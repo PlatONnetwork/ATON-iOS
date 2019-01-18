@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="SharedQRView" customModule="platonWallet" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="659"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="sharedBG" translatesAutoresizingMaskIntoConstraints="NO" id="5Td-iL-hN4">
+                    <rect key="frame" x="24" y="88" width="327" height="527"/>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ATPIcon" translatesAutoresizingMaskIntoConstraints="NO" id="89g-G0-ZBK">
+                    <rect key="frame" x="147.5" y="44" width="80" height="80"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="80" id="B2l-3W-5rC"/>
+                        <constraint firstAttribute="height" constant="80" id="vHI-Qp-RSe"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yHi-zY-qaT">
+                    <rect key="frame" x="42" y="136" width="291" height="20"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="20" id="sen-nf-4I4"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0x--" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K16-oX-koP">
+                    <rect key="frame" x="42" y="166" width="291" height="15"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <color key="textColor" red="0.77254901960784317" green="0.79607843137254897" blue="0.86274509803921573" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Receive ATP" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Dg-Ri-mAE">
+                    <rect key="frame" x="150" y="475" width="75" height="16"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <color key="textColor" red="0.66274509803921566" green="0.69019607843137254" blue="0.792156862745098" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="QRViewSharedViewReceive"/>
+                    </userDefinedRuntimeAttributes>
+                </label>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="uX9-gB-ZFf">
+                    <rect key="frame" x="77.5" y="241" width="220" height="220"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="220" id="MH5-VJ-thd"/>
+                        <constraint firstAttribute="width" constant="220" id="pCL-rE-wZb"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ATON" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gH9-wi-Jnn">
+                    <rect key="frame" x="171" y="629" width="33" height="15"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <color key="textColor" red="0.77254901960784317" green="0.79607843137254897" blue="0.86274509803921573" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="0.10464451462030411" green="0.13152614235877991" blue="0.21448582410812378" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="K16-oX-koP" firstAttribute="top" secondItem="yHi-zY-qaT" secondAttribute="bottom" constant="10" id="38r-vy-T8A"/>
+                <constraint firstItem="5Td-iL-hN4" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="24" id="8HC-d7-5TH"/>
+                <constraint firstItem="yHi-zY-qaT" firstAttribute="top" secondItem="89g-G0-ZBK" secondAttribute="bottom" constant="12" id="9Vz-Ni-rXH"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="5Td-iL-hN4" secondAttribute="trailing" constant="24" id="C68-LL-6hd"/>
+                <constraint firstItem="K16-oX-koP" firstAttribute="leading" secondItem="5Td-iL-hN4" secondAttribute="leading" constant="18" id="IEq-VE-Sbz"/>
+                <constraint firstItem="K16-oX-koP" firstAttribute="trailing" secondItem="5Td-iL-hN4" secondAttribute="trailing" constant="-18" id="Lgd-Va-hLV"/>
+                <constraint firstItem="uX9-gB-ZFf" firstAttribute="top" secondItem="K16-oX-koP" secondAttribute="bottom" constant="60" id="R6y-Yl-n8M"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="gH9-wi-Jnn" secondAttribute="bottom" constant="15" id="RoP-m5-8Xg"/>
+                <constraint firstItem="89g-G0-ZBK" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="S3W-gN-LvU"/>
+                <constraint firstItem="uX9-gB-ZFf" firstAttribute="centerX" secondItem="5Td-iL-hN4" secondAttribute="centerX" id="SsM-YN-Lyh"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="5Td-iL-hN4" secondAttribute="bottom" constant="44" id="Xbe-hg-cj6"/>
+                <constraint firstItem="gH9-wi-Jnn" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="ZVB-Fv-RAQ"/>
+                <constraint firstItem="yHi-zY-qaT" firstAttribute="leading" secondItem="5Td-iL-hN4" secondAttribute="leading" constant="18" id="ZuQ-RK-VZG"/>
+                <constraint firstItem="89g-G0-ZBK" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="24" id="cqi-VI-3hT"/>
+                <constraint firstItem="6Dg-Ri-mAE" firstAttribute="top" secondItem="uX9-gB-ZFf" secondAttribute="bottom" constant="14" id="fwl-qX-9eP"/>
+                <constraint firstItem="yHi-zY-qaT" firstAttribute="centerX" secondItem="5Td-iL-hN4" secondAttribute="centerX" id="gyo-RP-J5o"/>
+                <constraint firstItem="6Dg-Ri-mAE" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="mns-He-RHe"/>
+                <constraint firstItem="yHi-zY-qaT" firstAttribute="trailing" secondItem="5Td-iL-hN4" secondAttribute="trailing" constant="-18" id="oKg-h6-Fiu"/>
+                <constraint firstItem="5Td-iL-hN4" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="68" id="tZc-4K-7g1"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="logoImage" destination="89g-G0-ZBK" id="QPf-Bv-PDF"/>
+                <outlet property="qrImageView" destination="uX9-gB-ZFf" id="hTo-p9-b5u"/>
+                <outlet property="walletAddress" destination="K16-oX-koP" id="igb-br-88O"/>
+                <outlet property="walletName" destination="yHi-zY-qaT" id="aUx-WX-kDd"/>
+            </connections>
+            <point key="canvasLocation" x="55.200000000000003" y="44.527736131934034"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="ATPIcon" width="24" height="24"/>
+        <image name="sharedBG" width="375" height="615"/>
+    </resources>
+</document>

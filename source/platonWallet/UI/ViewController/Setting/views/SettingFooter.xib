@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="SettingFooter" customModule="platonWallet" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EFd-iT-Rk8" userLabel="7">
+                    <rect key="frame" x="273" y="9.5" width="30" height="30"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="30" id="1D3-tG-0Ia"/>
+                        <constraint firstAttribute="height" constant="30" id="2ZL-vw-ycM"/>
+                    </constraints>
+                    <state key="normal" image="icon-Medium"/>
+                    <connections>
+                        <action selector="onButtonPress:" destination="iN0-l3-epB" eventType="touchUpInside" id="1Go-Ey-qou"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="00z-Sf-bfe" userLabel="6">
+                    <rect key="frame" x="228" y="9.5" width="30" height="30"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="clO-ec-hEN"/>
+                        <constraint firstAttribute="width" constant="30" id="pxA-la-mwY"/>
+                    </constraints>
+                    <state key="normal" image="icon-Reddit"/>
+                    <connections>
+                        <action selector="onButtonPress:" destination="iN0-l3-epB" eventType="touchUpInside" id="31v-9O-HjD"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KNu-Ct-Xqo" userLabel="5">
+                    <rect key="frame" x="183" y="9.5" width="30" height="30"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="H2M-Qs-8pk"/>
+                        <constraint firstAttribute="width" constant="30" id="KX2-pK-Ip3"/>
+                    </constraints>
+                    <state key="normal" image="icon-Facebook"/>
+                    <connections>
+                        <action selector="onButtonPress:" destination="iN0-l3-epB" eventType="touchUpInside" id="wt5-4g-hqz"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CmF-aF-0dQ" userLabel="4">
+                    <rect key="frame" x="138" y="9.5" width="30" height="30"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="8f1-qN-kXK"/>
+                        <constraint firstAttribute="width" constant="30" id="teF-nO-5IL"/>
+                    </constraints>
+                    <state key="normal" image="icon-Twitter"/>
+                    <connections>
+                        <action selector="onButtonPress:" destination="iN0-l3-epB" eventType="touchUpInside" id="OIn-WN-D7L"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a6e-Ek-8KM" userLabel="3">
+                    <rect key="frame" x="93" y="9.5" width="30" height="30"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="30" id="AMM-re-RfD"/>
+                        <constraint firstAttribute="height" constant="30" id="gKg-7i-zLE"/>
+                    </constraints>
+                    <state key="normal" image="icon-GitHub"/>
+                    <connections>
+                        <action selector="onButtonPress:" destination="iN0-l3-epB" eventType="touchUpInside" id="kXn-Rc-Khd"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KtZ-kb-VdP" userLabel="1">
+                    <rect key="frame" x="48" y="9.5" width="30" height="30"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="QGQ-AT-BMl"/>
+                        <constraint firstAttribute="width" constant="30" id="ivH-dO-Xoo"/>
+                    </constraints>
+                    <state key="normal" image="icon-Telegram"/>
+                    <connections>
+                        <action selector="onButtonPress:" destination="iN0-l3-epB" eventType="touchUpInside" id="QsH-i7-gvz"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="0.10588235294117647" green="0.13333333333333333" blue="0.21176470588235294" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="00z-Sf-bfe" firstAttribute="leading" secondItem="KNu-Ct-Xqo" secondAttribute="trailing" constant="15" id="06W-fN-YHt"/>
+                <constraint firstItem="EFd-iT-Rk8" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" id="Gnr-tb-4cT"/>
+                <constraint firstItem="KNu-Ct-Xqo" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" id="Mbi-B9-2Ld"/>
+                <constraint firstItem="KtZ-kb-VdP" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="48" id="Net-Mc-uvm"/>
+                <constraint firstItem="KNu-Ct-Xqo" firstAttribute="leading" secondItem="CmF-aF-0dQ" secondAttribute="trailing" constant="15" id="Y9F-8L-p4r"/>
+                <constraint firstItem="a6e-Ek-8KM" firstAttribute="leading" secondItem="KtZ-kb-VdP" secondAttribute="trailing" constant="15" id="eDb-cH-m52"/>
+                <constraint firstItem="EFd-iT-Rk8" firstAttribute="leading" secondItem="00z-Sf-bfe" secondAttribute="trailing" constant="15" id="fnv-m5-Kjf"/>
+                <constraint firstItem="00z-Sf-bfe" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" id="gVI-Tu-olc"/>
+                <constraint firstItem="CmF-aF-0dQ" firstAttribute="leading" secondItem="a6e-Ek-8KM" secondAttribute="trailing" constant="15" id="idL-uQ-iI2"/>
+                <constraint firstItem="CmF-aF-0dQ" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" id="sZL-6t-05m"/>
+                <constraint firstItem="KtZ-kb-VdP" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" id="xbG-jh-38J"/>
+                <constraint firstItem="a6e-Ek-8KM" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" id="y4G-Ey-x4i"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="facebookBtn" destination="KNu-Ct-Xqo" id="Tbd-xV-flu"/>
+                <outlet property="githubBtn" destination="a6e-Ek-8KM" id="B0S-Xg-FgB"/>
+                <outlet property="mediumBtn" destination="EFd-iT-Rk8" id="Mwc-iH-feI"/>
+                <outlet property="redditBtn" destination="00z-Sf-bfe" id="Mqs-lH-WJI"/>
+                <outlet property="telegtamBtn" destination="KtZ-kb-VdP" id="Od9-RG-1hU"/>
+                <outlet property="twitterBtn" destination="CmF-aF-0dQ" id="ava-Mc-e2N"/>
+            </connections>
+            <point key="canvasLocation" x="132" y="440.32983508245883"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="icon-Facebook" width="30" height="30"/>
+        <image name="icon-GitHub" width="30" height="30"/>
+        <image name="icon-Medium" width="30" height="30"/>
+        <image name="icon-Reddit" width="30" height="30"/>
+        <image name="icon-Telegram" width="30" height="30"/>
+        <image name="icon-Twitter" width="30" height="30"/>
+    </resources>
+</document>

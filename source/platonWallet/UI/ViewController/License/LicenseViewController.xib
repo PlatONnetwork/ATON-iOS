@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="LicenseViewController" customModule="platonWallet" customModuleProvider="target">
+            <connections>
+                <outlet property="content" destination="ozd-Kv-hdU" id="bbe-fR-hBu"/>
+                <outlet property="continueBtn" destination="uPO-yX-1vr" id="sSc-8k-FBh"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dDo-3V-jvO">
+                    <rect key="frame" x="0.0" y="20" width="375" height="547"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="c4P-ni-81j">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="776"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="License Agreement" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YYX-IC-vrn">
+                                    <rect key="frame" x="117.5" y="15" width="140" height="20"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <nil key="highlightedColor"/>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="protocol_title"/>
+                                    </userDefinedRuntimeAttributes>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GNU GENERAL PUBLIC LICENSE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lbf-hO-2YJ">
+                                    <rect key="frame" x="82" y="49" width="211.5" height="17"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <nil key="highlightedColor"/>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="protocol_sub_title"/>
+                                    </userDefinedRuntimeAttributes>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="GNU GENERAL PUBLIC LICENSE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y4j-fd-0Cs">
+                                    <rect key="frame" x="95" y="74" width="185" height="15"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                    <color key="textColor" red="0.80392156862745101" green="0.80392156862745101" blue="0.80392156862745101" alpha="1" colorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="protocol_update_time"/>
+                                    </userDefinedRuntimeAttributes>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ozd-Kv-hdU">
+                                    <rect key="frame" x="13" y="103" width="349" height="659"/>
+                                    <string key="text">Copyright (C) 2007 Free Software Foundation, Inc. &lt;http://fsf.org/&gt;
+ Everyone is permitted to copy and distribute verbatim copies
+ of this license document, but changing it is not allowed.
+
+                            Preamble
+
+  The GNU General Public License is a free, copyleft license for
+software and other kinds of works.
+
+  The licenses for most software and other practical works are designed
+to take away your freedom to share and change the works.  By contrast,
+the GNU General Public License is intended to guarantee your freedom to
+share and change all versions of a program--to make sure it remains free
+software for all its users.  We, the Free Software Foundation, use the
+GNU General Public License for most of our software; it applies also to
+any other work released this way by its authors.  You can apply it to
+your programs, too.
+
+  When we speak of free software, we are referring to freedom, not
+price.  Our General Public Licenses are designed to make sure that you
+have the freedom to distribute copies of free software (and charge for
+them if you wish), that you receive source code or can get it if you
+want it, that you can change the software or use pieces of it in new
+free programs, and that you know you can do these things.
+
+  To protect your rights, we need to prevent others from denying you
+these rights or asking you to surrender the rights.  Therefore, you have
+certain responsibilities if you distribute copies of the software, or if
+</string>
+                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                    <color key="textColor" red="0.80392156859999997" green="0.80392156859999997" blue="0.80392156859999997" alpha="1" colorSpace="calibratedRGB"/>
+                                    <nil key="highlightedColor"/>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="protocol_content"/>
+                                    </userDefinedRuntimeAttributes>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" red="0.1058823529" green="0.12941176469999999" blue="0.2156862745" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <constraints>
+                                <constraint firstItem="lbf-hO-2YJ" firstAttribute="top" secondItem="YYX-IC-vrn" secondAttribute="bottom" constant="14" id="5MR-Ht-v18"/>
+                                <constraint firstItem="Y4j-fd-0Cs" firstAttribute="centerX" secondItem="c4P-ni-81j" secondAttribute="centerX" id="Ps4-pN-mtP"/>
+                                <constraint firstAttribute="trailing" secondItem="ozd-Kv-hdU" secondAttribute="trailing" constant="13" id="R0Q-Xq-oie"/>
+                                <constraint firstItem="ozd-Kv-hdU" firstAttribute="leading" secondItem="c4P-ni-81j" secondAttribute="leading" constant="13" id="ZND-4Z-aOf"/>
+                                <constraint firstItem="Y4j-fd-0Cs" firstAttribute="top" secondItem="lbf-hO-2YJ" secondAttribute="bottom" constant="8" id="aAa-Bv-RIY"/>
+                                <constraint firstItem="ozd-Kv-hdU" firstAttribute="top" secondItem="Y4j-fd-0Cs" secondAttribute="bottom" constant="14" id="bWM-mn-CXb"/>
+                                <constraint firstItem="YYX-IC-vrn" firstAttribute="top" secondItem="c4P-ni-81j" secondAttribute="top" constant="15" id="nNE-Lg-xUs"/>
+                                <constraint firstItem="lbf-hO-2YJ" firstAttribute="centerX" secondItem="c4P-ni-81j" secondAttribute="centerX" id="nd1-CZ-VP6"/>
+                                <constraint firstAttribute="bottom" secondItem="ozd-Kv-hdU" secondAttribute="bottom" constant="14" id="rsS-g8-SI7"/>
+                                <constraint firstItem="YYX-IC-vrn" firstAttribute="centerX" secondItem="c4P-ni-81j" secondAttribute="centerX" id="tr4-i1-z9u"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="c4P-ni-81j" firstAttribute="leading" secondItem="dDo-3V-jvO" secondAttribute="leading" id="PaI-II-du5"/>
+                        <constraint firstItem="c4P-ni-81j" firstAttribute="top" secondItem="dDo-3V-jvO" secondAttribute="top" id="WSu-O5-Oby"/>
+                        <constraint firstAttribute="bottom" secondItem="c4P-ni-81j" secondAttribute="bottom" id="i6r-dH-j99"/>
+                        <constraint firstAttribute="trailing" secondItem="c4P-ni-81j" secondAttribute="trailing" id="vBF-la-ws6"/>
+                    </constraints>
+                </scrollView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YOh-Bh-bJp">
+                    <rect key="frame" x="0.0" y="577" width="50" height="34"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="50" id="3lb-vA-oSp"/>
+                        <constraint firstAttribute="height" constant="34" id="H23-PP-aIv"/>
+                    </constraints>
+                    <state key="normal" image="icon_uncheck"/>
+                    <state key="selected" image="icon_checked"/>
+                    <connections>
+                        <action selector="checkBtnClick:" destination="-1" eventType="touchUpInside" id="xHa-Ua-Crt"/>
+                    </connections>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="I Agree" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hOf-34-Oty">
+                    <rect key="frame" x="45" y="587" width="40" height="14.5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="protocol_agree_check"/>
+                    </userDefinedRuntimeAttributes>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uPO-yX-1vr" customClass="PButton" customModule="platonWallet" customModuleProvider="target">
+                    <rect key="frame" x="16" y="613" width="343" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="fQJ-7P-r15"/>
+                    </constraints>
+                    <state key="normal" title="Continue"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="localizedNormalTitle" value="protocol_continue"/>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="continue:" destination="-1" eventType="touchUpInside" id="HzQ-M2-6qD"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="0.1058823529" green="0.12941176469999999" blue="0.2156862745" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="dDo-3V-jvO" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Grg-Id-JjS"/>
+                <constraint firstItem="YOh-Bh-bJp" firstAttribute="top" secondItem="dDo-3V-jvO" secondAttribute="bottom" constant="10" id="IN7-Kk-nBO"/>
+                <constraint firstItem="c4P-ni-81j" firstAttribute="width" secondItem="i5M-Pr-FkT" secondAttribute="width" id="NsL-FE-rZP"/>
+                <constraint firstItem="hOf-34-Oty" firstAttribute="centerY" secondItem="YOh-Bh-bJp" secondAttribute="centerY" id="R2h-ae-ssb"/>
+                <constraint firstItem="hOf-34-Oty" firstAttribute="leading" secondItem="YOh-Bh-bJp" secondAttribute="trailing" constant="-5" id="UGY-hy-N0U"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="dDo-3V-jvO" secondAttribute="bottom" constant="100" id="Yt3-mm-PGX"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="uPO-yX-1vr" secondAttribute="bottom" constant="14" id="aru-Ml-M5f"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="dDo-3V-jvO" secondAttribute="trailing" id="cDv-ek-5OU"/>
+                <constraint firstItem="YOh-Bh-bJp" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="g1m-OZ-A5A"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="uPO-yX-1vr" secondAttribute="trailing" constant="16" id="ldN-7O-kxl"/>
+                <constraint firstItem="uPO-yX-1vr" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="s1O-9Y-TVP"/>
+                <constraint firstItem="dDo-3V-jvO" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="wQY-Hf-cOf"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <point key="canvasLocation" x="53.600000000000001" y="48.125937031484263"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="icon_checked" width="14" height="14"/>
+        <image name="icon_uncheck" width="14" height="14"/>
+    </resources>
+</document>

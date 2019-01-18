@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="CustomPickerView" customModule="platonWallet" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="232"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="epe-tI-SMD">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D8j-BU-UQP">
+                            <rect key="frame" x="12" y="7" width="48" height="30"/>
+                            <state key="normal" title="Cancel"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="string" keyPath="localizedNormalTitle" value="PickerView_cancel"/>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="cancel:" destination="iN0-l3-epB" eventType="touchUpInside" id="U6d-BH-ydR"/>
+                            </connections>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NFu-Fq-bkZ">
+                            <rect key="frame" x="314" y="7" width="49" height="30"/>
+                            <state key="normal" title="Submit"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="string" keyPath="localizedNormalTitle" value="PickerView_submit"/>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="submit:" destination="iN0-l3-epB" eventType="touchUpInside" id="SSX-j7-hi9"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="D8j-BU-UQP" firstAttribute="centerY" secondItem="epe-tI-SMD" secondAttribute="centerY" id="9vI-jN-Ffi"/>
+                        <constraint firstAttribute="height" constant="44" id="JF9-ck-hOR"/>
+                        <constraint firstAttribute="trailing" secondItem="NFu-Fq-bkZ" secondAttribute="trailing" constant="12" id="aqW-ut-XQG"/>
+                        <constraint firstItem="D8j-BU-UQP" firstAttribute="leading" secondItem="epe-tI-SMD" secondAttribute="leading" constant="12" id="mNj-HI-k36"/>
+                        <constraint firstItem="NFu-Fq-bkZ" firstAttribute="centerY" secondItem="epe-tI-SMD" secondAttribute="centerY" id="tep-8D-Wsm"/>
+                    </constraints>
+                </view>
+                <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nCF-yp-MqL">
+                    <rect key="frame" x="0.0" y="44" width="375" height="188"/>
+                </pickerView>
+            </subviews>
+            <color key="backgroundColor" red="0.97254901960784312" green="0.97254901960784312" blue="0.97254901960784312" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="epe-tI-SMD" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="2UK-gB-TOe"/>
+                <constraint firstItem="nCF-yp-MqL" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="9wc-Ku-LoL"/>
+                <constraint firstItem="nCF-yp-MqL" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="AgM-MJ-GxM"/>
+                <constraint firstItem="nCF-yp-MqL" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="BVV-jH-ira"/>
+                <constraint firstItem="nCF-yp-MqL" firstAttribute="top" secondItem="epe-tI-SMD" secondAttribute="bottom" id="I1v-kU-P3j"/>
+                <constraint firstItem="epe-tI-SMD" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="PY5-Y9-iyS"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="epe-tI-SMD" secondAttribute="trailing" id="Xxe-b8-2d8"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="pickerView" destination="nCF-yp-MqL" id="zjp-my-ocS"/>
+            </connections>
+            <point key="canvasLocation" x="138.40000000000001" y="310.79460269865069"/>
+        </view>
+    </objects>
+</document>

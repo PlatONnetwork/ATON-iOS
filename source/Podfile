@@ -1,0 +1,56 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+source 'git@192.168.9.66:weixuening/JuzixSpecs.git'
+source 'https://github.com/CocoaPods/Specs.git'
+
+target 'platonWallet' do
+  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+  use_frameworks!
+
+  pod 'Spring', :git => 'https://github.com/MengTo/Spring.git'
+  pod 'RealmSwift'
+  pod 'BigInt', inhibit_warnings: true
+  pod 'CryptoSwift', '~> 0.10.0'
+  pod 'TrezorCrypto', inhibit_warnings: true
+  pod 'SwiftLint'
+  pod 'RTRootNavigationController'
+  pod 'SnapKit', '~> 4.0.0'
+  
+  pod 'Localize-Swift', '~> 2.0'
+  pod 'UITextView+Placeholder'
+  pod 'MBProgressHUD', '~> 1.1.0'
+  pod 'ScryptSwift'
+  pod 'SwipeCellKit'
+  
+  # Web3 dependencies BigInt CryptoSwift secp256k1.swift
+  #pod 'BigInt', '~> 3.1'
+  #pod 'CryptoSwift', '~> 0.8'
+  pod 'secp256k1.swift', '~> 0.1'
+  pod 'Bugly'
+  
+  # Pods for platonWallet
+  
+  pod 'platonWeb3', '~> 0.3.0'
+
+  target 'platonWalletTests' do
+      inherit! :search_paths
+      # Pods for testing
+  end
+  
+  target 'platonWalletUITests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+end
+
+post_install do |installer|
+    installer.pods_project.targets.each do |target|
+        if ['ScryptSwift'].include? target.name
+            target.build_configurations.each do |config|
+                config.build_settings['SWIFT_OPTIMIZATION_LEVEL'] = '-Owholemodule'
+            end
+        end
+    end
+end

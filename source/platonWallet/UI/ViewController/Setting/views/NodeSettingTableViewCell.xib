@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="NodeSettingTableViewCell" rowHeight="60" id="KGk-i7-Jjw" customClass="NodeSettingTableViewCell" customModule="platonWallet" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="59.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_node_selection" translatesAutoresizingMaskIntoConstraints="NO" id="Qc3-Eb-W7R">
+                        <rect key="frame" x="292" y="24" width="12" height="12"/>
+                    </imageView>
+                    <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gtk-ct-6Xd">
+                        <rect key="frame" x="4" y="9" width="42" height="42"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="gtk-ct-6Xd" secondAttribute="height" multiplier="1:1" id="gjE-25-42m"/>
+                            <constraint firstAttribute="width" constant="42" id="hoN-49-Tr6"/>
+                        </constraints>
+                        <state key="normal" image="icon_node_delete"/>
+                        <connections>
+                            <action selector="deleteNode:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="V3d-4y-pF8"/>
+                        </connections>
+                    </button>
+                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="xCx-7d-Bpp">
+                        <rect key="frame" x="16" y="10" width="276" height="40"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="40" id="9aV-TT-EVK"/>
+                        </constraints>
+                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                        <textInputTraits key="textInputTraits"/>
+                        <connections>
+                            <outlet property="delegate" destination="-1" id="fth-vF-3bd"/>
+                        </connections>
+                    </textField>
+                </subviews>
+                <color key="backgroundColor" red="0.1058823529" green="0.12941176469999999" blue="0.2156862745" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                <constraints>
+                    <constraint firstItem="xCx-7d-Bpp" firstAttribute="leading" secondItem="gtk-ct-6Xd" secondAttribute="trailing" priority="500" id="8gB-mA-rZo"/>
+                    <constraint firstItem="xCx-7d-Bpp" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" priority="750" constant="16" id="H6L-D0-bUS"/>
+                    <constraint firstItem="gtk-ct-6Xd" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="4" id="QMC-tE-4bc"/>
+                    <constraint firstItem="xCx-7d-Bpp" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="aMt-lX-WUZ"/>
+                    <constraint firstItem="Qc3-Eb-W7R" firstAttribute="leading" secondItem="xCx-7d-Bpp" secondAttribute="trailing" id="kIu-gW-ucj"/>
+                    <constraint firstAttribute="trailing" secondItem="Qc3-Eb-W7R" secondAttribute="trailing" constant="16" id="vXM-Bh-4Hb"/>
+                    <constraint firstItem="Qc3-Eb-W7R" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="wWc-gO-okx"/>
+                    <constraint firstItem="gtk-ct-6Xd" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="y7V-wg-KEy"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="deleteBtn" destination="gtk-ct-6Xd" id="KH6-V5-RHW"/>
+                <outlet property="hideDeleteBtnConstraint" destination="H6L-D0-bUS" id="sWJ-ha-mdC"/>
+                <outlet property="nodeTF" destination="xCx-7d-Bpp" id="Mfb-lj-Lmx"/>
+                <outlet property="selectionImgV" destination="Qc3-Eb-W7R" id="jQ5-nd-vE7"/>
+            </connections>
+            <point key="canvasLocation" x="137.59999999999999" y="161.01949025487258"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="icon_node_delete" width="20" height="20"/>
+        <image name="icon_node_selection" width="12" height="12"/>
+    </resources>
+</document>

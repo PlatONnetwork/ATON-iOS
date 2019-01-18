@@ -1,0 +1,27 @@
+
+/* Class = "UILabel"; text = "Password"; ObjectID = "0sN-DN-xSW"; */
+"0sN-DN-xSW.text" = "Password";
+
+/* Class = "UILabel"; text = "Note: Be sure to keep your wallet password in mind, the server will not store your password, you will not be able to retrieve the password if forgetting or losing!"; ObjectID = "3BT-8o-lKq"; */
+"3BT-8o-lKq.text" = "Note: Be sure to keep your wallet password in mind, the server will not store your password, you will not be able to retrieve the password if forgetting or losing!";
+
+/* Class = "UIButton"; normalTitle = "Create"; ObjectID = "805-MY-ESh"; */
+"805-MY-ESh.normalTitle" = "Create";
+
+/* Class = "UILabel"; text = "*At least 6 characters,recommended to mix uppercase and lowercase alphabets,numbers and symbols"; ObjectID = "EIO-Se-rsq"; */
+"EIO-Se-rsq.text" = "*At least 6 characters,recommended to mix uppercase and lowercase alphabets,numbers and symbols";
+
+/* Class = "UITextField"; placeholder = "Name of Wallet"; ObjectID = "HDM-m9-rOk"; */
+"HDM-m9-rOk.placeholder" = "Set password";
+
+/* Class = "UILabel"; text = "Name"; ObjectID = "f5T-n5-Mbl"; */
+"f5T-n5-Mbl.text" = "Name";
+
+/* Class = "UILabel"; text = "Strength"; ObjectID = "kOc-DV-gED"; */
+"kOc-DV-gED.text" = "Strength";
+
+/* Class = "UITextField"; placeholder = "Name of Wallet"; ObjectID = "md6-L4-BIa"; */
+"md6-L4-BIa.placeholder" = "Name of Wallet";
+
+/* Class = "UITextField"; placeholder = "Repeat password"; ObjectID = "uO9-nk-pyE"; */
+"uO9-nk-pyE.placeholder" = "Repeat password";

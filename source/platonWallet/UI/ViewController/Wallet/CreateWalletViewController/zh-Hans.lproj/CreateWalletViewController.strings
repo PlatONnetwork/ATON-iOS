@@ -1,0 +1,27 @@
+
+/* Class = "UILabel"; text = "Password"; ObjectID = "0sN-DN-xSW"; */
+"0sN-DN-xSW.text" = "设置密码";
+
+/* Class = "UILabel"; text = "Note: Be sure to keep your wallet password in mind, the server will not store your password, you will not be able to retrieve the password if forgetting or losing!"; ObjectID = "3BT-8o-lKq"; */
+"3BT-8o-lKq.text" = "注意：请务必牢记钱包密码，服务器不会存储您的密码，遗忘丢失将无法找回！";
+
+/* Class = "UIButton"; normalTitle = "Create"; ObjectID = "805-MY-ESh"; */
+"805-MY-ESh.normalTitle" = "创建钱包";
+
+/* Class = "UILabel"; text = "*At least 6 characters,recommended to mix uppercase and lowercase alphabets,numbers and symbols"; ObjectID = "EIO-Se-rsq"; */
+"EIO-Se-rsq.text" = "*不少于6位字符，建议混合大小写、数字、特殊字符";
+
+/* Class = "UITextField"; placeholder = "Name of Wallet"; ObjectID = "HDM-m9-rOk"; */
+"HDM-m9-rOk.placeholder" = "设置钱包密码（不少于6位）";
+
+/* Class = "UILabel"; text = "Name"; ObjectID = "f5T-n5-Mbl"; */
+"f5T-n5-Mbl.text" = "钱包名称";
+
+/* Class = "UILabel"; text = "Strength"; ObjectID = "kOc-DV-gED"; */
+"kOc-DV-gED.text" = "强度";
+
+/* Class = "UITextField"; placeholder = "Name of Wallet"; ObjectID = "md6-L4-BIa"; */
+"md6-L4-BIa.placeholder" = "钱包名称";
+
+/* Class = "UITextField"; placeholder = "Repeat password"; ObjectID = "uO9-nk-pyE"; */
+"uO9-nk-pyE.placeholder" = "重复钱包密码";
