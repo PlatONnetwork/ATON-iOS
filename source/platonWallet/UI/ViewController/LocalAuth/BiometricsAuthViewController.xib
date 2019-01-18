@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BiometricsAuthViewController" customModule="platonWallet" customModuleProvider="target">
+            <connections>
+                <outlet property="localAuthIconImgV" destination="wir-mz-BFI" id="hKd-ie-ddt"/>
+                <outlet property="switchPswAuthBtn" destination="si8-T1-3Fd" id="Nq2-GR-dhi"/>
+                <outlet property="tips" destination="Ytn-re-KVk" id="Ka6-i8-UtK"/>
+                <outlet property="tipsBtn" destination="7sR-qV-vPl" id="bdx-vB-jsj"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchLogo" translatesAutoresizingMaskIntoConstraints="NO" id="xrJ-3q-YoN">
+                    <rect key="frame" x="147.5" y="75" width="80" height="160"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="80" id="2S2-Qq-DqY"/>
+                        <constraint firstAttribute="height" constant="160" id="OU2-yQ-gW3"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JlV-Z7-NGh">
+                    <rect key="frame" x="172" y="243" width="31" height="15"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="BiometricsAuthVC_logo_title"/>
+                    </userDefinedRuntimeAttributes>
+                </label>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="localAuth_icon_face" translatesAutoresizingMaskIntoConstraints="NO" id="wir-mz-BFI">
+                    <rect key="frame" x="145.5" y="331" width="84" height="84"/>
+                </imageView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7sR-qV-vPl">
+                    <rect key="frame" x="152" y="435" width="71" height="29"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <state key="normal" title="11111111111">
+                        <color key="titleColor" red="1" green="0.92941176469999998" blue="0.3294117647" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="continueAuth:" destination="-1" eventType="touchUpInside" id="Inu-7S-ffH"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="si8-T1-3Fd">
+                    <rect key="frame" x="170.5" y="610" width="34" height="27"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <state key="normal" title="111111">
+                        <color key="titleColor" red="1" green="0.92941176469999998" blue="0.3294117647" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="localizedNormalTitle" value="BiometricsAuthVC_switchBtn_title"/>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="switchToPswAuth:" destination="-1" eventType="touchUpInside" id="lLI-wU-6pY"/>
+                    </connections>
+                </button>
+                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ytn-re-KVk">
+                    <rect key="frame" x="16" y="472" width="343" height="17"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" red="1" green="0.2784313725" blue="0.2784313725" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="BiometricsAuthVC_initFailed_tips"/>
+                    </userDefinedRuntimeAttributes>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="0.1058823529" green="0.12941176469999999" blue="0.2156862745" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="wir-mz-BFI" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="0Iq-XH-x9J"/>
+                <constraint firstItem="xrJ-3q-YoN" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="Btf-ml-dRq"/>
+                <constraint firstItem="7sR-qV-vPl" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="Gg8-uC-byn"/>
+                <constraint firstItem="JlV-Z7-NGh" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="Qu0-UQ-KQB"/>
+                <constraint firstItem="7sR-qV-vPl" firstAttribute="top" secondItem="wir-mz-BFI" secondAttribute="bottom" constant="20" id="Rds-2v-K1x"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="si8-T1-3Fd" secondAttribute="bottom" constant="30" id="Wwh-Sq-vlM"/>
+                <constraint firstItem="Ytn-re-KVk" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="Wyz-rs-Sbh"/>
+                <constraint firstItem="wir-mz-BFI" firstAttribute="top" secondItem="JlV-Z7-NGh" secondAttribute="bottom" constant="73" id="XeJ-Ns-ZpY"/>
+                <constraint firstItem="JlV-Z7-NGh" firstAttribute="top" secondItem="xrJ-3q-YoN" secondAttribute="bottom" constant="8" id="a5A-AS-3wN"/>
+                <constraint firstItem="Ytn-re-KVk" firstAttribute="top" secondItem="7sR-qV-vPl" secondAttribute="bottom" constant="8" id="aUo-G1-nEc"/>
+                <constraint firstItem="si8-T1-3Fd" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="dU5-T4-11d"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Ytn-re-KVk" secondAttribute="trailing" constant="16" id="dgs-aH-KEh"/>
+                <constraint firstItem="xrJ-3q-YoN" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="55" id="g6c-AH-a5N"/>
+                <constraint firstItem="Ytn-re-KVk" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="seW-C6-lUe"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="LaunchLogo" width="80" height="106"/>
+        <image name="localAuth_icon_face" width="84" height="84"/>
+    </resources>
+</document>

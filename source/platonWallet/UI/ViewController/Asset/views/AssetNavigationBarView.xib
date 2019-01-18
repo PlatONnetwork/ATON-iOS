@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="AssetNavigationBarView" customModule="platonWallet" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="41"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uXJ-Yb-h2t" userLabel="centerSepeline">
+                    <rect key="frame" x="187.5" y="20.5" width="0.0" height="0.0"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J7R-1Z-tx1" customClass="SpringButton" customModule="Spring">
+                    <rect key="frame" x="139.5" y="7" width="38" height="27"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <state key="normal" title="Button"/>
+                    <connections>
+                        <action selector="onLeft:" destination="iN0-l3-epB" eventType="touchUpInside" id="xAr-G7-AQv"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1H4-Cq-1Id" customClass="SpringButton" customModule="Spring">
+                    <rect key="frame" x="197.5" y="7" width="38" height="27"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <state key="normal" title="Button"/>
+                    <connections>
+                        <action selector="onRight:" destination="iN0-l3-epB" eventType="touchUpInside" id="2A1-eB-SEN"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="1H4-Cq-1Id" firstAttribute="centerY" secondItem="uXJ-Yb-h2t" secondAttribute="centerY" id="3Ry-tO-y1o"/>
+                <constraint firstItem="uXJ-Yb-h2t" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="9vQ-Of-PLL"/>
+                <constraint firstItem="J7R-1Z-tx1" firstAttribute="centerY" secondItem="uXJ-Yb-h2t" secondAttribute="centerY" id="EUf-wU-XQ8"/>
+                <constraint firstItem="uXJ-Yb-h2t" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" id="g6O-qD-xa9"/>
+                <constraint firstItem="uXJ-Yb-h2t" firstAttribute="leading" secondItem="J7R-1Z-tx1" secondAttribute="trailing" constant="10" id="gDw-EK-8Je"/>
+                <constraint firstItem="1H4-Cq-1Id" firstAttribute="leading" secondItem="uXJ-Yb-h2t" secondAttribute="trailing" constant="10" id="rBx-SF-gaS"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="leftButton" destination="J7R-1Z-tx1" id="iKd-Bp-w3j"/>
+                <outlet property="rightButton" destination="1H4-Cq-1Id" id="3k2-Ke-7tP"/>
+            </connections>
+            <point key="canvasLocation" x="146.40000000000001" y="308.9955022488756"/>
+        </view>
+    </objects>
+</document>

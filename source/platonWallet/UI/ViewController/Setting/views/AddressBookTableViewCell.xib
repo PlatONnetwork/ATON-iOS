@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="64" id="KGk-i7-Jjw" customClass="AddressBookTableViewCell" customModule="platonWallet" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="63.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="R8W-AE-Z1z">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="63"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ATPIcon" translatesAutoresizingMaskIntoConstraints="NO" id="Hb8-EA-uTW">
+                                <rect key="frame" x="20" y="19.5" width="24" height="24"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="24" id="N5F-wc-0CK"/>
+                                    <constraint firstAttribute="height" constant="24" id="mkl-V8-BD8"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="- -" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tqy-m3-tKx">
+                                <rect key="frame" x="54" y="10" width="254" height="17"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0x----------------------------------------" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="txj-9p-vO6">
+                                <rect key="frame" x="54" y="32" width="254" height="13.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.1058823529" green="0.12941176469999999" blue="0.2156862745" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="tqy-m3-tKx" firstAttribute="leading" secondItem="Hb8-EA-uTW" secondAttribute="trailing" constant="10" id="3Jr-SR-eqB"/>
+                            <constraint firstAttribute="trailing" secondItem="txj-9p-vO6" secondAttribute="trailing" constant="12" id="Apl-LU-sG3"/>
+                            <constraint firstItem="txj-9p-vO6" firstAttribute="top" secondItem="tqy-m3-tKx" secondAttribute="bottom" constant="5" id="E5Z-QK-9t8"/>
+                            <constraint firstItem="txj-9p-vO6" firstAttribute="leading" secondItem="Hb8-EA-uTW" secondAttribute="trailing" constant="10" id="HL7-bl-Hp7"/>
+                            <constraint firstAttribute="trailing" secondItem="tqy-m3-tKx" secondAttribute="trailing" constant="12" id="hBo-jv-GcM"/>
+                            <constraint firstItem="tqy-m3-tKx" firstAttribute="top" secondItem="R8W-AE-Z1z" secondAttribute="top" constant="10" id="nFi-Go-Kgv"/>
+                            <constraint firstItem="Hb8-EA-uTW" firstAttribute="leading" secondItem="R8W-AE-Z1z" secondAttribute="leading" constant="20" id="smb-eJ-gWa"/>
+                            <constraint firstItem="Hb8-EA-uTW" firstAttribute="centerY" secondItem="R8W-AE-Z1z" secondAttribute="centerY" id="xFG-w7-oKY"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" red="0.098039215686274508" green="0.12941176470588237" blue="0.20784313725490197" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            </tableViewCellContentView>
+            <constraints>
+                <constraint firstItem="R8W-AE-Z1z" firstAttribute="leading" secondItem="njF-e1-oar" secondAttribute="leading" id="4jn-UC-2Xw"/>
+                <constraint firstItem="R8W-AE-Z1z" firstAttribute="top" secondItem="njF-e1-oar" secondAttribute="top" id="HrC-8V-IoE"/>
+                <constraint firstItem="njF-e1-oar" firstAttribute="bottom" secondItem="R8W-AE-Z1z" secondAttribute="bottom" constant="1" id="taU-OZ-2rH"/>
+                <constraint firstItem="njF-e1-oar" firstAttribute="trailing" secondItem="R8W-AE-Z1z" secondAttribute="trailing" id="uvf-te-zit"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <inset key="separatorInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+            <connections>
+                <outlet property="containerView" destination="R8W-AE-Z1z" id="e8W-tt-os1"/>
+                <outlet property="icon" destination="Hb8-EA-uTW" id="pEo-P7-SgB"/>
+                <outlet property="walletAddress" destination="txj-9p-vO6" id="ybB-1N-PhV"/>
+                <outlet property="walletName" destination="tqy-m3-tKx" id="REX-te-dcm"/>
+            </connections>
+            <point key="canvasLocation" x="132.80000000000001" y="163.71814092953525"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="ATPIcon" width="24" height="24"/>
+    </resources>
+</document>

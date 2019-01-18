@@ -1,0 +1,531 @@
+/* 
+  Localizable.strings
+  platonWallet
+
+  Created by Ned on 16/10/2018.
+  Copyright © 2018 ju. All rights reserved.
+*/
+
+"loading" = "加载中...";
+
+"WelcomePage_create_wallet" = "创建钱包";
+"WelcomePage_import_wallet" = "恢复钱包";
+
+"password_strength_level_0" = "强度";
+"password_strength_level_1" = "弱";
+"password_strength_level_2" = "一般";
+"password_strength_level_3" = "强";
+"password_strength_level_4" = "很好";
+
+"platon_slogan" = "一切皆可计算";
+
+///wallet common input placeholder
+"wallet_nameInput_placeholder" = "设置钱包名称";
+"wallet_pswInput_placeholder" = "设置钱包密码（不少于6位）";
+"wallet_pswConfirmInput_placeholder" = "重复钱包密码";
+"wallet_psw_advise" = "*不少于6位字符，建议混合大小写、数字、特殊字符";
+
+///wallet common input illegal tips
+"wallet_nameInput_empty_tips" = "名字不能为空！";
+"wallet_nameInput_lengthIllegal_tips" = "请输入1~12位钱包名称！";
+"wallet_pswInput_empty_tips" = "密码不能为空！";
+"wallet_pswInput_lengthIllegal_tips" = "密码长度至少6个字符！";
+"wallet_pswConfirmInput_empty_tips" = "重复密码不能为空！";
+"wallet_pswConfirmInput_mismatch_tips" = "两次密码不一致！";
+
+//createWalletVC
+"createWalletVC_title" = "创建普通钱包";
+"createWalletVC_walletName" = "钱包名称";
+"createWalletVC_password" = "设置密码";
+
+"createWalletVC_pswStrength" = "强度";
+"createWalletVC_note" = "注意：请务必牢记钱包密码，服务器不会存储您的密码，遗忘丢失将无法找回！";
+"createWalletVC_createBtn_title" = "创建钱包";
+"tabbar_asset_title" = "资产";
+"tabbar_personal_title" = "我的";
+
+"navigationbar_wallet_title" = "普通钱包";
+"navigationbar_sharedwallet_title" = "联名钱包";
+
+"asset_header_total_asset" = "总资产";
+
+//transfer viewController
+"transferVC_nav_title" = "发送 Energon";
+"transferVC_wallet_address_des" = "钱包地址";
+"transferVC_wallet_address_placeholder" = "输入钱包地址";
+"transferVC_Amount_des" = "发送数额";
+"transferVC_Input_placeholder" = "输入发送数量";
+"transferVC_Wallet_des" = "支付钱包";
+"transferVC_Wallet_name_des" = "钱包名称";
+"transferVC_switch_des" = "切换钱包";
+"transferVC_switch_memo_placeholder" = "备注（选填）";
+"transferVC_selectFee_des" = "交易费用";
+"transferVC_cheaper_des" = "更便宜";
+"transferVC_faster_des" = "更快捷";
+"transferVC_estima_des" = "预计交易确认时间：";
+
+"transferVC_confirm_title" = "发送确认";
+"transferVC_confirm_PayInfo" = "支付信息";
+"transferVC_confirm_To" = "接收地址";
+"transferVC_confirm_Fee" = "交易费用";
+"transferVC_confirm_ATP_send" = "Energon 发送";
+"transferVC_confirm_Submit" = "确定";
+
+"transferVC_address_Incorrect_tip" = "地址格式不正确 ";
+"transferVC_address_empty_tip" = "地址不能为空";
+"transferVC_amout_empty_tip" = "发送数量为空";
+"transferVC_amout_amout_input_error" = "数额输入错误";
+"transferVC_transfer_success_tip" = "转账成功";
+"transferVC_transfer_balance" = "余额:";
+"transferVC_transfer_SendAll" = "发送所有";
+"transferVC_Insufficient_balance" = "钱包余额不足";
+"transferVC_Insufficient_network_error" = "网络连接失败";
+"transferVC_transfer_select_wallet" = "选择钱包";
+
+//walletDetailVC
+"walletDetailVC_tx_status_pending" = "处理中";
+"walletDetailVC_tx_status_confirming" = "确认中";
+"walletDetailVC_no_transactions_Signing" = "签名中";
+"walletDetailVC_tx_status_success" = "成功";
+"walletDetailVC_tx_status_fail" = "失败";
+"walletDetailVC_tx_type_send" = "发送";
+"walletDetailVC_tx_type_receive" = "接收";
+"walletDetailVC_tx_transaction_title" = "交易记录";
+"walletDetailVC_balance" = "余额";
+"walletDetailVC_send_button" = "发送";
+"walletDetailVC_receive_button" = "接收";
+"walletDetailVC_vote_button" = "投票";
+"walletDetailVC_no_transactions_text" = "暂无交易";
+
+
+//Transaction Detail
+"TransactionDetailVC_nav_title" = "交易详情";
+
+"TransactionDetailVC_type" = "类别:";
+"TransactionDetailVC_time" = "时间:";
+"TransactionDetailVC_value" = "数量:";
+"TransactionDetailVC_energon_price" = "手续费:";
+"TransactionDetailVC_Wallet" = "钱包:";
+"TransactionDetailVC_memo" = "备注:";
+"TransactionDetailVC_memo_none" = "无";
+"TransactionDetailVC_hash" = "交易hash:";
+
+//qr scan
+"QRScanerVC_nav_title" = "扫描";
+
+"QRScan_success_tips" = "扫码成功";
+"QRScan_failed_tips" = "无法识别二维码";
+
+//qr code view
+
+"QRView_public_key" = "公钥";
+"QRView_wallet_address" = "钱包地址";
+"QRView_share_to_friend" = "分享给朋友";
+"QRView_transfer_tip_title" = "注意";
+"QRView_transfer_tip" = "您正处于PlatON测试网络，切勿将真实的资产转账到当前测试网络钱包地址";
+"QRViewSaveAndShared" = "保存图片并分享";
+"QRViewSharedViewWalletName" = "钱包名称";
+"QRViewSharedViewReceive" = "接收Energon";
+
+
+"SharedWechatFriend" = "微信";
+"SharedWechatMoment" = "微信朋友圈";
+"SharedQQ" = "QQ";
+"SharedWeibo" = "微博";
+"SharedFacebook" = "Facebook";
+"SharedTwitter" = "Twitter";
+"SharedMore" = "更多";
+"Receive_ATP" = "接收 Energon";
+"SharedQRViewSaving" = "保存中...";
+"SharedQRView_photolib_unauthorized_tips" = "照片写入权限受限，请至“系统-设置”授权后重试";
+
+
+
+
+
+"createWalletSuccessVC_title" = "备份钱包";
+
+"importKeystoreVC_tips" = "使用Keystore导入的同时需要输入钱包密码进行解密，同时未来需要通过密码验证才能进行Token发送、备份等操作。";
+"importKeystoreVC_keystoreInput_placeholder" = "请输入Keystore";
+"importKeystoreVC_nameInput_placeholder" = "设置钱包名称";
+"importKeystoreVC_pswInput_placeholder" = "钱包密码";
+"importKeystoreVC_keystore_empty_tips" = "Keystore 不能为空！";
+
+//importWalletVC
+"importWalletVC_title" = "导入ATP钱包";
+"importWalletVC_tab_keystore" = "Keystore";
+"importWalletVC_tab_mnemonic" = "助记词";
+"importWalletVC_tab_privateKey" = "私钥";
+"importWalletVC_mnemonic_tips" = "请将记下的助记词按顺序填入以下的表格中，用空格分割；使用助记词导入的同时需要设定钱包密码，未来需要通过密码验证才能够进行Token发送、备份等操作。";
+"importWalletVC_mnemonic_textView_placeholder" = "请输入助记词，用空格分割";
+
+"importWalletVC_privateKey_tips" = "使用私钥导入的同时需要设置钱包密码，未来需要通过密码验证才能够进行Token发送、备份等操作。";
+"importWalletVC_privateKey_textView_placeholder" = "请输入私钥";
+"importWalletVC_importBtn_title" = "开始导入";
+"importWalletVC_success_tips" = "导入成功";
+"importWalletVC_mnemonicInput_empty_tips" = "助记词不能为空";
+"importWalletVC_privateKeyInput_empty_tips" = "私钥不能为空";
+
+
+//backupMnemonicVC
+"backupMnemonicVC_title" = "备份助记词";
+"backupMnemonicVC_tips1" = "请记住下方助记词，我们将在下一步进行验证";
+"backupMnemonicVC_tips2" = "助记词用于恢复钱包或重置钱包密码，请将它准确抄写在纸上并存放在只有你知道的安全地点。";
+"backupMnemonicVC_nextBtn_title" = "下一步";
+
+//verifyMnemonicVC
+"verifyMnemonicVC_title" = "验证助记词";
+"verifyMnemonicVC_tips" = "请按顺序点击助记词，以确认您已经正确备份。";
+"verifyMnemonicVC_submitBtn_title" = "完成备份";
+"verifyMnemonicVC_emptyBtn_title" = "清空";
+
+
+
+//alert
+"alert_input_psw_title" = "请输入密码进行确认";
+"alert_confirmBtn_title" = "确认";
+"alert_cancelBtn_title" = "取消";
+"alert_psw_input_error_title" = "密码错误";
+"alert_psw_input_error_msg" = "请重新输入";
+"alert_psw_input_error_backBtn_title" = "返回";
+"alert_screenshot_ban_title" = "请勿截图";
+
+"alert_screenshot_privateKey_ban_msg" = "如果有人获取了你的私钥，将可以直接获取你的资产！请确保私钥存放在安全的地方。";
+"alert_backupMnemonic_ban_msg" = "如果有人获取了你的助记词，将可以直接获取你的资产！请抄写下助记词并存放在安全的地方。";
+"alert_screenshot_keystore_ban_msg" = "如果有人获取了你的Keystore，将可以直接获取你的资产！请确保Keystore存放在安全的地方。";
+"alert_screenshot_ban_confirmBtn_title" = "我知道了";
+"alert_backupFailed_title" = "验证失败";
+"alert_backupFailed_msg" = "请检查助记词顺序！";
+"alert_backupFailed_confirmBtn_title" = "我知道了";
+"alert_disclaimer_title" = "免责声明";
+"alert_disclaimer_msg" = "请确保已备份的钱包保存在安全地方，ATON不承担任何钱包丢失、被盗、忘记密码等原因产生的资产损失！";
+"alert_disclaimer_confirmBtn_title" = "我知道了";
+
+"alert_modifyWalletName_title" = "修改钱包名称";
+"alert_modifyWalletName_confirmBtn_title" = "确认";
+"alert_modifyWalletName_error_title" = "钱包名称格式错误";
+"alert_modifyWalletName_error_msg" = "请输入1-12位字符";
+"alert_modifyWalletName_error_backBtn_title" = "我知道了";
+
+"alert_cameraUsageDeny_title" = "无法使用相机";
+"alert_cameraUsageDeny_msg" = "请在iPhone的“设置-隐私-相机”选项中，允许app访问你的相机";
+"alert_cameraUsageDeny_gotoSettings_title" = "前往设置";
+
+//设置
+
+"PersonalVC_nav_title" = "我的";
+
+"PersonalVC_cell_wallet_manager" = "钱包管理";
+"PersonalVC_cell_wallet_Transactions" = "交易记录";
+"PersonalVC_cell_wallet_address_book" = "地址簿";
+"PersonalVC_cell_wallet_setting" = "设置";
+"PersonalVC_cell_wallet_help" = "帮助";
+"PersonalVC_cell_wallet_About" = "关于";
+"PersonalVC_cell_wallet_community" = "社区";
+
+
+//WalletManagerDetailViewController
+"WalletManagerDetailVC_title" = "钱包管理";
+"WalletManagerDetailVC_exportPrivateKey_title" = "导出私钥";
+"WalletManagerDetailVC_exportKeystore_title" = "导出Keystore";
+"WalletManagerDetailVC_deleteBtn_title" = "删除钱包";
+
+
+//ExportPrivateKeyVC
+"ExportPrivateKeyVC_title" = "导出私钥";
+"ExportPrivateKeyVC_note" = "注意：不要截图，请检查周围，以防他人偷看或拍摄，请妥善保管私钥，切勿存储在网盘中";
+"ExportPrivateKeyVC_tab1_title" = "私钥";
+"ExportPrivateKeyVC_tab2_title" = "二维码";
+
+
+//ExportKeystoreVC
+"ExportKeystoreVC_title" = "导出Keystore";
+"ExportKeystoreVC_note" = "注意：不要截图，请检查周围，以防他人偷看或拍摄，请妥善保管Keystore，切勿存储在网盘中";
+"ExportKeystoreVC_tab1_title" = "Keystore";
+"ExportKeystoreVC_tab2_title" = "二维码";
+
+"ExportVC_copyBtn_title" = "复制";
+
+"ExportVC_copy_success" = "复制成功";
+
+//AddressBookVC
+"AddressBookVC_nav_title" = "地址簿";
+"AddressBookVC_cell_edit_title" = "编辑";
+"AddressBookVC_cell_delete_title" = "删除";
+
+//AddAddressInfoViewController
+
+"AddAddress_nav_title"= "添加新地址";
+"AddAddress_textFieldPlaceHolder_address_Name"= "地址名称";
+"AddAddress_textFieldPlaceHolder_Wallet_Address"= "地址";
+"AddAddressVC_tip" = "地址存在本地，删除APP前请先备份！";
+"AddAddressVC_add_button_title" = "添加";
+
+"NewAddress_name_empty_tip" = "名称不能为空";
+"NewAddress_name_Incorrect_tip" = "请输入 1～12位名称";
+"NewAddress_address_empty_tip" = "地址不能为空";
+"NewAddress_address_Incorrect_tip" = "地址格式不正确";
+
+"EditAddress_nav_title" = "编辑地址";
+
+//AddWalletMenuVC
+
+"AddWalletMenuVC_createIndividualWallet_title" = "创建普通钱包";
+"AddWalletMenuVC_createSharedWallet_title" = "创建联名钱包";
+"AddWalletMenuVC_importIndividualWallet_title" = "导入普通钱包";
+"AddWalletMenuVC_addSharedWallet_title" = "添加联名钱包";
+
+
+"Invalid password" = "密码错误";
+"Invalid wallet" = "钱包错误";
+"Invalid private key" = "私钥无法解析";
+"Invalid mnemonic phrase" = "助记词无法识别";
+"Invalid keystore" = "keystore无法解析";
+"Wallet already exists" = "钱包已存在";
+
+
+//Receive QR Code ViewController
+"ReceiveVC_nav_title" = "接收";
+
+//WalletEmptyView
+"IndividualWallet_EmptyView_tips" = "还没有普通钱包";
+"IndividualWallet_EmptyView_createBtn_title" = "创建普通钱包";
+"IndividualWallet_EmptyView_importBtn_title" = "导入普通钱包";
+
+"SharedWallet_EmptyView_tips" = "还没有联名钱包";
+"SharedWallet_EmptyView_createBtn_title" = "创建联名钱包";
+"SharedWallet_EmptyView_importBtn_title" = "添加联名钱包";
+
+//TransactionListViewController
+"TransactionListVC_nav_title" = "交易记录";
+"TransactionListVC_Sending" = "发送";
+"TransactionListVC_Sent" = "发送";
+"TransactionListVC_Receiving" = "接收";
+"TransactionListVC_Received" = "接收";
+"TransactionListVC_Vote" = "投票";
+"TransactionListVC_JointWalletCreation" = "创建联名钱包";
+"TransactionListVC_JointWalletExecution" = "执行联名钱包";
+
+//SettingsVC
+"SettingsVC_title" = "设置";
+"SettingsVC_nodeSet_title" = "节点设置";
+"SettingsVC_faceId_title" = "指纹/面纹解锁";
+"SettingsVC_languages_title" = "语言";
+"SettingsVC_faceId_openFailed_tips" = "Touch ID或Face ID已锁定，请至“系统-设置”解锁后重试";
+
+"SettingsVC_nodeSet_editBtn_title" = "编辑";
+"SettingsVC_nodeSet_saveBtn_title" = "保存";
+"SettingsVC_nodeSet_cancelBtn_title" = "取消";
+"SettingsVC_nodeSet_edit_title" = "编辑节点";
+"SettingsVC_nodeSet_addBtn_title" = "添加";
+"SettingsVC_nodeSet_defaultMainNetwork_title" = "默认主网络";
+"SettingsVC_nodeSet_defaultTestNetwork_title" = "默认测试网络";
+"SettingsVC_nodeSet_switchSuccess_tips" = "节点切换成功";
+"SettingsVC_nodeSet_switchFail_tips" = "节点切换失败";
+"SettingsVC_nodeSet_recovery_tips" = "节点连接失败，已还原修改";
+"SettingsVC_nodeSet_switchDefault_tips" = "已切换到默认节点";
+"SettingsVC_error_node_format" = "节点格式错误";
+"SettingsVC_savesuccessfully" = "保存成功";
+
+//AddressBookViewController
+"AddresssBookVC_empty_tip" = "暂无地址";
+"AddresssBookVC_Edit" = "编辑";
+"AddresssBookVC_Delete" = "删除";
+
+//Language Setting
+"LanguageSetting_VC_Title" = "语言设置";
+
+//BiometricsAuthVC
+"BiometricsAuthVC_logo_title" = "PlatOn-Wallet";
+"BiometricsAuthVC_authFaceIDBtn_title" = "点击唤起人脸识别验证";
+"BiometricsAuthVC_authTouchIDBtn_title" = "点击唤起指纹验证";
+"BiometricsAuthVC_switchBtn_title" = "使用钱包密码登录解锁";
+"BiometricsAuthVC_initFailed_tips" = "Touch ID 或 Face ID 无法启动，请使用钱包密码登录解锁";
+
+//PasswordAuthVC
+"PasswordAuthVC_title" = "钱包密码解锁";
+"PasswordAuthVC_tips" = "请使用选定的钱包密码验证解锁";
+"PasswordAuthVC_walletName" = "钱包";
+"PasswordAuthVC_walletPsw" = "钱包密码";
+"PasswordAuthVC_unlockBtn_title" = "解锁";
+"PasswordAuthVC_unlocking_text" = "解锁中";
+"PasswordAuthVC_unlockSuccess_text" = "解锁成功";
+"PasswordAuthVC_unlockFail_text" = "解锁失败，请检查密码";
+
+
+//protocol
+
+"protocol_title" = "服务及隐私条款";
+"protocol_sub_title" = "《PlatON钱包客户端服务协议》";
+"protocol_update_time" = "最近更新于：2018年2月3日";
+"protocol_content" = "尊敬的用户：\r\n 条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容条款内容";
+"protocol_agree_check" = "我已经仔细阅读并同意以上条款";
+"protocol_continue" = "继续";
+
+//CreateSharedWalletVC
+"Wallet name" = "钱包名称";
+"CreateSharedWalletVC_Create Shared Wallet" = "创建联名钱包";
+"CreateSharedWalletVC_Select Owner" = "选择普通钱包";
+"CreateSharedWalletVC_Shared Owners" = "共享用户数量";
+"CreateSharedWalletVC_Required Signatures" = "所需签名数";
+"CreateSharedWalletVC_Next" = "下一步";
+"CreateSharedWalletVC_member" = "成员";
+"CreateSharedWalletVC_memberRemark" = "备注名称（选填）";
+"CreateSharedWalletVC_address" = "钱包地址";
+"CreateSharedWalletVC_memberRemark_illegal_tips" = "请输入1~12位备注名称";
+"CreateSharedWalletVC_address_illegal_tips" = "地址格式不正确";
+"CreateSharedWalletVC_address_empty_tips" = "地址不能为空";
+"invalidwalletaddress" = "非法钱包地址";
+
+//PickerView
+"PickerView_submit" = "确定";
+"PickerView_cancel" = "取消";
+
+
+
+
+
+
+
+
+
+
+//shared Wallet detail
+"SharedWalletVC_title" = "管理钱包";
+"Members_Des" = "共享用户";
+"SharedWallet_delete" = "删除钱包";
+"Owner_Des" = "关联普通钱包";
+
+
+//add shared wallet
+"AddSharedWalletVC_title" = "添加联名钱包";
+
+"AddSharedWalletVC_wallet_Name_Des" = "钱包名称";
+"AddSharedWalletVC_name_palceholder" = "请输入钱包名称";
+
+"AddSharedWalletVC_Owner_Des" = "关联普通钱包";
+"AddSharedWalletVC_walletName_Des" = "钱包名称";
+"AddSharedWalletVC_Change" = "切换钱包";
+
+"AddSharedWalletVC_addr" = "钱包地址";
+"AddSharedWalletVC_addr_placeholder" = "输入联名钱包地址";
+"AddSharedWalletVC_add" = "添加联名钱包";
+
+"sharedWalletDefaltMemberName" = "member";
+"MemberSignDetailVC_YOU" = "你";
+"sharedWallet_sharedWallet_existed" = "联名钱包已存在";
+"sharedWallet_sharedWallet_no_existed" = "添加失败，地址不存在";
+
+"sharedWallet_sharedWallet_forbidden" = "非联名用户钱包，无法添加";
+
+//Member Sign Detail VC
+"MemberSignDetailVC_nav_title" = "交易详情";
+
+"MemberSignDetailVC_Confirms" = "联名钱包交易确认";
+"MemberSignDetailVC_Total" = "总数量";
+"MemberSignDetailVC_Agree" = "确认";
+"MemberSignDetailVC_reject" = "拒绝";
+
+"MemberSignDetailVC_from" = "From";
+"MemberSignDetailVC_to" = "To";
+
+
+"MemberSignDetailVC_type" = "类别:";
+"MemberSignDetailVC_time" = "时间:";
+"MemberSignDetailVC_value" = "数量:";
+"MemberSignDetailVC_energon_price" = "手续费:";
+"MemberSignDetailVC_Wallet" = "钱包:";
+"MemberSignDetailVC_memo" = "备注:";
+"MemberSignDetailVC_memo_none" = "无";
+"MemberSignDetailVC_hash" = "交易Hash:";
+"MemberSignDetailVC_YOU" = "你";
+
+
+
+"MemberSignDetailVC_fail_all_reject" = "未达到指定签名数量";
+"MemberSignDetailVC_contract_transfer_fail" = "合约转账失败";
+"MemberSignDetailVC_transfer_success" = "成功";
+
+"ConfrimVC_nav_title" = "签名确认";
+
+"ConfrimVC_approve_success" = "确认成功";
+"ConfrimVC_Revoke_success" = " 拒绝成功";
+
+"SharedWalletDetailVC_Confirmations" = "交易确认";
+"SharedWalletDetailVC_nav_title" = "交易详情";
+
+
+"STranctionType_create" = "创建合约";
+"STranctionType_execute" = "执行合约";
+"STranctionType_transfer_send" = "发送";
+"STranctionType_transfer_recv" = "接收";
+
+
+
+
+
+
+
+"Common_checkInput" = "请检查输入";
+"AddSharedWallet_address_duplicated" = "存在重复地址";
+
+
+
+"Transaction.Fail" = "交易失败";
+"insufficient funds for gas * price + value" = "余额不足";
+
+
+//shard wallet transfer
+"SharedWalletTransactionDetailVC_create_contract" = "创建合约";
+"SharedWalletTransactionDetailVC_payment_des" = "支付信息";
+"SharedWalletTransactionDetailVC_payment_content" = "创建合约手续费";
+"SharedWalletTransactionDetailVC_payment_submit" = "创建";
+
+"SharedWalletTransactionDetailVC_execute_contract" = "执行合约";
+"SharedWalletTransactionDetailVC_payment_execute_contract" = "执行合约手续费";
+"SharedWalletTransactionDetailVC_payment_confirm" = "确定";
+"exceed max input" = "超过最大输入";
+
+
+"create_Individual_first" = "请先创建普通钱包";
+
+
+//individual wallet back up
+"backuptip" = "最后一步，备份钱包";
+"create_individual_success" = "成功";
+"backupsetp1" = "请将助记词抄写在纸上并保存在安全的地方，避免保存在往上以免被不法分子盗取。";
+"backup_start" = "开始备份";
+
+"Require sign number error" = "签名数错误";
+"no members" = "该钱包成员为空";
+
+"RPC_Response_empty" = "网络请求响应为空";
+"RPC_Response_requestFailed" = "网络请求失败";
+"RPC_Response_connectionFailed" = "网络连接失败";
+"RPC_Response_serverError" = "网络连接失败";
+"RPC_Response_decodingError" = "解码失败";
+"Request_timeout" = "请求超时";
+
+"Save" = "保存";
+
+
+"SharedWallet_create_with_insufficient_balance" = "钱包余额不足，无法创建";
+
+
+
+
+
+"Shared wallet create success" = "联名钱包创建成功";
+
+
+//About
+
+"AboutVC_nav_title" = "关于";
+"AboutVC_AboutUs" = "关于我们";
+"AboutVC_update" = "版本更新";
+
+//QRDisplayViewController
+"QRDisplayViewController_share" = "保存成功，点击去分享";
+"fail" = "失败";
+
+"cannot_send_itself" = "无法发送给自己";

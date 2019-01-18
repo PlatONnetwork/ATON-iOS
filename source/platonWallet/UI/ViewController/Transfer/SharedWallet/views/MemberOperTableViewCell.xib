@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="51" id="KGk-i7-Jjw" customClass="MemberOperTableViewCell" customModule="platonWallet" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="51"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="50.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hqa-G0-noa">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="46"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Member" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TZZ-Ef-Ota">
+                                <rect key="frame" x="5" y="5" width="43.5" height="14"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="14" id="KsN-uj-WjA"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                <color key="textColor" red="0.77254901960784317" green="0.79607843137254897" blue="0.86274509803921573" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iconApprove" translatesAutoresizingMaskIntoConstraints="NO" id="o8u-7A-ay7">
+                                <rect key="frame" x="53.5" y="7" width="10" height="10"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="10" id="sXM-SN-sql"/>
+                                    <constraint firstAttribute="height" constant="10" id="yWU-GW-YXr"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0x------------------------------------------------------------------------------------------------------------------------" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ppF-kh-QN7">
+                                <rect key="frame" x="6" y="27" width="285" height="15"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="15" id="74I-Wl-rJU"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="F5R-cd-ARP" customClass="CopyButton" customModule="platonWallet" customModuleProvider="target">
+                                <rect key="frame" x="297" y="23.5" width="16" height="22"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="22" id="8yl-Hg-IiW"/>
+                                    <constraint firstAttribute="width" constant="16" id="IlY-98-al9"/>
+                                </constraints>
+                                <state key="normal" image="copyIcon"/>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="0.20392156862745098" green="0.23529411764705882" blue="0.32549019607843138" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="F5R-cd-ARP" secondAttribute="trailing" constant="7" id="N6C-tB-1Ia"/>
+                            <constraint firstItem="ppF-kh-QN7" firstAttribute="leading" secondItem="hqa-G0-noa" secondAttribute="leading" constant="6" id="R8g-rB-6gh"/>
+                            <constraint firstItem="F5R-cd-ARP" firstAttribute="centerY" secondItem="ppF-kh-QN7" secondAttribute="centerY" id="W4j-rt-yrc"/>
+                            <constraint firstItem="F5R-cd-ARP" firstAttribute="leading" secondItem="ppF-kh-QN7" secondAttribute="trailing" constant="6" id="boS-NU-BQd"/>
+                            <constraint firstItem="o8u-7A-ay7" firstAttribute="leading" secondItem="TZZ-Ef-Ota" secondAttribute="trailing" constant="5" id="hTe-g2-F9K"/>
+                            <constraint firstItem="o8u-7A-ay7" firstAttribute="centerY" secondItem="TZZ-Ef-Ota" secondAttribute="centerY" id="iB2-B0-gbs"/>
+                            <constraint firstItem="ppF-kh-QN7" firstAttribute="top" secondItem="TZZ-Ef-Ota" secondAttribute="bottom" constant="8" id="t64-aG-ba4"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </tableViewCellContentView>
+            <color key="backgroundColor" red="0.12156862745098039" green="0.16078431372549021" blue="0.25098039215686274" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="njF-e1-oar" firstAttribute="trailing" secondItem="hqa-G0-noa" secondAttribute="trailing" id="1gT-eb-nqw"/>
+                <constraint firstItem="TZZ-Ef-Ota" firstAttribute="leading" secondItem="njF-e1-oar" secondAttribute="leading" constant="5" id="2cQ-aU-BGn"/>
+                <constraint firstItem="hqa-G0-noa" firstAttribute="bottom" secondItem="njF-e1-oar" secondAttribute="bottom" constant="-5" id="7LO-fx-wdR"/>
+                <constraint firstItem="njF-e1-oar" firstAttribute="leading" secondItem="hqa-G0-noa" secondAttribute="leading" id="drh-3f-GFK"/>
+                <constraint firstItem="njF-e1-oar" firstAttribute="top" secondItem="hqa-G0-noa" secondAttribute="top" id="gqg-vt-umA"/>
+                <constraint firstItem="TZZ-Ef-Ota" firstAttribute="top" secondItem="njF-e1-oar" secondAttribute="top" constant="5" id="knh-kR-Dpi"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="copyButton" destination="F5R-cd-ARP" id="i7f-d0-RF3"/>
+                <outlet property="operationIcon" destination="o8u-7A-ay7" id="TzM-0W-SsF"/>
+                <outlet property="walletAddress" destination="ppF-kh-QN7" id="Dsk-gE-uee"/>
+                <outlet property="walletName" destination="TZZ-Ef-Ota" id="s5e-ai-N6e"/>
+            </connections>
+            <point key="canvasLocation" x="132.80000000000001" y="156.97151424287858"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="copyIcon" width="16" height="16"/>
+        <image name="iconApprove" width="24" height="24"/>
+    </resources>
+</document>

@@ -1,0 +1,102 @@
+PODS:
+  - BigInt (3.1.0):
+    - SipHash (~> 1.2)
+  - Bugly (2.5.0)
+  - CryptoSwift (0.10.0)
+  - Localize-Swift (2.0.0)
+  - MBProgressHUD (1.1.0)
+  - platonWeb3 (0.3.0.11):
+    - BigInt
+    - CryptoSwift
+    - Localize-Swift
+    - secp256k1.swift
+  - Realm (3.11.0):
+    - Realm/Headers (= 3.11.0)
+  - Realm/Headers (3.11.0)
+  - RealmSwift (3.11.0):
+    - Realm (= 3.11.0)
+  - RTRootNavigationController (0.6.7):
+    - RTRootNavigationController/Core (= 0.6.7)
+  - RTRootNavigationController/Core (0.6.7)
+  - ScryptSwift (0.0.1):
+    - CryptoSwift
+  - secp256k1.swift (0.1.4)
+  - SipHash (1.2.2)
+  - SnapKit (4.0.1)
+  - Spring (1.0.6)
+  - SwiftLint (0.27.0)
+  - SwipeCellKit (2.5.0)
+  - TrezorCrypto (0.0.8)
+  - "UITextView+Placeholder (1.2.1)"
+
+DEPENDENCIES:
+  - BigInt
+  - Bugly
+  - CryptoSwift (~> 0.10.0)
+  - Localize-Swift (~> 2.0)
+  - MBProgressHUD (~> 1.1.0)
+  - platonWeb3 (~> 0.3.0.11)
+  - RealmSwift
+  - RTRootNavigationController
+  - ScryptSwift
+  - secp256k1.swift (~> 0.1)
+  - SnapKit (~> 4.0.0)
+  - Spring (from `https://github.com/MengTo/Spring.git`)
+  - SwiftLint
+  - SwipeCellKit
+  - TrezorCrypto
+  - "UITextView+Placeholder"
+
+SPEC REPOS:
+  "git@192.168.9.66:weixuening/JuzixSpecs.git":
+    - platonWeb3
+  https://github.com/cocoapods/specs.git:
+    - BigInt
+    - Bugly
+    - CryptoSwift
+    - Localize-Swift
+    - MBProgressHUD
+    - Realm
+    - RealmSwift
+    - RTRootNavigationController
+    - ScryptSwift
+    - secp256k1.swift
+    - SipHash
+    - SnapKit
+    - SwiftLint
+    - SwipeCellKit
+    - TrezorCrypto
+    - "UITextView+Placeholder"
+
+EXTERNAL SOURCES:
+  Spring:
+    :git: https://github.com/MengTo/Spring.git
+
+CHECKOUT OPTIONS:
+  Spring:
+    :commit: fafd0b2e8d4d46405bd86fa7ba84bb7f73a20b13
+    :git: https://github.com/MengTo/Spring.git
+
+SPEC CHECKSUMS:
+  BigInt: 76b5dfdfa3e2e478d4ffdf161aeede5502e2742f
+  Bugly: 3ca9f255c01025582df26f9222893b383c7e4b4e
+  CryptoSwift: 6c778d69282bed3b4e975ff97a79d074f20bb011
+  Localize-Swift: c798ec9286494866f7068f85f7c71283ac5bdab4
+  MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
+  platonWeb3: ab69826e24e30050388c75cae7fcb85cbfd094bb
+  Realm: 92f09a102692b96a9a10e9617f214f15c5ab85fc
+  RealmSwift: 5f0481cd658bb751c509314b964a35eaa264d2cf
+  RTRootNavigationController: d6aa6cbb78a3eaecea4f6e4df63f15dd887836b8
+  ScryptSwift: c771529fa895a563febe3184add81bbe5e2f85aa
+  secp256k1.swift: a7e7a214f6db6ce5db32cc6b2b45e5c4dd633634
+  SipHash: fad90a4683e420c52ef28063063dbbce248ea6d4
+  SnapKit: 0de968a9fec17499afa29683b05d0c775b6d1c29
+  Spring: 3d113f14575ef79aec9c5f906dfa4f5001c03254
+  SwiftLint: 3207c1faa2240bf8973b191820a116113cd11073
+  SwipeCellKit: d8f2617538ce3021cb0a11d1b93856a06a2f2e20
+  TrezorCrypto: 938c4b715fff7824a9c891a105e65ee0e4e81662
+  "UITextView+Placeholder": 0c3efd97f37ea64bde7f34cc6e90fe02e87b3909
+
+PODFILE CHECKSUM: c184508ff8915af8dfa25ccc9779d0c415a7f45a
+
+COCOAPODS: 1.5.3

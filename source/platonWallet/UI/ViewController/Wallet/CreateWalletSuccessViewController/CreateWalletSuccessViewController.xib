@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CreateWalletSuccessViewController" customModule="platonWallet" customModuleProvider="target">
+            <connections>
+                <outlet property="view" destination="iN0-l3-epB" id="v3A-hZ-n0v"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_wallet_create_success" translatesAutoresizingMaskIntoConstraints="NO" id="b4Q-1d-RlM">
+                    <rect key="frame" x="143.5" y="64" width="88" height="88"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="88" id="TmU-8n-g31"/>
+                        <constraint firstAttribute="height" constant="88" id="rF8-mA-nhE"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Success" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ytx-ld-PGE">
+                    <rect key="frame" x="160.5" y="162" width="54.5" height="17"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="create_individual_success"/>
+                    </userDefinedRuntimeAttributes>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="One last step，Back it up" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cjN-JG-hk7">
+                    <rect key="frame" x="93.5" y="223" width="188" height="19.5"/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="backuptip"/>
+                    </userDefinedRuntimeAttributes>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please writte down the mnemonics on paper and keep it in a safe place. " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i6f-JJ-m3p">
+                    <rect key="frame" x="20" y="252.5" width="335" height="31.5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <nil key="highlightedColor"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="backupsetp1"/>
+                    </userDefinedRuntimeAttributes>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kwV-e6-1jv" customClass="PButton" customModule="platonWallet" customModuleProvider="target">
+                    <rect key="frame" x="16" y="613" width="343" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="WV6-Dl-qzB"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <state key="normal" title="Start"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="localizedNormalTitle" value="backup_start"/>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="startBackup:" destination="-1" eventType="touchUpInside" id="FbM-Ae-PBS"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="0.14901960780000001" green="0.1764705882" blue="0.25882352939999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="kwV-e6-1jv" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="56d-IR-768"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="kwV-e6-1jv" secondAttribute="trailing" constant="16" id="6rx-IA-tT1"/>
+                <constraint firstItem="i6f-JJ-m3p" firstAttribute="top" secondItem="cjN-JG-hk7" secondAttribute="bottom" constant="10" id="8qK-JI-DH1"/>
+                <constraint firstItem="Ytx-ld-PGE" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="KTZ-9y-vDe"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="kwV-e6-1jv" secondAttribute="bottom" constant="14" id="LM9-Zd-q2a"/>
+                <constraint firstItem="cjN-JG-hk7" firstAttribute="top" secondItem="Ytx-ld-PGE" secondAttribute="bottom" constant="44" id="RVj-oF-wWX"/>
+                <constraint firstItem="i6f-JJ-m3p" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="c8h-Hw-PtG"/>
+                <constraint firstItem="cjN-JG-hk7" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="hwl-nk-vGR"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="i6f-JJ-m3p" secondAttribute="trailing" constant="20" id="urj-6d-7TW"/>
+                <constraint firstItem="b4Q-1d-RlM" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="44" id="w1b-78-bpy"/>
+                <constraint firstItem="b4Q-1d-RlM" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="xBb-r2-EHR"/>
+                <constraint firstItem="i6f-JJ-m3p" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="yLI-km-61d"/>
+                <constraint firstItem="Ytx-ld-PGE" firstAttribute="top" secondItem="b4Q-1d-RlM" secondAttribute="bottom" constant="10" id="yho-ag-dti"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="icon_wallet_create_success" width="88" height="88"/>
+    </resources>
+</document>

@@ -1,0 +1,6 @@
+framework module ScryptSwift {
+  umbrella header "ScryptSwift-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="AddAddressInfoView" customModule="platonWallet" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="429"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="s3g-nZ-maK" customClass="PTextFieldWithPadding" customModule="platonWallet" customModuleProvider="target">
+                    <rect key="frame" x="16" y="16" width="343" height="40"/>
+                    <color key="backgroundColor" red="0.14901960784313725" green="0.17647058823529413" blue="0.25490196078431371" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="SuW-0k-MuA"/>
+                    </constraints>
+                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="LocalizePlaceholder" value="AddAddress_textFieldPlaceHolder_address_Name"/>
+                    </userDefinedRuntimeAttributes>
+                </textField>
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rqt-zJ-bm1" customClass="PTextFieldWithPadding" customModule="platonWallet" customModuleProvider="target">
+                    <rect key="frame" x="16" y="79" width="343" height="40"/>
+                    <color key="backgroundColor" red="0.14901960780000001" green="0.1764705882" blue="0.25490196079999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="bFe-zm-Rc8"/>
+                    </constraints>
+                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="LocalizePlaceholder" value="AddAddress_textFieldPlaceHolder_Wallet_Address"/>
+                    </userDefinedRuntimeAttributes>
+                </textField>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Dk-05-8o5">
+                    <rect key="frame" x="16" y="375" width="343" height="40"/>
+                    <color key="backgroundColor" red="0.93725490196078431" green="0.94117647058823528" blue="0.96078431372549022" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="CNM-Gr-WfT"/>
+                    </constraints>
+                    <state key="normal" title="Add">
+                        <color key="titleColor" red="0.10588235294117647" green="0.12941176470588234" blue="0.21568627450980393" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="localizedNormalTitle" value="AddAddressVC_add_button_title"/>
+                    </userDefinedRuntimeAttributes>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J6a-W7-I4Z">
+                    <rect key="frame" x="16" y="58" width="343" height="16"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="16" id="DPl-U0-UJo"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <color key="textColor" red="1" green="0.27843137254901962" blue="0.27843137254901962" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bQK-xQ-sMZ">
+                    <rect key="frame" x="16" y="124" width="343" height="16"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="16" id="2kz-lP-tKB"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <color key="textColor" red="1" green="0.2784313725" blue="0.2784313725" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please backup your adress before deleting this App" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xQj-i0-57R">
+                    <rect key="frame" x="16" y="145" width="270" height="14"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                    <color key="textColor" red="1" green="0.92941176470588238" blue="0.32941176470588235" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="AddAddressVC_tip"/>
+                    </userDefinedRuntimeAttributes>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="0.10588235294117647" green="0.13333333333333333" blue="0.21176470588235294" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="2Dk-05-8o5" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="0K4-oX-jP9"/>
+                <constraint firstItem="J6a-W7-I4Z" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="3Kn-8K-27v"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="rqt-zJ-bm1" secondAttribute="trailing" constant="16" id="9Pt-9L-e0j"/>
+                <constraint firstItem="rqt-zJ-bm1" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="CRh-cJ-0Lp"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="bQK-xQ-sMZ" secondAttribute="trailing" constant="16" id="DrL-bj-n44"/>
+                <constraint firstItem="xQj-i0-57R" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="E3u-EK-hKZ"/>
+                <constraint firstItem="xQj-i0-57R" firstAttribute="top" secondItem="bQK-xQ-sMZ" secondAttribute="bottom" constant="5" id="MDb-CS-bnW"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="J6a-W7-I4Z" secondAttribute="trailing" constant="16" id="QyP-FU-4dX"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="2Dk-05-8o5" secondAttribute="trailing" constant="16" id="Uoj-eH-zH7"/>
+                <constraint firstItem="s3g-nZ-maK" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="d6Y-Rf-cuW"/>
+                <constraint firstItem="s3g-nZ-maK" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="16" id="eli-fF-h23"/>
+                <constraint firstItem="bQK-xQ-sMZ" firstAttribute="top" secondItem="rqt-zJ-bm1" secondAttribute="bottom" constant="5" id="k3O-gW-vGs"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="2Dk-05-8o5" secondAttribute="bottom" constant="14" id="lDP-ul-8hx"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="s3g-nZ-maK" secondAttribute="trailing" constant="16" id="sdS-qW-jnz"/>
+                <constraint firstItem="bQK-xQ-sMZ" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="uq9-IL-3HN"/>
+                <constraint firstItem="J6a-W7-I4Z" firstAttribute="top" secondItem="s3g-nZ-maK" secondAttribute="bottom" constant="2" id="vhA-Q4-3JO"/>
+                <constraint firstItem="rqt-zJ-bm1" firstAttribute="top" secondItem="J6a-W7-I4Z" secondAttribute="bottom" constant="5" id="zdw-ye-6ZL"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="addressField" destination="rqt-zJ-bm1" id="va2-kb-M25"/>
+                <outlet property="addressTip" destination="bQK-xQ-sMZ" id="MLD-Lb-btI"/>
+                <outlet property="addressTipHeight" destination="2kz-lP-tKB" id="8hX-9V-lDg"/>
+                <outlet property="confirmButton" destination="2Dk-05-8o5" id="CsC-aA-UT4"/>
+                <outlet property="nameTextField" destination="s3g-nZ-maK" id="K40-yk-FWP"/>
+                <outlet property="walletNameTip" destination="J6a-W7-I4Z" id="Nrg-Hl-3le"/>
+                <outlet property="walletNameTipHeight" destination="DPl-U0-UJo" id="MkK-4M-ymW"/>
+            </connections>
+            <point key="canvasLocation" x="132" y="255.92203898050977"/>
+        </view>
+    </objects>
+</document>

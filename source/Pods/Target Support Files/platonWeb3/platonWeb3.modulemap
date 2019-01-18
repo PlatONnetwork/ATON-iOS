@@ -1,0 +1,6 @@
+framework module platonWeb3 {
+  umbrella header "platonWeb3-umbrella.h"
+
+  export *
+  module * { export * }
+}
