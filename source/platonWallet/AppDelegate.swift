@@ -38,7 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LicenseVCDelegate {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             self.initUI()
         }
-        
+
         return true
     }
     
@@ -121,6 +121,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LicenseVCDelegate {
     func gotoWalletCreateVC() {
         self.window?.rootViewController = BaseNavigationController(rootViewController: WalletCreateOrImportViewController())
     }
+    
+    func gotoWalletCreateSuccessVC(){
+        self.window?.rootViewController = BaseNavigationController(rootViewController: CreateWalletSuccessViewController())
+    }
+    
     
     func localAuthStateSwitch(_ open:Bool) {
         UserDefaults.standard.set(open, forKey: userDefault_key_isLocalAuthenticationOpen)

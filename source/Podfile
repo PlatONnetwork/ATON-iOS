@@ -1,7 +1,7 @@
 # Uncomment the next line to define a global platform for your project
 # platform :ios, '9.0'
 
-source 'git@192.168.9.66:weixuening/JuzixSpecs.git'
+#source 'git@192.168.9.66:weixuening/JuzixSpecs.git'
 source 'https://github.com/CocoaPods/Specs.git'
 
 target 'platonWallet' do

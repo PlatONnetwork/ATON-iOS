@@ -66,7 +66,7 @@ STARTTIME=$(date +%s)
 
 mkdir -p ./builds/$output_directory
 
-fastlane gym --export_method ad-hoc --scheme $scheme --output_name $ipaName --output_directory ./builds/$output_directory
+fastlane gym --clean --export_method ad-hoc --scheme $scheme --output_name $ipaName --output_directory ./builds/$output_directory
 
 fullParam1=$1
 versionSub="v"

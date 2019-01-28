@@ -28,6 +28,5 @@ class CreateWalletSuccessViewController: BaseViewController {
     
     override func back() {
         (UIApplication.shared.delegate as? AppDelegate)?.gotoMainTab()
-        
     }
 }

@@ -171,6 +171,11 @@ class VerifyMnemonicViewController: BaseViewController {
     }
     
     @IBAction func submit(_ sender: Any) {
+        
+        if words_order.count != selectedWords.count {
+            return
+        }
+        
         if wordsOrderIsCorrect() {
             showDisclaimerAlert()
         }else {
@@ -210,7 +215,7 @@ class VerifyMnemonicViewController: BaseViewController {
         }
         alertC.show(inViewController: self)
         
-    } 
+    }
     
     private func showDisclaimerAlert() {
         
@@ -221,6 +226,10 @@ class VerifyMnemonicViewController: BaseViewController {
         }
         alertC.show(inViewController: self)
         
+    }
+    
+    override func back() {
+        (UIApplication.shared.delegate as? AppDelegate)?.gotoMainTab()
     }
     
 }

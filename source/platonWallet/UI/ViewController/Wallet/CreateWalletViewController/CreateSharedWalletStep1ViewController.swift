@@ -49,6 +49,12 @@ class CreateSharedWalletStep1ViewController: BaseViewController {
         
         if WalletService.sharedInstance.wallets.count > 0{
             selectedWallet = WalletService.sharedInstance.wallets[0]
+            for item in WalletService.sharedInstance.wallets{
+                if let b = AssetService.sharedInstace.assets[(item.key?.address)!],String((b?.balance)!) != "0"{
+                    selectedWallet = item
+                    break
+                }
+            }
         }else{
             self.navigationController?.popViewController(animated: true)
             UIApplication.rootViewController().showMessage(text: Localized("create_Individual_first"))

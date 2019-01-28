@@ -75,13 +75,7 @@ class SwipeActionsView: UIView {
         }
     }
     
-    private(set) var expanded: Bool = false{
-        willSet{
-            if newValue {
-                print("")
-            }
-        }
-    }
+    private(set) var expanded: Bool = false
     
     var expandableAction: SwipeAction? {
         return options.expansionStyle != nil ? actions.last : nil
