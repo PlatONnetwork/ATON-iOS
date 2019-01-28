@@ -92,9 +92,6 @@ public struct SwipeExpansionStyle {
         if xDelta <= actionsView.preferredWidth {
             return false
         } else if xDelta > targetOffset(for: view) {
-            return false
-            //don't allow swipt to delete
-            //http://zentao.eidpay.com:8555/zentao/bug-view-13992.html
             return true
         }
         
@@ -102,10 +99,7 @@ public struct SwipeExpansionStyle {
         let referenceFrame: CGRect = frame != nil ? view.frame : superview.bounds
         for trigger in additionalTriggers {
             if trigger.isTriggered(view: view, gesture: gesture, in: superview, referenceFrame: referenceFrame) {
-                return false
-                //don't allow swipt to delete
-                //http://zentao.eidpay.com:8555/zentao/bug-view-13992.html
-                //return true
+                return true
             }
         }
         

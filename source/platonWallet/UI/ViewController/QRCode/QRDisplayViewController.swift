@@ -25,7 +25,7 @@ class QRDisplayViewController: BaseViewController {
         qrCodeView.snp.makeConstraints { (make) in
             make.leading.trailing.top.bottom.equalTo(view)
         }
-        
+         
         if let wallet = walletInstance as? Wallet{
             let qrImage = setupQRCodeImage((wallet.key?.address)!, image: nil)
             qrCodeView.qrCodeImageView.image = qrImage
@@ -49,6 +49,10 @@ class QRDisplayViewController: BaseViewController {
         let rightBarButtonItem = UIBarButtonItem(customView: rightMenuButton)
         navigationItem.rightBarButtonItem = rightBarButtonItem
         
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidLoad()
         displayAlert()
     }
     
@@ -142,11 +146,13 @@ class QRDisplayViewController: BaseViewController {
                     self.sharedQRView.qrImageView.image = image
                     self.sharedQRView.walletAddress.text = wallet.key?.address
                     self.sharedQRView.walletName.text = wallet.name
+                    self.sharedQRView.logoImage.image = UIImage(named: (wallet.key?.address.walletRandomAvatar())!)
                     
                 }else if let swallet = self.walletInstance as? SWallet{
                     self.sharedQRView.qrImageView.image = image
                     self.sharedQRView.walletAddress.text = swallet.contractAddress
                     self.sharedQRView.walletName.text = swallet.name
+                    self.sharedQRView.logoImage.image = UIImage(named: (swallet.contractAddress.walletRandomAvatar()))
                 }
                 
                 let vc = SharedPresentedVC()

@@ -10,7 +10,14 @@ import Foundation
 import RealmSwift
 import Localize_Swift
 
-private let defalutNodes = [(nodeURL: DefaultNodeURL, desc: "SettingsVC_nodeSet_defaultMainNetwork_title", isSelected: true), (nodeURL: "192.168.9.73:6789", desc: "SettingsVC_nodeSet_defaultTestNetwork_title", isSelected: false)]
+/*
+private let defalutNodes = [
+    (nodeURL: DefaultNodeURL, desc: "SettingsVC_nodeSet_defaultMainNetwork_title", isSelected: true),
+    (nodeURL: "192.168.9.73:6789", desc: "SettingsVC_nodeSet_defaultTestNetwork_title", isSelected: false)]
+*/
+
+private let defalutNodes = [
+    (nodeURL: DefaultNodeURL, desc: "SettingsVC_nodeSet_defaultTestNetwork_title", isSelected: true)]
 
 class NodeInfoPersistence {
     
@@ -33,7 +40,41 @@ class NodeInfoPersistence {
         guard res.count > 0 else {
             return []
         }
-        return Array(res)
+        
+        //remove defaultMainNetwork while during test
+        var nodes : [NodeInfo] = []
+        var selectedExist = false
+        for item in res{
+            if item.nodeURLStr == "192.168.9.73:6789" && item.desc == "SettingsVC_nodeSet_defaultTestNetwork_title"{
+                continue
+            }
+            if item.nodeURLStr == "https://syde.platon.network/test" && item.desc == "SettingsVC_nodeSet_defaultMainNetwork_title"{
+                let tmp = NodeInfo(nodeURLStr: item.nodeURLStr, desc: "SettingsVC_nodeSet_defaultTestNetwork_title", isSelected: item.isSelected, isDefault: true)
+                nodes.append(tmp)
+                continue
+            }
+            nodes.append(item)
+        }
+        
+        for item in nodes{
+            if item.isSelected{
+                selectedExist = true
+            }
+        }
+        
+        if !selectedExist{
+            for item in nodes{
+                if item.nodeURLStr == "https://syde.platon.network/test"{
+                    try? realm.write {
+                        item.isSelected = true
+                    }
+                    break
+                }
+            }
+        }
+        
+        
+        return nodes
     }
     
     func add(node: NodeInfo) {

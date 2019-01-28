@@ -66,7 +66,7 @@ class CreateIndividualWalletViewController: BaseViewController,BackupDelegate {
                 self?.showMessage(text: error!.errorDescription ?? "")
                 return
             }
-            
+             
             self?.hideLoading()
             self?.wallet = wallet
             let successVC = CreateWalletSuccessViewController()

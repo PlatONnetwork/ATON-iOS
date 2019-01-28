@@ -11,12 +11,19 @@ import BigInt
 
 extension String{
     func is40ByteAddress() -> Bool{
-        let regex = "0x[A-Fa-f0-9]{40}"
+        let regex = "(0x)?[A-Fa-f0-9]{40}"
         let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
         let isValid = predicate.evaluate(with: self)
         return isValid
     }
     
+    func isHexString() -> Bool{
+        let regex = "(0x)?[A-Fa-f0-9]+"
+        let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
+        let isValid = predicate.evaluate(with: self)
+        return isValid
+    }
+     
     func ishexStringEqual(other: String?) -> Bool{
         if other == nil || other?.length == 0{
             return self == other
@@ -70,10 +77,16 @@ extension String{
     }
     
     func isValidAddress() -> Bool {
+        guard self.isHexString() else {
+            return false
+        }
         return drop0x().hexToBytes().count == 20
     }
     
     func isValidPrivateKey() -> Bool {
+        guard self.isHexString() else {
+            return false
+        }
         return drop0x().hexToBytes().count == 32
     }
     

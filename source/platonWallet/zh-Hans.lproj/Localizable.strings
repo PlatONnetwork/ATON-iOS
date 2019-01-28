@@ -152,7 +152,7 @@
 "importKeystoreVC_keystore_empty_tips" = "Keystore 不能为空！";
 
 //importWalletVC
-"importWalletVC_title" = "导入ATP钱包";
+"importWalletVC_title" = "导入普通钱包";
 "importWalletVC_tab_keystore" = "Keystore";
 "importWalletVC_tab_mnemonic" = "助记词";
 "importWalletVC_tab_privateKey" = "私钥";
@@ -493,7 +493,7 @@
 //individual wallet back up
 "backuptip" = "最后一步，备份钱包";
 "create_individual_success" = "成功";
-"backupsetp1" = "请将助记词抄写在纸上并保存在安全的地方，避免保存在往上以免被不法分子盗取。";
+"backupsetp1" = "请将助记词抄写在纸上并保存在安全的地方，避免保存在网上以免被不法分子盗取。";
 "backup_start" = "开始备份";
 
 "Require sign number error" = "签名数错误";

@@ -39,7 +39,35 @@ public extension String {
     /// Converts a hex string into an array of bytes
     ///
     /// - Returns: Array of 8 bit bytes
+    
+    func hexToBytes_opt() -> [UInt8]{
+        var value = self
+        if self.count % 2 > 0 {
+            value = "0" + value
+        }
+        let bytesCount = value.count / 2
+        var arr = Array<UInt8>(repeating: 0, count: bytesCount)
+        
+        var idx = 0
+        for c in value {
+            
+            if idx % 2 == 0 {
+                arr[idx / 2] = (UInt8(String(c), radix: 16)!) << 4
+            }else {
+                arr[idx / 2] += (UInt8(String(c), radix: 16)!)
+            }
+            idx += 1
+        }
+        
+        return arr
+    }
+    
+    
     func hexToBytes() -> [UInt8] {
+        
+        return self.hexToBytes_opt()
+        
+        /*
         var value = self
         if self.count % 2 > 0 {
             value = "0" + value
@@ -52,6 +80,7 @@ public extension String {
             }
             return nil
         })
+        */
     }
     
     /// Conveniently create a substring to more easily match JavaScript APIs
