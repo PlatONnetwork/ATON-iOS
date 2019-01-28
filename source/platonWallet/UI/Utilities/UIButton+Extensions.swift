@@ -56,7 +56,7 @@ extension UIButton {
     }
 
     open override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
-        if UIEdgeInsetsEqualToEdgeInsets(hitTestEdgeInsets!, UIEdgeInsets.zero) || !isEnabled || isHidden {
+        if hitTestEdgeInsets! == .zero || !isEnabled || isHidden {
             return super.point(inside: point, with: event)
         }
         let relativeFrame = bounds

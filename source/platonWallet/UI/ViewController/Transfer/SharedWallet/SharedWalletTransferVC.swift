@@ -426,7 +426,7 @@ class SharedWalletTransferVC: BaseViewController ,UITextViewDelegate,UITextField
         if transferView.sendAmoutTextField.text?.length == 0{
             return true
         }
-        var amountOfwei = BigUInt.mutiply(a: transferView.sendAmoutTextField.text!, by: ETHToWeiMultiplier)
+        let amountOfwei = BigUInt.mutiply(a: transferView.sendAmoutTextField.text!, by: ETHToWeiMultiplier)
         var overflow = false
         let fee = self.refreshLabel(true)
         

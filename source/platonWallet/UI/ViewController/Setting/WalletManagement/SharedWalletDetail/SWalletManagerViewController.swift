@@ -53,6 +53,13 @@ class SWalletManagerViewController: BaseViewController,UITableViewDataSource,UIT
              */
             owners.append(item)
         }
+        
+        owners.sort { (a, b) -> Bool in
+            if (a.walletAddress?.ishexStringEqual(other: swallet?.walletAddress))!{
+                return true
+            }
+            return false
+        }
         tableView.reloadData()
     }
     

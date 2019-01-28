@@ -13,7 +13,7 @@ extension Date {
         return Int((self.timeIntervalSince1970 * 1000.0).rounded())
     }
     
-    init(milliseconds:Int) {
+    init(milliseconds:UInt64) {
         self = Date(timeIntervalSince1970: TimeInterval(milliseconds) / 1000)
     }
     
@@ -30,6 +30,18 @@ extension Date {
         dateFormatter.locale = NSLocale.current
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
         let strDate = dateFormatter.string(from: date)
+        return strDate
+    }
+    
+    public func toFormatter(_ formatter: String) -> String {
+        
+        let dateFormatter = DateFormatter()
+        
+        let localZone = NSTimeZone.local
+        dateFormatter.timeZone = localZone
+        dateFormatter.locale = NSLocale.current
+        dateFormatter.dateFormat = formatter
+        let strDate = dateFormatter.string(from: self)
         return strDate
     }
 }

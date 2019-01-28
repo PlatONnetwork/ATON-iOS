@@ -151,6 +151,7 @@ class STransferDetailView: UIView ,UITableViewDataSource,UITableViewDelegate{
         }else{
             self.memoLabel.localizedText = "TransactionDetailVC_memo_none"
         }
+        
         self.typeLabel.text = tx.transanctionTypeLazy?.localizedDesciption
         
         var approvals = 0

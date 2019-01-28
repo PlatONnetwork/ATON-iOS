@@ -137,7 +137,7 @@ class CreateIndividualWalletViewController: BaseViewController,BackupDelegate {
         }
         alertC.addAction(title: Localized("alert_confirmBtn_title")) { [weak self] in
             
-            let input = alertC.textField?.text ?? ""
+            _ = alertC.textField?.text ?? ""
             if !CommonService.isValidWalletPassword(alertC.textField?.text ?? "").0{
                 return
             }

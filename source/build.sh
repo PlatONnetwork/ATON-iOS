@@ -69,15 +69,15 @@ mkdir -p ./builds/$output_directory
 fastlane gym --clean --export_method ad-hoc --scheme $scheme --output_name $ipaName --output_directory ./builds/$output_directory
 
 fullParam1=$1
-versionSub="v"
-result=$(echo $fullParam1 | grep "${versionSub}")
+sholdTag="true"
+result=$(echo $fullParam1 | grep "${sholdTag}")
 if [[ "$result" == "" ]]
 then
     echo "no input to create tag"
 else
-	tag=$1_$DATE
-	echo "creatting a lightweight tag:"$tag
-	git tag $1
-	git push origin --tags
+    tagName=$(printf "%s_%s" "$CFBundleShortVersionString" "$DATE")
+	echo "creatting a lightweight tag:"$tagName
+    git tag $tagName
+    git push origin --tags
 fi
 

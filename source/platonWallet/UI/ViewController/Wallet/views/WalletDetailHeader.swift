@@ -21,7 +21,7 @@ extension NSLayoutConstraint {
         NSLayoutConstraint.deactivate([self])
         
         let newConstraint = NSLayoutConstraint(
-            item: firstItem,
+            item: firstItem as Any,
             attribute: firstAttribute,
             relatedBy: relation,
             toItem: secondItem,
@@ -85,9 +85,9 @@ class WalletDetailHeader: UIView {
     
     func enableVoteBtn(_ enable : Bool){
         if enable{
-            let _ = recvWidth.setMultiplier(multiplier: 0.29)
-            let _ = sendWidth.setMultiplier(multiplier: 0.29)
-            let _ = voteWidth.setMultiplier(multiplier: 0.29)
+            let _ = recvWidth.setMultiplier(multiplier: 0.33)
+            let _ = sendWidth.setMultiplier(multiplier: 0.33)
+            let _ = voteWidth.setMultiplier(multiplier: 0.33)
             verticalSep2.isHidden = false
             voteBtn.isHidden = false
         }else{

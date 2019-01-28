@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import BigInt
 
 extension Array{
     mutating func txSort(){
@@ -23,4 +24,70 @@ extension Array{
             return false
         })
     }
+}
+
+extension Array where Element == Ticket {
+    
+    var tickets_validCount : Int{
+        get{
+            return reduce(0) { (acc, ticket) -> Int in
+                ticket.ticketStatus == .normal ? acc + 1 : acc
+            }
+        }
+    }
+    
+    var tickets_invalidCount: Int{
+        get{
+            return reduce(0) { (acc, ticket) -> Int in
+                ticket.ticketStatus != .normal ? acc + 1 : acc
+            }
+        }
+    }
+
+    var tickets_assetOflocked: String?{
+        get{
+            let assetBI = reduce(BigUInt(0)) { (acc, ticket) -> BigUInt in
+                
+                ticket.ticketStatus == .normal ? acc + (BigUInt(ticket.deposit ?? "") ?? BigUIntZero) : acc
+                
+            }
+            return String(assetBI)
+            
+            var asset = BigUInt(0)
+            let _ = map { t in
+                if t.ticketStatus == TicketStatus.normal && t.deposit != nil && (t.deposit?.length)! > 0{
+                    let deposit = BigUInt(t.deposit!)
+                    asset.multiplyAndAdd(deposit!, 1)
+                }
+            }
+            return String(asset)
+        }
+    }
+
+    var tickets_releaseOfVote: String?{
+        get{
+            let assetBI = reduce(BigUInt(0)) { (acc, ticket) -> BigUInt in
+                
+                ticket.ticketStatus != .normal ? acc + (BigUInt(ticket.deposit ?? "") ?? BigUIntZero) : acc
+                
+            }
+            return String(assetBI)
+
+            var asset = BigUInt(0)
+            let _ = map { t in
+                if t.ticketStatus != TicketStatus.normal && t.deposit != nil && (t.deposit?.length)! > 0{
+                    let deposit = BigUInt(t.deposit!)
+                    asset.multiplyAndAdd(deposit!, 1)
+                }
+            }
+            return String(asset)
+        }
+    }
+
+    var tickets_voteEarnings: String?{
+        get{
+            return ""
+        }
+    }
+    
 }

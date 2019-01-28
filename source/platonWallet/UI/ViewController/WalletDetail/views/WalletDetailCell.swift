@@ -68,43 +68,66 @@ class WalletDetailCell: UITableViewCell {
             }
         }
     }
-    
+
     func updateCellWithAPTTransfer(tx : Transaction, anyWallet : AnyObject?) {
       
-        if let w = anyWallet as? Wallet{
+        if let w = anyWallet as? Wallet {
+            tx.senderAddress = w.key?.address
             //classic wallet' transaction
-            if (tx.from?.ishexStringEqual(other: w.key?.address))! {
-                transferAmoutLabel.text = "-" + (tx.valueDescription)!.ATPSuffix()
-                txIcon.image = UIImage(named: "walletSendIcon")
-                txTypeLabel.text = Localized("walletDetailVC_tx_type_send")
-            }else{
-                transferAmoutLabel.text = "+" + (tx.valueDescription)!.ATPSuffix()
-                txIcon.image = UIImage(named: "walletRecvIcon")
-                if tx.blockNumber != nil && (tx.blockNumber?.length)! > 0{
-                    txTypeLabel.localizedText = "walletDetailVC_tx_type_receive"
-                }else{
-                    txTypeLabel.localizedText = "TransactionListVC_Receiving"
-                }
-                txTypeLabel.localizedText = "walletDetailVC_tx_type_receive"
-            }
-        }else if let ws = anyWallet as? SWallet{
+//            if (tx.from?.ishexStringEqual(other: w.key?.address))! {
+//                transferAmoutLabel.text = "-" + (tx.valueDescription)!.ATPSuffix()
+//                txIcon.image = UIImage(named: "walletSendIcon")
+//                
+////                txTypeLabel.text = Localized("walletDetailVC_tx_type_send")
+////                txTypeLabel.text = tx.transactionStauts.localizeTitle
+//            }else {
+//                transferAmoutLabel.text = "+" + (tx.valueDescription)!.ATPSuffix()
+//                txIcon.image = UIImage(named: "walletRecvIcon")
+//                
+////                txTypeLabel.text = tx.transactionStauts.localizeTitle
+////                if tx.blockNumber != nil && (tx.blockNumber?.length)! > 0{
+////                    txTypeLabel.localizedText = "walletDetailVC_tx_type_receive"
+////                }else{
+////                    txTypeLabel.localizedText = "TransactionListVC_Receiving"
+////                }
+////                txTypeLabel.localizedText = "walletDetailVC_tx_type_receive"
+//            }
+        }else if let ws = anyWallet as? SWallet {
             //joint wallet' transaction
-            if (tx.from?.ishexStringEqual(other: ws.contractAddress))! {
-                transferAmoutLabel.text = "-" + (tx.valueDescription)!.ATPSuffix()
-                txIcon.image = UIImage(named: "walletSendIcon")
-                txTypeLabel.text = Localized("walletDetailVC_tx_type_send")
-            }else{
-                transferAmoutLabel.text = "+" + (tx.valueDescription)!.ATPSuffix()
-                txIcon.image = UIImage(named: "walletRecvIcon")
-                if tx.blockNumber != nil && (tx.blockNumber?.length)! > 0{
-                    txTypeLabel.localizedText = "walletDetailVC_tx_type_receive"
-                }else{
-                    txTypeLabel.localizedText = "TransactionListVC_Receiving"
-                }
-            }
+            tx.senderAddress = ws.contractAddress
+//            if (tx.from?.ishexStringEqual(other: ws.contractAddress))! {
+//                transferAmoutLabel.text = "-" + (tx.valueDescription)!.ATPSuffix()
+//                txIcon.image = UIImage(named: "walletSendIcon")
+//                txTypeLabel.text = Localized("walletDetailVC_tx_type_send")
+//                
+//            }else{
+//                transferAmoutLabel.text = "+" + (tx.valueDescription)!.ATPSuffix()
+//                txIcon.image = UIImage(named: "walletRecvIcon")
+//                
+////                if tx.blockNumber != nil && (tx.blockNumber?.length)! > 0{
+////                    txTypeLabel.localizedText = "walletDetailVC_tx_type_receive"
+////                }else{
+////                    txTypeLabel.localizedText = "TransactionListVC_Receiving"
+////                }
+//
+//            }
+        }
+        
+        switch tx.transactionStauts {
+        case .sending,.sendSucceed,.sendFailed:
+            transferAmoutLabel.text = "-" + (tx.valueDescription)!.ATPSuffix()
+            txIcon.image = UIImage(named: "walletSendIcon")
+        case .receiving,.receiveSucceed,.receiveFailed:
+            transferAmoutLabel.text = "+" + (tx.valueDescription)!.ATPSuffix()
+            txIcon.image = UIImage(named: "walletRecvIcon")
+        case .voting,.voteSucceed,.voteFailed:
+            transferAmoutLabel.text = "-" + (tx.valueDescription)!.ATPSuffix()
+            txIcon.image = UIImage(named: "walletVote")
+ 
         }
 
-        let (des,color) = tx.labelDesciptionAndColor()
+        txTypeLabel.text = tx.transactionStauts.localizeTitle
+        let (des,color) = tx.transactionStauts.localizeDescAndColor
         statusLabel.text = des
         statusLabel.textColor = color
         

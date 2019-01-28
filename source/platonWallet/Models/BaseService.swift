@@ -55,6 +55,7 @@ class BaseService {
                 mc = nil
                 semaphore.signal()
             }
+            
             if semaphore.wait(wallTimeout: .now() + onMainPerformTimeout) == .timedOut{
             }
             completion = nil
@@ -93,9 +94,12 @@ class BaseService {
                 mc?(PlatonCommonResult.success,obj)
                 mc = nil
                 semaphore.signal()
+                
             }
+            
             if semaphore.wait(wallTimeout: .now() + onMainPerformTimeout) == .timedOut{
             }
+            
             completion = nil
         }
 

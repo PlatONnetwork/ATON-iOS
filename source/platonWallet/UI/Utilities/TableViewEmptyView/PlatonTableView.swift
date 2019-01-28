@@ -25,7 +25,7 @@ extension UITableView {
         viewContainer?.tag = emptyViewContainerTag
         addSubview(viewContainer!)
         let size = CGSize(width: 200, height: 200)
-        viewContainer?.frame = CGRect(x: (self.frame.size.width - size.width) * 0.5, y: (self.frame.size.height - size.height) * 0.5, width: size.width, height: size.height)
+        viewContainer?.frame = CGRect(x: (self.frame.size.width - size.width) * 0.5, y: (self.frame.size.height - size.height) * 0.5 - 100, width: size.width, height: size.height)
         bringSubviewToFront(viewContainer!)
     }
     

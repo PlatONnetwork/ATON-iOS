@@ -106,5 +106,9 @@ class PopUpViewController: UIViewController {
       
         
     }
+    
+    deinit {
+        print("PopupViewController deinit")
+    }
 
 }

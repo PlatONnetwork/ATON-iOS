@@ -26,15 +26,11 @@ class TransactionCell: UITableViewCell {
 
     func updateCell(tx : AnyObject?){ 
         if let tx = tx as? Transaction{
-            updateTransactionStatus(tx: tx)
-            amoutLabel.text = (tx.valueDescription)!.ATPSuffix()
-            if tx.blockNumber != nil && (tx.blockNumber?.length)! > 0{
-                typeLabel.localizedText = "TransactionListVC_Sent"
-            }else{
-                typeLabel.localizedText = "walletDetailVC_tx_type_send"
-            }
             
+            updateTransactionStatus(tx: tx)
+            amoutLabel.text = "-" + (tx.valueDescription)!.ATPSuffix()
             timeLabel.text = Date.toStanderTimeDescrition(millionSecondsTimeStamp: Int((tx.createTime)))
+            
         }else if let tx = tx as? STransaction{
             updateSTransactionStatus(tx: tx)
             typeLabel.text = tx.typeLocalization
@@ -50,9 +46,12 @@ class TransactionCell: UITableViewCell {
  
     
     func updateTransactionStatus(tx : Transaction) {
-        let (des,color) = tx.labelDesciptionAndColor()
-        statusLabel.text = des
-        statusLabel.textColor = color
+
+        tx.senderAddress = tx.from
+        typeLabel.text = tx.transactionStauts.localizeTitle
+        statusLabel.text = tx.transactionStauts.localizeDescAndColor.0
+        statusLabel.textColor = tx.transactionStauts.localizeDescAndColor.1
+        
     }
     
     func updateSTransactionStatus(tx : STransaction) {
