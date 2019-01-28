@@ -91,6 +91,7 @@
 "walletDetailVC_tx_status_fail" = "Fail";
 "walletDetailVC_tx_type_send" = "Send";
 "walletDetailVC_tx_type_receive" = "Receive";
+"walletDetailVC_tx_type_vote" = "Vote";
 "walletDetailVC_tx_transaction_title" = "Transactions";
 "walletDetailVC_balance" = "Balance";
 "walletDetailVC_send_button" = "Send";
@@ -116,6 +117,11 @@
 "TransactionDetailVC_memo" = "Memo:";
 "TransactionDetailVC_memo_none" = "None";
 "TransactionDetailVC_hash" = "Hash:";
+"TransactionDetailVC_voteFor" = "Vote For:";
+"TransactionDetailVC_nodeId" = "Node ID:";
+"TransactionDetailVC_votes" = "Votes:";
+"TransactionDetailVC_ticketPrice" = "Ticket Price:";
+"TransactionDetailVC_voteStaked" = "Vote Staked:";
 
 
 
@@ -314,6 +320,22 @@
 "TransactionListVC_Vote" = "Vote";
 "TransactionListVC_JointWalletCreation" = "Joint Wallet Creation";
 "TransactionListVC_JointWalletExecution" = "Joint Wallet Execution";
+
+"TransactionStatus_sending_title" = "Sending";
+"TransactionStatus_sendSucceed_title" = "Sent";
+"TransactionStatus_sendFailed_title" = "Sent";
+"TransactionStatus_receiving_title" = "Receiving";
+"TransactionStatus_receiveSucceed_title" = "Received";
+"TransactionStatus_receiveFailed_title" = "Received";
+"TransactionStatus_voting_title" = "Voting";
+"TransactionStatus_voteSucceed_title" = "Voted";
+"TransactionStatus_voteFailed_title" = "Voted";
+
+"TransactionStatus_pending_desc" = "Pending";
+"TransactionStatus_succeed_desc" = "Success";
+"TransactionStatus_failed_desc" = "Failed";
+
+
 
 
 //SettingsVC
@@ -521,10 +543,76 @@
 "AboutVC_AboutUs" = "About us";
 "AboutVC_update" = "Software update";
 
+//Vote
+"CandidateListVC_title" = "Vote";
+"CandidateListVC_header_desc" = "Vote Rate:%@ | Votes:%@ | Ticket Price:%@";
+"CandidateListVC_defaultBtn_title" = "Default";
+"CandidateListVC_bonusBtn_title" = "Reward";
+"CandidateListVC_areaBtn_title" = "Location";
+"CandidateListVC_searchTF_placeholder" = "Validator Node Name";
+"CandidateListVC_VoteBtn_title" = "Vote";
+"CandidateListVC_cell_desc" = "Reward Ratio:%@ | Staked:%@";
+"CandidateListVC_empty_desc" = "No Result!";
+"CandidateListVC_vote_noWallet_tips" = "Please create a wallet first";
+"CandidateListVC_vote_insufficient_balance_tips" = "Insufficient balance to vote";
+"CandidateListVC_rightBtn_title" = "My Vote";
+
+"IP_location_unknown" = "*Unknown";
+
+"CandidateDetailVC_title" = "Node Information";
+"CandidateDetailVC_joinTime" = "Join time:%@";
+"CandidateDetailVC_rank" = "Staked Ranking";
+"CandidateDetailVC_staked" = "Staked";
+"CandidateDetailVC_tickets" = "Tickets";
+"CandidateDetailVC_ticketAge" = "Ticket Age";
+"CandidateDetailVC_nodeInfo" = "Node Info";
+"CandidateDetailVC_nodeUrl" = "Node URL";
+"CandidateDetailVC_nodeId" = "Node ID";
+"CandidateDetailVC_rewardRatio" = "Reward Ratio";
+"CandidateDetailVC_institutionalName" = "Institutional Name";
+"CandidateDetailVC_institutionalWebsite" = "Institutional Website";
+"CandidateDetailVC_nodeIntroduction" = "Node Introdution";
+"CandidateDetailVC_voteBtn_title" = "Vote";
+"CandidateDetailVC_rankStatu_candidateFirst100" = "Candidate";
+"CandidateDetailVC_rankStatu_alternativeFirst100" = "Alternative";
+
+//MyVoteListVC
+"MyVoteListVC_nav_title" = "My vote";
+"MyVoteListVC_locked" = "locked";
+"MyVoteListVC_validinvalid" = "valid/invalid";
+"MyVoteListVC_reward" = "reward";
+"MyVoteListVC_Empty_tips" = "No voting record";
+
+//SingleVoteDetailListVC
+"SingleVoteDetailListVC_nav_title" = "Vote detail";
+"SingleVoteDetailListVC_validinvalid" = "valid/invalid";
+"SingleVoteDetailListVC_ticketPrice" = "ticket price";
+"SingleVoteDetailListVC_locked_release" = "locked/release";
+"SingleVoteDetailListVC_reward" = "reward";
+"SingleVoteDetailListVC_vote_wallet" = "vote wallet";
+"SingleVoteDetailListVC_expiredtime_1" = "estimated expired time";
+"SingleVoteDetailListVC_expiredtime_2" = "expired time";
+
+//VotingViewController
+"VotingViewController_nav_title" = "Node detail";
+"VotingViewController_vote_wallet_name" = "Vote wallet";
+"VotingViewController_vote_number" = "Ticket Number";
+"VotingViewController_vote_price" = "Ticket Price";
+"VotingViewController_vote_total_pay" = "Total payment";
+"VotingViewController_confirm" = "Confirm";
+"VotingViewController_insufficient_balance_tips" = "Insufficient balance!";
+"VotingViewController_exceed_limit_tips" = "Votes exceed the limit of the ticket pool";
+
+//VoteConfirm
+"VoteConfirm_title" = "Voting Confirmation";
+"VoteConfirm_payment_info" = "Information";
+"VoteConfirm_fee" = "Fee";
+"VoteConfirm_submitBtn_title" = "Confirm";
+"VoteConfirm_vote" = "Vote";
+
+
 //QRDisplayViewController
 "QRDisplayViewController_share" = "Success， click to share";
 "fail" = "fail";
-
-
 
 "cannot_send_itself" = "Can't send to itself";

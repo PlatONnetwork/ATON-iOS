@@ -90,6 +90,7 @@
 "walletDetailVC_tx_status_fail" = "失败";
 "walletDetailVC_tx_type_send" = "发送";
 "walletDetailVC_tx_type_receive" = "接收";
+"walletDetailVC_tx_type_vote" = "投票";
 "walletDetailVC_tx_transaction_title" = "交易记录";
 "walletDetailVC_balance" = "余额";
 "walletDetailVC_send_button" = "发送";
@@ -109,6 +110,11 @@
 "TransactionDetailVC_memo" = "备注:";
 "TransactionDetailVC_memo_none" = "无";
 "TransactionDetailVC_hash" = "交易hash:";
+"TransactionDetailVC_voteFor" = "投票给:";
+"TransactionDetailVC_nodeId" = "节点ID:";
+"TransactionDetailVC_votes" = "投票数:";
+"TransactionDetailVC_ticketPrice" = "票价:";
+"TransactionDetailVC_voteStaked" = "投票质押:";
 
 //qr scan
 "QRScanerVC_nav_title" = "扫描";
@@ -306,6 +312,21 @@
 "TransactionListVC_JointWalletCreation" = "创建联名钱包";
 "TransactionListVC_JointWalletExecution" = "执行联名钱包";
 
+"TransactionStatus_sending_title" = "发送";
+"TransactionStatus_sendSucceed_title" = "发送";
+"TransactionStatus_sendFailed_title" = "发送";
+"TransactionStatus_receiving_title" = "接收";
+"TransactionStatus_receiveSucceed_title" = "接收";
+"TransactionStatus_receiveFailed_title" = "接收";
+"TransactionStatus_voting_title" = "投票";
+"TransactionStatus_voteSucceed_title" = "投票";
+"TransactionStatus_voteFailed_title" = "投票";
+
+"TransactionStatus_pending_desc" = "处理中";
+"TransactionStatus_succeed_desc" = "成功";
+"TransactionStatus_failed_desc" = "失败";
+
+
 //SettingsVC
 "SettingsVC_title" = "设置";
 "SettingsVC_nodeSet_title" = "节点设置";
@@ -392,7 +413,7 @@
 
 //shared Wallet detail
 "SharedWalletVC_title" = "管理钱包";
-"Members_Des" = "共享用户";
+"Members_Des" = "联名用户";
 "SharedWallet_delete" = "删除钱包";
 "Owner_Des" = "关联普通钱包";
 
@@ -523,6 +544,74 @@
 "AboutVC_nav_title" = "关于";
 "AboutVC_AboutUs" = "关于我们";
 "AboutVC_update" = "版本更新";
+
+//Vote
+"CandidateListVC_title" = "投票";
+"CandidateListVC_header_desc" = "投票率：%@ | 已投票：%@ | 票价：%@";
+"CandidateListVC_defaultBtn_title" = "默认";
+"CandidateListVC_bonusBtn_title" = "分红";
+"CandidateListVC_areaBtn_title" = "区域";
+"CandidateListVC_searchTF_placeholder" = "输入节点账户名称查询";
+"CandidateListVC_VoteBtn_title" = "投票";
+"CandidateListVC_cell_desc" = "分红比例：%@ | 质押金：%@";
+"CandidateListVC_empty_desc" = "查询无结果！";
+"CandidateListVC_vote_noWallet_tips" = "请先创建钱包";
+"CandidateListVC_vote_insufficient_balance_tips" = "钱包余额不足，无法进行投票";
+"CandidateListVC_rightBtn_title" = "我的投票";
+
+"IP_location_unknown" = "*未知";
+
+"CandidateDetailVC_title" = "节点详情";
+"CandidateDetailVC_joinTime" = "加入时间：%@";
+"CandidateDetailVC_rank" = "质押排名";
+"CandidateDetailVC_staked" = "质押金";
+"CandidateDetailVC_tickets" = "得票数";
+"CandidateDetailVC_ticketAge" = "实时票龄";
+"CandidateDetailVC_nodeInfo" = "节点信息";
+"CandidateDetailVC_nodeUrl" = "节点地址";
+"CandidateDetailVC_nodeId" = "节点ID";
+"CandidateDetailVC_rewardRatio" = "分红比例";
+"CandidateDetailVC_institutionalName" = "机构名称";
+"CandidateDetailVC_institutionalWebsite" = "机构官网";
+"CandidateDetailVC_nodeIntroduction" = "节点简介";
+"CandidateDetailVC_voteBtn_title" = "投票";
+"CandidateDetailVC_rankStatu_candidateFirst100" = "候选前100名";
+"CandidateDetailVC_rankStatu_alternativeFirst100" = "备选前100名";
+
+//MyVoteListVC
+"MyVoteListVC_nav_title" = "我的投票";
+"MyVoteListVC_locked" = "投票锁定";
+"MyVoteListVC_validinvalid" = "有效票/失效票";
+"MyVoteListVC_reward" = "投票收益";
+"MyVoteListVC_Empty_tips" = "暂无投票记录";
+
+//SingleVoteDetailListVC
+"SingleVoteDetailListVC_nav_title" = "投票详情";
+"SingleVoteDetailListVC_validinvalid" = "有效票/失效票";
+"SingleVoteDetailListVC_ticketPrice" = "票价";
+"SingleVoteDetailListVC_locked_release" = "投票锁定/已解除";
+"SingleVoteDetailListVC_reward" = "投票收益";
+"SingleVoteDetailListVC_vote_wallet" = "投票钱包";
+"SingleVoteDetailListVC_expiredtime_1" = "预计过期时间";
+"SingleVoteDetailListVC_expiredtime_2" = "过期时间";
+
+//VotingViewController
+
+"VotingViewController_nav_title" = "节点详情";
+"VotingViewController_vote_wallet_name" = "投票钱包";
+"VotingViewController_vote_number" = "投票数";
+"VotingViewController_vote_price" = "票价";
+"VotingViewController_vote_total_pay" = "预计支付";
+"VotingViewController_confirm" = "确定";
+"VotingViewController_insufficient_balance_tips" = "钱包余额不足！";
+"VotingViewController_exceed_limit_tips" = "投票数超出票池限制";
+
+//
+"VoteConfirm_title" = "投票信息";
+"VoteConfirm_payment_info" = "支付信息";
+"VoteConfirm_fee" = "交易费用";
+"VoteConfirm_submitBtn_title" = "确定";
+"VoteConfirm_vote" = "投票";
 
 //QRDisplayViewController
 "QRDisplayViewController_share" = "保存成功，点击去分享";

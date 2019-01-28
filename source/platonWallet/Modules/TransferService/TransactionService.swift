@@ -80,6 +80,7 @@ class TransactionService : BaseService{
     @objc func OnPendingTxPolling(){
         self.EnergonTransferPooling()
         self.JointWalletTransferPooling()
+        self.VotePooling()
     }
     
     //MARK: - Polling method
@@ -101,6 +102,9 @@ class TransactionService : BaseService{
             guard (item.txhash != nil) else{
                 continue
             }
+            guard TransanctionType(rawValue: item.transactionType) != .Vote else {
+                continue
+            }
             let byteCode = try! EthereumData(ethereumValue: item.txhash!)
             let data = try! EthereumData(ethereumValue: byteCode)
             
@@ -119,6 +123,107 @@ class TransactionService : BaseService{
                     do{}
                 }
             }
+            
+        }
+    }
+    
+    func VotePooling(){
+        let txs = TransferPersistence.getUnConfirmedTransactions()
+        for item in txs{
+            guard (item.txhash != nil) else{
+                continue
+            }
+            guard TransanctionType(rawValue: item.transactionType) == .Vote else {
+                continue
+            }
+            let byteCode = try! EthereumData(ethereumValue: item.txhash!)
+            let data = try! EthereumData(ethereumValue: byteCode)
+            
+            web3.eth.getTransactionReceipt(transactionHash: data) { (txResp) in
+                switch txResp.status{
+                case .success(let resp):
+                    guard let receipt = resp, receipt.logs.count > 0, receipt.logs[0].data.hex().count > 0 else{
+                        return
+                    }
+                    
+                    guard let rlpItem = try? RLPDecoder().decode(receipt.logs[0].data.bytes), let respBytes = rlpItem.array?[0].bytes else {
+                        return
+                    }
+                    
+                    guard let dic = try? JSONSerialization.jsonObject(with: Data(bytes: respBytes), options: .mutableContainers) as? [String:Any], let count = Int(dic?["Data"] as? String ?? ""), let jsonStr = String(data: Data(bytes: respBytes), encoding: .utf8) else{
+                        return 
+                    }
+
+                    DispatchQueue.main.async {
+                        
+                        guard let singleVote = VotePersistence.getSingleVotesByTxHash(item.txhash!) else {
+                            return
+                        }
+                        
+                        try? RealmInstance?.write {
+                            item.blockNumber = String(receipt.blockNumber.quantity)
+                            item.gasUsed = String(receipt.gasUsed.quantity)
+                            item.extra = jsonStr
+                            if singleVote.tickets.count > count {
+                                
+                                item.value = String(EthereumQuantity(quantity: BigUInt(singleVote.tickets[0].deposit!)!.multiplied(by: BigUInt(count))).quantity)
+                                let startIndex = singleVote.tickets.count - count
+                                let endIndex = singleVote.tickets.count
+                                let tickets = singleVote.tickets[startIndex..<endIndex]
+                                RealmInstance?.delete(tickets)
+                            }
+                        }
+                        NotificationCenter.default.post(name: NSNotification.Name(DidUpdateTransactionByHashNotification), object: item.txhash)
+                    }
+                    
+                case .failure(_):
+                    do{}
+                }
+            }
+            
+//            web3.eth.platonGetTransactionReceipt(txHash: (data?.hexString)!, loopTime: 10, completion: { (receptionRes, data) in
+//                switch receptionRes{
+//                    
+//                case .success:
+//                    
+//                    guard let receipt = data as? EthereumTransactionReceiptObject,receipt.logs.count > 0, receipt.logs[0].data.hex().count > 0 else{
+//                        self.failCompletionOnMainThread(code: -1, errorMsg: "Can't parse transaction receipt log", completion: &completion)
+//                        return
+//                    }
+//                    
+//                    
+//                    let logdata = receipt.logs[0].data
+//                    let rlpItem = try? RLPDecoder().decode(logdata.bytes)
+//                    
+//                    guard let dic = try? JSONSerialization.jsonObject(with: Data(bytes: rlpItem!.array![0].bytes!), options: .mutableContainers) as? [String:Any] else{
+//                        
+//                        self.failCompletionOnMainThread(code: -2, errorMsg: "Can't parse transaction receipt log", completion: &completion)
+//                        return 
+//                    }
+//                    
+//                    let txHashData = Data(receipt.transactionHash.bytes)
+//                    let countStr = dic!["Data"] as? String ?? "0"
+//                    
+//                    let tickets = Ticket.generateTickets(txHash: txHashData, count: UInt32(countStr) ?? 0, owner: sender, candidateId: nodeId, price: String(price))
+//                    
+//                    let svote = SingleVote()
+//                    svote.txHash = txHashData.toHexString().add0x()
+//                    svote.candidateId = nodeId
+//                    svote.candidateName = ""
+//                    svote.owner = sender
+//                    if tickets.count > 0{
+//                        svote.tickets.append(objectsIn: tickets)
+//                    }
+//                    svote.createTime = Int(Date().timeIntervalSince1970)
+//                    
+//                    VotePersistence.add(singleVote: svote)
+//                    
+//                    self.successCompletionOnMain(obj: nil, completion: &completion)
+//                case .fail(let code, let errMsg):
+//                    self.failCompletionOnMainThread(code: code!, errorMsg: errMsg!, completion: &completion)
+//                }
+//            })
+            
             
         }
     }

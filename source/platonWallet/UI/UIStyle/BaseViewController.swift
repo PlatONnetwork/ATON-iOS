@@ -37,7 +37,7 @@ class BaseViewController: UIViewController {
         view.backgroundColor = UIViewController_backround
         
         let backgrouImage = UIImage(color: nav_bar_backgroud)
-    navigationController?.navigationBar.setBackgroundImage(backgrouImage, for: .default)
+        navigationController?.navigationBar.setBackgroundImage(backgrouImage, for: .default)
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.isTranslucent = false
         navigationController?.navigationBar.tintColor = UIColor.white

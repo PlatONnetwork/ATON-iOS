@@ -8,6 +8,7 @@
 
 import XCTest
 import BigInt
+import platonWeb3
 @testable import platonWallet
 
 extension UInt16 {
@@ -172,6 +173,143 @@ class platonWalletTests: XCTestCase {
     }
 
     
+    func testIPQuery(){
+        var list : [String] = []
+        
+        list.append("59.125.205.87")
+        list.append("61.244.148.166")
+        for i in 1...250{
+            let n:Int = Int(arc4random() % 250) + 1
+            let j:Int = Int(arc4random() % 250) + 1
+            let k:Int = Int(arc4random() % 250) + 1
+            let l:Int = Int(arc4random() % 250) + 1
+            list.append(String(format: "%d.%d.%d.%d", n,j,k,l))
+        }
+        
+        IPQuery.sharedInstance.batchQueryIPs(ipList: list) { (result, data) in
+            
+        }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            VoteManager.sharedInstance.CandidateList { (result, data) in
+                
+            }
+            
+//            self.window?.rootViewController = MyVoteListVC()
+        }
+    }
     
+    func testJsonwithbn(){
+        
+        
+        let data = Data(hex: "5b7b224465706f736974223a36303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030302c22426c6f636b4e756d626572223a3236302c225478496e646578223a302c2243616e6469646174654964223a223266336138363732333438666636623738396534313637363261643533653639303633313338623865623464383738303130313635386632346232333639663161386530393439393232366234363764386263306334653033653164633930336466383537656562336336373733336432316236616165653238343065343239222c22486f7374223a22302e302e302e31222c22506f7274223a223330333033222c224f776e6572223a22307835613563343336386532363932373436623238366365653336616230373130616633656661366366222c2246726f6d223a22307835613563343336386532363932373436623238366365653336616230373130616633656661366366222c224578747261223a2265787472612064617461222c22466565223a3530302c225469636b65744964223a22307830303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030227d2c7b224465706f736974223a353030303030303030303030303030303030302c22426c6f636b4e756d626572223a3235342c225478496e646578223a302c2243616e6469646174654964223a223166336138363732333438666636623738396534313637363261643533653639303633313338623865623464383738303130313635386632346232333639663161386530393439393232366234363764386263306334653033653164633930336466383537656562336336373733336432316236616165653238343065343239222c22486f7374223a22302e302e302e30222c22506f7274223a223330333033222c224f776e6572223a22307837343063653331623366616332306461633337396462323433303231613531653830616430306437222c2246726f6d223a22307837343063653331623366616332306461633337396462323433303231613531653830616430306437222c224578747261223a2265787472612064617461222c22466565223a3530302c225469636b65744964223a22307830303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030227d2c7b224465706f736974223a343030303030303030303030303030303030302c22426c6f636b4e756d626572223a3236342c225478496e646578223a302c2243616e6469646174654964223a223366336138363732333438666636623738396534313637363261643533653639303633313338623865623464383738303130313635386632346232333639663161386530393439393232366234363764386263306334653033653164633930336466383537656562336336373733336432316236616165653238343065343239222c22486f7374223a22302e302e302e32222c22506f7274223a223330333033222c224f776e6572223a22307834393333303137313236373161646135303662613663613738393166343336643239313835383231222c2246726f6d223a22307834393333303137313236373161646135303662613663613738393166343336643239313835383231222c224578747261223a2265787472612064617461222c22466565223a3530302c225469636b65744964223a22307830303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030227d5d")
+        
+        let darray = try? JSONSerialization.jsonObject(with: data, options: []) as! Array<Dictionary<String, Any>>
+        let tmpdic = darray![0]
+        
+        let value = tmpdic["Deposit"] as! Decimal
+        let stringvalue = value.description
+        
+    }
+    
+    func testVoteTicket() {
+        
+        let expectaion = self.expectation(description: "voteTicket.test")
+        
+        VoteManager.sharedInstance.VoteTicket(count: 100, price: BigUInt("1")!, nodeId: "0x1f3a8672348ff6b789e416762ad53e69063138b8eb4d8780101658f24b2369f1a8e09499226b467d8bc0c4e03e1dc903df857eeb3c67733d21b6aaee2840e429", sender: "0x493301712671Ada506ba6Ca7891F436D29185821", privateKey: "a11859ce23effc663a9460e332ca09bd812acc390497f8dc7542b6938e13f8d7", gasPrice: BigUInt("1000000000")!, gas: deploy_UseStipulatedGas, completion: { (res, data) in
+            expectaion.fulfill()
+            XCTAssert(true)
+        })
+        
+        waitForExpectations(timeout: 10) { (error) in
+            print(error?.localizedDescription ?? "")
+        }
+        
+    }
+    
+    func testGetCandidateEpoch() {
+        
+        let expectaion = self.expectation(description: "GetCandidateEpoch.test")
+        
+        VoteManager.sharedInstance.GetCandidateEpoch(candidateId: "0x1f3a8672348ff6b789e416762ad53e69063138b8eb4d8780101658f24b2369f1a8e09499226b467d8bc0c4e03e1dc903df857eeb3c67733d21b6aaee2840e429") { (res, data) in
+            expectaion.fulfill()
+            XCTAssert(true)
+        }
+        waitForExpectations(timeout: 10) { (error) in
+            print(error?.localizedDescription ?? "")
+        }
+    }
+    
+    func testGetTicketDetail() {
+        
+        let expectaion = self.expectation(description: "GetTicketDetail.test")
+        
+        VoteManager.sharedInstance.GetTicketDetail(ticketId: "0x34bdecd0fa6b8d85b1fa436eac6066aca2f51cc5e84fec278bff7df781310982") { (res, data) in
+            expectaion.fulfill()
+            print(res, data)
+            XCTAssert(true)
+        }
+        waitForExpectations(timeout: 10) { (error) in
+            print(error?.localizedDescription ?? "")
+        }
+    }
+    
+    func testGetBatchTicketDetail() {
+        
+        let expectaion = self.expectation(description: "GetBatchTicketDetail.test")
+        
+        VoteManager.sharedInstance.GetBatchTicketDetail(ticketIds: ["0x34bdecd0fa6b8d85b1fa436eac6066aca2f51cc5e84fec278bff7df781310982","0x34bdecd0fa6b8d85b1fa436eac6066aca2f51cc5e84fec278bff7df781310983"]) { (res, data) in
+            expectaion.fulfill()
+            print(res, data as Any)
+            XCTAssert(true)
+        }
 
+        waitForExpectations(timeout: 10) { (error) in
+            print(error?.localizedDescription ?? "")
+        }
+    }
+    
+    func testGetCandidateDetails() {
+        
+        let expectaion = self.expectation(description: "CandidateDetails.test")
+        
+        VoteManager.sharedInstance.CandidateDetails(candidateId: "0x1f3a8672348ff6b789e416762ad53e69063138b8eb4d8780101658f24b2369f1a8e09499226b467d8bc0c4e03e1dc903df857eeb3c67733d21b6aaee2840e429", completion: { (res, data) in
+            expectaion.fulfill()
+            print(res, data as Any)
+            XCTAssert(true)
+        })
+        waitForExpectations(timeout: 10) { (error) in
+            print(error?.localizedDescription ?? "")
+        }
+    }
+    
+    
+    func testGetBatchCandidateDetail() {
+        
+        let expectaion = self.expectation(description: "GetBatchCandidateDetail.test")
+        
+        VoteManager.sharedInstance.GetBatchCandidateDetail(ids: ["0x1f3a8672348ff6b789e416762ad53e69063138b8eb4d8780101658f24b2369f1a8e09499226b467d8bc0c4e03e1dc903df857eeb3c67733d21b6aaee2840e420"], completion: { (res, data) in
+            expectaion.fulfill()
+            print(res, data as Any)
+            XCTAssert(true)
+        })
+        waitForExpectations(timeout: 10) { (error) in
+            print(error?.localizedDescription ?? "")
+        }
+    }
+
+    func testGetBatchCandidateTicketIds() {
+        
+        let expectaion = self.expectation(description: "GetBatchCandidateTicketIds.test")
+        
+        VoteManager.sharedInstance.GetBatchCandidateTicketIds(candidateIds: ["0x1f3a8672348ff6b789e416762ad53e69063138b8eb4d8780101658f24b2369f1a8e09499226b467d8bc0c4e03e1dc903df857eeb3c67733d21b6aaee2840e420","0x1f3a8672348ff6b789e416762ad53e69063138b8eb4d8780101658f24b2369f1a8e09499226b467d8bc0c4e03e1dc903df857eeb3c67733d21b6aaee2840e429"], completion: { (res, data) in
+            expectaion.fulfill()
+            print(res, data as Any)
+            XCTAssert(true)
+        })
+        waitForExpectations(timeout: 10) { (error) in
+            print(error?.localizedDescription ?? "")
+        }
+    }
+    
 }

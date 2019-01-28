@@ -37,7 +37,7 @@ public final class WalletService {
         
         keystoreFolderURL = URL(fileURLWithPath: keystoreFolderPath)
         
-        print("�keystoreFloderURL:\(keystoreFolderURL.absoluteString)")
+        print("📁keystoreFloderURL:\(keystoreFolderURL.absoluteString)")
         
         let fileManager = FileManager.default
         if !fileManager.fileExists(atPath: keystoreFolderPath) {
@@ -50,12 +50,19 @@ public final class WalletService {
 
         for item in wallets{
             if (item.key?.address.ishexStringEqual(other: address))!{
+
                 return item
             }
         }
         return nil
     }
-
+    
+    /// Create Wallet
+    ///
+    /// - Parameters:
+    ///   - name: <#name description#>
+    ///   - password: <#password description#>
+    ///   - completion: <#completion description#>
     public func createWallet(name:String, password: String, completion: @escaping (Wallet?, Error?) -> Void) {
         
         walletQueue.async {
@@ -269,7 +276,7 @@ public final class WalletService {
             
             DispatchQueue.main.async {
                 let res = privateKeyData.toHexString()
-                print("�privateKey:\(res)")
+                print("🔑privateKey:\(res)")
                 completion(res, nil)
             }
             

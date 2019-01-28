@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="CandidatesTableViewCell" id="KGk-i7-Jjw" customClass="CandidatesTableViewCell" customModule="platonWallet" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="64"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="63.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iy0-er-gen">
+                        <rect key="frame" x="0.0" y="0.0" width="295" height="53.5"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ATPIcon" translatesAutoresizingMaskIntoConstraints="NO" id="WMW-0G-3iP">
+                                <rect key="frame" x="10" y="15" width="24" height="24"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="24" id="MPC-wF-k4n"/>
+                                    <constraint firstAttribute="width" constant="24" id="lrj-A9-L29"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IWF-jH-4IN">
+                                <rect key="frame" x="46" y="10" width="35.5" height="16"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="16" id="ymm-oZ-EYB"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(location)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fhJ-YH-bXe">
+                                <rect key="frame" x="84.5" y="10" width="55" height="15"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <color key="textColor" red="0.77254901960784317" green="0.79607843137254897" blue="0.86274509803921573" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="分红比例：100% | 质押金：1,516ATP" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V4H-yl-ozg">
+                                <rect key="frame" x="46" y="28" width="249" height="12"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                                <color key="textColor" red="0.47843137254901957" green="0.50196078431372548" blue="0.5725490196078431" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" red="0.12156862745098039" green="0.15686274509803921" blue="0.25490196078431371" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="fhJ-YH-bXe" firstAttribute="leading" secondItem="IWF-jH-4IN" secondAttribute="trailing" constant="3" id="5CN-AX-bsB"/>
+                            <constraint firstItem="fhJ-YH-bXe" firstAttribute="top" secondItem="iy0-er-gen" secondAttribute="top" constant="10" id="KA0-nI-yRq"/>
+                            <constraint firstItem="IWF-jH-4IN" firstAttribute="leading" secondItem="WMW-0G-3iP" secondAttribute="trailing" constant="12" id="REY-1U-sH9"/>
+                            <constraint firstItem="V4H-yl-ozg" firstAttribute="top" secondItem="IWF-jH-4IN" secondAttribute="bottom" constant="2" id="USU-GI-uvj"/>
+                            <constraint firstItem="V4H-yl-ozg" firstAttribute="leading" secondItem="IWF-jH-4IN" secondAttribute="leading" id="UZv-Bs-Hlx"/>
+                            <constraint firstItem="WMW-0G-3iP" firstAttribute="leading" secondItem="iy0-er-gen" secondAttribute="leading" constant="10" id="Uo6-aZ-vhf"/>
+                            <constraint firstAttribute="trailing" secondItem="V4H-yl-ozg" secondAttribute="trailing" id="m3r-XJ-EnJ"/>
+                            <constraint firstItem="IWF-jH-4IN" firstAttribute="top" secondItem="iy0-er-gen" secondAttribute="top" constant="10" id="s62-ix-WRO"/>
+                            <constraint firstItem="WMW-0G-3iP" firstAttribute="centerY" secondItem="iy0-er-gen" secondAttribute="centerY" id="ug6-Q6-4cz"/>
+                        </constraints>
+                    </view>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="vote_dashed_bg" translatesAutoresizingMaskIntoConstraints="NO" id="I98-3d-5eB">
+                        <rect key="frame" x="295" y="0.0" width="14" height="53.5"/>
+                    </imageView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eNq-m4-Rfw">
+                        <rect key="frame" x="309" y="0.0" width="66" height="53.5"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tMP-Bb-yFO">
+                                <rect key="frame" x="0.0" y="0.0" width="66" height="53.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <state key="normal" title="Button">
+                                    <color key="titleColor" red="1" green="0.92941176469999998" blue="0.3294117647" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="string" keyPath="localizedNormalTitle" value="CandidateListVC_VoteBtn_title"/>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="vote:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="63z-GT-7oq"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="0.1215686275" green="0.15686274510000001" blue="0.25490196079999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="tMP-Bb-yFO" secondAttribute="bottom" id="4ca-6L-MEU"/>
+                            <constraint firstItem="tMP-Bb-yFO" firstAttribute="top" secondItem="eNq-m4-Rfw" secondAttribute="top" id="LyQ-SV-wMh"/>
+                            <constraint firstItem="tMP-Bb-yFO" firstAttribute="leading" secondItem="eNq-m4-Rfw" secondAttribute="leading" id="Xp0-ou-7jT"/>
+                            <constraint firstAttribute="trailing" secondItem="tMP-Bb-yFO" secondAttribute="trailing" id="qER-Nt-Hw2"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <color key="backgroundColor" red="0.10588235294117647" green="0.12941176470588234" blue="0.21568627450980393" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                <constraints>
+                    <constraint firstItem="eNq-m4-Rfw" firstAttribute="leading" secondItem="I98-3d-5eB" secondAttribute="trailing" id="0Qw-Kf-dOG"/>
+                    <constraint firstItem="iy0-er-gen" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="3l9-5C-Y4C"/>
+                    <constraint firstAttribute="trailing" secondItem="iy0-er-gen" secondAttribute="trailing" constant="80" id="9z3-M8-Zkt"/>
+                    <constraint firstAttribute="bottom" secondItem="eNq-m4-Rfw" secondAttribute="bottom" constant="10" id="AK8-UL-hvI"/>
+                    <constraint firstItem="I98-3d-5eB" firstAttribute="leading" secondItem="iy0-er-gen" secondAttribute="trailing" id="Bu2-dk-5yE"/>
+                    <constraint firstItem="eNq-m4-Rfw" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="Eie-c0-hlR"/>
+                    <constraint firstItem="iy0-er-gen" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="K9d-1T-p43"/>
+                    <constraint firstItem="I98-3d-5eB" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="PSJ-T8-zaB"/>
+                    <constraint firstAttribute="bottom" secondItem="I98-3d-5eB" secondAttribute="bottom" constant="10" id="UxH-iM-ktn"/>
+                    <constraint firstAttribute="bottom" secondItem="iy0-er-gen" secondAttribute="bottom" constant="10" id="poO-l6-r90"/>
+                    <constraint firstAttribute="trailing" secondItem="eNq-m4-Rfw" secondAttribute="trailing" id="yBn-1i-lxV"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="avatar" destination="WMW-0G-3iP" id="HhX-lz-ys8"/>
+                <outlet property="candidateNameLabel" destination="IWF-jH-4IN" id="FlH-c5-8sD"/>
+                <outlet property="descLabel" destination="V4H-yl-ozg" id="WGp-wL-lzi"/>
+                <outlet property="leftView" destination="iy0-er-gen" id="b9V-Di-fQ4"/>
+                <outlet property="locationLabel" destination="fhJ-YH-bXe" id="D6K-bh-Ojp"/>
+                <outlet property="rightView" destination="eNq-m4-Rfw" id="TLa-cn-yhI"/>
+            </connections>
+            <point key="canvasLocation" x="137.59999999999999" y="151.12443778110946"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="ATPIcon" width="24" height="24"/>
+        <image name="vote_dashed_bg" width="14" height="54"/>
+    </resources>
+</document>

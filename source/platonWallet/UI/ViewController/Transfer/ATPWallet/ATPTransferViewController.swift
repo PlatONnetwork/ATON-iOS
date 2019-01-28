@@ -408,7 +408,7 @@ class ATPTransferViewController: BaseViewController ,UITextViewDelegate,UITextFi
         if transferView.sendAmoutTextField.text?.length == 0{
             return true
         }
-        var amountOfwei = BigUInt.mutiply(a: transferView.sendAmoutTextField.text!, by: ETHToWeiMultiplier)
+        let amountOfwei = BigUInt.mutiply(a: transferView.sendAmoutTextField.text!, by: ETHToWeiMultiplier)
         var overflow = false
         self.refreshLabel(true)
         

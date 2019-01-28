@@ -29,7 +29,6 @@ class AppFramework {
         Debugger.enableDebug(true)
     }
     
-    
     func initBugly(){
         Bugly.start(withAppId: "e8f57be7d2")
     }
@@ -55,9 +54,22 @@ class AppFramework {
     }
     
     func RealmConfiguration() {
-        let schemaVersion: UInt64 = 0
+        let schemaVersion: UInt64 = 3
         let config = Realm.Configuration(schemaVersion: schemaVersion, migrationBlock: { migration, oldSchemaVersion in
+//            if oldSchemaVersion < 1 {
+//
+//                migration.renameProperty(onType: SingleVote.className(), from: "CandidateId", to: "candidateId")
+//                migration.renameProperty(onType: SingleVote.className(), from: "Owner", to: "owner")
+//                
+//            }
+//            if oldSchemaVersion < 2 {
+//                migration.enumerateObjects(ofType: SingleVote.className(), { (old, new) in
+//                    new?["txHash"] = old?["txHash"]
+//                })
+//            }
+            
         })
+        
         RealmHelper.r = try? Realm(configuration: config)
         let walletStorge = WallletPersistence(realm: RealmInstance!)
         WalletService.sharedInstance.walletStorge = walletStorge

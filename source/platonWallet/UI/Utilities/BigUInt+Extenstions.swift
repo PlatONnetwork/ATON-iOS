@@ -186,4 +186,8 @@ extension BigUInt{
     func gasMutiply(_ times: Int) -> BigUInt{
         return self.multiplied(by: BigUInt(String(times))!)
     }
+    
+    func convertToEnergon(round:Int) -> String {
+        return self.divide(by: ETHToWeiMultiplier, round: round)
+    }
 }

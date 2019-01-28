@@ -44,6 +44,20 @@ class TransferDetailView: UIView {
     
     @IBOutlet weak var copyTxBtn: CopyButton!
     
+    @IBOutlet weak var voteExtraView: UIView!
+    
+    @IBOutlet weak var nodeNameLabel: UILabel!
+    
+    @IBOutlet weak var nodeIdLabel: UILabel!
+    
+    @IBOutlet weak var numOfTicketsLabel: UILabel!
+    
+    @IBOutlet weak var ticketPriceLabel: UILabel!
+    
+    @IBOutlet weak var valueTitle: UILabel!
+    
+    @IBOutlet weak var showVoteExtraViewConstraint: NSLayoutConstraint!
+    
     override func awakeFromNib() {
         
         copyFromAddrBtn.attachTextView = fromLabel
@@ -67,14 +81,38 @@ class TransferDetailView: UIView {
     func updateContent(tx : AnyObject,wallet : Wallet?){
         
         if let tx = tx as? Transaction{
-            hashContent.text = tx.txhash
+
+            if TransanctionType(rawValue: tx.transactionType) == .Vote {
+                voteExtraView.isHidden = false
+                showVoteExtraViewConstraint.priority = .defaultHigh
+                valueTitle.text = Localized("TransactionDetailVC_voteStaked")
+                guard let singleVote = VotePersistence.getSingleVotesByTxHash(tx.txhash!) else {
+                    nodeNameLabel.text = "-"
+                    nodeIdLabel.text = "-"
+                    numOfTicketsLabel.text = "-"
+                    ticketPriceLabel.text = "-"
+                    return
+                } 
+                
+                nodeNameLabel.text = singleVote.candidateName
+                nodeIdLabel.text = singleVote.candidateId?.add0x()
+                numOfTicketsLabel.text = "\(singleVote.tickets.count)"
+                ticketPriceLabel.text = BigUInt(tx.value!)?.divide(by: String(BigUInt(singleVote.tickets.count).multiplied(by: BigUInt(ETHToWeiMultiplier)!)), round: 8).ATPSuffix()
+                
+            }else {
+                voteExtraView.isHidden = true
+                showVoteExtraViewConstraint.priority = .defaultLow
+                valueTitle.text = Localized("TransactionDetailVC_value")
+            }
+            
+            hashContent.text = tx.txhash?.add0x()
             timeLabel.text = Date.toStanderTimeDescrition(millionSecondsTimeStamp: tx.createTime)
             fromLabel.text = tx.from
             toLabel.text = tx.to
             valueLabel.text = tx.valueDescription!.ATPSuffix()
             walletName.text = wallet?.name
             
-            feeLabel.text = tx.feeDescription
+            feeLabel.text = tx.feeDescription?.ATPSuffix()
             /*
             if (tx.memo?.length)! > 0{
                 memoContent.text = tx.memo
@@ -83,7 +121,7 @@ class TransferDetailView: UIView {
             }
             */
             
-            transactionTypeLabel.text = tx.transanctionTypeLazy?.localizedDesciption
+//                tx.transanctionTypeLazy?.localizedDesciption
             updateStatus(tx: tx)
         }else if let tx = tx as? STransaction{
             
@@ -115,24 +153,56 @@ class TransferDetailView: UIView {
         
     }
     
-    func updateStatus(tx : Transaction?){
-        let style = tx?.labelDesciptionAndColor()
-        statusLabel.localizedText = style!.0
-        statusLabel.textColor = style!.1
-        if (tx?.blockNumber?.length)! > 0{
-            //success
-            statusIconImageVIew.image = UIImage(named: "statusSuccess")
-        }else{
-            //confirming
+    func updateStatus(tx : Transaction){
+        
+        transactionTypeLabel.text = tx.transactionStauts.localizeTitle
+        statusLabel.text = tx.transactionStauts.localizeDescAndColor.0
+        statusLabel.textColor = tx.transactionStauts.localizeDescAndColor.1
+        switch tx.transactionStauts {
+        case .sending, .receiving, .voting:
             statusIconImageVIew.image = UIImage(named: "statusPending")
+        case .sendSucceed, .receiveSucceed, .voteSucceed:
+            statusIconImageVIew.image = UIImage(named: "statusSuccess")
+        case .sendFailed, .receiveFailed, .voteFailed:
+            statusIconImageVIew.image = UIImage(named: "statusFail")
         }
+        
+//        if TransanctionType(rawValue: tx.transactionType) == .Vote {
+//            statusLabel.localizedText = tx.voteStatus.localizedDesciptionAndColor.0
+//            statusLabel.textColor = tx.voteStatus.localizedDesciptionAndColor.1
+//            switch tx.voteStatus {
+//            case .pending:
+//                statusIconImageVIew.image = UIImage(named: "statusPending")
+//            case .success:
+//                statusIconImageVIew.image = UIImage(named: "statusSuccess")
+//            case .fail:
+//                statusIconImageVIew.image = UIImage(named: "statusFail")
+//            }
+//        }else {
+//            let style = tx.labelDesciptionAndColor()
+//            statusLabel.localizedText = style.0
+//            statusLabel.textColor = style.1
+//            if (tx.blockNumber?.length)! > 0{
+//                //success
+//                statusIconImageVIew.image = UIImage(named: "statusSuccess")
+//            }else{
+//                //confirming
+//                statusIconImageVIew.image = UIImage(named: "statusPending")
+//            }
+//            if tx.blockNumber != nil && (tx.blockNumber?.length)! > 0{
+//                transactionTypeLabel.localizedText = "TransactionListVC_Sent"
+//            }else{
+//                transactionTypeLabel.localizedText = "walletDetailVC_tx_type_send"
+//            }
+//        }
+        
     }
     
-    func updateStatus(tx : STransaction?){
-        let style = tx?.labelDesciptionAndColor()
-        statusLabel.localizedText = style!.0
-        statusLabel.textColor = style!.1
-        if (tx?.blockNumber?.length)! > 0{
+    func updateStatus(tx : STransaction){
+        let style = tx.labelDesciptionAndColor()
+        statusLabel.localizedText = style.0
+        statusLabel.textColor = style.1
+        if (tx.blockNumber?.length)! > 0{
             //success
             statusIconImageVIew.image = UIImage(named: "statusSuccess")
         }else{

@@ -19,9 +19,10 @@ let THE9powerof10 = "1000000000"
 let THE18powerof10 = "1000000000000000000"
 
 
-enum TransanctionType : Int {
+enum TransanctionType: Int {
     case Send
     case Receive
+    case Vote
     
     public var localizedDesciption: String? {
         switch self {
@@ -29,6 +30,8 @@ enum TransanctionType : Int {
             return Localized("walletDetailVC_tx_type_send")
         case .Receive:
             return Localized("walletDetailVC_tx_type_receive")
+        case .Vote:
+            return Localized("walletDetailVC_tx_type_vote")
         }
     }
 }
@@ -38,6 +41,62 @@ enum TransferStatus{
     case confiming
     case success
     case fail
+}
+
+enum TransactionStatus {
+    case sending
+    case sendSucceed
+    case sendFailed
+    case receiving
+    case receiveSucceed
+    case receiveFailed
+    case voting
+    case voteSucceed
+    case voteFailed
+    
+    var localizeTitle : String {
+        switch self {
+        case .sending:
+            return Localized("TransactionStatus_sending_title")
+        case .sendSucceed:
+            return Localized("TransactionStatus_sendSucceed_title")
+        case .sendFailed:
+            return Localized("TransactionStatus_sendFailed_title")
+        case .receiving:
+            return Localized("TransactionStatus_receiving_title")
+        case .receiveSucceed:
+            return Localized("TransactionStatus_receiveSucceed_title")
+        case .receiveFailed:
+            return Localized("TransactionStatus_receiveFailed_title")
+        case .voting:
+            return Localized("TransactionStatus_voting_title")
+        case .voteSucceed:
+            return Localized("TransactionStatus_voteSucceed_title")
+        case .voteFailed:
+            return Localized("TransactionStatus_voteFailed_title")
+        }
+    }
+    
+    var localizeDescAndColor : (String, UIColor) {
+        
+        let succeedColor = UIColor(rgb: 0x41D325)
+        let pendingColor = UIColor(rgb: 0xFFED54)
+        let failedColor  = UIColor(rgb: 0xFF4747)
+        
+        let pendingDesc = Localized("TransactionStatus_pending_desc")
+        let succeedDesc = Localized("TransactionStatus_succeed_desc")
+        let failedDesc = Localized("TransactionStatus_failed_desc")
+        
+        switch self {
+        case .sending, .receiving, .voting:
+            return (pendingDesc, pendingColor)
+        case .sendSucceed, .receiveSucceed, .voteSucceed:
+            return (succeedDesc, succeedColor)
+        case .sendFailed, .receiveFailed, .voteFailed:
+            return (failedDesc, failedColor)
+        }
+    }
+    
 }
 
 class Transaction : Object{
@@ -72,6 +131,40 @@ class Transaction : Object{
     
     @objc dynamic var transactionType = 0
     
+    @objc dynamic var extra: String?
+    
+    //to confirm send or receive
+    var senderAddress: String?
+    
+    var transactionStauts: TransactionStatus {
+        get {
+            switch transanctionTypeLazy {
+            case .Send:
+                if blockNumber?.length ?? 0 > 0 {
+                    return .sendSucceed
+                }else {
+                    return .sending
+                }
+            case .Receive:
+                if blockNumber?.length ?? 0 > 0 {
+                    return .receiveSucceed
+                }else {
+                    return .receiving
+                }
+            case .Vote:
+                guard let extra = extra else {
+                    return .voting
+                }
+                guard let dic = try? JSONSerialization.jsonObject(with: extra.data(using: .utf8) ?? Data(), options: .mutableContainers) as? [String:Any], let ret = dic?["Ret"] as? Int else {
+                    return .voting
+                }
+                guard ret == 1 else {
+                    return .voteFailed
+                }
+                return .voteSucceed
+            }
+        }
+    }
     
     var valueDescription : String?{
         get{
@@ -99,27 +192,19 @@ class Transaction : Object{
         }
     }
     
-    var transanctionTypeLazy : TransanctionType?{
+    var transanctionTypeLazy : TransanctionType {
         get{
-            return TransanctionType(rawValue: transactionType)
+            let type = TransanctionType(rawValue: transactionType) ?? .Send
+            if type == .Send {
+                if senderAddress == from {
+                    return .Send
+                }else {
+                    return .Receive
+                }
+            }else {
+                return type
+            }
         }
-    }
-
-    func labelDesciptionAndColor() -> (String,UIColor) {
-        var des : String = ""
-        var color : UIColor = .white
-        if (self.blockNumber?.length)! > 0 {
-            //return self.transactionReachTrustworthyStatus()
-            des = Localized("walletDetailVC_tx_status_success")
-            color = UIColor(rgb: 0x41d325)
-        }else{
-            //pending
-            des = Localized("walletDetailVC_tx_status_pending")
-            color = UIColor(rgb: 0xFFED54)
-            
-        }
-        
-        return (des,color)
     }
     
     private func transactionReachTrustworthyStatus() -> (String,UIColor){
@@ -154,7 +239,7 @@ class Transaction : Object{
     }
     
     override public static func ignoredProperties() ->[String] {
-        return ["sharedWalletOwners","sharedWalletConOwners","sharedWalletRejectOwners","valueDescription"]
+        return ["sharedWalletOwners","sharedWalletConOwners","sharedWalletRejectOwners","valueDescription","senderAddress"]
     }
     
     override public static func primaryKey() -> String? {

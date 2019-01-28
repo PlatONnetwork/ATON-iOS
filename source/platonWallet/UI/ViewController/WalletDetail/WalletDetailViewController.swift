@@ -46,8 +46,9 @@ class WalletDetailViewController: BaseViewController,UITableViewDelegate,UITable
             tableViewHeader = UIView.viewFromXib(theClass: WalletDetailHeader.self) as? WalletDetailHeader
             tableViewHeader?.sendBtn.addTarget(self, action: #selector(onSend), for: .touchUpInside)
             tableViewHeader?.recvBtn.addTarget(self, action: #selector(onRecv), for: .touchUpInside)
+            tableViewHeader?.voteBtn.addTarget(self, action: #selector(onVote), for: .touchUpInside)
             tableViewHeader?.addressLabel.text = wallet?.key?.address
-            tableViewHeader?.enableVoteBtn(false)
+            tableViewHeader?.enableVoteBtn(true)
         }
         return tableViewHeader
     }
@@ -181,6 +182,11 @@ class WalletDetailViewController: BaseViewController,UITableViewDelegate,UITable
         recvVC.walletInstance = wallet
         recvVC.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(recvVC, animated: true)
+    }
+    
+    @objc func onVote() {
+        let voteVC = CandidatesListViewController()
+        navigationController?.pushViewController(voteVC, animated: true)
     }
      
     // MARK: - Notification

@@ -14,6 +14,8 @@ import LocalAuthentication
 import platonWeb3
 
 
+
+
 private let userDefault_key_isLocalAuthenticationOpen = "isLocalAuthenticationOpen"
 private let userDefault_key_isFirst = "isFirst"
 
@@ -38,7 +40,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LicenseVCDelegate {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             self.initUI()
         }
-
         return true
     }
     
@@ -101,7 +102,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LicenseVCDelegate {
         verifyWindow = UIWindow(frame: CGRect(x: 0, y: 0, width: kUIScreenWidth, height: kUIScreenHeight))
         verifyWindow!.windowLevel = window!.windowLevel + 1
         verifyWindow!.rootViewController = BaseNavigationController(rootViewController:localAuthVC)
-        verifyWindow!.isHidden = false 
+        verifyWindow!.isHidden = false
+        
+        
         
     }
     

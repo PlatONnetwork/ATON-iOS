@@ -117,6 +117,13 @@ extension String{
         return self
     }
     
+    func add0x() -> String {
+        if !hasPrefix("0x") {
+            return "0x" + self
+        }
+        return self
+    }
+    
     /// fix number to display
     ///
     /// - Parameter maxRound: max round
