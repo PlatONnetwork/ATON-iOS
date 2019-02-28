@@ -9,7 +9,7 @@
 import Foundation
 import RealmSwift
 import Localize_Swift
-import platonWeb3
+import platonWeb3_local
 
 enum ECreationStatus : Int{
     case deploy_begin = 0
@@ -124,3 +124,5 @@ class SWallet: Object {
         }
     }
 }
+
+

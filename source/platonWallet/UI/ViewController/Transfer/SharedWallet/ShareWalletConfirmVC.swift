@@ -22,7 +22,7 @@ class ShareWalletConfirmVC: BaseViewController {
         super.viewDidLoad()
         initsubViews()
         navigationItem.localizedText = "ConfrimVC_nav_title"
-    }
+    } 
     
     func initsubViews(){
         stransferConfirmView.sw = swallet

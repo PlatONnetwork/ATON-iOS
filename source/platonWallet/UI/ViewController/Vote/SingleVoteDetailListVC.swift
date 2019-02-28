@@ -15,7 +15,7 @@ class SingleVoteDetailListVC : BaseViewController, UITableViewDelegate,UITableVi
     
     var tableViewHeader : VoteDetailHeader?
     
-    var candidate : Candidate?
+    var candidate : CandidateBasicInfo?
     
     var tickets: [Ticket]?
     
@@ -33,7 +33,7 @@ class SingleVoteDetailListVC : BaseViewController, UITableViewDelegate,UITableVi
     
     func initSubViews() {
         
-        self.navigationItem.localizedText = Localized("SingleVoteDetailListVC_nav_title")
+        self.navigationItem.localizedText = "SingleVoteDetailListVC_nav_title"
         
         view.backgroundColor = UIViewController_backround
         
@@ -48,6 +48,10 @@ class SingleVoteDetailListVC : BaseViewController, UITableViewDelegate,UITableVi
         
         tableView.registerCell(cellTypes: [VoteDetailCell.self])
         tableView.tableHeaderView = tableviewHeader()
+        
+        tableView.emptyDataSetView { [weak self] view in
+            view.customView(self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, Localized("MyVoteListVC_Empty_tips")))
+        }
     }
     
     func tableviewHeader() -> VoteDetailHeader? {
@@ -73,6 +77,7 @@ class SingleVoteDetailListVC : BaseViewController, UITableViewDelegate,UITableVi
     
     func initData(){
         
+        
         guard let candidate = candidate else {
             return
         }
@@ -83,7 +88,7 @@ class SingleVoteDetailListVC : BaseViewController, UITableViewDelegate,UITableVi
         
         tableViewHeader?.updateView(candidate)
         
-        let data = VotePersistence.getSingleVotesByCandidate(candidateId: candidate.candidateId!)
+        let data = VotePersistence.getSingleVotesByCandidate(candidateId: candidate.id)
         
         var tempDic = [String:Ticket]()
         for ticket in tickets {
@@ -96,12 +101,7 @@ class SingleVoteDetailListVC : BaseViewController, UITableViewDelegate,UITableVi
         }
         
         dataSource = data
-        if dataSource.count > 0{
-            self.tableView.removeEmptyView()
-        }else{
-            self.tableView.showEmptyView(description: "no data")
-        }
-        
+  
         
 //        VoteManager.sharedInstance.CandidateDetails(candidateId: candidateId!) { [weak self] (res, data) in
 //            switch res{

@@ -30,4 +30,8 @@ class IPGeoPersistence {
         }
     }
     
+    class func getIpInfo(_ ip: String) -> IPGeoInfo {
+        return RealmInstance!.object(ofType: IPGeoInfo.self, forPrimaryKey: ip) ?? IPGeoInfo()
+    }
+    
 }

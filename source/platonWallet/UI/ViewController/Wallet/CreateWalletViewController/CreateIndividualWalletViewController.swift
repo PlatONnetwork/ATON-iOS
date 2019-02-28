@@ -187,6 +187,12 @@ extension CreateIndividualWalletViewController :UITextFieldDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
+        if textField == self.pswTF || textField == self.confirmPswTF {
+            if string == " " {
+                return false
+            }
+        }
+        
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { 
             self.checkCanEableButton()
             
@@ -196,7 +202,7 @@ extension CreateIndividualWalletViewController :UITextFieldDelegate {
             }
             
         }
-        
+
         return true
     }
     

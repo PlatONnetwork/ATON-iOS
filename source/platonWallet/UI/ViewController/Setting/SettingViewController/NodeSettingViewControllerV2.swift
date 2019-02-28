@@ -9,14 +9,11 @@
 import UIKit
 import Localize_Swift
 
-//let nodeURLReg = "^(http(s?)://)?(\\d|[1-9]\\d|1\\d{2}|2[0-5][0-5]).(\\d|[1-9]\\d|1\\d{2}|2[0-5][0-5]).(\\d|[1-9]\\d|1\\d{2}|2[0-5][0-5]).(\\d|[1-9]\\d|1\\d{2}|2[0-5][0-5]):([0-9]|[1-9]\\d{1,3}|[1-5]\\d{4}|6[0-5]{2}[0-3][0-5])$"
+fileprivate let nodeURLReg = "^(http(s?)://)?([A-Z0-9a-z._%+-/:]{1,50})$"
 
-//let nodeURLReg = "^(http(s?)://)?([A-Z0-9a-z._%+-/]{1,50}):([0-9]|[1-9]\\d{1,3}|[1-5]\\d{4}|6[0-5]{2}[0-3][0-5])$"
-
-fileprivate let nodeURLReg = "^(http(s?)://)?([A-Z0-9a-z._%+-/:]{1,50})"
-
-class NodeSettingViewController: BaseViewController {
-
+class NodeSettingViewControllerV2: BaseViewController {
+    
+    //MARK: Lazy Init
     lazy var tableView: UITableView = {
         
         let tableView = UITableView(frame: .zero, style: .plain)
@@ -60,6 +57,22 @@ class NodeSettingViewController: BaseViewController {
         return view
     }()
     
+    lazy var rightBarButton = { () -> UIButton in
+        let btn = UIButton.getCommonBarButton()
+        btn.setTitle(Localized("SettingsVC_nodeSet_editBtn_title"), for: .normal)
+        btn.addTarget(self, action: #selector(onRigthItemClick(_ :)), for: .touchUpInside)
+        return btn
+    }()
+    
+    lazy var cancelBarButton = { () -> UIButton in 
+        let btn = UIButton.getCommonBarButton()
+        btn.setTitle(Localized("SettingsVC_nodeSet_cancelBtn_title"), for: .normal)
+        btn.addTarget(self, action: #selector(onCancelEditClick), for: .touchUpInside)
+        return btn
+    }()
+    
+    var backItem: UIBarButtonItem?
+    
     var isEdit: Bool = false {
         
         didSet {
@@ -68,19 +81,19 @@ class NodeSettingViewController: BaseViewController {
                 
                 navigationItem.localizedText = "SettingsVC_nodeSet_edit_title"
                 
-                navigationItem.leftBarButtonItem = UIBarButtonItem(title: Localized("SettingsVC_nodeSet_cancelBtn_title"), style: .plain, target: self, action: #selector(onCancelEditClick))
+                navigationItem.leftBarButtonItem = UIBarButtonItem(customView: cancelBarButton)
                 
-                navigationItem.rightBarButtonItem!.title = Localized("SettingsVC_nodeSet_saveBtn_title")
+                rightBarButton.setTitle(Localized("SettingsVC_nodeSet_saveBtn_title"), for: .normal)
                 
                 tableView.tableFooterView = footView
- 
+                
             }else {
                 
                 navigationItem.localizedText = "SettingsVC_nodeSet_title"
-                navigationItem.leftBarButtonItem = backItem
                 
-                navigationItem.rightBarButtonItem?.localizedText = "SettingsVC_nodeSet_editBtn_title"
-
+                navigationItem.leftBarButtonItem = backItem
+                rightBarButton.setTitle(Localized("SettingsVC_nodeSet_editBtn_title"), for: .normal)
+                
                 tableView.tableFooterView = UIView()
                 
             }
@@ -95,14 +108,12 @@ class NodeSettingViewController: BaseViewController {
     
     var editingNodes: [NodeInfo] = []
     
-    var deletingNodes: [NodeInfo] = []
-    
-    var currentSelectedNode: NodeInfo!
-    
-    var backItem: UIBarButtonItem?
+    var currentSelectedNode: (id:Int,url:String)!
     
     override func viewDidLoad() {
+        
         super.viewDidLoad()
+        
         setupUI()
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame(_:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
@@ -134,11 +145,9 @@ class NodeSettingViewController: BaseViewController {
             maker.edges.equalToSuperview()
         }
         
-        let rigthBtn = UIBarButtonItem(title: Localized("SettingsVC_nodeSet_editBtn_title"), style: .plain, target: self, action: #selector(onRigthItemClick(_ :)))
-        navigationItem.rightBarButtonItem = rigthBtn
-        
-    }
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightBarButton)
 
+    }
     
     @objc func onRigthItemClick(_ sender: UIBarButtonItem) {
         
@@ -146,7 +155,7 @@ class NodeSettingViewController: BaseViewController {
             //save
             saveNodeChanging()
         }else {
-            resetNodeChanging()
+            startEdit()
         }
         
         isEdit = !isEdit
@@ -167,11 +176,9 @@ class NodeSettingViewController: BaseViewController {
         isEdit = false
         
     }
-    
-    
-    private func resetNodeChanging() {
+
+    private func startEdit() {
         
-        deletingNodes = []
         editingNodes = [NodeInfo]()
         for item in nodes {
             editingNodes.append(item.copy() as! NodeInfo)
@@ -179,80 +186,95 @@ class NodeSettingViewController: BaseViewController {
     }
     
     private func saveNodeChanging() {
-
+        
         guard canSaveEditedNode() else {
             showMessage(text: Localized("SettingsVC_error_node_format"))
             return
         }
+        SettingService.shareInstance.deleteNodeList(nodes)
         
-        for node in deletingNodes {
-            
-            if node.id == currentSelectedNode.id {
-
-                showLoading()
-            
-                Web3Helper.switchRpcURL(nodes[0].nodeURLStr, succeedCb: {
-                    self.hideLoading(animated: false)
-                    self.showMessage(text: Localized("SettingsVC_nodeSet_switchDefault_tips"))
-                    SettingService.shareInstance.updateSelectedNode(self.nodes[0])
-                    SettingService.shareInstance.deleteNode(node)
-                    self.tableView.reloadData()
-                }) {
-                    self.hideLoading(animated: false)
-                    self.showMessage(text: Localized("SettingsVC_savesuccessfully"))
-                    
-                }
-                
+        editingNodes = editingNodes.filter { (item) -> Bool in
+            if item.nodeURLStr.length == 0 {
+                return false
             }else {
-                SettingService.shareInstance.deleteNode(node)
+                if !item.nodeURLStr.hasPrefix("http") {
+                    item.nodeURLStr = "http://\(item.nodeURLStr)"
+                }
+                return true
             }
         }
         
+        editingNodes = editingNodes.removeDuplicate { $0.nodeURLStr }
+        
+        var nonNodeSelected = true
         for item in editingNodes {
             
-            if item.isDefault {
-                continue
-            }
-            
-            if item.nodeURLStr.length == 0 {
-                continue
-            }
-            
-            if !item.nodeURLStr.hasPrefix("http") {
-                item.nodeURLStr = "http://\(item.nodeURLStr)"
-            }
-            
-            let node: NodeInfo
             if isNewNode(item) {
-                node = NodeInfo(nodeURLStr: item.nodeURLStr)
+                SettingService.shareInstance.addOrUpdateNode(NodeInfo(nodeURLStr: item.nodeURLStr))
             }else {
                 
-                if item.id == currentSelectedNode.id {
-                    guard item.nodeURLStr != currentSelectedNode.nodeURLStr else {
-                        continue
-                    }
-                    showLoading()
-                    Web3Helper.switchRpcURL(item.nodeURLStr, succeedCb: { 
-                        self.hideLoading()
-                        SettingService.shareInstance.addOrUpdateNode(item)
-                        self.tableView.reloadData()
-                        NotificationCenter.default.post(name: NSNotification.Name(didswitchNode_Notification), object: nil)
-                    }) {  
-                        //node modify failed, auto recovery
-                        self.hideLoading()
-                        self.showMessage(text: Localized("SettingsVC_nodeSet_recovery_tips"))
-                        
-                    }
-                    continue
-                }else{
-                    self.showMessage(text: Localized("SettingsVC_savesuccessfully"))
+                if item.isSelected {
+                    nonNodeSelected = false
                 }
-                node = item
                 
+                if item.id == currentSelectedNode.id && item.nodeURLStr != currentSelectedNode.url {
+                    
+                    item.isSelected = false
+                    self.reconnectNode(item)
+                }
+                SettingService.shareInstance.addOrUpdateNode(item)
             }
-            SettingService.shareInstance.addOrUpdateNode(node)
         }
+        if nonNodeSelected {
+            switchToDefaultNodeWhileNonNodeBeSelected(editingNodes[0])
+        }
+        
+    }
+    
+    private func switchToDefaultNodeWhileNonNodeBeSelected(_ defaultNode: NodeInfo) {
+        
+        showLoading()
+        Web3Helper.switchRpcURL(defaultNode.nodeURLStr) { [weak self](success) in
+            guard let self = self else { return }
+            
+            self.hideLoading()
+            
+            if success {
+                NotificationCenter.default.post(name: NSNotification.Name(didswitchNode_Notification), object: nil)
+                self.showMessage(text: Localized("SettingsVC_nodeSet_switchDefault_tips"))
+            }
+            SettingService.shareInstance.updateSelectedNode(defaultNode)
+            self.tableView.reloadData()
+            
+        }
+        
+    }
+    
+    private func reconnectNode(_ node: NodeInfo) {
+        
+        showLoading()
+        
+        Web3Helper.switchRpcURL(node.nodeURLStr) { [weak self] (success) in
+            guard let self = self else { return }
+            
+            self.hideLoading()
+            
+            let newNode = node.copy() as! NodeInfo
+            newNode.isSelected = true
+            
+            if !success {
+                newNode.nodeURLStr = self.currentSelectedNode.url
+                self.showMessage(text: Localized("SettingsVC_nodeSet_recovery_tips"))
+            }else {
 
+                NotificationCenter.default.post(name: NSNotification.Name(didswitchNode_Notification), object: nil)
+            }
+            
+            SettingService.shareInstance.addOrUpdateNode(newNode)
+             
+            self.tableView.reloadData()
+        }
+        
     }
     
     private func isNewNode(_ node: NodeInfo) -> Bool {
@@ -270,31 +292,21 @@ class NodeSettingViewController: BaseViewController {
             }
             
             if node.nodeURLStr.length == 0 {
-                
-                if !isNewNode(node) {
-                    deletingNodes.append(nodes.first(where: { (item) -> Bool in
-                        item.id == node.id
-                    })!)
-                }
                 continue
             }
-            
             
             if !NSPredicate(format: "SELF MATCHES %@", nodeURLReg).evaluate(with: node.nodeURLStr) {
                 canSave = false 
                 break
             }
- 
+            
         }
         return canSave
     }
     
 }
 
-
-
-
-extension NodeSettingViewController: UITableViewDelegate, UITableViewDataSource, NodeSettingTableViewCellDelegate {
+extension NodeSettingViewControllerV2: UITableViewDelegate, UITableViewDataSource, NodeSettingTableViewCellDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return isEdit ? editingNodes.count : nodes.count
@@ -306,7 +318,7 @@ extension NodeSettingViewController: UITableViewDelegate, UITableViewDataSource,
         let nodeInfo = isEdit ? editingNodes[indexPath.row] : nodes[indexPath.row]
         
         if !isEdit && nodeInfo.isSelected {
-            currentSelectedNode = nodeInfo
+            currentSelectedNode = (nodeInfo.id, nodeInfo.nodeURLStr)
         }
         
         cell.setup(node: nodeInfo.nodeURLStr, isSelected: isEdit ? false : nodeInfo.isSelected, isEdit: nodeInfo.isDefault ? false : isEdit, desc: nodeInfo.desc)
@@ -356,26 +368,19 @@ extension NodeSettingViewController: UITableViewDelegate, UITableViewDataSource,
         }
         
     }
-
+    
     //MARK: NodeSettingTableViewCellDelegate
     func deleteNode(_ cell: NodeSettingTableViewCell) {
         guard let indexPath = tableView .indexPath(for: cell) else {
             return
         }
-        
-        for item in nodes {
-            
-            if item.id == editingNodes[indexPath.row].id {
-                deletingNodes.append(item)
-            }
-        }
-        
+              
         cell.nodeTF.resignFirstResponder()
         editingNodes.remove(at: indexPath.row)
         tableView.beginUpdates()
         tableView.deleteRows(at: [indexPath], with: .automatic)
         tableView.endUpdates()
-    
+        
     }
     
     func editNode(_ cell:NodeSettingTableViewCell) {

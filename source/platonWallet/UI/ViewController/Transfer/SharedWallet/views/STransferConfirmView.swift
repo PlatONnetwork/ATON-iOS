@@ -153,10 +153,14 @@ class STransferConfirmView: UIView ,UICollectionViewDelegate,UICollectionViewDat
         }
         
         if specifiedWallet != nil{
+            
+            var isJointMember = false
+            
             for item in tx.determinedResult{
                 if !(specifiedWallet?.key?.address.ishexStringEqual(other: item.walletAddress))!{
                     continue
                 }
+                isJointMember = true
                 if (item.operation == OperationAction.undetermined.rawValue){
                     self.setOperateAreaHidden(false)
                 }else{
@@ -164,6 +168,12 @@ class STransferConfirmView: UIView ,UICollectionViewDelegate,UICollectionViewDat
                 }
                 break
             }
+            
+            if !isJointMember{
+                self.setOperateAreaHidden(true)
+                return
+            }
+            
         }else{
             for item in tx.determinedResult{
                 if !(item.walletAddress?.ishexStringEqual(other: sw?.walletAddress))!{

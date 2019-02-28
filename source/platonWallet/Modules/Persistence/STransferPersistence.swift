@@ -186,7 +186,7 @@ class STransferPersistence {
                                     address,address,TransanctionCategory.ATPTransfer.rawValue)
         
         let r = RealmInstance!.objects(STransaction.self).filter(predicate).sorted(byKeyPath: "createTime", ascending: false)
-        var array : [STransaction] = []
+        var array : [STransaction] = [] 
         for item in r{
             let w = SWalletService.sharedInstance.getATPWalletByAddress(address: item.ownerWalletAddress)
             if w != nil{

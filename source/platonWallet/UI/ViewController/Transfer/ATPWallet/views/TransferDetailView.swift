@@ -66,17 +66,17 @@ class TransferDetailView: UIView {
         self.memoContent.isHidden = true
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        let extraPedding =  CGFloat(88.0 + 50.0 + 20.0 + 15.0)
-        let h = self.detailContainer.frame.size.height + extraPedding
-        if h  < self.frame.size.height{
-            self.detailContainer.frame = CGRect(x: self.detailContainer.frame.origin.x,
-                                                y: self.detailContainer.frame.origin.y,
-                                                width: self.detailContainer.frame.size.width,
-                                                height: self.frame.size.height - extraPedding)
-        }
-    }
+//    override func layoutSubviews() {
+//        super.layoutSubviews()
+//        let extraPedding =  CGFloat(88.0 + 50.0 + 20.0 + 15.0)
+//        let h = self.detailContainer.frame.size.height + extraPedding
+//        if h  < self.frame.size.height{
+//            self.detailContainer.frame = CGRect(x: self.detailContainer.frame.origin.x,
+//                                                y: self.detailContainer.frame.origin.y,
+//                                                width: self.detailContainer.frame.size.width,
+//                                                height: self.frame.size.height - extraPedding)
+//        }
+//    }
     
     func updateContent(tx : AnyObject,wallet : Wallet?){
         
@@ -93,12 +93,12 @@ class TransferDetailView: UIView {
                     ticketPriceLabel.text = "-"
                     return
                 } 
-                
-                nodeNameLabel.text = singleVote.candidateName
+                let candidateInfo = VotePersistence.getCandidateInfoWithId(singleVote.candidateId ?? "")
+                nodeNameLabel.text = candidateInfo.name
                 nodeIdLabel.text = singleVote.candidateId?.add0x()
                 numOfTicketsLabel.text = "\(singleVote.tickets.count)"
-                ticketPriceLabel.text = BigUInt(tx.value!)?.divide(by: String(BigUInt(singleVote.tickets.count).multiplied(by: BigUInt(ETHToWeiMultiplier)!)), round: 8).ATPSuffix()
-                
+                ticketPriceLabel.text = singleVote.ticketPrice.EnergonSuffix()
+
             }else {
                 voteExtraView.isHidden = true
                 showVoteExtraViewConstraint.priority = .defaultLow

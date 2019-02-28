@@ -11,7 +11,7 @@ import RTRootNavigationController
 import RealmSwift
 import BigInt
 import LocalAuthentication
-import platonWeb3
+import platonWeb3_local
 
 
 

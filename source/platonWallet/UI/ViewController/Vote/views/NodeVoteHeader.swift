@@ -26,8 +26,8 @@ class NodeVoteHeader: UIView {
             tickets.append(contentsOf: sum.tickets)
         }
         
-        validandinvalidTicketNum.text = String(format: "%d/%d", self.tickets.tickets_validCount,self.tickets.tickets_invalidCount)
-        lockedAsset.text = self.tickets.tickets_assetOflocked?.EnergonSuffix()
+        validandinvalidTicketNum.text = String(format: "%d/%d", tickets.validTicketCount,tickets.invalidTicketCount)
+        lockedAsset.text = tickets.lockedAssetSum.divide(by: ETHToWeiMultiplier, round: 4).EnergonSuffix()
         reward.text = self.tickets.tickets_voteEarnings?.EnergonSuffix()
     }
 

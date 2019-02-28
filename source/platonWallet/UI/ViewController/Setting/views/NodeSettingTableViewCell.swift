@@ -44,7 +44,11 @@ class NodeSettingTableViewCell: UITableViewCell, UITextFieldDelegate {
         nodeTF.isEnabled = isEdit
         selectionImgV.isHidden = !isSelected
         deleteBtn.isHidden = !isEdit
-        
+        if isEdit {
+            contentView.backgroundColor = UIColor(rgb: 0x262D42)
+        }else {
+            contentView.backgroundColor = UIColor(rgb: 0x1B2137)
+        }
         UIView.animate(withDuration: 0.25) { 
             self.hideDeleteBtnConstraint.priority = isEdit ? .defaultLow : .defaultHigh
             self.layoutIfNeeded()

@@ -83,8 +83,10 @@ class SharedWalletTransferView : UIView{
         super.layoutSubviews()
         if self.containerView.frame.size.height != 0 && containerViewInitHeight == 0 && self.confirmButtonTopConstraint.constant == 0{
             containerViewInitHeight = self.containerView.frame.size.height
-            if UIDevice.current.iPhoneX{
-                containerViewInitHeight = containerViewInitHeight + 20
+            if UIDevice.current.screenType == .iPhones_X_XS ||
+                UIDevice.current.screenType == .iPhone_XR ||
+                UIDevice.current.screenType == .iPhone_XSMax{
+                containerViewInitHeight = containerViewInitHeight + 34
             }
         }
         let offset = self.frame.size.height - containerViewInitHeight

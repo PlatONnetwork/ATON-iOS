@@ -105,5 +105,13 @@ extension UIButton {
         }
     }
     
+    static func getCommonBarButton() -> UIButton {
+        let btn = UIButton(type: .custom)
+        btn.setTitleColor(UIColor(rgb: 0xCDCDCD), for: .normal)
+        btn.titleLabel?.font = UIFont.systemFont(ofSize: 12)
+        btn.sizeToFit()
+        return btn
+    }
+    
 }
 

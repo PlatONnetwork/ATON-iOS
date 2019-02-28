@@ -8,7 +8,7 @@
 
 import Foundation
 import BigInt
-import platonWeb3
+import platonWeb3_local
 
 extension VoteManager{
     
@@ -84,6 +84,11 @@ extension VoteManager{
         let concatenate = nodeIds.joined(separator: ":") 
         return build_commonInternalCall(funcName: "GetBatchCandidateTicketIds", param: concatenate)
 
+    }
+    
+    func build_GetBatchCandidateTicketCount(nodeIds:[String]) -> Data {
+        let concatenate = nodeIds.joined(separator: ":") 
+        return build_commonInternalCall(funcName: "GetBatchCandidateTicketCount", param: concatenate)
     }
     
     func build_VoteTicket(count: UInt64, price: BigUInt,nodeId: String) -> Data{

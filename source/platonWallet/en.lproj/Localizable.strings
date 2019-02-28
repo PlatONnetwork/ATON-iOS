@@ -517,7 +517,7 @@
 //individual wallet back up
 "backuptip" = "One last step，Back it up";
 "create_individual_success" = "Success";
-"backupsetp1" = "Please writte down the mnemonics on paper and keep it in a safe place. ";
+"backupsetp1" = "Please write down the mnemonics on paper and keep it in a safe place. ";
 "backup_start" = "Start";
 
 "Require sign number error" = "Require sign number error";
@@ -545,13 +545,13 @@
 
 //Vote
 "CandidateListVC_title" = "Vote";
-"CandidateListVC_header_desc" = "Vote Rate:%@ | Votes:%@ | Ticket Price:%@";
+"CandidateListVC_header_desc" = "Vote Rate：%@ | Votes：%@ | Ticket Price：%@";
 "CandidateListVC_defaultBtn_title" = "Default";
 "CandidateListVC_bonusBtn_title" = "Reward";
 "CandidateListVC_areaBtn_title" = "Location";
 "CandidateListVC_searchTF_placeholder" = "Validator Node Name";
 "CandidateListVC_VoteBtn_title" = "Vote";
-"CandidateListVC_cell_desc" = "Reward Ratio:%@ | Staked:%@";
+"CandidateListVC_cell_desc" = "Reward Ratio：%@ | Staked：%@";
 "CandidateListVC_empty_desc" = "No Result!";
 "CandidateListVC_vote_noWallet_tips" = "Please create a wallet first";
 "CandidateListVC_vote_insufficient_balance_tips" = "Insufficient balance to vote";
@@ -602,6 +602,7 @@
 "VotingViewController_confirm" = "Confirm";
 "VotingViewController_insufficient_balance_tips" = "Insufficient balance!";
 "VotingViewController_exceed_limit_tips" = "Votes exceed the limit of the ticket pool";
+"VotingViewController_success_tips" = "success";
 
 //VoteConfirm
 "VoteConfirm_title" = "Voting Confirmation";

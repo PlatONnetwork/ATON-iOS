@@ -8,6 +8,7 @@
 
 import UIKit
 import Localize_Swift
+import EmptyDataSet_Swift
 
 class WalletDetailViewController: BaseViewController,UITableViewDelegate,UITableViewDataSource {
     
@@ -28,6 +29,10 @@ class WalletDetailViewController: BaseViewController,UITableViewDelegate,UITable
         initData()
         
         NotificationCenter.default.addObserver(self, selector: #selector(didUpdateAllAsset), name: NSNotification.Name(DidUpdateAllAssetNotification), object: nil)
+        
+        tableView.emptyDataSetView { [weak self] view in
+            view.customView(self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, nil))
+        }
     }
     
     func initTxQueryTimer(){
@@ -66,19 +71,22 @@ class WalletDetailViewController: BaseViewController,UITableViewDelegate,UITable
         }
     }
     
+    
+ 
+    
     func initData() {
         dataSource?.removeAll()
         let data = TransferPersistence.getAllByAddress(from: (wallet?.key?.address)!)
         
         dataSource?.append(contentsOf: data)
-        dataSource?.append(contentsOf: STransferPersistence.getAllByWalletOwner(address: (wallet?.key?.address)!))
+        var jointTxs : [STransaction] = []
+        jointTxs.append(contentsOf:STransferPersistence.getAllByWalletOwner(address: (wallet?.key?.address)!))
+        jointTxs.append(contentsOf:STransferPersistence.getAllATPTransferByReceiveAddress((wallet?.key?.address)!))
+        jointTxs = jointTxs.removeDuplicate { $0.uuid }
         
-        if dataSource!.count == 0{
-            tableView.showEmptyView(description: Localized("walletDetailVC_no_transactions_text"))
-        }else{
-            tableView.removeEmptyView()
-        }
+        dataSource?.append(contentsOf: jointTxs)
         dataSource?.txSort()
+
         tableView.reloadData()
         didUpdateAllAsset()
     }

@@ -26,11 +26,31 @@ class NodeInfoPersistence {
     init(realm: Realm) {
         self.realm = realm
         NodeInfo.realm = realm
-        
-        if getAll().count == 0 {
+        let nodes = getAll()
+        if nodes.count == 0 {
             for node in defalutNodes {
                 add(node: NodeInfo(nodeURLStr: node.nodeURL, desc: node.desc, isSelected: node.isSelected, isDefault: true))
             }
+        }else {
+            var existSelected = false
+            for item in nodes {
+                if item.isSelected {
+                    existSelected = true
+                    break
+                }
+            }
+            
+            if !existSelected {
+                for item in nodes {
+                    if item.nodeURLStr == "https://syde.platon.network/test"{
+                        try? realm.write {
+                            item.isSelected = true
+                        }
+                        break
+                    }
+                }
+            }
+            
         }
     }
     
@@ -41,40 +61,13 @@ class NodeInfoPersistence {
             return []
         }
         
-        //remove defaultMainNetwork while during test
-        var nodes : [NodeInfo] = []
-        var selectedExist = false
-        for item in res{
-            if item.nodeURLStr == "192.168.9.73:6789" && item.desc == "SettingsVC_nodeSet_defaultTestNetwork_title"{
-                continue
-            }
-            if item.nodeURLStr == "https://syde.platon.network/test" && item.desc == "SettingsVC_nodeSet_defaultMainNetwork_title"{
-                let tmp = NodeInfo(nodeURLStr: item.nodeURLStr, desc: "SettingsVC_nodeSet_defaultTestNetwork_title", isSelected: item.isSelected, isDefault: true)
-                nodes.append(tmp)
-                continue
-            }
-            nodes.append(item)
+        return Array(res)
+    }
+    
+    func deleteList(_ list:[NodeInfo]) {
+        try? realm.write {
+            realm.delete(list)
         }
-        
-        for item in nodes{
-            if item.isSelected{
-                selectedExist = true
-            }
-        }
-        
-        if !selectedExist{
-            for item in nodes{
-                if item.nodeURLStr == "https://syde.platon.network/test"{
-                    try? realm.write {
-                        item.isSelected = true
-                    }
-                    break
-                }
-            }
-        }
-        
-        
-        return nodes
     }
     
     func add(node: NodeInfo) {

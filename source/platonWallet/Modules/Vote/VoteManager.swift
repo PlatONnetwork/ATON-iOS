@@ -8,7 +8,7 @@
 
 import UIKit
 import BigInt
-import platonWeb3
+import platonWeb3_local
 import Localize_Swift
 
 let reservePoolingContract = "0x1000000000000000000000000000000000000000"
@@ -56,7 +56,7 @@ class VoteManager: BaseService {
     public override init(){
         super.init()
         if true {
-            timer = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(ticketPoolPolling), userInfo: nil, repeats: true)
+            timer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(ticketPoolPolling), userInfo: nil, repeats: true)
             timer?.fire()
         }
         
@@ -161,9 +161,12 @@ class VoteManager: BaseService {
                 if let arr = data as? [Ticket] {
                     
                     VotePersistence.updateTickets(arr)
+                    let knownIds = arr.map({$0.ticketId ?? ""})
+                    let unknownIds = Set(ticketids.keys).subtracting(knownIds)
+                    VotePersistence.updateUnknownStatusTickets(Array(unknownIds))
 
                     for candidateId in summaryMap.keys {
-                        summaryMap[candidateId]!.tickets = arr.filter({ (ticket) -> Bool in
+                        summaryMap[candidateId]!.tickets = VotePersistence.getAllTickets().filter({ (ticket) -> Bool in
                             return ticket.candidateId == candidateId
                         })
                     }
@@ -281,7 +284,22 @@ class VoteManager: BaseService {
         
     }
     
-    func VoteTicket(count: UInt64, price: BigUInt, nodeId: String, nodeName: String, sender: String, privateKey: String, gasPrice: BigUInt, gas: BigUInt, completion: PlatonCommonCompletion?){
+    func GetBatchCandidateTicketCount(candidateIds:[String], completion: PlatonCommonCompletion?) {
+        var completion = completion
+        let data = build_GetBatchCandidateTicketCount(nodeIds: candidateIds)
+        web3CommonCall(contractAddress: votePoolingContract, data: data, completion: &completion) { (resp) in
+            do{
+                let dic:[String:Int] =  try JSONDecoder().decode([String:Int].self, from: resp.data(using: .utf8)!) 
+                
+                self.successCompletionOnMain(obj: dic as AnyObject, completion: &completion)
+            }catch {
+                self.failCompletionOnMainThread(code: -2, errorMsg: "data parse error:\(error.localizedDescription)", completion: &completion)
+                
+            }
+        }
+    }
+    
+    func VoteTicket(count: UInt64, price: BigUInt, nodeId: String, sender: String, privateKey: String, gasPrice: BigUInt, gas: BigUInt, completion: PlatonCommonCompletion?){
         var completion = completion
         let data = self.build_VoteTicket(count: count, price: price, nodeId: nodeId)
         
@@ -313,7 +331,7 @@ class VoteManager: BaseService {
                 let svote = SingleVote()
                 svote.txHash = txHashData.toHexString().add0x()
                 svote.candidateId = nodeId
-                svote.candidateName = nodeName
+//                svote.candidateName = nodeInfo.name
                 svote.owner = sender
                 if tickets.count > 0{
                     svote.tickets.append(objectsIn: tickets)

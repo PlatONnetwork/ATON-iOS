@@ -55,9 +55,7 @@ class PasswordStrengthView: UIView {
         
 //        let lev = arc4random_uniform(5)
         let lev = strengthLevelFor(password)
-        
 
-        
         for view in levelViews {
             
             if view.tag - 100 <= lev.rawValue {

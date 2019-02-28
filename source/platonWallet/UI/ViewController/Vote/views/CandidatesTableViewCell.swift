@@ -61,7 +61,7 @@ class CandidatesTableViewCell: UITableViewCell {
         avatar.image = UIImage(named: candidate.avatarName)
         candidateNameLabel.text = candidate.extra?.nodeName ?? ""
         locationLabel.text = "(\(candidate.countryName))"
-        let rewardRate = String(format: "%.2f%%", Float(candidate.fee ?? 0)/Float(100))
+        let rewardRate = candidate.rewardRate
         let staked = (candidate.deposit?.convertToEnergon(round: 4) ?? "-").ATPSuffix()
         descLabel.text = Localized("CandidateListVC_cell_desc", arguments: rewardRate, staked)
         voteHandler = onVoteHandler

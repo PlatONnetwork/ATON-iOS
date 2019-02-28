@@ -23,12 +23,13 @@ extension Array{
             }
             return false
         })
+
     }
 }
 
 extension Array where Element == Ticket {
     
-    var tickets_validCount : Int{
+    var validTicketCount : Int{
         get{
             return reduce(0) { (acc, ticket) -> Int in
                 ticket.ticketStatus == .normal ? acc + 1 : acc
@@ -36,7 +37,7 @@ extension Array where Element == Ticket {
         }
     }
     
-    var tickets_invalidCount: Int{
+    var invalidTicketCount: Int{
         get{
             return reduce(0) { (acc, ticket) -> Int in
                 ticket.ticketStatus != .normal ? acc + 1 : acc
@@ -44,50 +45,45 @@ extension Array where Element == Ticket {
         }
     }
 
-    var tickets_assetOflocked: String?{
+    var lockedAssetSum: BigUInt{
         get{
-            let assetBI = reduce(BigUInt(0)) { (acc, ticket) -> BigUInt in
+            return reduce(BigUInt(0)) { (acc, ticket) -> BigUInt in
                 
                 ticket.ticketStatus == .normal ? acc + (BigUInt(ticket.deposit ?? "") ?? BigUIntZero) : acc
                 
             }
-            return String(assetBI)
-            
-            var asset = BigUInt(0)
-            let _ = map { t in
-                if t.ticketStatus == TicketStatus.normal && t.deposit != nil && (t.deposit?.length)! > 0{
-                    let deposit = BigUInt(t.deposit!)
-                    asset.multiplyAndAdd(deposit!, 1)
-                }
-            }
-            return String(asset)
         }
     }
 
-    var tickets_releaseOfVote: String?{
+    var releasedAssetSum: BigUInt{
         get{
-            let assetBI = reduce(BigUInt(0)) { (acc, ticket) -> BigUInt in
+            return reduce(BigUInt(0)) { (acc, ticket) -> BigUInt in
                 
                 ticket.ticketStatus != .normal ? acc + (BigUInt(ticket.deposit ?? "") ?? BigUIntZero) : acc
                 
             }
-            return String(assetBI)
-
-            var asset = BigUInt(0)
-            let _ = map { t in
-                if t.ticketStatus != TicketStatus.normal && t.deposit != nil && (t.deposit?.length)! > 0{
-                    let deposit = BigUInt(t.deposit!)
-                    asset.multiplyAndAdd(deposit!, 1)
-                }
-            }
-            return String(asset)
         }
     }
 
     var tickets_voteEarnings: String?{
         get{
-            return ""
+            return "-"
         }
     }
     
+}
+
+extension Array {
+
+    func removeDuplicate<E : Equatable>(_ filter: (Element) -> E) -> [Element] {
+        
+        var newArr:[Element] = []
+        forEach { (item) in
+            let e = filter(item)
+            if !newArr.map({filter($0)}).contains(e) {
+                newArr.append(item)
+            }
+        }
+        return newArr
+    }
 }

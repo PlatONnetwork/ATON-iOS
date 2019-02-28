@@ -16,11 +16,11 @@ class VoteDetailHeader: UIView {
     
     @IBOutlet weak var id: UILabel!
 
-    func updateView(_ detail: Candidate){
+    func updateView(_ detail: CandidateBasicInfo){
         
-        name.text = detail.extra?.nodeName
-        id.text = detail.candidateId?.add0x()
-        
+        name.text = detail.name
+        id.text = detail.id.add0x()
+        avatar.image = detail.getAvatar
     }
 
 }

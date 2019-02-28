@@ -8,6 +8,7 @@
 
 import UIKit
 import Localize_Swift
+import EmptyDataSet_Swift
 
 class BaseViewController: UIViewController {
     
@@ -59,6 +60,15 @@ class BaseViewController: UIViewController {
     
     @objc func back() {
         navigationController?.popViewController(animated: true)
+    }
+    
+    func emptyViewForTableView(forEmptyDataSet scrollView: UIScrollView, _ description: String?) -> UIView? {
+        
+        let holder = (UIView.viewFromXib(theClass: TableViewNoDataPlaceHolder.self) as! TableViewNoDataPlaceHolder)
+        if description != nil && description!.length > 0{
+            holder.descriptionLabel.text = description
+        }
+        return holder
     }
     
     deinit {

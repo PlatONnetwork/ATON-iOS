@@ -49,15 +49,15 @@ class NodeVoteTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func updateCell(nodeVote: NodeVoteSummary, candidate:Candidate){
+    func updateCell(nodeVote: NodeVoteSummary, candidate:CandidateBasicInfo){
         candidateId = nodeVote.CandidateId
-        
-        nodeName.text = candidate.extra?.nodeName ?? ""
-        location.text = "(\(candidate.countryName))"
-        
+        avatar.image = candidate.getAvatar
+        nodeName.text = candidate.name ?? ""
+        let ipInfo = IPGeoPersistence.getIpInfo(candidate.host ?? "")
+        location.text = "(\(ipInfo.localizeCountryName ?? Localized("IP_location_unknown")))"
         validandinvalidTicketNum.text = String(format: "%d/%d", nodeVote.validCount,nodeVote.invalidCount)
         lockedAsset.text = nodeVote.assetOflocked?.EnergonSuffix()
-        reward.text = nodeVote.voteEarnings
+        reward.text = nodeVote.voteEarnings?.EnergonSuffix()
     }
     
 }

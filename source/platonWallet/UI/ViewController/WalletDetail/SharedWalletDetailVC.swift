@@ -123,6 +123,9 @@ class SharedWalletDetailVC: BaseViewController ,UITableViewDelegate,UITableViewD
          */
         
         tableView.registerCell(cellTypes: [WalletDetailCell.self])
+        tableView.emptyDataSetView { [weak self] view in
+            view.customView(self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, Localized("walletDetailVC_no_transactions_text")))
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -235,12 +238,6 @@ class SharedWalletDetailVC: BaseViewController ,UITableViewDelegate,UITableViewD
         }
         
         dataSource?.txSort()
-         
-        if dataSource!.count == 0{
-            tableView.showEmptyView(description: Localized("walletDetailVC_no_transactions_text"))
-        }else{
-            tableView.removeEmptyView()
-        }
         self.tableView.reloadData()
     }
     

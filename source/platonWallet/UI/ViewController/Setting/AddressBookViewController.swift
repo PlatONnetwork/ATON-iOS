@@ -32,13 +32,7 @@ class AddressBookViewController: BaseViewController {
     
     func initData(){
         dataSource?.removeAll()
-        let data = AddressBookService.service.getAll()
-        if data.count == 0{
-            tableView.showEmptyView(description: Localized("AddresssBookVC_empty_tip"))
-        }else{
-            dataSource?.append(contentsOf: data)
-            tableView.removeEmptyView()
-        }
+        dataSource = AddressBookService.service.getAll()
         tableView!.reloadData()
     }
     
@@ -59,6 +53,9 @@ class AddressBookViewController: BaseViewController {
         }
         
         tableView.registerCell(cellTypes: [AddressBookTableViewCell.self])
+        tableView.emptyDataSetView { [weak self] view in
+            view.customView(self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, Localized("AddresssBookVC_empty_tip")))
+        }
     }
     
     func initNavigationItem(){

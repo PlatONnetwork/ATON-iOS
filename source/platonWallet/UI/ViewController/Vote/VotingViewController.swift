@@ -40,7 +40,7 @@ class VotingViewController0 : BaseViewController {
     
     func initSubView(){
         
-        self.navigationItem.localizedText = Localized("VotingViewController_nav_title")
+        self.navigationItem.localizedText = "VotingViewController_nav_title"
         
         self.view.addSubview(votingView)
         votingView.snp.makeConstraints({ (make) in
@@ -69,6 +69,7 @@ class VotingViewController0 : BaseViewController {
         
         let popUpVC = PopUpViewController()
         let view = UIView.viewFromXib(theClass: TransferSwitchWallet.self) as! TransferSwitchWallet
+        view.selectedAddress = selectedWallet?.key?.address
         popUpVC.setUpContentView(view: view, size: CGSize(width: kUIScreenWidth, height: 289))
         popUpVC.setCloseEvent(button: view.closeBtn)
         view.selectionCompletion = { [weak self] wallet in
@@ -78,17 +79,6 @@ class VotingViewController0 : BaseViewController {
             guard let selectedWallet = wallet as? Wallet else {
                 return
             }
-            
-            guard let asset = AssetService.sharedInstace.assets[selectedWallet.key?.address ?? ""] else {
-                return
-            }
-            
-            if asset?.balance ?? BigUIntZero == BigUIntZero {
-                self.showMessage(text: "只能选择余额不等于0的钱包", delay: 2)
-                popUpVC.onDismissViewController()
-                return
-            }
-            
             self.selectedWallet = selectedWallet
             popUpVC.onDismissViewController()
         }
@@ -140,7 +130,7 @@ class VotingViewController0 : BaseViewController {
                 self.confirmPopUpView = PopUpViewController()
                 let confirmView = UIView.viewFromXib(theClass: VoteConfirmView.self) as! VoteConfirmView
                 confirmView.submitBtn.addTarget(self, action: #selector(self.onSubmit), for: .touchUpInside)
-                self.confirmPopUpView.setUpContentView(view: confirmView, size: CGSize(width: kUIScreenWidth, height: 240))
+                self.confirmPopUpView.setUpContentView(view: confirmView, size: CGSize(width: kUIScreenWidth, height: 260))
                 self.confirmPopUpView.setCloseEvent(button: confirmView.closeBtn)
                 confirmView.submitBtn.style = .gray
                 confirmView.totalLabel.text = VoteManager.sharedInstance.ticketPrice!.multiplied(by: numOfTickets).convertToEnergon(round: 8).ATPSuffix()
@@ -164,6 +154,9 @@ class VotingViewController0 : BaseViewController {
         }
         
         alertC.addAction(title: Localized("alert_confirmBtn_title")) { [weak self] in
+            
+            alertC.dismiss(animated: true, completion: nil)
+            
             self?.showLoading()
             
             WalletService.sharedInstance.exportPrivateKey(wallet: (self!.selectedWallet)!, password: (alertC.textField?.text)!, completion: { (pri, err) in
@@ -176,20 +169,24 @@ class VotingViewController0 : BaseViewController {
             })
             
         }
-        alertC.show(inViewController: self, animated: false)
         
+        alertC.inputVerify = { input in
+            return CommonService.isValidWalletPassword(input).0
+        }
+        alertC.addActionEnableStyle(title: Localized("alert_confirmBtn_title"))
+        alertC.show(inViewController: self, animated: false)
         alertC.textField?.becomeFirstResponder()
         
     }
     
     func doVote(_ pri: String){
         
-        VoteManager.sharedInstance.VoteTicket(count: UInt64(self.votingView.voteNumber!.text!)!, price: VoteManager.sharedInstance.ticketPrice!, nodeId: (self.candidate?.candidateId)!, nodeName: self.candidate?.extra?.nodeName ?? "", sender: (self.selectedWallet?.key?.address)!, privateKey: pri, gasPrice: TransactionService.service.ethGasPrice!, gas: deploy_UseStipulatedGas) { (result, data) in
+        VoteManager.sharedInstance.VoteTicket(count: UInt64(self.votingView.voteNumber!.text!)!, price: VoteManager.sharedInstance.ticketPrice!, nodeId: (self.candidate?.candidateId)!, sender: (self.selectedWallet?.key?.address)!, privateKey: pri, gasPrice: TransactionService.service.ethGasPrice!, gas: deploy_UseStipulatedGas) { (result, data) in
             self.hideLoading()
             switch result{
             case .success:
                 self.navigationController?.popViewController(animated: true)
-                UIApplication.rootViewController().showMessage(text: "success", delay: 2)
+                UIApplication.rootViewController().showMessage(text: Localized("VotingViewController_success_tips"), delay: 2)
             case .fail(_, let errMsg):
                 self.showMessage(text: errMsg!, delay: 2)
             }
