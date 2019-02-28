@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 import Localize_Swift
-import platonWeb3_local
+import platonWeb3
 
 enum CandidatesListSortType: Int {
     case `default` = 0,reward,location

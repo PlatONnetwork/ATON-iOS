@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import platonWeb3_local
+import platonWeb3
 
 var web3 = Web3(rpcURL: Web3Helper.getRpcURL())
 

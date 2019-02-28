@@ -9,7 +9,7 @@
 import Foundation
 import Realm
 import RealmSwift
-import platonWeb3_local
+import platonWeb3
 import CryptoSwift
 
 enum TicketStatus: Int{

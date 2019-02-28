@@ -9,7 +9,7 @@
 import Foundation
 import RealmSwift
 import Localize_Swift
-import platonWeb3_local
+import platonWeb3
 import BigInt
 
 enum OperationAction : Int{

@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import platonWeb3_local
+import platonWeb3
 
 let maxRequestContentLength = 1024 * 128
 

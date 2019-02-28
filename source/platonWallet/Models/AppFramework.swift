@@ -11,7 +11,7 @@ import Localize_Swift
 import RealmSwift
 import BigInt
 import Bugly
-import platonWeb3_local
+import platonWeb3
 
 class AppFramework {
     

@@ -8,7 +8,7 @@
 
 import Foundation
 import BigInt
-import platonWeb3_local
+import platonWeb3
 
 extension VoteManager{
     

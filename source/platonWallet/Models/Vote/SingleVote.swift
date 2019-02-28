@@ -8,7 +8,7 @@
 
 import Foundation
 import RealmSwift
-import platonWeb3_local
+import platonWeb3
 
 class SingleVote: Object {
     
