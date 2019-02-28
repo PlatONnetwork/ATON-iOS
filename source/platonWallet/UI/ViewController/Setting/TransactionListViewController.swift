@@ -29,12 +29,6 @@ class TransactionListViewController: BaseViewController,UITableViewDelegate,UITa
         let sdata = STransferPersistence.getAllTransactionForTransactionList()
         dataSource.append(contentsOf: sdata)
         dataSource.txSort()
-        
-        if dataSource.count == 0 {
-            tableView.showEmptyView(description: Localized("walletDetailVC_no_transactions_text"))
-        }else{
-            tableView.removeEmptyView()
-        }
         tableView.reloadData()
     }
 
@@ -54,6 +48,9 @@ class TransactionListViewController: BaseViewController,UITableViewDelegate,UITa
         }
         
         navigationItem.localizedText = "TransactionListVC_nav_title"
+        tableView.emptyDataSetView { [weak self] view in
+            view.customView(self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, Localized("walletDetailVC_no_transactions_text")))
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

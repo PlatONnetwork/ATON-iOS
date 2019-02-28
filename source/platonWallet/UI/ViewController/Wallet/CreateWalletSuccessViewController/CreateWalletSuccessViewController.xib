@@ -45,7 +45,7 @@
                         <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="backuptip"/>
                     </userDefinedRuntimeAttributes>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please writte down the mnemonics on paper and keep it in a safe place. " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i6f-JJ-m3p">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please write down the mnemonics on paper and keep it in a safe place. " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i6f-JJ-m3p">
                     <rect key="frame" x="20" y="252.5" width="335" height="31.5"/>
                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

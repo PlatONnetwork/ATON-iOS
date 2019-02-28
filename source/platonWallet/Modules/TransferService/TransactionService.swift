@@ -8,7 +8,7 @@
 
 import Foundation
 import BigInt
-import platonWeb3
+import platonWeb3_local
 
 
 
@@ -173,58 +173,14 @@ class TransactionService : BaseService{
                                 RealmInstance?.delete(tickets)
                             }
                         }
-                        NotificationCenter.default.post(name: NSNotification.Name(DidUpdateTransactionByHashNotification), object: item.txhash)
+                        NotificationCenter.default.post(name: NSNotification.Name(DidUpdateVoteTransactionByHashNotification), object: item.txhash)
                     }
                     
                 case .failure(_):
                     do{}
                 }
             }
-            
-//            web3.eth.platonGetTransactionReceipt(txHash: (data?.hexString)!, loopTime: 10, completion: { (receptionRes, data) in
-//                switch receptionRes{
-//                    
-//                case .success:
-//                    
-//                    guard let receipt = data as? EthereumTransactionReceiptObject,receipt.logs.count > 0, receipt.logs[0].data.hex().count > 0 else{
-//                        self.failCompletionOnMainThread(code: -1, errorMsg: "Can't parse transaction receipt log", completion: &completion)
-//                        return
-//                    }
-//                    
-//                    
-//                    let logdata = receipt.logs[0].data
-//                    let rlpItem = try? RLPDecoder().decode(logdata.bytes)
-//                    
-//                    guard let dic = try? JSONSerialization.jsonObject(with: Data(bytes: rlpItem!.array![0].bytes!), options: .mutableContainers) as? [String:Any] else{
-//                        
-//                        self.failCompletionOnMainThread(code: -2, errorMsg: "Can't parse transaction receipt log", completion: &completion)
-//                        return 
-//                    }
-//                    
-//                    let txHashData = Data(receipt.transactionHash.bytes)
-//                    let countStr = dic!["Data"] as? String ?? "0"
-//                    
-//                    let tickets = Ticket.generateTickets(txHash: txHashData, count: UInt32(countStr) ?? 0, owner: sender, candidateId: nodeId, price: String(price))
-//                    
-//                    let svote = SingleVote()
-//                    svote.txHash = txHashData.toHexString().add0x()
-//                    svote.candidateId = nodeId
-//                    svote.candidateName = ""
-//                    svote.owner = sender
-//                    if tickets.count > 0{
-//                        svote.tickets.append(objectsIn: tickets)
-//                    }
-//                    svote.createTime = Int(Date().timeIntervalSince1970)
-//                    
-//                    VotePersistence.add(singleVote: svote)
-//                    
-//                    self.successCompletionOnMain(obj: nil, completion: &completion)
-//                case .fail(let code, let errMsg):
-//                    self.failCompletionOnMainThread(code: code!, errorMsg: errMsg!, completion: &completion)
-//                }
-//            })
-            
-            
+                        
         }
     }
     

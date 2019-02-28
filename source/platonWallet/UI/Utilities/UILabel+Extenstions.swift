@@ -21,7 +21,7 @@ extension UILabel {
         }
         set(newValue) {
             objc_setAssociatedObject(self, &AssociatedKey, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN)
-            localizationSetup();
+            localizationSetup()
             updateLocalization()
         }
     }

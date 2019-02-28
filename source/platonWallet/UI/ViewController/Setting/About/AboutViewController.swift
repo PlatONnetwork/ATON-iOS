@@ -15,7 +15,7 @@ class AboutViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.navigationItem.localizedText = Localized("AboutVC_nav_title")
+        self.navigationItem.localizedText = "AboutVC_nav_title"
         
         let appVersion = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as? String
         versionLabel.text = "V" + appVersion!

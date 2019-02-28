@@ -44,12 +44,15 @@ class VoteDetailCell: UITableViewCell {
        
         voteDateLabel.text = Date(timeIntervalSince1970: TimeInterval(singleVote.createTime)).toFormatter("yyyy-MM-dd HH:mm:ss")
         
-        validInvalidLabel.text = String(format: "%d/%d", Array(singleVote.tickets).tickets_validCount,Array(singleVote.tickets).tickets_invalidCount)
-        ticketPriceLabel.text = BigUInt((singleVote.tickets.first?.deposit) ?? "0")?.divide(by: THE18powerof10, round: 2).EnergonSuffix()
-        lockedAndReleaseLabel.text = String(format: "%@/%@", (Array(singleVote.tickets).tickets_assetOflocked?.EnergonSuffix())!,(Array(singleVote.tickets).tickets_releaseOfVote?.EnergonSuffix())!)
+        validInvalidLabel.text = String(format: "%d/%d", singleVote.validCount,singleVote.invalidCount)
         
-        let wallet = WalletService.sharedInstance.getWalletByAddress(address: singleVote.owner)
-        voteWalletAddressLabel.text = "\(singleVote.owner)(\(wallet?.name ?? ""))"
+        ticketPriceLabel.text = singleVote.ticketPrice.EnergonSuffix()
+    
+        lockedAndReleaseLabel.text = String(format: "%@/%@", singleVote.assetOflocked ?? "-",singleVote.releaseOfVote ?? "-")
+        rewardLabel.text = singleVote.voteEarnings?.EnergonSuffix()
+        
+        voteWalletAddressLabel.text = "\(singleVote.owner)(\(singleVote.walletName))"
+        
         expiredTime.text = Date(timeIntervalSince1970: TimeInterval(singleVote.createTime + TicketEffectivePeriod)).toFormatter("yyyy-MM-dd HH:mm:ss")
     }
     

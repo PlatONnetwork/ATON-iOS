@@ -64,6 +64,9 @@ STARTTIME=$(date +%s)
 # find . -name "*.ipa" | xargs rm
 # find . -name "*.DSYM.zip" | xargs rm
 
+
+pod install --verbose
+
 mkdir -p ./builds/$output_directory
 
 fastlane gym --clean --export_method ad-hoc --scheme $scheme --output_name $ipaName --output_directory ./builds/$output_directory

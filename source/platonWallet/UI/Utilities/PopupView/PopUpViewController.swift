@@ -40,7 +40,7 @@ class PopUpViewController: UIViewController {
         bgView.addSubview(contentView!)
         contentView?.snp.makeConstraints({ (make) in
             make.centerX.equalTo(bgView)
-            make.bottom.equalTo(bgView.snp_bottomMargin).offset(size.height)
+            make.bottom.equalTo(bgView.snp.bottom).offset(size.height)
             make.width.equalTo(size.width)
             make.height.equalTo(size.height)
         })
@@ -68,7 +68,7 @@ class PopUpViewController: UIViewController {
                        animations: {
                         
                         self.contentView?.snp.updateConstraints({ (make) in
-                            make.bottom.equalTo(self.bgView.snp_bottomMargin).offset(kUIScreenHeight)
+                            make.bottom.equalTo(self.bgView.snp.bottom).offset(kUIScreenHeight)
                         })
                         self.contentView!.superview!.layoutIfNeeded()
                         self.bgView.alpha = 0
@@ -94,7 +94,7 @@ class PopUpViewController: UIViewController {
                            animations: {
                             
                             self.contentView?.snp.updateConstraints({ (make) in
-                                make.bottom.equalTo(self.bgView.snp_bottomMargin).offset(20)
+                                make.bottom.equalTo(self.bgView.snp.bottom)
                             })
                             self.contentView!.superview!.layoutIfNeeded()
                             

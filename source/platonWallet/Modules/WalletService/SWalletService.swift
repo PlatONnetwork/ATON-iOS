@@ -9,7 +9,7 @@
 import Foundation
 import Localize_Swift
 import BigInt
-import platonWeb3
+import platonWeb3_local
 
 
 let BigUIntZero = BigUInt("0")!

@@ -32,6 +32,18 @@ class CandidateDetailViewController: BaseViewController {
     
     var candidate: Candidate!
     
+    lazy var headerShadowLayer : CALayer = {
+        let shadowL = CALayer()
+        shadowL.cornerRadius = 4.0
+        shadowL.frame = headerView.frame
+        shadowL.backgroundColor = UIViewController_backround.cgColor
+        shadowL.shadowColor = UIColor(rgb: 0x020527, alpha: 0.2).cgColor
+        shadowL.shadowOffset = CGSize(width: 0, height: 2)
+        shadowL.shadowOpacity = 1
+        shadowL.shadowRadius = 3
+        return shadowL
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = Localized("CandidateDetailVC_title")
@@ -42,17 +54,17 @@ class CandidateDetailViewController: BaseViewController {
         // Do any additional setup after loading the view.
         
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
         let shapeL = CAShapeLayer()
         shapeL.path = UIBezierPath(roundedRect: headerView.bounds, byRoundingCorners: [.topLeft, .topRight], cornerRadii: CGSize(width: 4, height: 4)).cgPath
-        shapeL.shadowColor = UIColor(rgb: 0x020527, alpha: 0.2).cgColor
-        shapeL.shadowOffset = CGSize(width: 0, height: 2)
-        shapeL.shadowOpacity = 1
-        shapeL.shadowRadius = 3
         headerView.layer.mask = shapeL
+        
+        headerShadowLayer.frame = headerView.frame
+        if !view.layer.sublayers!.contains(headerShadowLayer) {
+            headerView.superview!.layer.insertSublayer(headerShadowLayer, at: 0)
+        }
     }
     
     private func setup() {
@@ -74,7 +86,7 @@ class CandidateDetailViewController: BaseViewController {
         }
         
         nodeIdLabel.text = candidate.candidateId!.hasPrefix("0x") ? candidate.candidateId!:"0x\(candidate.candidateId!)"
-        rewardRatioLabel.text = String(format: "%.2f%%", Float((candidate.fee ?? 0) / 100))
+        rewardRatioLabel.text = candidate.rewardRate
         institutionalNameLabel.text = candidate.extra?.nodeDepartment
         institutionalWebsiteLabel.text = candidate.extra?.officialWebsite
         nodeInfoLabel.text = candidate.extra?.nodeDiscription

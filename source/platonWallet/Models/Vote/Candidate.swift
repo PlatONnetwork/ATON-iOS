@@ -9,6 +9,7 @@
 import Foundation
 import BigInt
 import Localize_Swift
+import RealmSwift
 
 enum RankStatus {
     case candidateFirst100
@@ -24,7 +25,7 @@ enum RankStatus {
     }
 }
 
-class CandidateExtra: Decodable {
+class CandidateExtra:Decodable {
     
     var nodeName: String = ""//节点名称
     var nodePortrait: String = ""//节点logo
@@ -75,45 +76,12 @@ class Candidate:NSObject, Decodable {
     
     var rankByDeposit: UInt16?
     
-    public static func parser(data: Data) -> [Candidate]{
-        return []
-    }
-    
-    
-    enum CodingKeys: String, CodingKey {
-        case deposit = "Deposit"
-        case blockNumber = "BlockNumber"
-        case txIndex = "TxIndex"
-        case candidateId = "CandidateId"
-        case host = "Host"
-        case port = "Port"
-        case owner = "Owner"
-        case from = "From"
-        case extra = "Extra"
-        case fee = "Fee"
-    }
-    
-    required init(from decoder: Decoder) throws {
-
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        let depositStr = try? container.decode(Decimal.self, forKey: .deposit)
-        deposit = BigUInt(depositStr?.description ?? "")
-        let blockNumberStr = try? container.decode(Decimal.self, forKey: .blockNumber)
-        blockNumber = BigUInt(blockNumberStr?.description ?? "")
-        txIndex = try container.decode(Int.self, forKey: .txIndex)
-        candidateId = try container.decode(String.self, forKey: .candidateId)
-        host = try container.decode(String.self, forKey: .host)
-        port = try container.decode(String.self, forKey: .port)
-        owner = try container.decode(String.self, forKey: .owner)
-        from = try container.decode(String.self, forKey: .from)
-        let extraStr = try container.decode(String.self, forKey: .extra)
-        do {
-            extra = try JSONDecoder().decode(CandidateExtra.self, from: extraStr.data(using: .utf8)!)
-        } catch  {
-            print(error.localizedDescription)
+    //like: 80%
+    var rewardRate: String {
+        get {
+            return String(format: "%.2f%%", Float(10000 - (fee ?? 0))/Float(100))
         }
         
-        fee = try container.decode(UInt64.self, forKey: .fee)
     }
     
     @objc var countryName : String {
@@ -137,7 +105,78 @@ class Candidate:NSObject, Decodable {
         }
     }
     
+    
+    
+    
+    enum CodingKeys: String, CodingKey {
+        case deposit = "Deposit"
+        case blockNumber = "BlockNumber"
+        case txIndex = "TxIndex"
+        case candidateId = "CandidateId"
+        case host = "Host"
+        case port = "Port"
+        case owner = "Owner"
+        case from = "From"
+        case extra = "Extra"
+        case fee = "Fee"
+    }
+    
+    required init(from decoder: Decoder) throws {
+        
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let depositStr = try? container.decode(Decimal.self, forKey: .deposit)
+        deposit = BigUInt(depositStr?.description ?? "")
+        let blockNumberStr = try? container.decode(Decimal.self, forKey: .blockNumber)
+        blockNumber = BigUInt(blockNumberStr?.description ?? "")
+        txIndex = try container.decode(Int.self, forKey: .txIndex)
+        candidateId = try container.decode(String.self, forKey: .candidateId)
+        host = try container.decode(String.self, forKey: .host)
+        port = try container.decode(String.self, forKey: .port)
+        owner = try container.decode(String.self, forKey: .owner)
+        from = try container.decode(String.self, forKey: .from)
+        let extraStr = try container.decode(String.self, forKey: .extra)
+        do {
+            extra = try JSONDecoder().decode(CandidateExtra.self, from: extraStr.data(using: .utf8)!)
+        } catch  {
+            print(error.localizedDescription)
+        }
+        
+        fee = try container.decode(UInt64.self, forKey: .fee)
+        
+        let info = CandidateBasicInfo()
+        info.id = candidateId ?? ""
+        info.name = extra?.nodeName
+        info.avatar = extra?.nodePortrait
+        info.host = host
+        info.port = port
+        info.owner = owner
+        VotePersistence.addCandidateInfo(info)
+    }
+    
+    
 }
 
 
 
+class CandidateBasicInfo: Object {
+    
+    @objc dynamic var id: String = ""
+    @objc dynamic var name: String? = ""
+    @objc dynamic var avatar: String? = ""
+    @objc dynamic var host: String? = ""
+    @objc dynamic var port: String? = ""
+    @objc dynamic var owner: String? = ""
+    
+    override public static func primaryKey() -> String? {
+        return "id"
+    }
+    
+    
+    var getAvatar : UIImage? {
+        get {
+            let index = Int(avatar ?? "1") ?? 1
+            return UIImage(named: "nodeAvatar_\(index)")
+        }
+    }
+    
+}

@@ -19,19 +19,19 @@ class NodeVoteSummary {
     
     var validCount : Int{
         get{
-            return self.tickets.tickets_validCount
+            return self.tickets.validTicketCount
         }
     }
     
     var invalidCount: Int{
         get{
-            return self.tickets.tickets_invalidCount
+            return self.tickets.invalidTicketCount
         }
     }
     
     var assetOflocked: String?{
         get{
-            return self.tickets.tickets_assetOflocked
+            return self.tickets.lockedAssetSum.divide(by: ETHToWeiMultiplier, round: 4)
         }
     }
     

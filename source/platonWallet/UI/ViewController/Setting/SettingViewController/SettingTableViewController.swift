@@ -184,7 +184,7 @@ class SettingTableViewController: BaseViewController, UITableViewDelegate, UITab
         
         switch indexPath.row {
         case 0:
-            navigationController?.pushViewController(NodeSettingViewController(), animated: true)
+            navigationController?.pushViewController(NodeSettingViewControllerV2(), animated: true)
             
         case 1:
             do{

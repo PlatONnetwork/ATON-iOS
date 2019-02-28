@@ -38,14 +38,28 @@ class SettingService {
         
     }
     
-    func addNode(_ node: NodeInfo) {
+    func addOrUpdateNode(_ node: NodeInfo) {
         
         nodeStorge.add(node: node)
-        
     }
     
-    func updateNode(_ node: NodeInfo, isSelected: Bool) {
-        nodeStorge.update(node: node, isSelected: isSelected)
+    func deleteNodeList(_ list: [NodeInfo]) {
+        nodeStorge.deleteList(list)
+    }
+    
+//    func updateNode(_ node: NodeInfo, isSelected: Bool) {
+//        
+//        nodeStorge.update(node: node, isSelected: isSelected)
+//    }
+    
+    func updateSelectedNode(_ node: NodeInfo) {
+        getNodes().forEach { (item) in
+            if item.nodeURLStr == node.nodeURLStr {
+                nodeStorge.update(node: item, isSelected: true)
+            }else {
+                nodeStorge.update(node: item, isSelected: false)
+            }
+        }
     }
     
     func deleteNode(_ node: NodeInfo) {

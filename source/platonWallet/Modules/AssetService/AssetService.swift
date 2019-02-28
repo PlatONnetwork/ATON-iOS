@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import platonWeb3
+import platonWeb3_local
 
 typealias AssetQueryCompletion = (_ result : PlatonCommonResult?, _ balances : [WalletBalance] ) -> ()
 

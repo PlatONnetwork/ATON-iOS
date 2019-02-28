@@ -41,11 +41,6 @@ class CandidatesListHeaderView: UIView {
         view.snp.makeConstraints { (maker) in
             maker.edges.equalToSuperview()
         }
-        view.layer.shadowColor = UIColor(hex: "0x1F2841").cgColor
-        view.layer.shadowOffset = CGSize(width: 0, height: 2)
-        view.layer.shadowOpacity = 1
-        view.layer.shadowRadius = 2
-        view.layer.masksToBounds = false
 
         update()
     }

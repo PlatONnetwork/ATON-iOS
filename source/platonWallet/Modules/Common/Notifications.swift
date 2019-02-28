@@ -22,4 +22,5 @@ let updateWalletList_Notification = "updateWalletList_Notification"
 
 let didswitchNode_Notification = "didswitchNode_Notification"
 
+let DidUpdateVoteTransactionByHashNotification = "DidUpdateVoteTransactionByHashNotification"
 

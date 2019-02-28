@@ -178,6 +178,7 @@
 		9A096A3421E5C3D9008A1308 /* VoteConfirmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A096A3321E5C3D9008A1308 /* VoteConfirmView.swift */; };
 		9A096A3621E5C3EB008A1308 /* VoteConfirmView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A096A3521E5C3EB008A1308 /* VoteConfirmView.xib */; };
 		9A11FC482181E90C002D9A96 /* LeftAlignLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A11FC472181E90C002D9A96 /* LeftAlignLayout.swift */; };
+		9A1F87B922014FD70002BE67 /* NodeSettingViewControllerV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1F87B822014FD70002BE67 /* NodeSettingViewControllerV2.swift */; };
 		9A25B99C2186D70100B9433A /* WalletManagerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A25B99B2186D70100B9433A /* WalletManagerViewController.swift */; };
 		9A25B99F2186DF9E00B9433A /* WalletManagerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A25B99D2186DF9E00B9433A /* WalletManagerTableViewCell.swift */; };
 		9A25B9A02186DF9E00B9433A /* WalletManagerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A25B99E2186DF9E00B9433A /* WalletManagerTableViewCell.xib */; };
@@ -473,6 +474,7 @@
 		9A096A3321E5C3D9008A1308 /* VoteConfirmView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteConfirmView.swift; sourceTree = "<group>"; };
 		9A096A3521E5C3EB008A1308 /* VoteConfirmView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = VoteConfirmView.xib; sourceTree = "<group>"; };
 		9A11FC472181E90C002D9A96 /* LeftAlignLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftAlignLayout.swift; sourceTree = "<group>"; };
+		9A1F87B822014FD70002BE67 /* NodeSettingViewControllerV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeSettingViewControllerV2.swift; sourceTree = "<group>"; };
 		9A25B99B2186D70100B9433A /* WalletManagerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletManagerViewController.swift; sourceTree = "<group>"; };
 		9A25B99D2186DF9E00B9433A /* WalletManagerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletManagerTableViewCell.swift; sourceTree = "<group>"; };
 		9A25B99E2186DF9E00B9433A /* WalletManagerTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WalletManagerTableViewCell.xib; sourceTree = "<group>"; };
@@ -1372,6 +1374,7 @@
 			children = (
 				9AE31415218BEE1D00B5433F /* SettingTableViewController.swift */,
 				9AE3141A218BF7EC00B5433F /* NodeSettingViewController.swift */,
+				9A1F87B822014FD70002BE67 /* NodeSettingViewControllerV2.swift */,
 			);
 			path = SettingViewController;
 			sourceTree = "<group>";
@@ -1679,6 +1682,7 @@
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/BigInt/BigInt.framework",
 				"${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/EmptyDataSet-Swift/EmptyDataSet_Swift.framework",
 				"${BUILT_PRODUCTS_DIR}/Localize-Swift/Localize_Swift.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/RTRootNavigationController/RTRootNavigationController.framework",
@@ -1691,7 +1695,7 @@
 				"${BUILT_PRODUCTS_DIR}/SwipeCellKit/SwipeCellKit.framework",
 				"${BUILT_PRODUCTS_DIR}/TrezorCrypto/TrezorCrypto.framework",
 				"${BUILT_PRODUCTS_DIR}/UITextView+Placeholder/UITextView_Placeholder.framework",
-				"${BUILT_PRODUCTS_DIR}/platonWeb3/platonWeb3.framework",
+				"${BUILT_PRODUCTS_DIR}/platonWeb3_local/platonWeb3_local.framework",
 				"${BUILT_PRODUCTS_DIR}/secp256k1.swift/secp256k1.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -1699,6 +1703,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BigInt.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CryptoSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/EmptyDataSet_Swift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Localize_Swift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RTRootNavigationController.framework",
@@ -1711,7 +1716,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwipeCellKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TrezorCrypto.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UITextView_Placeholder.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/platonWeb3.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/platonWeb3_local.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/secp256k1.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1922,6 +1927,7 @@
 				9ADE45202180074C006F1C81 /* ImportMnemonicOrPrivateKeyViewController.swift in Sources */,
 				81515BCB21C74E8400054197 /* SharedQRView.swift in Sources */,
 				818A913F2181E6BA00D03D57 /* Date+Extenstions.swift in Sources */,
+				9A1F87B922014FD70002BE67 /* NodeSettingViewControllerV2.swift in Sources */,
 				9A25B9B6218850B600B9433A /* AddWalletMenuViewController.swift in Sources */,
 				818A91412182C23300D03D57 /* NSDecimal+Swift.swift in Sources */,
 				9AE31424218C27D400B5433F /* NodeInfoPersistence.swift in Sources */,
@@ -2173,6 +2179,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ju.platonWallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = JuWildCard;
+				SWIFT_COMPILATION_MODE = singlefile;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";

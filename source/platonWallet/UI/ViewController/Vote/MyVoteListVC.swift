@@ -18,11 +18,13 @@ class MyVoteListVC: BaseViewController,UITableViewDelegate,UITableViewDataSource
     
     var dataSource: [NodeVoteSummary] = []
     
-    var candidateDetailDic:[String:Candidate] = [:]
+    var candidateDetailDic:[String:CandidateBasicInfo] = [:]
     
     override func viewDidLoad() {
         super.viewDidLoad()
         initSubViews()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(didReceiveVoteTransactionUpdate(_:)), name:NSNotification.Name(DidUpdateVoteTransactionByHashNotification) , object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -30,41 +32,14 @@ class MyVoteListVC: BaseViewController,UITableViewDelegate,UITableViewDataSource
         getData()
     }
     
-    func getCandidatesDetail(candidateIds:[String], completion: @escaping ((_ success:Bool, _ errMsg:String?)->Void)) {
-        
-        VoteManager.sharedInstance.GetBatchCandidateDetail(ids: candidateIds, completion: { [weak self] (res, data) in
-            
-            guard let self = self else { return }
-            
-            switch res {
-            case .success:
-                
-                guard let resp = data as? [String:Candidate] else {
-                    completion(false, "data parse error")
-                    return
-                }
-                let ips = resp.values.map({ (candidate) -> String in
-                    return candidate.host ?? ""
-                })
-                let areaDic = IPQuery.sharedInstance.getIPGeoInfoFromDB(ipList: ips)
-                
-                for candidate in resp.values {
-                    
-                    candidate.area = areaDic[candidate.host ?? ""]
-                    self.candidateDetailDic[candidate.candidateId ?? ""] = candidate
-                }
-                
-                completion(true, nil)
-                
-                
-            case .fail(let ret, let msg):    
-                completion(false, msg ?? "")
-                self.showMessage(text: "GetBatchCandidateDetail fail:\(ret ?? 0),\(msg ?? "")", delay: 3)
-            }
-            
-        })
-        
-        
+    @objc func didReceiveVoteTransactionUpdate(_ notify: Notification) {
+        getData(showLoading: false)
+    }
+    
+    func getCandidateDetail(ids: [String]) {
+        for id in ids {
+            self.candidateDetailDic[id] = VotePersistence.getCandidateInfoWithId(id)
+        }
     }
     
     
@@ -74,7 +49,7 @@ class MyVoteListVC: BaseViewController,UITableViewDelegate,UITableViewDataSource
     
     func initSubViews() {
         
-        self.navigationItem.localizedText = Localized("MyVoteListVC_nav_title")
+        self.navigationItem.localizedText = "MyVoteListVC_nav_title"
         
         view.backgroundColor = UIViewController_backround
         
@@ -97,30 +72,36 @@ class MyVoteListVC: BaseViewController,UITableViewDelegate,UITableViewDataSource
         }
 
         tableView.registerCell(cellTypes: [NodeVoteTableViewCell.self])
+        
+        tableView.emptyDataSetView { [weak self] view in
+            view.customView(self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, Localized("MyVoteListVC_Empty_tips")))
+        }
     }
     
     
-    func getData(){
+    func getData(showLoading: Bool = true) {
         
-        showLoading()
+        if showLoading {
+            self.showLoading()
+        }
         
         VoteManager.sharedInstance.getMyVoteList { [weak self] (result, data) in
             
             guard let self = self else { return }
             
-            self.hideLoading()
+            if showLoading {
+                self.hideLoading()
+            }
             
             switch result{
                 
             case .success:
                 
                 guard data != nil else {
-                    self.tableView.showEmptyView(description: Localized("MyVoteListVC_Empty_tips"))
                     return
                 }
                 
                 guard let summary = data as? [NodeVoteSummary], summary.count > 0 else {
-                    self.tableView.showEmptyView(description: Localized("MyVoteListVC_Empty_tips"))
                     return
                 }
                 
@@ -132,7 +113,6 @@ class MyVoteListVC: BaseViewController,UITableViewDelegate,UITableViewDataSource
                     }
                 }
                 guard !empty else {
-                    self.tableView.showEmptyView(description: Localized("MyVoteListVC_Empty_tips"))
                     return
                 }
                 
@@ -141,38 +121,11 @@ class MyVoteListVC: BaseViewController,UITableViewDelegate,UITableViewDataSource
                 let nodeIds = summary.map({ (node) -> String in
                     return node.CandidateId ?? ""
                 })
+                self.getCandidateDetail(ids: nodeIds)
                 
-                var shouldRefreshCandidateDetail = false
-                for id in nodeIds {
-                    if self.candidateDetailDic[id] == nil {
-                        shouldRefreshCandidateDetail = true
-                        break
-                    }
-                }
-                
-                if shouldRefreshCandidateDetail {
-                    
-                    self.showLoading()
-                    self.getCandidatesDetail(candidateIds: nodeIds, completion: { (success, errMsg) in
-                        
-                        self.hideLoading()
-                        
-                        if success {
-                            
-                            self.tableView.reloadData()
-                            self.tableView.removeEmptyView()
-                            self.updateTableHeaderVote()
-                            
-                        }else {
-                            self.showMessage(text: "error:\(errMsg ?? "")", delay: 3)
-                        }
-                        
-                    })
-                }else {
-                    self.tableView.reloadData()
-                    self.tableView.removeEmptyView()
-                    self.updateTableHeaderVote()
-                }
+                self.tableView.reloadData()
+                self.tableView.removeEmptyView()
+                self.updateTableHeaderVote()
      
             case .fail(let ret, let msg):
                 self.showMessage(text: "getMyVoteList fail:\(ret ?? 0),\(msg ?? "")", delay: 3)
@@ -241,6 +194,10 @@ class MyVoteListVC: BaseViewController,UITableViewDelegate,UITableViewDataSource
             
         }
         
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
 }

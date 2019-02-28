@@ -11,7 +11,7 @@ import Localize_Swift
 import RealmSwift
 import BigInt
 import Bugly
-import platonWeb3
+import platonWeb3_local
 
 class AppFramework {
     
@@ -54,19 +54,21 @@ class AppFramework {
     }
     
     func RealmConfiguration() {
-        let schemaVersion: UInt64 = 3
+        let schemaVersion: UInt64 = 5
         let config = Realm.Configuration(schemaVersion: schemaVersion, migrationBlock: { migration, oldSchemaVersion in
-//            if oldSchemaVersion < 1 {
-//
-//                migration.renameProperty(onType: SingleVote.className(), from: "CandidateId", to: "candidateId")
-//                migration.renameProperty(onType: SingleVote.className(), from: "Owner", to: "owner")
-//                
-//            }
-//            if oldSchemaVersion < 2 {
-//                migration.enumerateObjects(ofType: SingleVote.className(), { (old, new) in
-//                    new?["txHash"] = old?["txHash"]
-//                })
-//            }
+        
+            if oldSchemaVersion < 4 {
+
+                migration.enumerateObjects(ofType: NodeInfo.className(), { (old, new) in
+                    if old!["nodeURLStr"] as! String == "https://syde.platon.network/test" {
+                        new!["desc"] = "SettingsVC_nodeSet_defaultTestNetwork_title"
+                        
+                    }else if old!["nodeURLStr"] as! String == "192.168.9.73:6789" && old?["desc"] as? String == "SettingsVC_nodeSet_defaultTestNetwork_title"{
+                        migration.delete(old!)
+                    }
+                    
+                })
+            }
             
         })
         

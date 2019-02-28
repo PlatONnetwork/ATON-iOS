@@ -8,7 +8,7 @@
 
 import UIKit
 import Localize_Swift
-import platonWeb3
+import platonWeb3_local
 
 class SharedWalletTransferVC: BaseViewController ,UITextViewDelegate,UITextFieldDelegate{
     
@@ -256,7 +256,10 @@ class SharedWalletTransferVC: BaseViewController ,UITextViewDelegate,UITextField
             return
         }
         
-        let fee = self.refreshLabel(true)
+        //let fee = self.refreshLabel(true)
+        //fee will take out from classic wallet,not joint wallet
+        let fee = BigUInt("0")!
+        
         var maxSendAmout = BigUInt(String((balance)))
         //let overflow = maxSendAmout?.subtractingReportingOverflow(fee!)
         let overflow = maxSendAmout?.subtractReportingOverflow(fee)
@@ -428,16 +431,12 @@ class SharedWalletTransferVC: BaseViewController ,UITextViewDelegate,UITextField
         }
         let amountOfwei = BigUInt.mutiply(a: transferView.sendAmoutTextField.text!, by: ETHToWeiMultiplier)
         var overflow = false
-        let fee = self.refreshLabel(true)
+        
+        //the fee is take out from classic wallet
+        //let fee = self.refreshLabel(true)
         
         let balance = getAvailbleBalance()
         var newBalance = BigUInt(String(balance))
-        overflow = (newBalance?.subtractReportingOverflow(fee, shiftedBy: 0))!
-        if overflow{
-            //balance < fee
-            transferView.resportSufficiency(isSufficient: false)
-            return false
-        }
         overflow = (newBalance?.subtractReportingOverflow(amountOfwei!, shiftedBy: 0))!
         if overflow{
             //amount < balance

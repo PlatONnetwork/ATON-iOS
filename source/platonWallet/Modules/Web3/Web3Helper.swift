@@ -7,13 +7,45 @@
 //
 
 import Foundation
-import platonWeb3
+import platonWeb3_local
 
 var web3 = Web3(rpcURL: Web3Helper.getRpcURL())
 
 
 
 struct Web3Helper {
+    
+    static func switchRpcURL(_ url: String, completion:@escaping (_ success: Bool)->Void) {
+        
+        let newWeb3 = Web3(rpcURL: url)
+        var isCallback = false
+        newWeb3.eth.blockNumber { (resp) in
+            
+            DispatchQueue.main.async {
+                
+                if isCallback {
+                    return
+                }
+                
+                if resp.status.isSuccess {
+                    web3 = newWeb3
+                    completion(true)
+                }else {
+                    completion(false)
+                }
+                isCallback = true
+            }
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+            
+            if isCallback {
+                return
+            }
+            completion(false)
+            isCallback = true
+        }
+        
+    }
     
     static func switchRpcURL(_ url: String, succeedCb:@escaping ()->Void, failedCb:@escaping ()->Void) {
         

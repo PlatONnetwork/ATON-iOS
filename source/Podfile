@@ -1,7 +1,5 @@
 # Uncomment the next line to define a global platform for your project
 # platform :ios, '9.0'
-
-#source 'git@192.168.9.66:weixuening/JuzixSpecs.git'
 source 'https://github.com/CocoaPods/Specs.git'
 
 target 'platonWallet' do
@@ -22,6 +20,8 @@ target 'platonWallet' do
   pod 'MBProgressHUD', '~> 1.1.0'
   pod 'ScryptSwift'
   pod 'SwipeCellKit'
+  pod 'EmptyDataSet-Swift', '~> 4.2.0'
+
   
   # Web3 dependencies BigInt CryptoSwift secp256k1.swift
   #pod 'BigInt', '~> 3.1'
@@ -33,7 +33,7 @@ target 'platonWallet' do
   
   # Pods for platonWallet
   
-  pod 'platonWeb3', '~> 0.3.0'
+  pod 'platonWeb3', '~> 0.4.0'
 
   target 'platonWalletTests' do
       inherit! :search_paths

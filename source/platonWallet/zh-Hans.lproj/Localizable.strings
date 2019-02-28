@@ -605,6 +605,7 @@
 "VotingViewController_confirm" = "确定";
 "VotingViewController_insufficient_balance_tips" = "钱包余额不足！";
 "VotingViewController_exceed_limit_tips" = "投票数超出票池限制";
+"VotingViewController_success_tips" = "投票成功";
 
 //
 "VoteConfirm_title" = "投票信息";

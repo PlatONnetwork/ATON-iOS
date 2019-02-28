@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 import Localize_Swift
-import platonWeb3
+import platonWeb3_local
 
 enum CandidatesListSortType: Int {
     case `default` = 0,reward,location
@@ -23,13 +23,21 @@ class CandidatesListViewController: BaseViewController {
     var tableView: UITableView!
     var sortType: CandidatesListSortType = .default
     var timer: Timer?
-    var originCandidatesList: [Candidate] = []
-    var sortedCandidatesList: [Candidate] = []
+    
     var candidatesPool: [Candidate] = []
     var alternativePool: [Candidate] = []
+    
+    var originCandidatesList: [Candidate] = []
+    var sortedCandidatesList: [Candidate] = []
     var filteredCandidateList: [Candidate] = []
     
-    var dataSource: [Candidate] = []
+    var isFirstQuery = true
+    
+    var dataSource: [Candidate] = [] {
+        didSet {
+            isFirstQuery = false
+        }
+    }
     
     var isQuerying = false
    
@@ -100,14 +108,18 @@ class CandidatesListViewController: BaseViewController {
             maker.right.equalToSuperview().offset(-12)
             maker.bottom.equalToSuperview()
         }
+        tableView.emptyDataSetView { [weak self] view in
+            view.customView(self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, Localized("CandidateListVC_empty_desc")))
+        }
         
         let rightMenuButton = UIButton(type: .custom)
-        rightMenuButton.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
+//        rightMenuButton.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
         rightMenuButton.setTitle(Localized("CandidateListVC_rightBtn_title"), for: .normal)
         rightMenuButton.setTitleColor(UIColor(rgb: 0xCDCDCD), for: .normal)
         rightMenuButton.titleLabel?.font = UIFont.systemFont(ofSize: 12)
         rightMenuButton.addTarget(self, action: #selector(onNavRight), for: .touchUpInside)
         let rightBarButtonItem = UIBarButtonItem(customView: rightMenuButton)
+        rightMenuButton.sizeToFit()
         navigationItem.rightBarButtonItem = rightBarButtonItem
     }
     
@@ -117,7 +129,8 @@ class CandidatesListViewController: BaseViewController {
     }
     
     func startPolling() {
-        timer = Timer.scheduledTimer(timeInterval: 2.0, target: self, selector: #selector(queryDataAndUpdate), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(queryDataAndUpdate), userInfo: nil, repeats: true)
+        timer?.fire()
     }
     
     func stopPolling() {
@@ -128,7 +141,7 @@ class CandidatesListViewController: BaseViewController {
     
     @objc func queryDataAndUpdate() {
         
-        updateTicketPriceAndNum()
+        updateTicketPriceAndPoolNum()
         
         if !isQuerying {
             queryCandidatesList()
@@ -136,28 +149,19 @@ class CandidatesListViewController: BaseViewController {
 
     }
     
-    private func updateTicketPriceAndNum() {
+    private func updateTicketPriceAndPoolNum() {
         headerView.updateTicketPrice(VoteManager.sharedInstance.ticketPrice?.convertToEnergon(round: 4), isUpward: true)
         headerView.updatePoll(VoteManager.sharedInstance.ticketPoolUsageNum, voteRate: VoteManager.sharedInstance.ticketPoolUsageRate)
-        
-//        VoteManager.sharedInstance.GetTicketPrice { [weak self] (result, data) in
-//            DispatchQueue.main.async {
-//                self?.headerView.updateTicketPrice(data as? Float ?? 0, isUpward: true)
-//            }
-//        }
-//        
-//        VoteManager.sharedInstance.GetPoolRemainder { [weak self] (result, data) in
-//            DispatchQueue.main.async {
-//                let numOfTicket = kTicketsPoolCapacity - Int(data as? String ?? "0")!
-//                self?.headerView.updatePoll(numOfTicket, voteRate: Float(numOfTicket) / Float(kTicketsPoolCapacity))
-//            }
-//        }
         
     }
     
     private func queryCandidatesList() {
         
         isQuerying = true 
+        
+        if isFirstQuery {
+            showLoading()
+        }
         
         VoteManager.sharedInstance.CandidateList { [weak self] (res, data) in
             
@@ -179,7 +183,11 @@ class CandidatesListViewController: BaseViewController {
                 }
                 
                 self.setCandidateAreaInfo(list: list)
-                self.queryCandidateTickets(list: list, completion: { (newList) in
+                self.queryCandidateTicketCount(list: list, completion: { (newList) in
+                
+                    if (self.isFirstQuery) {
+                        self.hideLoading()
+                    }
                     
                     divideInfoPool()
                     
@@ -206,6 +214,9 @@ class CandidatesListViewController: BaseViewController {
                 }
             case .fail(_, _):
                 self.isQuerying = false
+                if (self.isFirstQuery) {
+                    self.hideLoading()
+                }
             
             }
         }
@@ -224,19 +235,19 @@ class CandidatesListViewController: BaseViewController {
         
     }
     
-    func queryCandidateTickets(list: [Candidate], completion:@escaping (([Candidate])->Void)) {
+    func queryCandidateTicketCount(list: [Candidate], completion:@escaping (([Candidate])->Void)) {
             
         let ids = list.map({ (item) -> String in
             return item.candidateId!
         })
-        VoteManager.sharedInstance.GetBatchCandidateTicketIds(candidateIds: ids) { (res, data) in
-            print("TicketIds Query Done")
+        
+        VoteManager.sharedInstance.GetBatchCandidateTicketCount(candidateIds: ids) { (res, data) in
             switch res{
             case .success:
-                if let ticketNums = data as? [String:[String]] {
+                if let ticketNums = data as? [String:Int] {
                     for i in 0..<list.count {
-                        if let candidateId = list[i].candidateId, let arr = ticketNums[candidateId], arr.count > 0 {
-                            list[i].tickets = UInt16(arr.count)
+                        if let candidateId = list[i].candidateId, let num = ticketNums[candidateId] {
+                            list[i].tickets = UInt16(num)
                         }
                     }
                 }
@@ -245,6 +256,23 @@ class CandidatesListViewController: BaseViewController {
             }
             completion(list)
         }
+
+//        VoteManager.sharedInstance.GetBatchCandidateTicketIds(candidateIds: ids) { (res, data) in
+//            print("TicketIds Query Done")
+//            switch res{
+//            case .success:
+//                if let ticketNums = data as? [String:[String]] {
+//                    for i in 0..<list.count {
+//                        if let candidateId = list[i].candidateId, let arr = ticketNums[candidateId], arr.count > 0 {
+//                            list[i].tickets = UInt16(arr.count)
+//                        }
+//                    }
+//                }
+//            default:
+//                break
+//            }
+//            completion(list)
+//        }
 
     }
     
@@ -275,11 +303,7 @@ class CandidatesListViewController: BaseViewController {
         }else {
             dataSource = sortedCandidatesList
         }
-        if dataSource.count > 0 {
-            tableView.removeEmptyView()
-        }else {
-            tableView.showEmptyView(description: Localized("CandidateListVC_empty_desc"))
-        }
+        
         tableView.reloadData()
     }
     
@@ -382,6 +406,10 @@ extension CandidatesListViewController: UITableViewDelegate, UITableViewDataSour
         vc.candidate = dataSource[indexPath.row]
         navigationController?.pushViewController(vc, animated: true)
         
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 64
     }
     
 }

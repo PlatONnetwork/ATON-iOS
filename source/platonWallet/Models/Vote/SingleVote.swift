@@ -8,7 +8,7 @@
 
 import Foundation
 import RealmSwift
-import platonWeb3
+import platonWeb3_local
 
 class SingleVote: Object {
     
@@ -22,7 +22,9 @@ class SingleVote: Object {
     
     @objc dynamic var candidateId : String? = ""
     
-    @objc dynamic var candidateName: String? = ""
+//    @objc dynamic var candidateName: String? = ""
+    
+//    @objc dynamic var candidateHost: String? = ""
     
     @objc dynamic var owner : String = ""
     
@@ -41,27 +43,33 @@ class SingleVote: Object {
         return ""
     }
     
+    var ticketPrice : String{
+        get{
+            return BigUInt((tickets.first?.deposit) ?? "0")!.divide(by: ETHToWeiMultiplier, round: 2)
+        }
+    }
+    
     var validCount : Int{
         get{
-            return Array(self.tickets).tickets_validCount
+            return Array(self.tickets).validTicketCount
         }
     }
     
     var invalidCount: Int{
         get{
-            return Array(self.tickets).tickets_invalidCount
+            return Array(self.tickets).invalidTicketCount
         }
     }
     
     var assetOflocked: String?{
         get{
-            return Array(self.tickets).tickets_assetOflocked
+            return Array(self.tickets).lockedAssetSum.divide(by: ETHToWeiMultiplier, round: 4)
         }
     }
     
     var releaseOfVote: String?{
         get{
-            return Array(self.tickets).tickets_releaseOfVote
+            return Array(self.tickets).releasedAssetSum.divide(by: ETHToWeiMultiplier, round: 4)
         }
     }
     
