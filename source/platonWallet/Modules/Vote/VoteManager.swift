@@ -8,7 +8,7 @@
 
 import UIKit
 import BigInt
-import platonWeb3_local
+import platonWeb3
 import Localize_Swift
 
 let reservePoolingContract = "0x1000000000000000000000000000000000000000"

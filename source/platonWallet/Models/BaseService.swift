@@ -8,7 +8,7 @@
 
 import Foundation
 import Localize_Swift
-import platonWeb3_local
+import platonWeb3
 
 
 

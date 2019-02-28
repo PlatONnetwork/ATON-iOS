@@ -8,7 +8,7 @@
 
 import XCTest
 import BigInt
-import platonWeb3_local
+import platonWeb3
 @testable import platonWallet
 
 extension UInt16 {

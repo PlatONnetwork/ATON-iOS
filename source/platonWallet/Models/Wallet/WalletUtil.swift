@@ -8,7 +8,7 @@
 
 import Foundation
 import TrezorCrypto
-import platonWeb3_local
+import platonWeb3
 
 public let publicKeyByteSize = 64
 public let privateKeyByteSize = 32
