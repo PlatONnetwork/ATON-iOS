@@ -29,13 +29,12 @@ class AddressBookViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         initData()
     }
-    
+     
     func initData(){
         dataSource?.removeAll()
         dataSource = AddressBookService.service.getAll()
         tableView!.reloadData()
     }
-    
     
     func initSubViews() {
         
@@ -44,8 +43,7 @@ class AddressBookViewController: BaseViewController {
         tableView.backgroundColor = UIViewController_backround
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.separatorInset = .zero
-        tableView.separatorColor = UIColor(rgb: 0x32394E)
+        tableView.separatorStyle = .none
         tableView.tableFooterView = UIView()
         view.addSubview(tableView!)
         tableView!.snp.makeConstraints { (make) in
@@ -56,14 +54,32 @@ class AddressBookViewController: BaseViewController {
         tableView.emptyDataSetView { [weak self] view in
             view.customView(self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, Localized("AddresssBookVC_empty_tip")))
         }
+//        if #available(iOS 11, *) {
+//            let guide = view.safeAreaLayoutGuide
+//            NSLayoutConstraint.activate([
+//                tableView.topAnchor.constraint(equalToSystemSpacingBelow: guide.topAnchor, multiplier: 1.0),
+//                guide.bottomAnchor.constraint(equalToSystemSpacingBelow: tableView.bottomAnchor, multiplier: 1.0)
+//                ])
+//            
+//        } else {
+//            let standardSpacing: CGFloat = 8.0
+//            NSLayoutConstraint.activate([
+//                tableView.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor, constant: standardSpacing),
+//                bottomLayoutGuide.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: standardSpacing)
+//                ])
+//        }
     }
+    
     
     func initNavigationItem(){
         
-        navigationItem.localizedText = "AddressBookVC_nav_title"
+        super.leftNavigationTitle = "AddressBookVC_nav_title"
+        
+        //let backgrouImage = UIImage(color: .white)
+        //self.navigationController?.navigationBar.setBackgroundImage(backgrouImage, for: .default)
         
         let addButton = UIButton(type: .custom)
-        addButton.setImage(UIImage(named: "navAdd"), for: .normal)
+        addButton.setImage(UIImage(named: "nav_add"), for: .normal)
         addButton.addTarget(self, action: #selector(onNavRight), for: .touchUpInside)
         addButton.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
         let rightBarButtonItem = UIBarButtonItem(customView: addButton)
@@ -92,7 +108,7 @@ extension AddressBookViewController:UITableViewDataSource,UITableViewDelegate,Sw
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60
+        return 69
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -116,9 +132,9 @@ extension AddressBookViewController:UITableViewDataSource,UITableViewDelegate,Sw
             action.fulfill(with: .delete)
             
         }
-        deleteAction.backgroundColor = UIColor(rgb: 0xDC5151)
-        deleteAction.textColor = UIColor.white   
-        deleteAction.font = UIFont.systemFont(ofSize: 13)
+        deleteAction.backgroundColor = UIColor(rgb: 0xF5302C)
+        deleteAction.textColor = UIColor(rgb: 0xFAFAFA)   
+        deleteAction.font = UIFont.systemFont(ofSize: 14)
         deleteAction.hidesWhenSelected = true
         
         let editAction = SwipeAction(style: .default, title: Localized("AddressBookVC_cell_edit_title")) { (action, indexPath) in
@@ -128,9 +144,9 @@ extension AddressBookViewController:UITableViewDataSource,UITableViewDelegate,Sw
             vc.addressInfo = self.dataSource![indexPath.row]
             self.navigationController?.pushViewController(vc, animated: true)
         }
-        editAction.backgroundColor = UIColor(rgb: 0xEFF0F5)
-        editAction.textColor = UIColor(rgb: 0x1B2137)   
-        editAction.font = UIFont.systemFont(ofSize: 13)
+        editAction.backgroundColor = UIColor(rgb: 0xF0F1F5)
+        editAction.textColor = .black   
+        editAction.font = UIFont.systemFont(ofSize: 14)
         editAction.hidesWhenSelected = true
         return [deleteAction, editAction]
     }

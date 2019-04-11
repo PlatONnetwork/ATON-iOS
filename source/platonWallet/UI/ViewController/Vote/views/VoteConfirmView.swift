@@ -14,8 +14,14 @@ class VoteConfirmView: UIView {
     @IBOutlet weak var transactionType: UILabel!
     @IBOutlet weak var feeLabel: UILabel!
     @IBOutlet weak var submitBtn: PButton!
-    
     @IBOutlet weak var closeBtn: UIButton!
+    @IBOutlet weak var confirmButton: PButton!
+    @IBOutlet weak var walletName: UILabel!
+    @IBOutlet weak var walletAddressLabel: UILabel!
+    
+    override func awakeFromNib() {
+        self.confirmButton.style = .blue
+    }
     
     /*
     // Only override draw() if you perform custom drawing.

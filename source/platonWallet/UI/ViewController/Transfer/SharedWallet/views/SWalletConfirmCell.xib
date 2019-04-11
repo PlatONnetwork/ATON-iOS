@@ -13,21 +13,33 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="SWalletConfirmCell" customModule="platonWallet" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="160" height="160"/>
+            <rect key="frame" x="0.0" y="0.0" width="82" height="111"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="160" height="160"/>
+                <rect key="frame" x="0.0" y="0.0" width="82" height="111"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iconConfirm" translatesAutoresizingMaskIntoConstraints="NO" id="iEr-Uo-z52">
-                        <rect key="frame" x="12" y="0.0" width="136" height="136"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6Qd-XA-zEa">
+                        <rect key="frame" x="12" y="0.0" width="58" height="58"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="memberIconConfirm" translatesAutoresizingMaskIntoConstraints="NO" id="iEr-Uo-z52">
+                                <rect key="frame" x="19" y="19" width="20" height="20"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="20" id="Muc-wG-mNm"/>
+                                    <constraint firstAttribute="height" constant="20" id="u6r-ph-S6K"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.94117647058823528" green="0.94509803921568625" blue="0.96078431372549022" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="width" secondItem="iEr-Uo-z52" secondAttribute="height" multiplier="1:1" id="JUU-jh-H5j"/>
+                            <constraint firstAttribute="width" secondItem="6Qd-XA-zEa" secondAttribute="height" multiplier="1:1" id="7AR-Z9-sEC"/>
+                            <constraint firstItem="iEr-Uo-z52" firstAttribute="centerX" secondItem="6Qd-XA-zEa" secondAttribute="centerX" id="guh-ef-4SF"/>
+                            <constraint firstItem="iEr-Uo-z52" firstAttribute="centerY" secondItem="6Qd-XA-zEa" secondAttribute="centerY" id="xQ3-Qc-zfa"/>
                         </constraints>
-                    </imageView>
+                    </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="- -" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sgR-6W-VAq">
-                        <rect key="frame" x="0.0" y="141" width="160" height="20"/>
+                        <rect key="frame" x="0.0" y="58" width="82" height="20"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="7ew-pa-CNm"/>
                         </constraints>
@@ -35,39 +47,29 @@
                         <color key="textColor" red="0.77254901960784317" green="0.79607843137254897" blue="0.86274509803921573" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="loading-s" translatesAutoresizingMaskIntoConstraints="NO" id="f3g-Db-PA3">
-                        <rect key="frame" x="72" y="60" width="16" height="16"/>
-                        <constraints>
-                            <constraint firstAttribute="width" constant="16" id="Gpo-T9-vp2"/>
-                            <constraint firstAttribute="height" constant="16" id="Oeq-Wi-1a3"/>
-                        </constraints>
-                    </imageView>
                 </subviews>
             </view>
-            <color key="backgroundColor" red="0.12156862745098039" green="0.16078431372549021" blue="0.25098039215686274" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
+                <constraint firstItem="ZTg-uK-7eu" firstAttribute="trailing" secondItem="6Qd-XA-zEa" secondAttribute="trailing" constant="12" id="1gj-5e-SM7"/>
+                <constraint firstItem="sgR-6W-VAq" firstAttribute="top" secondItem="6Qd-XA-zEa" secondAttribute="bottom" id="7I9-Ee-x7C"/>
                 <constraint firstItem="sgR-6W-VAq" firstAttribute="leading" secondItem="ZTg-uK-7eu" secondAttribute="leading" id="8fN-wI-1mA"/>
-                <constraint firstItem="ZTg-uK-7eu" firstAttribute="trailing" secondItem="iEr-Uo-z52" secondAttribute="trailing" constant="12" id="Bkt-vs-mCn"/>
                 <constraint firstItem="sgR-6W-VAq" firstAttribute="centerX" secondItem="ZTg-uK-7eu" secondAttribute="centerX" id="V5E-we-k9O"/>
-                <constraint firstItem="iEr-Uo-z52" firstAttribute="leading" secondItem="ZTg-uK-7eu" secondAttribute="leading" constant="12" id="ao4-fC-KPW"/>
+                <constraint firstItem="6Qd-XA-zEa" firstAttribute="top" secondItem="ZTg-uK-7eu" secondAttribute="top" id="Zn9-Eo-HHW"/>
                 <constraint firstItem="ZTg-uK-7eu" firstAttribute="trailing" secondItem="sgR-6W-VAq" secondAttribute="trailing" id="gdP-cC-xUA"/>
-                <constraint firstItem="sgR-6W-VAq" firstAttribute="top" secondItem="iEr-Uo-z52" secondAttribute="bottom" constant="5" id="htv-EH-hoB"/>
-                <constraint firstItem="iEr-Uo-z52" firstAttribute="top" secondItem="ZTg-uK-7eu" secondAttribute="top" id="ieB-Bl-wgc"/>
-                <constraint firstItem="f3g-Db-PA3" firstAttribute="centerY" secondItem="iEr-Uo-z52" secondAttribute="centerY" id="mSW-Ri-QBg"/>
-                <constraint firstItem="f3g-Db-PA3" firstAttribute="centerX" secondItem="ZTg-uK-7eu" secondAttribute="centerX" id="v0a-g1-QRT"/>
+                <constraint firstItem="6Qd-XA-zEa" firstAttribute="leading" secondItem="ZTg-uK-7eu" secondAttribute="leading" constant="12" id="lyN-cO-I42"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
-            <size key="customSize" width="160" height="161"/>
+            <size key="customSize" width="82" height="112"/>
             <connections>
-                <outlet property="loadingView" destination="f3g-Db-PA3" id="VX3-Lg-eHj"/>
                 <outlet property="nameLabel" destination="sgR-6W-VAq" id="T2y-jf-JVm"/>
                 <outlet property="statusIcon" destination="iEr-Uo-z52" id="iwb-j2-Ecd"/>
+                <outlet property="statusIconContainer" destination="6Qd-XA-zEa" id="gDs-DP-In0"/>
             </connections>
-            <point key="canvasLocation" x="44.799999999999997" y="204.64767616191907"/>
+            <point key="canvasLocation" x="-36.799999999999997" y="80.50974512743629"/>
         </collectionViewCell>
     </objects>
     <resources>
-        <image name="iconConfirm" width="88" height="88"/>
-        <image name="loading-s" width="16" height="16"/>
+        <image name="memberIconConfirm" width="20" height="20"/>
     </resources>
 </document>

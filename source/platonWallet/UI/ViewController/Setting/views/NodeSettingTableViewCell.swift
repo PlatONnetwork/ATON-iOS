@@ -18,6 +18,9 @@ class NodeSettingTableViewCell: UITableViewCell, UITextFieldDelegate {
 
     @IBOutlet weak var nodeTF: UITextField!
     
+    
+    @IBOutlet weak var sublabel: UILabel!
+    
     @IBOutlet weak var selectionImgV: UIImageView!
     
     @IBOutlet weak var deleteBtn: UIButton!
@@ -39,15 +42,17 @@ class NodeSettingTableViewCell: UITableViewCell, UITextFieldDelegate {
     
     func setup(node: String, isSelected: Bool, isEdit: Bool, desc: String = "") {
         
-        nodeTF.text = desc.length > 0 ? node + "  (\(Localized(desc)))" : node
+        //nodeTF.text = desc.length > 0 ? node + "  (\(Localized(desc)))" : node
+        nodeTF.text = node
+        sublabel.text = Localized(desc)
         nodeTF.delegate = self
         nodeTF.isEnabled = isEdit
         selectionImgV.isHidden = !isSelected
         deleteBtn.isHidden = !isEdit
         if isEdit {
-            contentView.backgroundColor = UIColor(rgb: 0x262D42)
+            contentView.backgroundColor = UIColor(rgb: 0xffffff)
         }else {
-            contentView.backgroundColor = UIColor(rgb: 0x1B2137)
+            contentView.backgroundColor = UIColor(rgb: 0xffffff)
         }
         UIView.animate(withDuration: 0.25) { 
             self.hideDeleteBtnConstraint.priority = isEdit ? .defaultLow : .defaultHigh

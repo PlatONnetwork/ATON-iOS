@@ -8,7 +8,7 @@
 
 import UIKit
 import RTRootNavigationController
-import RealmSwift
+import RealmSwift   
 import BigInt
 import LocalAuthentication
 import platonWeb3
@@ -24,6 +24,12 @@ private let userDefault_key_isFirst = "isFirst"
 class AppDelegate: UIResponder, UIApplicationDelegate, LicenseVCDelegate {
 
     var window: UIWindow?
+    {
+        didSet{
+            //must set to white,or Dark shadow on navigation bar during segue transition
+            window?.backgroundColor = .white
+        }
+    }
 
     var laContext = LAContext()
     
@@ -40,12 +46,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LicenseVCDelegate {
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             self.initUI()
         }
+        
+        //RTRootNavigationController.doBadSwizzleStuff()
+        UIViewController.doBadSwizzleStuff()
+        
         return true
     }
     
-
+    func initStatusBar(){
+        (UIApplication.shared.value(forKey: "statusBar") as? UIView)?.backgroundColor = .clear
+    }
     
     func initUI() {
+        
+        self.initStatusBar()
         
         UserDefaults.standard.register(defaults: [userDefault_key_isFirst:true, userDefault_key_isLocalAuthenticationOpen:false])
         
@@ -98,19 +112,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LicenseVCDelegate {
                 self.localAuthStateSwitch(false)
             }
         }
-        
         verifyWindow = UIWindow(frame: CGRect(x: 0, y: 0, width: kUIScreenWidth, height: kUIScreenHeight))
         verifyWindow!.windowLevel = window!.windowLevel + 1
         verifyWindow!.rootViewController = BaseNavigationController(rootViewController:localAuthVC)
         verifyWindow!.isHidden = false
-        
-        
-        
     }
     
     private func gotoNextVC() {
         
-        if WalletService.sharedInstance.wallets.count > 0 {
+        if WalletService.sharedInstance.wallets.count > 0 || SWalletService.sharedInstance.wallets.count > 0  {
             gotoMainTab()
         }else {
             gotoWalletCreateVC()
@@ -122,7 +132,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LicenseVCDelegate {
     }
     
     func gotoWalletCreateVC() {
-        self.window?.rootViewController = BaseNavigationController(rootViewController: WalletCreateOrImportViewController())
+        let nav = BaseNavigationController(rootViewController: WalletCreateOrImportViewController())
+        self.window?.rootViewController = nav
     }
     
     func gotoWalletCreateSuccessVC(){

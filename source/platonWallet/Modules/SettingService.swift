@@ -54,7 +54,7 @@ class SettingService {
     
     func updateSelectedNode(_ node: NodeInfo) {
         getNodes().forEach { (item) in
-            if item.nodeURLStr == node.nodeURLStr {
+            if item.id == node.id {
                 nodeStorge.update(node: item, isSelected: true)
             }else {
                 nodeStorge.update(node: item, isSelected: false)

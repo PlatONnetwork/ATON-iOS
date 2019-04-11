@@ -21,6 +21,25 @@ public extension UIImage {
         guard let thecgImage = image?.cgImage else { return nil }
         self.init(cgImage: thecgImage)
     }
+    
+    public class func gradientImage(colors:[UIColor], size: CGSize) -> UIImage? {
+        if colors.count == 0 || size == .zero {
+            return nil
+        }
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
+        gradientLayer.startPoint = CGPoint(x: 0, y: 0)
+        gradientLayer.endPoint = CGPoint(x: 1, y: 1)
+        let cgColors = colors.map { (color) -> CGColor in
+            return color.cgColor
+        }
+        gradientLayer.colors = cgColors
+        UIGraphicsBeginImageContextWithOptions(size, false, 0)
+        gradientLayer.render(in: UIGraphicsGetCurrentContext()!)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return image
+    }
 
     
     public class func geneQRCodeImageFor(_ content: String, size: CGFloat) -> UIImage? {

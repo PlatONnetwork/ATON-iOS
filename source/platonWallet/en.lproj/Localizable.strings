@@ -35,19 +35,20 @@
 
 //createWalletVC
 "createWalletVC_title" = "Create Classic Wallet";
-"createWalletVC_walletName" = "Name";
-"createWalletVC_password" = "Password";
+"createWalletVC_walletName" = "Name:";
+"createWalletVC_password" = "Password:";
 "createWalletVC_pswStrength" = "Strength";
 "createWalletVC_note" = "Note: Be sure to keep your wallet password in mind, the server will not store your password, you will not be able to retrieve the password if forgetting or losing!";
 "createWalletVC_createBtn_title" = "Create";
 
-"tabbar_asset_title" = "Property";
+"tabbar_asset_title" = "Wallet";
 "tabbar_personal_title" = "Me";
+"tabbar_candidate_title" = "Vote";
 
 "navigationbar_wallet_title" = "Classic Wallet";
 "navigationbar_sharedwallet_title" = "Joint Wallet";
 
-"asset_header_total_asset" = "BALANCE";
+"asset_header_total_asset" = "Total";
 
 //transfer viewController
 "transferVC_nav_title" = "Send";
@@ -65,9 +66,12 @@
 "transferVC_estima_des" = "Estimated transaction confirmation time:\nprobably within";
 
 "transferVC_confirm_title" = "Confirm";
-"transferVC_confirm_PayInfo" = "Payment Info";
-"transferVC_confirm_To" = "To";
-"transferVC_confirm_Fee" = "Fee";
+"transferVC_confirm_PayInfo" = "Payment Info:";
+"transferVC_confirm_executor" = "Executor:";
+"transferVC_confirm_From" = "From:";
+"transferVC_confirm_To" = "To:";
+"transferVC_confirm_Fee" = "Fee:";
+
 "transferVC_confirm_ATP_send" = "Energon Send";
 "transferVC_confirm_Submit" = "Submit";
 
@@ -112,7 +116,7 @@
 "TransactionDetailVC_type" = "Type:";
 "TransactionDetailVC_time" = "Time:";
 "TransactionDetailVC_value" = "Value:";
-"TransactionDetailVC_energon_price" = "Energon Price:";
+"TransactionDetailVC_energon_price" = "Fee:";
 "TransactionDetailVC_Wallet" = "Wallet:";
 "TransactionDetailVC_memo" = "Memo:";
 "TransactionDetailVC_memo_none" = "None";
@@ -166,10 +170,10 @@
 
 //importWalletVC
 "importWalletVC_title" = "Import Classic Wallet";
-"importWalletVC_tab_keystore" = "Keystore";
+"importWalletVC_tab_keystore" = "钱包文件（.json）";
 "importWalletVC_tab_mnemonic" = "Mnemonic phrase";
 "importWalletVC_tab_privateKey" = "Private Key";
-"importWalletVC_mnemonic_tips" = "Input the Mnemonic Phrase. Please pay attention to case sensitivity and sequence.";
+"importWalletVC_mnemonic_tips" = "Input the Mnemonic phrase. Please pay attention to case sensitivity and sequence.";
 "importWalletVC_mnemonic_textView_placeholder" = "Please separate each Mnemonic Phrase with a space";
 
 "importWalletVC_privateKey_tips" = "Input the Private Key, or scan the Qr Code generated with Private Key to import. Please pay attention to case sensitivity.";
@@ -178,13 +182,14 @@
 "importWalletVC_success_tips" = "success";
 "importWalletVC_mnemonicInput_empty_tips" = "Mnemonic can't be empty !";
 "importWalletVC_privateKeyInput_empty_tips" = "PrivateKey can't be empty !";
-
+"importWalletVC_PasteButton" = "Paste";
 
 //backupMnemonicVC
 "backupMnemonicVC_title" = "Backup Wallet";
-"backupMnemonicVC_tips1" = "Please write down the Mnemonic in the paper";
-"backupMnemonicVC_tips2" = "Those 12 mnemonic words are for recovering your wallet, write down correctly on paper and keep in a safe place";
+"backupMnemonicVC_tips1" = "Please write down the Mnemonics in the paper";
+"backupMnemonicVC_tips2" = "Those 12 mnemonic words are for recovering your wallet, write down correctly on paper and keep in a safe place.";
 "backupMnemonicVC_nextBtn_title" = "Next";
+"backupskip" = "Skip";
 
 //verifyMnemonicVC
 "verifyMnemonicVC_title" = "Verification of Mnemonic";
@@ -196,6 +201,7 @@
 
 //alert
 "alert_input_psw_title" = "Input wallet password";
+"alert_input_psw_title_placeholder" = "Input the wallet's password";
 "alert_confirmBtn_title" = "Confirm";
 "alert_cancelBtn_title" = "Cancel";
 "alert_psw_input_error_title" = "Incorrect password";
@@ -239,11 +245,18 @@
 "PersonalVC_cell_wallet_community" = "Community";
 
 
+
+
 //WalletManagerDetailViewController
 "WalletManagerDetailVC_title" = "Manage";
+
+"WalletManagerDetailVC_WalletAddress"="Wallet Address:";
+"WalletManagerDetailVC_Rename"="Rename";
 "WalletManagerDetailVC_exportPrivateKey_title" = "Export Private Key";
 "WalletManagerDetailVC_exportKeystore_title" = "Export Keystore";
+"WalletManagerDetailVC_Mnemonicsbackup" = "Mnemonics backup";
 "WalletManagerDetailVC_deleteBtn_title" = "Delete";
+"WalletManager_backUp" = "Backup";
 
 
 //ExportPrivateKeyVC
@@ -272,7 +285,7 @@
 "AddAddress_nav_title"= "Add New Address";
 "AddAddress_textFieldPlaceHolder_address_Name"= "Name";
 "AddAddress_textFieldPlaceHolder_Wallet_Address"= "Address";
-"AddAddressVC_tip" = "Please backup your adress before deleting this App";
+"AddAddressVC_tip" = "Please backup your address before deleting this App";
 "AddAddressVC_add_button_title" = "Add";
 
 "NewAddress_name_empty_tip" = "Name is empty";
@@ -301,9 +314,9 @@
 
 
 //WalletEmptyView
-"IndividualWallet_EmptyView_tips" = "You don’t have any Classic Wallet";
-"IndividualWallet_EmptyView_createBtn_title" = "Create";
-"IndividualWallet_EmptyView_importBtn_title" = "Import";
+"IndividualWallet_EmptyView_tips" = "No Classic Wallet yet.";
+"IndividualWallet_EmptyView_createBtn_title" = "Create Classic Wallet";
+"IndividualWallet_EmptyView_importBtn_title" = "Import Classic Wallet";
 
 "SharedWallet_EmptyView_tips" = "You don’t have any Joint Wallet";
 "SharedWallet_EmptyView_createBtn_title" = "Create";
@@ -397,13 +410,20 @@
 //CreateSharedWalletVC
 "Wallet name" = "Wallet name";
 "CreateSharedWalletVC_Create Shared Wallet" = "Create Joint Wallet";
+
 "CreateSharedWalletVC_Select Owner" = "Select Owner";
 "CreateSharedWalletVC_Shared Owners" = "Joint Owners";
 "CreateSharedWalletVC_Required Signatures" = "Required Signatures";
+
+"CreateSharedWalletVC_Select Owner colon" = "Select Owner:";
+"CreateSharedWalletVC_Shared Owners colon" = "Joint Owners:";
+"CreateSharedWalletVC_Required Signatures colon" = "Required Signatures:";
+
+
 "CreateSharedWalletVC_Next" = "Next";
 "CreateSharedWalletVC_member" = "Member";
 "CreateSharedWalletVC_memberRemark" = "Name（Non - compulsory）";
-"CreateSharedWalletVC_address" = "Wallet Adress";
+"CreateSharedWalletVC_address" = "Wallet Address";
 "CreateSharedWalletVC_memberRemark_illegal_tips" = "Name's length should be 1~12 characters";
 "CreateSharedWalletVC_address_illegal_tips" = "Address is incorrect";
 "CreateSharedWalletVC_address_empty_tips" = "Address is empty";
@@ -422,7 +442,7 @@
 "Members_Des" = "Members";
 "SharedWallet_delete" = "Delete";
 "Owner_Des" = "Owner";
-
+"JointWalletManagement_Joint_Owner" = "Joint Wallet";
 
 //add shared wallet
 "AddSharedWalletVC_title" = "Add Joint Wallet";
@@ -441,7 +461,7 @@
 
 "sharedWallet_sharedWallet_forbidden" = "Not the associated wallet, unable to add";
 
-"sharedWalletDefaltMemberName" = "member";
+"sharedWalletDefaltMemberName" = "user";
 "sharedWallet_sharedWallet_existed" = "Joint wallet existed";
 
 
@@ -460,7 +480,7 @@
 "MemberSignDetailVC_type" = "Type:";
 "MemberSignDetailVC_time" = "Time:";
 "MemberSignDetailVC_value" = "Value:";
-"MemberSignDetailVC_energon_price" = "Energon Price:";
+"MemberSignDetailVC_energon_price" = "Fee:";
 "MemberSignDetailVC_Wallet" = "Wallet:";
 "MemberSignDetailVC_memo" = "Memo:";
 "MemberSignDetailVC_memo_none" = "None";
@@ -517,8 +537,8 @@
 //individual wallet back up
 "backuptip" = "One last step，Back it up";
 "create_individual_success" = "Success";
-"backupsetp1" = "Please write down the mnemonics on paper and keep it in a safe place. ";
-"backup_start" = "Start";
+"backupsetp1" = "Mnemonic phrase consist of 12 common English words converted from 64-bit private keys by algorithm. Please write down the words on paper and keep them in a safe place. ";
+"backup_start" = "Start to backup";
 
 "Require sign number error" = "Require sign number error";
 "no members" = "no members";
@@ -546,6 +566,9 @@
 //Vote
 "CandidateListVC_title" = "Vote";
 "CandidateListVC_header_desc" = "Vote Rate：%@ | Votes：%@ | Ticket Price：%@";
+"CandidateListVC_voteRate_desc" = "投票率：%@ ";
+"CandidateListVC_VoteNumber_desc" = "已投票：%@";
+"CandidateListVC_TicketPrice_desc" = "票价：%@";
 "CandidateListVC_defaultBtn_title" = "Default";
 "CandidateListVC_bonusBtn_title" = "Reward";
 "CandidateListVC_areaBtn_title" = "Location";
@@ -573,14 +596,14 @@
 "CandidateDetailVC_institutionalWebsite" = "Institutional Website";
 "CandidateDetailVC_nodeIntroduction" = "Node Introdution";
 "CandidateDetailVC_voteBtn_title" = "Vote";
-"CandidateDetailVC_rankStatu_candidateFirst100" = "Candidate";
-"CandidateDetailVC_rankStatu_alternativeFirst100" = "Alternative";
+"CandidateDetailVC_rankStatu_candidateFirst100" = "Nominees";
+"CandidateDetailVC_rankStatu_alternativeFirst100" = "Candidates";
 
 //MyVoteListVC
 "MyVoteListVC_nav_title" = "My vote";
 "MyVoteListVC_locked" = "locked";
 "MyVoteListVC_validinvalid" = "valid/invalid";
-"MyVoteListVC_reward" = "reward";
+"MyVoteListVC_reward" = "Voting Reward";
 "MyVoteListVC_Empty_tips" = "No voting record";
 
 //SingleVoteDetailListVC
@@ -588,7 +611,7 @@
 "SingleVoteDetailListVC_validinvalid" = "valid/invalid";
 "SingleVoteDetailListVC_ticketPrice" = "ticket price";
 "SingleVoteDetailListVC_locked_release" = "locked/release";
-"SingleVoteDetailListVC_reward" = "reward";
+"SingleVoteDetailListVC_reward" = "Voting Reward";
 "SingleVoteDetailListVC_vote_wallet" = "vote wallet";
 "SingleVoteDetailListVC_expiredtime_1" = "estimated expired time";
 "SingleVoteDetailListVC_expiredtime_2" = "expired time";
@@ -607,7 +630,7 @@
 //VoteConfirm
 "VoteConfirm_title" = "Voting Confirmation";
 "VoteConfirm_payment_info" = "Information";
-"VoteConfirm_fee" = "Fee";
+"VoteConfirm_fee_colon" = "Fee:";
 "VoteConfirm_submitBtn_title" = "Confirm";
 "VoteConfirm_vote" = "Vote";
 
@@ -616,4 +639,36 @@
 "QRDisplayViewController_share" = "Success， click to share";
 "fail" = "fail";
 
-"cannot_send_itself" = "Can't send to itself";
+"cannot_send_itself" = "Do not send to the same Address";
+
+
+//AssetViewController
+"Asset_segment_Transaction" = "Txn";
+"Asset_segment_Send" = "Send";
+"Asset_segment_Receive" = "Receive";
+
+//common
+"savetoaddressbook" = "Save to Address Book";
+
+"alert_walletnamecolon" = "Wallet Name:";
+"alert_pwdcolon" = "Password:";
+"alert_quit_backup_yes" = "Yes";
+"alert_quit_backup_no" = "No";
+"alert_rename_wallet" = "Rename Wallet";
+"alert_rename_wallet_placeholder" = "Wallet name";
+"backup_quit_tip" = "Backup has not been completed, sure to quit the operation?";
+
+
+
+"Send_transaction_alert_title" = "Send transaction";
+
+"addressbook_wallet_name_with_Colon" = "Wallet Name:";
+"addressbook_wallet_address_with_Colon" = "Wallet Address:";
+
+"wallet_name_duplicate" = "The name already exists on this APP, and can not be repeated";
+
+
+"scanviewcontroller_scan" = "Auto-scan in the frame";
+
+"watchJointWalletTip_Notice" = "Transaction initiation failed";
+"watchJointWalletTip_message" = "The associated Classic Wallet has been removed.";

@@ -8,12 +8,9 @@
 
 import UIKit
 import Localize_Swift
+import BigInt
 
 class NodeVoteTableViewCell: UITableViewCell {
-    
-    @IBOutlet weak var leftView: UIView!
-    
-    @IBOutlet weak var rightView: UIView!
     
     @IBOutlet weak var validandinvalidTicketNum: UILabel!
     
@@ -23,7 +20,7 @@ class NodeVoteTableViewCell: UITableViewCell {
     
     @IBOutlet weak var voteBtn: UIButton!
     
-    @IBOutlet weak var avatar: UIImageView!
+    @IBOutlet weak var middleDashsepline: UILabel!
     
     @IBOutlet weak var nodeName: UILabel!
     
@@ -34,13 +31,29 @@ class NodeVoteTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .none
+        
+        let lineLayer = CAShapeLayer()
+        lineLayer.strokeColor = UIColor(rgb: 0xE4E7F3).cgColor
+        lineLayer.lineWidth = 1
+        lineLayer.lineDashPattern = [4,4]
+        let path = CGMutablePath()
+        path.addLines(between: [CGPoint(x: 0, y: 0),CGPoint(x: kUIScreenWidth - 16, y: 0)])
+        lineLayer.path = path
+        self.middleDashsepline.layer.addSublayer(lineLayer)
+        
+        voteBtn.backgroundColor = .clear
+        voteBtn.layer.borderColor = UIColor(rgb: 0x105CFE ).cgColor
+        voteBtn.layer.borderWidth = 1.0
+    }
+    
+  
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        voteBtn.layer.cornerRadius = voteBtn.frame.size.height * 0.5
     }
     
     override func draw(_ rect: CGRect) {
         
-        leftView.addMaskView(corners: [.topLeft,.bottomLeft], cornerRadiiV: 4)
-        
-        rightView.addMaskView(corners: [.topRight,.bottomRight], cornerRadiiV: 4)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -51,13 +64,16 @@ class NodeVoteTableViewCell: UITableViewCell {
     
     func updateCell(nodeVote: NodeVoteSummary, candidate:CandidateBasicInfo){
         candidateId = nodeVote.CandidateId
-        avatar.image = candidate.getAvatar
         nodeName.text = candidate.name ?? ""
         let ipInfo = IPGeoPersistence.getIpInfo(candidate.host ?? "")
         location.text = "(\(ipInfo.localizeCountryName ?? Localized("IP_location_unknown")))"
         validandinvalidTicketNum.text = String(format: "%d/%d", nodeVote.validCount,nodeVote.invalidCount)
-        lockedAsset.text = nodeVote.assetOflocked?.EnergonSuffix()
-        reward.text = nodeVote.voteEarnings?.EnergonSuffix()
+        
+        let lockedB = BigUInt(nodeVote.assetOflocked ?? "0")!
+        let lockedS = lockedB.divide(by: ETHToWeiMultiplier, round: 8)
+        lockedAsset.text = lockedS
+        let earningsDes = BigUInt.safeInit(str: nodeVote.voteEarnings).divide(by: ETHToWeiMultiplier, round: 8)
+        reward.text = earningsDes
     }
     
 }

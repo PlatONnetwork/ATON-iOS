@@ -33,9 +33,9 @@ class SwitchWalletTableViewCell: UITableViewCell {
     
     func updateBalanceStyle(balance: WalletBalance?){
         if balance == nil || balance?.balance == nil || String((balance?.balance)!) == "0"{
-            self.contentView.backgroundColor = SwitchWalletCellDisableBG
+            self.contentView.backgroundColor = .white
         }else{
-            self.contentView.backgroundColor = SwitchWalletCellEnableBG
+            self.contentView.backgroundColor = .white
         }
     }
     

@@ -23,6 +23,9 @@ class VotingViewController0 : BaseViewController {
             votingView.walletName.text = selectedWallet?.name
             if let balance = AssetService.sharedInstace.assets[(selectedWallet!.key?.address)!] {
                 votingView.walletAddress.text = Localized("walletDetailVC_balance") +  (balance!.displayValueWithRound(round: 8)?.balanceFixToDisplay(maxRound: 8))!.ATPSuffix()
+                
+                let av = selectedWallet?.key?.address.walletAddressLastCharacterAvatar()
+                votingView.walletAvatar.image = UIImage(named: av!)?.circleImage()
             }
 
         }
@@ -40,7 +43,7 @@ class VotingViewController0 : BaseViewController {
     
     func initSubView(){
         
-        self.navigationItem.localizedText = "VotingViewController_nav_title"
+        super.leftNavigationTitle = "VotingViewController_nav_title"
         
         self.view.addSubview(votingView)
         votingView.snp.makeConstraints({ (make) in
@@ -70,7 +73,7 @@ class VotingViewController0 : BaseViewController {
         let popUpVC = PopUpViewController()
         let view = UIView.viewFromXib(theClass: TransferSwitchWallet.self) as! TransferSwitchWallet
         view.selectedAddress = selectedWallet?.key?.address
-        popUpVC.setUpContentView(view: view, size: CGSize(width: kUIScreenWidth, height: 289))
+        popUpVC.setUpContentView(view: view, size: CGSize(width: PopUpContentWidth, height: 289))
         popUpVC.setCloseEvent(button: view.closeBtn)
         view.selectionCompletion = { [weak self] wallet in
             
@@ -84,17 +87,17 @@ class VotingViewController0 : BaseViewController {
         }
         popUpVC.show(inViewController: self)
     }
-    
+     
     @objc func onVote(){
         
         view.endEditing(true)
         
-        showLoading()
+        showLoadingHUD()
         VoteManager.sharedInstance.GetTicketPrice { [weak self] (res, _) in
             
             guard let self = self else {return}
             
-            self.hideLoading()
+            self.hideLoadingHUD()
             
             switch res{
             case .success:
@@ -126,14 +129,15 @@ class VotingViewController0 : BaseViewController {
                     TransactionService.service.getEthGasPrice(completion: nil)
                     return
                 }
-                
+                 
                 self.confirmPopUpView = PopUpViewController()
                 let confirmView = UIView.viewFromXib(theClass: VoteConfirmView.self) as! VoteConfirmView
                 confirmView.submitBtn.addTarget(self, action: #selector(self.onSubmit), for: .touchUpInside)
-                self.confirmPopUpView.setUpContentView(view: confirmView, size: CGSize(width: kUIScreenWidth, height: 260))
+                self.confirmPopUpView.setUpContentView(view: confirmView, size: CGSize(width: PopUpContentWidth, height: 345))
                 self.confirmPopUpView.setCloseEvent(button: confirmView.closeBtn)
-                confirmView.submitBtn.style = .gray
-                confirmView.totalLabel.text = VoteManager.sharedInstance.ticketPrice!.multiplied(by: numOfTickets).convertToEnergon(round: 8).ATPSuffix()
+                confirmView.totalLabel.text = VoteManager.sharedInstance.ticketPrice!.multiplied(by: numOfTickets).convertToEnergon(round: 8)
+                confirmView.walletAddressLabel.text = self.selectedWallet?.key?.address
+                confirmView.walletName.text = self.selectedWallet?.name
                 confirmView.feeLabel.text = TransactionService.service.ethGasPrice!.multiplied(by: BigUInt(deploy_UseStipulatedGas)).convertToEnergon(round: 8).ATPSuffix()
                 self.confirmPopUpView.show(inViewController: self)
 
@@ -145,50 +149,54 @@ class VotingViewController0 : BaseViewController {
 
     }
     
-    func showInputPswAlert() {
+    
+    func showPasswordInputPswAlert() {
         
-        let alertC = PAlertController(title: Localized("alert_input_psw_title"), message: nil)
-        alertC.addTextField(text: "", placeholder: "", isSecureTextEntry: true)
-        
-        alertC.addAction(title: Localized("alert_cancelBtn_title")) {
-        }
-        
-        alertC.addAction(title: Localized("alert_confirmBtn_title")) { [weak self] in
-            
-            alertC.dismiss(animated: true, completion: nil)
-            
-            self?.showLoading()
-            
-            WalletService.sharedInstance.exportPrivateKey(wallet: (self!.selectedWallet)!, password: (alertC.textField?.text)!, completion: { (pri, err) in
+        let alertVC = AlertStylePopViewController.initFromNib()
+        self.passwordInputAlert = alertVC
+        let style = PAlertStyle.passwordInput(walletName: self.selectedWallet?.name) 
+        alertVC.onAction(confirm: {[weak self] (text, _) -> (Bool)  in
+            let valid = CommonService.isValidWalletPassword(text ?? "")
+            if !valid.0{ 
+                alertVC.showInputErrorTip(string: valid.1)
+                return false
+            }
+            if let notnilAlertVC = self?.passwordInputAlert{
+                notnilAlertVC.showLoadingHUD()
+            }
+            WalletService.sharedInstance.exportPrivateKey(wallet: self!.selectedWallet!, password: (alertVC.textFieldInput?.text)!, completion: { (pri, err) in
                 if (err == nil && (pri?.length)! > 0) {
                     self?.doVote(pri!)
+                    alertVC.dismissWithCompletion()
                 }else{
-                    self?.hideLoading()
-                    self?.showMessage(text: (err?.errorDescription)!, delay: 2)
+                    if let notnilAlertVC = self?.passwordInputAlert{
+                        notnilAlertVC.hideLoadingHUD()
+                    }
+                    self?.showMessage(text: (err?.errorDescription)!)
                 }
             })
+            return false
             
+        }) { (_, _) -> (Bool) in
+            return true
         }
-        
-        alertC.inputVerify = { input in
-            return CommonService.isValidWalletPassword(input).0
-        }
-        alertC.addActionEnableStyle(title: Localized("alert_confirmBtn_title"))
-        alertC.show(inViewController: self, animated: false)
-        alertC.textField?.becomeFirstResponder()
-        
+        alertVC.style = style
+        alertVC.showInViewController(viewController: self)
+        return
     }
     
     func doVote(_ pri: String){
-        
-        VoteManager.sharedInstance.VoteTicket(count: UInt64(self.votingView.voteNumber!.text!)!, price: VoteManager.sharedInstance.ticketPrice!, nodeId: (self.candidate?.candidateId)!, sender: (self.selectedWallet?.key?.address)!, privateKey: pri, gasPrice: TransactionService.service.ethGasPrice!, gas: deploy_UseStipulatedGas) { (result, data) in
-            self.hideLoading()
+         
+        VoteManager.sharedInstance.VoteTicket(count: UInt64(self.votingView.voteNumber!.text!)!, price: VoteManager.sharedInstance.ticketPrice!, nodeId: (self.candidate?.candidateId)!, sender: (self.selectedWallet?.key?.address)!, privateKey: pri, gasPrice: TransactionService.service.ethGasPrice!, gas: deploy_UseStipulatedGas) {[weak self] (result, data) in
+            if let notnilAlertVC = self?.passwordInputAlert{
+                notnilAlertVC.showLoadingHUD()
+            }
             switch result{
             case .success:
-                self.navigationController?.popViewController(animated: true)
+                self?.navigationController?.popViewController(animated: true)
                 UIApplication.rootViewController().showMessage(text: Localized("VotingViewController_success_tips"), delay: 2)
             case .fail(_, let errMsg):
-                self.showMessage(text: errMsg!, delay: 2)
+                self?.showMessage(text: errMsg!, delay: 2)
             }
         }
         
@@ -198,7 +206,7 @@ class VotingViewController0 : BaseViewController {
         
         confirmPopUpView.onDismissViewController()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            self.showInputPswAlert()
+            self.showPasswordInputPswAlert()
         }
         
     }

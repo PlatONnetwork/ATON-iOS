@@ -19,8 +19,8 @@ class QRDisplayViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        navigationItem.localizedText = "ReceiveVC_nav_title"
+         
+        super.leftNavigationTitle = "ReceiveVC_nav_title"
         view.addSubview(qrCodeView)
         qrCodeView.snp.makeConstraints { (make) in
             make.leading.trailing.top.bottom.equalTo(view)
@@ -30,13 +30,13 @@ class QRDisplayViewController: BaseViewController {
             let qrImage = setupQRCodeImage((wallet.key?.address)!, image: nil)
             qrCodeView.qrCodeImageView.image = qrImage
             qrCodeView.addressLabel.text = wallet.key?.address
-            qrCodeView.publicKeyLabel.text = wallet.key?.publicKey
-            qrCodeView.walletNameLabel.text = wallet.name
+//            qrCodeView.publicKeyLabel.text = wallet.key?.publicKey
+//            qrCodeView.walletNameLabel.text = wallet.name
         }else if let swallet = walletInstance as? SWallet{
             let qrImage = setupQRCodeImage(swallet.contractAddress, image: nil)
             qrCodeView.qrCodeImageView.image = qrImage
             qrCodeView.addressLabel.text = swallet.contractAddress
-            qrCodeView.walletNameLabel.text = swallet.name
+//            qrCodeView.walletNameLabel.text = swallet.name
             qrCodeView.hidePublicKeyArea()
         }
         
@@ -53,13 +53,13 @@ class QRDisplayViewController: BaseViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidLoad()
-        displayAlert()
+        //displayAlert()
     }
     
     @objc func onNavRight(){
         let popUpVC = PopUpViewController()
         let view = SharedView()
-        popUpVC.setUpContentView(view: view, size: CGSize(width: kUIScreenWidth, height: SharedView.getSharedViewHeight()))
+        popUpVC.setUpContentView(view: view, size: CGSize(width: PopUpContentWidth, height: SharedView.getSharedViewHeight()))
         popUpVC.setCloseEvent(button: view.closeBtn)
         popUpVC.show(inViewController: self)
     }
@@ -137,7 +137,7 @@ class QRDisplayViewController: BaseViewController {
             string = swallet.contractAddress
         }
         
-        UIApplication.rootViewController().showLoading(text: Localized("SharedQRViewSaving"), animated: true)
+        UIApplication.rootViewController().showLoadingHUD(text: Localized("SharedQRViewSaving"), animated: true)
         DispatchQueue.global().async {
             let image = self.setupQRCodeImage(string!, image: nil)
             DispatchQueue.main.async {
@@ -146,13 +146,13 @@ class QRDisplayViewController: BaseViewController {
                     self.sharedQRView.qrImageView.image = image
                     self.sharedQRView.walletAddress.text = wallet.key?.address
                     self.sharedQRView.walletName.text = wallet.name
-                    self.sharedQRView.logoImage.image = UIImage(named: (wallet.key?.address.walletRandomAvatar())!)
+                    self.sharedQRView.logoImage.image = UIImage(named: (wallet.key?.address.walletAddressLastCharacterAvatar())!)
                     
                 }else if let swallet = self.walletInstance as? SWallet{
                     self.sharedQRView.qrImageView.image = image
                     self.sharedQRView.walletAddress.text = swallet.contractAddress
                     self.sharedQRView.walletName.text = swallet.name
-                    self.sharedQRView.logoImage.image = UIImage(named: (swallet.contractAddress.walletRandomAvatar()))
+                    self.sharedQRView.logoImage.image = UIImage(named: (swallet.contractAddress.walletAddressLastCharacterAvatar()))
                 }
                 
                 let vc = SharedPresentedVC()
@@ -171,10 +171,10 @@ class QRDisplayViewController: BaseViewController {
         }
 
     }
-    
+     
     
     @objc func image(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
-        UIApplication.rootViewController().hideLoading()
+        UIApplication.rootViewController().hideLoadingHUD()
         if error != nil {
             self.showMessage(text: Localized("SharedQRView_photolib_unauthorized_tips"))
         } else {

@@ -21,7 +21,7 @@ class MainImportWalletViewController: BaseViewController,UIScrollViewDelegate,Im
         let vc = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         vc.delegate = self
         vc.dataSource = self
-        return vc
+        return vc 
         
     }()
     
@@ -35,8 +35,9 @@ class MainImportWalletViewController: BaseViewController,UIScrollViewDelegate,Im
     
     lazy var viewControllers: [BaseImportWalletViewController] = {
         
-        return [ImportKeystoreViewController(), ImportMnemonicOrPrivateKeyViewController(type: .mnemonic), ImportMnemonicOrPrivateKeyViewController(type: 
-            .privateKey)]
+        return [ImportKeystoreViewController(),
+                ImportMnemonicOrPrivateKeyViewController(type: .mnemonic),
+                ImportMnemonicOrPrivateKeyViewController(type: .privateKey)]
         
     }()
     
@@ -65,10 +66,10 @@ class MainImportWalletViewController: BaseViewController,UIScrollViewDelegate,Im
     
     func setupUI() {
         
-        navigationItem.localizedText = "importWalletVC_title"
+        super.leftNavigationTitle = "importWalletVC_title"
         
         let scanButton = UIButton(type: .custom)
-        scanButton.setImage(UIImage(named: "navScanWhite"), for: .normal)
+        scanButton.setImage(UIImage(named: "navScanBlack"), for: .normal)
         scanButton.addTarget(self, action: #selector(onNavRightBtnClick), for: .touchUpInside)
         scanButton.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
         let rightBarButtonItem = UIBarButtonItem(customView: scanButton)
@@ -76,7 +77,13 @@ class MainImportWalletViewController: BaseViewController,UIScrollViewDelegate,Im
     
         view.addSubview(headerView)
         headerView.snp.makeConstraints { (maker) in
-            maker.top.left.right.equalToSuperview()
+            //maker.top.equalToSuperview().offset(44 + 20 + UIDevice.notchHeight)
+            if #available(iOS 11.0, *) {
+                maker.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            } else {
+                maker.top.equalToSuperview().offset(44 + 20)
+            }
+            maker.left.right.equalToSuperview()
             maker.height.equalTo(42)
         }
         
@@ -87,10 +94,12 @@ class MainImportWalletViewController: BaseViewController,UIScrollViewDelegate,Im
         view.addSubview(pageVC.view)
         pageVC.view.snp.makeConstraints { (maker) in
             maker.left.right.bottom.equalToSuperview()
-            maker.top.equalTo(headerView.snp.bottom)
+            maker.top.equalTo(headerView.snp.bottom).offset(0)
         }
-        
     }
+    
+    
+    
     
     @objc func onNavRightBtnClick() {
         

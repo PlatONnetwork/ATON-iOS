@@ -26,6 +26,7 @@ class SWallet: Object {
     
     @objc dynamic var name: String = ""
     
+    //owner Address
     @objc dynamic var walletAddress: String = ""
     
     @objc dynamic var contractAddress: String = ""
@@ -41,6 +42,7 @@ class SWallet: Object {
     
     var owners = List<AddressInfo>()
     
+    //joint wallet contract deploy hash
     @objc dynamic var deployHash: String = ""
     
     @objc dynamic var initWalletHash: String = ""
@@ -48,6 +50,8 @@ class SWallet: Object {
     @objc dynamic var deployReceptionLooptime = 0
     
     @objc dynamic var initWalletReceptionLooptime = 0
+    
+    @objc dynamic var userArrangementIndex = -1
     
     override public static func primaryKey() -> String? {
         return "uuid"
@@ -103,6 +107,7 @@ class SWallet: Object {
         self.owners.append(objectsIn: ownerAddrInfos)
     }
     
+    //0~100
     var progress: Int{
         get{
             if self.creationStatus == ECreationStatus.deploy_HashGenerated.rawValue{

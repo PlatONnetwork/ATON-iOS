@@ -9,6 +9,8 @@
 import UIKit
 import Spring
 
+let PopUpContentWidth = kUIScreenWidth - 24 * 2
+
 class PopUpViewController: UIViewController {
     
     var contentView : UIView?
@@ -16,6 +18,8 @@ class PopUpViewController: UIViewController {
     let bgView = UIView()
     
     let dismissView = UIView()
+    
+    var dismissCompletion: (() -> ())?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,7 +32,7 @@ class PopUpViewController: UIViewController {
             make.leading.trailing.top.bottom.equalTo(view)
         }
         
-        let tapGes = UITapGestureRecognizer(target: self, action: #selector(onDismissViewController))
+        let tapGes = UITapGestureRecognizer(target: self, action: #selector(touchClose))
         dismissView.addGestureRecognizer(tapGes)
         dismissView.backgroundColor = UIColor(rgb: 0xff0000, alpha: 0)
         
@@ -36,6 +40,7 @@ class PopUpViewController: UIViewController {
     
     
     func setUpContentView(view : UIView, size : CGSize) {
+
         contentView = view
         bgView.addSubview(contentView!)
         contentView?.snp.makeConstraints({ (make) in
@@ -50,40 +55,49 @@ class PopUpViewController: UIViewController {
             make.top.leading.trailing.equalTo(bgView)
             make.bottom.equalTo((contentView?.snp_topMargin)!)
         }
+        contentView?.layer.cornerRadius = 8
+        contentView?.layer.masksToBounds = true
     }
     
     func setCloseEvent(button : UIButton){
-        button.addTarget(self, action: #selector(onDismissViewController), for: .touchUpInside)
+        button.addTarget(self, action: #selector(touchClose), for: .touchUpInside)
+    }
+    
+    @objc func touchClose(){
+        self.onDismissViewController()
     }
     
     
-    
-    @objc func onDismissViewController() {
-        
-        UIView.animate(withDuration: 0.35,
-                       delay: 0,
-                       usingSpringWithDamping: CGFloat(0.75),
-                       initialSpringVelocity: CGFloat(3.0),
-                       options: UIView.AnimationOptions.allowUserInteraction,
-                       animations: {
-                        
-                        self.contentView?.snp.updateConstraints({ (make) in
-                            make.bottom.equalTo(self.bgView.snp.bottom).offset(kUIScreenHeight)
-                        })
-                        self.contentView!.superview!.layoutIfNeeded()
-                        self.bgView.alpha = 0
-                        
-        },completion: { Void in()
-            self.presentingViewController?.dismiss(animated: false
-                , completion: nil)
-        })
-        
+    @objc func onDismissViewController(animated: Bool = true, completion: (() -> ())? = nil) {
+        if self.dismissCompletion != nil{
+            self.dismissCompletion!()
+        }
+        if animated{
+            UIView.animate(withDuration: 0.15,
+                           delay: 0,
+                           usingSpringWithDamping: CGFloat(0.75),
+                           initialSpringVelocity: CGFloat(3.0),
+                           options: UIView.AnimationOptions.allowUserInteraction,
+                           animations: {
+                            
+                            self.contentView?.snp.updateConstraints({ (make) in
+                                make.bottom.equalTo(self.bgView.snp.bottom).offset(kUIScreenHeight)
+                            })
+                            self.contentView!.superview!.layoutIfNeeded()
+                            self.bgView.alpha = 0
+                            
+            },completion: { Void in()
+                self.presentingViewController?.dismiss(animated: false, completion: completion)
+            })
+        }else{
+            self.presentingViewController?.dismiss(animated: false, completion: completion)
+        } 
         
     }
     
     open func show(inViewController vc: UIViewController, animated: Bool = false){
         
-        self.modalPresentationStyle = UIModalPresentationStyle.overCurrentContext
+        self.modalPresentationStyle = UIModalPresentationStyle.overFullScreen
         vc.present(self, animated: animated) {
             
             UIView.animate(withDuration: 0.35,
@@ -94,7 +108,7 @@ class PopUpViewController: UIViewController {
                            animations: {
                             
                             self.contentView?.snp.updateConstraints({ (make) in
-                                make.bottom.equalTo(self.bgView.snp.bottom)
+                                make.bottom.equalTo(self.bgView.snp.bottom).offset(-16)
                             })
                             self.contentView!.superview!.layoutIfNeeded()
                             
@@ -112,3 +126,4 @@ class PopUpViewController: UIViewController {
     }
 
 }
+

@@ -21,7 +21,7 @@ class ShareWalletConfirmVC: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         initsubViews()
-        navigationItem.localizedText = "ConfrimVC_nav_title"
+        super.leftNavigationTitle = "ConfrimVC_nav_title"
     } 
     
     func initsubViews(){

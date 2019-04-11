@@ -17,7 +17,7 @@ class SingleVoteDetailListVC : BaseViewController, UITableViewDelegate,UITableVi
     
     var candidate : CandidateBasicInfo?
     
-    var tickets: [Ticket]?
+    var voteSum : NodeVoteSummary?
     
     var dataSource : [SingleVote] = []
     
@@ -33,7 +33,7 @@ class SingleVoteDetailListVC : BaseViewController, UITableViewDelegate,UITableVi
     
     func initSubViews() {
         
-        self.navigationItem.localizedText = "SingleVoteDetailListVC_nav_title"
+        super.leftNavigationTitle = "SingleVoteDetailListVC_nav_title"
         
         view.backgroundColor = UIViewController_backround
         
@@ -65,12 +65,9 @@ class SingleVoteDetailListVC : BaseViewController, UITableViewDelegate,UITableVi
         super.viewWillLayoutSubviews()
         let header = tableviewHeader()
 
-        var height = header?.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
+        //var height = header?.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
         var newFrame = header?.frame
-        if height == nil || height == 0.0{
-            height = 98
-        }
-        newFrame?.size.height = height!;
+        newFrame?.size.height = 124
         header?.frame = newFrame!
         tableView.tableHeaderView = header
     }
@@ -81,39 +78,13 @@ class SingleVoteDetailListVC : BaseViewController, UITableViewDelegate,UITableVi
         guard let candidate = candidate else {
             return
         }
-        
-        guard let tickets = tickets else {
-            return
-        }
-        
         tableViewHeader?.updateView(candidate)
-        
-        let data = VotePersistence.getSingleVotesByCandidate(candidateId: candidate.id)
-        
-        var tempDic = [String:Ticket]()
-        for ticket in tickets {
-            tempDic[ticket.ticketId ?? ""] = ticket
-        }
-        for vote in data {
-            for var t in vote.tickets {
-                t = tempDic[t.ticketId ?? ""]!
-            }
-        }
-        
-        dataSource = data
+        dataSource.removeAll()
+        let singlevotes = voteSum?.singleVote as! [SingleVote]
+        dataSource.append(contentsOf: singlevotes)
   
-        
-//        VoteManager.sharedInstance.CandidateDetails(candidateId: candidateId!) { [weak self] (res, data) in
-//            switch res{
-//            case .success:
-//                self?.tableViewHeader?.updateView(data as! Candidate)
-//            default:
-//                break
-//            }
-//            
-//        }
     }
-    
+     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell : VoteDetailCell = tableView.dequeueReusableCell(withIdentifier: String(describing: VoteDetailCell.self)) as! VoteDetailCell
 
@@ -131,7 +102,8 @@ class SingleVoteDetailListVC : BaseViewController, UITableViewDelegate,UITableVi
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 226
+        //return 226
+        return 252
     }
     
     

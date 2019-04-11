@@ -25,26 +25,26 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchLogo" translatesAutoresizingMaskIntoConstraints="NO" id="xrJ-3q-YoN">
-                    <rect key="frame" x="147.5" y="75" width="80" height="160"/>
+                    <rect key="frame" x="155" y="75" width="65" height="130"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="80" id="2S2-Qq-DqY"/>
-                        <constraint firstAttribute="height" constant="160" id="OU2-yQ-gW3"/>
+                        <constraint firstAttribute="width" constant="65" id="2S2-Qq-DqY"/>
+                        <constraint firstAttribute="height" constant="130" id="OU2-yQ-gW3"/>
                     </constraints>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JlV-Z7-NGh">
-                    <rect key="frame" x="187.5" y="243" width="0.0" height="0.0"/>
+                    <rect key="frame" x="187.5" y="213" width="0.0" height="0.0"/>
                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                     <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="localAuth_icon_face" translatesAutoresizingMaskIntoConstraints="NO" id="wir-mz-BFI">
-                    <rect key="frame" x="145.5" y="316" width="84" height="84"/>
+                    <rect key="frame" x="145.5" y="286" width="84" height="84"/>
                 </imageView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7sR-qV-vPl">
-                    <rect key="frame" x="152" y="420" width="71" height="29"/>
+                    <rect key="frame" x="152" y="390" width="71" height="29"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <state key="normal" title="11111111111">
-                        <color key="titleColor" red="1" green="0.92941176469999998" blue="0.3294117647" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="titleColor" red="0.062745098039215685" green="0.36078431372549019" blue="0.99607843137254903" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <connections>
                         <action selector="continueAuth:" destination="-1" eventType="touchUpInside" id="Inu-7S-ffH"/>
@@ -54,7 +54,7 @@
                     <rect key="frame" x="170.5" y="610" width="34" height="27"/>
                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                     <state key="normal" title="111111">
-                        <color key="titleColor" red="1" green="0.92941176469999998" blue="0.3294117647" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="titleColor" red="0.062745098039215685" green="0.36078431372549019" blue="0.99607843137254903" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="string" keyPath="localizedNormalTitle" value="BiometricsAuthVC_switchBtn_title"/>
@@ -64,7 +64,7 @@
                     </connections>
                 </button>
                 <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ytn-re-KVk">
-                    <rect key="frame" x="16" y="457" width="343" height="17"/>
+                    <rect key="frame" x="16" y="427" width="343" height="17"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <color key="textColor" red="1" green="0.2784313725" blue="0.2784313725" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
@@ -73,7 +73,7 @@
                     </userDefinedRuntimeAttributes>
                 </label>
             </subviews>
-            <color key="backgroundColor" red="0.1058823529" green="0.12941176469999999" blue="0.2156862745" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="wir-mz-BFI" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="0Iq-XH-x9J"/>
                 <constraint firstItem="xrJ-3q-YoN" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="Btf-ml-dRq"/>
@@ -94,7 +94,7 @@
         </view>
     </objects>
     <resources>
-        <image name="LaunchLogo" width="80" height="106"/>
+        <image name="LaunchLogo" width="100" height="134"/>
         <image name="localAuth_icon_face" width="84" height="84"/>
     </resources>
 </document>

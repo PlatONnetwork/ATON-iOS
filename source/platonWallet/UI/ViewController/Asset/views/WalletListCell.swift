@@ -51,13 +51,13 @@ class WalletListCell: UITableViewCell {
             walletName.text = aptWallet.name
             coinName.text = "Energon";
             address = aptWallet.key?.address
-            coinIcon.image = UIImage(named: (aptWallet.key?.address.walletRandomAvatar())!)
+            coinIcon.image = UIImage(named: (aptWallet.key?.address.walletAddressLastCharacterAvatar())!)
             unreadDot.isHidden = true
             
         }else if let swallet = wallet as? SWallet{
             walletName.text = swallet.name
             coinName.text = "Energon"; 
-            coinIcon.image = UIImage(named: swallet.contractAddress.walletRandomAvatar())
+            coinIcon.image = UIImage(named: swallet.contractAddress.walletAddressLastCharacterAvatar())
             address = swallet.contractAddress
             unreadDot.isHidden = !STransferPersistence.unreadMessageExistedWithContractAddress((swallet.contractAddress))
         }

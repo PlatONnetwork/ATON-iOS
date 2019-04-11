@@ -1,0 +1,6 @@
+framework module Pods_platonWallet {
+  umbrella header "Pods-platonWallet-umbrella.h"
+
+  export *
+  module * { export * }
+}

@@ -18,34 +18,45 @@ class WalletCreateOrImportViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        //self.navigationController?.navigationBar.isHidden = true
+        self.navigationController?.isNavigationBarHidden = true
+    }
+    
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
     }
     
     func setupUI() {
-        createWalletBtn.setTitle(Localized("WelcomePage_create_wallet"), for: .normal)
-        importWalletBtn.setTitle(Localized("WelcomePage_import_wallet"), for: .normal)
-        
+        createWalletBtn.style = .blue
+        importWalletBtn.style = .gray
+        createWalletBtn.setHorizontalLinerTitleAndImage(image: UIImage(named: "walletCreateIcon")!)
+        importWalletBtn.setHorizontalLinerTitleAndImage(image: UIImage(named: "walletImportIcon")!)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: false)
+        
+    }
+    
+    override func didMove(toParent parent: UIViewController?) {
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-//        navigationController?.setNavigationBarHidden(false, animated: false)
+        
+
     }
+    
+
     
     @IBAction func onCreateWallet(_ sender: Any) {
         let createWalletVC = CreateIndividualWalletViewController()
-        
-        rt_navigationController.pushViewController(createWalletVC, animated: true)
+        //let createWalletVC = TSLViewControllerTwo()
+        self.rt_navigationController.pushViewController(createWalletVC, animated: true, complete: nil)
     }
     
     @IBAction func onImportWallet(_ sender: Any) {
-        
-        rt_navigationController.pushViewController(MainImportWalletViewController(), animated: true)
-        
+        self.rt_navigationController.pushViewController(MainImportWalletViewController(), animated: true)
     }
     
     

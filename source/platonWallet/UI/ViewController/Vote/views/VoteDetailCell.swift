@@ -19,7 +19,7 @@ class VoteDetailCell: UITableViewCell {
     
     @IBOutlet weak var lockedAndReleaseLabel: UILabel!
     
-    @IBOutlet weak var rewardLabel: UILabel!
+    //@IBOutlet weak var rewardLabel: UILabel!
     
     @IBOutlet weak var voteWalletAddressLabel: UILabel!
     
@@ -43,13 +43,20 @@ class VoteDetailCell: UITableViewCell {
     func updateCell(singleVote: SingleVote){
        
         voteDateLabel.text = Date(timeIntervalSince1970: TimeInterval(singleVote.createTime)).toFormatter("yyyy-MM-dd HH:mm:ss")
+        let validNumber = Int(singleVote.validNum) ?? 0
+        let invalidNumber = singleVote.invalidNumber
+        validInvalidLabel.text = String(format: "%d/%d", validNumber, invalidNumber)
         
-        validInvalidLabel.text = String(format: "%d/%d", singleVote.validCount,singleVote.invalidCount)
+        let price = BigUInt(singleVote.deposit ?? "0")!
+        let priceDes = price.divide(by: ETHToWeiMultiplier, round: 8).EnergonSuffix()
+        ticketPriceLabel.text = priceDes
         
-        ticketPriceLabel.text = singleVote.ticketPrice.EnergonSuffix()
+        let lockedDes = price.multiplied(by: BigUInt(String(validNumber))!).divide(by: ETHToWeiMultiplier, round: 8)
+        let releaseDes = price.multiplied(by: BigUInt(String(invalidNumber))!).divide(by: ETHToWeiMultiplier, round: 8)
     
-        lockedAndReleaseLabel.text = String(format: "%@/%@", singleVote.assetOflocked ?? "-",singleVote.releaseOfVote ?? "-")
-        rewardLabel.text = singleVote.voteEarnings?.EnergonSuffix()
+        lockedAndReleaseLabel.text = String(format: "%@/%@", lockedDes,releaseDes)
+        
+        //rewardLabel.text = singleVote.voteEarnings?.EnergonSuffix()
         
         voteWalletAddressLabel.text = "\(singleVote.owner)(\(singleVote.walletName))"
         

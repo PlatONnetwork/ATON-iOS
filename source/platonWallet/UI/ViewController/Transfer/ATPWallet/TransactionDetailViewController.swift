@@ -19,7 +19,7 @@ class TransactionDetailViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         initSubViews()
-        navigationItem.localizedText = "TransactionDetailVC_nav_title"
+        super.leftNavigationTitle = "TransactionDetailVC_nav_title"
        
         NotificationCenter.default.addObserver(self, selector: #selector(didReceiveTransactionUpdate(_:)), name:NSNotification.Name(DidUpdateTransactionByHashNotification) , object: nil)
     }

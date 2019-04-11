@@ -16,7 +16,11 @@ let WillUpdateUnreadDot_Notification = "WillUpdateUnreadDot_Notification"
 
 let DidUpdateAllAssetNotification = "DidUpdateAllAssetNotification"
 
+let DidNodeGasPriceUpdateNotification = "DidNodeGasPriceUpdateNotification"
+
 let DidJointWalletUpdateProgress_Notification = "DidJointWalletUpdateProgress_Notification"
+
+let WillDeleateWallet_Notification = "WillDeleateWallet_Notification"
 
 let updateWalletList_Notification = "updateWalletList_Notification"
 
@@ -24,3 +28,6 @@ let didswitchNode_Notification = "didswitchNode_Notification"
 
 let DidUpdateVoteTransactionByHashNotification = "DidUpdateVoteTransactionByHashNotification"
 
+let BackupMnemonicFinishNotification = "BackupMnemonicFinishNotification"
+
+let ChangeCandidatesTableViewCellbackground = "ChangeCandidatesTableViewCellbackground"

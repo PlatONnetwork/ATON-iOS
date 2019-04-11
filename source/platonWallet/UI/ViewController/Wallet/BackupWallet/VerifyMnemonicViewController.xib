@@ -13,7 +13,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="VerifyMnemonicViewController" customModule="platonWallet" customModuleProvider="target">
             <connections>
                 <outlet property="clearBtn" destination="ipD-La-yZ3" id="P0M-jD-wr3"/>
-                <outlet property="inputCollectionView" destination="We2-HU-AXQ" id="ADo-P8-5oy"/>
+                <outlet property="mnemonicContainer" destination="bVO-IZ-1MD" id="JDN-nl-EKh"/>
                 <outlet property="optionCollectionView" destination="iWi-2C-bdp" id="bBu-Gu-xbZ"/>
                 <outlet property="submitButton" destination="KPs-pW-bNj" id="rjj-BU-3Y1"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -27,39 +27,29 @@
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NK1-tD-9Or">
                     <rect key="frame" x="20" y="52" width="335" height="18"/>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <nil key="highlightedColor"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="verifyMnemonicVC_tips"/>
                     </userDefinedRuntimeAttributes>
                 </label>
-                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="We2-HU-AXQ">
-                    <rect key="frame" x="24" y="90" width="327" height="112"/>
-                    <color key="backgroundColor" red="0.1215686275" green="0.15686274510000001" blue="0.25490196079999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="112" id="iMp-U6-vd0"/>
-                    </constraints>
-                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="5Ie-O1-UcD">
-                        <size key="itemSize" width="50" height="50"/>
-                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
-                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
-                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
-                    </collectionViewFlowLayout>
-                </collectionView>
                 <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="iWi-2C-bdp">
-                    <rect key="frame" x="24" y="218" width="327" height="100"/>
+                    <rect key="frame" x="24" y="299" width="327" height="100"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="100" id="Emk-gy-rYG"/>
                     </constraints>
                     <collectionViewLayout key="collectionViewLayout" id="jZy-FT-cwe" customClass="LeftAlignLayout" customModule="platonWallet" customModuleProvider="target"/>
                 </collectionView>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ipD-La-yZ3" customClass="PButton" customModule="platonWallet" customModuleProvider="target">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ipD-La-yZ3">
                     <rect key="frame" x="16" y="613" width="343" height="40"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="hcu-hv-Roy"/>
                     </constraints>
-                    <state key="normal" title="Button"/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                    <state key="normal" title="Empty">
+                        <color key="titleColor" red="0.062745098039215685" green="0.36078431372549019" blue="0.99607843137254903" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="string" keyPath="localizedNormalTitle" value="verifyMnemonicVC_emptyBtn_title"/>
                     </userDefinedRuntimeAttributes>
@@ -68,10 +58,11 @@
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KPs-pW-bNj" customClass="PButton" customModule="platonWallet" customModuleProvider="target">
-                    <rect key="frame" x="16" y="561" width="343" height="40"/>
+                    <rect key="frame" x="16" y="564" width="343" height="44"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="40" id="SS3-SI-hE9"/>
+                        <constraint firstAttribute="height" constant="44" id="SS3-SI-hE9"/>
                     </constraints>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                     <state key="normal" title="Button"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="string" keyPath="localizedNormalTitle" value="verifyMnemonicVC_submitBtn_title"/>
@@ -80,24 +71,31 @@
                         <action selector="submit:" destination="-1" eventType="touchUpInside" id="jxb-2e-cnM"/>
                     </connections>
                 </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bVO-IZ-1MD">
+                    <rect key="frame" x="16" y="86" width="343" height="192"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="192" id="q4B-iJ-dSK"/>
+                    </constraints>
+                </view>
             </subviews>
-            <color key="backgroundColor" red="0.1058823529" green="0.12941176469999999" blue="0.2156862745" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
+                <constraint firstItem="iWi-2C-bdp" firstAttribute="top" secondItem="bVO-IZ-1MD" secondAttribute="bottom" constant="21" id="260-w6-yBc"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="iWi-2C-bdp" secondAttribute="trailing" constant="24" id="7SL-wp-hOd"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="bVO-IZ-1MD" secondAttribute="trailing" constant="16" id="8Ix-ko-cMU"/>
                 <constraint firstItem="iWi-2C-bdp" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="AVs-cs-QmM"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="We2-HU-AXQ" secondAttribute="trailing" constant="24" id="GR4-4r-8pt"/>
                 <constraint firstItem="NK1-tD-9Or" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="HYr-Ez-y84"/>
-                <constraint firstItem="ipD-La-yZ3" firstAttribute="top" secondItem="KPs-pW-bNj" secondAttribute="bottom" constant="12" id="IsQ-RA-E2A"/>
+                <constraint firstItem="bVO-IZ-1MD" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="QEz-53-WvV"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="ipD-La-yZ3" secondAttribute="trailing" constant="16" id="QGd-Tt-mdX"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="NK1-tD-9Or" secondAttribute="trailing" constant="20" id="Qa9-mZ-M6q"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="KPs-pW-bNj" secondAttribute="trailing" constant="16" id="TE5-g5-FmZ"/>
                 <constraint firstItem="ipD-La-yZ3" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="Vo2-DW-uED"/>
-                <constraint firstItem="We2-HU-AXQ" firstAttribute="top" secondItem="NK1-tD-9Or" secondAttribute="bottom" constant="20" id="cOU-Uo-aLQ"/>
-                <constraint firstItem="We2-HU-AXQ" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="cdv-rl-O7I"/>
                 <constraint firstItem="NK1-tD-9Or" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="32" id="ffJ-HU-whp"/>
                 <constraint firstItem="KPs-pW-bNj" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="gLF-4P-oae"/>
+                <constraint firstItem="bVO-IZ-1MD" firstAttribute="top" secondItem="NK1-tD-9Or" secondAttribute="bottom" constant="16" id="hro-D7-1FU"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="ipD-La-yZ3" secondAttribute="bottom" constant="14" id="imZ-aB-GUW"/>
-                <constraint firstItem="iWi-2C-bdp" firstAttribute="top" secondItem="We2-HU-AXQ" secondAttribute="bottom" constant="16" id="oxL-PN-p6q"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="KPs-pW-bNj" secondAttribute="bottom" constant="59" id="lFv-98-jjS"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
         </view>

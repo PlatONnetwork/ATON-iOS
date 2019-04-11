@@ -21,7 +21,7 @@ target 'platonWallet' do
   pod 'ScryptSwift'
   pod 'SwipeCellKit'
   pod 'EmptyDataSet-Swift', '~> 4.2.0'
-
+  pod 'SwiftReorder', '~> 6.0'
   
   # Web3 dependencies BigInt CryptoSwift secp256k1.swift
   #pod 'BigInt', '~> 3.1'

@@ -11,8 +11,8 @@ import RealmSwift
 
 /// Support account types.
 public enum WalletType {
-    case ATPWallet
-    case sWallet
+    case ClassicWallet
+    case JointWallet
 }
 
 
@@ -36,9 +36,17 @@ public final class Wallet: Object {
     
     @objc dynamic var avatar: String = ""
     
-    var type: WalletType = .ATPWallet
+    @objc dynamic var userArrangementIndex = -1
+    
+    var type: WalletType = .ClassicWallet
     
     public var key: Keystore?
+    
+    public var canBackupMnemonic: Bool {
+        get{
+            return key?.mnemonic != nil
+        }
+    }
     
 //    public var keystoreJson: String? {
 //        
@@ -63,7 +71,7 @@ public final class Wallet: Object {
         key = keystoreObject
         keystorePath = ""
         self.name = name
-        self.avatar = keystoreObject.address.walletRandomAvatar()
+        self.avatar = keystoreObject.address.walletAddressLastCharacterAvatar()
         
     }
     

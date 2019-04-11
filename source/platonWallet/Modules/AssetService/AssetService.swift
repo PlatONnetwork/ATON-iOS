@@ -117,14 +117,14 @@ class AssetService : BaseService{
         for wallet in wallets{
             let balance = WalletBalance()
             balance.address = wallet.key?.address
-            balance.walletType = WalletType.ATPWallet
+            balance.walletType = WalletType.ClassicWallet
             addresses.append(balance)
         }
         
         for swallet in swallets{
             let balance = WalletBalance()
             balance.address = swallet.contractAddress
-            balance.walletType = WalletType.sWallet
+            balance.walletType = WalletType.JointWallet
             addresses.append(balance)
         }
         

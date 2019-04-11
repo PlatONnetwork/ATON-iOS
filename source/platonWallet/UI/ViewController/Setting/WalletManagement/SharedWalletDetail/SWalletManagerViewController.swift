@@ -15,19 +15,18 @@ class SWalletManagerViewController: BaseViewController,UITableViewDataSource,UIT
     
     var owners : [AddressInfo] = []
     
-    @IBOutlet weak var walletAvatar: UIImageView!
-    
-    @IBOutlet weak var walletNameLabel: UILabel!
-    
-    @IBOutlet weak var walletAddressLabel: UILabel!
-    
     @IBOutlet weak var tableView: UITableView!
     
     @IBOutlet weak var ownerNameLabel: UILabel!
     
     @IBOutlet weak var ownerAddressLabel: UILabel!
     
+    @IBOutlet weak var walletName: UILabel!
+    
     var alertPswInput: String?
+    
+    
+    @IBOutlet weak var deleteButton: PButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,7 +35,7 @@ class SWalletManagerViewController: BaseViewController,UITableViewDataSource,UIT
         tableView.dataSource = self
         tableView.backgroundColor = .clear
         tableView.registerCell(cellTypes: [SharedWalletMemberCell.self])
-        navigationItem.localizedText = "SharedWalletVC_title"
+
         updateUI()
         
         self.reloadDataSource()
@@ -45,14 +44,13 @@ class SWalletManagerViewController: BaseViewController,UITableViewDataSource,UIT
     
     func reloadDataSource(){
         owners.removeAll()
+        
         for item in swallet!.owners{
-            /*
-            if item.walletAddress?.lowercased() == swallet?.walletAddress.lowercased(){
+            if (item.walletAddress?.ishexStringEqual(other: swallet?.walletAddress))!{
                 continue
             }
-             */
             owners.append(item)
-        }
+        } 
         
         owners.sort { (a, b) -> Bool in
             if (a.walletAddress?.ishexStringEqual(other: swallet?.walletAddress))!{
@@ -64,15 +62,25 @@ class SWalletManagerViewController: BaseViewController,UITableViewDataSource,UIT
     }
     
     func updateUI(){
+        if (swallet?.isWatchAccount)!{
+            self.ownerNameLabel.text = Localized("sharedWalletDefaltMemberName") + String(1)
+        }else{
+            self.ownerNameLabel.text = swallet?.name
+        }
         
-        walletNameLabel.text = swallet?.name
-        walletAddressLabel.text = swallet?.contractAddress
+        self.ownerAddressLabel.text = swallet?.walletAddress
         
         let wallet = SWalletService.sharedInstance.getATPWalletByAddress(address: (swallet?.walletAddress)!)
         ownerNameLabel.text = wallet?.name
         ownerAddressLabel.text = swallet?.walletAddress
         
-        walletAvatar.image = UIImage(named: (swallet?.contractAddress.walletRandomAvatar())!)?.circleImage()
+        super.leftNavigationTitle = swallet?.name
+        walletName.text = swallet?.name
+        if let label = self.titleLabel{
+            label.text = swallet?.name
+        }
+        
+        self.deleteButton.style = .delete
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -87,27 +95,11 @@ class SWalletManagerViewController: BaseViewController,UITableViewDataSource,UIT
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
+        self.showCommonRenameInput(completion: {[weak self] (text) in
+            self?.updateOwnerName(name: text!, index: indexPath.row)
+        }, checkDuplicate: false)
         
-        let alertC = PAlertController(title: Localized("alert_modifyWalletName_title"), message: nil)
-        alertC.addTextField()
-        alertC.addAction(title: Localized("alert_cancelBtn_title")) {
-        }
-        alertC.addAction(title: Localized("alert_modifyWalletName_confirmBtn_title")) {[weak self] in
-            
-            if  CommonService.isValidWalletName(alertC.textField!.text).0 {
-                self?.updateOwnerName(name: alertC.textField!.text!, index: indexPath.row)
-                alertC.dismiss(animated: true, completion: nil)
-            }else {
-                self!.showErrorNameAlert()
-            }
-            
-        }
-        alertC.inputVerify = { input in
-            return CommonService.isValidWalletName(input).0
-        }
-        alertC.addActionEnableStyle(title: Localized("alert_modifyWalletName_confirmBtn_title"))
-        alertC.show(inViewController: self, animated: false)
-        alertC.textField?.becomeFirstResponder()
     }
     
     func updateOwnerName(name : String, index : Int){
@@ -132,27 +124,9 @@ class SWalletManagerViewController: BaseViewController,UITableViewDataSource,UIT
         alertC.show(inViewController: self)
     }
     
-    @IBAction func onTableHeaderButton(_ sender: Any) {
-        
-        let alertC = PAlertController(title: Localized("alert_modifyWalletName_title"), message: nil)
-        alertC.addTextField()
-        alertC.addAction(title: Localized("alert_cancelBtn_title")) {
-        }
-        alertC.addAction(title: Localized("alert_modifyWalletName_confirmBtn_title")) {[weak self] in
-            if  CommonService.isValidWalletName(alertC.textField!.text).0 {
-                self?.updateWalletName(name: alertC.textField!.text!)
-                alertC.dismiss(animated: true, completion: nil)
-            }else {
-                self!.showErrorNameAlert()
-            }
-        }
-        alertC.inputVerify = { input in
-            return CommonService.isValidWalletName(input).0
-        }
-        alertC.addActionEnableStyle(title: Localized("alert_modifyWalletName_confirmBtn_title"))
-        alertC.show(inViewController: self, animated: false)
-        alertC.textField?.becomeFirstResponder()
-    }
+  
+    
+    //MARK: - User Interaction
     
     @IBAction func onDeleteSharedWallet(_ sender: Any) {
         if (self.swallet?.isWatchAccount)!{
@@ -160,79 +134,46 @@ class SWalletManagerViewController: BaseViewController,UITableViewDataSource,UIT
         }else{
             showInputPswAlertFor()
         }
-        
-    }
-    
+    } 
     
     func showInputPswAlertFor() {
-        
-        let alertC = PAlertController(title: Localized("alert_input_psw_title"), message: nil)
-        alertC.addTextField(text: alertPswInput, placeholder: "", isSecureTextEntry: true)
-        alertC.addAction(title: Localized("alert_cancelBtn_title")) {[weak self] in
-            self?.alertPswInput = nil
-        }
-        alertC.addAction(title: Localized("alert_confirmBtn_title")) { [weak self] in
-            
-            let input = alertC.textField?.text ?? ""
-            if !CommonService.isValidWalletPassword(alertC.textField?.text ?? "").0{
-                return
+        let alertVC = AlertStylePopViewController.initFromNib()
+        alertVC.style = PAlertStyle.passwordInput(walletName: self.swallet?.name)
+        alertVC.onAction(confirm: {[weak self] (text, _) -> (Bool)  in
+            let valid = CommonService.isValidWalletPassword(text ?? "")
+            if !valid.0{
+                alertVC.showInputErrorTip(string: valid.1)
+                return false
             }
-            alertC.dismiss(animated: true, completion: nil)
+            self?.showLoadingHUD()
+            WalletService.sharedInstance.exportPrivateKey(wallet: (self?.swallet?.ownerWallet()!)!, password: (alertVC.textFieldInput?.text)!, completion: { (pri, err) in
+                self?.hideLoadingHUD()
+                if (err == nil && (pri?.length)! > 0) {
+                    self?.doDelete()
+                    alertVC.dismissWithCompletion()
+                }else{
+                    alertVC.showInputErrorTip(string: Localized((err?.errorDescription)!))
+                }
+            }) 
+            return false
             
-            self?.confirmToDeleteWallet(input)
+        }) { (_, _) -> (Bool) in
+            return true
         }
-        alertC.inputVerify = { input in
-            return CommonService.isValidWalletPassword(input).0
-        }
-        alertC.addActionEnableStyle(title: Localized("alert_confirmBtn_title"))
-        alertC.show(inViewController: self, animated: false)
-        alertC.textField?.becomeFirstResponder()
         
+        alertVC.showInViewController(viewController: self)
     }
-    
-    func confirmToDeleteWallet(_ psw: String) {
-        
-        verifyPassword(psw, type: .deleteWallet) { [weak self](_) in
-            self?.doDelete()
-        }
-        
-    }
-    
-    
-    func showErrorPswAlertFor(_ type: AlertActionType) {
-        
-        let alertC = PAlertController(title: Localized("alert_psw_input_error_title"), message: Localized("alert_psw_input_error_msg"))
-        
-        alertC.addAction(title: Localized("alert_psw_input_error_backBtn_title")) { [weak self] in
-            
-            self?.showInputPswAlertFor()
-            
-        }
-        alertC.show(inViewController: self)
-    }
-    
-    func verifyPassword(_ psw: String, type: AlertActionType, completionCallback:@escaping (_ privateKey: String?) -> Void) {
-        
-        showLoading()
-        let wallet = SWalletService.sharedInstance.getATPWalletByAddress(address: (swallet?.walletAddress)!)
-        WalletService.sharedInstance.exportPrivateKey(wallet: wallet!, password: psw) { [weak self](privateKey, error) in
-            
-            self?.hideLoading()
-            
-            if error != nil {
-                self?.alertPswInput = psw
-                self?.showErrorPswAlertFor(type)
-            }else {
-                
-                self?.alertPswInput = nil
-                completionCallback(privateKey)
-            }
-            
-        }
-    }
-    
+
+       
     func doDelete(){
         SWalletService.sharedInstance.deleteWallet(swallet: self.swallet!)
         self.navigationController?.popViewController(animated: true)
+    }
+    
+    
+    @IBAction func onRename(_ sender: Any) {
+        self.showCommonRenameInput(completion: { [weak self] text in
+            self?.updateWalletName(name: text!)
+        }, checkDuplicate: true)
     }
 }

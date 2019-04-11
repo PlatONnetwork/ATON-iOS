@@ -16,19 +16,10 @@ class NodeVoteHeader: UIView {
     
     @IBOutlet weak var reward: UILabel!
     
-    var tickets : [Ticket] = []
-    
-    
-    func updateView(_ summary: [NodeVoteSummary]){
-        
-        tickets.removeAll()
-        let _ = summary.map { sum in
-            tickets.append(contentsOf: sum.tickets)
-        }
-        
-        validandinvalidTicketNum.text = String(format: "%d/%d", tickets.validTicketCount,tickets.invalidTicketCount)
-        lockedAsset.text = tickets.lockedAssetSum.divide(by: ETHToWeiMultiplier, round: 4).EnergonSuffix()
-        reward.text = self.tickets.tickets_voteEarnings?.EnergonSuffix()
+    func updateView(_ summary: MyVoteStatic){
+        validandinvalidTicketNum.text = String(format: "%d/%d", summary.validNum,summary.inValidNum)
+        lockedAsset.text = summary.locktotal.divide(by: oneMultiplier, round: 4).EnergonSuffix()
+        reward.text = summary.earnings.divide(by: oneMultiplier, round: 4).EnergonSuffix()
     }
 
 }

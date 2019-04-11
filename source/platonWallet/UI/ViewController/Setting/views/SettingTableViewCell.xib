@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -27,29 +27,29 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dq0-W3-aM6">
-                        <rect key="frame" x="48" y="20.5" width="144" height="19.5"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <rect key="frame" x="54" y="21.5" width="138" height="17"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vhQ-Ej-uLP" userLabel="sepline">
                         <rect key="frame" x="0.0" y="59.5" width="320" height="0.5"/>
-                        <color key="backgroundColor" red="0.19607843137254902" green="0.22352941176470589" blue="0.30196078431372547" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" red="0.89411764705882346" green="0.90588235294117647" blue="0.95294117647058818" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="0.5" id="GL5-v8-pgu"/>
                         </constraints>
                     </view>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iconCellDetail" translatesAutoresizingMaskIntoConstraints="NO" id="iQE-aP-Ta5">
-                        <rect key="frame" x="294" y="22" width="16" height="16"/>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_right_arrow" translatesAutoresizingMaskIntoConstraints="NO" id="iQE-aP-Ta5">
+                        <rect key="frame" x="290" y="22" width="16" height="16"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="16" id="oty-hk-Vx7"/>
                             <constraint firstAttribute="height" constant="16" id="yxi-u0-VuH"/>
                         </constraints>
                     </imageView>
                 </subviews>
-                <color key="backgroundColor" red="0.10588235294117647" green="0.13333333333333333" blue="0.21176470588235294" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
-                    <constraint firstItem="dq0-W3-aM6" firstAttribute="leading" secondItem="FAK-jt-rT4" secondAttribute="trailing" constant="10" id="R88-hE-Ur4"/>
+                    <constraint firstAttribute="trailing" secondItem="iQE-aP-Ta5" secondAttribute="trailing" constant="14.199999999999999" id="Cv1-mi-RKN"/>
+                    <constraint firstItem="dq0-W3-aM6" firstAttribute="leading" secondItem="FAK-jt-rT4" secondAttribute="trailing" constant="16" id="R88-hE-Ur4"/>
                     <constraint firstItem="iQE-aP-Ta5" firstAttribute="centerY" secondItem="FAK-jt-rT4" secondAttribute="centerY" id="SfE-DB-ZF5"/>
                     <constraint firstItem="dq0-W3-aM6" firstAttribute="centerY" secondItem="FAK-jt-rT4" secondAttribute="centerY" id="cNW-tR-lf6"/>
                 </constraints>
@@ -61,7 +61,6 @@
                 <constraint firstItem="njF-e1-oar" firstAttribute="trailing" secondItem="dq0-W3-aM6" secondAttribute="trailing" constant="128" id="VcA-k6-gWb"/>
                 <constraint firstItem="FAK-jt-rT4" firstAttribute="top" secondItem="njF-e1-oar" secondAttribute="top" constant="20" id="W3l-1L-iJi"/>
                 <constraint firstItem="vhQ-Ej-uLP" firstAttribute="leading" secondItem="njF-e1-oar" secondAttribute="leading" id="bGJ-Uu-V7r"/>
-                <constraint firstItem="iQE-aP-Ta5" firstAttribute="trailing" secondItem="njF-e1-oar" secondAttribute="trailing" constant="-10" id="t7j-7Q-xte"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
@@ -74,6 +73,6 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="iconCellDetail" width="16" height="16"/>
+        <image name="icon_right_arrow" width="16" height="16"/>
     </resources>
 </document>

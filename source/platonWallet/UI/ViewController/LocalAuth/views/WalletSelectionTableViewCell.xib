@@ -1,58 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" id="KGk-i7-Jjw" customClass="WalletSelectionTableViewCell" customModule="platonWallet" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="70" id="KGk-i7-Jjw" customClass="WalletSelectionTableViewCell" customModule="platonWallet" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="59.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="69.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_ATP" translatesAutoresizingMaskIntoConstraints="NO" id="Qyd-Bb-zC8">
-                        <rect key="frame" x="20" y="18" width="24" height="24"/>
+                        <rect key="frame" x="11" y="14" width="42" height="42"/>
                         <constraints>
-                            <constraint firstAttribute="height" constant="24" id="tTs-RY-0bI"/>
-                            <constraint firstAttribute="width" constant="24" id="u2o-TS-hlj"/>
+                            <constraint firstAttribute="height" constant="42" id="tTs-RY-0bI"/>
+                            <constraint firstAttribute="width" constant="42" id="u2o-TS-hlj"/>
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oC8-eC-OAu">
-                        <rect key="frame" x="54" y="10" width="36" height="17"/>
+                        <rect key="frame" x="56" y="16" width="36" height="17"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                        <color key="textColor" red="0.16078431369999999" green="0.16078431369999999" blue="0.16078431369999999" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xVz-NP-ppl">
-                        <rect key="frame" x="54" y="34" width="31" height="15"/>
+                        <rect key="frame" x="63" y="37" width="31" height="15"/>
                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                        <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="textColor" red="0.53725490196078429" green="0.5490196078431373" blue="0.61960784313725492" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="localAuth_icon_selection" translatesAutoresizingMaskIntoConstraints="NO" id="rNi-s1-JsT">
-                        <rect key="frame" x="286" y="22" width="16" height="16"/>
+                        <rect key="frame" x="286" y="27" width="16" height="16"/>
                     </imageView>
                 </subviews>
-                <color key="backgroundColor" red="0.97254901960784312" green="0.97254901960784312" blue="0.97254901960784312" alpha="1" colorSpace="calibratedRGB"/>
+                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
                     <constraint firstItem="Qyd-Bb-zC8" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="2le-fy-VuD"/>
                     <constraint firstItem="xVz-NP-ppl" firstAttribute="leading" secondItem="Qyd-Bb-zC8" secondAttribute="trailing" constant="10" id="8NA-GO-zNH"/>
                     <constraint firstItem="rNi-s1-JsT" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Ne4-Pc-OcI"/>
-                    <constraint firstItem="oC8-eC-OAu" firstAttribute="leading" secondItem="Qyd-Bb-zC8" secondAttribute="trailing" constant="10" id="NsC-En-BDT"/>
-                    <constraint firstItem="xVz-NP-ppl" firstAttribute="top" secondItem="oC8-eC-OAu" secondAttribute="bottom" constant="7" id="SzA-h8-PwL"/>
-                    <constraint firstItem="oC8-eC-OAu" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="eBT-cJ-NzW"/>
+                    <constraint firstItem="oC8-eC-OAu" firstAttribute="leading" secondItem="Qyd-Bb-zC8" secondAttribute="trailing" constant="3" id="NsC-En-BDT"/>
+                    <constraint firstItem="xVz-NP-ppl" firstAttribute="top" secondItem="oC8-eC-OAu" secondAttribute="bottom" constant="4" id="SzA-h8-PwL"/>
+                    <constraint firstItem="oC8-eC-OAu" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="16" id="eBT-cJ-NzW"/>
                     <constraint firstAttribute="trailing" secondItem="rNi-s1-JsT" secondAttribute="trailing" constant="18" id="fAL-Tf-Xdy"/>
                     <constraint firstItem="rNi-s1-JsT" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="xVz-NP-ppl" secondAttribute="trailing" constant="8" id="ogd-gt-ZqO"/>
-                    <constraint firstItem="Qyd-Bb-zC8" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="20" id="utv-UV-McP"/>
+                    <constraint firstItem="Qyd-Bb-zC8" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="11" id="utv-UV-McP"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
@@ -62,7 +61,7 @@
                 <outlet property="walletIconImgV" destination="Qyd-Bb-zC8" id="yQh-tA-Obi"/>
                 <outlet property="walletNameLabel" destination="oC8-eC-OAu" id="Inl-8f-LLc"/>
             </connections>
-            <point key="canvasLocation" x="137.59999999999999" y="151.12443778110946"/>
+            <point key="canvasLocation" x="137.59999999999999" y="146.62668665667167"/>
         </tableViewCell>
     </objects>
     <resources>

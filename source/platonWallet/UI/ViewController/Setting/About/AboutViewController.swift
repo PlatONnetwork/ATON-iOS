@@ -15,7 +15,7 @@ class AboutViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.navigationItem.localizedText = "AboutVC_nav_title"
+        super.leftNavigationTitle = "AboutVC_nav_title"
         
         let appVersion = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as? String
         versionLabel.text = "V" + appVersion!
@@ -26,6 +26,7 @@ class AboutViewController: BaseViewController {
     }
     
     @IBAction func softwareUpdate(_ sender: Any) {
-        UIApplication.shared.openURL(URL(string: "https://github.com/PlatONnetwork")!)
+        UIApplication.shared.openURL(URL(string: "https://developer.platon.network/mobile/index.html")!)
+        //UIApplication.shared.openURL(URL(string: "https://github.com/PlatONnetwork")!)
     }
 }

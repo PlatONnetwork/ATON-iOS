@@ -1,0 +1,6 @@
+framework module Pods_platonWalletUITests {
+  umbrella header "Pods-platonWalletUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}

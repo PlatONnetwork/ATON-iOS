@@ -12,7 +12,7 @@ import Localize_Swift
 class OptionCollectionViewCell: UICollectionViewCell {
     
     enum Style {
-        case white,gray
+        case white,gray 
     }
     
     var label: UILabel!
@@ -30,12 +30,14 @@ class OptionCollectionViewCell: UICollectionViewCell {
     }
     
     private func initUI() {
-//        backgroundColor = UIColor(rgb: 0x465170)
-        layer.cornerRadius = 2.0
-        layer.masksToBounds = true
+        
+        self.layer.borderColor = UIColor(rgb: 0x316DEF).cgColor
+        self.layer.borderWidth = 0.5
+        self.layer.cornerRadius = self.frame.size.height * 0.5
+        
         label = UILabel(frame: .zero)
         label.font = UIFont.systemFont(ofSize: 13)
-//        label.textColor = UIColor.white
+        label.textColor = UIColor(rgb: 0x316DEF)
         label.textAlignment = .center
         addSubview(label)
         label.snp.makeConstraints { (maker) in
@@ -47,21 +49,19 @@ class OptionCollectionViewCell: UICollectionViewCell {
     func feedWord(_ word:String, isSelected:Bool = false, style: Style = .gray) {
         
         label.text = word
+        
         switch style {
         case .white:
             
-            backgroundColor = UIColor(rgb: 0xE3E6EC)
-            label.textColor = UIColor(rgb: 0x24272B)
+            label.textColor = UIColor(rgb: 0x316DEF)
+            backgroundColor = .white
+            self.layer.borderColor = UIColor(rgb: 0x316DEF).cgColor
             
-        case .gray: 
+        case .gray:
             
-            if isSelected {
-                backgroundColor = UIColor(rgb: 0x313950)
-                label.textColor = UIColor(rgb: 0x7A8092)
-            }else {
-                backgroundColor = UIColor(rgb: 0x465170)
-                label.textColor = UIColor.white
-            }
+            backgroundColor = UIColor(rgb: 0xDCDFE8)
+            label.textColor = UIColor(rgb: 0xB6BBD0)
+            self.layer.borderColor = UIColor(rgb: 0xDCDFE8).cgColor
 
         }
         
@@ -70,17 +70,25 @@ class OptionCollectionViewCell: UICollectionViewCell {
     
 }
 
-class VerifyMnemonicViewController: BaseViewController {
+class VerifyMnemonicViewController: BaseViewController,MnemonicGridViewDelegate {
 
-    @IBOutlet weak var inputCollectionView: UICollectionView!
     
+    
+    var mnemonicGridView : MnemonicGridView? = UIView.viewFromXib(theClass: MnemonicGridView.self) as? MnemonicGridView
+    
+    @IBOutlet weak var mnemonicContainer: UIView!
     @IBOutlet weak var optionCollectionView: UICollectionView!
     
-    @IBOutlet weak var clearBtn: PButton!
+    @IBOutlet weak var clearBtn: UIButton!
+    
+    var walletAddress : String?
     
     var words_order:[String]!
     
-    var selectedWords = [String]()
+    var selectedWords : Dictionary<Int,String> = [:]
+    
+    //key: bottom disorder collectionCell index, value: grid UITextField index
+    var words_disorder_selected_Map : Dictionary<String,String> = [:]
     
     @IBOutlet weak var submitButton: PButton!
     
@@ -103,6 +111,7 @@ class VerifyMnemonicViewController: BaseViewController {
                 return s2.compare(s1, options:.backwards) == .orderedAscending
             }
         })
+        
         
         return words!
         
@@ -130,21 +139,13 @@ class VerifyMnemonicViewController: BaseViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        addShadow()
+        
     }
 
     
     func setupUI() {
         
-        navigationItem.localizedText = "verifyMnemonicVC_title"
-        clearBtn.style = .gray
-        
-        inputCollectionView.layer.cornerRadius = 4.0
-        inputCollectionView.backgroundColor = UIColor(rgb: 0x1F2841)
-        inputCollectionView.collectionViewLayout = LeftAlignLayout(10.0, sectionInset: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
-        inputCollectionView.delegate = self
-        inputCollectionView.dataSource = self
-        inputCollectionView.register(OptionCollectionViewCell.self, forCellWithReuseIdentifier: NSStringFromClass(OptionCollectionViewCell.self))
+        super.leftNavigationTitle = "verifyMnemonicVC_title"
         
         optionCollectionView.backgroundColor = view.backgroundColor
         optionCollectionView.collectionViewLayout = LeftAlignLayout(10.0)
@@ -152,54 +153,81 @@ class VerifyMnemonicViewController: BaseViewController {
         optionCollectionView.dataSource = self
         optionCollectionView.register(OptionCollectionViewCell.self, forCellWithReuseIdentifier: NSStringFromClass(OptionCollectionViewCell.self))
         self.checkSubmitButtonEnable()
+        
+        self.mnemonicContainer.addSubview(self.mnemonicGridView!)
+        self.mnemonicGridView?.snp.makeConstraints({ (make) in
+            make.edges.equalTo(self.mnemonicContainer)
+        })
+        self.mnemonicGridView?.setDisableEditStyle()
+        self.mnemonicGridView?.delegate = self
     }
     
-    func addShadow() {
-        
-        if view.layer.sublayers == nil || !view.layer.sublayers!.contains(shadowLayer) {
-            view.layer.insertSublayer(shadowLayer, below: inputCollectionView.layer)
-        }
-        shadowLayer.frame = inputCollectionView.frame
-    }
-
     @IBAction func clear(_ sender: Any) {
         
         selectedWords.removeAll()
-        inputCollectionView.reloadData()
+        words_disorder_selected_Map.removeAll()
+        self.mnemonicGridView?.removeAllContent()
         optionCollectionView.reloadData()
         
     }
     
     @IBAction func submit(_ sender: Any) {
         
-        if words_order.count != selectedWords.count {
-            return
+        let inputs = selectedWords.filter { (key,value) -> Bool in
+            if value == ""{
+                return false
+            }
+            return true
         }
+
+        if words_order.count != inputs.count {
+            return
+        } 
         
         if wordsOrderIsCorrect() {
             showDisclaimerAlert()
+            guard self.walletAddress != nil, let wallet = WalletService.sharedInstance.getWalletByAddress(address: self.walletAddress!) else{
+                return
+            } 
+            WalletService.sharedInstance.afterBackupMnemonic(wallet: wallet)
+            NotificationCenter.default.post(name: NSNotification.Name(updateWalletList_Notification), object: nil)
         }else {
             showErrorAlert()
         }
     }
     
     private func checkSubmitButtonEnable(){
-        if words_order.count != selectedWords.count || selectedWords.count == 0 {
+        let inputs = selectedWords.filter { (key,value) -> Bool in
+            if value == ""{
+                return false
+            }
+            return true
+        }
+        if inputs.count < 12{
             submitButton.style = .disable
         }else{
-            submitButton.style = .common
+            submitButton.style = .blue
         }
     }
     
-    
     private func wordsOrderIsCorrect() ->Bool {
         
-        if words_order.count != selectedWords.count {
+        let inputs = selectedWords.filter { (key,value) -> Bool in
+            if value == ""{
+                return false
+            }
+            return true
+        }
+        
+        if words_order.count != inputs.count {
             return false 
         }
+        
+        let inputWords = self.mnemonicGridView?.getMnemonic().split(separator: " ").map({String($0)})
+        
         var isCorrect = true
         for i in 0..<words_order.count {
-            if words_order[i] != selectedWords[i] {
+            if words_order[i] != inputWords![i] {
                 isCorrect = false
             }
         }
@@ -209,23 +237,28 @@ class VerifyMnemonicViewController: BaseViewController {
     
     private func showErrorAlert() {
         
-        let alertC = PAlertController(title: Localized("alert_backupFailed_title"), message: Localized("alert_backupFailed_msg"))
-        alertC.addAction(title: Localized("alert_backupFailed_confirmBtn_title")) { 
-            
+        let alertVC = AlertStylePopViewController.initFromNib()
+        alertVC.style = PAlertStyle.AlertWithRedTitle(title: "alert_backupFailed_title", message: "alert_backupFailed_msg")
+        alertVC.confirmButton.localizedNormalTitle = "alert_backupFailed_confirmBtn_title"
+        alertVC.onAction(confirm: { (text, _) -> (Bool) in
+            return true
+        }) { (_, _) -> (Bool) in
+            return true 
         }
-        alertC.show(inViewController: self)
-        
+        alertVC.showInViewController(viewController: self)
     }
     
     private func showDisclaimerAlert() {
-        
-        let alertC = PAlertController(title: Localized("alert_disclaimer_title"), message: Localized("alert_disclaimer_msg"))
-        alertC.addAction(title: Localized("alert_disclaimer_confirmBtn_title")) {
-            (UIApplication.shared.delegate as? AppDelegate)?.gotoMainTab()
-            
+        let alertVC = AlertStylePopViewController.initFromNib()
+        alertVC.style = PAlertStyle.AlertWithRedTitle(title: "alert_disclaimer_title", message: "alert_disclaimer_msg")
+        alertVC.confirmButton.localizedNormalTitle = "alert_disclaimer_confirmBtn_title"
+        alertVC.onAction(confirm: { (text, _) -> (Bool) in
+            self.afterBackupRouter()
+            return true
+        }) { (_, _) -> (Bool) in
+            return true
         }
-        alertC.show(inViewController: self)
-        
+        alertVC.showInViewController(viewController: self)
     }
     
     override func back() {
@@ -239,55 +272,83 @@ extension VerifyMnemonicViewController:UICollectionViewDelegate,UICollectionView
     
     ///UICollectionViewDataSource
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return collectionView == inputCollectionView ? selectedWords.count : words_disorder.count
+        return words_disorder.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
         let cell = collectionView .dequeueReusableCell(withReuseIdentifier: NSStringFromClass(OptionCollectionViewCell.self), for: indexPath) as! OptionCollectionViewCell
-        if collectionView == optionCollectionView {
-            cell.feedWord(words_disorder[indexPath.item], isSelected: selectedWords.contains(words_disorder[indexPath.item]))
-        }else {
-            cell.feedWord(selectedWords[indexPath.item], style: .white)
+
+        let gridViewIndex = words_disorder_selected_Map[String(indexPath.item)]
+        var style = OptionCollectionViewCell.Style.white
+        if gridViewIndex != nil && (gridViewIndex?.length)! > 0{
+            style = OptionCollectionViewCell.Style.gray
         }
-        
+        cell.feedWord(words_disorder[indexPath.item], style: style)
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         var targetString = ""
-        if collectionView == inputCollectionView {
-            targetString = selectedWords[indexPath.row]
-        }else {
-            targetString = words_disorder[indexPath.row]
-        }
+        targetString = words_disorder[indexPath.row]
         
         let wordWidth = (targetString as NSString).boundingRect(with: CGSize(width: 300, height: 30), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 13)], context: nil).width
         
-        return CGSize(width: wordWidth + 16 , height: 24)
+        return CGSize(width: wordWidth + 20 , height: 24)
     }
     
     ///UICollectionViewDelegate
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
-        if collectionView == optionCollectionView {
-            let cell = collectionView.cellForItem(at: indexPath) as! OptionCollectionViewCell
-            
-            if selectedWords.contains(cell.label.text!) {
+        
+        let cell = collectionView.cellForItem(at: indexPath) as! OptionCollectionViewCell
+        if words_disorder_selected_Map[String(indexPath.row)]?.length ?? 0 > 0{
+            //Invert Selection
+            let gridIndexS = words_disorder_selected_Map[String(indexPath.row)]
+            guard gridIndexS != nil,let gridindex = Int(gridIndexS!) else{
                 return
+                }
+            selectedWords[gridindex] = ""
+            self.mnemonicGridView?.setTextAtIndex(index: gridindex, text: "")
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                //delay wait for text setted (self.mnemonicGridView?.setTextAtIndex(index: gridindex, text: ""))
+                let gridViewIndex = (self.mnemonicGridView?.getFirstEmptyFieldIndex())!
+                self.words_disorder_selected_Map[String(indexPath.row)] = ""
+                self.optionCollectionView.reloadData()
+                self.checkSubmitButtonEnable()
+                print("selectedWords:\(self.selectedWords)")
             }
             
-            selectedWords.append(cell.label.text!)
-            let targetIndexPath = IndexPath(item: selectedWords.count - 1, section: 0)
-            inputCollectionView.insertItems(at: [IndexPath(item: selectedWords.count - 1, section: 0)])
-            inputCollectionView.scrollToItem(at: targetIndexPath, at: .bottom, animated: true)
-        }else {
-            selectedWords.remove(at: indexPath.row)
-            inputCollectionView.deleteItems(at: [indexPath])
+            return
         }
+        
+        let gridViewIndex = (self.mnemonicGridView?.getFirstEmptyFieldIndex())!
+        words_disorder_selected_Map[String(indexPath.row)] = String(gridViewIndex)
+        selectedWords[gridViewIndex] = cell.label.text!
+        cell.feedWord(cell.label.text!, isSelected: false, style: .gray)
+        
+        self.mnemonicGridView?.setTextAtIndex(index:gridViewIndex, text: cell.label.text!)
         optionCollectionView.reloadData()
         checkSubmitButtonEnable()
+        self.checkSubmitButtonEnable()
+        print("gridViewIndex:\(gridViewIndex),selectedWords:\(selectedWords)")
+    }
+    
+    //Mark: MnemonicGridViewDelegate
+    
+    func onTextFieldSelected(index: Int,word: String){
+        selectedWords[index] = ""
+        for (k,v) in words_disorder_selected_Map{
+            if v == String(index){
+                words_disorder_selected_Map[k] = ""
+                break
+            }
+        }
+    
+        self.mnemonicGridView?.setTextAtIndex(index: index, text: "")
+        optionCollectionView.reloadData()
     }
     
 }

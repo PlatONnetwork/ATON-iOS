@@ -12,13 +12,13 @@ import BigInt
 
 class STransferDetailView: UIView ,UITableViewDataSource,UITableViewDelegate{
 
-    
-    
     @IBOutlet weak var statusImageView: UIImageView!
+    
+    @IBOutlet weak var pendingRotateImage: UIImageView!
     
     @IBOutlet weak var bottomContainer: UIView!
     
-    @IBOutlet weak var statusLabel: UILabel!
+    @IBOutlet weak var statusLabel: UILabel! 
     
     @IBOutlet weak var ConfirmTitle: UILabel!
     
@@ -46,8 +46,6 @@ class STransferDetailView: UIView ,UITableViewDataSource,UITableViewDelegate{
     @IBOutlet weak var priceLabel: UILabel!
     
     @IBOutlet weak var walletNameLabel: UILabel!
-    
-    @IBOutlet weak var memoLabel: UILabel!
 
     @IBOutlet weak var hashLabel: UILabel!
     
@@ -78,10 +76,12 @@ class STransferDetailView: UIView ,UITableViewDataSource,UITableViewDelegate{
         copyButtonFrom.attachTextView = fromAddressLabel
         copyButtonTo.attachTextView = toAddressLabel
         
+        self.pendingRotateImage.isHidden = true
+        
         NotificationCenter.default.addObserver(self, selector: #selector(didReceiveTransactionUpdate(_:)), name:NSNotification.Name(DidUpdateTransactionByHashNotification) , object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(txlistUpdate), name: NSNotification.Name(DidUpdateSharedWalletTransactionList_Notification), object: nil)
-        
+         
     }
     
     override func layoutSubviews() {
@@ -146,12 +146,6 @@ class STransferDetailView: UIView ,UITableViewDataSource,UITableViewDelegate{
     
         self.walletNameLabel.text = sw?.name
         
-        if (tx.memo != nil) && (tx.memo?.length)! > 0{
-            self.memoLabel.text = tx.memo
-        }else{
-            self.memoLabel.localizedText = "TransactionDetailVC_memo_none"
-        }
-        
         self.typeLabel.text = tx.transanctionTypeLazy?.localizedDesciption
         
         var approvals = 0
@@ -197,7 +191,7 @@ class STransferDetailView: UIView ,UITableViewDataSource,UITableViewDelegate{
                         //confriming
                         statusImageView.image = UIImage(named: "statusPending")
                         statusLabel.text = String(format: "%@(%d/%d)", Localized("walletDetailVC_tx_status_confirming"),blockDiff,MinTransactionConfirmations)
-                        statusLabel.textColor = UIColor(rgb: 0xFFED54)
+                        statusLabel.textColor = .black
                     }else{
                         self.transactionReachTrustworthyStatus(tx: tx, swallet: swallet)
                     }
@@ -209,7 +203,9 @@ class STransferDetailView: UIView ,UITableViewDataSource,UITableViewDelegate{
                     //pending
                     statusImageView.image = UIImage(named: "statusPending")
                     statusLabel.text = String(format: "%@", Localized("walletDetailVC_tx_status_confirming"),0,MinTransactionConfirmations)
-                    statusLabel.textColor = UIColor(rgb: 0xFFED54)
+                    statusLabel.textColor = .black
+                    self.pendingRotateImage.isHidden = false
+                    self.pendingRotateImage.rotate()
                 }
                 
             }else{
@@ -225,7 +221,7 @@ class STransferDetailView: UIView ,UITableViewDataSource,UITableViewDelegate{
             if tx.isWaitForConfirmation{
                 statusImageView.image = UIImage(named: "statusPending")
                 statusLabel.text = String(format: "%@", Localized("walletDetailVC_tx_status_confirming"),0,MinTransactionConfirmations)
-                statusLabel.textColor = UIColor(rgb: 0xFFED54)
+                statusLabel.textColor = .black
             }else{
                 //success
                 statusImageView.image = UIImage(named: "statusSuccess")
@@ -248,7 +244,7 @@ class STransferDetailView: UIView ,UITableViewDataSource,UITableViewDelegate{
             if t?.signStatus == SignStatus.voting{
                 
                 statusLabel.text = String(format: "%@(%d/%d)", Localized("walletDetailVC_no_transactions_Signing"),(t?.approveNumber)!,swallet.required)
-                statusLabel.textColor = UIColor(rgb: 0xFFED54)
+                statusLabel.textColor = .black
                 statusImageView.image = UIImage(named: "statusPending")
                 
                 assert(false, "should be in ShareWalletConfirmVC not me!")

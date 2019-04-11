@@ -9,8 +9,8 @@
 import UIKit
 import Localize_Swift
 
-class CreateIndividualWalletViewController: BaseViewController,BackupDelegate {
-
+class CreateIndividualWalletViewController: BaseViewController,StartBackupMnemonicDelegate {
+    
     @IBOutlet weak var nameTF: PTextFieldWithPadding!
     @IBOutlet weak var pswTF: PTextFieldWithPadding!
     @IBOutlet weak var confirmPswTF: PTextFieldWithPadding!
@@ -32,20 +32,27 @@ class CreateIndividualWalletViewController: BaseViewController,BackupDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setupUI()
+        NotificationCenter.default.addObserver(self, selector: #selector(afterBackup), name: NSNotification.Name(BackupMnemonicFinishNotification), object: nil)
     }
     
     func setupUI() {
         
         endEditingWhileTapBackgroundView = true
 
-        navigationItem.localizedText = "createWalletVC_title"
+        super.leftNavigationTitle = "createWalletVC_title"
         
         showNavigationBarShadowImage()
         
         nameTF.becomeFirstResponder()
         
-        checkCanEableButton()
+        createBtn.style = .disable
+        
+    }
+    
+    override func rt_customBackItem(withTarget target: Any!, action: Selector!) -> UIBarButtonItem! {
+        return self.getBasicLeftBarButtonItemWithBasicStyle(localizedText: "createWalletVC_title")
     }
     
     @IBAction func createWallet(_ sender: Any) {
@@ -56,9 +63,7 @@ class CreateIndividualWalletViewController: BaseViewController,BackupDelegate {
             return
         }
         
-        showLoading()
-        
-        
+        showLoadingHUD() 
         
         WalletService.sharedInstance.createWallet(name: nameTF.text!, password: pswTF.text!) { [weak self](wallet, error) in
 
@@ -67,7 +72,7 @@ class CreateIndividualWalletViewController: BaseViewController,BackupDelegate {
                 return
             }
              
-            self?.hideLoading()
+            self?.hideLoadingHUD()
             self?.wallet = wallet
             let successVC = CreateWalletSuccessViewController()
             successVC.delegate = self
@@ -78,43 +83,61 @@ class CreateIndividualWalletViewController: BaseViewController,BackupDelegate {
     }
     
     
+  
+    
+    //MARK: - Check Input
+    
+    func checkCanEableButton() {
+        if self.checkInputValueIsValid(){
+            createBtn.style = .blue
+        }else{
+            createBtn.style = .disable
+        }
+    }
+    
     func checkInputValueIsValid() -> Bool {
         
         return checkNameTF() && checkPswTF(isConfirmPsw: true)
-          
-    }
-    
-    func checkCanEableButton() {
-        createBtn.isEnabled = nameTF.text!.length > 0 && pswTF.text!.length > 5 && confirmPswTF.text!.length > 5
-    }
-    
-    func checkNameTF() -> Bool {
-        let nameRes = CommonService.isValidWalletName(nameTF.text)
         
-        if nameRes.0 {
-            nameTipsLabel.isHidden = true
-            pswLabelTopLayoutWithNameTips.priority = .defaultLow
-        }else {
-            nameTipsLabel.text = nameRes.1 ?? ""
-            nameTipsLabel.isHidden = false
-            pswLabelTopLayoutWithNameTips.priority = .defaultHigh
+    }
+    
+    
+    func checkNameTF(showErrorMsg: Bool = false) -> Bool {
+        let nameRes = CommonService.isValidWalletName(nameTF.text,checkDuplicate: true)
+        if showErrorMsg{
+            if nameRes.0 {
+                nameTipsLabel.isHidden = true
+                pswLabelTopLayoutWithNameTips.priority = .defaultLow
+                nameTF.setBottomLineStyle(style: .Normal)
+            }else {
+                nameTipsLabel.text = nameRes.1 ?? ""
+                nameTipsLabel.isHidden = false
+                pswLabelTopLayoutWithNameTips.priority = .defaultHigh
+                nameTF.setBottomLineStyle(style: .Error)
+            }
         }
         self.view.layoutIfNeeded()
         return nameRes.0
-    }
+    } 
     
-    func checkPswTF(isConfirmPsw: Bool = false) -> Bool {
+    func checkPswTF(showErrorMsg: Bool = false,isConfirmPsw: Bool = false) -> Bool {
         
         let pswRes = CommonService.isValidWalletPassword(pswTF.text, confirmPsw: isConfirmPsw ? confirmPswTF.text : nil)
-        if pswRes.0 {
-            pswTipsLabel.isHidden = true
-            pswAdviseLabel.isHidden = false 
-            noteLabelTopLayoutWithPswTips.priority = .defaultLow
-        }else {
-            pswTipsLabel.text = pswRes.1
-            pswTipsLabel.isHidden = false
-            pswAdviseLabel.isHidden = true
-            noteLabelTopLayoutWithPswTips.priority = .defaultHigh
+        if showErrorMsg{
+            if pswRes.0 {
+                pswTipsLabel.isHidden = true
+                pswAdviseLabel.isHidden = false 
+                noteLabelTopLayoutWithPswTips.priority = .defaultLow
+                pswTF.setBottomLineStyle(style: .Normal)
+                confirmPswTF.setBottomLineStyle(style: .Normal)
+            }else {
+                pswTipsLabel.text = pswRes.1
+                pswTipsLabel.isHidden = false
+                pswAdviseLabel.isHidden = true
+                noteLabelTopLayoutWithPswTips.priority = .defaultHigh
+                pswTF.setBottomLineStyle(style: .Error)
+                confirmPswTF.setBottomLineStyle(style: .Error)
+            }
         }
         self.view.layoutIfNeeded()
         return pswRes.0
@@ -122,64 +145,56 @@ class CreateIndividualWalletViewController: BaseViewController,BackupDelegate {
     
     
     /// BackupDelegate
-    func startBackupClick() {
-        
+    func startBackup() {
         showInputPswAlert()
-        
     }
     
-    func showInputPswAlert() {
+    @objc func afterBackup() {
+        WalletService.sharedInstance.afterBackupMnemonic(wallet: wallet)
+    }
+    
+    
+    func showInputPswAlert() { 
         
-        let alertC = PAlertController(title: Localized("alert_input_psw_title"), message: nil)
-        alertC.addTextField(text: alertPswInput, placeholder: "", isSecureTextEntry: true)
-        alertC.addAction(title: Localized("alert_cancelBtn_title")) {
-            
-        }
-        alertC.addAction(title: Localized("alert_confirmBtn_title")) { [weak self] in
-            
-            _ = alertC.textField?.text ?? ""
-            if !CommonService.isValidWalletPassword(alertC.textField?.text ?? "").0{
-                return
+        let alertVC = AlertStylePopViewController.initFromNib()
+        let style = PAlertStyle.passwordInput(walletName: self.nameTF.text)
+        alertVC.onAction(confirm: {[weak self] (text, _) -> (Bool)  in
+            let valid = CommonService.isValidWalletPassword(text ?? "")
+            if !valid.0{
+                alertVC.showInputErrorTip(string: valid.1)
+                return false
             }
-            alertC.dismiss(animated: true, completion: nil)
             
-            if (self?.pswTF.text != alertC.textField?.text) {
-                self?.alertPswInput = alertC.textField?.text
-                self?.showErrorPswAlert()
+            if (self?.pswTF.text != text) {
+                alertVC.showInputErrorTip(string: Localized("alert_psw_input_error_title"))
+                return false
+                
             }else {
-                self?.pushToBackupMnemonicVC()
+                
+                self?.showLoadingHUD()
+                WalletService.sharedInstance.exportMnemonic(wallet: self!.wallet, password: self!.pswTF.text!, completion: { (res, error) in
+                    if (error == nil && (res!.length) > 0) {
+                        let vc = BackupMnemonicViewController()
+                        vc.walletAddress = self?.wallet.key?.address
+                        vc.mnemonic = res 
+                        self?.rt_navigationController.pushViewController(vc, animated: true)
+                        alertVC.dismissWithCompletion()
+                    }else{
+                        self?.hideLoadingHUD()
+                        alertVC.showInputErrorTip(string: error?.errorDescription)
+                    }
+                })
+                return false
+                
             }
             
+        }) { (_, _) -> (Bool) in
+            return true
         }
-        alertC.inputVerify = { input in
-            return CommonService.isValidWalletPassword(input).0
-        }
-        alertC.addActionEnableStyle(title: Localized("alert_confirmBtn_title"))
-        alertC.show(inViewController: self, animated: false)
-        alertC.textField?.becomeFirstResponder()
-
+        alertVC.style = style
+        alertVC.showInViewController(viewController: self)
+        return
     }
-    
-    func showErrorPswAlert() {
-        
-        let alertC = PAlertController(title: Localized("alert_psw_input_error_title"), message: Localized("alert_psw_input_error_msg"))
-        
-        alertC.addAction(title: Localized("alert_psw_input_error_backBtn_title")) { [weak self] in
-            
-            self?.showInputPswAlert()
-            
-        }
-        alertC.show(inViewController: self)
-    }
-    
-    func pushToBackupMnemonicVC() {
-        
-        let vc = BackupMnemonicViewController()
-        vc.mnemonic = wallet.key?.mnemonic
-        rt_navigationController.pushViewController(vc, animated: true) 
-        
-    }
-
     
 }
 
@@ -210,12 +225,25 @@ extension CreateIndividualWalletViewController :UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         
         if textField == nameTF {
-            let _ = checkNameTF()
+            let _ = checkNameTF(showErrorMsg: true)
         }else if textField == pswTF {
-            let _ = checkPswTF(isConfirmPsw: confirmPswTF.text!.length > 0)
+            let _ = checkPswTF(showErrorMsg: true,isConfirmPsw: confirmPswTF.text!.length > 0)
         }else if textField == confirmPswTF {
-            let _ = checkPswTF(isConfirmPsw: true)
+            let _ = checkPswTF(showErrorMsg: true,isConfirmPsw: true)
         }
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        
+        if textField == nameTF {
+            pswTF.becomeFirstResponder()
+        }else if textField == pswTF {
+            confirmPswTF.becomeFirstResponder()
+        }else if textField == confirmPswTF {
+            confirmPswTF.resignFirstResponder()
+        }
+        
+        return true
     }
     
 }

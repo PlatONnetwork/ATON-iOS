@@ -86,9 +86,12 @@ class SWalletService: BaseService{
     
     
     func deleteWallet(swallet : SWallet){
-        
+        NotificationCenter.default.post(name: NSNotification.Name(WillDeleateWallet_Notification), object: swallet)
         AssetService.sharedInstace.assets.removeValue(forKey: swallet.contractAddress)
-        
+        self.wallets.removeAll { sw -> Bool in
+            return sw.contractAddress.ishexStringEqual(other: swallet.contractAddress)
+        }
+        NotificationCenter.default.post(name: NSNotification.Name(updateWalletList_Notification), object: nil)
         /*
          keep STransaction for individual wallet
          STransferPersistence.deleteByContractAddress(swallet.contractAddress)
@@ -97,14 +100,21 @@ class SWalletService: BaseService{
         //update associated shared wallet transactions swallet delete tag
         STransferPersistence.updateSharedWalletDeleteTag(contractAddress: swallet.contractAddress, deleted: DeleteTag.YES)
         
+        if let selectedWallet = AssetVCSharedData.sharedData.selectedWallet as? SWallet{
+            if selectedWallet.contractAddress.ishexStringEqual(other: swallet.contractAddress){
+                AssetVCSharedData.sharedData.selectedWallet = nil
+            }
+        } 
+        
         RealmInstance?.beginWrite()
         RealmInstance?.delete(swallet)
         try? RealmInstance?.commitWrite()
         SWalletService.sharedInstance.reFreshDB()
         
-        SWalletService.sharedInstance.getAllSharedWalletTransactionList()
-        
-        NotificationCenter.default.post(name: NSNotification.Name(updateWalletList_Notification), object: nil)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            //delay for UI datasouce updating
+            SWalletService.sharedInstance.getAllSharedWalletTransactionList()
+        }
     }
     
     //MARK: - utility
@@ -438,7 +448,7 @@ class SWalletService: BaseService{
                 SWalletService.sharedInstance.creatingWallets.append(sharedWallet)
                 
                 self.successCompletionOnMain(obj: nil, completion: &completion)
-                
+                 
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
                     NotificationCenter.default.post(name: NSNotification.Name(DidJointWalletUpdateProgress_Notification), object: transactionHash)
                 })
@@ -632,7 +642,7 @@ class SWalletService: BaseService{
                 return
             }
             
-            web3.eth.platonGetTransactionReceipt(txHash: submitTxHash!, loopTime: 15, completion: { (result, data) in
+            web3.eth.platonGetTransactionReceipt(txHash: submitTxHash!, loopTime: 30, completion: { (result, data) in
                 switch result{
                     
                 case .success:
@@ -1005,9 +1015,12 @@ class SWalletService: BaseService{
                     break
                 }
             }
-            DispatchQueue.main.async {
-                NotificationCenter.default.post(name: NSNotification.Name(WillUpdateUnreadDot_Notification), object: nil, userInfo: nil)
+            if rwallets.count > 0{
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(name: NSNotification.Name(WillUpdateUnreadDot_Notification), object: nil, userInfo: nil)
+                }
             }
+            
         }
     
     }
@@ -1074,10 +1087,10 @@ class SWalletService: BaseService{
                 }
                 index = index + 1
             }
-            
+             
             let idsData = trasactionIds.data(using: .utf8)
             let getMultiSigListParamter = SolidityFunctionParameter(name: "", type: .string)
-            
+             
             web3.eth.platonCall(code: ExecuteCode.ContractExecute,contractAddress: contractAddress, functionName: "getMultiSigList", from: sender, params: [idsData!], outputs: [getMultiSigListParamter]) { (result, dataRet) in
                 semaphore.signal()
                 
@@ -1094,7 +1107,7 @@ class SWalletService: BaseService{
                         completion?(.success,[] as AnyObject)
                         completion = nil
                         return
-                    }
+                    } 
                     
                     let txsWithStatus = STransaction.sTransactionParse(txs: txs, concatenated: concatenateString!)
                     for item in txsWithStatus{
@@ -1116,10 +1129,6 @@ class SWalletService: BaseService{
                 }
             }
         }
-        
-        
-        
-        
         
         
     }

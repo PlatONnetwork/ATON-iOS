@@ -22,11 +22,11 @@ public struct Keystore {
     var version = 3
     
     var publicKey: String?
-    var mnemonic:String = ""
+    var mnemonic:String?
     
     public init(password: String) throws {
         
-        var mnemonic:String
+        let mnemonic:String
         
         do {
              mnemonic = try WalletUtil.generateMnemonic(strength: 128)
@@ -36,7 +36,8 @@ public struct Keystore {
         
         try self.init(password: password, mnemonic: mnemonic, passphrase: "")
         
-        self.mnemonic = mnemonic
+        self.mnemonic = try encrypt(mnemonic: mnemonic, password: password)
+        
     }
     
 
@@ -82,10 +83,41 @@ public struct Keystore {
     }
     
     
-    
-    
     /// Decrypts the key and returns the private key.
     public func decrypt(password: String) throws -> Data {
+//        let derivedKey: Data
+//        switch crypto.kdf {
+//        case "scrypt":
+//            let scrypt = Scrypt(params: crypto.kdfParams)
+//            derivedKey = try scrypt.calculate(password: password)
+//        default:
+//            throw DecryptError.unsupportedKDF
+//        }
+//        
+//        let mac = Keystore.computeMAC(prefix: derivedKey[derivedKey.count - 16 ..< derivedKey.count], key: crypto.cipherText)
+//        if mac != crypto.mac {
+//            throw DecryptError.invalidPassword
+//        }
+        
+//        let decryptionKey = derivedKey[0...15]
+        let decryptionKey = try geneDecryptionKey(password: password)
+        let decryptedPK: [UInt8]
+        switch crypto.cipher {
+        case "aes-128-ctr":
+            let aesCipher = try AES(key: decryptionKey.bytes, blockMode: CTR(iv: crypto.cipherParams.iv.bytes), padding: .noPadding)
+            decryptedPK = try aesCipher.decrypt(crypto.cipherText.bytes)
+        case "aes-128-cbc":
+            let aesCipher = try AES(key: decryptionKey.bytes, blockMode: CBC(iv: crypto.cipherParams.iv.bytes), padding: .noPadding)
+            decryptedPK = try aesCipher.decrypt(crypto.cipherText.bytes)
+        default:
+            throw DecryptError.unsupportedCipher
+        }
+        
+        return Data(bytes: decryptedPK)
+    }
+    
+    fileprivate func geneDecryptionKey(password: String) throws -> Data {
+        
         let derivedKey: Data
         switch crypto.kdf {
         case "scrypt":
@@ -100,20 +132,45 @@ public struct Keystore {
             throw DecryptError.invalidPassword
         }
         
-        let decryptionKey = derivedKey[0...15]
-        let decryptedPK: [UInt8]
+        return derivedKey[0...15]
+        
+    }
+    
+    fileprivate func encrypt(mnemonic: String, password: String) throws -> String {
+        
+        let decryptionKey = try geneDecryptionKey(password: password)
+        let encryptedData: [UInt8]
         switch crypto.cipher {
         case "aes-128-ctr":
+            
             let aesCipher = try AES(key: decryptionKey.bytes, blockMode: CTR(iv: crypto.cipherParams.iv.bytes), padding: .noPadding)
-            decryptedPK = try aesCipher.decrypt(crypto.cipherText.bytes)
+            encryptedData = try aesCipher.encrypt(mnemonic.data(using: .utf8)!.bytes)
+            
         case "aes-128-cbc":
             let aesCipher = try AES(key: decryptionKey.bytes, blockMode: CBC(iv: crypto.cipherParams.iv.bytes), padding: .noPadding)
-            decryptedPK = try aesCipher.decrypt(crypto.cipherText.bytes)
+            encryptedData = try aesCipher.encrypt(mnemonic.data(using: .utf8)!.bytes)
         default:
             throw DecryptError.unsupportedCipher
         }
-        
-        return Data(bytes: decryptedPK)
+        return encryptedData.toHexString()
+    }
+    
+    public func decrypt(encryptedMnemonic: String, password: String) throws -> String {
+        let decryptionKey = try geneDecryptionKey(password: password)
+        let decryptedData: [UInt8]
+        switch crypto.cipher {
+        case "aes-128-ctr":
+            
+            let aesCipher = try AES(key: decryptionKey.bytes, blockMode: CTR(iv: crypto.cipherParams.iv.bytes), padding: .noPadding)
+            decryptedData = try aesCipher.decrypt(encryptedMnemonic.hexToBytes())
+            
+        case "aes-128-cbc":
+            let aesCipher = try AES(key: decryptionKey.bytes, blockMode: CBC(iv: crypto.cipherParams.iv.bytes), padding: .noPadding)
+            decryptedData = try aesCipher.decrypt(encryptedMnemonic.hexToBytes())
+        default:
+            throw DecryptError.unsupportedCipher
+        }
+        return String(data: Data(decryptedData), encoding: .utf8)!
     }
     
     static func computeMAC(prefix: Data, key: Data) -> Data {
@@ -144,6 +201,7 @@ extension Keystore: Codable {
         case crypto
         case version
         case publicKey
+        case mnemonic
     }
     
     enum UppercaseCodingKeys: String, CodingKey {
@@ -163,6 +221,7 @@ extension Keystore: Codable {
         version = try values.decode(Int.self, forKey: .version)
         address = try values.decodeIfPresent(String.self, forKey: .address) ?? ""
         publicKey = try values.decodeIfPresent(String.self, forKey: .publicKey)
+        mnemonic = try values.decodeIfPresent(String.self, forKey: .mnemonic)
     }
     
     public func encode(to encoder: Encoder) throws {
@@ -172,6 +231,7 @@ extension Keystore: Codable {
         try container.encode(crypto, forKey: .crypto)
         try container.encode(version, forKey: .version)
         try container.encodeIfPresent(publicKey, forKey: .publicKey)
+        try container.encodeIfPresent(mnemonic, forKey: .mnemonic)
     }
 }
 

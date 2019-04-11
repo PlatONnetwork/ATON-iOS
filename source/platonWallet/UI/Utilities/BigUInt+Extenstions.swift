@@ -11,6 +11,24 @@ import BigInt
 
 extension BigUInt{
     
+    static func safeInit(str: String?) -> BigUInt{
+        guard str != nil else{
+            return BigUInt("0")!
+        }
+        
+        var conditionVar = str 
+        for _ in 0...100{
+            if let index = conditionVar!.lastIndex(of: "."){
+                conditionVar = String(conditionVar![..<index])
+            }else{
+                return BigUInt(conditionVar ?? "0") ?? BigUInt("0")!
+            }
+        }
+        
+        
+        return BigUInt("0")!
+    }
+    
     static func mutiply(a : String, by : String) -> BigUInt?{
         
         let regex = "10*" //

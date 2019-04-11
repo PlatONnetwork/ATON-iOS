@@ -12,6 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CreateWalletSuccessViewController" customModule="platonWallet" customModuleProvider="target">
             <connections>
+                <outlet property="nextButton" destination="kwV-e6-1jv" id="UIN-vs-Uuu"/>
                 <outlet property="view" destination="iN0-l3-epB" id="v3A-hZ-n0v"/>
             </connections>
         </placeholder>
@@ -20,46 +21,45 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_wallet_create_success" translatesAutoresizingMaskIntoConstraints="NO" id="b4Q-1d-RlM">
-                    <rect key="frame" x="143.5" y="64" width="88" height="88"/>
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="walletCreateSucc" translatesAutoresizingMaskIntoConstraints="NO" id="b4Q-1d-RlM">
+                    <rect key="frame" x="107.5" y="92" width="160" height="110"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="88" id="TmU-8n-g31"/>
-                        <constraint firstAttribute="height" constant="88" id="rF8-mA-nhE"/>
+                        <constraint firstAttribute="width" constant="160" id="TmU-8n-g31"/>
+                        <constraint firstAttribute="height" constant="110" id="rF8-mA-nhE"/>
                     </constraints>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Success" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ytx-ld-PGE">
-                    <rect key="frame" x="160.5" y="162" width="54.5" height="17"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <rect key="frame" x="150.5" y="226" width="74" height="24"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
                     <nil key="highlightedColor"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="create_individual_success"/>
                     </userDefinedRuntimeAttributes>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="One last step，Back it up" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cjN-JG-hk7">
-                    <rect key="frame" x="93.5" y="223" width="188" height="19.5"/>
-                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
-                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <rect key="frame" x="95.5" y="274" width="184" height="19.5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
                     <nil key="highlightedColor"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="backuptip"/>
                     </userDefinedRuntimeAttributes>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please write down the mnemonics on paper and keep it in a safe place. " textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i6f-JJ-m3p">
-                    <rect key="frame" x="20" y="252.5" width="335" height="31.5"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please write down the mnemonics on paper and keep it in a safe place. " lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i6f-JJ-m3p">
+                    <rect key="frame" x="20" y="309.5" width="335" height="31.5"/>
                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="textColor" red="0.38039215686274508" green="0.39215686274509803" blue="0.43137254901960786" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="backupsetp1"/>
                     </userDefinedRuntimeAttributes>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kwV-e6-1jv" customClass="PButton" customModule="platonWallet" customModuleProvider="target">
-                    <rect key="frame" x="16" y="613" width="343" height="40"/>
+                    <rect key="frame" x="16" y="537" width="343" height="44"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="40" id="WV6-Dl-qzB"/>
+                        <constraint firstAttribute="height" constant="44" id="WV6-Dl-qzB"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
                     <state key="normal" title="Start"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="string" keyPath="localizedNormalTitle" value="backup_start"/>
@@ -68,27 +68,47 @@
                         <action selector="startBackup:" destination="-1" eventType="touchUpInside" id="FbM-Ae-PBS"/>
                     </connections>
                 </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1eW-iR-BOQ">
+                    <rect key="frame" x="162.5" y="589" width="50" height="29"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="50" id="6df-MD-xth"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
+                    <state key="normal" title="Skip">
+                        <color key="titleColor" red="0.062745098039215685" green="0.36078431372549019" blue="0.99607843137254903" alpha="1" colorSpace="calibratedRGB"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="localizedNormalTitle" value="backupskip"/>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="onSkip:" destination="-1" eventType="touchUpInside" id="EOA-ph-EfH"/>
+                    </connections>
+                </button>
             </subviews>
-            <color key="backgroundColor" red="0.14901960780000001" green="0.1764705882" blue="0.25882352939999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="kwV-e6-1jv" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="56d-IR-768"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="kwV-e6-1jv" secondAttribute="trailing" constant="16" id="6rx-IA-tT1"/>
-                <constraint firstItem="i6f-JJ-m3p" firstAttribute="top" secondItem="cjN-JG-hk7" secondAttribute="bottom" constant="10" id="8qK-JI-DH1"/>
+                <constraint firstItem="i6f-JJ-m3p" firstAttribute="top" secondItem="cjN-JG-hk7" secondAttribute="bottom" constant="16" id="8qK-JI-DH1"/>
+                <constraint firstItem="1eW-iR-BOQ" firstAttribute="centerX" secondItem="kwV-e6-1jv" secondAttribute="centerX" id="Jkx-TQ-eZy"/>
                 <constraint firstItem="Ytx-ld-PGE" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="KTZ-9y-vDe"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="kwV-e6-1jv" secondAttribute="bottom" constant="14" id="LM9-Zd-q2a"/>
-                <constraint firstItem="cjN-JG-hk7" firstAttribute="top" secondItem="Ytx-ld-PGE" secondAttribute="bottom" constant="44" id="RVj-oF-wWX"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="kwV-e6-1jv" secondAttribute="bottom" constant="86" id="LM9-Zd-q2a"/>
+                <constraint firstItem="cjN-JG-hk7" firstAttribute="top" secondItem="Ytx-ld-PGE" secondAttribute="bottom" constant="24" id="RVj-oF-wWX"/>
+                <constraint firstItem="1eW-iR-BOQ" firstAttribute="top" secondItem="kwV-e6-1jv" secondAttribute="bottom" constant="8" id="TwK-oQ-bJZ"/>
                 <constraint firstItem="i6f-JJ-m3p" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="c8h-Hw-PtG"/>
                 <constraint firstItem="cjN-JG-hk7" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="hwl-nk-vGR"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="i6f-JJ-m3p" secondAttribute="trailing" constant="20" id="urj-6d-7TW"/>
-                <constraint firstItem="b4Q-1d-RlM" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="44" id="w1b-78-bpy"/>
+                <constraint firstItem="b4Q-1d-RlM" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="72" id="w1b-78-bpy"/>
                 <constraint firstItem="b4Q-1d-RlM" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="xBb-r2-EHR"/>
                 <constraint firstItem="i6f-JJ-m3p" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="20" id="yLI-km-61d"/>
-                <constraint firstItem="Ytx-ld-PGE" firstAttribute="top" secondItem="b4Q-1d-RlM" secondAttribute="bottom" constant="10" id="yho-ag-dti"/>
+                <constraint firstItem="Ytx-ld-PGE" firstAttribute="top" secondItem="b4Q-1d-RlM" secondAttribute="bottom" constant="24" id="yho-ag-dti"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <point key="canvasLocation" x="132" y="154.27286356821591"/>
         </view>
     </objects>
     <resources>
-        <image name="icon_wallet_create_success" width="88" height="88"/>
+        <image name="walletCreateSucc" width="160" height="110"/>
     </resources>
 </document>

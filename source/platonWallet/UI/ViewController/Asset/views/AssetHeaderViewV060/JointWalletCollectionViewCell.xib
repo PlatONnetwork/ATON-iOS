@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="JointWalletCollectionViewCell" id="gTV-IL-0wX" customClass="JointWalletCollectionViewCell" customModule="platonWallet" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="108" height="108"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="108" height="108"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QBY-wp-mcp">
+                        <rect key="frame" x="0.0" y="0.0" width="108" height="108"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="home_jointWallet_bg_disabled" translatesAutoresizingMaskIntoConstraints="NO" id="DY2-OG-1Ix">
+                                <rect key="frame" x="0.0" y="0.0" width="108" height="52"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="108" id="Tg5-9n-fmy"/>
+                                    <constraint firstAttribute="height" constant="52" id="zb4-dV-Itz"/>
+                                </constraints>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="home_jointWallet_icon_disabled" translatesAutoresizingMaskIntoConstraints="NO" id="QYs-79-HC5">
+                                <rect key="frame" x="9" y="19" width="24" height="24"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="24" id="mFl-0t-Uwr"/>
+                                    <constraint firstAttribute="height" constant="24" id="t5t-Ao-YSj"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="hahfhafadhas" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9n3-Cp-vbB">
+                                <rect key="frame" x="39" y="23.5" width="69" height="15"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="9n3-Cp-vbB" firstAttribute="leading" secondItem="QYs-79-HC5" secondAttribute="trailing" constant="6" id="L73-77-dgD"/>
+                            <constraint firstAttribute="trailing" secondItem="9n3-Cp-vbB" secondAttribute="trailing" id="RED-wh-UW8"/>
+                            <constraint firstItem="DY2-OG-1Ix" firstAttribute="centerX" secondItem="QBY-wp-mcp" secondAttribute="centerX" id="Vbb-zv-jgG"/>
+                            <constraint firstItem="QYs-79-HC5" firstAttribute="leading" secondItem="QBY-wp-mcp" secondAttribute="leading" constant="9" id="j0O-AF-WYh"/>
+                            <constraint firstItem="QYs-79-HC5" firstAttribute="top" secondItem="QBY-wp-mcp" secondAttribute="top" constant="19" id="lvQ-KW-D03"/>
+                            <constraint firstItem="9n3-Cp-vbB" firstAttribute="centerY" secondItem="QYs-79-HC5" secondAttribute="centerY" id="pZX-Jt-4OR"/>
+                            <constraint firstItem="DY2-OG-1Ix" firstAttribute="top" secondItem="QBY-wp-mcp" secondAttribute="top" id="y8u-MO-hpL"/>
+                        </constraints>
+                    </view>
+                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3Pz-VH-kCg">
+                        <rect key="frame" x="0.0" y="54" width="108" height="54"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="home_jointWallet_bg_normal" translatesAutoresizingMaskIntoConstraints="NO" id="tdr-fl-xXQ">
+                                <rect key="frame" x="0.0" y="0.0" width="108" height="52"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="108" id="IU8-qX-l2X"/>
+                                    <constraint firstAttribute="height" constant="52" id="kRv-Xm-iuY"/>
+                                </constraints>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="home_jointWallet_icon_normal" translatesAutoresizingMaskIntoConstraints="NO" id="Q4i-Yd-SwA">
+                                <rect key="frame" x="9" y="19" width="24" height="24"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="24" id="cFo-Ci-Y5i"/>
+                                    <constraint firstAttribute="height" constant="24" id="hSG-A3-nUM"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="hahfhafadhas" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bcz-kq-e5Z">
+                                <rect key="frame" x="39" y="23.5" width="69" height="15"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <color key="textColor" red="0.062745098040000002" green="0.36078431370000003" blue="0.99607843139999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="●" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ted-pK-7wQ">
+                                <rect key="frame" x="97" y="3" width="6" height="7.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="6"/>
+                                <color key="textColor" red="1" green="0.13333333333333333" blue="0.13333333333333333" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="bcz-kq-e5Z" firstAttribute="centerY" secondItem="Q4i-Yd-SwA" secondAttribute="centerY" id="07k-ZY-X5n"/>
+                            <constraint firstAttribute="trailing" secondItem="bcz-kq-e5Z" secondAttribute="trailing" id="13l-jT-CzV"/>
+                            <constraint firstItem="tdr-fl-xXQ" firstAttribute="centerX" secondItem="3Pz-VH-kCg" secondAttribute="centerX" id="2sz-4q-3Gi"/>
+                            <constraint firstItem="tdr-fl-xXQ" firstAttribute="top" secondItem="3Pz-VH-kCg" secondAttribute="top" id="7Xl-xK-iA8"/>
+                            <constraint firstAttribute="trailing" secondItem="Ted-pK-7wQ" secondAttribute="trailing" constant="5" id="GML-Sa-n8M"/>
+                            <constraint firstItem="Q4i-Yd-SwA" firstAttribute="top" secondItem="3Pz-VH-kCg" secondAttribute="top" constant="19" id="KjT-0t-baE"/>
+                            <constraint firstItem="bcz-kq-e5Z" firstAttribute="leading" secondItem="Q4i-Yd-SwA" secondAttribute="trailing" constant="6" id="QVX-Uc-S5P"/>
+                            <constraint firstItem="Q4i-Yd-SwA" firstAttribute="leading" secondItem="3Pz-VH-kCg" secondAttribute="leading" constant="9" id="fEf-wN-k9b"/>
+                            <constraint firstItem="Ted-pK-7wQ" firstAttribute="top" secondItem="3Pz-VH-kCg" secondAttribute="top" constant="3" id="fcN-gT-4yx"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <constraints>
+                <constraint firstItem="3Pz-VH-kCg" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="2dS-lr-OSa"/>
+                <constraint firstAttribute="bottom" secondItem="QBY-wp-mcp" secondAttribute="bottom" id="4nt-ft-ovg"/>
+                <constraint firstItem="3Pz-VH-kCg" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="9aY-hg-DoL"/>
+                <constraint firstAttribute="trailing" secondItem="3Pz-VH-kCg" secondAttribute="trailing" id="CKy-LV-Mrd"/>
+                <constraint firstAttribute="trailing" secondItem="QBY-wp-mcp" secondAttribute="trailing" id="bov-lJ-5PA"/>
+                <constraint firstItem="QBY-wp-mcp" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="dpp-oW-wkW"/>
+                <constraint firstAttribute="bottom" secondItem="3Pz-VH-kCg" secondAttribute="bottom" id="f4u-pe-ee1"/>
+                <constraint firstItem="QBY-wp-mcp" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="qqZ-9A-jXR"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <size key="customSize" width="150" height="106"/>
+            <connections>
+                <outlet property="bgImgV" destination="tdr-fl-xXQ" id="A8v-eC-POm"/>
+                <outlet property="container" destination="3Pz-VH-kCg" id="I4d-Qc-yNB"/>
+                <outlet property="iconImgV" destination="Q4i-Yd-SwA" id="EcD-mV-arT"/>
+                <outlet property="redDot" destination="Ted-pK-7wQ" id="qax-BU-UiD"/>
+                <outlet property="walletNameBGLabel" destination="9n3-Cp-vbB" id="RsC-DG-nsl"/>
+                <outlet property="walletNameLabel" destination="bcz-kq-e5Z" id="fmf-Qt-bIt"/>
+            </connections>
+            <point key="canvasLocation" x="132.80000000000001" y="73.763118440779621"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="home_jointWallet_bg_disabled" width="108" height="52"/>
+        <image name="home_jointWallet_bg_normal" width="108" height="52"/>
+        <image name="home_jointWallet_icon_disabled" width="24" height="24"/>
+        <image name="home_jointWallet_icon_normal" width="24" height="24"/>
+    </resources>
+</document>

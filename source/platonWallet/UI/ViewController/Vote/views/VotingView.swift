@@ -11,8 +11,6 @@ import BigInt
 
 class VotingView: UIView ,UITextFieldDelegate{
 
-    @IBOutlet weak var avatar: UIImageView!
-    
     @IBOutlet weak var nodeNameLabel: UILabel!
     
     @IBOutlet weak var nodeIdLabel: UILabel!
@@ -35,9 +33,15 @@ class VotingView: UIView ,UITextFieldDelegate{
     
     @IBOutlet weak var confirmBtn: UIButton!
     
+    @IBOutlet weak var voteButton: PButton!
+    
+    @IBOutlet weak var walletAvatar: UIImageView!
+    
+    
     override func awakeFromNib() {
         initSubViews()
         voteNumber.delegate = self
+        voteButton.style = .blue
     }
     
     func initSubViews(){
@@ -47,7 +51,6 @@ class VotingView: UIView ,UITextFieldDelegate{
     }
     
     func updateWithCandidate(candidate: Candidate){
-        avatar.image = candidate.avatar
         nodeNameLabel.text = candidate.extra?.nodeName
         nodeIdLabel.text = candidate.candidateId?.add0x()
     }

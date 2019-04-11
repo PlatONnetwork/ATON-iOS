@@ -17,11 +17,12 @@ class ImportMnemonicOrPrivateKeyViewController: BaseImportWalletViewController {
     @IBOutlet weak var textViewTipsBottomLayout: NSLayoutConstraint!
     
     @IBOutlet weak var nameTF: PTextFieldWithPadding!
+    @IBOutlet weak var pswTF: PPasswordTextField!
+    @IBOutlet weak var confirmPswTF: PPasswordTextField!
+    
     @IBOutlet weak var nameTFTipsLabel: UILabel!
     @IBOutlet weak var nameTFTipsBottomLayout: NSLayoutConstraint!
-    @IBOutlet weak var pswTF: PPasswordTextField!
-    
-    @IBOutlet weak var confirmPswTF: PPasswordTextField!
+
     
     @IBOutlet weak var pswAdviseLabel: UILabel!
     @IBOutlet weak var pswTipsLabel: UILabel!
@@ -33,6 +34,18 @@ class ImportMnemonicOrPrivateKeyViewController: BaseImportWalletViewController {
     
     @IBOutlet weak var passwordStrengthView: PasswordStrengthView!
     
+    @IBOutlet weak var mnemonicContainer: UIView!
+    
+    @IBOutlet weak var pasteButton: UIButton!
+    
+    
+    var mnemonicGridView : MnemonicGridView? = UIView.viewFromXib(theClass: MnemonicGridView.self) as? MnemonicGridView
+    
+    @IBOutlet weak var mnemonicContainerHeight: NSLayoutConstraint!
+    
+    @IBOutlet weak var inputTextViewHeight: NSLayoutConstraint!
+    
+    
     var importType: ImportWalletVCType = .mnemonic
     
     convenience init(type: ImportWalletVCType) {
@@ -42,6 +55,26 @@ class ImportMnemonicOrPrivateKeyViewController: BaseImportWalletViewController {
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.checkKeyboard()
+    }
+    
+    @objc func onPasteboardChange(){
+        self.checkKeyboard()
+    }
+    
+    func checkKeyboard(){
+        if let pasteBoardString = UIPasteboard.general.string{
+            if self.importType == .privateKey && pasteBoardString.is128BytePrivateKey(){
+                self.pasteButton.setTitleColor(UIColor(rgb: 0x105CFE), for: .normal)
+            }else{
+                self.pasteButton.setTitleColor(UIColor(rgb: 0xB6BBD0), for: .normal)
+            }
+        }else{
+            self.pasteButton.setTitleColor(UIColor(rgb: 0xB6BBD0), for: .normal)
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,6 +82,10 @@ class ImportMnemonicOrPrivateKeyViewController: BaseImportWalletViewController {
         setupUI()
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame(_:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onPasteboardChange), name: UIPasteboard.changedNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(onPasteboardChange), name: UIApplication.willEnterForegroundNotification, object: nil)
+        
+        
     }
 
     func setupUI() {
@@ -59,15 +96,26 @@ class ImportMnemonicOrPrivateKeyViewController: BaseImportWalletViewController {
             
             headerTipsLabel.localizedText = "importWalletVC_mnemonic_tips"
             textView.localizedText_Placeholder = "importWalletVC_mnemonic_textView_placeholder"
+            self.inputTextViewHeight.constant = 0
+            self.textView.isHidden = true
             
+            self.mnemonicContainer.addSubview(self.mnemonicGridView!)
+            self.mnemonicGridView?.snp.makeConstraints({ (make) in
+                make.edges.equalTo(self.mnemonicContainer)
+            })
+            pasteButton.isHidden = true
         }else {
-            
             headerTipsLabel.localizedText = "importWalletVC_privateKey_tips"
             textView.localizedText_Placeholder = "importWalletVC_privateKey_textView_placeholder"
+            self.mnemonicContainerHeight.constant = 0
+            self.mnemonicContainer.isHidden = true
         }
         scrollView.keyboardDismissMode = .interactive
         textView.text = defaultText
-        checkCanEableButton()
+        
+        importBtn.style = .disable
+        
+        
     }
 
     ///keyboard notification
@@ -91,20 +139,20 @@ class ImportMnemonicOrPrivateKeyViewController: BaseImportWalletViewController {
             return
         }
         
-        showLoading()
+        showLoadingHUD()
         
         if importType == .mnemonic {
-            
-            WalletService.sharedInstance.import(mnemonic: textView.text!, walletName: nameTF.text!, walletPassword: pswTF.text!) { [weak self](wallet, error) in
-                self?.hideLoading(animated: false)
+            let mnemonicString = self.mnemonicGridView?.getMnemonic()
+            WalletService.sharedInstance.import(mnemonic: mnemonicString!, walletName: nameTF.text!, walletPassword: pswTF.text!) { [weak self](wallet, error) in
+                self?.hideLoadingHUD(animated: false)
                 self?.importCompletion(wallet: wallet, error: error)
             }
-            
+             
         }else {
             
             WalletService.sharedInstance.import(privateKey: textView.text!, walletName: nameTF.text!, walletPassword: pswTF.text!) { [weak self](wallet, error) in
                 
-                self?.hideLoading(animated: false)
+                self?.hideLoadingHUD(animated: false)
                 self?.importCompletion(wallet: wallet, error: error)
             }
             
@@ -124,108 +172,116 @@ class ImportMnemonicOrPrivateKeyViewController: BaseImportWalletViewController {
     }
     
     func checkCanEableButton() {
-        importBtn.isEnabled = nameTF.text!.length > 0 && pswTF.text!.length > 5 && confirmPswTF.text!.length > 5 && textView.text!.length > 0
-    }
-    
-    func checkTextView() -> Bool {
-        
-        if textView.text!.isEmpty {
-            if importType == .mnemonic {
-                textViewTipsLabel.localizedText = "importWalletVC_mnemonicInput_empty_tips"
-            }else {
-                textViewTipsLabel.localizedText = "importWalletVC_privateKeyInput_empty_tips"
+        if importType == .mnemonic{
+            if self.checkInputValueIsValid() && (mnemonicGridView?.nonEmptyCount())! == 12{
+                importBtn.style = .blue
+            }else{
+                importBtn.style = .disable
             }
-            
-            textViewTipsLabel.isHidden = false
-            textViewTipsBottomLayout.priority = .defaultHigh
-        }else {
-            textViewTipsLabel.isHidden = true
-            textViewTipsBottomLayout.priority = .defaultLow
+        }else{
+            if self.checkInputValueIsValid() && textView.text!.length > 0{
+                importBtn.style = .blue
+            }else{
+                importBtn.style = .disable
+            }
         }
-        view.layoutIfNeeded()
-        return !textView.text!.isEmpty
+
+    }
+    
+    func checkContentInput(showErrorMsg: Bool = false) -> Bool {
+        if importType == .mnemonic{
+            if showErrorMsg{
+                if (self.mnemonicGridView?.nonEmptyCount())! < 12{
+                    textViewTipsLabel.localizedText = "importWalletVC_mnemonicInput_empty_tips"
+                    textViewTipsLabel.isHidden = false
+                    textViewTipsBottomLayout.priority = .defaultHigh
+                }else{
+                    textViewTipsLabel.isHidden = true
+                    textViewTipsBottomLayout.priority = .defaultLow
+                }
+            }
+            return (self.mnemonicGridView?.nonEmptyCount())! == 12
+
+        }else{
+            if showErrorMsg{
+                if textView.text!.isEmpty {
+                    if importType == .mnemonic {
+                        textViewTipsLabel.localizedText = "importWalletVC_mnemonicInput_empty_tips"
+                    }else {
+                        textViewTipsLabel.localizedText = "importWalletVC_privateKeyInput_empty_tips"
+                    }
+                    textViewTipsLabel.isHidden = false
+                    textViewTipsBottomLayout.priority = .defaultHigh
+                }else {
+                    textViewTipsLabel.isHidden = true
+                    textViewTipsBottomLayout.priority = .defaultLow
+                }
+                view.layoutIfNeeded()
+            }
+            return !textView.text!.isEmpty
+        }
+
         
     }
     
-    func checkNameTF() -> Bool {
-        
-        let nameRes = CommonService.isValidWalletName(nameTF.text)
-        if (nameRes.0) {
-            nameTFTipsLabel.isHidden = true
-            nameTFTipsBottomLayout.priority = .defaultLow
-        }else {
-            nameTFTipsLabel.text = nameRes.1
-            nameTFTipsLabel.isHidden = false
-            nameTFTipsBottomLayout.priority = .defaultHigh
+    func checkNameTF(showErrorMsg: Bool = false) -> Bool {
+        let nameRes = CommonService.isValidWalletName(nameTF.text,checkDuplicate: true)
+        if showErrorMsg{
+            if (nameRes.0) {
+                nameTFTipsLabel.isHidden = true
+                nameTFTipsBottomLayout.priority = .defaultLow
+                nameTF.setBottomLineStyle(style: .Normal)
+            }else {
+                nameTFTipsLabel.text = nameRes.1
+                nameTFTipsLabel.isHidden = false
+                nameTFTipsBottomLayout.priority = .defaultHigh
+                nameTF.setBottomLineStyle(style: .Error)
+            }
+            view.layoutIfNeeded()
         }
-        view.layoutIfNeeded()
+        
         return nameRes.0
-        
     }
     
-    func checkPswTF(isConfirmPsw: Bool = false) -> Bool {
+    func checkPswTF(showErrorMsg: Bool = false,isConfirmPsw: Bool = false) -> Bool {
         
         let pswRes = CommonService.isValidWalletPassword(pswTF.text, confirmPsw: isConfirmPsw ? confirmPswTF.text : nil)
-        if (pswRes.0) {
-            pswTipsLabel.isHidden = true
-            pswAdviseLabel.isHidden = false
-            pswTipsBottomLayout.priority = .defaultLow
-        }else {
-            pswTipsLabel.text = pswRes.1
-            pswTipsLabel.isHidden = false
-            pswAdviseLabel.isHidden = true
-            pswTipsBottomLayout.priority = .defaultHigh
+        if showErrorMsg{
+            if (pswRes.0) {
+                pswTipsLabel.isHidden = true
+                pswAdviseLabel.isHidden = false
+                pswTipsBottomLayout.priority = .defaultLow
+                pswTF.setBottomLineStyle(style: .Normal)
+                confirmPswTF.setBottomLineStyle(style: .Normal)
+            }else {
+                pswTipsLabel.text = pswRes.1
+                pswTipsLabel.isHidden = false
+                pswAdviseLabel.isHidden = true
+                pswTipsBottomLayout.priority = .defaultHigh
+                pswTF.setBottomLineStyle(style: .Error)
+                confirmPswTF.setBottomLineStyle(style: .Error)
+            }
+            view.layoutIfNeeded()
         }
         
-        view.layoutIfNeeded()
         return pswRes.0
     }
     
     func checkInputValueIsValid() -> Bool {
-        
-        return checkTextView() && checkNameTF() && checkPswTF(isConfirmPsw: true)
-        
-//        if textView.text!.isEmpty {
-//            if importType == .mnemonic {
-//                textViewTipsLabel.text = Localized("importWalletVC_mnemonicInput_empty_tips")
-//            }else {
-//                textViewTipsLabel.text = Localized("importWalletVC_privateKeyInput_empty_tips")
-//            }
-//
-//            textViewTipsLabel.isHidden = false
-//            textViewTipsBottomLayout.priority = .defaultHigh
-//        }else {
-//            textViewTipsLabel.isHidden = true
-//            textViewTipsBottomLayout.priority = .defaultLow
-//        }
-//        
-//        let nameRes = CommonService.isValidWalletName(nameTF.text)
-//        if (nameRes.0) {
-//            nameTFTipsLabel.isHidden = true
-//            nameTFTipsBottomLayout.priority = .defaultLow
-//        }else {
-//            nameTFTipsLabel.text = nameRes.1
-//            nameTFTipsLabel.isHidden = false
-//            nameTFTipsBottomLayout.priority = .defaultHigh
-//        }
-//        
-//        let pswRes = CommonService.isValidWalletPassword(pswTF.text, confirmPsw: confirmPswTF.text)
-//        if (pswRes.0) {
-//            pswTipsLabel.isHidden = true
-//            pswAdviseLabel.isHidden = false
-//            pswTipsBottomLayout.priority = .defaultLow
-//        }else {
-//            pswTipsLabel.text = pswRes.1
-//            pswTipsLabel.isHidden = false
-//            pswAdviseLabel.isHidden = true
-//            pswTipsBottomLayout.priority = .defaultHigh
-//        }
-//        
-//        self.view.layoutIfNeeded()
-//        
-//        return textViewTipsLabel.isHidden && nameRes.0 && pswRes.0
-        
+        return checkContentInput() && checkNameTF() && checkPswTF(isConfirmPsw: true)
     }
+    
+    //MARK:- User Interaction
+    
+    @IBAction func onPaste(_ sender: Any) {
+        if let pasteBoardString = UIPasteboard.general.string{
+            if self.importType == .privateKey && pasteBoardString.is128BytePrivateKey(){
+                self.textView.text = pasteBoardString
+                self.checkCanEableButton()
+            }
+        }
+    }
+    
     
 }
 
@@ -234,35 +290,48 @@ extension ImportMnemonicOrPrivateKeyViewController :UITextFieldDelegate, UITextV
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.2) { 
-            self.checkCanEableButton()
             if textField == self.pswTF {
-                self.passwordStrengthView.updateFor(password: self.pswTF.text ?? "")
+                self.passwordStrengthView.updateFor( password: self.pswTF.text ?? "")
             }
         }
         
         return true
     }
     
+    
+    
+    
     //MARK:- UITextFieldDelegate
     func textFieldDidEndEditing(_ textField: UITextField) {
         
         if textField == nameTF {
-            let _ = checkNameTF()
+            let _ = checkNameTF(showErrorMsg: true)
         }else if textField == pswTF {
-            let _ = checkPswTF()
+            let _ = checkPswTF(showErrorMsg: true)
         }else if textField == confirmPswTF {
-            let _ = checkPswTF(isConfirmPsw: true)
+            let _ = checkPswTF(showErrorMsg: true,isConfirmPsw: true)
         }
-        
+        self.checkCanEableButton()
     }
     
     //MARK:- UITextViewDelegate
     func textViewDidEndEditing(_ textView: UITextView) {
         
         if self.textView == textView {
-            let _ = checkTextView()
+            let _ = checkContentInput(showErrorMsg: true)
         }
         
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if textField == nameTF {
+            pswTF.becomeFirstResponder()
+        }else if textField == pswTF {
+            confirmPswTF.becomeFirstResponder()
+        }else if textField == confirmPswTF {
+            textField.resignFirstResponder()
+        }
+        return true
     }
     
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
@@ -272,5 +341,8 @@ extension ImportMnemonicOrPrivateKeyViewController :UITextFieldDelegate, UITextV
         }
         return true
     }
+    
+    
+    
 
 }

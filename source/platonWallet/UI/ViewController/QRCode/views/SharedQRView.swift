@@ -18,4 +18,7 @@ class SharedQRView: UIView {
     
     @IBOutlet weak var qrImageView: UIImageView!
     
+    
+    override func awakeFromNib() {
+    }
 }

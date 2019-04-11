@@ -44,3 +44,29 @@ extension UIView {
         }
     }
 }
+
+extension UIView {
+    func addBottomSepline(offset: CGFloat = 0) {
+        let view = UIView()
+        view.backgroundColor = UIColor(rgb: 0xEBEEF4)
+        self.addSubview(view)
+        view.snp.makeConstraints { (make) in
+            make.leading.equalToSuperview().offset(offset)
+            make.trailing.equalToSuperview().offset(-offset)
+            make.bottom.equalToSuperview()
+            make.height.equalTo(1)
+        }
+    }
+    
+    func addTopSepline(offset: CGFloat = 0) {
+        let view = UIView()
+        view.backgroundColor = UIColor(rgb: 0xEBEEF4)
+        self.addSubview(view)
+        view.snp.makeConstraints { (make) in
+            make.leading.equalToSuperview().offset(offset)
+            make.trailing.equalToSuperview().offset(-offset)
+            make.top.equalToSuperview()
+            make.height.equalTo(1)
+        }
+    }
+}

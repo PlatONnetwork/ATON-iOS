@@ -23,34 +23,12 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchLogo" translatesAutoresizingMaskIntoConstraints="NO" id="gcc-qf-dzr">
-                    <rect key="frame" x="147.5" y="124" width="80" height="106"/>
+                    <rect key="frame" x="147.5" y="146" width="80" height="106"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="80" id="7Pv-Li-v8V"/>
                         <constraint firstAttribute="height" constant="106" id="ZZ5-FU-1MP"/>
                     </constraints>
                 </imageView>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qfK-wL-sz0" customClass="PButton" customModule="platonWallet" customModuleProvider="target">
-                    <rect key="frame" x="87.5" y="330" width="200" height="40"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="200" id="aGH-5e-5Vk"/>
-                        <constraint firstAttribute="height" constant="40" id="zlN-x5-hFd"/>
-                    </constraints>
-                    <state key="normal" title="Button"/>
-                    <connections>
-                        <action selector="onCreateWallet:" destination="-1" eventType="touchUpInside" id="PsE-5a-DHZ"/>
-                    </connections>
-                </button>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ffh-dM-RYK" customClass="PButton" customModule="platonWallet" customModuleProvider="target">
-                    <rect key="frame" x="87.5" y="400" width="200" height="40"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="40" id="O8L-8e-4Xz"/>
-                        <constraint firstAttribute="width" constant="200" id="cKB-vY-vq1"/>
-                    </constraints>
-                    <state key="normal" title="Button"/>
-                    <connections>
-                        <action selector="onImportWallet:" destination="-1" eventType="touchUpInside" id="P1x-2G-jAc"/>
-                    </connections>
-                </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vuq-KA-XtX">
                     <rect key="frame" x="172" y="629.5" width="31" height="14.5"/>
                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
@@ -60,22 +38,70 @@
                         <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="platon_slogan"/>
                     </userDefinedRuntimeAttributes>
                 </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YsB-Fa-JWs">
+                    <rect key="frame" x="58" y="491" width="259" height="44"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qfK-wL-sz0" customClass="PButton" customModule="platonWallet" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="0.0" width="259" height="44"/>
+                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="string" keyPath="localizedNormalTitle" value="WelcomePage_create_wallet"/>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="onCreateWallet:" destination="-1" eventType="touchUpInside" id="PsE-5a-DHZ"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="qfK-wL-sz0" firstAttribute="top" secondItem="YsB-Fa-JWs" secondAttribute="top" id="60O-BE-q4F"/>
+                        <constraint firstAttribute="bottom" secondItem="qfK-wL-sz0" secondAttribute="bottom" id="Kr2-eV-tJz"/>
+                        <constraint firstAttribute="trailing" secondItem="qfK-wL-sz0" secondAttribute="trailing" id="Xy3-hr-LEn"/>
+                        <constraint firstAttribute="height" constant="44" id="dTr-E4-QDz"/>
+                        <constraint firstItem="qfK-wL-sz0" firstAttribute="leading" secondItem="YsB-Fa-JWs" secondAttribute="leading" id="sPR-UD-EiK"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="spn-UD-SMw">
+                    <rect key="frame" x="58" y="559" width="259" height="44"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ffh-dM-RYK" customClass="PButton" customModule="platonWallet" customModuleProvider="target">
+                            <rect key="frame" x="0.0" y="0.0" width="259" height="44"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="string" keyPath="localizedNormalTitle" value="WelcomePage_import_wallet"/>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="onImportWallet:" destination="-1" eventType="touchUpInside" id="P1x-2G-jAc"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="ffh-dM-RYK" firstAttribute="leading" secondItem="spn-UD-SMw" secondAttribute="leading" id="WH4-wB-F2T"/>
+                        <constraint firstAttribute="height" constant="44" id="Yc9-bm-i7N"/>
+                        <constraint firstAttribute="trailing" secondItem="ffh-dM-RYK" secondAttribute="trailing" id="jtP-dA-49v"/>
+                        <constraint firstAttribute="bottom" secondItem="ffh-dM-RYK" secondAttribute="bottom" id="pUS-UL-bdS"/>
+                        <constraint firstItem="ffh-dM-RYK" firstAttribute="top" secondItem="spn-UD-SMw" secondAttribute="top" id="phz-dQ-INg"/>
+                    </constraints>
+                </view>
             </subviews>
-            <color key="backgroundColor" red="0.10588235294117647" green="0.12941176470588234" blue="0.21568627450980393" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstItem="qfK-wL-sz0" firstAttribute="top" secondItem="gcc-qf-dzr" secondAttribute="bottom" constant="100" id="F0Q-6i-AUB"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="spn-UD-SMw" secondAttribute="bottom" constant="64" id="0L6-2s-fMQ"/>
                 <constraint firstItem="Vuq-KA-XtX" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="LRB-sv-IZg"/>
                 <constraint firstItem="gcc-qf-dzr" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="Lfr-ka-Chs"/>
-                <constraint firstItem="gcc-qf-dzr" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="124" id="WiO-u2-8Vb"/>
-                <constraint firstItem="qfK-wL-sz0" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="ari-Dg-LqI"/>
-                <constraint firstItem="ffh-dM-RYK" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="bKM-3c-pyR"/>
-                <constraint firstItem="ffh-dM-RYK" firstAttribute="top" secondItem="qfK-wL-sz0" secondAttribute="bottom" constant="30" id="tp8-SQ-OTf"/>
+                <constraint firstItem="gcc-qf-dzr" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="146" id="WiO-u2-8Vb"/>
+                <constraint firstItem="YsB-Fa-JWs" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="58" id="dC1-sd-Pml"/>
+                <constraint firstItem="spn-UD-SMw" firstAttribute="top" secondItem="YsB-Fa-JWs" secondAttribute="bottom" constant="24" id="l5n-7v-n6m"/>
+                <constraint firstItem="spn-UD-SMw" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="58" id="nG9-Y9-kmV"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="spn-UD-SMw" secondAttribute="trailing" constant="58" id="pa3-tl-XWM"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="YsB-Fa-JWs" secondAttribute="trailing" constant="58" id="sDA-6U-c3p"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="Vuq-KA-XtX" secondAttribute="bottom" constant="23" id="wog-Hc-EWF"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <point key="canvasLocation" x="132" y="154.27286356821591"/>
         </view>
     </objects>
     <resources>
-        <image name="LaunchLogo" width="80" height="106"/>
+        <image name="LaunchLogo" width="100" height="134"/>
     </resources>
 </document>

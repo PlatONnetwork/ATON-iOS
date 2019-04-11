@@ -27,7 +27,6 @@ public final class WalletService {
     
     public private(set) var wallets = [Wallet]()
     
-    
     static let sharedInstance = WalletService()
     
     let walletQueue = DispatchQueue(label: "com.ju.walletServiceQueue", qos: .userInitiated, attributes: .concurrent)
@@ -104,7 +103,7 @@ public final class WalletService {
         guard WalletUtil.isValidMnemonic(mnemonic) else {
             completion(nil, Error.invalidMnemonic)
             return
-        }
+        } 
         
         walletQueue.async {
             
@@ -310,12 +309,58 @@ public final class WalletService {
 //        }
         let tempPublicKey = keystore.publicKey
         keystore.publicKey = nil
+//        let tempMnemonic = keystore.mnemonic
+//        keystore.mnemonic = nil
         guard let keystoreJson = String(bytes: try! JSONEncoder().encode(keystore), encoding: .utf8) else { return (nil, Error.invalidWallet) }
         keystore.publicKey = tempPublicKey
+//        keystore.mnemonic = tempMnemonic
         return (keystoreJson, nil)
     }
     
+    public func exportMnemonic(wallet: Wallet, password: String, completion: @escaping (String?, Error?) -> Void) {
+        
+        guard let keystore = wallet.key else {
+            completion(nil, Error.invalidWallet)
+            return
+        }
+        guard let encryptedMnemonic = keystore.mnemonic else {
+            completion(nil, Error.invalidMnemonic)
+            return
+        }
+        walletQueue.async {
+            guard let mnemonic = try? keystore.decrypt(encryptedMnemonic: encryptedMnemonic, password: password) else {
+                completion(nil, Error.invalidWalletPassword)
+                return
+            }
+            DispatchQueue.main.async {
+                completion(mnemonic, nil)
+            }
+            
+        }
+
+    }
+    
+    public func afterBackupMnemonic(wallet: Wallet) {
+        guard var keystore = wallet.key else {
+            return
+        }
+        keystore.mnemonic = nil
+        guard let json = try? JSONEncoder().encode(keystore) else {
+            return
+        }
+        let fileURL = keystoreFolderURL.appendingPathComponent(wallet.keystorePath)
+        try? json.write(to: fileURL, options: [.atomicWrite])
+        
+        let w = wallets.first { (item) -> Bool in
+            item.uuid == wallet.uuid
+        }
+        w?.key?.mnemonic = nil
+        
+    }
+    
     public func deleteWallet(_ wallet:Wallet) {
+        
+        NotificationCenter.default.post(name: NSNotification.Name(WillDeleateWallet_Notification), object: wallet)
         
         AssetService.sharedInstace.assets.removeValue(forKey: (wallet.key?.address)!)
         
@@ -323,6 +368,12 @@ public final class WalletService {
             return item == wallet
         }
         walletStorge.delete(wallet: wallet)
+        //issue mutiply thread access wallet object?
+        if let selectedWallet = AssetVCSharedData.sharedData.selectedWallet as? Wallet{
+            if (selectedWallet.key?.address.ishexStringEqual(other: wallet.key?.address))!{
+                AssetVCSharedData.sharedData.selectedWallet = nil
+            }
+        } 
         
         //delete associated shared wallets
         SWalletService.sharedInstance.willOwnerWalletBeingDelete(ownerWallet: wallet)
@@ -389,7 +440,6 @@ public final class WalletService {
                     try FileManager.default.removeItem(at: keystoreFolderURL.appendingPathComponent(path))
                 }
             }
-            
         }
 
         wallet.keystorePath = fileName

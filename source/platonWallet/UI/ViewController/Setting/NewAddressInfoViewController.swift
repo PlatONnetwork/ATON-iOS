@@ -24,9 +24,11 @@ class NewAddressInfoViewController: BaseViewController , UITextFieldDelegate{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        initNavigationItem()
         initSubViews()
+        initNavigationItem()
         contentView.addressField.text = defaultAddress
+        contentView.scanButton.addTarget(self, action: #selector(onConfirm), for: .touchUpInside)
+        self.autoAdjustInset()
         
         if fromScene == .edit {
             contentView.nameTextField.text = addressInfo?.walletName
@@ -45,7 +47,8 @@ class NewAddressInfoViewController: BaseViewController , UITextFieldDelegate{
         
         view.addSubview(contentView)
         contentView.snp.makeConstraints { (make) in
-            make.edges.equalTo(view)
+            make.leading.trailing.bottom.equalTo(view)
+            make.top.equalToSuperview().offset(UIDevice.notchHeight)
         }
         contentView.confirmButton.addTarget(self, action: #selector(onConfirm), for: .touchUpInside)
     }
@@ -53,20 +56,21 @@ class NewAddressInfoViewController: BaseViewController , UITextFieldDelegate{
     func initNavigationItem(){
         
         if fromScene == .add {
-            navigationItem.localizedText = "AddAddress_nav_title"
+            super.leftNavigationTitle = "AddAddress_nav_title"
         }else if fromScene == .edit {
-            navigationItem.localizedText = "EditAddress_nav_title"
+            super.leftNavigationTitle = "EditAddress_nav_title"
         }
-        
+        /*
         let scanButton = UIButton(type: .custom)
-        scanButton.setImage(UIImage(named: "navScanWhite"), for: .normal)
-        scanButton.addTarget(self, action: #selector(onNavRight), for: .touchUpInside)
+        scanButton.setImage(UIImage(named: "navScanBlack"), for: .normal)
+        scanButton.addTarget(self, action: #selector(onScanButton), for: .touchUpInside)
         scanButton.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
         let rightBarButtonItem = UIBarButtonItem(customView: scanButton)
         navigationItem.rightBarButtonItem = rightBarButtonItem
+        */
     }
     
-    @objc func onNavRight(){
+    @objc func onScanButton(){
         let scanner = QRScannerViewController {[weak self] (res) in
             
             if res.isValidAddress() {
@@ -149,46 +153,32 @@ class NewAddressInfoViewController: BaseViewController , UITextFieldDelegate{
     }
     
     func checkName(showTip :Bool) -> Bool{
-        if contentView.nameTextField.text?.length == 0{
-            if showTip{
-                contentView.showWalletNameTipWithString(desciption: Localized("NewAddress_name_empty_tip"))
-            }
-            return false
-        }else{
+        let resp = CommonService.checkNewAddressName(contentView.nameTextField.text ?? "")
+        if resp.0{
             contentView.hideWalletNameTip()
-        }
-        
-        if (contentView.nameTextField.text?.length)! > 12{
-            if showTip{
-                contentView.showWalletNameTipWithString(desciption: Localized("NewAddress_name_Incorrect_tip"))
-            }
-            return false
+            contentView.nameTextField.setBottomLineStyle(style: .Normal)
         }else{
-            contentView.hideWalletNameTip()
+            if showTip{
+                contentView.showWalletNameTipWithString(desciption: resp.1!)
+                contentView.nameTextField.setBottomLineStyle(style: .Error)
+            }
+            
         }
-        
-        return true
+        return resp.0
     }
     
     func checkAddress(showTip :Bool) -> Bool{
-        if contentView.addressField.text?.length == 0 {
-            if showTip{
-                contentView.showAddressTipWithString(desciption: Localized("NewAddress_address_empty_tip"))
-            }
-            return false
-        }else{
+        let resp = CommonService.checkNewAddressString(contentView.addressField.text)
+        if resp.0{
             contentView.hideAddressTip()
-        }
-        
-        if !(contentView.addressField.text?.is40ByteAddress())!{
-            if showTip{
-                contentView.showAddressTipWithString(desciption: Localized("NewAddress_address_Incorrect_tip"))
-            }
-            return false
+            contentView.addressField.setBottomLineStyle(style: .Normal)
         }else{
-            contentView.hideAddressTip()
+            if showTip{
+                contentView.showAddressTipWithString(desciption: resp.1!)
+                contentView.addressField.setBottomLineStyle(style: .Error)
+            }
         }
-        return true
+        return resp.0
     }
     
   
@@ -196,6 +186,11 @@ class NewAddressInfoViewController: BaseViewController , UITextFieldDelegate{
     func checkConfirmButtonEnable(showTip :Bool) -> Bool{
         let result = self.checkName(showTip: showTip) && self.checkAddress(showTip: showTip)
         contentView.confirmButton.setCommonEanbleStyle(result)
+        if result{
+            contentView.addButton.style = .blue
+        }else{
+            contentView.addButton.style = .disable
+        }
         return result
     }
 }

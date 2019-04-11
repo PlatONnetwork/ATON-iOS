@@ -19,6 +19,7 @@ let kUIScreenSize = UIScreen.main.responds(to: #selector(getter: UIScreen.native
 let kUIScreenWidth = kUIScreenSize.width
 let kUIScreenHeight = kUIScreenSize.height
 let kUIScreenBounds = UIScreen.main.bounds
+let kStatusBarHeight = UIApplication.shared.statusBarFrame.height
 
 let kAppVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"]
 

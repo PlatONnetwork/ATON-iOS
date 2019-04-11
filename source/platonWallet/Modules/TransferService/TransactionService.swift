@@ -89,7 +89,11 @@ class TransactionService : BaseService{
         web3.eth.gasPrice { (res) in
             switch res.status{
             case .success(_):
-                self.ethGasPrice = res.result?.quantity
+                DispatchQueue.main.async {
+                    self.ethGasPrice = res.result?.quantity
+                    NotificationCenter.default.post(name: NSNotification.Name(DidNodeGasPriceUpdateNotification), object: nil)
+
+                }
             case .failure(_):
                 do{}
             }
@@ -126,7 +130,7 @@ class TransactionService : BaseService{
             
         }
     }
-    
+     
     func VotePooling(){
         let txs = TransferPersistence.getUnConfirmedTransactions()
         for item in txs{
@@ -141,7 +145,7 @@ class TransactionService : BaseService{
             
             web3.eth.getTransactionReceipt(transactionHash: data) { (txResp) in
                 switch txResp.status{
-                case .success(let resp):
+                case .success(let resp): 
                     guard let receipt = resp, receipt.logs.count > 0, receipt.logs[0].data.hex().count > 0 else{
                         return
                     }
@@ -150,28 +154,44 @@ class TransactionService : BaseService{
                         return
                     }
                     
-                    guard let dic = try? JSONSerialization.jsonObject(with: Data(bytes: respBytes), options: .mutableContainers) as? [String:Any], let count = Int(dic?["Data"] as? String ?? ""), let jsonStr = String(data: Data(bytes: respBytes), encoding: .utf8) else{
-                        return 
+                    guard let dic = try? JSONSerialization.jsonObject(with: Data(bytes: respBytes), options: .mutableContainers) as? [String:Any] else{
+                        return
                     }
-
+                    
+                    guard let responseJson = String(bytes: respBytes, encoding: .utf8) else{
+                        return
+                    }  
                     DispatchQueue.main.async {
                         
                         guard let singleVote = VotePersistence.getSingleVotesByTxHash(item.txhash!) else {
                             return
                         }
                         
+                        
+                        guard let dataString = dic?["Data"] as? String,
+                            dataString.split(separator: ":").count == 2,
+                            let validCountStr = String(dataString.split(separator: ":")[0]) as? String,
+                            let priceStr = String(dataString.split(separator: ":")[1]) as? String else{
+                                return
+                        }
+                        
                         try? RealmInstance?.write {
                             item.blockNumber = String(receipt.blockNumber.quantity)
                             item.gasUsed = String(receipt.gasUsed.quantity)
-                            item.extra = jsonStr
-                            if singleVote.tickets.count > count {
-                                
+                            item.extra = responseJson
+                            
+                            singleVote.validNum = validCountStr
+                            singleVote.deposit = priceStr 
+                            
+                            /*
+                            if singleVote.tickets.count > count {  
                                 item.value = String(EthereumQuantity(quantity: BigUInt(singleVote.tickets[0].deposit!)!.multiplied(by: BigUInt(count))).quantity)
                                 let startIndex = singleVote.tickets.count - count
                                 let endIndex = singleVote.tickets.count
                                 let tickets = singleVote.tickets[startIndex..<endIndex]
                                 RealmInstance?.delete(tickets)
                             }
+                            */
                         }
                         NotificationCenter.default.post(name: NSNotification.Name(DidUpdateVoteTransactionByHashNotification), object: item.txhash)
                     }
@@ -224,7 +244,7 @@ class TransactionService : BaseService{
         var toAddr : EthereumAddress?
         var fromAddr : EthereumAddress?
         var pk : EthereumPrivateKey?
-        
+         
         let gasPrice = EthereumQuantity(quantity: InputGasPrice)
         
         let txgas = EthereumQuantity(quantity: BigUInt(estimatedGas)!)
@@ -372,7 +392,7 @@ class TransactionService : BaseService{
 
     }
  
-    
+     
     func poolingInitWalletReception(wallet: SWallet?){
          
         let hash = try? EthereumData(bytes: EthereumData(bytes: Data(hex: (wallet?.initWalletHash)!).bytes))

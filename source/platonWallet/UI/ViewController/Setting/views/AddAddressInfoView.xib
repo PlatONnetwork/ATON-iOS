@@ -16,9 +16,18 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="429"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="walletname" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RSS-NA-n3z">
+                    <rect key="frame" x="16" y="24" width="82.5" height="20"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <color key="textColor" red="0.38039215686274508" green="0.39215686274509803" blue="0.43137254901960786" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="addressbook_wallet_name_with_Colon"/>
+                    </userDefinedRuntimeAttributes>
+                </label>
                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="s3g-nZ-maK" customClass="PTextFieldWithPadding" customModule="platonWallet" customModuleProvider="target">
-                    <rect key="frame" x="16" y="16" width="343" height="40"/>
-                    <color key="backgroundColor" red="0.14901960784313725" green="0.17647058823529413" blue="0.25490196078431371" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <rect key="frame" x="16" y="44" width="343" height="40"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="SuW-0k-MuA"/>
                     </constraints>
@@ -30,8 +39,8 @@
                     </userDefinedRuntimeAttributes>
                 </textField>
                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="rqt-zJ-bm1" customClass="PTextFieldWithPadding" customModule="platonWallet" customModuleProvider="target">
-                    <rect key="frame" x="16" y="79" width="343" height="40"/>
-                    <color key="backgroundColor" red="0.14901960780000001" green="0.1764705882" blue="0.25490196079999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <rect key="frame" x="16" y="119.5" width="343" height="40"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="bFe-zm-Rc8"/>
                     </constraints>
@@ -40,14 +49,18 @@
                     <textInputTraits key="textInputTraits"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="string" keyPath="LocalizePlaceholder" value="AddAddress_textFieldPlaceHolder_Wallet_Address"/>
+                        <userDefinedRuntimeAttribute type="number" keyPath="rightInset">
+                            <real key="value" value="30"/>
+                        </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </textField>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Dk-05-8o5">
-                    <rect key="frame" x="16" y="375" width="343" height="40"/>
-                    <color key="backgroundColor" red="0.93725490196078431" green="0.94117647058823528" blue="0.96078431372549022" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Dk-05-8o5" customClass="PButton" customModule="platonWallet" customModuleProvider="target">
+                    <rect key="frame" x="16" y="359" width="343" height="44"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="40" id="CNM-Gr-WfT"/>
+                        <constraint firstAttribute="height" constant="44" id="CNM-Gr-WfT"/>
                     </constraints>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                     <state key="normal" title="Add">
                         <color key="titleColor" red="0.10588235294117647" green="0.12941176470588234" blue="0.21568627450980393" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </state>
@@ -56,7 +69,7 @@
                     </userDefinedRuntimeAttributes>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J6a-W7-I4Z">
-                    <rect key="frame" x="16" y="58" width="343" height="16"/>
+                    <rect key="frame" x="16" y="92" width="343" height="16"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="16" id="DPl-U0-UJo"/>
                     </constraints>
@@ -65,7 +78,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bQK-xQ-sMZ">
-                    <rect key="frame" x="16" y="124" width="343" height="16"/>
+                    <rect key="frame" x="16" y="164.5" width="343" height="16"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="16" id="2kz-lP-tKB"/>
                     </constraints>
@@ -73,48 +86,78 @@
                     <color key="textColor" red="1" green="0.2784313725" blue="0.2784313725" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please backup your adress before deleting this App" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xQj-i0-57R">
-                    <rect key="frame" x="16" y="145" width="270" height="14"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                    <color key="textColor" red="1" green="0.92941176470588238" blue="0.32941176470588235" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please backup your address before deleting this App" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xQj-i0-57R">
+                    <rect key="frame" x="16" y="196.5" width="298.5" height="14"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <color key="textColor" red="1" green="0.41960784313725491" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="AddAddressVC_tip"/>
                     </userDefinedRuntimeAttributes>
                 </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="walletAddress" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6XJ-DW-Dwg">
+                    <rect key="frame" x="16" y="100" width="102" height="19.5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <color key="textColor" red="0.3803921569" green="0.3921568627" blue="0.43137254899999999" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="addressbook_wallet_address_with_Colon"/>
+                    </userDefinedRuntimeAttributes>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U1X-f3-UBe">
+                    <rect key="frame" x="325" y="121.5" width="36" height="36"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="36" id="59M-sw-s15"/>
+                        <constraint firstAttribute="height" constant="36" id="yE0-G6-uA6"/>
+                    </constraints>
+                    <state key="normal" image="textField_icon_scan"/>
+                </button>
             </subviews>
-            <color key="backgroundColor" red="0.10588235294117647" green="0.13333333333333333" blue="0.21176470588235294" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="2Dk-05-8o5" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="0K4-oX-jP9"/>
+                <constraint firstItem="6XJ-DW-Dwg" firstAttribute="top" secondItem="J6a-W7-I4Z" secondAttribute="bottom" priority="500" constant="8" id="2dK-cE-6Ex"/>
                 <constraint firstItem="J6a-W7-I4Z" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="3Kn-8K-27v"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="rqt-zJ-bm1" secondAttribute="trailing" constant="16" id="9Pt-9L-e0j"/>
                 <constraint firstItem="rqt-zJ-bm1" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="CRh-cJ-0Lp"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="bQK-xQ-sMZ" secondAttribute="trailing" constant="16" id="DrL-bj-n44"/>
                 <constraint firstItem="xQj-i0-57R" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="E3u-EK-hKZ"/>
-                <constraint firstItem="xQj-i0-57R" firstAttribute="top" secondItem="bQK-xQ-sMZ" secondAttribute="bottom" constant="5" id="MDb-CS-bnW"/>
+                <constraint firstItem="xQj-i0-57R" firstAttribute="top" secondItem="bQK-xQ-sMZ" secondAttribute="bottom" constant="16" id="MDb-CS-bnW"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="J6a-W7-I4Z" secondAttribute="trailing" constant="16" id="QyP-FU-4dX"/>
+                <constraint firstItem="6XJ-DW-Dwg" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="SPb-fj-tuY"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="2Dk-05-8o5" secondAttribute="trailing" constant="16" id="Uoj-eH-zH7"/>
+                <constraint firstItem="rqt-zJ-bm1" firstAttribute="top" secondItem="6XJ-DW-Dwg" secondAttribute="bottom" id="Yx8-9A-Ob4"/>
                 <constraint firstItem="s3g-nZ-maK" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="d6Y-Rf-cuW"/>
-                <constraint firstItem="s3g-nZ-maK" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="16" id="eli-fF-h23"/>
+                <constraint firstItem="RSS-NA-n3z" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="f9h-6Q-u6D"/>
+                <constraint firstItem="6XJ-DW-Dwg" firstAttribute="top" secondItem="s3g-nZ-maK" secondAttribute="bottom" priority="998" constant="16" id="huE-dm-9NE"/>
                 <constraint firstItem="bQK-xQ-sMZ" firstAttribute="top" secondItem="rqt-zJ-bm1" secondAttribute="bottom" constant="5" id="k3O-gW-vGs"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="2Dk-05-8o5" secondAttribute="bottom" constant="14" id="lDP-ul-8hx"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="2Dk-05-8o5" secondAttribute="bottom" constant="26" id="lDP-ul-8hx"/>
+                <constraint firstItem="RSS-NA-n3z" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="24" id="mrP-hL-sUL"/>
+                <constraint firstItem="s3g-nZ-maK" firstAttribute="top" secondItem="RSS-NA-n3z" secondAttribute="bottom" id="nzY-Rz-toC"/>
+                <constraint firstItem="U1X-f3-UBe" firstAttribute="centerY" secondItem="rqt-zJ-bm1" secondAttribute="centerY" id="ocS-Gv-7Fl"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="U1X-f3-UBe" secondAttribute="trailing" constant="14" id="pEa-LC-hbJ"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="rqt-zJ-bm1" secondAttribute="trailing" constant="16" id="sHs-1s-kBj"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="s3g-nZ-maK" secondAttribute="trailing" constant="16" id="sdS-qW-jnz"/>
                 <constraint firstItem="bQK-xQ-sMZ" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="uq9-IL-3HN"/>
-                <constraint firstItem="J6a-W7-I4Z" firstAttribute="top" secondItem="s3g-nZ-maK" secondAttribute="bottom" constant="2" id="vhA-Q4-3JO"/>
-                <constraint firstItem="rqt-zJ-bm1" firstAttribute="top" secondItem="J6a-W7-I4Z" secondAttribute="bottom" constant="5" id="zdw-ye-6ZL"/>
+                <constraint firstItem="J6a-W7-I4Z" firstAttribute="top" secondItem="s3g-nZ-maK" secondAttribute="bottom" constant="8" id="vhA-Q4-3JO"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
+                <outlet property="addButton" destination="2Dk-05-8o5" id="x78-lH-SLG"/>
+                <outlet property="addressDesToNameTextFieldBottom" destination="huE-dm-9NE" id="pGe-Sb-JrG"/>
+                <outlet property="addressDesToNameTipBottom" destination="2dK-cE-6Ex" id="xdY-Kt-QcL"/>
                 <outlet property="addressField" destination="rqt-zJ-bm1" id="va2-kb-M25"/>
                 <outlet property="addressTip" destination="bQK-xQ-sMZ" id="MLD-Lb-btI"/>
                 <outlet property="addressTipHeight" destination="2kz-lP-tKB" id="8hX-9V-lDg"/>
                 <outlet property="confirmButton" destination="2Dk-05-8o5" id="CsC-aA-UT4"/>
                 <outlet property="nameTextField" destination="s3g-nZ-maK" id="K40-yk-FWP"/>
+                <outlet property="scanButton" destination="U1X-f3-UBe" id="Rek-9n-CcP"/>
                 <outlet property="walletNameTip" destination="J6a-W7-I4Z" id="Nrg-Hl-3le"/>
-                <outlet property="walletNameTipHeight" destination="DPl-U0-UJo" id="MkK-4M-ymW"/>
             </connections>
             <point key="canvasLocation" x="132" y="255.92203898050977"/>
         </view>
     </objects>
+    <resources>
+        <image name="textField_icon_scan" width="20" height="20"/>
+    </resources>
 </document>

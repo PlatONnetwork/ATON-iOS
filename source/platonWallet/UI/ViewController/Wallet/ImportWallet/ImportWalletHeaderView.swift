@@ -18,11 +18,9 @@ class ImportWalletHeaderView: UIView {
     var tabLists: [String] = []
     var curIndex: Int = 0 {
         didSet {
-            
             if oldValue == curIndex {
                 return
             }
-            
             tabBtns[oldValue].isSelected = false
             
             tabBtns[curIndex].isSelected = true
@@ -36,7 +34,7 @@ class ImportWalletHeaderView: UIView {
             UIView.animate(withDuration: 0.25) { 
                 self.layoutIfNeeded()
             }
-        }
+        } 
     }
     
     weak var delegate: ImportWalletHeaderViewDelegate?
@@ -49,8 +47,8 @@ class ImportWalletHeaderView: UIView {
             btn.titleLabel?.font = UIFont.systemFont(ofSize: 14.0)
             btn.setTitle(tabLists[i], for: .normal)
             btn.tag = 100 + i
-            btn.setTitleColor(UIColor(rgb: 0xCDCDCD), for: .normal)
-            btn.setTitleColor(UIColor(rgb: 0xFFED54), for: .selected)
+            btn.setTitleColor(UIColor(rgb: 0x000000), for: .normal)
+            btn.setTitleColor(UIColor(rgb: 0x105CFE ), for: .selected)
             btn.backgroundColor = UIColor.clear
             btn.addTarget(self, action: #selector(onTabBtnClick(_:)), for: .touchUpInside)
             arr.append(btn)
@@ -62,7 +60,7 @@ class ImportWalletHeaderView: UIView {
     lazy var slider: UIView = {
         
         let line = UIView(frame: .zero)
-        line.backgroundColor = UIColor(rgb: 0xFFED54)
+        line.backgroundColor = UIColor(rgb: 0x105CFE)
         return line
         
     }()
@@ -85,26 +83,28 @@ class ImportWalletHeaderView: UIView {
     
     func setupUI() {
         
-        backgroundColor = UIColor(rgb: 0x1B2137)
+        backgroundColor = UIColor.white
         
         let line = UIView(frame: .zero)
-        line.backgroundColor = UIColor(rgb: 0x32394E)
+        line.backgroundColor = UIColor(rgb: 0xffffff)
         addSubview(line)
         line.snp.makeConstraints { (maker) in
             maker.left.right.bottom.equalToSuperview()
-            maker.height.equalTo(1.0)
+            maker.height.equalTo(2.0)
         }
         
         for index in 0..<tabBtns.count {
             
             let btn = tabBtns[index]
             addSubview(btn)
+            //btn.contentHorizontalAlignment = .center
+
             btn.snp.makeConstraints { (maker) in
                 maker.top.bottom.equalToSuperview()
                 
                 if index == 0 {
                     maker.width.equalToSuperview().dividedBy(tabBtns.count)
-                    maker.left.equalToSuperview()
+                    maker.left.equalToSuperview().offset(16)
                 }else if index == tabBtns.count - 1 {
                     maker.left.equalTo(tabBtns[index - 1].snp.right)
                     maker.right.equalToSuperview()
@@ -124,6 +124,7 @@ class ImportWalletHeaderView: UIView {
             maker.left.width.equalTo(tabBtns[curIndex])
         }
         
+        self.addBottomSepline()
     }
     
     @objc func onTabBtnClick(_ sender:Any) {

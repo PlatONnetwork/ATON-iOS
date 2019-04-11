@@ -38,7 +38,7 @@ class AppFramework {
         let _ = AssetService.sharedInstace
         let _ = TransactionService.service
     }
-    
+     
     func languageSetting() {
         
         let defaullt = UserDefaults.standard.object(forKey: "LCLCurrentLanguageKey")
@@ -53,8 +53,9 @@ class AppFramework {
         
     }
     
-    func RealmConfiguration() {
-        let schemaVersion: UInt64 = 5
+    func RealmConfiguration() { 
+        //v0.6.0 update scheme version to 6
+        let schemaVersion: UInt64 = 6
         let config = Realm.Configuration(schemaVersion: schemaVersion, migrationBlock: { migration, oldSchemaVersion in
         
             if oldSchemaVersion < 4 {

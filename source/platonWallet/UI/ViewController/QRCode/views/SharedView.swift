@@ -11,10 +11,11 @@ import Foundation
 
 let itemHorizontalCount = 4
 let itemHorizontalSpacing = 20
-let containerEdge = 25
-let itemratio = 1.3
+let containerEdge = 16
+let itemratio = 1.5
 
-let itemWidth = (kUIScreenWidth - CGFloat(containerEdge) * 2 - CGFloat((itemHorizontalSpacing * (itemHorizontalCount - 1))))/CGFloat(itemHorizontalCount)
+//let itemWidth = (kUIScreenWidth - CGFloat(containerEdge) * 2 - CGFloat((itemHorizontalSpacing * (itemHorizontalCount - 1))))/CGFloat(itemHorizontalCount)
+let itemWidth = CGFloat(54)
 
 class SharedView: UIView ,UICollectionViewDelegate,UICollectionViewDataSource{
 
@@ -30,7 +31,7 @@ class SharedView: UIView ,UICollectionViewDelegate,UICollectionViewDataSource{
     var urlschemes : [String] = []
 
     public class func getSharedViewHeight() -> CGFloat{
-        return 44 + itemWidth * CGFloat(itemratio) * 2 + CGFloat(itemHorizontalSpacing * 2)
+        return 51 + 51 + itemWidth * CGFloat(itemratio) * 2 + CGFloat(itemHorizontalSpacing * 2)
     }
 
     override init(frame: CGRect) {
@@ -46,7 +47,8 @@ class SharedView: UIView ,UICollectionViewDelegate,UICollectionViewDataSource{
         layout.minimumLineSpacing = CGFloat(itemHorizontalSpacing)
         layout.minimumInteritemSpacing = CGFloat(itemHorizontalSpacing)
         layout.scrollDirection = .vertical
-        //layout.sectionInset = UIEdgeInsets.init(top: 5, left: 5, bottom: 5, right: 5)
+        layout.sectionInset = UIEdgeInsets.init(top: 5, left: 5, bottom: 5, right: 5)
+        
         
         collectionView = UICollectionView.init(frame: CGRect(x:0, y:0, width:0, height:0), collectionViewLayout: layout)
         collectionView?.backgroundColor = UIColor.white
@@ -54,20 +56,24 @@ class SharedView: UIView ,UICollectionViewDelegate,UICollectionViewDataSource{
         collectionView?.dataSource = self
         self.addSubview(collectionView!)
         collectionView?.snp.makeConstraints({ (make) in
-            make.top.equalTo(self).offset(44)
+            make.top.equalTo(self).offset(51 + 8)
             make.leading.equalTo(self).offset(containerEdge)
             make.trailing.equalTo(self).offset(-containerEdge)
             make.bottom.equalTo((self))
         })
         
-        let _ = self.headerView()
+        let _ = self.headerAndFooterView()
         
         // 注册cell
         collectionView?.register(UINib.init(nibName: "SharedCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: Identifier)
         
-        self.backgroundColor = UIColor(red: 246, green: 246, blue: 246, alpha: 1)
-        collectionView!.backgroundColor = UIColor(red: 246, green: 246, blue: 246, alpha: 1)
+        self.backgroundColor = .white
+        collectionView!.backgroundColor = .white
+        collectionView?.addBottomSepline()
     }
+    
+    
+    
     
     func initData(){
         /*
@@ -108,35 +114,36 @@ class SharedView: UIView ,UICollectionViewDelegate,UICollectionViewDataSource{
         
     }
     
-    func headerView() -> UIView {
+    func headerAndFooterView() -> UIView {
         let header = UIView()
         header.backgroundColor = .white
         self.addSubview(header)
         header.snp.makeConstraints { (make) in
             make.leading.trailing.top.equalTo(self)
-            make.height.equalTo(44)
+            make.height.equalTo(51)
         }
+        header.addBottomSepline(offset: 16)
         
         let label = UILabel()
         label.localizedText = "QRView_share_to_friend"
-        label.font = UIFont.systemFont(ofSize: 15)
+        label.font = UIFont(name: "HelveticaNeue-Medium", size: 16)
         label.textColor = UIColor(rgb: 0x292929)
+        label.textAlignment = .center
         header.addSubview(label)
         label.snp.makeConstraints { (make) in
-            make.centerY.equalTo(header)
-            make.leading.equalTo(header).offset(itemHorizontalSpacing)
-            make.trailing.equalTo(header).offset(-50)
+            make.edges.equalToSuperview()
         }
         
-        closeBtn.setImage(UIImage.init(named: "closeBtn"), for: .normal)
-        header.addSubview(closeBtn)
+        //closeBtn.setImage(UIImage.init(named: "closeBtn"), for: .normal)
+        self.addSubview(closeBtn)
         closeBtn.snp.makeConstraints { (make) in
-            make.centerY.equalTo(header)
-            make.trailing.equalTo(header).offset(-10)
-            make.size.equalTo(CGSize(width: 30, height: 30))
+            make.bottom.equalToSuperview()
+            make.trailing.leading.equalToSuperview()
+            make.height.equalTo(51)
         }
-        header.addSubview(closeBtn)
-        
+        closeBtn.localizedNormalTitle = "alert_cancelBtn_title"
+        closeBtn.setTitleColor(UIColor(rgb: 0x105CFE ), for: .normal)
+        closeBtn.addTopSepline(offset: 16)
         return header
     }
     
@@ -151,6 +158,7 @@ class SharedView: UIView ,UICollectionViewDelegate,UICollectionViewDataSource{
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return imgs.count
     }
+    
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell:SharedCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: Identifier, for: indexPath) as! SharedCollectionViewCell

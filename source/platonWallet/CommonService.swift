@@ -8,6 +8,7 @@
 
 import Foundation
 import Localize_Swift
+import BigInt
 
 struct CommonService {
     
@@ -24,7 +25,7 @@ struct CommonService {
         return (true, nil)
     }
     
-    static func isValidWalletName(_ name:String?) -> (Bool,String?) {
+    static func isValidWalletName(_ name:String?,checkDuplicate: Bool = false) -> (Bool,String?) {
         
         guard name != nil && name!.length > 0 else {
             return (false, Localized("wallet_nameInput_empty_tips"))
@@ -38,10 +39,50 @@ struct CommonService {
         guard name!.length <= 12 else {
             return (false, Localized("wallet_nameInput_lengthIllegal_tips"))
         }
-        
+        if checkDuplicate{
+            let wallets = WalletService.sharedInstance.wallets.filter{$0.name == name}
+            let swallets = SWalletService.sharedInstance.wallets.filter{$0.name == name}
+            if wallets.count > 0 || swallets.count > 0{
+                return (false, Localized("wallet_name_duplicate")) 
+            }
+        }
         return (true, nil)
-        
     }
+    
+    static func checkNewAddressName(_ name:String?) -> (Bool,String?) {
+        
+        guard name != nil && name!.length > 0 else {
+            return (false, Localized("NewAddress_name_empty_tip"))
+        }
+        let trimmingName = name!.trimmingCharacters(in: CharacterSet(charactersIn: " "))
+        
+        guard trimmingName.length > 0 else {
+            return (false, Localized("NewAddress_name_empty_tip"))
+        }
+        
+        guard name!.length <= 12 else {
+            return (false, Localized("NewAddress_name_Incorrect_tip"))
+        }
+        return (true, nil)
+    }
+    
+    static func checkNewAddressString(_ address: String?)  -> (Bool,String?) {
+        
+        guard address != nil && address!.length > 0 else {
+            return (false, Localized("NewAddress_address_empty_tip"))
+        }
+        let trimmingName = address!.trimmingCharacters(in: CharacterSet(charactersIn: " "))
+        
+        guard trimmingName.length > 0 else {
+            return (false, Localized("NewAddress_address_empty_tip"))
+        }
+        
+        guard (address?.is40ByteAddress())! else {
+            return (false, Localized("NewAddress_address_Incorrect_tip"))
+        }
+        return (true, nil)
+    }
+    
     
     static func isValidWalletPassword(_ psw:String?, confirmPsw:String? = nil) -> (Bool,String?) {
         
@@ -66,5 +107,48 @@ struct CommonService {
         return (true, nil)
         
     }
+    
+    static func checkTransferAddress(text: String) -> (Bool,String){
+        var valid = true
+        var msg = ""
+        if text.length == 0 {
+            msg = Localized("transferVC_address_empty_tip")
+            valid = false
+        }
+        
+        if (!text.is40ByteAddress()) {
+            msg = Localized("transferVC_address_Incorrect_tip")
+            valid = false
+        }
+        return (valid,msg)
+    }
+    
+    static func checkTransferAmoutInput(text: String,checkBalance: Bool = false, fee: BigUInt? = BigUInt("0")!) -> (Bool,String) {
+        
+        var valid = true
+        var msg = ""
+        if text.length == 0 {
+            msg = Localized("transferVC_amout_empty_tip")
+            valid = false
+        }
+        
+        if (!(text.isValidInputAmoutWith8DecimalPlaceAndNonZero())){
+            msg = Localized("transferVC_amout_amout_input_error")
+            valid = false
+        }
+        
+        if checkBalance{
+            let balance = AssetService.sharedInstace.assets[text]
+            if balance == nil{
+                //balance not exist return true
+                return (true, "")
+            }
+        }
+        
+        return (valid, msg)
+        
+    }
+    
+    
     
 }

@@ -11,7 +11,10 @@ import UIKit
 
 //background view color
 
-let UIViewController_backround = UIColor(rgb: 0x1b2137)
+//let UIViewController_backround = UIColor(rgb: 0x1b2137)
+
+let UIViewController_backround = UIColor.white
+
 let UITextField_backround = UIColor(rgb: 0x262D42)
 let UINavigationBar_backround = UIColor(rgb: 0x1b2137)
 
@@ -19,7 +22,9 @@ let UIButton_backround_light_white = UIColor(rgb: 0xEFF0F5)
 
 //navigationBar background view color
 
-let nav_bar_backgroud = UIColor(rgb: 0x232E48)
+//let nav_bar_backgroud = UIColor(rgb: 0x232E48)
+
+let nav_bar_backgroud = UIColor.clear
 
 //navigationBar button title
 let nav_title_unselected_title = UIColor(rgb: 0xCDCDCD)
@@ -29,8 +34,16 @@ let nav_title_selected_title = UIColor(rgb: 0xFFFFFF)
 let total_asset_color = UIColor(rgb: 0xFEED54)
 
 //textfield textview input placeholder string
-let transfer_placeholder_color = UIColor(rgb: 0x7A8092)
+let transfer_placeholder_color = UIColor(rgb: 0xB6BBD0)
 
 let transfer_input_color = UIColor(rgb: 0xffffff)
 
 
+let common_darkGray_color = UIColor(rgb: 0x61646E)
+let common_lightGray_color = UIColor(rgb: 0xB6BBD0)
+let common_blue_color = UIColor(rgb: 0x105CFE)
+
+
+let cell_Transaction_success_color = UIColor(red: 48, green: 159, blue: 36, alpha: 1)
+let cell_Transaction_fail_color = UIColor(red: 240, green: 45, blue: 54, alpha: 1)
+let cell_Transaction_pending_color = UIColor(red: 33, green: 83, blue: 254, alpha: 1)

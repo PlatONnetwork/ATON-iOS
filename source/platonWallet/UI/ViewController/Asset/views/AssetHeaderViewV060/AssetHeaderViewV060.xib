@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="AssetHeaderViewV060" customModule="platonWallet" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="168"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bY1-Ns-1Ua">
+                    <rect key="frame" x="16" y="40" width="44" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="asset_header_total_asset"/>
+                    </userDefinedRuntimeAttributes>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(Energon)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VBC-Gv-VZ0">
+                    <rect key="frame" x="64" y="41.5" width="56" height="14.5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <color key="textColor" red="0.53725490196078429" green="0.5490196078431373" blue="0.61960784313725492" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B4u-Um-wDY">
+                    <rect key="frame" x="125" y="37.5" width="22" height="22"/>
+                    <state key="normal" image="home_openEye"/>
+                    <state key="selected" image="home_closeEye"/>
+                    <connections>
+                        <action selector="OnHideAssets:" destination="iN0-l3-epB" eventType="touchUpInside" id="UVo-et-DK1"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Vrd-Qd-Ssc">
+                    <rect key="frame" x="299" y="36" width="25" height="25"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="25" id="00V-yu-cuh"/>
+                        <constraint firstAttribute="width" constant="25" id="Zba-qB-gl3"/>
+                    </constraints>
+                    <state key="normal" image="nav_scan"/>
+                </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xvo-Fb-ODW">
+                    <rect key="frame" x="16" y="69" width="343" height="17"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" red="0.53725490196078429" green="0.5490196078431373" blue="0.61960784313725492" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="6jF-Oo-yuH">
+                    <rect key="frame" x="0.0" y="94" width="375" height="62"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="62" id="dgx-pz-nqJ"/>
+                    </constraints>
+                    <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="mRO-j6-W4U">
+                        <size key="itemSize" width="50" height="50"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    </collectionViewFlowLayout>
+                </collectionView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bt3-cs-o41">
+                    <rect key="frame" x="336" y="36" width="25" height="25"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="25" id="Yi7-V2-YsN"/>
+                        <constraint firstAttribute="height" constant="25" id="hcJ-WF-dV7"/>
+                    </constraints>
+                    <state key="normal" image="nav_add"/>
+                </button>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="bY1-Ns-1Ua" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="1yR-iK-NYG"/>
+                <constraint firstItem="Vrd-Qd-Ssc" firstAttribute="centerY" secondItem="B4u-Um-wDY" secondAttribute="centerY" id="4Bp-Ue-O7K"/>
+                <constraint firstItem="6jF-Oo-yuH" firstAttribute="top" secondItem="xvo-Fb-ODW" secondAttribute="bottom" constant="8" id="71e-MA-f9q"/>
+                <constraint firstItem="VBC-Gv-VZ0" firstAttribute="leading" secondItem="bY1-Ns-1Ua" secondAttribute="trailing" constant="4" id="FhC-pM-CrQ"/>
+                <constraint firstItem="6jF-Oo-yuH" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="IEg-Yj-iq8"/>
+                <constraint firstItem="B4u-Um-wDY" firstAttribute="centerY" secondItem="VBC-Gv-VZ0" secondAttribute="centerY" id="Tex-0m-K5X"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="xvo-Fb-ODW" secondAttribute="trailing" constant="16" id="Zfc-qK-Iz7"/>
+                <constraint firstItem="6jF-Oo-yuH" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="bSs-40-6XP"/>
+                <constraint firstItem="bt3-cs-o41" firstAttribute="centerY" secondItem="B4u-Um-wDY" secondAttribute="centerY" id="ddd-5s-3VZ"/>
+                <constraint firstItem="B4u-Um-wDY" firstAttribute="leading" secondItem="VBC-Gv-VZ0" secondAttribute="trailing" constant="5" id="eYa-Vg-b2w"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="6jF-Oo-yuH" secondAttribute="bottom" constant="12" id="grx-Wv-gpH"/>
+                <constraint firstItem="bt3-cs-o41" firstAttribute="leading" secondItem="Vrd-Qd-Ssc" secondAttribute="trailing" constant="12" id="tIX-Bl-i1t"/>
+                <constraint firstItem="xvo-Fb-ODW" firstAttribute="top" secondItem="bY1-Ns-1Ua" secondAttribute="bottom" constant="8" id="tWH-ba-SFf"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="bt3-cs-o41" secondAttribute="trailing" constant="14" id="uPq-4y-jfN"/>
+                <constraint firstItem="VBC-Gv-VZ0" firstAttribute="centerY" secondItem="bY1-Ns-1Ua" secondAttribute="centerY" constant="-2" id="ur1-m0-Lxx"/>
+                <constraint firstItem="xvo-Fb-ODW" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="v1N-bJ-lzd"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="assetLabel" destination="xvo-Fb-ODW" id="5NW-44-zwb"/>
+                <outlet property="collectionView" destination="6jF-Oo-yuH" id="Pri-Ye-RNw"/>
+                <outlet property="hideAssetButton" destination="B4u-Um-wDY" id="D8v-b7-oQ5"/>
+                <outlet property="menuButton" destination="bt3-cs-o41" id="KyN-tO-22S"/>
+                <outlet property="scanButton" destination="Vrd-Qd-Ssc" id="mCV-Dk-sGg"/>
+            </connections>
+            <point key="canvasLocation" x="138.40000000000001" y="138.53073463268368"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="home_closeEye" width="22" height="22"/>
+        <image name="home_openEye" width="22" height="22"/>
+        <image name="nav_add" width="16" height="16"/>
+        <image name="nav_scan" width="16" height="16"/>
+    </resources>
+</document>

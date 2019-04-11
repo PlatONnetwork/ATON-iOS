@@ -37,14 +37,14 @@ class WalletSelectionView: UIView {
     public static func show(inViewController vc: UIViewController, lastSelectedWallet: Wallet, selectedHandler:@escaping (Wallet) -> Void) {
         
         let popVC = PopUpViewController()
-        let height:CGFloat = (44 + CGFloat(60 * min(WalletService.sharedInstance.wallets.count, 4)))
+        let height:CGFloat = (51 + CGFloat(70 * min(WalletService.sharedInstance.wallets.count, 3)))
         let view = UIView.viewFromXib(theClass: WalletSelectionView.self) as! WalletSelectionView
         view.currentSelectedWallet = lastSelectedWallet
         view.onBackHandler = {[weak popVC] in
             popVC?.onDismissViewController()
         }
         view.onSelectedHandler = selectedHandler
-        popVC.setUpContentView(view: view, size: CGSize(width: kUIScreenWidth, height: height))
+        popVC.setUpContentView(view: view, size: CGSize(width: PopUpContentWidth, height: height))
         popVC.show(inViewController: vc)
     }
     
@@ -54,7 +54,7 @@ class WalletSelectionView: UIView {
 extension WalletSelectionView : UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return wallets.count
+        return wallets.count 
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -71,6 +71,6 @@ extension WalletSelectionView : UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60
+        return 70
     }
 }

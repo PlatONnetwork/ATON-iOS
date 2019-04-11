@@ -43,7 +43,7 @@ class PasswordAuthViewController: BaseViewController {
 
     func setupUI() {
 
-        navigationItem.localizedText = "PasswordAuthVC_title"
+        super.leftNavigationTitle = "PasswordAuthVC_title"
         
         endEditingWhileTapBackgroundView = true
         addressContainer.layer.cornerRadius = 5.0
@@ -58,9 +58,9 @@ class PasswordAuthViewController: BaseViewController {
         
         view.endEditing(true)
 
-        showLoading(text: Localized("PasswordAuthVC_unlocking_text"))
+        showLoadingHUD(text: Localized("PasswordAuthVC_unlocking_text"))
         WalletService.sharedInstance.exportPrivateKey(wallet: selectedWallet, password: pswTF.text!) {[weak self](_, error) in
-            self?.hideLoading()
+            self?.hideLoadingHUD()
             if error == nil {
                 self?.showMessage(text: Localized("PasswordAuthVC_unlockSuccess_text"))
                 self?.completion?()

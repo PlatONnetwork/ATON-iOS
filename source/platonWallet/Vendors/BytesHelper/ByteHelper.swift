@@ -98,6 +98,13 @@ extension Data {
         return ret
     }
     
+    static func newData(uint32data: UInt32, bigEndian: Bool = true) -> Data{
+        let data = bigEndian ? uint32data.bigEndian : uint32data.littleEndian
+        var ret = Data(count: 0)
+        ret.append(unsignedInteger: data)
+        return ret
+    }
+    
     func safeGetUnsignedLong(at index: Int, bigEndian: Bool = true) -> UInt64 {
         if self.count < 8 && self.count >= 0{
             let appendN = 8 - self.count
