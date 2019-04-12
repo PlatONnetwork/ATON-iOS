@@ -40,8 +40,6 @@ public final class WalletService {
             try! fileManager.createDirectory(at: keystoreFolderURL, withIntermediateDirectories: false, attributes: nil)
         }
         
-        NotificationCenter.default.addObserver(self, selector: #selector(didSwitchNode), name: NSNotification.Name(NodeStoreService.didSwitchNodeNotification), object: nil)
-        
     }
     
     func refreshDB(){
@@ -371,13 +369,8 @@ public final class WalletService {
         wallets.removeAll { (item) -> Bool in
             return item == wallet
         }
-        walletStorge.delete(wallet: wallet)
-        //issue mutiply thread access wallet object?
-        if let selectedWallet = AssetVCSharedData.sharedData.selectedWallet as? Wallet{
-            if (selectedWallet.key?.address.ishexStringEqual(other: wallet.key?.address))!{
-                AssetVCSharedData.sharedData.selectedWallet = nil
-            }
-        } 
+        walletStorge.delete(wallet: wallet)        
+        AssetVCSharedData.sharedData.willDeleteWallet(object: wallet as AnyObject)
         
         //delete associated shared wallets
         SWalletService.sharedInstance.willOwnerWalletBeingDelete(ownerWallet: wallet)
@@ -511,8 +504,5 @@ extension WalletService {
 
 extension WalletService{
     
-    @objc func didSwitchNode(){
-        self.refreshDB()
-        NotificationCenter.default.post(name: NSNotification.Name(updateWalletList_Notification), object: nil)
-    }
+   
 }

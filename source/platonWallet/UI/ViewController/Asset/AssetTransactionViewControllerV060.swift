@@ -60,6 +60,7 @@ class AssetTransactionViewControllerV060: BaseViewController, EmptyDataSetDelega
             automaticallyAdjustsScrollViewInsets = false
         }
         NotificationCenter.default.addObserver(self, selector: #selector(willDeleteWallet(_:)), name: NSNotification.Name(WillDeleateWallet_Notification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateWalletList), name: NSNotification.Name(updateWalletList_Notification), object: nil)
 
     }
     
@@ -187,7 +188,7 @@ extension AssetTransactionViewControllerV060{
     
     @objc func willDeleteWallet(_ notification: Notification){
         guard self.walletAddress != nil else {
-            return
+            return 
         }
         if let cwallet = notification.object as? Wallet{
             if (self.walletAddress?.ishexStringEqual(other: cwallet.key?.address))!{
@@ -201,6 +202,12 @@ extension AssetTransactionViewControllerV060{
             }
         } 
     }
+    
+    @objc func updateWalletList(){
+        
+    }
+    
+    
 
     
 }

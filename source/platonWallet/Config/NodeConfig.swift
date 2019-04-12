@@ -15,6 +15,11 @@ let MinTransactionConfirmations = 1
 
 let DefaultAlphaNodeURL = "https://syde.platon.network/test"
 
+let DefualtAlphaNodeURL_tmp = "https://test-amigo.platon.network/test"
+
+let DefualtBetaNodeNodeURL_tmp = "https://test-amigo.platon.network/test"
+
+
 //balance query timer
 let assetQueryTimerEnable = true
 

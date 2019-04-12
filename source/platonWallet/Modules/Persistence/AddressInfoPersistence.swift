@@ -20,7 +20,8 @@ class AddressInfoPersistence {
     
     public class func replaceInto(addrInfo : AddressInfo){
         
-        let predicate = NSPredicate(format: "addressType = %d AND walletAddress = %@", AddressType_AddressBook,addrInfo.walletAddress!)
+        addrInfo.nodeURLStr = SettingService.getCurrentNodeURLString()
+        let predicate = NSPredicate(format: "addressType = %d AND walletAddress = %@ AND nodeURLStr = %@", AddressType_AddressBook,addrInfo.walletAddress!,SettingService.getCurrentNodeURLString())
         let r = RealmInstance!.objects(AddressInfo.self).filter(predicate)
         if r.count == 1{
             let existedObj = r.first

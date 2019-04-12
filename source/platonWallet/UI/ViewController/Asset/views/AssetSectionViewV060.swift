@@ -234,8 +234,12 @@ class AssetSectionViewV060: UIView {
         }
     }
     
-    func updateWaleltInfo(){
+    func updateWaleltInfo(){ 
         guard AssetVCSharedData.sharedData.selectedWallet != nil else {
+            self.walletName.text = "--"
+            self.balanceLabel.text = "--"
+            self.walletAvatar.image = UIImage()
+            self.backupContainer.isHidden = true
             return
         }
         self.walelt = AssetVCSharedData.sharedData.selectedWallet
