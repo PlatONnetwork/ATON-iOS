@@ -551,7 +551,10 @@ extension AssetViewControllerV060{
         guard let vc = self.getInstance() else{
             return
         }
-        vc.transactionVC.refreshData()
+        //wait for db writing
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { 
+            vc.transactionVC.refreshData()
+        }
     }
     
     static func gotoCreateClassicWallet(){

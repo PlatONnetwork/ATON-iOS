@@ -71,13 +71,14 @@ public final class Wallet: Object {
     convenience public init(name: String, keystoreObject:Keystore) {
         
         self.init()
+        let nodeurl = SettingService.threadSafeGetCurrentNodeURLString()
         uuid = keystoreObject.address
-        primaryKeyIdentifier = keystoreObject.address + SettingService.threadSafeGetCurrentNodeURLString() 
+        nodeURLStr = nodeurl
+        primaryKeyIdentifier = keystoreObject.address + nodeurl
         key = keystoreObject
         keystorePath = ""
         self.name = name
         self.avatar = keystoreObject.address.walletAddressLastCharacterAvatar()
-        
     }
     
     override public static func ignoredProperties() ->[String] {
@@ -87,7 +88,7 @@ public final class Wallet: Object {
     override public static func primaryKey() -> String? {
         return "primaryKeyIdentifier"
     }
-
+ 
     public static func == (lhs: Wallet, rhs: Wallet) -> Bool {
         return lhs.primaryKeyIdentifier == rhs.primaryKeyIdentifier
     }

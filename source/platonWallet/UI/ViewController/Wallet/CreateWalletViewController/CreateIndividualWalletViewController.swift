@@ -43,7 +43,7 @@ class CreateIndividualWalletViewController: BaseViewController,StartBackupMnemon
 
         super.leftNavigationTitle = "createWalletVC_title"
         
-        showNavigationBarShadowImage()
+        //showNavigationBarShadowImage()
         
         nameTF.becomeFirstResponder()
         
@@ -83,7 +83,7 @@ class CreateIndividualWalletViewController: BaseViewController,StartBackupMnemon
     }
     
     
-  
+   
     
     //MARK: - Check Input
     
