@@ -36,10 +36,10 @@ class AssetViewController: BaseViewController{
     
     lazy var atpWalletEmptyView : WalletEmptyView! = {
         
-        let view = WalletEmptyView(walletType: .ATPWallet, createBtnClickHandler: { [weak self] in 
+        let view = WalletEmptyView(walletType: .ClassicWallet, createBtnClickHandler: { [weak self] in 
             self?.createIndividualWallet()
             
-        }) { [weak self] in 
+        }) { [weak self] in  
             self?.importIndividualWallet()
         }
         view.isHidden = true
@@ -52,7 +52,7 @@ class AssetViewController: BaseViewController{
     
     lazy var sharedWalletEmptyView : WalletEmptyView! = {
         
-        let view = WalletEmptyView(walletType: .sWallet, createBtnClickHandler: { [weak self] in 
+        let view = WalletEmptyView(walletType: .JointWallet, createBtnClickHandler: { [weak self] in 
             self?.createSharedWallet()
             
         }) { [weak self] in 
@@ -66,7 +66,7 @@ class AssetViewController: BaseViewController{
         return view
     }()
     
-    var currentType: WalletType = .ATPWallet
+    var currentType: WalletType = .ClassicWallet
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -87,7 +87,7 @@ class AssetViewController: BaseViewController{
     
     func updateUI() {
         
-        if currentType == .ATPWallet {
+        if currentType == .ClassicWallet {
             didUpdateAllAsset()
             if atpWallets.count > 0 {
                 sharedWalletEmptyView.isHidden = true
@@ -131,7 +131,7 @@ class AssetViewController: BaseViewController{
         navigationItem.titleView = titleView
         
         let scanButton = UIButton(type: .custom)
-        scanButton.setImage(UIImage(named: "navScanWhite"), for: .normal)
+        scanButton.setImage(UIImage(named: "navScanBlack"), for: .normal)
         scanButton.addTarget(self, action: #selector(onNavLeft), for: .touchUpInside)
         scanButton.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
         let leftBarButtonItem = UIBarButtonItem(customView: scanButton)
@@ -184,12 +184,12 @@ class AssetViewController: BaseViewController{
     }
     
     @objc func onNavigationLeft() {
-        currentType = .ATPWallet
+        currentType = .ClassicWallet
         updateUI()
     }
     
     @objc func onNavigationRight() {
-        currentType = .sWallet
+        currentType = .JointWallet
         updateUI()
     }
     
@@ -266,7 +266,7 @@ extension AssetViewController:UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
         let cell = tableView.dequeueReusableCell(withIdentifier: "WalletListCell", for: indexPath) as! WalletListCell
-        if currentType == .ATPWallet {
+        if currentType == .ClassicWallet {
             cell.feedData(atpWallets[indexPath.section], count: "")
         }else {
             cell.feedData(sharedWallets![indexPath.section], count: "")
@@ -277,7 +277,7 @@ extension AssetViewController:UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
 //        return 2
-        return currentType == .ATPWallet ? atpWallets.count : sharedWallets.count
+        return currentType == .ClassicWallet ? atpWallets.count : sharedWallets.count
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -289,7 +289,7 @@ extension AssetViewController:UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if currentType == .ATPWallet {
+        if currentType == .ClassicWallet {
             let detailVC = WalletDetailViewController()
             detailVC.wallet = atpWallets[indexPath.section]
             detailVC.hidesBottomBarWhenPushed = true
@@ -356,15 +356,15 @@ extension AssetViewController: AddWalletMenuDelegate {
     
     @objc func didUpdateAllAsset(){
         
-        if currentType == .ATPWallet && WalletService.sharedInstance.wallets.count == 0{
+        if currentType == .ClassicWallet && WalletService.sharedInstance.wallets.count == 0{
             header.updateAssetValue(value: "0.00")
             return
         }
         
-        if currentType == .sWallet && SWalletService.sharedInstance.wallets.count == 0{
+        if currentType == .JointWallet && SWalletService.sharedInstance.wallets.count == 0{
             header.updateAssetValue(value: "0.00")
             return
-        }
+        } 
         
         var total = BigUInt("0")
         

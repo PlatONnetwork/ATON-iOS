@@ -12,6 +12,8 @@ import Localize_Swift
 
 private var AssociatedKey: UInt8 = 1
 
+
+
 extension UIButton {
     
     @IBInspectable
@@ -87,31 +89,45 @@ extension UIButton {
         
         let chooseWalletImgView = UIImageView(image: UIImage(named: "chooseWallet"))
         self.addSubview(chooseWalletImgView)
-        chooseWalletImgView.snp.makeConstraints { (make) in
-            make.leading.equalTo(self).offset(10)
-            make.size.equalTo(CGSize(width: 16, height: 16))
+       
+         
+        let Label = UILabel()
+        Label.localizedText = "transferVC_switch_des"
+        Label.textColor = UIColor(rgb: 0x105CFE)
+        Label.font = UIFont.systemFont(ofSize: 12)
+        self.addSubview(Label)
+        Label.snp.makeConstraints { (make) in
+            make.trailing.equalTo(self).offset(-16)
+            make.leading.equalTo(chooseWalletImgView.snp.trailing).offset(6)
             make.centerY.equalTo(self)
         }
         
-        let Label = UILabel()
-        Label.localizedText = "transferVC_switch_des"
-        Label.textColor = UIColor(rgb: 0x1b2137)
-        Label.font = UIFont.systemFont(ofSize: 10)
-        self.addSubview(Label)
-        Label.snp.makeConstraints { (make) in
-            make.leading.equalTo(chooseWalletImgView.snp_leadingMargin).offset(12)
+        chooseWalletImgView.snp.makeConstraints { (make) in
+            make.size.equalTo(CGSize(width: 16, height: 16))
             make.centerY.equalTo(self)
-            make.trailing.equalTo(self)
         }
     }
     
     static func getCommonBarButton() -> UIButton {
         let btn = UIButton(type: .custom)
-        btn.setTitleColor(UIColor(rgb: 0xCDCDCD), for: .normal)
-        btn.titleLabel?.font = UIFont.systemFont(ofSize: 12)
+        btn.setTitleColor(UIColor(rgb: 0x000000), for: .normal)
+        btn.titleLabel?.font = UIFont.systemFont(ofSize: 13)
         btn.sizeToFit()
         return btn
     }
     
 }
 
+class EnlargeTouchButton: UIButton {
+    
+    @IBInspectable var margin:CGFloat = 120.0
+    override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+        //increase touch area for control in all directions by 20
+        
+        let area = self.bounds.insetBy(dx: -margin, dy: -margin)
+//        let area = CGRectInset(self.bounds, -margin, -margin)
+        
+        return area.contains(point)
+    }
+    
+}

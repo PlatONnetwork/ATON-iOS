@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -22,7 +22,8 @@
                         <constraint firstAttribute="width" constant="30" id="1D3-tG-0Ia"/>
                         <constraint firstAttribute="height" constant="30" id="2ZL-vw-ycM"/>
                     </constraints>
-                    <state key="normal" image="icon-Medium"/>
+                    <state key="normal" image="icon-Medium-n"/>
+                    <state key="highlighted" image="icon-Medium-h"/>
                     <connections>
                         <action selector="onButtonPress:" destination="iN0-l3-epB" eventType="touchUpInside" id="1Go-Ey-qou"/>
                     </connections>
@@ -33,7 +34,8 @@
                         <constraint firstAttribute="height" constant="30" id="clO-ec-hEN"/>
                         <constraint firstAttribute="width" constant="30" id="pxA-la-mwY"/>
                     </constraints>
-                    <state key="normal" image="icon-Reddit"/>
+                    <state key="normal" image="icon-Rabbit-n"/>
+                    <state key="highlighted" image="icon-Rabbit-h"/>
                     <connections>
                         <action selector="onButtonPress:" destination="iN0-l3-epB" eventType="touchUpInside" id="31v-9O-HjD"/>
                     </connections>
@@ -44,7 +46,8 @@
                         <constraint firstAttribute="height" constant="30" id="H2M-Qs-8pk"/>
                         <constraint firstAttribute="width" constant="30" id="KX2-pK-Ip3"/>
                     </constraints>
-                    <state key="normal" image="icon-Facebook"/>
+                    <state key="normal" image="icon-Facebook-n"/>
+                    <state key="highlighted" image="icon-Facebook-h"/>
                     <connections>
                         <action selector="onButtonPress:" destination="iN0-l3-epB" eventType="touchUpInside" id="wt5-4g-hqz"/>
                     </connections>
@@ -55,7 +58,8 @@
                         <constraint firstAttribute="height" constant="30" id="8f1-qN-kXK"/>
                         <constraint firstAttribute="width" constant="30" id="teF-nO-5IL"/>
                     </constraints>
-                    <state key="normal" image="icon-Twitter"/>
+                    <state key="normal" image="icon-Twitter-n"/>
+                    <state key="highlighted" image="icon-Twitter-h"/>
                     <connections>
                         <action selector="onButtonPress:" destination="iN0-l3-epB" eventType="touchUpInside" id="OIn-WN-D7L"/>
                     </connections>
@@ -66,7 +70,8 @@
                         <constraint firstAttribute="width" constant="30" id="AMM-re-RfD"/>
                         <constraint firstAttribute="height" constant="30" id="gKg-7i-zLE"/>
                     </constraints>
-                    <state key="normal" image="icon-GitHub"/>
+                    <state key="normal" image="icon-GitHub-n"/>
+                    <state key="highlighted" image="icon-GitHub-h"/>
                     <connections>
                         <action selector="onButtonPress:" destination="iN0-l3-epB" eventType="touchUpInside" id="kXn-Rc-Khd"/>
                     </connections>
@@ -77,13 +82,14 @@
                         <constraint firstAttribute="height" constant="30" id="QGQ-AT-BMl"/>
                         <constraint firstAttribute="width" constant="30" id="ivH-dO-Xoo"/>
                     </constraints>
-                    <state key="normal" image="icon-Telegram"/>
+                    <state key="normal" image="icon-Telegram-n"/>
+                    <state key="highlighted" image="icon-Telegram-h"/>
                     <connections>
                         <action selector="onButtonPress:" destination="iN0-l3-epB" eventType="touchUpInside" id="QsH-i7-gvz"/>
                     </connections>
                 </button>
             </subviews>
-            <color key="backgroundColor" red="0.10588235294117647" green="0.13333333333333333" blue="0.21176470588235294" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="00z-Sf-bfe" firstAttribute="leading" secondItem="KNu-Ct-Xqo" secondAttribute="trailing" constant="15" id="06W-fN-YHt"/>
                 <constraint firstItem="EFd-iT-Rk8" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" id="Gnr-tb-4cT"/>
@@ -112,11 +118,17 @@
         </view>
     </objects>
     <resources>
-        <image name="icon-Facebook" width="30" height="30"/>
-        <image name="icon-GitHub" width="30" height="30"/>
-        <image name="icon-Medium" width="30" height="30"/>
-        <image name="icon-Reddit" width="30" height="30"/>
-        <image name="icon-Telegram" width="30" height="30"/>
-        <image name="icon-Twitter" width="30" height="30"/>
+        <image name="icon-Facebook-h" width="30" height="30"/>
+        <image name="icon-Facebook-n" width="30" height="30"/>
+        <image name="icon-GitHub-h" width="30" height="30"/>
+        <image name="icon-GitHub-n" width="30" height="30"/>
+        <image name="icon-Medium-h" width="30" height="30"/>
+        <image name="icon-Medium-n" width="30" height="30"/>
+        <image name="icon-Rabbit-h" width="30" height="30"/>
+        <image name="icon-Rabbit-n" width="30" height="30"/>
+        <image name="icon-Telegram-h" width="30" height="30"/>
+        <image name="icon-Telegram-n" width="30" height="30"/>
+        <image name="icon-Twitter-h" width="30" height="30"/>
+        <image name="icon-Twitter-n" width="30" height="30"/>
     </resources>
 </document>

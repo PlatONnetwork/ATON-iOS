@@ -22,10 +22,9 @@
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PYN-Mr-95k">
                         <rect key="frame" x="16" y="13.5" width="254" height="17"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_node_selection" translatesAutoresizingMaskIntoConstraints="NO" id="Vl3-T8-wRR">
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="iconApprove" translatesAutoresizingMaskIntoConstraints="NO" id="Vl3-T8-wRR">
                         <rect key="frame" x="290" y="14.5" width="15" height="15"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="15" id="AWO-rN-Ojf"/>
@@ -33,8 +32,8 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TV1-fo-ZrW" userLabel="sepline">
-                        <rect key="frame" x="0.0" y="43.5" width="320" height="0.5"/>
-                        <color key="backgroundColor" red="0.19607843137254902" green="0.22352941176470587" blue="0.30588235294117649" alpha="1" colorSpace="calibratedRGB"/>
+                        <rect key="frame" x="16" y="43.5" width="288" height="0.5"/>
+                        <color key="backgroundColor" red="0.89411764705882346" green="0.90588235294117647" blue="0.95294117647058818" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="0.5" id="IkP-80-2Lo"/>
                         </constraints>
@@ -43,15 +42,15 @@
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
-                <color key="backgroundColor" red="0.10196078431372549" green="0.12941176470588237" blue="0.21176470588235294" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             </tableViewCellContentView>
             <constraints>
                 <constraint firstItem="PYN-Mr-95k" firstAttribute="leading" secondItem="njF-e1-oar" secondAttribute="leading" constant="16" id="4eq-fm-23q"/>
                 <constraint firstItem="njF-e1-oar" firstAttribute="bottom" secondItem="TV1-fo-ZrW" secondAttribute="bottom" id="HVh-CZ-6HY"/>
                 <constraint firstItem="Vl3-T8-wRR" firstAttribute="trailing" secondItem="njF-e1-oar" secondAttribute="trailing" constant="-15" id="NRK-79-ZAo"/>
-                <constraint firstItem="TV1-fo-ZrW" firstAttribute="leading" secondItem="njF-e1-oar" secondAttribute="leading" id="VDp-YR-ufc"/>
+                <constraint firstItem="TV1-fo-ZrW" firstAttribute="leading" secondItem="njF-e1-oar" secondAttribute="leading" constant="16" id="VDp-YR-ufc"/>
                 <constraint firstItem="njF-e1-oar" firstAttribute="trailing" secondItem="PYN-Mr-95k" secondAttribute="trailing" constant="50" id="dSR-vQ-z5X"/>
-                <constraint firstItem="njF-e1-oar" firstAttribute="trailing" secondItem="TV1-fo-ZrW" secondAttribute="trailing" id="etp-ht-Tsj"/>
+                <constraint firstItem="njF-e1-oar" firstAttribute="trailing" secondItem="TV1-fo-ZrW" secondAttribute="trailing" constant="16" id="etp-ht-Tsj"/>
                 <constraint firstItem="Vl3-T8-wRR" firstAttribute="centerY" secondItem="njF-e1-oar" secondAttribute="centerY" id="gxM-k2-uHy"/>
                 <constraint firstItem="PYN-Mr-95k" firstAttribute="centerY" secondItem="njF-e1-oar" secondAttribute="centerY" id="k4u-rT-J2d"/>
             </constraints>
@@ -63,6 +62,6 @@
         </tableViewCell>
     </objects>
     <resources>
-        <image name="icon_node_selection" width="12" height="12"/>
+        <image name="iconApprove" width="20" height="20"/>
     </resources>
 </document>

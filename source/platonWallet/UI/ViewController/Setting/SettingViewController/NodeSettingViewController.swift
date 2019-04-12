@@ -66,7 +66,7 @@ class NodeSettingViewController: BaseViewController {
             
             if isEdit == true {
                 
-                navigationItem.localizedText = "SettingsVC_nodeSet_edit_title"
+                super.leftNavigationTitle = "SettingsVC_nodeSet_edit_title"
                 
                 navigationItem.leftBarButtonItem = UIBarButtonItem(title: Localized("SettingsVC_nodeSet_cancelBtn_title"), style: .plain, target: self, action: #selector(onCancelEditClick))
                 
@@ -76,7 +76,7 @@ class NodeSettingViewController: BaseViewController {
  
             }else {
                 
-                navigationItem.localizedText = "SettingsVC_nodeSet_title"
+                super.leftNavigationTitle = "SettingsVC_nodeSet_title"
                 navigationItem.leftBarButtonItem = backItem
                 
                 navigationItem.rightBarButtonItem?.localizedText = "SettingsVC_nodeSet_editBtn_title"
@@ -127,7 +127,7 @@ class NodeSettingViewController: BaseViewController {
     
     func setupUI() {
         
-        navigationItem.localizedText = "SettingsVC_nodeSet_title"
+        super.leftNavigationTitle = "SettingsVC_nodeSet_title"
         
         view.addSubview(tableView)
         tableView.snp.makeConstraints { (maker) in
@@ -189,16 +189,16 @@ class NodeSettingViewController: BaseViewController {
             
             if node.id == currentSelectedNode.id {
 
-                showLoading()
+                showLoadingHUD()
             
                 Web3Helper.switchRpcURL(nodes[0].nodeURLStr, succeedCb: {
-                    self.hideLoading(animated: false)
+                    self.hideLoadingHUD(animated: false)
                     self.showMessage(text: Localized("SettingsVC_nodeSet_switchDefault_tips"))
                     SettingService.shareInstance.updateSelectedNode(self.nodes[0])
                     SettingService.shareInstance.deleteNode(node)
                     self.tableView.reloadData()
                 }) {
-                    self.hideLoading(animated: false)
+                    self.hideLoadingHUD(animated: false)
                     self.showMessage(text: Localized("SettingsVC_savesuccessfully"))
                     
                 }
@@ -231,15 +231,15 @@ class NodeSettingViewController: BaseViewController {
                     guard item.nodeURLStr != currentSelectedNode.nodeURLStr else {
                         continue
                     }
-                    showLoading()
+                    showLoadingHUD()
                     Web3Helper.switchRpcURL(item.nodeURLStr, succeedCb: { 
-                        self.hideLoading()
+                        self.hideLoadingHUD()
                         SettingService.shareInstance.addOrUpdateNode(item)
                         self.tableView.reloadData()
-                        NotificationCenter.default.post(name: NSNotification.Name(didswitchNode_Notification), object: nil)
+                        NotificationCenter.default.post(name: NSNotification.Name(NodeStoreService.didSwitchNodeNotification), object: nil)
                     }) {  
                         //node modify failed, auto recovery
-                        self.hideLoading()
+                        self.hideLoadingHUD()
                         self.showMessage(text: Localized("SettingsVC_nodeSet_recovery_tips"))
                         
                     }
@@ -335,7 +335,7 @@ extension NodeSettingViewController: UITableViewDelegate, UITableViewDataSource,
             return
         }
         
-        showLoading()
+        showLoadingHUD()
         
         Web3Helper.switchRpcURL(didSelectNode.nodeURLStr, succeedCb: { [weak self] in
             
@@ -343,7 +343,7 @@ extension NodeSettingViewController: UITableViewDelegate, UITableViewDataSource,
                 return
             }
             
-            self!.hideLoading()
+            self!.hideLoadingHUD()
             self!.showMessage(text: Localized("SettingsVC_nodeSet_switchSuccess_tips"))
             SettingService.shareInstance.updateSelectedNode(didSelectNode)
             
@@ -351,7 +351,7 @@ extension NodeSettingViewController: UITableViewDelegate, UITableViewDataSource,
             
         }) { [weak self] in
             
-            self?.hideLoading()
+            self?.hideLoadingHUD()
             self?.showMessage(text: Localized("SettingsVC_nodeSet_switchFail_tips"))
         }
         

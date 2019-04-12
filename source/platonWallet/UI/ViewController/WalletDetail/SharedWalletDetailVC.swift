@@ -26,7 +26,7 @@ class SharedWalletDetailVC: BaseViewController ,UITableViewDelegate,UITableViewD
         initSubViews()
         initTxQueryTimer()
         initData()
-        
+         
         
         NotificationCenter.default.addObserver(self, selector: #selector(didUpdateAllAsset), name: NSNotification.Name(DidUpdateAllAssetNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didUpdateSharedWalletTransaction), name: NSNotification.Name(DidUpdateSharedWalletTransactionList_Notification), object: nil)
@@ -138,7 +138,7 @@ class SharedWalletDetailVC: BaseViewController ,UITableViewDelegate,UITableViewD
         tableView.tableHeaderView = header
         didUpdateAllAsset()
     }
-    
+     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)        
     }
@@ -146,7 +146,7 @@ class SharedWalletDetailVC: BaseViewController ,UITableViewDelegate,UITableViewD
     @objc func onNavigationLeft(){
         
     }
-    
+     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell : WalletDetailCell = tableView.dequeueReusableCell(withIdentifier: String(describing: WalletDetailCell.self)) as! WalletDetailCell
         let anytx = dataSource?[indexPath.row]

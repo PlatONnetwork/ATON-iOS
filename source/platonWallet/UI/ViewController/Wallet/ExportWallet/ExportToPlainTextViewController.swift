@@ -15,6 +15,7 @@ class ExportToPlainTextViewController: BaseViewController {
     
     @IBOutlet weak var plainTextLabel: UILabel!
     
+    @IBOutlet weak var copyButton: PButton!
     
     var note: String!
     var plainText: String!
@@ -25,6 +26,7 @@ class ExportToPlainTextViewController: BaseViewController {
         // Do any additional setup after loading the view.
         noteLabel.text = note
         plainTextLabel.text = plainText
+        copyButton.style = .blue
     }
 
     @IBAction func copyText(_ sender: Any) {

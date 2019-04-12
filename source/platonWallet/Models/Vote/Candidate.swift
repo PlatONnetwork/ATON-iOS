@@ -27,14 +27,43 @@ enum RankStatus {
 
 class CandidateExtra:Decodable {
     
-    var nodeName: String = ""//节点名称
-    var nodePortrait: String = ""//节点logo
-    var nodeDiscription: String = ""//机构简介
-    var nodeDepartment: String = ""//机构名称
-    var officialWebsite: String = ""//官网
-    var time: UInt64?//申请时间
+    var nodeName: String? = ""          //节点名称
+    var nodePortrait: String? = ""      //节点logo
+    var nodeDiscription: String? = ""   //机构简介
+    var nodeDepartment: String? = ""    //机构名称
+    var officialWebsite: String? = ""   //官网
+    var time: UInt64? = 0               //申请时间 
+    
+    
+    enum CodingKeys: String, CodingKey {
+        case nodeName = "nodeName"
+        case nodePortrait = "nodePortrait"
+        case nodeDiscription = "nodeDiscription"
+        case nodeDepartment = "nodeDepartment"
+        case officialWebsite = "officialWebsite"
+        case time = "time"
+    }
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        officialWebsite = try? container.decode(String.self, forKey: .officialWebsite)
+        nodeName = try? container.decode(String.self, forKey: .nodeName)
+        nodeDiscription = try? container.decode(String.self, forKey: .nodeDiscription)
+        nodeDepartment = try? container.decode(String.self, forKey: .nodeDepartment)
+        
+        time = try? container.decode(UInt64.self, forKey: .time)
+        do{
+            nodePortrait = try container.decode(String.self, forKey: .nodePortrait)
+        }catch{
+            //var tmp : UInt64 = 1
+            //tmp = try? container.decode(UInt64.self, forKey: .nodePortrait)
+            //nodePortrait = String(format: "%d", tmp)
+        }
+    }
     
 }
+
+
 
 class Candidate:NSObject, Decodable {
     
@@ -122,23 +151,24 @@ class Candidate:NSObject, Decodable {
     }
     
     required init(from decoder: Decoder) throws {
-        
+         
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let depositStr = try? container.decode(Decimal.self, forKey: .deposit)
         deposit = BigUInt(depositStr?.description ?? "")
         let blockNumberStr = try? container.decode(Decimal.self, forKey: .blockNumber)
         blockNumber = BigUInt(blockNumberStr?.description ?? "")
-        txIndex = try container.decode(Int.self, forKey: .txIndex)
-        candidateId = try container.decode(String.self, forKey: .candidateId)
-        host = try container.decode(String.self, forKey: .host)
-        port = try container.decode(String.self, forKey: .port)
-        owner = try container.decode(String.self, forKey: .owner)
-        from = try container.decode(String.self, forKey: .from)
-        let extraStr = try container.decode(String.self, forKey: .extra)
+        candidateId = try? container.decode(String.self, forKey: .candidateId)
+        host = try? container.decode(String.self, forKey: .host)
+        port = try? container.decode(String.self, forKey: .port)
+        owner = try? container.decode(String.self, forKey: .owner)
+        from = try? container.decode(String.self, forKey: .from)
+        let extraStr = try container.decode(String.self, forKey: .extra) 
         do {
+            txIndex = try container.decode(Int.self, forKey: .txIndex)
             extra = try JSONDecoder().decode(CandidateExtra.self, from: extraStr.data(using: .utf8)!)
         } catch  {
-            print(error.localizedDescription)
+            print("candidate Extra filed:" + error.localizedDescription)
+            return
         }
         
         fee = try container.decode(UInt64.self, forKey: .fee)

@@ -32,11 +32,13 @@ class WalletEmptyView: UIView {
             maker.edges.equalToSuperview()
         }
         setupUIFor(walletType)
+        btn1.style = .blue
+        btn2.style = .gray
     }
     
     func setupUIFor(_ type: WalletType) {
         
-        if type == .ATPWallet {
+        if type == .ClassicWallet {
             tipsLabel.localizedText = "IndividualWallet_EmptyView_tips" 
             btn1.localizedNormalTitle = "IndividualWallet_EmptyView_createBtn_title"
             btn2.localizedNormalTitle = "IndividualWallet_EmptyView_importBtn_title"

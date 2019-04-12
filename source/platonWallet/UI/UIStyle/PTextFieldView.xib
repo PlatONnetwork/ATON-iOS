@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="PTextFieldView" customModule="platonWallet" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="90"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kpq-DU-LFg">
+                    <rect key="frame" x="16" y="0.0" width="39.5" height="19.5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <color key="textColor" red="0.3803921569" green="0.3921568627" blue="0.43137254899999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Zpb-sv-kRA">
+                    <rect key="frame" x="16" y="24.5" width="343" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="Ewr-6K-jLz"/>
+                    </constraints>
+                    <nil key="textColor"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HSn-fb-4Wa">
+                    <rect key="frame" x="16" y="64.5" width="343" height="0.5"/>
+                    <color key="backgroundColor" red="0.83529411764705885" green="0.84705882352941175" blue="0.87450980392156863" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="0.5" id="8ox-uq-hAW"/>
+                    </constraints>
+                </view>
+                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jdq-dR-Tq7">
+                    <rect key="frame" x="16" y="73" width="29" height="14"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                    <color key="textColor" red="0.96078431372549022" green="0.18823529411764706" blue="0.17254901960784313" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="Kpq-DU-LFg" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="2sX-U9-giM"/>
+                <constraint firstItem="HSn-fb-4Wa" firstAttribute="top" secondItem="Zpb-sv-kRA" secondAttribute="bottom" id="3fb-o5-G2g"/>
+                <constraint firstItem="Kpq-DU-LFg" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="6Wy-tV-fHz"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="HSn-fb-4Wa" secondAttribute="trailing" constant="16" id="ILd-IG-L55"/>
+                <constraint firstItem="Zpb-sv-kRA" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="aVf-hD-s9F"/>
+                <constraint firstItem="Jdq-dR-Tq7" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="gLO-NT-1Pc"/>
+                <constraint firstItem="Zpb-sv-kRA" firstAttribute="top" secondItem="Kpq-DU-LFg" secondAttribute="bottom" constant="5" id="mA3-yf-9ha"/>
+                <constraint firstItem="HSn-fb-4Wa" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="mIm-Qr-zc9"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Zpb-sv-kRA" secondAttribute="trailing" constant="16" id="sBk-P9-z9u"/>
+                <constraint firstItem="Jdq-dR-Tq7" firstAttribute="top" secondItem="HSn-fb-4Wa" secondAttribute="bottom" constant="8" id="vUh-Ns-Yrx"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="line" destination="HSn-fb-4Wa" id="3aj-Ur-knv"/>
+                <outlet property="textField" destination="Zpb-sv-kRA" id="ngF-as-hbP"/>
+                <outlet property="textFieldRightConstraint" destination="sBk-P9-z9u" id="9u8-j5-9Yw"/>
+                <outlet property="tipsLabel" destination="Jdq-dR-Tq7" id="Y84-v2-eqU"/>
+                <outlet property="title" destination="Kpq-DU-LFg" id="qbo-4W-Sln"/>
+            </connections>
+            <point key="canvasLocation" x="138.40000000000001" y="194.30284857571215"/>
+        </view>
+    </objects>
+</document>

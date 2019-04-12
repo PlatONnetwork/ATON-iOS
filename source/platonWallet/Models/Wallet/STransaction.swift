@@ -135,6 +135,8 @@ class STransaction: Object {
     
     @objc dynamic var blockNumber : String?  = ""
     
+    @objc dynamic var nodeURLStr: String = ""
+    
     // txhash refers to the hash of confirmTransaction or revokeConfirmation
     @objc dynamic var txhash: String? = ""
     
@@ -145,6 +147,7 @@ class STransaction: Object {
     @objc dynamic var gasPrice : String? = ""
     
     @objc dynamic var required = 0
+    
     
     @objc dynamic var readTag = 0
     
@@ -255,7 +258,7 @@ class STransaction: Object {
                     //still pending
                     //pending
                     des = Localized("walletDetailVC_tx_status_pending")
-                    color = UIColor(rgb: 0xFFED54)
+                    color = cell_Transaction_pending_color
                 }
                 
             }else{
@@ -269,11 +272,11 @@ class STransaction: Object {
             
             if self.isWaitForConfirmation{
                 des = Localized("walletDetailVC_tx_status_pending")
-                color = UIColor(rgb: 0xFFED54)
+                color = cell_Transaction_pending_color
             }else{
                 //success
                 des = Localized("walletDetailVC_tx_status_success")
-                color = UIColor(rgb: 0x41d325)
+                color = cell_Transaction_success_color
             }
 
         }
@@ -288,18 +291,18 @@ class STransaction: Object {
         if self.executed{
             //success
             des = Localized("walletDetailVC_tx_status_success")
-            color = UIColor(rgb: 0x41d325)
+            color = cell_Transaction_success_color
         }else{
             if self.signStatus == .reachRevoke{
                 //remain undetermind member can't reach the approve required number
                 des = Localized("Transaction.Fail")
-                color = UIColor(rgb: 0xFF4747)
+                color = cell_Transaction_fail_color
             }else if self.signStatus == .reachApproval{
                 //contract transfer fail
                 des = Localized("Transaction.Fail")
-                color = UIColor(rgb: 0xFF4747)
+                color = cell_Transaction_fail_color
             }else if self.signStatus == .voting{
-                //voting
+                //signning(n/m)
                 var approveNumber = 0
                 for item in self.determinedResult{
                     if item.operation == OperationAction.approval.rawValue{
@@ -307,7 +310,7 @@ class STransaction: Object {
                     }
                 }
                 des = String(format: "%@(%d/%d)", Localized("walletDetailVC_no_transactions_Signing"),approveNumber,self.required)
-                color = UIColor(rgb: 0xFFED54)
+                color = cell_Transaction_pending_color
             }
         }
         
@@ -376,8 +379,9 @@ class STransaction: Object {
     }
     
     static func stransactionConfirmsParser(tx: STransaction, concatenated : String) -> STransaction{
-        let fixedCon = concatenated.replacingOccurrences(of: ",", with: "")
-        let txStatusComponets = fixedCon.components(separatedBy: ":")
+        var fixedCon = concatenated.replacingOccurrences(of: ":,", with: ":")
+        fixedCon = fixedCon.replacingOccurrences(of: ",:", with: ":")
+        let txStatusComponets = fixedCon.components(separatedBy: ":") 
         
         if txStatusComponets.count < 3{
             return tx
@@ -460,7 +464,7 @@ class STransaction: Object {
             var dic: Dictionary<String,STransaction> = [:]
             for item in txs{
                 dic[item.transactionID] = item
-            }
+            }  
             for item in txComponets{
                 let txStatusComponets = item.components(separatedBy: ":")
                 guard txStatusComponets.count >= 3, dic[txStatusComponets[0]] != nil else{

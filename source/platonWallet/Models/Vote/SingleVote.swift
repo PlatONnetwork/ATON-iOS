@@ -22,13 +22,22 @@ class SingleVote: Object {
     
     @objc dynamic var candidateId : String? = ""
     
-//    @objc dynamic var candidateName: String? = ""
-    
-//    @objc dynamic var candidateHost: String? = ""
+    @objc dynamic var deposit : String? = ""
     
     @objc dynamic var owner : String = ""
     
-//    @objc dynamic var ticketPrice: String = ""
+    @objc dynamic var totalTicketNum : String = ""
+    
+    @objc dynamic var validNum : String = ""
+    
+    var invalidNumber: Int{
+        get{
+            if let total = Int(totalTicketNum), let valid = Int(validNum){
+                return total - valid
+            }
+            return 0
+        }
+    }
     
     override public static func primaryKey() -> String? {
         return "txHash"
@@ -43,48 +52,21 @@ class SingleVote: Object {
         return ""
     }
     
-    var ticketPrice : String{
-        get{
-            return BigUInt((tickets.first?.deposit) ?? "0")!.divide(by: ETHToWeiMultiplier, round: 2)
-        }
-    }
+    var voteEarnings: String? = ""
     
-    var validCount : Int{
-        get{
-            return Array(self.tickets).validTicketCount
-        }
-    }
+//    var ticketPrice : String = ""
+//    
+//    var validCount : Int = 0
+//    
+//    var invalidCount: Int = 0
+//    
+//    var assetOflocked: String? = ""
+//    
+//    var releaseOfVote: String? = ""
+//    
     
-    var invalidCount: Int{
-        get{
-            return Array(self.tickets).invalidTicketCount
-        }
-    }
-    
-    var assetOflocked: String?{
-        get{
-            return Array(self.tickets).lockedAssetSum.divide(by: ETHToWeiMultiplier, round: 4)
-        }
-    }
-    
-    var releaseOfVote: String?{
-        get{
-            return Array(self.tickets).releasedAssetSum.divide(by: ETHToWeiMultiplier, round: 4)
-        }
-    }
-    
-    var voteEarnings: String?{
-        get{
-            return Array(self.tickets).tickets_voteEarnings
-        }
-    }
-    
-    //预计过期时间和实际过期时间，预期过期时间是可以知道的，实际过期时间是查不到的，你去查询这个票的时候(没达到预计过期时间就过期了)，实际过期时间就显示当前查询时间吧
-    var expiredTime: String?{
-        get{
-            return ""
-        }
-    }
+//    
+//    var expiredTime: String? = ""
     
     
     

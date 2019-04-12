@@ -14,7 +14,7 @@ class MyVoteListVC: BaseViewController,UITableViewDelegate,UITableViewDataSource
     
     let tableView = UITableView()
     
-    var headerView : NodeVoteHeader?
+    var headerView : NodeVoteHeader? = UIView.viewFromXib(theClass: NodeVoteHeader.self) as? NodeVoteHeader
     
     var dataSource: [NodeVoteSummary] = []
     
@@ -49,17 +49,22 @@ class MyVoteListVC: BaseViewController,UITableViewDelegate,UITableViewDataSource
     
     func initSubViews() {
         
-        self.navigationItem.localizedText = "MyVoteListVC_nav_title"
+        super.leftNavigationTitle = "MyVoteListVC_nav_title"
         
         view.backgroundColor = UIViewController_backround
         
-        headerView = UIView.viewFromXib(theClass: NodeVoteHeader.self) as? NodeVoteHeader
+        /*
         view.addSubview(headerView!)
         headerView!.snp.makeConstraints { (maker) in
-            maker.left.right.top.equalToSuperview()
-            maker.height.equalTo(70)
+            if #available(iOS 11.0, *) {
+                maker.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            } else {
+                maker.top.equalToSuperview()
+            }
+            maker.left.right.equalToSuperview()
+            maker.height.equalTo(88)
         }
-        
+        */
         
         tableView.backgroundColor = UIViewController_backround
         tableView.separatorStyle = .none
@@ -68,34 +73,60 @@ class MyVoteListVC: BaseViewController,UITableViewDelegate,UITableViewDataSource
         view.addSubview(tableView)
         tableView.snp.makeConstraints { (maker) in
             maker.left.right.bottom.equalToSuperview()
-            maker.top.equalTo(headerView!.snp.bottom)
+            if #available(iOS 11.0, *) {
+                maker.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            } else {
+                maker.top.equalToSuperview()
+            }
         }
 
+        tableView.tableHeaderView = headerView
+        headerView?.frame = CGRect(x: 0, y: 0, width: kUIScreenWidth, height: 88)
+            
         tableView.registerCell(cellTypes: [NodeVoteTableViewCell.self])
         
         tableView.emptyDataSetView { [weak self] view in
             view.customView(self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, Localized("MyVoteListVC_Empty_tips")))
         }
+        self.autoAdjustInset()
     }
     
     
     func getData(showLoading: Bool = true) {
         
         if showLoading {
-            self.showLoading()
+            self.showLoadingHUD()
         }
         
+        let addressStrs = AssetVCSharedData.sharedData.walletList.filterClassicWallet.map { cwallet in
+            return cwallet.key!.address
+        }
+        if addressStrs.count > 0{
+            VoteManager.sharedInstance.getBatchVoteSummary(addressList: addressStrs) {[weak self] (result, resp) in
+                switch result{
+                    
+                case .success:
+                    if let sum = resp as? MyVoteStatic{
+                        self?.headerView?.updateView(sum)
+                    }
+                case .fail(_, _):
+                    do{}
+                }
+            }
+        }
+        
+         
         VoteManager.sharedInstance.getMyVoteList { [weak self] (result, data) in
             
             guard let self = self else { return }
             
             if showLoading {
-                self.hideLoading()
+                self.hideLoadingHUD()
             }
             
             switch result{
                 
-            case .success:
+            case .success: 
                 
                 guard data != nil else {
                     return
@@ -105,27 +136,31 @@ class MyVoteListVC: BaseViewController,UITableViewDelegate,UITableViewDataSource
                     return
                 }
                 
+                /*
                 var empty = true
                 for s in summary {
+                    /*
                     if s.tickets.count > 0 {
                         empty = false
                         break
                     }
+                     */
                 }
                 guard !empty else {
                     return
                 }
+                */ 
                 
                 self.dataSource = summary
                 
                 let nodeIds = summary.map({ (node) -> String in
                     return node.CandidateId ?? ""
-                })
+                }) 
                 self.getCandidateDetail(ids: nodeIds)
                 
                 self.tableView.reloadData()
                 self.tableView.removeEmptyView()
-                self.updateTableHeaderVote()
+    
      
             case .fail(let ret, let msg):
                 self.showMessage(text: "getMyVoteList fail:\(ret ?? 0),\(msg ?? "")", delay: 3)
@@ -135,10 +170,6 @@ class MyVoteListVC: BaseViewController,UITableViewDelegate,UITableViewDataSource
     }
     
     
-    
-    func updateTableHeaderVote(){
-        headerView?.updateView(dataSource)
-    }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell : NodeVoteTableViewCell = tableView.dequeueReusableCell(withIdentifier: String(describing: NodeVoteTableViewCell.self)) as! NodeVoteTableViewCell
@@ -154,7 +185,7 @@ class MyVoteListVC: BaseViewController,UITableViewDelegate,UITableViewDataSource
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 85
+        return 107
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -162,22 +193,20 @@ class MyVoteListVC: BaseViewController,UITableViewDelegate,UITableViewDataSource
         let voteDetail = SingleVoteDetailListVC()
         let summary = dataSource[indexPath.row]
         voteDetail.candidate = candidateDetailDic[summary.CandidateId!]
-        voteDetail.tickets = summary.tickets
+        voteDetail.voteSum = summary
         navigationController?.pushViewController(voteDetail, animated: true)
-    }
+    } 
     
     //MARK: - UIButton Action
     
     @objc func onVote(_ sender: UIButton){
         
-        showLoading()
+        showLoadingHUD()
+        let candidateId = dataSource[sender.tag].CandidateId!
         
-        VoteManager.sharedInstance.CandidateDetails(candidateId: dataSource[sender.tag].CandidateId!) { [weak self] (res, data) in
-            
+        VoteManager.sharedInstance.GetCandidateDetails(candidateId: dataSource[sender.tag].CandidateId!) { [weak self] (res, data) in
+            self?.hideLoadingHUD()
             guard let self = self else { return }
-            
-            self.hideLoading()
-            
             switch res{
             case .success:
                 guard let candidate = data as? Candidate, candidate.candidateId == self.dataSource[sender.tag].CandidateId else {

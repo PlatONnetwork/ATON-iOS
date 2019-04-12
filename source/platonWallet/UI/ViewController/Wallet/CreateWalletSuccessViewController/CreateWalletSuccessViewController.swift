@@ -9,24 +9,42 @@
 import Foundation
 import Localize_Swift
 
-protocol BackupDelegate: AnyObject {
-    func startBackupClick()
+protocol StartBackupMnemonicDelegate: AnyObject {
+    func startBackup()
 }
 
 class CreateWalletSuccessViewController: BaseViewController {
     
-    weak var delegate: BackupDelegate?
+    @IBOutlet weak var nextButton: PButton!
+    weak var delegate: StartBackupMnemonicDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.localizedText = "createWalletSuccessVC_title"
+        self.nextButton.style = .blue
+        self.nextButton.setHorizontalLinerTitleAndImage(image: UIImage(named: "nextBtnIcon")!)
+        //super.leftNavigationTitle = "createWalletSuccessVC_title"
+    }
+    
+    override func rt_customBackItem(withTarget target: Any!, action: Selector!) -> UIBarButtonItem! {
+        
+        let label = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 44))
+        label.textColor = UIColor.black
+        label.font = UIFont.systemFont(ofSize: 18)
+        label.localizedText = "createWalletSuccessVC_title"
+        let leftBarButtonItem = UIBarButtonItem(customView: label)
+        return leftBarButtonItem
     }
     
     @IBAction func startBackup(_ sender: Any) {
-        delegate?.startBackupClick()
+        delegate?.startBackup()
     }
     
     override func back() {
         (UIApplication.shared.delegate as? AppDelegate)?.gotoMainTab()
     }
+    
+    @IBAction func onSkip(_ sender: Any) {
+        (UIApplication.shared.delegate as? AppDelegate)?.gotoMainTab()
+    }
+    
 }

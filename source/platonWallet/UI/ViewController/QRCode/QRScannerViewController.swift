@@ -79,12 +79,9 @@ class QRScannerViewController: BaseViewController,AVCaptureMetadataOutputObjects
     }
     
     override func viewDidLoad() {
-        
         super.viewDidLoad()
-
         checkCamareAuthStatus()
         setupUI()
-        
     }
      
     override func viewWillAppear(_ animated: Bool) {
@@ -112,9 +109,7 @@ class QRScannerViewController: BaseViewController,AVCaptureMetadataOutputObjects
     }
     
     func setupUI() {
-        
-        navigationItem.localizedText = "QRScanerVC_nav_title"
-
+        //super.leftNavigationTitle = "QRScanerVC_nav_title"
         addScanLayer()
     }
     
@@ -141,8 +136,23 @@ class QRScannerViewController: BaseViewController,AVCaptureMetadataOutputObjects
         scanLine.frame = CGRect(x: 0, y: 0, width: centerLayer.frame.size.width, height: 3)
         centerLayer.addSublayer(scanLine)
         
+        let labelFrame = CGRect(x: 0, y: centerLayer.frame.origin.y - 14 - 16, width: kUIScreenWidth, height: 20)
+        
+        let label = UILabel(frame: labelFrame)
+        label.textColor = .white
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.localizedText = "scanviewcontroller_scan"
+        label.textAlignment = .center
+        view.addSubview(label)
+        //view.layer.addSublayer(label.layer)
+        
         view.layer.addSublayer(centerLayer)
         
+    }
+    
+    
+    override func rt_customBackItem(withTarget target: Any!, action: Selector!) -> UIBarButtonItem! {
+        return UIBarButtonItem(image: UIImage(named: "navback"), style: .plain, target: self, action: #selector(back))
     }
     
     func checkCamareAuthStatus() {
@@ -161,7 +171,7 @@ class QRScannerViewController: BaseViewController,AVCaptureMetadataOutputObjects
             }
             
             alert.show(inViewController: self)
-        }
+        } 
         
         let status = AVCaptureDevice.authorizationStatus(for: .video)
         

@@ -50,14 +50,14 @@ extension VoteManager{
         return build_commonInternalCall(funcName: "GetCandidateEpoch", param: candidateId)
     }
     
-    func build_CandidateDetails(candidateId: String) -> Data {
+    func build_GetCandidateDetails(candidateId: String) -> Data {
         
-        return build_commonInternalCall(funcName: "CandidateDetails", param: candidateId)
+        return build_commonInternalCall(funcName: "GetCandidateDetails", param: candidateId)
     }
     
     func build_CandidateList() -> Data{
         
-        return build_commonInternalCall(funcName: "CandidateList")
+        return build_commonInternalCall(funcName: "GetCandidateList")
     }
     
     func build_GetTicketDetail(ticketId: String) -> Data{
@@ -86,15 +86,15 @@ extension VoteManager{
 
     }
     
-    func build_GetBatchCandidateTicketCount(nodeIds:[String]) -> Data {
+    func build_GetCandidateTicketCount(nodeIds:[String]) -> Data {
         let concatenate = nodeIds.joined(separator: ":") 
-        return build_commonInternalCall(funcName: "GetBatchCandidateTicketCount", param: concatenate)
+        return build_commonInternalCall(funcName: "GetCandidateTicketCount", param: concatenate)
     }
     
     func build_VoteTicket(count: UInt64, price: BigUInt,nodeId: String) -> Data{
         
-        let count_d = Data.newData(unsignedLong: count, bigEndian: true)
-        
+        //let count_d_old = Data.newData(unsignedLong: count, bigEndian: true)
+        let count_d = Data.newData(uint32data: UInt32(count), bigEndian: false)
         
         let priceV = SolidityWrappedValue(value: price, type: SolidityType.uint256)
         let price_d = Data(hex: priceV.value.abiEncode(dynamic: false)!)

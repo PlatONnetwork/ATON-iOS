@@ -26,8 +26,8 @@ let TicketPricePeriod = 3600
 let kTicketsPoolCapacity = 51200
 
 //number
-let kCandidateMinNumOfTickets = 100
-
+let kCandidateMinNumOfTickets = 512
+ 
 
 class VoteManager: BaseService {
 
@@ -108,16 +108,18 @@ class VoteManager: BaseService {
         }
         
     }
-
+ 
     func CandidateList(completion: PlatonCommonCompletion?)  {
 
-        var completion = completion
+        var completion = completion 
         let data = self.build_CandidateList()
         
         web3CommonCall(contractAddress: candidateContract, data: data, completion: &completion) { (resp) in
             do{
-                let list:[Candidate] =  try JSONDecoder().decode([Candidate].self, from: resp.data(using: .utf8)!) 
-                self.successCompletionOnMain(obj: list as AnyObject, completion: &completion)
+                //let list:[Candidate] =  try JSONDecoder().decode([Candidate].self, from: resp.data(using: .utf8)!)
+                let obj =  try JSONDecoder().decode(CandidateParserContainerMatrix.self, from: resp.data(using: .utf8)!)
+                self.successCompletionOnMain(obj: obj.candidates as AnyObject, completion: &completion)
+
             }catch {
                 self.failCompletionOnMainThread(code: -2, errorMsg: "data parse error!!!", completion: &completion)
             }
@@ -126,72 +128,23 @@ class VoteManager: BaseService {
     }
     
     func getMyVoteList(completion: PlatonCommonCompletion?){
-        
-        var completion = completion
-        
-        let summary = VotePersistence.getAllNodeVoteList()
-        
-        //key:ticketID value:candidateID
-        var ticketids : Dictionary<String, String> = [:]
-        
-        //key:CandidateId value:NodeVoteSummary
-        var summaryMap : Dictionary<String, NodeVoteSummary> = [:]
-        
-        //key:CandidateId value:[Ticket]
-        var summaryTicketMap : Dictionary<String, [Ticket]> = [:]
-        
-        guard summary.count > 0 else {
-            self.successCompletionOnMain(obj: nil, completion: &completion)
-            return
-        }
-        
-        let _ = summary.map { sum in
-            let _ = sum.tickets.map({ ticket in
-                ticketids[ticket.ticketId!] = sum.CandidateId
-            })
-            summaryMap[sum.CandidateId!] = sum
-            summaryTicketMap[sum.CandidateId!] = []
-        }
-       
-        self.GetBatchTicketDetail(ticketIds: Array(ticketids.keys)) { (result, data) in
-            switch result{
-                
-            case .success:
-                
-                if let arr = data as? [Ticket] {
-                    
-                    VotePersistence.updateTickets(arr)
-                    let knownIds = arr.map({$0.ticketId ?? ""})
-                    let unknownIds = Set(ticketids.keys).subtracting(knownIds)
-                    VotePersistence.updateUnknownStatusTickets(Array(unknownIds))
-
-                    for candidateId in summaryMap.keys {
-                        summaryMap[candidateId]!.tickets = VotePersistence.getAllTickets().filter({ (ticket) -> Bool in
-                            return ticket.candidateId == candidateId
-                        })
-                    }
-                    self.successCompletionOnMain(obj: Array(summaryMap.values) as AnyObject, completion: &completion)
-                }else {
-                    self.failCompletionOnMainThread(code: -1, errorMsg: "data parse error", completion: &completion)
-                }
-                
-                    
-            case .fail(let code, let errMsg):
-                self.failCompletionOnMainThread(code: code!, errorMsg: errMsg!, completion: &completion)
-            }
-        }
-        
+        self.getBatchVoteTransaction(completion: completion)   
     }
     
-    func CandidateDetails(candidateId: String, completion: PlatonCommonCompletion?) {
+    func GetCandidateDetails(candidateId: String, completion: PlatonCommonCompletion?) {
         
         var completion = completion
-        let data = build_CandidateDetails(candidateId: candidateId)
+        let data = build_GetCandidateDetails(candidateId: candidateId)
         
         web3CommonCall(contractAddress: candidateContract, data: data, completion: &completion) { (resp) in
             do{
-                let desc: Candidate = try JSONDecoder().decode(Candidate.self, from: resp.data(using: .utf8)!) 
-                self.successCompletionOnMain(obj: desc as AnyObject, completion: &completion)
+                let desc = try JSONDecoder().decode(CandidateParserContainerArray.self, from: resp.data(using: .utf8)!)
+                if desc.candidates.count > 0{
+                    self.successCompletionOnMain(obj: desc.candidates.first as AnyObject, completion: &completion)
+                }else{
+                    self.failCompletionOnMainThread(code: -2, errorMsg: "data parse error!!!", completion: &completion)
+                }
+                
             }catch {
                 self.failCompletionOnMainThread(code: -2, errorMsg: "data parse error!!!", completion: &completion)
             }
@@ -284,9 +237,9 @@ class VoteManager: BaseService {
         
     }
     
-    func GetBatchCandidateTicketCount(candidateIds:[String], completion: PlatonCommonCompletion?) {
+    func GetCandidateTicketCount(candidateIds:[String], completion: PlatonCommonCompletion?) {
         var completion = completion
-        let data = build_GetBatchCandidateTicketCount(nodeIds: candidateIds)
+        let data = build_GetCandidateTicketCount(nodeIds: candidateIds)
         web3CommonCall(contractAddress: votePoolingContract, data: data, completion: &completion) { (resp) in
             do{
                 let dic:[String:Int] =  try JSONDecoder().decode([String:Int].self, from: resp.data(using: .utf8)!) 
@@ -308,7 +261,7 @@ class VoteManager: BaseService {
             switch result{
                 
             case .success:
-                
+                 
                 guard let txHashData = data else {
                     self.failCompletionOnMainThread(code: -1, errorMsg: "data parse error!", completion: &completion)
                     return
@@ -327,11 +280,10 @@ class VoteManager: BaseService {
                 
                 //add SingleVote
                 let tickets = Ticket.generateTickets(txHash: txHashData, count: UInt32(count), owner: sender, candidateId: nodeId, price: String(price))
-                
+                 
                 let svote = SingleVote()
                 svote.txHash = txHashData.toHexString().add0x()
                 svote.candidateId = nodeId
-//                svote.candidateName = nodeInfo.name
                 svote.owner = sender
                 if tickets.count > 0{
                     svote.tickets.append(objectsIn: tickets)

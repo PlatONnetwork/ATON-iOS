@@ -12,49 +12,51 @@ import Localize_Swift
 class BackupMnemonicViewController: BaseViewController {
 
     @IBOutlet weak var shadowView: UIView!
+    @IBOutlet weak var button: PButton!
     
-    @IBOutlet weak var mnemonicLabel: UILabel!
+    var walletAddress : String?
     
     var mnemonic: String!
     
+    var mnemonicGridView : MnemonicGridView? = UIView.viewFromXib(theClass: MnemonicGridView.self) as? MnemonicGridView
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-        navigationItem.localizedText = "backupMnemonicVC_title"
-        shadowView.layer.cornerRadius = 4.0
-        shadowView.layer.masksToBounds = true
-        
-        let subArr = mnemonic.split(separator: " ")
-        let newMnemonic = subArr.joined(separator: "   ")
-        
-        let attr = NSMutableAttributedString(string: newMnemonic)
-        let paragraphStye = NSMutableParagraphStyle()
-        
-        //调整行间距
-        paragraphStye.lineSpacing = 8
-        let rang = NSMakeRange(0, newMnemonic.length)
-        attr.addAttribute(NSAttributedString.Key.paragraphStyle, value: paragraphStye, range: rang)
-
-        mnemonicLabel.attributedText = attr
-        
+        self.view.backgroundColor = .white
+        button.style = .blue
+        super.leftNavigationTitle = "backupMnemonicVC_title"
+        self.shadowView.addSubview(self.mnemonicGridView!)
+        self.mnemonicGridView?.snp.makeConstraints({ (make) in
+            make.edges.equalTo(self.shadowView)
+        })
+        self.mnemonicGridView?.setMnemonic(mnemonic: mnemonic)
+        self.mnemonicGridView?.setDisableEditStyle()
+        button.setHorizontalLinerTitleAndImage(image: UIImage(named: "nextBtnIcon")!)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidLoad()
-        
-        
-        let alertC = PAlertController(title: Localized("alert_screenshot_ban_title"), message: Localized("alert_backupMnemonic_ban_msg"), image: UIImage(named: "icon_screenshot_ban"))
-        alertC.addAction(title: Localized("alert_screenshot_ban_confirmBtn_title")) { 
-            
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { 
+            self.showNotScreeshotAler()
         }
-        alertC.show(inViewController: self)
-        
+    }
+    
+    func showNotScreeshotAler(){
+        let alertVC = AlertStylePopViewController.initFromNib()
+        alertVC.style = PAlertStyle.AlertWithRedTitle(title: "alert_screenshot_ban_title", message: "alert_backupMnemonic_ban_msg")
+        alertVC.confirmButton.localizedNormalTitle = "alert_screenshot_ban_confirmBtn_title"
+        alertVC.onAction(confirm: { (text, _) -> (Bool) in
+            return true
+        }) { (_, _) -> (Bool) in
+            return true
+        }
+        alertVC.showInViewController(viewController: self)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        addShadow()
+        self.rt_navigationController.rt_disableInteractivePop = true
+        //addShadow()
     } 
     
     func addShadow() {
@@ -69,18 +71,45 @@ class BackupMnemonicViewController: BaseViewController {
         view.layer.insertSublayer(shadowL, below: shadowView.layer)
                
     }
+    
+    override func rt_customBackItem(withTarget target: Any!, action: Selector!) -> UIBarButtonItem! {
+        if self.useDefaultLeftBarButtonItem && super.leftNavigationTitle != nil && (super.leftNavigationTitle?.length)! > 0{
+            return self.getBasicLeftBarButtonItemWithBasicStyle(localizedText: super.leftNavigationTitle)
+        }
+        return UIBarButtonItem(image: UIImage(named: "nav_back"), style: .plain, target: self, action: #selector(back))
+    }
 
     @IBAction func next(_ sender: Any) {
         
         let vc = VerifyMnemonicViewController()
+        vc.walletAddress = self.walletAddress
+        //mnemonic = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about"
         vc.words_order = mnemonic.split(separator: " ").map({ return String($0) })
         rt_navigationController.pushViewController(vc, animated: true)
     }
     
     override func back() {
-        
-        (UIApplication.shared.delegate as? AppDelegate)?.gotoMainTab()
-        
+        self.gotoMainTab()
+    }
+    
+    func showChoiceView(){
+        let alertVC = AlertStylePopViewController.initFromNib()
+        alertVC.style = PAlertStyle.ChoiceView(message: "backup_quit_tip")
+        alertVC.onAction(confirm: { (text, _) -> (Bool) in
+            self.gotoMainTab()
+            return true
+        }) { (_, _) -> (Bool) in
+            return true
+        }
+        alertVC.showInViewController(viewController: self)
+    }
+    
+    func gotoMainTab(){
+        self.afterBackupRouter()
+    }
+    
+    override func onCustomBack(){
+        self.showChoiceView()
     }
     
     /*

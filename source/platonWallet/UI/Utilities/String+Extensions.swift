@@ -9,12 +9,27 @@
 import Foundation
 import BigInt
 
+
+let dateFormatter = DateFormatter()
+
 extension String{
+    
     func is40ByteAddress() -> Bool{
         let regex = "(0x)?[A-Fa-f0-9]{40}"
         let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
         let isValid = predicate.evaluate(with: self)
         return isValid
+    }
+    
+    func is128BytePrivateKey() -> Bool{
+        let regex = "(0x)?[A-Fa-f0-9]{64}"
+        let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
+        let isValid = predicate.evaluate(with: self)
+        return isValid
+    }
+    
+    func isKeyStoreString() -> Bool{
+        return self.contains("ciphertext") && self.contains("crypto") && self.contains("address")
     }
     
     func isHexString() -> Bool{
@@ -77,6 +92,10 @@ extension String{
     }
     
     func isValidAddress() -> Bool {
+        return self.is40ByteAddress()
+        
+        //0x5eBb663FD101b46dBBe6465E72Ed4b291849111 -> true (wrong logic)
+        //0x5eBb663FD101b46dBBe6465E72Ed4b2918491111 -> true
         guard self.isHexString() else {
             return false
         }
@@ -202,17 +221,43 @@ extension String{
         return self + " Energon"
     }
     
+    func addressForDisplay() -> String{
+        guard self.is40ByteAddress() else {
+            return self
+        }
+        if !self.hasPrefix("0x"){
+            return "0x" + self.substr(0, 8)! + "......" + self.substr(30, 10)! 
+        }
+        return self.substr(0, 10)! + "......" + self.substr(32, 10)!
+    }
+    
     func EnergonSuffix() -> String {
         return self + " Energon"
     }
     
-    func walletRandomAvatar() -> String{
+    func walletAddressLastCharacterAvatar() -> String{
         if self.length == 0{
             return "walletAvatar_1"
         }
     
         let remain = (self.unicodeScalars.last?.value ?? 0) % 15
         return "walletAvatar_\(remain + 1)"
+    }
+    
+    func GreenwichTime() -> Date{
+        
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        dateFormatter.timeZone = TimeZone(identifier: "UTC")
+        let date = dateFormatter.date(from: self)
+        return date ?? Date()
+    }
+    
+    func GreenwichTimeStamp() -> UInt64{
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        dateFormatter.timeZone = TimeZone(identifier: "UTC")
+        let date = dateFormatter.date(from: self)
+        return UInt64((date?.timeIntervalSince1970)!)
     }
     
     static func walletRandomAvatar() -> String{

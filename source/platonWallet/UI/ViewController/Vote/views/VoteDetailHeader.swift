@@ -9,18 +9,14 @@
 import UIKit
 
 class VoteDetailHeader: UIView {
-
-    @IBOutlet weak var avatar: UIImageView!
     
     @IBOutlet weak var name: UILabel!
     
     @IBOutlet weak var id: UILabel!
 
     func updateView(_ detail: CandidateBasicInfo){
-        
         name.text = detail.name
         id.text = detail.id.add0x()
-        avatar.image = detail.getAvatar
     }
 
 }

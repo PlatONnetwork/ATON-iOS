@@ -15,17 +15,21 @@
                 <outlet property="confirmPswTF" destination="l65-bY-zfC" id="OBT-ab-ZMH"/>
                 <outlet property="headerTipsLabel" destination="uZg-oD-ap0" id="3Wl-SJ-Jz5"/>
                 <outlet property="importBtn" destination="eao-Xf-tIM" id="TUy-x2-l9B"/>
+                <outlet property="inputTextViewHeight" destination="LDF-5a-kPs" id="h68-Qf-65u"/>
+                <outlet property="mnemonicContainer" destination="QSs-cE-zQJ" id="icd-lT-F4n"/>
+                <outlet property="mnemonicContainerHeight" destination="czt-t9-egm" id="8LO-ZT-X39"/>
                 <outlet property="nameTF" destination="3mw-wJ-AXN" id="r38-zj-LmT"/>
-                <outlet property="nameTFTipsBottomLayout" destination="tRs-PX-2Q7" id="eer-Xe-Y2G"/>
+                <outlet property="nameTFTipsBottomLayout" destination="e7K-yr-Npc" id="Db5-PW-98G"/>
                 <outlet property="nameTFTipsLabel" destination="qza-kO-WyA" id="4lW-lP-uSo"/>
                 <outlet property="passwordStrengthView" destination="dGj-Xw-5ed" id="2SL-fc-Eg8"/>
+                <outlet property="pasteButton" destination="H0E-K0-9gP" id="TSR-7g-Wgq"/>
                 <outlet property="pswAdviseLabel" destination="dWZ-vJ-yuX" id="Hv6-Zk-1PS"/>
                 <outlet property="pswTF" destination="tqG-LA-ghr" id="EmO-OT-1pY"/>
                 <outlet property="pswTipsBottomLayout" destination="nTh-6E-76d" id="HAX-WV-fH5"/>
                 <outlet property="pswTipsLabel" destination="iiu-eB-EhU" id="HZo-ku-fT9"/>
                 <outlet property="scrollView" destination="sik-7Z-Hk4" id="iUi-i5-eyd"/>
                 <outlet property="textView" destination="1Kh-Tc-mkj" id="3Dy-KS-0Qs"/>
-                <outlet property="textViewTipsBottomLayout" destination="el7-Yd-oPb" id="SjV-tC-Exr"/>
+                <outlet property="textViewTipsBottomLayout" destination="0Oz-xN-DMK" id="JOf-gI-dgc"/>
                 <outlet property="textViewTipsLabel" destination="1MG-TA-sXu" id="vw2-2L-1EO"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -39,26 +43,33 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OxQ-CI-w1V">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="459"/>
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="657"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uZg-oD-ap0">
-                                    <rect key="frame" x="20" y="22" width="335" height="14.5"/>
+                                    <rect key="frame" x="20" y="16" width="335" height="14.5"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                    <color key="textColor" red="0.7725490196" green="0.79607843140000001" blue="0.86274509799999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="textColor" red="0.38039215686274508" green="0.39215686274509803" blue="0.43137254901960786" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="1Kh-Tc-mkj">
-                                    <rect key="frame" x="16" y="56.5" width="343" height="130"/>
-                                    <color key="backgroundColor" red="0.14901960780000001" green="0.1764705882" blue="0.25882352939999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QSs-cE-zQJ" userLabel="MnemonicInputView" customClass="MnemonicGridView" customModule="platonWallet" customModuleProvider="target">
+                                    <rect key="frame" x="16" y="35.5" width="343" height="184"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="130" id="LDF-5a-kPs"/>
+                                        <constraint firstAttribute="height" constant="184" id="czt-t9-egm"/>
                                     </constraints>
-                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </view>
+                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="1Kh-Tc-mkj">
+                                    <rect key="frame" x="16" y="219.5" width="343" height="95"/>
+                                    <color key="backgroundColor" red="0.94117647058823528" green="0.94509803921568625" blue="0.96078431372549022" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="95" id="LDF-5a-kPs"/>
+                                    </constraints>
+                                    <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                     <userDefinedRuntimeAttributes>
                                         <userDefinedRuntimeAttribute type="color" keyPath="placeholderColor">
-                                            <color key="value" red="0.47843137250000001" green="0.50196078430000002" blue="0.57254901960000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="value" red="0.71372549019607845" green="0.73333333333333328" blue="0.81568627450980391" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </userDefinedRuntimeAttribute>
                                     </userDefinedRuntimeAttributes>
                                     <connections>
@@ -66,18 +77,30 @@
                                     </connections>
                                 </textView>
                                 <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1MG-TA-sXu">
-                                    <rect key="frame" x="16" y="194.5" width="343" height="14.5"/>
+                                    <rect key="frame" x="16" y="322.5" width="343" height="14.5"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                     <color key="textColor" red="1" green="0.2784313725" blue="0.2784313725" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name of wallet" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3mw-wJ-AXN" customClass="PTextFieldWithPadding" customModule="platonWallet" customModuleProvider="target">
-                                    <rect key="frame" x="16" y="194.5" width="343" height="40"/>
-                                    <color key="backgroundColor" red="0.14901960780000001" green="0.1764705882" blue="0.25882352939999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="createWalletVC_walletName" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pv4-It-i6c" userLabel="walletName">
+                                    <rect key="frame" x="16" y="330.5" width="200.5" height="20"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="40" id="KOg-b6-J4v"/>
+                                        <constraint firstAttribute="height" constant="20" id="3rQ-5K-Bbp"/>
                                     </constraints>
-                                    <nil key="textColor"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                    <color key="textColor" red="0.3803921569" green="0.3921568627" blue="0.43137254899999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <nil key="highlightedColor"/>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="createWalletVC_walletName"/>
+                                    </userDefinedRuntimeAttributes>
+                                </label>
+                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Name of wallet" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="3mw-wJ-AXN" customClass="PTextFieldWithPadding" customModule="platonWallet" customModuleProvider="target">
+                                    <rect key="frame" x="16" y="352.5" width="343" height="42"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="42" id="KOg-b6-J4v"/>
+                                    </constraints>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <textInputTraits key="textInputTraits"/>
                                     <userDefinedRuntimeAttributes>
@@ -88,32 +111,28 @@
                                     </connections>
                                 </textField>
                                 <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qza-kO-WyA">
-                                    <rect key="frame" x="16" y="242.5" width="343" height="14.5"/>
+                                    <rect key="frame" x="16" y="402.5" width="343" height="14.5"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                     <color key="textColor" red="1" green="0.2784313725" blue="0.2784313725" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="tqG-LA-ghr" customClass="PPasswordTextField" customModule="platonWallet" customModuleProvider="target">
-                                    <rect key="frame" x="16" y="242.5" width="343" height="40"/>
-                                    <color key="backgroundColor" red="0.14901960780000001" green="0.1764705882" blue="0.25882352939999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="createWalletVC_password" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OaW-5h-UJW" userLabel="password">
+                                    <rect key="frame" x="16" y="410.5" width="187.5" height="20"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="40" id="NWV-QL-jWU"/>
+                                        <constraint firstAttribute="height" constant="20" id="khR-Yp-gXT"/>
                                     </constraints>
-                                    <nil key="textColor"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                    <color key="textColor" red="0.3803921569" green="0.3921568627" blue="0.43137254899999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <nil key="highlightedColor"/>
                                     <userDefinedRuntimeAttributes>
-                                        <userDefinedRuntimeAttribute type="string" keyPath="LocalizePlaceholder" value="wallet_pswInput_placeholder"/>
+                                        <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="createWalletVC_password"/>
                                     </userDefinedRuntimeAttributes>
-                                    <connections>
-                                        <outlet property="delegate" destination="-1" id="lWZ-BV-nyi"/>
-                                    </connections>
-                                </textField>
+                                </label>
                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="l65-bY-zfC" customClass="PPasswordTextField" customModule="platonWallet" customModuleProvider="target">
-                                    <rect key="frame" x="16" y="283.5" width="343" height="40"/>
-                                    <color key="backgroundColor" red="0.14901960780000001" green="0.1764705882" blue="0.25882352939999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <rect key="frame" x="16" y="475.5" width="343" height="42"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="40" id="351-JE-fXr"/>
+                                        <constraint firstAttribute="height" constant="42" id="351-JE-fXr"/>
                                     </constraints>
                                     <nil key="textColor"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -126,23 +145,23 @@
                                     </connections>
                                 </textField>
                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dGj-Xw-5ed" customClass="PasswordStrengthView" customModule="platonWallet" customModuleProvider="target">
-                                    <rect key="frame" x="16" y="324.5" width="343" height="30"/>
-                                    <color key="backgroundColor" red="0.20392156859999999" green="0.2274509804" blue="0.30196078430000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <rect key="frame" x="16" y="518.5" width="343" height="30"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="30" id="mhf-In-2VZ"/>
                                     </constraints>
                                 </view>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="*At least 6 characters,recommended to mix uppercase and lowercase alphabets,numbers and symbols" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dWZ-vJ-yuX">
-                                    <rect key="frame" x="16" y="362.5" width="343" height="26.5"/>
+                                    <rect key="frame" x="16" y="556.5" width="343" height="26.5"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                                    <color key="textColor" red="0.7725490196" green="0.79607843140000001" blue="0.86274509799999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="textColor" red="0.71372549019607845" green="0.73333333333333328" blue="0.81568627450980391" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <nil key="highlightedColor"/>
                                     <userDefinedRuntimeAttributes>
                                         <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="wallet_psw_advise"/>
                                     </userDefinedRuntimeAttributes>
                                 </label>
                                 <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iiu-eB-EhU">
-                                    <rect key="frame" x="16" y="362.5" width="343" height="14.5"/>
+                                    <rect key="frame" x="16" y="556.5" width="343" height="14.5"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="14.5" id="m0z-Xr-INd"/>
                                     </constraints>
@@ -151,9 +170,9 @@
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eao-Xf-tIM" customClass="PButton" customModule="platonWallet" customModuleProvider="target">
-                                    <rect key="frame" x="16" y="409" width="343" height="40"/>
+                                    <rect key="frame" x="16" y="603" width="343" height="44"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="40" id="OG7-UY-EfP"/>
+                                        <constraint firstAttribute="height" constant="44" id="OG7-UY-EfP"/>
                                     </constraints>
                                     <state key="normal" title="import"/>
                                     <userDefinedRuntimeAttributes>
@@ -163,50 +182,89 @@
                                         <action selector="startImport:" destination="-1" eventType="touchUpInside" id="C22-ta-wlP"/>
                                     </connections>
                                 </button>
+                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="tqG-LA-ghr" customClass="PPasswordTextField" customModule="platonWallet" customModuleProvider="target">
+                                    <rect key="frame" x="16" y="432.5" width="343" height="42"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="42" id="NWV-QL-jWU"/>
+                                    </constraints>
+                                    <nil key="textColor"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <textInputTraits key="textInputTraits"/>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="string" keyPath="LocalizePlaceholder" value="wallet_pswInput_placeholder"/>
+                                    </userDefinedRuntimeAttributes>
+                                    <connections>
+                                        <outlet property="delegate" destination="-1" id="lWZ-BV-nyi"/>
+                                    </connections>
+                                </textField>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="H0E-K0-9gP">
+                                    <rect key="frame" x="323" y="284.5" width="32" height="30"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="30" id="gvL-Mh-DeP"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                    <state key="normal" title="Paste"/>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="string" keyPath="localizedNormalTitle" value="importWalletVC_PasteButton"/>
+                                    </userDefinedRuntimeAttributes>
+                                    <connections>
+                                        <action selector="onPaste:" destination="-1" eventType="touchUpInside" id="NcI-07-ue1"/>
+                                    </connections>
+                                </button>
                             </subviews>
-                            <color key="backgroundColor" red="0.1058823529" green="0.12941176469999999" blue="0.2156862745" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
+                                <constraint firstItem="pv4-It-i6c" firstAttribute="top" secondItem="1MG-TA-sXu" secondAttribute="bottom" priority="250" constant="8" id="0Oz-xN-DMK"/>
                                 <constraint firstItem="uZg-oD-ap0" firstAttribute="leading" secondItem="OxQ-CI-w1V" secondAttribute="leading" constant="20" id="43B-CQ-wgz"/>
+                                <constraint firstItem="H0E-K0-9gP" firstAttribute="top" secondItem="1Kh-Tc-mkj" secondAttribute="bottom" constant="-30" id="6kI-SA-Kyf"/>
                                 <constraint firstAttribute="bottom" secondItem="eao-Xf-tIM" secondAttribute="bottom" constant="10" id="82r-TL-Vz4"/>
                                 <constraint firstAttribute="trailing" secondItem="3mw-wJ-AXN" secondAttribute="trailing" constant="16" id="9pJ-uB-u9Z"/>
                                 <constraint firstAttribute="trailing" secondItem="1Kh-Tc-mkj" secondAttribute="trailing" constant="16" id="Ang-k0-m6H"/>
+                                <constraint firstItem="pv4-It-i6c" firstAttribute="leading" secondItem="OxQ-CI-w1V" secondAttribute="leading" constant="16" id="BS3-Ct-QNb"/>
+                                <constraint firstItem="OaW-5h-UJW" firstAttribute="leading" secondItem="OxQ-CI-w1V" secondAttribute="leading" constant="16" id="Bfm-Bb-UvO"/>
                                 <constraint firstItem="dGj-Xw-5ed" firstAttribute="leading" secondItem="OxQ-CI-w1V" secondAttribute="leading" constant="16" id="C5G-kD-o3U"/>
-                                <constraint firstItem="3mw-wJ-AXN" firstAttribute="top" secondItem="1Kh-Tc-mkj" secondAttribute="bottom" priority="500" constant="8" id="Dng-2o-PAr"/>
                                 <constraint firstItem="dWZ-vJ-yuX" firstAttribute="top" secondItem="dGj-Xw-5ed" secondAttribute="bottom" constant="8" id="Fgp-Su-Lm3"/>
+                                <constraint firstItem="tqG-LA-ghr" firstAttribute="top" secondItem="OaW-5h-UJW" secondAttribute="bottom" constant="2" id="FuM-YN-AVj"/>
                                 <constraint firstItem="l65-bY-zfC" firstAttribute="top" secondItem="tqG-LA-ghr" secondAttribute="bottom" constant="1" id="GTR-y7-7CF"/>
+                                <constraint firstAttribute="trailing" secondItem="H0E-K0-9gP" secondAttribute="trailing" constant="20" id="GpU-GC-asd"/>
                                 <constraint firstItem="l65-bY-zfC" firstAttribute="leading" secondItem="OxQ-CI-w1V" secondAttribute="leading" constant="16" id="Hcu-rb-gtX"/>
                                 <constraint firstAttribute="trailing" secondItem="uZg-oD-ap0" secondAttribute="trailing" constant="20" id="PtK-Ro-5qh"/>
-                                <constraint firstItem="1MG-TA-sXu" firstAttribute="top" secondItem="1Kh-Tc-mkj" secondAttribute="bottom" constant="8" id="QbQ-Yz-W8f"/>
                                 <constraint firstItem="dWZ-vJ-yuX" firstAttribute="leading" secondItem="OxQ-CI-w1V" secondAttribute="leading" constant="16" id="RJW-l2-sNA"/>
-                                <constraint firstItem="uZg-oD-ap0" firstAttribute="top" secondItem="OxQ-CI-w1V" secondAttribute="top" constant="22" id="Sfa-ht-XQC"/>
+                                <constraint firstItem="1Kh-Tc-mkj" firstAttribute="top" secondItem="QSs-cE-zQJ" secondAttribute="bottom" id="RKH-E9-c47"/>
+                                <constraint firstItem="uZg-oD-ap0" firstAttribute="top" secondItem="OxQ-CI-w1V" secondAttribute="top" constant="16" id="Sfa-ht-XQC"/>
                                 <constraint firstItem="iiu-eB-EhU" firstAttribute="top" secondItem="dGj-Xw-5ed" secondAttribute="bottom" constant="8" id="TMY-Pa-H75"/>
                                 <constraint firstItem="dGj-Xw-5ed" firstAttribute="top" secondItem="l65-bY-zfC" secondAttribute="bottom" constant="1" id="UMg-xo-EDc"/>
-                                <constraint firstItem="tqG-LA-ghr" firstAttribute="top" secondItem="3mw-wJ-AXN" secondAttribute="bottom" priority="500" constant="8" id="Y7j-wi-NPm"/>
                                 <constraint firstAttribute="trailing" secondItem="qza-kO-WyA" secondAttribute="trailing" constant="16" id="ZSW-Hl-2jO"/>
                                 <constraint firstAttribute="trailing" secondItem="dGj-Xw-5ed" secondAttribute="trailing" constant="16" id="Zuz-7M-Olf"/>
                                 <constraint firstItem="tqG-LA-ghr" firstAttribute="leading" secondItem="OxQ-CI-w1V" secondAttribute="leading" constant="16" id="a8B-Yo-BaC"/>
                                 <constraint firstAttribute="trailing" secondItem="iiu-eB-EhU" secondAttribute="trailing" constant="16" id="aji-Xv-jhk"/>
-                                <constraint firstItem="3mw-wJ-AXN" firstAttribute="top" secondItem="1MG-TA-sXu" secondAttribute="bottom" priority="250" constant="8" id="el7-Yd-oPb"/>
+                                <constraint firstItem="3mw-wJ-AXN" firstAttribute="top" secondItem="pv4-It-i6c" secondAttribute="bottom" constant="2" id="bYK-98-VUL"/>
+                                <constraint firstItem="OaW-5h-UJW" firstAttribute="top" secondItem="3mw-wJ-AXN" secondAttribute="bottom" priority="500" constant="16" id="dSe-bD-g3k"/>
+                                <constraint firstItem="OaW-5h-UJW" firstAttribute="top" secondItem="qza-kO-WyA" secondAttribute="bottom" priority="250" constant="16" id="e7K-yr-Npc"/>
                                 <constraint firstItem="qza-kO-WyA" firstAttribute="leading" secondItem="OxQ-CI-w1V" secondAttribute="leading" constant="16" id="euf-bE-cP7"/>
                                 <constraint firstAttribute="trailing" secondItem="1MG-TA-sXu" secondAttribute="trailing" constant="16" id="hWP-oF-PXA"/>
+                                <constraint firstItem="QSs-cE-zQJ" firstAttribute="top" secondItem="uZg-oD-ap0" secondAttribute="bottom" constant="5" id="iJX-5U-d5J"/>
+                                <constraint firstItem="pv4-It-i6c" firstAttribute="top" secondItem="1Kh-Tc-mkj" secondAttribute="bottom" priority="500" constant="16" id="j48-Sk-h0J"/>
                                 <constraint firstItem="3mw-wJ-AXN" firstAttribute="leading" secondItem="OxQ-CI-w1V" secondAttribute="leading" constant="16" id="j8v-wI-C7s"/>
-                                <constraint firstItem="1Kh-Tc-mkj" firstAttribute="top" secondItem="uZg-oD-ap0" secondAttribute="bottom" constant="20" id="jJx-Il-0Nb"/>
+                                <constraint firstItem="1MG-TA-sXu" firstAttribute="top" secondItem="1Kh-Tc-mkj" secondAttribute="bottom" constant="8" id="jYi-0T-PpO"/>
                                 <constraint firstItem="eao-Xf-tIM" firstAttribute="top" secondItem="dWZ-vJ-yuX" secondAttribute="bottom" priority="500" constant="20" id="knP-N2-8cZ"/>
                                 <constraint firstItem="qza-kO-WyA" firstAttribute="top" secondItem="3mw-wJ-AXN" secondAttribute="bottom" constant="8" id="maW-GH-umy"/>
+                                <constraint firstItem="QSs-cE-zQJ" firstAttribute="leading" secondItem="OxQ-CI-w1V" secondAttribute="leading" constant="16" id="mwX-dI-nNb"/>
                                 <constraint firstItem="eao-Xf-tIM" firstAttribute="top" secondItem="iiu-eB-EhU" secondAttribute="bottom" priority="250" constant="20" id="nTh-6E-76d"/>
                                 <constraint firstAttribute="trailing" secondItem="eao-Xf-tIM" secondAttribute="trailing" constant="16" id="pMj-Gi-ZrS"/>
                                 <constraint firstAttribute="trailing" secondItem="l65-bY-zfC" secondAttribute="trailing" constant="16" id="sFU-2x-ZAT"/>
-                                <constraint firstItem="tqG-LA-ghr" firstAttribute="top" secondItem="qza-kO-WyA" secondAttribute="bottom" priority="250" constant="8" id="tRs-PX-2Q7"/>
                                 <constraint firstItem="iiu-eB-EhU" firstAttribute="leading" secondItem="OxQ-CI-w1V" secondAttribute="leading" constant="16" id="uV7-h5-MnW"/>
                                 <constraint firstAttribute="trailing" secondItem="dWZ-vJ-yuX" secondAttribute="trailing" constant="16" id="vdt-Ah-GNQ"/>
                                 <constraint firstItem="1MG-TA-sXu" firstAttribute="leading" secondItem="OxQ-CI-w1V" secondAttribute="leading" constant="16" id="w7h-Lg-rFv"/>
                                 <constraint firstItem="eao-Xf-tIM" firstAttribute="leading" secondItem="OxQ-CI-w1V" secondAttribute="leading" constant="16" id="x9m-by-NGP"/>
+                                <constraint firstAttribute="trailing" secondItem="QSs-cE-zQJ" secondAttribute="trailing" constant="16" id="y4q-Hh-XaO"/>
                                 <constraint firstAttribute="trailing" secondItem="tqG-LA-ghr" secondAttribute="trailing" constant="16" id="yMP-Sj-cdc"/>
                                 <constraint firstItem="1Kh-Tc-mkj" firstAttribute="leading" secondItem="OxQ-CI-w1V" secondAttribute="leading" constant="16" id="yZE-i9-qeN"/>
                             </constraints>
                         </view>
                     </subviews>
-                    <color key="backgroundColor" red="0.1058823529" green="0.12941176469999999" blue="0.2156862745" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="backgroundColor" red="0.99989169836044312" green="1" blue="0.99988096952438354" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="OxQ-CI-w1V" secondAttribute="trailing" id="cHO-gv-ARn"/>
                         <constraint firstItem="OxQ-CI-w1V" firstAttribute="top" secondItem="sik-7Z-Hk4" secondAttribute="top" id="fw4-Rr-1YZ"/>
@@ -224,7 +282,7 @@
                 <constraint firstItem="sik-7Z-Hk4" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="vDN-0L-FJV"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
-            <point key="canvasLocation" x="53.600000000000001" y="48.125937031484263"/>
+            <point key="canvasLocation" x="53.600000000000001" y="82.758620689655174"/>
         </view>
     </objects>
 </document>

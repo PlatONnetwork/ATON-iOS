@@ -69,15 +69,15 @@ class PasswordStrengthView: UIView {
             case .none:
                 view.backgroundColor = UIColor(red: 22, green: 30, blue: 51, alpha: 1)
             case .weak:
-                view.backgroundColor = UIColor(rgb: 0xff4747)
+                view.backgroundColor = UIColor(rgb: 0xF5302C )
             case .soso:
-                view.backgroundColor = UIColor(rgb: 0xff9947)
+                view.backgroundColor = UIColor(rgb: 0xFF9000 )
             case .good:
-                view.backgroundColor = UIColor(rgb: 0xffed54)
+                view.backgroundColor = UIColor(rgb: 0x58B8FF )
             case .strong:
-                view.backgroundColor = UIColor(rgb: 0x41d325)
+                view.backgroundColor = UIColor(rgb: 0x19A20E)
             }
-            
+            descLabel.textColor = view.backgroundColor
         }
         descLabel.text = lev.desc()
         

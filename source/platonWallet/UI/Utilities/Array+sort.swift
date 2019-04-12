@@ -25,6 +25,47 @@ extension Array{
         })
 
     }
+    
+    mutating func userArrangementSort(){
+        self.sort(by: { (obj1, obj2) -> Bool in
+            if let obj1 = obj1 as? Wallet, let obj2 = obj2 as? Wallet{
+                return obj1.userArrangementIndex < obj2.userArrangementIndex
+            }else if let obj1 = obj1 as? SWallet , let obj2 = obj2 as? SWallet{
+                return Int(obj1.userArrangementIndex) < obj2.userArrangementIndex
+            }else if let obj1 = obj1 as? Wallet , let obj2 = obj2 as? SWallet{
+                return obj1.userArrangementIndex < Int(obj2.userArrangementIndex)
+            }else if let obj1 = obj1 as? SWallet , let obj2 = obj2 as? Wallet{
+                return obj1.userArrangementIndex < obj2.userArrangementIndex
+            }
+            return false
+        })
+        
+    }
+}
+
+extension Array where Element == Any {
+    
+    var filterClassicWallet : [Wallet]{
+        get{
+            return filter({ (element) -> Bool in
+                if let _ = element as? Wallet{
+                    return true
+                }
+                return false
+            }) as! [Wallet]
+        }
+    }
+    
+    var filterSharedWallet : [SWallet]{
+        get{
+            return filter({ (element) -> Bool in
+                if let _ = element as? SWallet{
+                    return true
+                }
+                return false
+            }) as! [SWallet]
+        }
+    }
 }
 
 extension Array where Element == Ticket {
@@ -85,5 +126,28 @@ extension Array {
             }
         }
         return newArr
+    }
+    
+    func filterArrayByCurrentNodeUrlString() -> [Element]{
+        
+        return self.filter { item -> Bool in
+            if let castItem = item as? Wallet{
+                return castItem.nodeURLStr == SettingService.getCurrentNodeURLString()
+            }
+            if let castItem = item as? SWallet{
+                return castItem.nodeURLStr == SettingService.getCurrentNodeURLString()
+            }
+            if let castItem = item as? Transaction{
+                return castItem.nodeURLStr == SettingService.getCurrentNodeURLString()
+            }
+            if let castItem = item as? STransaction{
+                return castItem.nodeURLStr == SettingService.getCurrentNodeURLString()
+            }
+            if let castItem = item as? AddressInfo{
+                return castItem.nodeURLStr == SettingService.getCurrentNodeURLString()
+            }
+            return true
+        }
+       
     }
 }

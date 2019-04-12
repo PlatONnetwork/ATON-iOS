@@ -58,4 +58,5 @@ class NodeInfo: Object {
 //    public static func == (lhs: NodeInfo, rhs: NodeInfo) -> Bool {
 //        return lhs.id == rhs.id
 //    }
+    
 }

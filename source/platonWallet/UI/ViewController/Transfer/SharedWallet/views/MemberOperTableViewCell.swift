@@ -28,7 +28,7 @@ class MemberOperTableViewCell: UITableViewCell {
         
         let copyResult = DeterminedResult(value: result as Any)
         
-        for item in (swallet.owners){
+        for item in (swallet.owners){ 
             if item.walletAddress == copyResult.walletAddress{
                 copyResult.walletName = item.walletName
             }

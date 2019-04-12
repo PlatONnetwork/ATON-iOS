@@ -19,7 +19,7 @@ class SharedWalletTransactionDetailVC: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationItem.localizedText = "SharedWalletDetailVC_nav_title"
+        super.leftNavigationTitle = "SharedWalletDetailVC_nav_title"
 
         view.addSubview(transferView)
         transferView.snp.makeConstraints { (make) in

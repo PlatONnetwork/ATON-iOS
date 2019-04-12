@@ -13,24 +13,34 @@ import Localize_Swift
 
 extension UIView {
     func rotate() {
-        let rotation : CABasicAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
-        rotation.toValue = NSNumber(value: Double.pi * 2)
-        rotation.duration = 1
-        rotation.isCumulative = true
-        rotation.repeatCount = Float.greatestFiniteMagnitude
-        self.layer.add(rotation, forKey: "rotationAnimation")
+        if self.layer.animation(forKey: "rotationAnimation") == nil{
+            let rotation : CABasicAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
+            rotation.toValue = NSNumber(value: Double.pi * 2)
+            rotation.duration = 1
+            rotation.isCumulative = true
+            rotation.repeatCount = Float.greatestFiniteMagnitude
+            self.layer.add(rotation, forKey: "rotationAnimation")
+        }
+
+    }
+    func stopRotate(){
+        self.layer.removeAllAnimations()
     }
 }
 
 class SWalletConfirmCell: UICollectionViewCell {
 
+    @IBOutlet weak var statusIconContainer: UIView!
+    
     @IBOutlet weak var statusIcon: UIImageView!
 
     @IBOutlet weak var nameLabel: UILabel!
     
-    @IBOutlet weak var loadingView: UIImageView!
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.statusIconContainer.layer.masksToBounds = true
+        self.statusIconContainer.layer.cornerRadius = 20
+        
     }
     
     override func layoutSubviews() {
@@ -41,20 +51,25 @@ class SWalletConfirmCell: UICollectionViewCell {
             statusIcon.layer.masksToBounds = true
         }
          */
+        
+        
     }
     
     func updateImageAndDescription(result : DeterminedResult)  {
         switch result.operationEnum {
         case .undetermined:
             nameLabel.text = ""
-            statusIcon.image = UIImage(named: "iconUndetermined")
+            self.statusIconContainer.backgroundColor = UIColor(rgb: 0xF9FBFF)
+            //statusIcon.image = UIImage(named: "memberIconUndetermined")
+            statusIcon.image = UIImage(named: "")
         case .approval:
+            self.statusIconContainer.backgroundColor = UIColor(rgb: 0xF9FBFF)
             nameLabel.text = result.walletName
-            statusIcon.image = UIImage(named: "iconConfirm")
+            statusIcon.image = UIImage(named: "memberIconConfirm")
         case .revoke:
+            self.statusIconContainer.backgroundColor = UIColor(rgb: 0xF9FBFF)
             nameLabel.text = result.walletName
-            statusIcon.image = UIImage(named: "iconReject")
-            
+            statusIcon.image = UIImage(named: "memberIconReject")
         }
         
         //loading-s
@@ -75,10 +90,8 @@ class SWalletConfirmCell: UICollectionViewCell {
             (transaction.txhash?.count)! > 0 &&
             result.operationEnum == .undetermined{
             //wait for contranct confirm list to take effect
-            nameLabel.text = Localized("MemberSignDetailVC_YOU")
-            statusIcon.image = UIImage(named: "iconUndetermined")
-            self.loadingView.isHidden = false
-            self.loadingView.rotate()
+            statusIcon.image = UIImage(named: "memberIconUndetermined")
+            self.statusIcon.rotate()
             return
         }
         
@@ -86,20 +99,19 @@ class SWalletConfirmCell: UICollectionViewCell {
             if (transaction.txhash?.count)! > 0 && transaction.blockNumber?.count == 0{
                 //wait for transaction receipt
                 nameLabel.text = Localized("MemberSignDetailVC_YOU")
-                statusIcon.image = UIImage(named: "iconUndetermined")
-                self.loadingView.isHidden = false
-                self.loadingView.rotate()
+                statusIcon.image = UIImage(named: "memberIconUndetermined")
+                self.statusIcon.rotate()
             }else{
-                self.loadingView.isHidden = true
+                self.statusIcon.stopRotate()
                 self.updateImageAndDescription(result: result)
             }
         }else{
-            self.loadingView.isHidden = true
+            self.statusIcon.stopRotate()
             self.updateImageAndDescription(result: result)
         }
     }
 
     deinit {
-        self.loadingView.layer.removeAllAnimations()
+        self.statusIcon.layer.removeAllAnimations()
     }
 }

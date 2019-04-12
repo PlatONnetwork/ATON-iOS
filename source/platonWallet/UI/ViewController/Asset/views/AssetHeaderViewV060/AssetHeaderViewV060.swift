@@ -1,0 +1,187 @@
+//
+//  AssetHeaderViewV060.swift
+//  platonWallet
+//
+//  Created by juzix on 2019/3/5.
+//  Copyright © 2019 ju. All rights reserved.
+//
+
+import UIKit
+import BigInt
+
+let AssetHidingStatus = "AssetHidingStatus"
+
+class AssetHeaderViewV060: UIView {
+
+    @IBOutlet weak var assetLabel: UILabel!
+    
+    @IBOutlet weak var collectionView: UICollectionView!
+    
+    @IBOutlet weak var hideAssetButton: UIButton!
+    
+    @IBOutlet weak var menuButton: UIButton!
+    
+    @IBOutlet weak var scanButton: UIButton!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        initSubviews()
+ 
+        NotificationCenter.default.addObserver(self, selector: #selector(didUpdateAllAsset), name: Notification.Name(DidUpdateAllAssetNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(shouldUpdateWalletList), name: Notification.Name(updateWalletList_Notification), object: nil)
+    }
+    
+    
+    
+    func initSubviews() {
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.register(UINib(nibName: "ClassicWalletCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "ClassicWalletCollectionViewCell")
+        collectionView.register(UINib(nibName: "JointWalletCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "JointWalletCollectionViewCell")
+        collectionView.register(UINib(nibName: "CreateAndInputWalletCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "CreateAndInputWalletCollectionViewCell")
+        
+        
+        if let isHide = UserDefaults.standard.object(forKey: AssetHidingStatus) as? Bool{
+            self.updateAssetHiddingStatus(isHide: isHide, syncTopersist: false)
+        }else{
+            self.updateAssetHiddingStatus(isHide: false, syncTopersist: false)
+        }
+    }
+    
+    func updateAssetHiddingStatus(isHide: Bool, syncTopersist: Bool){
+        if syncTopersist{
+            UserDefaults.standard.set(isHide, forKey: AssetHidingStatus)
+            UserDefaults.standard.synchronize()
+        }
+        if isHide{
+            hideAssetButton.setImage(UIImage(named: "pwdInvisable"), for: .normal)
+            assetLabel.text = "--"
+            self.didUpdateAllAsset()
+        }else{
+            hideAssetButton.setImage(UIImage(named: "pwdvisable"), for: .normal)
+            self.didUpdateAllAsset()
+        }
+
+        
+    }
+    
+    var dataSource : [AnyObject]{
+        var allWallets : [AnyObject] = []
+        allWallets.append(contentsOf: AssetVCSharedData.sharedData.walletList as [AnyObject])
+        allWallets.append(contentsOf: SWalletService.sharedInstance.creatingWallets)
+        allWallets.append(Int(0) as AnyObject)
+        allWallets.append(Int(1) as AnyObject)
+        return allWallets
+    }
+    
+    @IBAction func OnHideAssets(_ sender: Any) {
+        if let isHide = UserDefaults.standard.object(forKey: AssetHidingStatus) as? Bool{
+            self.updateAssetHiddingStatus(isHide: !isHide, syncTopersist: true)
+        }else{
+            self.updateAssetHiddingStatus(isHide: true, syncTopersist: true)
+        }
+    }
+    
+
+}
+
+extension AssetHeaderViewV060: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return dataSource.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let obj = dataSource[indexPath.row]
+        if let cwallet = obj as? Wallet{
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ClassicWalletCollectionViewCell", for: indexPath) as! ClassicWalletCollectionViewCell
+            cell.updateWallet(walletObj: cwallet)
+            return cell
+        }else if let jwallet = obj as? SWallet{
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "JointWalletCollectionViewCell", for: indexPath) as! JointWalletCollectionViewCell
+            //cell.setProgress(1.0)
+            cell.updateWallet(walletObj: jwallet)
+
+            return cell
+        }
+
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CreateAndInputWalletCollectionViewCell", for: indexPath) as! CreateAndInputWalletCollectionViewCell
+        if let obj = obj as? Int{
+            cell.updateCell(index: obj)
+        }
+        return cell
+        
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 108, height: 52)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let obj = dataSource[indexPath.row] 
+        
+        if let i = obj as? Int{
+            if i == 0{
+                AssetViewControllerV060.gotoCreateClassicWallet()
+            }else{
+                AssetViewControllerV060.gotoImportClassicWallet()
+            }
+            return
+        }
+        
+        
+        if let obj = obj as? SWallet{
+            if obj.privateKey?.length ?? 0 > 0{
+                //wallet is creating, return now
+                return
+            }
+
+            if obj.isWatchAccount{
+                AssetViewControllerV060.getInstance()?.showAlertWithRedTitle(localizedTitle: "watchJointWalletTip_Notice", localizedMessage: "watchJointWalletTip_message")
+            }
+        }
+
+        AssetVCSharedData.sharedData.selectedWallet = obj
+        collectionView.reloadData()
+    }
+ 
+    
+    
+    
+    // MARK: - Notification
+    
+    @objc func didUpdateAllAsset(){
+    
+        if let assetIsHide = UserDefaults.standard.object(forKey: AssetHidingStatus) as? Bool{
+            if assetIsHide{
+                assetLabel.text = "--"
+                return
+            }
+        }
+        var total = BigUInt("0")
+        for item in AssetService.sharedInstace.assets{
+            total?.multiplyAndAdd(item.value!.balance ?? BigUInt(0), 1)
+        }
+        
+        if total == nil || String(total!) == "0"{
+            assetLabel.text = "0.00"
+            return
+        }
+        
+        var totalDes = total?.divide(by: ETHToWeiMultiplier, round: 8)
+        totalDes = totalDes?.balanceFixToDisplay(maxRound: 8)
+        if let totalDes = totalDes{
+            assetLabel.text = totalDes
+        }
+    }
+    
+    @objc func shouldUpdateWalletList(){
+        DispatchQueue.main.async {
+            self.collectionView.reloadData()
+        }
+    }
+
+}

@@ -53,7 +53,11 @@ class IPQuery: BaseService {
         }
         
         queue.async {
-            for i in 0..<self.queryingIpArray.count {
+            guard self.queryingIpArray.count > 0 else{
+                return
+            }
+            let array = Array(self.queryingIpArray)
+            for i in 0..<array.count {
                 self.queryIPs(ipList: self.queryingIpArray[i]) { (res, data) in
                     
                     switch res{
@@ -64,7 +68,7 @@ class IPQuery: BaseService {
                     case .fail( _, _):
                         break
                     }
-                    self.queryingIpArray.remove(at: i)
+                    //self.queryingIpArray.remove(at: i)
                 }
             }
         }

@@ -12,7 +12,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BackupMnemonicViewController" customModule="platonWallet" customModuleProvider="target">
             <connections>
-                <outlet property="mnemonicLabel" destination="dEx-0U-GZD" id="TCj-4O-zWB"/>
+                <outlet property="button" destination="sF2-8d-Z37" id="kqa-64-qzC"/>
                 <outlet property="shadowView" destination="1zq-2u-3eP" id="doX-xI-aHw"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -22,19 +22,20 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qff-mh-Ehg">
-                    <rect key="frame" x="20" y="52" width="335" height="18"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Please write down the Mnemonic in the paper" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qff-mh-Ehg">
+                    <rect key="frame" x="20" y="52" width="335" height="19.5"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
                     <nil key="highlightedColor"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="backupMnemonicVC_tips1"/>
                     </userDefinedRuntimeAttributes>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label " lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pX1-O0-KaG">
-                    <rect key="frame" x="20" y="83" width="335" height="16"/>
+                    <rect key="frame" x="20" y="84.5" width="335" height="16"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="13"/>
-                    <color key="textColor" red="1" green="0.92941176469999998" blue="0.3294117647" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="textColor" red="0.38039215686274508" green="0.39215686274509803" blue="0.43137254901960786" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="backupMnemonicVC_tips2"/>
@@ -42,10 +43,11 @@
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sF2-8d-Z37" customClass="PButton" customModule="platonWallet" customModuleProvider="target">
                     <rect key="frame" x="16" y="613" width="343" height="40"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="IW6-SE-3ak"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                     <state key="normal" title="Button"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="string" keyPath="localizedNormalTitle" value="backupMnemonicVC_nextBtn_title"/>
@@ -55,44 +57,26 @@
                     </connections>
                 </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1zq-2u-3eP">
-                    <rect key="frame" x="24" y="132" width="327" height="61.5"/>
-                    <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dEx-0U-GZD">
-                            <rect key="frame" x="12" y="11" width="303" height="39.5"/>
-                            <attributedString key="attributedText">
-                                <fragment content="Label  Label  Label  Label  Label  Label  Label  Label  Label  Label  Label  Label">
-                                    <attributes>
-                                        <color key="NSColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <font key="NSFont" metaFont="system"/>
-                                        <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" lineSpacing="8" tighteningFactorForTruncation="0.0"/>
-                                    </attributes>
-                                </fragment>
-                            </attributedString>
-                            <nil key="highlightedColor"/>
-                        </label>
-                    </subviews>
-                    <color key="backgroundColor" red="0.1215686275" green="0.15686274510000001" blue="0.25490196079999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <rect key="frame" x="16" y="116.5" width="343" height="192"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="trailing" secondItem="dEx-0U-GZD" secondAttribute="trailing" constant="12" id="7na-zP-efg"/>
-                        <constraint firstItem="dEx-0U-GZD" firstAttribute="leading" secondItem="1zq-2u-3eP" secondAttribute="leading" constant="12" id="GdT-7q-EhV"/>
-                        <constraint firstAttribute="bottom" secondItem="dEx-0U-GZD" secondAttribute="bottom" constant="11" id="GnY-Rz-5ym"/>
-                        <constraint firstItem="dEx-0U-GZD" firstAttribute="top" secondItem="1zq-2u-3eP" secondAttribute="top" constant="11" id="ZgK-rA-Hmx"/>
+                        <constraint firstAttribute="height" constant="192" id="eRX-R1-fdm"/>
                     </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" red="0.1058823529" green="0.12941176469999999" blue="0.2156862745" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="pX1-O0-KaG" firstAttribute="top" secondItem="qff-mh-Ehg" secondAttribute="bottom" constant="13" id="6WF-zS-FwW"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="qff-mh-Ehg" secondAttribute="trailing" constant="20" id="AyJ-vF-UMZ"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="sF2-8d-Z37" secondAttribute="bottom" constant="14" id="FZj-c3-Q6k"/>
                 <constraint firstItem="pX1-O0-KaG" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="U1b-43-leu"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="1zq-2u-3eP" secondAttribute="trailing" constant="24" id="Xy7-GL-o7s"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="1zq-2u-3eP" secondAttribute="trailing" constant="16" id="Xy7-GL-o7s"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="pX1-O0-KaG" secondAttribute="trailing" constant="20" id="i3x-Hc-ZDd"/>
-                <constraint firstItem="1zq-2u-3eP" firstAttribute="top" secondItem="pX1-O0-KaG" secondAttribute="bottom" constant="33" id="l40-zb-Wed"/>
+                <constraint firstItem="1zq-2u-3eP" firstAttribute="top" secondItem="pX1-O0-KaG" secondAttribute="bottom" constant="16" id="l40-zb-Wed"/>
                 <constraint firstItem="qff-mh-Ehg" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="32" id="rAT-Lo-bVq"/>
                 <constraint firstItem="sF2-8d-Z37" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="uaK-5D-rWs"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="sF2-8d-Z37" secondAttribute="trailing" constant="16" id="wSO-fe-HT2"/>
-                <constraint firstItem="1zq-2u-3eP" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="24" id="x3M-rU-g5S"/>
+                <constraint firstItem="1zq-2u-3eP" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="x3M-rU-g5S"/>
                 <constraint firstItem="qff-mh-Ehg" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="xTP-Rl-tf3"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>

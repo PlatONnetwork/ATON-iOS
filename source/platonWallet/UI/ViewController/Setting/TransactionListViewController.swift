@@ -47,7 +47,7 @@ class TransactionListViewController: BaseViewController,UITableViewDelegate,UITa
             make.right.equalToSuperview().offset(0)
         }
         
-        navigationItem.localizedText = "TransactionListVC_nav_title"
+        super.leftNavigationTitle = "TransactionListVC_nav_title"
         tableView.emptyDataSetView { [weak self] view in
             view.customView(self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, Localized("walletDetailVC_no_transactions_text")))
         }
@@ -66,7 +66,7 @@ class TransactionListViewController: BaseViewController,UITableViewDelegate,UITa
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60
+        return 69
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

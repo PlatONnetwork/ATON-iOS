@@ -15,13 +15,13 @@ enum AlertActionType {
 
 class WalletManagerDetailViewController: BaseViewController {
 
-
-    
-    @IBOutlet weak var walletIcon: UIImageView!
     @IBOutlet weak var walletName: UILabel!
+    
     @IBOutlet weak var address: UILabel!
     
     @IBOutlet weak var deleteBtn: PButton!
+    
+    @IBOutlet weak var exportMnemonicContainer: UIView!
     
     var wallet: Wallet!
     
@@ -31,16 +31,29 @@ class WalletManagerDetailViewController: BaseViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-       setupUI()
+       setupUI() 
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        if let w = WalletService.sharedInstance.getWalletByAddress(address: (wallet.key?.address)!){
+            self.wallet = w
+        }
+        if wallet.canBackupMnemonic{
+            deleteBtn.isHidden = true
+            self.exportMnemonicContainer.isHidden = false
+        }else{
+            deleteBtn.isHidden = false
+            self.exportMnemonicContainer.isHidden = true
+        }
     }
     
     func setupUI() {
-        navigationItem.localizedText = "WalletManagerDetailVC_title"
-        deleteBtn.style = .alert
+        super.leftNavigationTitle = wallet.name
+        deleteBtn.style = .delete
         walletName.text = wallet.name
         address.text = wallet.key?.address ?? ""
-        walletIcon.image = UIImage(named: wallet.avatar)?.circleImage()
-        
+        self.exportMnemonicContainer.isHidden = !self.wallet.canBackupMnemonic
     }
 
     @IBAction func exportPrivateKey(_ sender: Any) {
@@ -55,77 +68,75 @@ class WalletManagerDetailViewController: BaseViewController {
         showInputPswAlertFor(.deleteWallet)
     }
     
+    @IBAction func exportMnemonics(_ sender: Any) {
+        print("exportMnemonics")
+        self.showWalletBackup(wallet: self.wallet)
+    }
+    
+    
     @IBAction func modifyWalletName(_ sender: Any) {
-        let alertC = PAlertController(title: Localized("alert_modifyWalletName_title"), message: nil)
-        alertC.addTextField() 
-        alertC.addAction(title: Localized("alert_cancelBtn_title")) {
-        }
-        alertC.addAction(title: Localized("alert_modifyWalletName_confirmBtn_title")) {[weak self] in
-            
-            if  CommonService.isValidWalletName(alertC.textField!.text).0 {
-                self?.updateWalletName(alertC.textField!.text!)
-                alertC.dismiss(animated: true, completion: nil)
-            }else {
-                self!.showErrorNameAlert()
-            }
-        }
-        alertC.inputVerify = { input in
-            return CommonService.isValidWalletName(input).0
-        }
-        alertC.addActionEnableStyle(title: Localized("alert_modifyWalletName_confirmBtn_title"))
-        alertC.show(inViewController: self, animated: false)
-        alertC.textField?.becomeFirstResponder()
-        
+        self.showCommonRenameInput(completion: { [weak self] text in
+            self?.updateWalletName(text!)
+        }, checkDuplicate: true)
     }
     
     func updateWalletName(_ name:String) {
         
         WalletService.sharedInstance.updateWalletName(wallet, name: name)
         walletName.text = name
+        if let titleLabel = super.titleLabel{
+            titleLabel.text = name
+        }
     }
     
     func showErrorNameAlert() {
-        
-        let alertC = PAlertController(title: Localized("alert_modifyWalletName_error_title"), message: Localized("alert_modifyWalletName_error_msg"))
-        alertC.addAction(title: Localized("alert_modifyWalletName_error_backBtn_title")) { 
+        let alertVC = AlertStylePopViewController.initFromNib()
+        let style = PAlertStyle.AlertWithRedTitle(title: "alert_modifyWalletName_error_title", message: "alert_modifyWalletName_error_msg")
+        alertVC.onAction(confirm: { (text, _) -> (Bool) in
+            return true
+        }) { (_, _) -> (Bool) in
+            return true
         }
-        alertC.show(inViewController: self)
-        
+        alertVC.style = style
+        alertVC.showInViewController(viewController: self)
     }
     
     func showInputPswAlertFor(_ type: AlertActionType) {
-        
-        let alertC = PAlertController(title: Localized("alert_input_psw_title"), message: nil)
-        alertC.addTextField(text: alertPswInput, placeholder: "", isSecureTextEntry: true)
-        alertC.addAction(title: Localized("alert_cancelBtn_title")) {[weak self] in
-            self?.alertPswInput = nil
-        }
-        alertC.addAction(title: Localized("alert_confirmBtn_title")) { [weak self] in
-            
-            let input = alertC.textField?.text ?? ""
-            if !CommonService.isValidWalletPassword(alertC.textField?.text ?? "").0{
-                return
+        let alertVC = AlertStylePopViewController.initFromNib()
+        alertVC.style = PAlertStyle.passwordInput(walletName: self.wallet.name)
+        alertVC.onAction(confirm: {[weak self] (text, _) -> (Bool)  in
+            let valid = CommonService.isValidWalletPassword(text ?? "")
+            if !valid.0{
+                alertVC.showInputErrorTip(string: valid.1)
+                return false
             }
-            alertC.dismiss(animated: true, completion: nil)
-            switch type {
-            case .modifyWalletName:
-                self?.confirmToModifyWalletName(input)
-            case .deleteWallet:
-                self?.confirmToDeleteWallet(input)
-            case .exportPrivateKey:
-                self?.confirmToExportPrivateKey(input)
-            case .exportKeystore:
-                self?.confirmToExportKeystore(input)
-            }
+            self?.showLoadingHUD()
+            WalletService.sharedInstance.exportPrivateKey(wallet: (self?.wallet!)!, password: (alertVC.textFieldInput?.text)!, completion: { (pri, err) in
+                if (err == nil && (pri?.length)! > 0) {
+                    self?.hideLoadingHUD()
+                    switch type {
+                    case .modifyWalletName:
+                        self?.confirmToModifyWalletName(text!)
+                    case .deleteWallet:
+                        self?.confirmToDeleteWallet(text!)
+                    case .exportPrivateKey:
+                        self?.confirmToExportPrivateKey(text!)
+                    case .exportKeystore:
+                        self?.confirmToExportKeystore(text!)
+                    }
+                    alertVC.dismissWithCompletion()
+                }else{
+                    self?.hideLoadingHUD()
+                    alertVC.showInputErrorTip(string: Localized((err?.errorDescription)!))
+                }
+            })
+            return false
             
+        }) { (_, _) -> (Bool) in
+            return true
         }
-        alertC.inputVerify = { input in
-            return CommonService.isValidWalletPassword(input).0
-        }
-        alertC.addActionEnableStyle(title: Localized("alert_confirmBtn_title"))
-        alertC.show(inViewController: self, animated: false)
-        alertC.textField?.becomeFirstResponder() 
         
+        alertVC.showInViewController(viewController: self)
     }
     
     func showErrorPswAlertFor(_ type: AlertActionType) {
@@ -202,19 +213,22 @@ class WalletManagerDetailViewController: BaseViewController {
     func confirmToDeleteWallet(_ psw: String) {
         
         verifyPassword(psw, type: .deleteWallet) { [weak self](_) in
+            
             AssetService.sharedInstace.assets.removeValue(forKey: (self?.wallet.key?.address)!)
             WalletService.sharedInstance.deleteWallet(self!.wallet)
             self?.navigationController?.popViewController(animated: true)
+            NotificationCenter.default.post(name: NSNotification.Name(updateWalletList_Notification), object: nil)
+             
         }
         
     }
     
     func verifyPassword(_ psw: String, type: AlertActionType, completionCallback:@escaping (_ privateKey: String?) -> Void) {
         
-        showLoading()
+        showLoadingHUD()
         WalletService.sharedInstance.exportPrivateKey(wallet: wallet, password: psw) { [weak self](privateKey, error) in
             
-            self?.hideLoading()
+            self?.hideLoadingHUD()
             
             if error != nil {
                 self?.alertPswInput = psw

@@ -171,7 +171,6 @@ open class PAlertController: UIViewController, UITextFieldDelegate{
     }
     
     private func addTitleLabel(_ titleL: UILabel) {
-        
         view.addSubview(titleL)
         titleLabel!.snp.makeConstraints { (maker) in
             if imageView != nil {

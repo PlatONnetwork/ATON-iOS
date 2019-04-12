@@ -12,12 +12,12 @@ import Localize_Swift
 
 /*
 private let defalutNodes = [
-    (nodeURL: DefaultNodeURL, desc: "SettingsVC_nodeSet_defaultMainNetwork_title", isSelected: true),
+    (nodeURL: DefaultAlphaNodeURL, desc: "SettingsVC_nodeSet_defaultMainNetwork_title", isSelected: true),
     (nodeURL: "192.168.9.73:6789", desc: "SettingsVC_nodeSet_defaultTestNetwork_title", isSelected: false)]
 */
 
 private let defalutNodes = [
-    (nodeURL: DefaultNodeURL, desc: "SettingsVC_nodeSet_defaultTestNetwork_title", isSelected: true)]
+    (nodeURL: DefaultAlphaNodeURL, desc: "SettingsVC_nodeSet_defaultTestNetwork_title", isSelected: true)]
 
 class NodeInfoPersistence {
     
@@ -42,7 +42,7 @@ class NodeInfoPersistence {
             
             if !existSelected {
                 for item in nodes {
-                    if item.nodeURLStr == "https://syde.platon.network/test"{
+                    if item.nodeURLStr == DefaultAlphaNodeURL{
                         try? realm.write {
                             item.isSelected = true
                         }

@@ -30,9 +30,9 @@ class STransferConfirmView: UIView ,UICollectionViewDelegate,UICollectionViewDat
     
     @IBOutlet weak var bottomContainer: UIView!
     
-    @IBOutlet weak var confirmButton: UIButton!
+    @IBOutlet weak var confirmButton: PButton!
     
-    @IBOutlet weak var rejectButton: UIButton!
+    @IBOutlet weak var rejectButton: PButton!
     
     @IBOutlet weak var fromAddressLabel: UILabel!
     
@@ -51,8 +51,6 @@ class STransferConfirmView: UIView ,UICollectionViewDelegate,UICollectionViewDat
     @IBOutlet weak var priceLabel: UILabel!
     
     @IBOutlet weak var walletNameLabel: UILabel!
-    
-    @IBOutlet weak var memoLabel: UILabel!
     
     @IBOutlet weak var operationAreaHeight: NSLayoutConstraint!
     
@@ -84,11 +82,12 @@ class STransferConfirmView: UIView ,UICollectionViewDelegate,UICollectionViewDat
         
         copyButtonFrom.attachTextView = fromAddressLabel
         copyButtonTo.attachTextView = toAddressLabel
+        self.rejectButton.style = .gray
+        self.confirmButton.style = .blue
         
         NotificationCenter.default.addObserver(self, selector: #selector(didReceiveTransactionUpdate(_:)), name:NSNotification.Name(DidUpdateTransactionByHashNotification) , object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didUpdateSharedWalletTransactionList(_:)), name:NSNotification.Name(DidUpdateSharedWalletTransactionList_Notification) , object: nil)
         
-
     }
     
     override func layoutSubviews() {
@@ -103,7 +102,7 @@ class STransferConfirmView: UIView ,UICollectionViewDelegate,UICollectionViewDat
         }
     }
     
-    func updateUI(transaction : STransaction){
+    func updateUI(transaction : STransaction){ 
         
         t = transaction
         let totalOwnerCount = sw?.owners.count
@@ -115,7 +114,7 @@ class STransferConfirmView: UIView ,UICollectionViewDelegate,UICollectionViewDat
         collectionViewCHeight.constant = ConfrimItemWidth * CGFloat(collViewNumber)
         
         updateOperateArea(tx: t!)
-        updateDisplayView(tx: t!)
+        updateDisplayView(tx: t!) 
         
         dataSource.removeAll()
         if (t?.determinedResult.count)! > 0 {
@@ -209,7 +208,7 @@ class STransferConfirmView: UIView ,UICollectionViewDelegate,UICollectionViewDat
         self.timeLabel.text = Date.toStanderTimeDescrition(millionSecondsTimeStamp: Int(tx.createTime))
 
         if let valueBn = BigUInt(tx.value!){
-            self.valueLabel.text = valueBn.divide(by: ETHToWeiMultiplier, round: 8).ATPSuffix()
+            self.valueLabel.text = valueBn.divide(by: ETHToWeiMultiplier, round: 8)
             self.totalAssetLabel.text = self.valueLabel.text
         }else{
             self.valueLabel.text = ""
@@ -225,11 +224,6 @@ class STransferConfirmView: UIView ,UICollectionViewDelegate,UICollectionViewDat
         
         self.walletNameLabel.text = sw?.name
         
-        if (tx.memo != nil) && (tx.memo?.length)! > 0{
-            self.memoLabel.text = tx.memo
-        }else{
-            self.memoLabel.localizedText = "TransactionDetailVC_memo_none"
-        }
         self.typeLabel.text = tx.transanctionTypeLazy?.localizedDesciption
         
     }
@@ -254,7 +248,7 @@ class STransferConfirmView: UIView ,UICollectionViewDelegate,UICollectionViewDat
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionViewContainer.addSubview(collectionView)
-        
+         
         // 注册cell
         collectionView.register(UINib.init(nibName: String(describing: SWalletConfirmCell.self), bundle: nil), forCellWithReuseIdentifier: SWalletConfirmCellIdentifier)
         
@@ -292,46 +286,43 @@ class STransferConfirmView: UIView ,UICollectionViewDelegate,UICollectionViewDat
     
     func showInputPswAlertWithExportPrivateKey(completion: @escaping (_ sender: String, _ privateKey : String) -> ()) {
         
-        let alertC = PAlertController(title: Localized("alert_input_psw_title"), message: nil)
-        alertC.addTextField(text: "", placeholder: "", isSecureTextEntry: true)
-        
-        alertC.addAction(title: Localized("alert_cancelBtn_title")) {
+        var wallet : Wallet?
+        if self.specifiedWallet != nil{
+            wallet = self.specifiedWallet
+        }else{
+            wallet = SWalletService.sharedInstance.getATPWalletByAddress(address: (self.sw?.walletAddress)!)
+        }
+        guard wallet != nil else{
+            return
         }
         
-        alertC.addAction(title: Localized("alert_confirmBtn_title")) { [weak self] in
-            
-            if !CommonService.isValidWalletPassword(alertC.textField?.text ?? "").0{
-                return
-            }
-            alertC.dismiss(animated: true, completion: nil)
-            
-            var wallet : Wallet?
-            if self!.specifiedWallet != nil{
-                wallet = self!.specifiedWallet
-            }else{
-                wallet = SWalletService.sharedInstance.getATPWalletByAddress(address: (self!.sw?.walletAddress)!)
-            }
-            guard wallet != nil else{
-                return
-            }
-            
-            self?.viewController?.showLoading()
-            WalletService.sharedInstance.exportPrivateKey(wallet: wallet!, password: (alertC.textField?.text)!, completion: { (pri, err) in
+        let alertVC = AlertStylePopViewController.initFromNib()
+        let style = PAlertStyle.passwordInput(walletName: wallet?.name) 
+        alertVC.onAction(confirm: {[weak self] (text, _) -> (Bool)  in
+            let valid = CommonService.isValidWalletPassword(text ?? "")
+            if !valid.0{
+                alertVC.showInputErrorTip(string: valid.1)
+                return false
+            } 
+            self?.viewController?.showLoadingHUD()
+            WalletService.sharedInstance.exportPrivateKey(wallet: wallet!, password: (alertVC.textFieldInput?.text)!, completion: { (pri, err) in
+                self?.viewController?.hideLoadingHUD()
                 if (err == nil && (pri?.length)! > 0) {
                     completion((wallet?.key?.address)!, pri!)
+                    alertVC.dismissWithCompletion()
                 }else{
-                    self?.viewController?.hideLoading()
-                    self!.viewController?.showMessage(text: (err?.errorDescription)!)
+                    alertVC.showInputErrorTip(string: (err?.errorDescription)!)
                 }
             })
+            return false
+            
+        }) { (_, _) -> (Bool) in
+            return true
         }
-        alertC.inputVerify = { input in
-            return CommonService.isValidWalletPassword(input).0
-        }
-        alertC.addActionEnableStyle(title: Localized("alert_confirmBtn_title"))
-        alertC.show(inViewController: viewController!, animated: false)
-        alertC.textField?.becomeFirstResponder()
-        
+        alertVC.style = style
+        alertVC.showInViewController(viewController: self.viewController!)
+        alertVC.textFieldInput.becomeFirstResponder()
+
     }
     
     @IBAction func onConfirm(_ sender: Any) {
@@ -343,9 +334,9 @@ class STransferConfirmView: UIView ,UICollectionViewDelegate,UICollectionViewDat
         }
         
         operation = OperationAction.approval
-        self.viewController?.showLoading()
+        self.viewController?.showLoadingHUD()
         SWalletService.sharedInstance.estimateConfirmTransaction(contractAddress: (self.sw?.contractAddress)!, transactionId: UInt64(self.t!.transactionID)!) { (result, data) in
-            self.viewController?.hideLoading()
+            self.viewController?.hideLoadingHUD()
             switch result{
             case .success:
                 let gas = data as? BigUInt
@@ -366,9 +357,9 @@ class STransferConfirmView: UIView ,UICollectionViewDelegate,UICollectionViewDat
         }
         
         operation = OperationAction.revoke
-        self.viewController?.showLoading()
+        self.viewController?.showLoadingHUD()
         SWalletService.sharedInstance.estimateRevokeConfirmation(contractAddress: (self.sw?.contractAddress)!, transactionId: UInt64(self.t!.transactionID)!) { (result, data) in
-            self.viewController?.hideLoading()
+            self.viewController?.hideLoadingHUD()
             switch result{
             case .success:
                 let gas = data as? BigUInt
@@ -384,25 +375,25 @@ class STransferConfirmView: UIView ,UICollectionViewDelegate,UICollectionViewDat
     func showCreateContractFee(gasPrice: BigUInt,gas: BigUInt){
         
         confirmPopUpView = PopUpViewController()
-        let confirmView = UIView.viewFromXib(theClass: FeeConfirmView.self) as! FeeConfirmView
+        let confirmView = UIView.viewFromXib(theClass: JointWalletCreationFeeConfirmView.self) as! JointWalletCreationFeeConfirmView
         confirmView.setViewType(.ExecuteContract)
         confirmView.submitButton.addTarget(self, action: #selector(onFinalSubmit), for: .touchUpInside)
-        confirmPopUpView?.setUpContentView(view: confirmView, size: CGSize(width: kUIScreenWidth, height: 247.2))
+        confirmPopUpView?.setUpContentView(view: confirmView, size: CGSize(width: PopUpContentWidth, height: 292))
         confirmPopUpView?.setCloseEvent(button: confirmView.closeButton)
         
         let fee = gas.multiplied(by: gasPrice)
-        let feeDescription = fee.divide(by: ETHToWeiMultiplier, round: 8).balanceFixToDisplay(maxRound: 8).ATPSuffix()
+        let feeDescription = fee.divide(by: ETHToWeiMultiplier, round: 8).balanceFixToDisplay(maxRound: 8)
         
         confirmView.feeLabel.text = feeDescription
         confirmPopUpView?.show(inViewController: self.viewController!)
-    }
+    } 
     
     @objc func onFinalSubmit(){
         confirmPopUpView?.onDismissViewController()
         if operation == .revoke{
             self.showInputPswAlertWithExportPrivateKey { [weak self](sender,privateKey) in
                 SWalletService.sharedInstance.revokeConfirmation(walltAddress: sender, privateKey: privateKey, contractAddress: (self?.sw?.contractAddress)!, gasPrice: TransactionService.service.ethGasPrice!, gas: self?.revokeGas! ?? revoke_StipulatedGas, tx: self!.t!, estimated: false, completion: { (result, data) in
-                    self?.viewController?.hideLoading()
+                    self?.viewController?.hideLoadingHUD()
                     switch result{
                         
                     case .success:
@@ -418,7 +409,7 @@ class STransferConfirmView: UIView ,UICollectionViewDelegate,UICollectionViewDat
             
             self.showInputPswAlertWithExportPrivateKey { [weak self](sender, privateKey) in
                 SWalletService.sharedInstance.confirmTransaction(walltAddress: sender, privateKey: privateKey, contractAddress: (self?.sw?.contractAddress)!, gasPrice: TransactionService.service.ethGasPrice!, gas: self?.approveGas! ?? approve_StipulatedGas, tx: self!.t!, estimated: false, completion: { (result, data) in
-                    self?.viewController?.hideLoading()
+                    self?.viewController?.hideLoadingHUD()
                     switch result{
                     case .success:
                         UIApplication.rootViewController().showMessage(text: Localized("ConfrimVC_approve_success"))
@@ -435,6 +426,7 @@ class STransferConfirmView: UIView ,UICollectionViewDelegate,UICollectionViewDat
     func updateData(){
         if let tx = STransferPersistence.getByTxhash(self.t?.txhash){
             self.updateUI(transaction: tx)
+            self.viewController?.hideLoadingHUD()
         }
     }
     

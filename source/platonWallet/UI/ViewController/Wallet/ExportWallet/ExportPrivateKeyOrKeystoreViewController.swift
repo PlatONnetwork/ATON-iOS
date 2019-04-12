@@ -74,23 +74,26 @@ class ExportPrivateKeyOrKeystoreViewController: BaseViewController {
         
     }
     
+    func showNotScreeshotAler(title: String, message: String, cofirmTitle:String){
+        let alertVC = AlertStylePopViewController.initFromNib()
+        alertVC.style = PAlertStyle.AlertWithRedTitle(title: title, message: message)
+        alertVC.confirmButton.localizedNormalTitle = cofirmTitle
+        alertVC.onAction(confirm: { (text, _) -> (Bool) in
+            return true
+        }) { (_, _) -> (Bool) in
+            return true
+        }
+        alertVC.showInViewController(viewController: self)
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         
         super.viewDidAppear(animated)
         
-        
         if exportType == .privateKey {
-            let alertC = PAlertController(title: Localized("alert_screenshot_ban_title"), message: Localized("alert_screenshot_privateKey_ban_msg"), image: UIImage(named: "icon_screenshot_ban"))
-            alertC.addAction(title: Localized("alert_screenshot_ban_confirmBtn_title")) {
-                
-            }
-            alertC.show(inViewController: self)
+            self.showNotScreeshotAler(title: "alert_screenshot_ban_title", message: "alert_screenshot_privateKey_ban_msg", cofirmTitle: "alert_screenshot_ban_confirmBtn_title")
         }else {
-            let alertC = PAlertController(title: Localized("alert_screenshot_ban_title"), message: Localized("alert_screenshot_keystore_ban_msg"), image: UIImage(named: "icon_screenshot_ban"))
-            alertC.addAction(title: Localized("alert_screenshot_ban_confirmBtn_title")) {
-                
-            }
-            alertC.show(inViewController: self)
+            self.showNotScreeshotAler(title: "alert_screenshot_ban_title", message: "alert_screenshot_keystore_ban_msg", cofirmTitle: "alert_screenshot_ban_confirmBtn_title")
         }
         
     }
@@ -100,17 +103,18 @@ class ExportPrivateKeyOrKeystoreViewController: BaseViewController {
         if exportType == .privateKey {
             tabTitles = [Localized("ExportPrivateKeyVC_tab1_title"), Localized("ExportPrivateKeyVC_tab2_title")]
             note = Localized("ExportPrivateKeyVC_note")
-            title = Localized("ExportPrivateKeyVC_title")
+            super.leftNavigationTitle = "ExportPrivateKeyVC_title"
         }else {
             tabTitles = [Localized("ExportKeystoreVC_tab1_title"), Localized("ExportKeystoreVC_tab2_title")]
             note = Localized("ExportKeystoreVC_note")
-            title = Localized("ExportKeystoreVC_title")
+            super.leftNavigationTitle = "ExportKeystoreVC_title"
         }
         
         view.addSubview(headerView)
         headerView.snp.makeConstraints { (maker) in
-            maker.top.left.right.equalToSuperview()
+            maker.left.right.equalToSuperview()
             maker.height.equalTo(42)
+            maker.top.equalToSuperview().offset(62)
         }
         
         pageVC.setViewControllers([viewControllers[currentIndex]], direction: .forward, animated: false, completion: nil)

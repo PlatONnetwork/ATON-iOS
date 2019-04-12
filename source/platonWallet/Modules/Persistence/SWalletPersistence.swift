@@ -11,6 +11,7 @@ import Foundation
 class SWalletPersistence {
      
     public class func add(swallet : SWallet){
+        swallet.nodeURLStr = SettingService.getCurrentNodeURLString()
         try? RealmInstance!.write {
             RealmInstance!.add(swallet)
         }
@@ -25,7 +26,7 @@ class SWalletPersistence {
     public class func getAll() -> [SWallet]{
         let r = RealmInstance!.objects(SWallet.self).sorted(byKeyPath: "createTime", ascending: true)
         let array = Array(r)
-        return array
+        return array.filterArrayByCurrentNodeUrlString()
     }
     
     public class func delete(addrInfo: SWallet) {

@@ -19,7 +19,7 @@ class WalletBalance {
     
     var updateTime : CLong = 0
     
-    var walletType : WalletType = .ATPWallet
+    var walletType : WalletType = .ClassicWallet
     
     var descriptionString : String?{
         get{

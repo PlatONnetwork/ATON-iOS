@@ -11,6 +11,7 @@ import BigInt
 import RealmSwift
 import Localize_Swift
 
+let oneMultiplier = "1"
 let ETHToWeiMultiplier = "1000000000000000000"
 let GMultiplier = "1000000000"
 
@@ -79,9 +80,9 @@ enum TransactionStatus {
     
     var localizeDescAndColor : (String, UIColor) {
         
-        let succeedColor = UIColor(rgb: 0x41D325)
-        let pendingColor = UIColor(rgb: 0xFFED54)
-        let failedColor  = UIColor(rgb: 0xFF4747)
+        let succeedColor = cell_Transaction_success_color
+        let pendingColor = cell_Transaction_pending_color
+        let failedColor  = cell_Transaction_fail_color
         
         let pendingDesc = Localized("TransactionStatus_pending_desc")
         let succeedDesc = Localized("TransactionStatus_succeed_desc")
@@ -133,6 +134,8 @@ class Transaction : Object{
     
     @objc dynamic var extra: String?
     
+    @objc dynamic var nodeURLStr: String = ""
+    
     //to confirm send or receive
     var senderAddress: String?
     
@@ -150,18 +153,19 @@ class Transaction : Object{
                     return .receiveSucceed
                 }else {
                     return .receiving
-                }
+                } 
             case .Vote:
-                guard let extra = extra else {
+                guard extra != nil else {
                     return .voting
                 }
-                guard let dic = try? JSONSerialization.jsonObject(with: extra.data(using: .utf8) ?? Data(), options: .mutableContainers) as? [String:Any], let ret = dic?["Ret"] as? Int else {
+                guard let dic = try? JSONSerialization.jsonObject(with: extra!.data(using: .utf8) ?? Data(), options: .mutableContainers) as? [String:Any], let ret = dic?["Ret"] as? Bool else {
                     return .voting
                 }
-                guard ret == 1 else {
-                    return .voteFailed
+               
+                if ret == true{
+                    return .voteSucceed
                 }
-                return .voteSucceed
+                return .voteFailed
             }
         }
     }
@@ -225,11 +229,11 @@ class Transaction : Object{
             if Int64(blockDiff) > MinTransactionConfirmations{
                 //success
                 des = Localized("walletDetailVC_tx_status_success")
-                color = UIColor(rgb: 0x41d325)
+                color = cell_Transaction_success_color
             }else{
                 //block confirming or chain data rollback(debug)
                 des = String(format: "%@(%d/%d)", Localized("walletDetailVC_tx_status_confirming"),blockDiff,MinTransactionConfirmations)
-                color = UIColor(rgb: 0xFFED54)
+                color = cell_Transaction_success_color
             }
         }else{
             //network unreachable

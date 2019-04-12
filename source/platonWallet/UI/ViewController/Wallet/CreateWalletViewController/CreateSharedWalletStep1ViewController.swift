@@ -29,6 +29,8 @@ class CreateSharedWalletStep1ViewController: BaseViewController {
     
     @IBOutlet weak var numOfSignLabel: UILabel!
     
+    @IBOutlet weak var walletAvatar: UIImageView!
+    
     @IBOutlet weak var nextBtn: PButton!
     
     @IBOutlet weak var showNameTipsLayout: NSLayoutConstraint!
@@ -40,17 +42,19 @@ class CreateSharedWalletStep1ViewController: BaseViewController {
             walletNameLabel.text = selectedWallet.name
             walletAddrLabel.text = selectedWallet.key?.address
             selectedAddress = selectedWallet.key?.address
+            self.walletAvatar.image = selectedWallet.image()
         }
-    }
+    } 
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
         
         if WalletService.sharedInstance.wallets.count > 0{
-            selectedWallet = WalletService.sharedInstance.wallets[0]
-
-            for item in WalletService.sharedInstance.wallets{
+            var wallets = AssetVCSharedData.sharedData.walletList.filterClassicWallet
+            wallets.userArrangementSort()
+            selectedWallet = wallets.first
+            for item in wallets{
                 if let b = AssetService.sharedInstace.assets[(item.key?.address)!],String((b?.balance)!) != "0"{
                     selectedWallet = item
                     break
@@ -81,35 +85,38 @@ class CreateSharedWalletStep1ViewController: BaseViewController {
     
     func setupUI() {
         
-        title = Localized("CreateSharedWalletVC_Create Shared Wallet")
+        super.leftNavigationTitle = "CreateSharedWalletVC_Create Shared Wallet"
         
         endEditingWhileTapBackgroundView = true
         walletInfoContainerView.layer.cornerRadius = 5.0
         walletInfoContainerView.layer.masksToBounds = true
         
-        nextBtn.isEnabled = false
+        nextBtn.style = .disable
         
         chooseWalletBtn.setupSwitchWalletStyle()
-    }
-    
-    func checkNameTF() -> Bool {
-        let nameRes = CommonService.isValidWalletName(nameTF.text)
         
-        if nameRes.0 {
-            nameTipsLabel.isHidden = true
-            showNameTipsLayout.priority = .defaultLow
-        }else {
-            nameTipsLabel.text = nameRes.1 ?? ""
-            nameTipsLabel.isHidden = false
-            showNameTipsLayout.priority = .defaultHigh
-        }
-        self.view.layoutIfNeeded()
-        return nameRes.0
+        let _ = self.checkButtonEnable()
     }
     
-    func checkCanEnableNextBtn() {
-        nextBtn.isEnabled = nameTF.text!.length > 0
+    func checkNameTF(showError: Bool = true) -> Bool {
+        let nameRes = CommonService.isValidWalletName(nameTF.text,checkDuplicate: true)
+        if showError{
+            if nameRes.0 {
+                nameTipsLabel.isHidden = true
+                showNameTipsLayout.priority = .defaultLow
+                nameTF.setBottomLineStyle(style: .Normal)
+            }else {
+                nameTipsLabel.text = nameRes.1 ?? ""
+                nameTipsLabel.isHidden = false
+                showNameTipsLayout.priority = .defaultHigh
+                nameTF.setBottomLineStyle(style: .Error)
+            }
+            self.view.layoutIfNeeded()
+        }
+        
+        return nameRes.0 
     }
+    
     
     //MARK: Click Handler
     @IBAction func changeWallet(_ sender: Any) {
@@ -117,7 +124,7 @@ class CreateSharedWalletStep1ViewController: BaseViewController {
         let popUpVC = PopUpViewController()
         let view = UIView.viewFromXib(theClass: TransferSwitchWallet.self) as! TransferSwitchWallet
         view.selectedAddress = selectedAddress
-        popUpVC.setUpContentView(view: view, size: CGSize(width: kUIScreenWidth, height: 289))
+        popUpVC.setUpContentView(view: view, size: CGSize(width: PopUpContentWidth, height: 265))
         popUpVC.setCloseEvent(button: view.closeBtn)
         view.selectionCompletion = { wallet in
             popUpVC.onDismissViewController()
@@ -129,19 +136,20 @@ class CreateSharedWalletStep1ViewController: BaseViewController {
     
     @IBAction func selectNumOfOwner(_ sender: Any) {
         
-        view.endEditing(true)
+        view.endEditing(true) 
         
         var dataSource = [String]()
-        for i in 2...10 {
+        for i in 2...8 {
             dataSource.append("\(i)")
         }
         
-        CustomPickerView.show(inViewController: self, dataSource: dataSource, curSelected: numOfOwnerLabel.text) { (selected) in
+        CustomPickerView.show(inViewController: self, dataSource: dataSource, curSelected: numOfOwnerLabel.text,title: Localized("CreateSharedWalletVC_Shared Owners")) { (selected) in
             self.numOfOwnerLabel.text = selected
             if Int(self.numOfSignLabel.text!)! > Int(self.numOfOwnerLabel.text!)! {
                 self.numOfSignLabel.text = selected
             }
         }
+        let _ = self.checkButtonEnable()
         
     }
     
@@ -156,9 +164,10 @@ class CreateSharedWalletStep1ViewController: BaseViewController {
             dataSource.append("\(i)")
         }
         
-        CustomPickerView.show(inViewController: self, dataSource: dataSource, curSelected: numOfSignLabel.text) { (selected) in
+        CustomPickerView.show(inViewController: self, dataSource: dataSource, curSelected: numOfSignLabel.text,title: Localized("CreateSharedWalletVC_Required Signatures")) { (selected) in
             self.numOfSignLabel.text = selected
         }
+        let _ = self.checkButtonEnable()
         
     }
     
@@ -179,6 +188,20 @@ class CreateSharedWalletStep1ViewController: BaseViewController {
         
     }
     
+    func checkButtonEnable() -> Bool{
+        if self.numOfSignLabel.text != "0" &&
+            self.numOfSignLabel.text != "0" &&
+            checkNameTF(showError: false)
+        {
+            //self.nextBtn.setHorizontalLinerTitleAndImage(image: UIImage(named: "nextBtnIcon")!)
+            self.nextBtn.style = .blue
+            return true
+        }
+        //self.nextBtn.setHorizontalLinerTitleAndImage(image: UIImage(named: "nextBtnIconDisable")!)
+        self.nextBtn.style = .disable
+        return false
+    }
+    
 }
 
 extension CreateSharedWalletStep1ViewController: UITextFieldDelegate {
@@ -191,8 +214,8 @@ extension CreateSharedWalletStep1ViewController: UITextFieldDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
-        DispatchQueue.main.asyncAfter(deadline: .now()+0.2) { 
-            self.checkCanEnableNextBtn()
+        DispatchQueue.main.asyncAfter(deadline: .now()+0.2) {
+            let _ = self.checkButtonEnable()
         }
         
         return true

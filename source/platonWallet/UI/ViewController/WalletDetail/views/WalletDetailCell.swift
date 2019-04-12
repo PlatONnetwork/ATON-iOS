@@ -22,18 +22,18 @@ class WalletDetailCell: UITableViewCell {
     
     @IBOutlet weak var txIcon: UIImageView!
     
-    @IBOutlet weak var unreadDot: UIView!
     
-    @IBOutlet weak var bgView: UIView!
+    @IBOutlet weak var unreadTag: UILabel!
+    
     
     @IBOutlet weak var sepline: UIView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
 
-        unreadDot.layer.masksToBounds = true
-        unreadDot.layer.cornerRadius = 3
-        unreadDot.isHidden = true
+        unreadTag.layer.masksToBounds = true
+        unreadTag.layer.cornerRadius = 3
+        unreadTag.isHidden = true
     }
     
 
@@ -53,25 +53,13 @@ class WalletDetailCell: UITableViewCell {
     }
     
     func updateCellStyle(count: Int, index: Int){
-        if count == 1{
-            self.bgView.addMaskView(corners: [.topLeft,.topRight,.bottomRight,.bottomLeft], cornerRadiiV: 4)
-            self.sepline.isHidden = true
-        }else{
-            if index == (count) - 1{
-                self.sepline.isHidden = true
-                self.bgView.addMaskView(corners: [.bottomRight,.bottomLeft], cornerRadiiV: 4)
-            }else{
-                self.sepline.isHidden = false
-            }
-            if index == 0{
-                self.bgView.addMaskView(corners: [.topLeft,.topRight], cornerRadiiV: 4)
-            }
-        }
+
     }
 
     func updateCellWithAPTTransfer(tx : Transaction, anyWallet : AnyObject?) {
       
         if let w = anyWallet as? Wallet {
+            self.unreadTag.isHidden = true
             tx.senderAddress = w.key?.address
             //classic wallet' transaction
 //            if (tx.from?.ishexStringEqual(other: w.key?.address))! {
@@ -116,10 +104,10 @@ class WalletDetailCell: UITableViewCell {
         switch tx.transactionStauts {
         case .sending,.sendSucceed,.sendFailed:
             transferAmoutLabel.text = "-" + (tx.valueDescription)!.ATPSuffix()
-            txIcon.image = UIImage(named: "walletSendIcon")
+            txIcon.image = UIImage(named: "txSendSign")
         case .receiving,.receiveSucceed,.receiveFailed:
             transferAmoutLabel.text = "+" + (tx.valueDescription)!.ATPSuffix()
-            txIcon.image = UIImage(named: "walletRecvIcon")
+            txIcon.image = UIImage(named: "txRecvSign")
         case .voting,.voteSucceed,.voteFailed:
             transferAmoutLabel.text = "-" + (tx.valueDescription)!.ATPSuffix()
             txIcon.image = UIImage(named: "walletVote")
@@ -141,9 +129,9 @@ class WalletDetailCell: UITableViewCell {
     func updateCellWithSharedWalletTransfer(tx : STransaction,walletAny : AnyObject?) {
         
         if tx.readTag == 1{
-            unreadDot.isHidden = false
+            unreadTag.isHidden = false
         }else{
-            unreadDot.isHidden = true
+            unreadTag.isHidden = true
         }
         
         var fixedFrom = tx.to
@@ -157,7 +145,7 @@ class WalletDetailCell: UITableViewCell {
                 if (tx.from?.ishexStringEqual(other: sw.contractAddress))!{
                     transferAmoutLabel.text = "-" + (tx.valueDescription)!.ATPSuffix()
                     txTypeLabel.text = tx.typeLocalization
-                    txIcon.image = UIImage(named: "walletSendIcon")
+                    txIcon.image = UIImage(named: "txSendSign")
                 }else{
                     transferAmoutLabel.text = "+" + (tx.valueDescription)!.ATPSuffix()
                     if tx.executed{
@@ -165,7 +153,7 @@ class WalletDetailCell: UITableViewCell {
                     }else{
                         txTypeLabel.text = Localized("TransactionListVC_Receiving")
                     }
-                    txIcon.image = UIImage(named: "walletRecvIcon")
+                    txIcon.image = UIImage(named: "txRecvSign")
                 }
                 
             }else if let w = walletAny as? Wallet{
@@ -185,7 +173,7 @@ class WalletDetailCell: UITableViewCell {
                 if ((tx.ownerWalletAddress.ishexStringEqual(other: w.key?.address)) || owerSendout) && !isRecv{
                     transferAmoutLabel.text = "-" + (tx.valueDescription)!.ATPSuffix()
                     txTypeLabel.text = Localized("walletDetailVC_tx_type_send")
-                    txIcon.image = UIImage(named: "walletSendIcon")
+                    txIcon.image = UIImage(named: "txSendSign")
                 }else{
                     transferAmoutLabel.text = "+" + (tx.valueDescription)!.ATPSuffix()
                     if tx.executed{
@@ -193,7 +181,7 @@ class WalletDetailCell: UITableViewCell {
                     }else{
                         txTypeLabel.text = Localized("TransactionListVC_Receiving")
                     }
-                    txIcon.image = UIImage(named: "walletRecvIcon")
+                    txIcon.image = UIImage(named: "txRecvSign")
                 }
             }
 

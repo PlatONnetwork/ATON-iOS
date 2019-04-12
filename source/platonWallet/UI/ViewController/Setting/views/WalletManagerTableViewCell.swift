@@ -18,6 +18,11 @@ class WalletManagerTableViewCell: UITableViewCell {
     
     @IBOutlet weak var address: UILabel!
     
+    @IBOutlet weak var backupContainer: UIView!
+    
+    @IBOutlet weak var backupButton: UIButton!
+    
+    @IBOutlet weak var jointIcon: UIImageView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -27,15 +32,25 @@ class WalletManagerTableViewCell: UITableViewCell {
     }
     
     func feedData(_ wallet:AnyObject) {
+        self.backupContainer.isHidden = true
+        self.backupButton.isEnabled = false
+        
         if let aptWallet = wallet as? Wallet{
             walletName.text = aptWallet.name
             address.text = aptWallet.key?.address
             walletIcon.image = UIImage(named: aptWallet.avatar)?.circleImage()
+            
+            if aptWallet.canBackupMnemonic{
+                self.backupContainer.isHidden = false
+                self.backupButton.isEnabled = true
+            }
+            jointIcon.isHidden = true
         }else if let swallet = wallet as? SWallet{
             walletName.text = swallet.name
             address.text = swallet.contractAddress
-            let av = swallet.contractAddress.walletRandomAvatar()
+            let av = swallet.contractAddress.walletAddressLastCharacterAvatar()
             walletIcon.image = UIImage(named: av)?.circleImage()
+            jointIcon.isHidden = false
         }
     }
 
@@ -43,7 +58,9 @@ class WalletManagerTableViewCell: UITableViewCell {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
-        
+    }
+    
+    @IBAction func onBackup(_ sender: Any) { 
     }
     
 }

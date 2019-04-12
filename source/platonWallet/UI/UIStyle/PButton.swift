@@ -9,65 +9,140 @@
 import UIKit
 
 enum PButtonStyle : Int {
-    case common = 0,gray,alert,disable
+    case plain = 0,blue,gray,alert,disable,delete
 }
 
-class PButton: UIButton {
+enum GradientDirection : Int{
+    case vertical,horizontal
+}
 
-    var style: PButtonStyle = .common {
+let blueNormalGradient = [UIColor(rgb: 0x3B92F1).cgColor, UIColor(rgb: 0x1B60F3).cgColor]
+let blueHighlightedGradient = [UIColor(rgb: 0x2C7AD1).cgColor, UIColor(rgb: 0x104DCF).cgColor]
+let grayNormalGradient = [UIColor(rgb: 0xFFFFFF).cgColor, UIColor(rgb: 0xEAEAEA).cgColor]
+let grayHighlightedGradient = [UIColor(rgb: 0xEEF0F3).cgColor, UIColor(rgb: 0xDADADA ).cgColor]
+let disableNormalGradient = [UIColor(rgb: 0xFFFFFF).cgColor, UIColor(rgb: 0xEAEAEA).cgColor]
+let disableHighlightedGradient = [UIColor(rgb: 0xFFFFFF).cgColor, UIColor(rgb: 0xEAEAEA).cgColor]
+
+//let deleteNormalGradient = [UIColor(rgb: 0xDE1B42).cgColor, UIColor(rgb: 0xD40F0B).cgColor]
+//let deleteHighlightedGradient = [UIColor(rgb: 0xE4E6EF).cgColor, UIColor(rgb: 0xB6BBD0).cgColor]
+
+let deleteNormalGradient = [UIColor(rgb: 0xffffff).cgColor, UIColor(rgb: 0xffffff).cgColor]
+let deleteHighlightedGradient = [UIColor(rgb: 0xffffff).cgColor, UIColor(rgb: 0xffffff).cgColor]
+
+class PButton: UIButton { 
+    
+    func gradientLayer(color: [CGColor], _ direction:GradientDirection = .vertical) -> CAGradientLayer{
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.frame = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: self.bounds.size.height)
+        gradientLayer.colors = color
+        gradientLayer.cornerRadius = self.bounds.size.height * 0.5
+        
+        if direction == .horizontal{
+            gradientLayer.startPoint = CGPoint(x: 0.0, y: 0.0)
+            gradientLayer.endPoint = CGPoint(x: 1.0, y: 0.0)
+        }
+         
+        return gradientLayer
+    }
+    
+    func setHorizontalLinerTitleAndImage(image: UIImage){
+        self.setImage(image, for: .normal)
+        self.titleEdgeInsets = UIEdgeInsets(top: 0, left: -self.imageView!.bounds.size.width - 18, bottom: 0, right: self.imageView!.bounds.size.width);
+        self.imageEdgeInsets = UIEdgeInsets(top: 0, left: self.titleLabel!.bounds.size.width, bottom: 0, right: -self.titleLabel!.bounds.size.width);
+    }
+    
+    
+    func layerToImage(layer: CALayer) -> UIImage?{
+        if layer.frame.size.width == 0.0{
+            return UIImage()
+        }
+        UIGraphicsBeginImageContextWithOptions(layer.frame.size, false, 0);
+        layer.render(in: UIGraphicsGetCurrentContext()!)
+        let outputImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext();
+        return outputImage;
+    }
+    
+
+    var style: PButtonStyle = .plain {
         didSet {
-            
-            layer.cornerRadius = 1.0
-            layer.masksToBounds = true
-            titleLabel?.font = UIFont .systemFont(ofSize: 14.0)
-            setTitleColor(UIColor(rgb: 0x626980), for: .disabled)
-            setBackgroundImage(UIImage(color: UIColor(rgb: 0x272E47)), for: .disabled)
+            self.backgroundColor = .clear
             
             switch style {
-            case .common:
-                setTitleColor(UIColor(rgb: 0x1B2137), for: .normal)
-                setTitleColor(UIColor(rgb: 0xC5CBDC), for: .highlighted)
+            case .plain:
+                do{}
+            case .blue:
+                //shadow
+                self.layer.shadowColor = UIColor(rgb: 0x0051ff).cgColor
+                self.layer.shadowOpacity = 0.4
+                self.layer.shadowOffset = CGSize(width: 0, height: 0)
                 
-                setBackgroundImage(UIImage(color: UIButton_backround_light_white), for: .normal)
-                setBackgroundImage(UIImage(color: UIButton_backround_light_white), for: .highlighted)
+                //title
+                setTitleColor(UIColor(rgb: 0xF6F6F6 ), for: .normal)
+                setTitleColor(UIColor(rgb: 0xA2C1F2), for: .highlighted)
+                
+                //background
+                self.setBackgroundImage(self.layerToImage(layer: self.gradientLayer(color: blueNormalGradient)), for: .normal)
+                self.setBackgroundImage(self.layerToImage(layer: self.gradientLayer(color: blueHighlightedGradient)), for: UIControl.State.highlighted)
                 
             case .gray:
-                setTitleColor(UIColor(rgb: 0xFFFFFF), for: .normal)
-                setTitleColor(UIColor(rgb: 0x6B6F7D), for: .highlighted)
+                //shadow
+                self.layer.shadowColor = UIColor(rgb: 0x969696).cgColor
+                self.layer.shadowOpacity = 0.4
+                self.layer.shadowOffset = CGSize(width: 0, height: 0)
                 
-                setBackgroundImage(UIImage(color: UIColor(rgb: 0x373E51)), for: .normal)
-                setBackgroundImage(UIImage(color: UIColor(rgb: 0x373E51)), for: .highlighted)
+                //title
+                setTitleColor(UIColor(rgb: 0x000000), for: .normal)
+                setTitleColor(UIColor(rgb: 0x979797), for: .highlighted)
+                
+                //background
+                self.setBackgroundImage(self.layerToImage(layer: self.gradientLayer(color: grayNormalGradient)), for: .normal)
+                self.setBackgroundImage(self.layerToImage(layer: self.gradientLayer(color: grayHighlightedGradient)), for: UIControl.State.highlighted)
+                
+            case .delete:
+                self.layer.shadowColor = UIColor.clear.cgColor
+                setTitleColor(UIColor(rgb: 0xF5302C), for: .normal)
+                setTitleColor(UIColor(rgb: 0xDC5E5B), for: .highlighted)
+                self.layer.borderColor = UIColor(rgb: 0xF5302C).cgColor
+                self.layer.borderWidth = 1
+                self.layer.cornerRadius = 22
+//                self.setBackgroundImage(self.layerToImage(layer: self.gradientLayer(color:deleteNormalGradient)), for: .normal)
+//                self.setBackgroundImage(self.layerToImage(layer: self.gradientLayer(color: deleteHighlightedGradient)), for: UIControl.State.highlighted)
+                
             case .alert:
-                setTitleColor(UIColor(rgb: 0xFFFFFF), for: .normal)
-                setTitleColor(UIColor(rgb: 0xE79292), for: .highlighted)
+                setTitleColor(UIColor(rgb: 0xF5302C), for: .normal)
+                setTitleColor(UIColor(rgb: 0xDC5E5B), for: .highlighted)
                 
                 setBackgroundImage(UIImage(color: UIColor(rgb: 0xDC5151)), for: .normal)
                 setBackgroundImage(UIImage(color: UIColor(rgb: 0xDC5151)), for: .highlighted)
-            
             case .disable:
                 
-                setTitleColor(UIColor(rgb: 0x626980), for: .normal)
-                setTitleColor(UIColor(rgb: 0x626980), for: .highlighted)
+                self.layer.shadowColor = UIColor(rgb: 0x969696).cgColor
+                self.layer.shadowOpacity = 0.4
+                self.layer.shadowOffset = CGSize(width: 0, height: 0)
                 
-                setBackgroundImage(UIImage(color: UIColor(rgb: 0x272E47)), for: .normal)
-                setBackgroundImage(UIImage(color: UIColor(rgb: 0x272E47)), for: .highlighted)
+                setTitleColor(UIColor(rgb: 0xD8D8D8), for: .normal)
+                setTitleColor(UIColor(rgb: 0xD8D8D8), for: .highlighted)
+                
+                self.setBackgroundImage(self.layerToImage(layer: self.gradientLayer(color: disableNormalGradient)), for: .normal)
+                self.setBackgroundImage(self.layerToImage(layer: self.gradientLayer(color: disableHighlightedGradient)), for: UIControl.State.highlighted)
             }
         }
     }
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.style = .common
+        self.style = .plain
     }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.style = .common
+        self.style = .plain
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        self.style = .common
+        self.style = .plain
     }
     
     convenience init(style: PButtonStyle) {

@@ -11,7 +11,7 @@ import Localize_Swift
 
 class PersonalViewController: BaseViewController,UITableViewDelegate,UITableViewDataSource {
   
-    
+    let tableView = UITableView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,8 +21,8 @@ class PersonalViewController: BaseViewController,UITableViewDelegate,UITableView
     
     
     func initSubViews() {
+        self.statusBarNeedTruncate = true
         view.backgroundColor = UIViewController_backround
-        let tableView = UITableView()
         tableView.separatorStyle = .none
         tableView.backgroundColor = UIViewController_backround
         tableView.delegate = self as UITableViewDelegate
@@ -33,10 +33,41 @@ class PersonalViewController: BaseViewController,UITableViewDelegate,UITableView
         }
         
         tableView.registerCell(cellTypes: [SettingTableViewCell.self])
+        
+    }
+    
+    func tableviewHeader() -> UIView {
+        let container = UIView(frame: CGRect(x: 0, y: 0, width: kUIScreenWidth, height: 18))
+        let label = UILabel(frame: .zero)
+        label.textColor = .black
+        label.localizedText = "PersonalVC_nav_title"
+        label.font = UIFont.systemFont(ofSize: 18)
+        container.addSubview(label)
+        label.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(16)
+            make.trailing.bottom.top.equalToSuperview()
+        }
+        
+        return container
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        let header = tableviewHeader()
+        
+        var height = header.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
+        var newFrame = header.frame
+        if height == 0.0{
+            height = 18
+        }
+        newFrame.size.height = height;
+        header.frame = newFrame
+        tableView.tableHeaderView = header
     }
     
     func initNavigationItems(){
-        navigationItem.localizedText = "PersonalVC_nav_title"
+        //super.leftNavigationTitle = "PersonalVC_nav_title"
+        //self.navigationController?.isNavigationBarHidden = true
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -58,7 +89,7 @@ class PersonalViewController: BaseViewController,UITableViewDelegate,UITableView
         if indexPath.row == 5 {
             return 60 + 50
         }
-        return 60
+        return 68
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -68,7 +99,7 @@ class PersonalViewController: BaseViewController,UITableViewDelegate,UITableView
         switch indexPath.row {
         case 0:
             do {
-                targetVC = WalletManagerViewController()
+                targetVC = WalletListViewController()
             }
         case 1:
             do {

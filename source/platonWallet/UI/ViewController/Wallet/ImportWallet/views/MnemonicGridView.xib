@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pog-6j-sba" userLabel="MnemonicInputView" customClass="MnemonicGridView" customModule="platonWallet" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="192"/>
+            <subviews>
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="1" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="XUN-ov-Hwy" userLabel="input1" customClass="MnemonicTextField" customModule="platonWallet" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="0.0" width="119.5" height="40"/>
+                    <color key="backgroundColor" red="0.94117647059999998" green="0.94509803920000002" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="uEm-I3-pwG"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <textField opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="2" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6IS-iX-v0J" userLabel="input2" customClass="MnemonicTextField" customModule="platonWallet" customModuleProvider="target">
+                    <rect key="frame" x="127.5" y="0.0" width="120" height="40"/>
+                    <color key="backgroundColor" red="0.94117647059999998" green="0.94509803920000002" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="GTD-BR-5VW"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <textField opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="3" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="78a-Qb-enD" userLabel="input3" customClass="MnemonicTextField" customModule="platonWallet" customModuleProvider="target">
+                    <rect key="frame" x="255.5" y="0.0" width="119.5" height="40"/>
+                    <color key="backgroundColor" red="0.94117647059999998" green="0.94509803920000002" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="eml-VB-ipg"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <textField opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="4" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Umr-5e-auZ" userLabel="input4" customClass="MnemonicTextField" customModule="platonWallet" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="48" width="119.5" height="40"/>
+                    <color key="backgroundColor" red="0.94117647059999998" green="0.94509803920000002" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="CBv-Ew-HC3"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <textField opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="5" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9Lg-pf-RB0" userLabel="input5" customClass="MnemonicTextField" customModule="platonWallet" customModuleProvider="target">
+                    <rect key="frame" x="127.5" y="48" width="120" height="40"/>
+                    <color key="backgroundColor" red="0.94117647059999998" green="0.94509803920000002" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="u6C-9s-IAF"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <textField opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="6" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fEE-iO-S0u" userLabel="input6" customClass="MnemonicTextField" customModule="platonWallet" customModuleProvider="target">
+                    <rect key="frame" x="255.5" y="48" width="119.5" height="40"/>
+                    <color key="backgroundColor" red="0.94117647059999998" green="0.94509803920000002" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="VbC-Nu-aYg"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <textField opaque="NO" tag="6" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="7" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="R6f-zi-Ml5" userLabel="input7" customClass="MnemonicTextField" customModule="platonWallet" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="96" width="119.5" height="40"/>
+                    <color key="backgroundColor" red="0.94117647059999998" green="0.94509803920000002" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="6Mu-JV-sKq"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <textField opaque="NO" tag="7" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="8" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="nK4-5m-Eyl" userLabel="input8" customClass="MnemonicTextField" customModule="platonWallet" customModuleProvider="target">
+                    <rect key="frame" x="127.5" y="95.5" width="120" height="40"/>
+                    <color key="backgroundColor" red="0.94117647059999998" green="0.94509803920000002" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="Osa-ze-CV8"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <textField opaque="NO" tag="8" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="9" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="UvE-0U-S0u" userLabel="input9" customClass="MnemonicTextField" customModule="platonWallet" customModuleProvider="target">
+                    <rect key="frame" x="255.5" y="95.5" width="119.5" height="40"/>
+                    <color key="backgroundColor" red="0.94117647059999998" green="0.94509803920000002" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="xOw-kb-lyM"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <textField opaque="NO" tag="9" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="10" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Wsb-tZ-MFI" userLabel="input10" customClass="MnemonicTextField" customModule="platonWallet" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="144" width="119.5" height="40"/>
+                    <color key="backgroundColor" red="0.94117647059999998" green="0.94509803920000002" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="Dvc-yp-OjE"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <textField opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="11" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Gss-8V-V6N" userLabel="input11" customClass="MnemonicTextField" customModule="platonWallet" customModuleProvider="target">
+                    <rect key="frame" x="127.5" y="144" width="120" height="40"/>
+                    <color key="backgroundColor" red="0.94117647059999998" green="0.94509803920000002" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="Sj4-q7-biF"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+                <textField opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="12" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="x5Q-QJ-VFC" userLabel="input12" customClass="MnemonicTextField" customModule="platonWallet" customModuleProvider="target">
+                    <rect key="frame" x="255.5" y="144" width="119.5" height="40"/>
+                    <color key="backgroundColor" red="0.94117647059999998" green="0.94509803920000002" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="MLS-W5-y2C"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="XUN-ov-Hwy" firstAttribute="width" secondItem="6IS-iX-v0J" secondAttribute="width" id="3ra-6n-Dix"/>
+                <constraint firstItem="Umr-5e-auZ" firstAttribute="centerX" secondItem="XUN-ov-Hwy" secondAttribute="centerX" id="4OV-uY-KCz"/>
+                <constraint firstItem="Wsb-tZ-MFI" firstAttribute="width" secondItem="XUN-ov-Hwy" secondAttribute="width" id="54S-wb-jpp"/>
+                <constraint firstItem="Gss-8V-V6N" firstAttribute="top" secondItem="6IS-iX-v0J" secondAttribute="bottom" constant="104" id="5oX-g6-1Pu"/>
+                <constraint firstItem="x5Q-QJ-VFC" firstAttribute="top" secondItem="78a-Qb-enD" secondAttribute="bottom" constant="104" id="6J1-F8-boU"/>
+                <constraint firstItem="9Lg-pf-RB0" firstAttribute="width" secondItem="6IS-iX-v0J" secondAttribute="width" id="8dx-k3-2TZ"/>
+                <constraint firstItem="9Lg-pf-RB0" firstAttribute="top" secondItem="6IS-iX-v0J" secondAttribute="bottom" constant="8" id="Bnt-On-Kcw"/>
+                <constraint firstItem="UvE-0U-S0u" firstAttribute="top" secondItem="78a-Qb-enD" secondAttribute="bottom" constant="55.5" id="DVU-eL-qxw"/>
+                <constraint firstItem="6IS-iX-v0J" firstAttribute="top" secondItem="pog-6j-sba" secondAttribute="top" id="DhX-GT-Q11"/>
+                <constraint firstItem="R6f-zi-Ml5" firstAttribute="centerX" secondItem="XUN-ov-Hwy" secondAttribute="centerX" id="EM7-Sp-TZU"/>
+                <constraint firstItem="6IS-iX-v0J" firstAttribute="leading" secondItem="XUN-ov-Hwy" secondAttribute="trailing" constant="8" id="EVD-mz-N8V"/>
+                <constraint firstItem="fEE-iO-S0u" firstAttribute="width" secondItem="78a-Qb-enD" secondAttribute="width" id="GHO-o9-5yB"/>
+                <constraint firstItem="x5Q-QJ-VFC" firstAttribute="centerX" secondItem="78a-Qb-enD" secondAttribute="centerX" id="GzW-3b-nNi"/>
+                <constraint firstItem="UvE-0U-S0u" firstAttribute="width" secondItem="78a-Qb-enD" secondAttribute="width" id="HKc-Vf-AmW"/>
+                <constraint firstItem="6IS-iX-v0J" firstAttribute="width" secondItem="78a-Qb-enD" secondAttribute="width" id="JJA-as-0fA"/>
+                <constraint firstItem="XUN-ov-Hwy" firstAttribute="leading" secondItem="pog-6j-sba" secondAttribute="leading" id="KPU-W7-Xs8"/>
+                <constraint firstItem="fEE-iO-S0u" firstAttribute="top" secondItem="78a-Qb-enD" secondAttribute="bottom" constant="8" id="M6M-8Y-pK8"/>
+                <constraint firstAttribute="height" constant="192" id="Mn2-eH-AFA"/>
+                <constraint firstItem="Umr-5e-auZ" firstAttribute="width" secondItem="XUN-ov-Hwy" secondAttribute="width" id="NmJ-lN-BXV"/>
+                <constraint firstItem="x5Q-QJ-VFC" firstAttribute="width" secondItem="78a-Qb-enD" secondAttribute="width" id="PbC-cG-TDt"/>
+                <constraint firstAttribute="trailing" secondItem="78a-Qb-enD" secondAttribute="trailing" id="QBO-X0-dRW"/>
+                <constraint firstItem="Gss-8V-V6N" firstAttribute="width" secondItem="6IS-iX-v0J" secondAttribute="width" id="R8P-Xn-dVY"/>
+                <constraint firstItem="9Lg-pf-RB0" firstAttribute="centerX" secondItem="6IS-iX-v0J" secondAttribute="centerX" id="TLF-rb-ZH8"/>
+                <constraint firstItem="78a-Qb-enD" firstAttribute="top" secondItem="pog-6j-sba" secondAttribute="top" id="VXo-49-bOU"/>
+                <constraint firstItem="R6f-zi-Ml5" firstAttribute="top" secondItem="XUN-ov-Hwy" secondAttribute="bottom" constant="56" id="ZPe-Ou-BTP"/>
+                <constraint firstItem="Wsb-tZ-MFI" firstAttribute="centerX" secondItem="XUN-ov-Hwy" secondAttribute="centerX" id="fVo-40-xf4"/>
+                <constraint firstItem="Umr-5e-auZ" firstAttribute="top" secondItem="XUN-ov-Hwy" secondAttribute="bottom" constant="8" id="gSq-Yr-Cey"/>
+                <constraint firstItem="nK4-5m-Eyl" firstAttribute="centerX" secondItem="6IS-iX-v0J" secondAttribute="centerX" id="hCh-9n-dBs"/>
+                <constraint firstItem="78a-Qb-enD" firstAttribute="leading" secondItem="6IS-iX-v0J" secondAttribute="trailing" constant="8" id="hT3-kM-crL"/>
+                <constraint firstItem="nK4-5m-Eyl" firstAttribute="width" secondItem="6IS-iX-v0J" secondAttribute="width" id="qwy-Er-aVV"/>
+                <constraint firstItem="XUN-ov-Hwy" firstAttribute="top" secondItem="pog-6j-sba" secondAttribute="top" id="qxJ-NH-QhK"/>
+                <constraint firstItem="UvE-0U-S0u" firstAttribute="centerX" secondItem="78a-Qb-enD" secondAttribute="centerX" id="tZR-fH-7tf"/>
+                <constraint firstItem="nK4-5m-Eyl" firstAttribute="top" secondItem="6IS-iX-v0J" secondAttribute="bottom" constant="55.5" id="ub3-QE-Bt3"/>
+                <constraint firstItem="fEE-iO-S0u" firstAttribute="centerX" secondItem="78a-Qb-enD" secondAttribute="centerX" id="vxy-Ui-wdj"/>
+                <constraint firstItem="Wsb-tZ-MFI" firstAttribute="top" secondItem="XUN-ov-Hwy" secondAttribute="bottom" constant="104" id="wZU-m8-dtL"/>
+                <constraint firstItem="R6f-zi-Ml5" firstAttribute="width" secondItem="XUN-ov-Hwy" secondAttribute="width" id="wcO-DB-FUJ"/>
+                <constraint firstItem="Gss-8V-V6N" firstAttribute="centerX" secondItem="6IS-iX-v0J" secondAttribute="centerX" id="y3L-Zs-aNV"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="wm4-1r-VBY"/>
+            <point key="canvasLocation" x="88.799999999999997" y="-385.90704647676165"/>
+        </view>
+    </objects>
+</document>

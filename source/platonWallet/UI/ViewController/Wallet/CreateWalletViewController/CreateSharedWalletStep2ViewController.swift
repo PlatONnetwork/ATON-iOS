@@ -36,6 +36,9 @@ class CreateSharedWalletStep2ViewController: BaseViewController {
     
     var dataSource = [Int:(address: String, remark: String, tips: String)]()
     
+    @IBOutlet weak var createButton: PButton!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
@@ -44,7 +47,7 @@ class CreateSharedWalletStep2ViewController: BaseViewController {
     
     func setupUI() {
         
-        title = Localized("CreateSharedWalletVC_Create Shared Wallet")
+        super.leftNavigationTitle = "CreateSharedWalletVC_Create Shared Wallet"
         
         tableView.backgroundColor = UIViewController_backround
         tableView.separatorStyle = .none
@@ -53,10 +56,12 @@ class CreateSharedWalletStep2ViewController: BaseViewController {
         tableView.keyboardDismissMode = .interactive
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(onTap))
-        tableView.addGestureRecognizer(tap)
+        tableView.addGestureRecognizer(tap) 
         
         saveAddress((self.wallet?.key?.address)!, inRow: 0)
         saveRemark(Localized("MemberSignDetailVC_YOU"), inRow: 0)
+        
+        createButton.style = .disable
     }
     
     @objc func onTap(){
@@ -85,10 +90,13 @@ class CreateSharedWalletStep2ViewController: BaseViewController {
     private func checkInputValueIsValid(index: Int, isEndEditFromAddress: Bool = true) -> Bool {
         
         guard var data = dataSource[index] else {
+            createButton.style = .disable
             return false
         }
         
         var res = true
+        
+        let cell = tableView.cellForRow(at: IndexPath(row: index, section: 0)) as? CreateSharedWalletMemberTableViewCell
         
         if data.remark.length > 12 {
             
@@ -96,7 +104,7 @@ class CreateSharedWalletStep2ViewController: BaseViewController {
             res = false
             
         }else {
-            
+             
             if data.address.length > 0 && !data.address.isValidAddress() {
                 data.tips = Localized("CreateSharedWalletVC_address_illegal_tips")
                 res = false
@@ -110,7 +118,13 @@ class CreateSharedWalletStep2ViewController: BaseViewController {
         }
 
         dataSource[index] = data
-        
+        if res{
+            cell?.addressTF.setBottomLineStyle(style:.Normal)
+            createButton.style = .blue
+        }else{
+            cell?.addressTF.setBottomLineStyle(style:.Error)
+            createButton.style = .disable
+        }
         return res
     }
 
@@ -143,7 +157,7 @@ class CreateSharedWalletStep2ViewController: BaseViewController {
         return (true,"")
         
     }
-
+ 
     @IBAction func create(_ sender: Any) {
         
         view.endEditing(true)
@@ -157,13 +171,13 @@ class CreateSharedWalletStep2ViewController: BaseViewController {
             for item in self.dataSource{
                 addresses.append(item.value.address)
             }
-            self.showLoading()
+            self.showLoadingHUD()
             SWalletService.sharedInstance.checkArrayisSharedWalletContract(addresses: addresses, completion: { (result, data) in
                 switch result{
                 case .success:
                     self.estimaGas()
                 case .fail(let code, let errMsg):
-                    self.hideLoading()
+                    self.hideLoadingHUD()
                     self.showMessageWithCodeAndMsg(code: code!, text: errMsg!, delay: 2.5)
                 }
             })
@@ -179,7 +193,7 @@ class CreateSharedWalletStep2ViewController: BaseViewController {
         }
 
         SWalletService.sharedInstance.estimateCreateWalletGas(sender: (wallet?.key?.address)!, addresses: addresses, require: UInt64(self.signRequired)) { (result, data) in
-            self.hideLoading()
+            self.hideLoadingHUD()
             switch result{
                 
             case .success:
@@ -204,15 +218,16 @@ class CreateSharedWalletStep2ViewController: BaseViewController {
     
     func showCreateContractFee(gasPrice: BigUInt, gas: BigUInt){
         confirmPopUpView = PopUpViewController()
-        let confirmView = UIView.viewFromXib(theClass: FeeConfirmView.self) as! FeeConfirmView
+        let confirmView = UIView.viewFromXib(theClass: JointWalletCreationFeeConfirmView.self) as! JointWalletCreationFeeConfirmView
         confirmView.submitButton.addTarget(self, action: #selector(onSubmit), for: .touchUpInside)
-        confirmPopUpView?.setUpContentView(view: confirmView, size: CGSize(width: kUIScreenWidth, height: 247.2))
+        confirmPopUpView?.setUpContentView(view: confirmView, size: CGSize(width: PopUpContentWidth, height: 292))
         confirmPopUpView?.setCloseEvent(button: confirmView.closeButton)
         
         let fee = gasPrice.multiplied(by: gas)
-        let feeDescription = fee.divide(by: ETHToWeiMultiplier, round: 8).balanceFixToDisplay(maxRound: 8).ATPSuffix()
+        let feeDescription = fee.divide(by: ETHToWeiMultiplier, round: 8).balanceFixToDisplay(maxRound: 8)
         
         confirmView.feeLabel.text = feeDescription
+        confirmView.executorName.text = self.wallet?.name
         confirmPopUpView?.show(inViewController: self)
     }
     
@@ -224,48 +239,46 @@ class CreateSharedWalletStep2ViewController: BaseViewController {
             return
         }
         
-        self.showInputPswAlert()
+        self.showPasswordInputPswAlert()
         confirmPopUpView?.onDismissViewController()
     }
     
-    func showInputPswAlert() {
+    func showPasswordInputPswAlert() {
         
-        let alertC = PAlertController(title: Localized("alert_input_psw_title"), message: nil)
-        alertC.addTextField(text: "", placeholder: "", isSecureTextEntry: true)
-        
-        alertC.addAction(title: Localized("alert_cancelBtn_title")) {
-        }
-        
-        alertC.addAction(title: Localized("alert_confirmBtn_title")) { [weak self] in
-            
-            if !CommonService.isValidWalletPassword(alertC.textField?.text ?? "").0{
-                return
+        let alertVC = AlertStylePopViewController.initFromNib()
+        self.passwordInputAlert = alertVC
+        let style = PAlertStyle.passwordInput(walletName: self.wallet?.name)
+        alertVC.onAction(confirm: {[weak self] (text, _) -> (Bool)  in
+            let valid = CommonService.isValidWalletPassword(text ?? "")
+            if !valid.0{
+                alertVC.showInputErrorTip(string: valid.1)
+                return false
             }
-            alertC.dismiss(animated: true, completion: nil)
-            
-            guard self!.wallet != nil else{
-                return
+            if let notnilAlertVC = self?.passwordInputAlert{
+                notnilAlertVC.showLoadingHUD()
             }
-            
-            self!.showLoading()
-            WalletService.sharedInstance.exportPrivateKey(wallet: self!.wallet!, password: (alertC.textField?.text)!, completion: { (pri, err) in
+            WalletService.sharedInstance.exportPrivateKey(wallet: self!.wallet!, password: (alertVC.textFieldInput?.text)!, completion: { (pri, err) in
+                
                 if (err == nil && (pri?.length)! > 0) {
                     self?.doCreateSharedWallet(pri: pri!)
+                    alertVC.dismissWithCompletion()
                 }else{
-                    self?.hideLoading()
-                    self?.showMessage(text: (err?.errorDescription)!)
+                    if let notnilAlertVC = self?.passwordInputAlert{
+                        notnilAlertVC.hideLoadingHUD()
+                    }
+                    alertVC.showInputErrorTip(string: (err?.errorDescription)!)
                 }
             })
+            return false
             
+        }) { (_, _) -> (Bool) in
+            return true
         }
-        alertC.inputVerify = { input in
-            return CommonService.isValidWalletPassword(input).0
-        }
-        alertC.addActionEnableStyle(title: Localized("alert_confirmBtn_title"))
-        alertC.show(inViewController: self, animated: false)
-        alertC.textField?.becomeFirstResponder()
-        
+        alertVC.style = style
+        alertVC.showInViewController(viewController: self)
+        return
     }
+    
     
     func doCreateSharedWallet(pri: String){
         
@@ -302,7 +315,9 @@ class CreateSharedWalletStep2ViewController: BaseViewController {
         addresses: addresses,
         require: require.uint64Value
         ) { (ret, obj) in
-            self.hideLoading()
+            if let notnilAlertVC = self.passwordInputAlert{
+                notnilAlertVC.showLoadingHUD()
+            }
             switch ret{
             case .success:
                 UIApplication.rootViewController().showMessage(text: Localized("Shared wallet create success"))
@@ -337,16 +352,13 @@ extension CreateSharedWalletStep2ViewController: UITableViewDelegate, UITableVie
         //disable reuse
         //let cell = UIView.viewFromXib(theClass: CreateSharedWalletMemberTableViewCell.self) as! CreateSharedWalletMemberTableViewCell
         let data = dataSource[indexPath.row]!
-
         let title = Localized("CreateSharedWalletVC_member") + "\(indexPath.row + 1)"
-
-        
         cell.setup(title: title, address: data.address, remark: data.remark, tips: data.tips, index: indexPath.row)
         cell.delegate = self
         
-        
         if indexPath.row == 0{
             cell.setEnableMode(enable: false)
+            cell.updateMyWallet(wallet: self.wallet)
         }else{
             cell.setEnableMode(enable: true)
         }
@@ -356,6 +368,9 @@ extension CreateSharedWalletStep2ViewController: UITableViewDelegate, UITableVie
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.row == 0{
+            return 110
+        }
         return (dataSource[indexPath.row]?.tips ?? "").length > 0 ? 150:125
     }
     

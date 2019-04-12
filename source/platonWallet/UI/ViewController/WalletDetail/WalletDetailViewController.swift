@@ -77,7 +77,7 @@ class WalletDetailViewController: BaseViewController,UITableViewDelegate,UITable
     func initData() {
         dataSource?.removeAll()
         let data = TransferPersistence.getAllByAddress(from: (wallet?.key?.address)!)
-        
+         
         dataSource?.append(contentsOf: data)
         var jointTxs : [STransaction] = []
         jointTxs.append(contentsOf:STransferPersistence.getAllByWalletOwner(address: (wallet?.key?.address)!))
@@ -147,7 +147,6 @@ class WalletDetailViewController: BaseViewController,UITableViewDelegate,UITable
         let cell : WalletDetailCell = tableView.dequeueReusableCell(withIdentifier: String(describing: WalletDetailCell.self)) as! WalletDetailCell
         let tx = dataSource?[indexPath.row]
         cell.updateTransferCell(txAny: tx , walletAny: wallet)
-        cell.unreadDot.isHidden = true
         cell.updateCellStyle(count: dataSource?.count ?? 0, index: indexPath.row)
         return cell
     }
@@ -163,7 +162,7 @@ class WalletDetailViewController: BaseViewController,UITableViewDelegate,UITable
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 50
     }
-    
+     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) { 
         let transferVC = TransactionDetailViewController()
         let data = dataSource![indexPath.row]

@@ -180,7 +180,7 @@ final public class PopupDialog: UIViewController {
             panRecognizer.cancelsTouchesInView = false
             popupContainerView.stackView.addGestureRecognizer(panRecognizer)
         }
-    }
+    } 
 
     // Init with coder not implemented
     required public init?(coder aDecoder: NSCoder) {

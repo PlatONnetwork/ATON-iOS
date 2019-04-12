@@ -12,6 +12,9 @@ class CustomPickerView: UIView {
 
     @IBOutlet weak var pickerView: UIPickerView!
     
+    @IBOutlet weak var submitButton: PButton!
+    
+    @IBOutlet weak var title: UILabel!
     var onCancelHandler: (() -> Void)?
     var onSubmitHandler: ((String) -> Void)?
     
@@ -21,13 +24,13 @@ class CustomPickerView: UIView {
         super.awakeFromNib()
         pickerView.delegate = self
         pickerView.dataSource = self
-        
+        submitButton.style = .blue
     }
     
-    public static func show(inViewController vc: UIViewController, dataSource: [String], curSelected: String?, onSubmitHandler:@escaping (String) -> Void) {
+    public static func show(inViewController vc: UIViewController, dataSource: [String], curSelected: String?,title : String = "", onSubmitHandler:@escaping (String) -> Void) {
         
         let popVC = PopUpViewController()
-        let height:CGFloat = 232
+        let height:CGFloat = 330
         let view = UIView.viewFromXib(theClass: CustomPickerView.self) as! CustomPickerView
         
         view.dataSource = dataSource
@@ -38,8 +41,9 @@ class CustomPickerView: UIView {
             popVC?.onDismissViewController()
         }
         view.onSubmitHandler = onSubmitHandler
-        popVC.setUpContentView(view: view, size: CGSize(width: kUIScreenWidth, height: height))
+        popVC.setUpContentView(view: view, size: CGSize(width: PopUpContentWidth, height: height))
         popVC.show(inViewController: vc)
+        view.title.text = title
         
     }
     
@@ -71,6 +75,22 @@ extension CustomPickerView: UIPickerViewDelegate,UIPickerViewDataSource {
     }
     
     func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
-        return 30
+        return 34
+    }
+    
+    public func pickerView(_ pickerView: UIPickerView, viewForRow row: Int, forComponent component: Int, reusing view: UIView?) -> UIView {
+        for view in pickerView.subviews {
+            if view.frame.size.height < 1 {
+                var frame = view.frame
+                frame.size.height = 1
+                view.frame = frame
+                view.backgroundColor = UIColor(rgb: 0xE4E7F3)
+            }
+        }
+        
+        let label = UILabel()
+        label.text = dataSource[row]
+        label.textAlignment = NSTextAlignment.center
+        return label
     }
 }

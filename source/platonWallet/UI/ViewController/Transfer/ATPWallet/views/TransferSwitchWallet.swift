@@ -7,55 +7,75 @@
 //
 
 import UIKit
+import Localize_Swift
 
 let TransferSwitchWalletHeight = kUIScreenHeight * 0.4
 
 class TransferSwitchWallet: UIView,UITableViewDataSource,UITableViewDelegate {
     
-    
     @IBOutlet weak var closeBtn: UIButton!
     
     var selectionCompletion : ((_ wallet : AnyObject?) -> ())?
     
-    var type = 0
+    var switchType = 0
     
     var selectedAddress : String?
     
     var checkBalance: Bool = true
 
     let tableView = UITableView()
+    
+    var dataSourse : [AnyObject] = []
+    
     override func awakeFromNib() {
         initSubViews()
+        self.closeBtn.isHidden = true
     }
     
     func initSubViews() {
         addSubview(tableView)
         tableView.snp.makeConstraints { (make) in
-            make.top.equalTo(self).offset(40)
+            make.top.equalTo(self).offset(51)
             make.leading.trailing.bottom.equalTo(self)
         }
         tableView.dataSource = self
         tableView.delegate = self
         tableView.separatorStyle = .none
         tableView.registerCell(cellTypes: [SwitchWalletTableViewCell.self])
+        self.refresh()
+    } 
+    
+    func refresh(){
+        dataSourse.removeAll()
+        if switchType == 0{ 
+            var wallets = AssetVCSharedData.sharedData.walletList.filterClassicWallet
+            wallets.userArrangementSort()
+            for item in wallets{
+                if item.WalletBalanceStatus() == .Sufficient{
+                    dataSourse.append(item)
+                }
+            }
+        }else{
+            for item in SWalletService.sharedInstance.wallets{
+                if item.WalletBalanceStatus() == .Sufficient{
+                    dataSourse.append(item)
+                }
+            }
+        }
+        self.tableView.reloadData()
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if type == 0{
-            return WalletService.sharedInstance.wallets.count
-        }
-        return SWalletService.sharedInstance.wallets.count
+        return dataSourse.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: SwitchWalletTableViewCell.self)) as! SwitchWalletTableViewCell
-        if type == 0{
-            let wallet = WalletService.sharedInstance.wallets[indexPath.row]
-            let balance = AssetService.sharedInstace.assets[(wallet.key?.address)!]
-            
-            if balance != nil{
-                cell.walletBalance.text = (balance?!.displayValueWithRound(round: 8)?.balanceFixToDisplay(maxRound: 8))!.ATPSuffix()
+        if switchType == 0{
+            guard let wallet = dataSourse[indexPath.row] as? Wallet else{
+                return SwitchWalletTableViewCell()
             }
+        
             cell.walletName.text = wallet.name
             
             if (selectedAddress != nil) && (wallet.key?.address.ishexStringEqual(other: selectedAddress!))!{
@@ -64,21 +84,13 @@ class TransferSwitchWallet: UIView,UITableViewDataSource,UITableViewDelegate {
                 cell.checkIcon.isHidden = true
             }
             
-            let av = wallet.key?.address.walletRandomAvatar()
+            let av = wallet.key?.address.walletAddressLastCharacterAvatar()
             cell.walletIcon.image = UIImage(named: av ?? "" )?.circleImage()
-            if self.checkBalance{
-                cell.updateBalanceStyle(balance: balance ?? nil)
-            }else{
-                cell.contentView.backgroundColor = SwitchWalletCellEnableBG
-            }
-            
+            cell.walletBalance.text = Localized("transferVC_transfer_balance")  + wallet.balanceDescription()
             
         }else{
-            let wallet = SWalletService.sharedInstance.wallets[indexPath.row]
-            let balance = AssetService.sharedInstace.assets[(wallet.contractAddress)]
-            
-            if balance != nil{
-                cell.walletBalance.text = (balance?!.displayValueWithRound(round: 8)?.balanceFixToDisplay(maxRound: 8))!.ATPSuffix()
+            guard let wallet = dataSourse[indexPath.row] as? SWallet else{
+                return SwitchWalletTableViewCell()
             }
             cell.walletName.text = wallet.name
             
@@ -87,48 +99,25 @@ class TransferSwitchWallet: UIView,UITableViewDataSource,UITableViewDelegate {
             }else{
                 cell.checkIcon.isHidden = true
             }
-            let av = wallet.contractAddress.walletRandomAvatar()
+            let av = wallet.contractAddress.walletAddressLastCharacterAvatar()
             cell.walletIcon.image = UIImage(named: av )?.circleImage()
-            
-            if self.checkBalance{
-                cell.updateBalanceStyle(balance: balance ?? nil)
-            }else{
-                cell.contentView.backgroundColor = SwitchWalletCellEnableBG
-            }
         }
 
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return (TransferSwitchWalletHeight - 40) * 0.25
+        return 70
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        if self.checkBalance{
-            if type == 0{
-                let wallet = WalletService.sharedInstance.wallets[indexPath.row]
-                let balance = AssetService.sharedInstace.assets[(wallet.key?.address)!]
-                if balance == nil || balance?!.balance == nil || String((balance?!.balance)!) == "0"{
-                    return
-                }
-                
-            }else{
-                let wallet = SWalletService.sharedInstance.wallets[indexPath.row]
-                let balance = AssetService.sharedInstace.assets[(wallet.contractAddress)]
-                if balance == nil || balance?!.balance == nil || String((balance?!.balance)!) == "0"{
-                    return
-                }
-            }
-        }
-        
         if (selectionCompletion != nil) {
-            if type == 0{
-                let wallet = WalletService.sharedInstance.wallets[indexPath.row]
+            if switchType == 0{
+                let wallet = dataSourse[indexPath.row]
                 selectionCompletion!(wallet)
             }else{
-                let wallet = SWalletService.sharedInstance.wallets[indexPath.row]
+                let wallet = dataSourse[indexPath.row]
                 selectionCompletion!(wallet)
             }
         }

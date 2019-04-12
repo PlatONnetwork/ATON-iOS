@@ -15,11 +15,14 @@
                 <outlet property="addressBookBtn" destination="n0S-Kr-0nu" id="Nxh-y9-91v"/>
                 <outlet property="chooseWalletBtn" destination="hwh-jk-fOp" id="gae-d7-PmD"/>
                 <outlet property="chooseWalletName" destination="K6j-ss-Jg6" id="4kq-oq-i4R"/>
-                <outlet property="confirmButton" destination="ZCt-5C-d1b" id="fZb-at-Iez"/>
+                <outlet property="confirmButton" destination="ZCt-5C-d1b" id="iy2-g0-10e"/>
                 <outlet property="contractAddrTip" destination="Bae-jN-1Cj" id="W2k-nN-bb8"/>
                 <outlet property="contractAddressField" destination="teQ-db-MhW" id="nqn-xu-joU"/>
+                <outlet property="topToWalletTextField" destination="Ynj-pB-whV" id="dJi-sw-FxU"/>
+                <outlet property="topToWalletTipView" destination="EWX-gd-s7e" id="GgY-gT-h0q"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="walletAddress" destination="ZkB-4U-xRH" id="lLr-pO-tt9"/>
+                <outlet property="walletAvatar" destination="Ly0-A4-B4p" id="aFK-39-Osl"/>
                 <outlet property="walletName" destination="BkJ-3M-CAg" id="phQ-i4-d8D"/>
                 <outlet property="walletNameTip" destination="YTb-iR-yEs" id="MSX-pO-gAs"/>
             </connections>
@@ -33,12 +36,12 @@
                     <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yFE-YI-ZLw">
-                            <rect key="frame" x="23" y="17" width="38" height="17"/>
+                            <rect key="frame" x="23" y="17" width="43" height="17"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="17" id="8sx-0c-Oer"/>
                             </constraints>
-                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                            <color key="textColor" red="0.38039215686274508" green="0.39215686274509803" blue="0.43137254901960786" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="AddSharedWalletVC_wallet_Name_Des"/>
@@ -49,7 +52,7 @@
                             <subviews>
                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="BkJ-3M-CAg" customClass="PTextFieldWithPadding" customModule="platonWallet" customModuleProvider="target">
                                     <rect key="frame" x="0.0" y="0.0" width="343" height="40"/>
-                                    <color key="backgroundColor" red="0.14901960780000001" green="0.1764705882" blue="0.25490196079999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="40" id="Uxy-iq-nHx"/>
                                     </constraints>
@@ -61,7 +64,7 @@
                                     </userDefinedRuntimeAttributes>
                                 </textField>
                             </subviews>
-                            <color key="backgroundColor" red="0.14901960780000001" green="0.1764705882" blue="0.25490196079999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstItem="BkJ-3M-CAg" firstAttribute="top" secondItem="Ec1-bK-J89" secondAttribute="top" id="Ctb-lR-wAb"/>
                                 <constraint firstAttribute="height" constant="40" id="DOL-Sg-Ily"/>
@@ -71,7 +74,7 @@
                             </constraints>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YTb-iR-yEs">
-                            <rect key="frame" x="16" y="88" width="343" height="16"/>
+                            <rect key="frame" x="16" y="92" width="343" height="16"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="16" id="eBQ-6H-Qzo"/>
                             </constraints>
@@ -80,50 +83,57 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select Owner" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wxY-J9-R3B">
-                            <rect key="frame" x="23" y="109" width="87" height="17"/>
+                            <rect key="frame" x="23" y="100" width="97.5" height="17"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="17" id="gNi-aJ-kFx"/>
                             </constraints>
-                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                            <color key="textColor" red="0.38039215686274508" green="0.39215686274509803" blue="0.43137254901960786" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="AddSharedWalletVC_Owner_Des"/>
                             </userDefinedRuntimeAttributes>
                         </label>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fqp-PY-CkZ" userLabel="walletInfoContainer">
-                            <rect key="frame" x="16" y="136" width="343" height="55"/>
+                            <rect key="frame" x="16" y="127" width="343" height="60"/>
                             <subviews>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="walletChoosen" translatesAutoresizingMaskIntoConstraints="NO" id="gQi-sO-8Lg">
-                                    <rect key="frame" x="0.0" y="0.0" width="343" height="55"/>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="switchWalletBG" translatesAutoresizingMaskIntoConstraints="NO" id="gQi-sO-8Lg">
+                                    <rect key="frame" x="0.0" y="0.0" width="343" height="60"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </imageView>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ly0-A4-B4p" userLabel="walletIcon">
+                                    <rect key="frame" x="3" y="9" width="42" height="42"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="42" id="6Pz-3B-0gp"/>
+                                        <constraint firstAttribute="width" constant="42" id="9BZ-Ll-iym"/>
+                                    </constraints>
                                 </imageView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="WalletName" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K6j-ss-Jg6">
-                                    <rect key="frame" x="12" y="6" width="83" height="18"/>
+                                    <rect key="frame" x="48" y="6" width="78" height="18"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="18" id="9XE-WV-h0q"/>
                                     </constraints>
-                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
-                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                     <nil key="highlightedColor"/>
                                     <userDefinedRuntimeAttributes>
                                         <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="AddSharedWalletVC_walletName_Des"/>
                                     </userDefinedRuntimeAttributes>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0x----------------------------------------" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZkB-4U-xRH">
-                                    <rect key="frame" x="12" y="24" width="246" height="29"/>
+                                    <rect key="frame" x="48" y="24" width="190" height="29"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="29" id="eMX-rQ-BGx"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                    <color key="textColor" red="0.7725490196" green="0.79607843140000001" blue="0.86274509799999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="textColor" red="0.38039215686274508" green="0.39215686274509803" blue="0.43137254901960786" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hwh-jk-fOp">
-                                    <rect key="frame" x="263" y="0.0" width="80" height="55"/>
-                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <rect key="frame" x="243" y="2.5" width="100" height="55"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="55" id="64G-na-EOm"/>
-                                        <constraint firstAttribute="width" constant="80" id="Ja7-yx-JTC"/>
+                                        <constraint firstAttribute="width" constant="100" id="Ja7-yx-JTC"/>
                                     </constraints>
                                     <connections>
                                         <action selector="onSwitchWallet:" destination="-1" eventType="touchUpInside" id="aHt-DU-WCo"/>
@@ -135,44 +145,86 @@
                                 <constraint firstAttribute="bottom" secondItem="gQi-sO-8Lg" secondAttribute="bottom" id="0kT-eP-K7L"/>
                                 <constraint firstItem="K6j-ss-Jg6" firstAttribute="top" secondItem="fqp-PY-CkZ" secondAttribute="top" constant="6" id="494-Bn-Wef"/>
                                 <constraint firstItem="ZkB-4U-xRH" firstAttribute="top" secondItem="K6j-ss-Jg6" secondAttribute="bottom" id="9Mp-1g-f5I"/>
+                                <constraint firstItem="K6j-ss-Jg6" firstAttribute="leading" secondItem="Ly0-A4-B4p" secondAttribute="trailing" constant="3" id="GZG-e0-ut2"/>
                                 <constraint firstItem="gQi-sO-8Lg" firstAttribute="top" secondItem="fqp-PY-CkZ" secondAttribute="top" id="HNY-IH-N92"/>
-                                <constraint firstItem="K6j-ss-Jg6" firstAttribute="leading" secondItem="fqp-PY-CkZ" secondAttribute="leading" constant="12" id="ORX-tt-kLH"/>
-                                <constraint firstItem="ZkB-4U-xRH" firstAttribute="leading" secondItem="fqp-PY-CkZ" secondAttribute="leading" constant="12" id="WgR-5u-ush"/>
                                 <constraint firstAttribute="trailing" secondItem="hwh-jk-fOp" secondAttribute="trailing" id="XLP-Yf-jHW"/>
                                 <constraint firstAttribute="trailing" secondItem="gQi-sO-8Lg" secondAttribute="trailing" id="a5P-zX-w03"/>
                                 <constraint firstItem="hwh-jk-fOp" firstAttribute="leading" secondItem="ZkB-4U-xRH" secondAttribute="trailing" constant="5" id="cK8-x9-PSu"/>
-                                <constraint firstAttribute="height" constant="55" id="fOX-5B-Xsa"/>
+                                <constraint firstItem="Ly0-A4-B4p" firstAttribute="leading" secondItem="fqp-PY-CkZ" secondAttribute="leading" constant="3" id="dgl-BL-WeA"/>
+                                <constraint firstAttribute="height" constant="60" id="fOX-5B-Xsa"/>
                                 <constraint firstItem="gQi-sO-8Lg" firstAttribute="leading" secondItem="fqp-PY-CkZ" secondAttribute="leading" id="mIM-1I-LPQ"/>
+                                <constraint firstItem="ZkB-4U-xRH" firstAttribute="leading" secondItem="Ly0-A4-B4p" secondAttribute="trailing" constant="3" id="pIt-aM-9Jj"/>
                                 <constraint firstItem="hwh-jk-fOp" firstAttribute="centerY" secondItem="fqp-PY-CkZ" secondAttribute="centerY" id="pKD-sn-nIo"/>
+                                <constraint firstItem="Ly0-A4-B4p" firstAttribute="centerY" secondItem="fqp-PY-CkZ" secondAttribute="centerY" id="thk-x8-QNI"/>
                             </constraints>
                         </view>
-                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="teQ-db-MhW" customClass="PTextFieldWithPadding" customModule="platonWallet" customModuleProvider="target">
-                            <rect key="frame" x="16" y="242" width="303" height="40"/>
-                            <color key="backgroundColor" red="0.14901960780000001" green="0.1764705882" blue="0.25882352939999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="40" id="Eo3-IK-I6Z"/>
-                            </constraints>
-                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <textInputTraits key="textInputTraits"/>
-                            <userDefinedRuntimeAttributes>
-                                <userDefinedRuntimeAttribute type="string" keyPath="LocalizePlaceholder" value="AddSharedWalletVC_addr_placeholder"/>
-                            </userDefinedRuntimeAttributes>
-                        </textField>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Wallet Address" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vXk-sj-7xa">
-                            <rect key="frame" x="23" y="208" width="97" height="17"/>
+                            <rect key="frame" x="23" y="204" width="108.5" height="17"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="17" id="zua-MS-7Q8"/>
                             </constraints>
-                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                            <color key="textColor" red="0.38039215686274508" green="0.39215686274509803" blue="0.43137254901960786" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="AddSharedWalletVC_addr"/>
                             </userDefinedRuntimeAttributes>
                         </label>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fpG-5I-1Dv" userLabel="AddressContainer">
+                            <rect key="frame" x="16" y="221" width="343" height="46"/>
+                            <subviews>
+                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="teQ-db-MhW" customClass="PTextFieldWithPadding" customModule="platonWallet" customModuleProvider="target">
+                                    <rect key="frame" x="0.0" y="0.0" width="278" height="46"/>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="46" id="Eo3-IK-I6Z"/>
+                                    </constraints>
+                                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                    <textInputTraits key="textInputTraits"/>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="string" keyPath="LocalizePlaceholder" value="AddSharedWalletVC_addr_placeholder"/>
+                                    </userDefinedRuntimeAttributes>
+                                </textField>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TQV-Zm-RJn" userLabel="scanBtn">
+                                    <rect key="frame" x="283" y="8" width="30" height="30"/>
+                                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="width" constant="30" id="Uwe-pX-5a7"/>
+                                        <constraint firstAttribute="height" constant="30" id="zWO-Wi-Fdb"/>
+                                    </constraints>
+                                    <state key="normal" image="textField_icon_scan"/>
+                                    <connections>
+                                        <action selector="onScan:" destination="-1" eventType="touchUpInside" id="BKx-1u-D7g"/>
+                                    </connections>
+                                </button>
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n0S-Kr-0nu">
+                                    <rect key="frame" x="313" y="8" width="30" height="30"/>
+                                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="30" id="9T3-fh-LCk"/>
+                                        <constraint firstAttribute="width" constant="30" id="nFx-TE-Qpz"/>
+                                    </constraints>
+                                    <state key="normal" image="textField_icon_addressBook"/>
+                                    <connections>
+                                        <action selector="onAddressBook:" destination="-1" eventType="touchUpInside" id="ZWZ-Ow-Fuu"/>
+                                    </connections>
+                                </button>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstItem="TQV-Zm-RJn" firstAttribute="centerY" secondItem="fpG-5I-1Dv" secondAttribute="centerY" id="KeJ-u7-T3H"/>
+                                <constraint firstItem="teQ-db-MhW" firstAttribute="centerY" secondItem="fpG-5I-1Dv" secondAttribute="centerY" id="LmD-kA-cj0"/>
+                                <constraint firstItem="teQ-db-MhW" firstAttribute="leading" secondItem="fpG-5I-1Dv" secondAttribute="leading" id="NkC-NW-a59"/>
+                                <constraint firstItem="TQV-Zm-RJn" firstAttribute="leading" secondItem="teQ-db-MhW" secondAttribute="trailing" constant="5" id="SAD-Ua-Gwv"/>
+                                <constraint firstAttribute="trailing" secondItem="n0S-Kr-0nu" secondAttribute="trailing" id="fMm-O7-LqZ"/>
+                                <constraint firstAttribute="height" constant="46" id="kHQ-Om-g8J"/>
+                                <constraint firstItem="n0S-Kr-0nu" firstAttribute="leading" secondItem="TQV-Zm-RJn" secondAttribute="trailing" id="mR4-bD-K9R"/>
+                                <constraint firstItem="n0S-Kr-0nu" firstAttribute="centerY" secondItem="fpG-5I-1Dv" secondAttribute="centerY" id="nNM-1W-Usf"/>
+                            </constraints>
+                        </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bae-jN-1Cj">
-                            <rect key="frame" x="16" y="287" width="343" height="16"/>
+                            <rect key="frame" x="16" y="275" width="343" height="16"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="16" id="Ifv-r9-IuL"/>
                             </constraints>
@@ -180,23 +232,11 @@
                             <color key="textColor" red="1" green="0.2784313725" blue="0.2784313725" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n0S-Kr-0nu">
-                            <rect key="frame" x="319" y="242" width="40" height="40"/>
-                            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZCt-5C-d1b" customClass="PButton" customModule="platonWallet" customModuleProvider="target">
+                            <rect key="frame" x="16" y="579" width="343" height="44"/>
+                            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
-                                <constraint firstAttribute="height" constant="40" id="9T3-fh-LCk"/>
-                                <constraint firstAttribute="width" constant="40" id="nFx-TE-Qpz"/>
-                            </constraints>
-                            <state key="normal" image="addressbookDark"/>
-                            <connections>
-                                <action selector="onAddressBook:" destination="-1" eventType="touchUpInside" id="ZWZ-Ow-Fuu"/>
-                            </connections>
-                        </button>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZCt-5C-d1b">
-                            <rect key="frame" x="16" y="309" width="343" height="40"/>
-                            <color key="backgroundColor" red="0.93725490199999995" green="0.94117647059999998" blue="0.96078431369999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="40" id="p4P-0q-CMD"/>
+                                <constraint firstAttribute="height" constant="44" id="p4P-0q-CMD"/>
                             </constraints>
                             <state key="normal" title="confirm">
                                 <color key="titleColor" red="0.1058823529" green="0.12941176469999999" blue="0.2156862745" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -209,14 +249,13 @@
                             </connections>
                         </button>
                     </subviews>
-                    <color key="backgroundColor" red="0.10588235294117647" green="0.13333333333333333" blue="0.21176470588235294" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstItem="ZCt-5C-d1b" firstAttribute="top" secondItem="teQ-db-MhW" secondAttribute="bottom" constant="27" id="AfV-54-Vll"/>
-                        <constraint firstItem="wxY-J9-R3B" firstAttribute="top" secondItem="YTb-iR-yEs" secondAttribute="bottom" constant="5" id="EWX-gd-s7e"/>
-                        <constraint firstAttribute="trailing" secondItem="n0S-Kr-0nu" secondAttribute="trailing" constant="16" id="F8z-Iu-FEs"/>
+                        <constraint firstAttribute="bottom" secondItem="ZCt-5C-d1b" secondAttribute="bottom" constant="24" id="4LX-wJ-U1Q"/>
+                        <constraint firstItem="Bae-jN-1Cj" firstAttribute="top" secondItem="fpG-5I-1Dv" secondAttribute="bottom" constant="8" id="Bug-HW-Mm9"/>
+                        <constraint firstItem="wxY-J9-R3B" firstAttribute="top" secondItem="YTb-iR-yEs" secondAttribute="bottom" priority="997" constant="8" id="EWX-gd-s7e"/>
                         <constraint firstItem="yFE-YI-ZLw" firstAttribute="leading" secondItem="5KZ-Sv-1ed" secondAttribute="leading" constant="23" id="Fgg-Wp-sAK"/>
                         <constraint firstItem="fqp-PY-CkZ" firstAttribute="leading" secondItem="5KZ-Sv-1ed" secondAttribute="leading" constant="16" id="JYH-WS-OWH"/>
-                        <constraint firstItem="Bae-jN-1Cj" firstAttribute="top" secondItem="teQ-db-MhW" secondAttribute="bottom" constant="5" id="LWv-eV-tSY"/>
                         <constraint firstItem="fqp-PY-CkZ" firstAttribute="top" secondItem="wxY-J9-R3B" secondAttribute="bottom" constant="10" id="LnZ-dk-PHW"/>
                         <constraint firstAttribute="trailing" secondItem="fqp-PY-CkZ" secondAttribute="trailing" constant="16" id="M0i-q3-hAL"/>
                         <constraint firstItem="wxY-J9-R3B" firstAttribute="leading" secondItem="5KZ-Sv-1ed" secondAttribute="leading" constant="23" id="N53-w0-QYH"/>
@@ -228,13 +267,11 @@
                         <constraint firstAttribute="trailing" secondItem="Ec1-bK-J89" secondAttribute="trailing" constant="16" id="SIg-iA-sZ4"/>
                         <constraint firstItem="Ec1-bK-J89" firstAttribute="leading" secondItem="5KZ-Sv-1ed" secondAttribute="leading" constant="16" id="UGr-ZM-acg"/>
                         <constraint firstAttribute="trailing" secondItem="Bae-jN-1Cj" secondAttribute="trailing" constant="16" id="VCI-6E-yYX"/>
-                        <constraint firstItem="YTb-iR-yEs" firstAttribute="top" secondItem="Ec1-bK-J89" secondAttribute="bottom" constant="4" id="XQT-gO-5QP"/>
+                        <constraint firstItem="YTb-iR-yEs" firstAttribute="top" secondItem="Ec1-bK-J89" secondAttribute="bottom" constant="8" id="XQT-gO-5QP"/>
                         <constraint firstItem="vXk-sj-7xa" firstAttribute="top" secondItem="gQi-sO-8Lg" secondAttribute="bottom" constant="17" id="YeZ-FY-I4a"/>
-                        <constraint firstItem="teQ-db-MhW" firstAttribute="top" secondItem="vXk-sj-7xa" secondAttribute="bottom" constant="17" id="aAe-Vc-5t3"/>
-                        <constraint firstItem="n0S-Kr-0nu" firstAttribute="leading" secondItem="teQ-db-MhW" secondAttribute="trailing" id="hNq-lY-qiC"/>
+                        <constraint firstItem="wxY-J9-R3B" firstAttribute="top" secondItem="BkJ-3M-CAg" secondAttribute="bottom" priority="999" constant="16" id="Ynj-pB-whV"/>
+                        <constraint firstItem="fpG-5I-1Dv" firstAttribute="top" secondItem="vXk-sj-7xa" secondAttribute="bottom" id="aIO-1U-4Lc"/>
                         <constraint firstItem="yFE-YI-ZLw" firstAttribute="top" secondItem="5KZ-Sv-1ed" secondAttribute="top" constant="17" id="k4u-wF-Re5"/>
-                        <constraint firstItem="n0S-Kr-0nu" firstAttribute="centerY" secondItem="teQ-db-MhW" secondAttribute="centerY" id="oU9-OJ-Qik"/>
-                        <constraint firstItem="teQ-db-MhW" firstAttribute="leading" secondItem="5KZ-Sv-1ed" secondAttribute="leading" constant="16" id="xEt-nB-XqR"/>
                         <constraint firstItem="YTb-iR-yEs" firstAttribute="leading" secondItem="5KZ-Sv-1ed" secondAttribute="leading" constant="16" id="xp2-Uf-jub"/>
                         <constraint firstAttribute="trailing" secondItem="ZCt-5C-d1b" secondAttribute="trailing" constant="16" id="xys-m2-eVZ"/>
                     </constraints>
@@ -242,16 +279,20 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="fpG-5I-1Dv" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="LL2-jY-iOh"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="5KZ-Sv-1ed" secondAttribute="trailing" id="RcG-JM-ztI"/>
                 <constraint firstItem="5KZ-Sv-1ed" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="URt-1Z-UCO"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="fpG-5I-1Dv" secondAttribute="trailing" constant="16" id="aS9-Le-fYo"/>
                 <constraint firstItem="5KZ-Sv-1ed" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="s6T-hA-gwx"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="5KZ-Sv-1ed" secondAttribute="bottom" id="s9w-bQ-wWT"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <point key="canvasLocation" x="39.200000000000003" y="46.326836581709152"/>
         </view>
     </objects>
     <resources>
-        <image name="addressbookDark" width="20" height="20"/>
-        <image name="walletChoosen" width="343" height="55"/>
+        <image name="switchWalletBG" width="343" height="60"/>
+        <image name="textField_icon_addressBook" width="20" height="20"/>
+        <image name="textField_icon_scan" width="20" height="20"/>
     </resources>
 </document>

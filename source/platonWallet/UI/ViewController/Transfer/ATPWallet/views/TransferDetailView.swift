@@ -14,6 +14,8 @@ class TransferDetailView: UIView {
 
     @IBOutlet weak var statusIconImageVIew: UIImageView!
     
+    @IBOutlet weak var pendingLoadingImage: UIImageView!
+    
     @IBOutlet weak var scrollView: UIScrollView!
     
     @IBOutlet weak var statusLabel: UILabel!
@@ -29,8 +31,6 @@ class TransferDetailView: UIView {
     @IBOutlet weak var valueLabel: UILabel!
     
     @IBOutlet weak var feeLabel: UILabel!
-    
-    @IBOutlet weak var walletName: UILabel!
     
     @IBOutlet weak var memoContent: UILabel!
     
@@ -64,6 +64,7 @@ class TransferDetailView: UIView {
         copyToAddrBtn.attachTextView = toLabel
         copyTxBtn.attachTextView = hashContent
         self.memoContent.isHidden = true
+        self.pendingLoadingImage.isHidden = true
     }
     
 //    override func layoutSubviews() {
@@ -81,7 +82,7 @@ class TransferDetailView: UIView {
     func updateContent(tx : AnyObject,wallet : Wallet?){
         
         if let tx = tx as? Transaction{
-
+ 
             if TransanctionType(rawValue: tx.transactionType) == .Vote {
                 voteExtraView.isHidden = false
                 showVoteExtraViewConstraint.priority = .defaultHigh
@@ -97,7 +98,7 @@ class TransferDetailView: UIView {
                 nodeNameLabel.text = candidateInfo.name
                 nodeIdLabel.text = singleVote.candidateId?.add0x()
                 numOfTicketsLabel.text = "\(singleVote.tickets.count)"
-                ticketPriceLabel.text = singleVote.ticketPrice.EnergonSuffix()
+                ticketPriceLabel.text = singleVote.deposit!.EnergonSuffix()
 
             }else {
                 voteExtraView.isHidden = true
@@ -110,7 +111,6 @@ class TransferDetailView: UIView {
             fromLabel.text = tx.from
             toLabel.text = tx.to
             valueLabel.text = tx.valueDescription!.ATPSuffix()
-            walletName.text = wallet?.name
             
             feeLabel.text = tx.feeDescription?.ATPSuffix()
             /*
@@ -135,7 +135,6 @@ class TransferDetailView: UIView {
                 toLabel.text = DefaultAddress
             }
             
-            walletName.text = wallet?.name
             valueLabel.text = "-"
             feeLabel.text = tx.feeDescription!.ATPSuffix()
             
@@ -154,47 +153,23 @@ class TransferDetailView: UIView {
     }
     
     func updateStatus(tx : Transaction){
-        
+         
         transactionTypeLabel.text = tx.transactionStauts.localizeTitle
         statusLabel.text = tx.transactionStauts.localizeDescAndColor.0
-        statusLabel.textColor = tx.transactionStauts.localizeDescAndColor.1
+        statusLabel.textColor = .black
         switch tx.transactionStauts {
         case .sending, .receiving, .voting:
             statusIconImageVIew.image = UIImage(named: "statusPending")
+            self.pendingLoadingImage.isHidden = false
+            self.pendingLoadingImage.rotate()
         case .sendSucceed, .receiveSucceed, .voteSucceed:
+            self.pendingLoadingImage.isHidden = true
             statusIconImageVIew.image = UIImage(named: "statusSuccess")
         case .sendFailed, .receiveFailed, .voteFailed:
+            self.pendingLoadingImage.isHidden = true
             statusIconImageVIew.image = UIImage(named: "statusFail")
         }
-        
-//        if TransanctionType(rawValue: tx.transactionType) == .Vote {
-//            statusLabel.localizedText = tx.voteStatus.localizedDesciptionAndColor.0
-//            statusLabel.textColor = tx.voteStatus.localizedDesciptionAndColor.1
-//            switch tx.voteStatus {
-//            case .pending:
-//                statusIconImageVIew.image = UIImage(named: "statusPending")
-//            case .success:
-//                statusIconImageVIew.image = UIImage(named: "statusSuccess")
-//            case .fail:
-//                statusIconImageVIew.image = UIImage(named: "statusFail")
-//            }
-//        }else {
-//            let style = tx.labelDesciptionAndColor()
-//            statusLabel.localizedText = style.0
-//            statusLabel.textColor = style.1
-//            if (tx.blockNumber?.length)! > 0{
-//                //success
-//                statusIconImageVIew.image = UIImage(named: "statusSuccess")
-//            }else{
-//                //confirming
-//                statusIconImageVIew.image = UIImage(named: "statusPending")
-//            }
-//            if tx.blockNumber != nil && (tx.blockNumber?.length)! > 0{
-//                transactionTypeLabel.localizedText = "TransactionListVC_Sent"
-//            }else{
-//                transactionTypeLabel.localizedText = "walletDetailVC_tx_type_send"
-//            }
-//        }
+
         
     }
     
@@ -205,9 +180,12 @@ class TransferDetailView: UIView {
         if (tx.blockNumber?.length)! > 0{
             //success
             statusIconImageVIew.image = UIImage(named: "statusSuccess")
+            self.pendingLoadingImage.isHidden = true
         }else{
             //confirming
             statusIconImageVIew.image = UIImage(named: "statusPending")
+            self.pendingLoadingImage.isHidden = false
+            self.pendingLoadingImage.rotate()
         }
     }
     

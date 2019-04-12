@@ -8,6 +8,7 @@
 
 import UIKit
 import Localize_Swift
+import SnapKit
 
 class AddSharedWalletVC: BaseViewController, UITextFieldDelegate {
 
@@ -21,19 +22,31 @@ class AddSharedWalletVC: BaseViewController, UITextFieldDelegate {
     @IBOutlet weak var contractAddressField: PTextFieldWithPadding!
     
     @IBOutlet weak var contractAddrTip: UILabel!
-    @IBOutlet weak var addressBookBtn: UIButton!
     
-    @IBOutlet weak var confirmButton: UIButton!
+    @IBOutlet weak var addressBookBtn: UIButton!
     
     @IBOutlet weak var chooseWalletName: UILabel!
     
+    @IBOutlet weak var walletAvatar: UIImageView!
+    
+    @IBOutlet weak var confirmButton: PButton!
+    
+    @IBOutlet weak var topToWalletTextField: NSLayoutConstraint!
+    
+    @IBOutlet weak var topToWalletTipView: NSLayoutConstraint!
+    
+    
+    
+    
+    
     var selectedAddress : String?
     
-    var selectedWallet : Wallet?{
+    var selectedWallet : Wallet?{ 
         didSet{
             self.selectedAddress = selectedWallet?.key?.address
             self.walletAddress.text = selectedWallet?.key?.address
             self.chooseWalletName.text = selectedWallet?.name
+            self.walletAvatar.image = selectedWallet?.image()
         }
     }
     
@@ -45,24 +58,33 @@ class AddSharedWalletVC: BaseViewController, UITextFieldDelegate {
         contractAddrTip.isHidden = true
         walletNameTip.isHidden = true
         
-        navigationItem.localizedText = "AddSharedWalletVC_title"
+        super.leftNavigationTitle = "AddSharedWalletVC_title"
         initSubViews()
         initNavigationItem()
         
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(onTap))
         self.view.addGestureRecognizer(tapGestureRecognizer)
         
-        confirmButton.setCommonEanbleStyle(false)
-        
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
-        
-        if WalletService.sharedInstance.wallets.count > 0{
-            selectedWallet = WalletService.sharedInstance.wallets[0]
+        var wallets = AssetVCSharedData.sharedData.walletList.filterClassicWallet
+        wallets.userArrangementSort()
+        if wallets.count > 0{
+            for item in wallets{
+                if item.WalletBalanceStatus() == BalanceStatus.Sufficient{
+                    selectedWallet = item
+                    break
+                }
+            }
+            if selectedWallet == nil{
+                selectedWallet = WalletService.sharedInstance.wallets[0]
+            }
+            
         }else{
             self.navigationController?.popViewController(animated: true)
             UIApplication.rootViewController().showMessage(text: Localized("create_Individual_first"))
             return
         }
+        self.confirmButton.style = .disable
     }
     
     @objc func onTap() {
@@ -75,9 +97,7 @@ class AddSharedWalletVC: BaseViewController, UITextFieldDelegate {
     }
     
     func initSubViews() {
-        addressBookBtn.addMaskView(corners: [.bottomRight,.topRight], cornerRadiiV: 5)
-        chooseWalletBtn.addMaskView(corners: [.bottomRight,.topRight], cornerRadiiV: 5)
-        
+
         let chooseWalletImgView = UIImageView(image: UIImage(named: "chooseWallet"))
         chooseWalletBtn.addSubview(chooseWalletImgView)
         chooseWalletImgView.snp.makeConstraints { (make) in
@@ -96,42 +116,59 @@ class AddSharedWalletVC: BaseViewController, UITextFieldDelegate {
             make.centerY.equalTo(chooseWalletBtn)
             make.trailing.equalTo(chooseWalletBtn)
         }
-        
+         
+        contractAddressField.bottomSeplineView?.snp.updateConstraints { (make) in
+            make.trailing.equalTo(5+30+30)
+        }
     }
     
-    func checkContractValidation() -> Bool{
+    func checkWalletNameValidation(showErrorMsg: Bool = false) -> Bool {
+        let nameRes = CommonService.isValidWalletName(walletName.text,checkDuplicate: true)
         
+        if showErrorMsg{
+            if nameRes.0 { 
+                walletNameTip.isHidden = true
+                self.topToWalletTipView.priority = UILayoutPriority(rawValue: 998)
+                self.topToWalletTextField.priority = UILayoutPriority(rawValue: 999)
+            }else {
+                walletNameTip.text = nameRes.1 ?? ""
+                walletNameTip.isHidden = false
+                self.topToWalletTipView.priority = UILayoutPriority(rawValue: 999)
+                self.topToWalletTextField.priority = UILayoutPriority(rawValue: 998)
+            }
+            self.view.layoutIfNeeded() 
+        }
+        
+        return nameRes.0
+    }
+    
+    func checkContractValidation(showErrorMsg: Bool = false) -> Bool{
         let nameRes = CommonService.isValidContractAddress(contractAddressField.text)
-        if nameRes.0 {
-            contractAddrTip.isHidden = true
-        }else {
-            contractAddrTip.text = nameRes.1 ?? ""
-            contractAddrTip.isHidden = false
+        if showErrorMsg{
+            
+            if nameRes.0 {
+                contractAddrTip.isHidden = true
+            }else {
+                contractAddrTip.text = nameRes.1 ?? ""
+                contractAddrTip.isHidden = false
+            }
+            self.view.layoutIfNeeded()
         }
-        self.view.layoutIfNeeded()
+        
         return nameRes.0
     }
     
-    func checkWalletNameValidation() -> Bool {
-        let nameRes = CommonService.isValidWalletName(walletName.text)
-        
-        if nameRes.0 {
-            walletNameTip.isHidden = true
-        }else {
-            walletNameTip.text = nameRes.1 ?? ""
-            walletNameTip.isHidden = false
-        }
-        self.view.layoutIfNeeded()
-        return nameRes.0
-    }
+
 
     func initNavigationItem(){
+        /*
         let scanButton = UIButton(type: .custom)
-        scanButton.setImage(UIImage(named: "navScanWhite"), for: .normal)
+        scanButton.setImage(UIImage(named: "navScanBlack"), for: .normal)
         scanButton.addTarget(self, action: #selector(onNavRight), for: .touchUpInside)
         scanButton.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
         let rightBarButtonItem = UIBarButtonItem(customView: scanButton)
         navigationItem.rightBarButtonItem = rightBarButtonItem
+         */
     }
     
     // MARK: - Button Actions
@@ -142,7 +179,7 @@ class AddSharedWalletVC: BaseViewController, UITextFieldDelegate {
         let view = UIView.viewFromXib(theClass: TransferSwitchWallet.self) as! TransferSwitchWallet
         view.selectedAddress = selectedAddress
         view.checkBalance = false
-        popUpVC.setUpContentView(view: view, size: CGSize(width: kUIScreenWidth, height: 289))
+        popUpVC.setUpContentView(view: view, size: CGSize(width: PopUpContentWidth, height: 289))
         popUpVC.setCloseEvent(button: view.closeBtn)
         view.selectionCompletion = { wallet in
             popUpVC.onDismissViewController()
@@ -154,16 +191,22 @@ class AddSharedWalletVC: BaseViewController, UITextFieldDelegate {
     
     
     @objc func onNavRight(){
+ 
+    }
+    
+    
+    @IBAction func onScan(_ sender: Any) {
         let scanner = QRScannerViewController()
         scanner.hidesBottomBarWhenPushed = true
-        scanner.scanCompletion = { result in
+        scanner.scanCompletion = {[weak self] result in
             if result.is40ByteAddress(){
-                self.contractAddressField.text = result
-                self.keyboardWillHide()
+                self?.contractAddressField.text = result
+                self?.keyboardWillHide()
+                let _  = self?.checkContractValidation()
             }else{
-                self.showMessage(text: Localized("QRScan_failed_tips"))
+                self?.showMessage(text: Localized("QRScan_failed_tips"))
             }
-            self.navigationController?.popViewController(animated: true)
+            self?.navigationController?.popViewController(animated: true)
         }
         navigationController?.pushViewController(scanner, animated: true)
     }
@@ -173,6 +216,7 @@ class AddSharedWalletVC: BaseViewController, UITextFieldDelegate {
         addressBookVC.selectionCompletion = { [weak self](_ addressInfo : AddressInfo?) -> () in
             if let weakSelf = self{
                 weakSelf.contractAddressField.text = addressInfo?.walletAddress
+                let _  = self?.checkContractValidation()
             }
         }
         navigationController?.pushViewController(addressBookVC, animated: true)
@@ -181,14 +225,18 @@ class AddSharedWalletVC: BaseViewController, UITextFieldDelegate {
     
     @IBAction func onConfirm(_ sender: Any) {
         
+        if !self.checkConfirmButtonEnable(){
+            return 
+        }
+        
         if SWalletService.sharedInstance.getSWalletByContractAddress(contractAddress: contractAddressField.text!) != nil{
             self.showMessage(text: Localized("sharedWallet_sharedWallet_existed"))
             return
         }
         
-        self.showLoading()
+        self.showLoadingHUD()
         SWalletService.sharedInstance.addShardWallet(contractAddress: self.contractAddressField.text!, sender: (selectedWallet?.key?.address)!, name: self.walletName.text!, walletAddress: (selectedWallet?.key?.address)!) { (result, data) in
-            self.hideLoading()
+            self.hideLoadingHUD()
             switch result{
                 
             case .success:
@@ -206,19 +254,26 @@ class AddSharedWalletVC: BaseViewController, UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         
         if textField == walletName {
-            let _ = checkWalletNameValidation()
+            let _ = checkWalletNameValidation(showErrorMsg: true)
         }else if textField == contractAddressField {
-            let _ = checkContractValidation()
+            let _ = checkContractValidation(showErrorMsg: true)
         }
+        let _ = self.checkConfirmButtonEnable()
     }
     
     
     
     @objc func keyboardWillHide(){
-        if CommonService.isValidContractAddress(contractAddressField.text).0 && CommonService.isValidWalletName(walletName.text).0{
-            confirmButton.setCommonEanbleStyle(true)
+        
+    }
+    
+    func checkConfirmButtonEnable() -> Bool{
+        if checkWalletNameValidation() && checkContractValidation(){
+            self.confirmButton.style = .blue
+            return true
         }else{
-            confirmButton.setCommonEanbleStyle(false)
+            self.confirmButton.style = .disable
+            return false
         }
     }
     

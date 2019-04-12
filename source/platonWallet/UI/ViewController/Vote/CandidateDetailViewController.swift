@@ -12,8 +12,7 @@ import Localize_Swift
 class CandidateDetailViewController: BaseViewController {
     
     @IBOutlet weak var headerView: UIView!
-    
-    @IBOutlet weak var avatar: UIImageView!
+
     @IBOutlet weak var candidateNameLabel: UILabel!
     @IBOutlet weak var locationLabel: UILabel!
     @IBOutlet weak var statusLabel: UILabel!
@@ -30,6 +29,7 @@ class CandidateDetailViewController: BaseViewController {
     @IBOutlet weak var institutionalWebsiteLabel: UILabel!
     @IBOutlet weak var nodeInfoLabel: UILabel!
     
+    @IBOutlet weak var voteButton: PButton!
     var candidate: Candidate!
     
     lazy var headerShadowLayer : CALayer = {
@@ -44,9 +44,21 @@ class CandidateDetailViewController: BaseViewController {
         return shadowL
     }()
     
+    lazy var candidateRankBgLayer : CALayer = {
+        let bglayer = CALayer()
+        bglayer.cornerRadius = 2
+        bglayer.frame = CGRect(x: -4, y: -4, width: statusLabel.frame.size.width + 8, height: statusLabel.frame.size.height + 8)
+        bglayer.backgroundColor = UIViewController_backround.cgColor
+        bglayer.backgroundColor = UIColor(rgb: 0x256AFE, alpha: 0.2).cgColor
+        //bglayer.shadowColor = UIColor(rgb: 0x020527, alpha: 0.2).cgColor
+        return bglayer
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = Localized("CandidateDetailVC_title")
+         
+        voteButton.style = .blue
+        super.leftNavigationTitle = "CandidateDetailVC_title"
         institutionalWebsiteLabel.isUserInteractionEnabled = true
         let tapG = UITapGestureRecognizer(target: self, action: #selector(openUrl(_:)))
         institutionalWebsiteLabel.addGestureRecognizer(tapG)
@@ -62,14 +74,17 @@ class CandidateDetailViewController: BaseViewController {
         headerView.layer.mask = shapeL
         
         headerShadowLayer.frame = headerView.frame
+        if statusLabel.layer.sublayers != nil && !statusLabel.layer.sublayers!.contains(candidateRankBgLayer){
+            statusLabel.layer.insertSublayer(candidateRankBgLayer, at: 0)
+        }
+        /*
         if !view.layer.sublayers!.contains(headerShadowLayer) {
             headerView.superview!.layer.insertSublayer(headerShadowLayer, at: 0)
         }
+         */
     }
     
     private func setup() {
-        
-        avatar.image = candidate.avatar
         candidateNameLabel.text = candidate.extra?.nodeName
         locationLabel.text = "(\(candidate.countryName))"
         statusLabel.text = candidate.rankStatus.desc()
@@ -84,13 +99,13 @@ class CandidateDetailViewController: BaseViewController {
         if let host = candidate.host, host.length > 0, let port = candidate.port, port.length > 0 {
             nodeUrlLabel.text = "\(host):\(port)"
         }
-        
+
         nodeIdLabel.text = candidate.candidateId!.hasPrefix("0x") ? candidate.candidateId!:"0x\(candidate.candidateId!)"
         rewardRatioLabel.text = candidate.rewardRate
         institutionalNameLabel.text = candidate.extra?.nodeDepartment
         institutionalWebsiteLabel.text = candidate.extra?.officialWebsite
         nodeInfoLabel.text = candidate.extra?.nodeDiscription
-        
+         
         VoteManager.sharedInstance.GetCandidateEpoch(candidateId: candidate.candidateId!) { (res, data) in
             self.ticketAgeLabel.text = "\(data as? String ?? "-")Bs"
         }

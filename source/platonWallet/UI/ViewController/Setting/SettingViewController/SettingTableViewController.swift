@@ -16,8 +16,9 @@ class SettingTableViewController: BaseViewController, UITableViewDelegate, UITab
         
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.backgroundColor = UIViewController_backround
-        tableView.separatorColor = UIColor(rgb: 0x32394E)
-        tableView.separatorInset = .zero
+        //tableView.separatorColor = UIColor(rgb: 0x32394E)
+        tableView.separatorColor = UIColor(rgb: 0xE4E7F3)
+        tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         tableView.layoutMargins = .zero;
         tableView.preservesSuperviewLayoutMargins = false
         tableView.delegate = self
@@ -30,7 +31,7 @@ class SettingTableViewController: BaseViewController, UITableViewDelegate, UITab
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.localizedText = "SettingsVC_title"
+        super.leftNavigationTitle = "SettingsVC_title"
         view.addSubview(tableView)
         tableView.snp.makeConstraints { (maker) in
             maker.edges.equalToSuperview()
@@ -49,6 +50,7 @@ class SettingTableViewController: BaseViewController, UITableViewDelegate, UITab
         }
         
     }
+
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -119,7 +121,7 @@ class SettingTableViewController: BaseViewController, UITableViewDelegate, UITab
             }else{
                 lanL.text = "简体中文"
             }
-            lanL.textColor = UIColor(rgb: 0xC5CBDC)
+            lanL.textColor = UIColor(rgb: 0x000000)
             lanL.font = UIFont.systemFont(ofSize: 12)
             cell.contentView.addSubview(lanL)
             lanL.snp.makeConstraints { (maker) in
@@ -161,11 +163,11 @@ class SettingTableViewController: BaseViewController, UITableViewDelegate, UITab
         }
         
         let titleL = UILabel(frame: .zero)
-        titleL.textColor = UIColor.white
+        titleL.textColor = UIColor.black
         titleL.font = UIFont.systemFont(ofSize: 14)
         titleL.localizedText = title
         cell.contentView.addSubview(titleL)
-        cell.contentView.backgroundColor = UIViewController_backround
+        cell.contentView.backgroundColor = UIColor(rgb: 0xffffff)
         titleL.snp.makeConstraints { (maker) in
             maker.left.equalToSuperview().offset(18)
             maker.centerY.equalToSuperview()

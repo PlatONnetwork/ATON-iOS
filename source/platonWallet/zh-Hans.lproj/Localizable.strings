@@ -35,19 +35,20 @@
 
 //createWalletVC
 "createWalletVC_title" = "创建普通钱包";
-"createWalletVC_walletName" = "钱包名称";
-"createWalletVC_password" = "设置密码";
+"createWalletVC_walletName" = "钱包名称:";
+"createWalletVC_password" = "设置密码:";
 
 "createWalletVC_pswStrength" = "强度";
 "createWalletVC_note" = "注意：请务必牢记钱包密码，服务器不会存储您的密码，遗忘丢失将无法找回！";
 "createWalletVC_createBtn_title" = "创建钱包";
-"tabbar_asset_title" = "资产";
+"tabbar_asset_title" = "钱包";
 "tabbar_personal_title" = "我的";
+"tabbar_candidate_title" = "投票";
 
 "navigationbar_wallet_title" = "普通钱包";
 "navigationbar_sharedwallet_title" = "联名钱包";
 
-"asset_header_total_asset" = "总资产";
+"asset_header_total_asset" = "总计";
 
 //transfer viewController
 "transferVC_nav_title" = "发送 Energon";
@@ -65,9 +66,13 @@
 "transferVC_estima_des" = "预计交易确认时间：";
 
 "transferVC_confirm_title" = "发送确认";
-"transferVC_confirm_PayInfo" = "支付信息";
-"transferVC_confirm_To" = "接收地址";
-"transferVC_confirm_Fee" = "交易费用";
+
+"transferVC_confirm_PayInfo" = "支付信息：";
+"transferVC_confirm_From" = "发送钱包：";
+"transferVC_confirm_executor" = "执行钱包：";
+"transferVC_confirm_To" = "接收地址：";
+"transferVC_confirm_Fee" = "交易费用：";
+
 "transferVC_confirm_ATP_send" = "Energon 发送";
 "transferVC_confirm_Submit" = "确定";
 
@@ -141,7 +146,7 @@
 "SharedFacebook" = "Facebook";
 "SharedTwitter" = "Twitter";
 "SharedMore" = "更多";
-"Receive_ATP" = "接收 Energon";
+"Receive_ATP" = "转入 Energon";
 "SharedQRViewSaving" = "保存中...";
 "SharedQRView_photolib_unauthorized_tips" = "照片写入权限受限，请至“系统-设置”授权后重试";
 
@@ -151,27 +156,27 @@
 
 "createWalletSuccessVC_title" = "备份钱包";
 
-"importKeystoreVC_tips" = "使用Keystore导入的同时需要输入钱包密码进行解密，同时未来需要通过密码验证才能进行Token发送、备份等操作。";
-"importKeystoreVC_keystoreInput_placeholder" = "请输入Keystore";
+"importKeystoreVC_tips" = "使用Keystore导入的同时需要输入钱包密码进行解密，同时未来需要通过密码验证才能进行Energon发送、备份等操作。";
+"importKeystoreVC_keystoreInput_placeholder" = "请输入钱包文件（.json）内容";
 "importKeystoreVC_nameInput_placeholder" = "设置钱包名称";
 "importKeystoreVC_pswInput_placeholder" = "钱包密码";
-"importKeystoreVC_keystore_empty_tips" = "Keystore 不能为空！";
+"importKeystoreVC_keystore_empty_tips" = "钱包文件(.json)不能为空！";
 
 //importWalletVC
 "importWalletVC_title" = "导入普通钱包";
-"importWalletVC_tab_keystore" = "Keystore";
+"importWalletVC_tab_keystore" = "钱包文件（.json）";
 "importWalletVC_tab_mnemonic" = "助记词";
 "importWalletVC_tab_privateKey" = "私钥";
-"importWalletVC_mnemonic_tips" = "请将记下的助记词按顺序填入以下的表格中，用空格分割；使用助记词导入的同时需要设定钱包密码，未来需要通过密码验证才能够进行Token发送、备份等操作。";
+"importWalletVC_mnemonic_tips" = "请将记下的助记词按顺序填入以下表格中，在每个助记词输入完成后按“空格”键可以跳转到下个单词，使用助记词导入的同时需要设定钱包密码，未来需要通过密码验证才能够进行能量发送、备份等操作。";
 "importWalletVC_mnemonic_textView_placeholder" = "请输入助记词，用空格分割";
 
-"importWalletVC_privateKey_tips" = "使用私钥导入的同时需要设置钱包密码，未来需要通过密码验证才能够进行Token发送、备份等操作。";
+"importWalletVC_privateKey_tips" = "使用私钥导入的同时需要设置钱包密码，未来需要通过密码验证才能够进行Energon发送、备份等操作。";
 "importWalletVC_privateKey_textView_placeholder" = "请输入私钥";
 "importWalletVC_importBtn_title" = "开始导入";
 "importWalletVC_success_tips" = "导入成功";
 "importWalletVC_mnemonicInput_empty_tips" = "助记词不能为空";
 "importWalletVC_privateKeyInput_empty_tips" = "私钥不能为空";
-
+"importWalletVC_PasteButton" = "粘贴";
 
 //backupMnemonicVC
 "backupMnemonicVC_title" = "备份助记词";
@@ -184,11 +189,12 @@
 "verifyMnemonicVC_tips" = "请按顺序点击助记词，以确认您已经正确备份。";
 "verifyMnemonicVC_submitBtn_title" = "完成备份";
 "verifyMnemonicVC_emptyBtn_title" = "清空";
-
+"backupskip" = "跳过";
 
 
 //alert
 "alert_input_psw_title" = "请输入密码进行确认";
+"alert_input_psw_title_placeholder" = "请输入钱包密码";
 "alert_confirmBtn_title" = "确认";
 "alert_cancelBtn_title" = "取消";
 "alert_psw_input_error_title" = "密码错误";
@@ -229,19 +235,22 @@
 "PersonalVC_cell_wallet_About" = "关于";
 "PersonalVC_cell_wallet_community" = "社区";
 
-
 //WalletManagerDetailViewController
 "WalletManagerDetailVC_title" = "钱包管理";
+"WalletManagerDetailVC_Rename"="修改名称";
 "WalletManagerDetailVC_exportPrivateKey_title" = "导出私钥";
-"WalletManagerDetailVC_exportKeystore_title" = "导出Keystore";
+"WalletManagerDetailVC_exportKeystore_title" = "导出钱包文件（.json）";
+"WalletManagerDetailVC_Mnemonicsbackup" = "备份助记词";
 "WalletManagerDetailVC_deleteBtn_title" = "删除钱包";
-
+"WalletManager_backUp" = "备份";
 
 //ExportPrivateKeyVC
 "ExportPrivateKeyVC_title" = "导出私钥";
 "ExportPrivateKeyVC_note" = "注意：不要截图，请检查周围，以防他人偷看或拍摄，请妥善保管私钥，切勿存储在网盘中";
 "ExportPrivateKeyVC_tab1_title" = "私钥";
 "ExportPrivateKeyVC_tab2_title" = "二维码";
+
+
 
 
 //ExportKeystoreVC
@@ -286,7 +295,7 @@
 "Invalid wallet" = "钱包错误";
 "Invalid private key" = "私钥无法解析";
 "Invalid mnemonic phrase" = "助记词无法识别";
-"Invalid keystore" = "keystore无法解析";
+"Invalid keystore" = "钱包文件无法解析";
 "Wallet already exists" = "钱包已存在";
 
 
@@ -294,7 +303,7 @@
 "ReceiveVC_nav_title" = "接收";
 
 //WalletEmptyView
-"IndividualWallet_EmptyView_tips" = "还没有普通钱包";
+"IndividualWallet_EmptyView_tips" = "还没有钱包";
 "IndividualWallet_EmptyView_createBtn_title" = "创建普通钱包";
 "IndividualWallet_EmptyView_importBtn_title" = "导入普通钱包";
 
@@ -386,9 +395,14 @@
 //CreateSharedWalletVC
 "Wallet name" = "钱包名称";
 "CreateSharedWalletVC_Create Shared Wallet" = "创建联名钱包";
-"CreateSharedWalletVC_Select Owner" = "选择普通钱包";
-"CreateSharedWalletVC_Shared Owners" = "共享用户数量";
+"CreateSharedWalletVC_Select Owner" = "选择关联钱包";
+"CreateSharedWalletVC_Shared Owners" = "联名用户数量";
 "CreateSharedWalletVC_Required Signatures" = "所需签名数";
+
+"CreateSharedWalletVC_Select Owner colon" = "选择关联钱包：";
+"CreateSharedWalletVC_Shared Owners colon" = "联名用户数量：";
+"CreateSharedWalletVC_Required Signatures colon" = "所需签名书：";
+
 "CreateSharedWalletVC_Next" = "下一步";
 "CreateSharedWalletVC_member" = "成员";
 "CreateSharedWalletVC_memberRemark" = "备注名称（选填）";
@@ -416,6 +430,8 @@
 "Members_Des" = "联名用户";
 "SharedWallet_delete" = "删除钱包";
 "Owner_Des" = "关联普通钱包";
+"JointWalletManagement_Joint_Owner" = "联名用户";
+
 
 
 //add shared wallet
@@ -432,7 +448,7 @@
 "AddSharedWalletVC_addr_placeholder" = "输入联名钱包地址";
 "AddSharedWalletVC_add" = "添加联名钱包";
 
-"sharedWalletDefaltMemberName" = "member";
+"sharedWalletDefaltMemberName" = "用户";
 "MemberSignDetailVC_YOU" = "你";
 "sharedWallet_sharedWallet_existed" = "联名钱包已存在";
 "sharedWallet_sharedWallet_no_existed" = "添加失败，地址不存在";
@@ -514,7 +530,7 @@
 //individual wallet back up
 "backuptip" = "最后一步，备份钱包";
 "create_individual_success" = "成功";
-"backupsetp1" = "请将助记词抄写在纸上并保存在安全的地方，避免保存在网上以免被不法分子盗取。";
+"backupsetp1" = "助记词由12个常见英文单词组成，如果泄露，无需密码即可获取钱包资产。请将助记词抄写在纸上并保存在安全的地方，不要保存在网上以免被不法分子盗取。";
 "backup_start" = "开始备份";
 
 "Require sign number error" = "签名数错误";
@@ -548,12 +564,17 @@
 //Vote
 "CandidateListVC_title" = "投票";
 "CandidateListVC_header_desc" = "投票率：%@ | 已投票：%@ | 票价：%@";
+
+"CandidateListVC_voteRate_desc" = "投票率：%@ ";
+"CandidateListVC_VoteNumber_desc" = "已投票：%@";
+"CandidateListVC_TicketPrice_desc" = "票价：%@";
+
 "CandidateListVC_defaultBtn_title" = "默认";
-"CandidateListVC_bonusBtn_title" = "分红";
+"CandidateListVC_bonusBtn_title" = "激励";
 "CandidateListVC_areaBtn_title" = "区域";
 "CandidateListVC_searchTF_placeholder" = "输入节点账户名称查询";
 "CandidateListVC_VoteBtn_title" = "投票";
-"CandidateListVC_cell_desc" = "分红比例：%@ | 质押金：%@";
+"CandidateListVC_cell_desc" = "投票激励：%@ | 质押金：%@";
 "CandidateListVC_empty_desc" = "查询无结果！";
 "CandidateListVC_vote_noWallet_tips" = "请先创建钱包";
 "CandidateListVC_vote_insufficient_balance_tips" = "钱包余额不足，无法进行投票";
@@ -570,19 +591,19 @@
 "CandidateDetailVC_nodeInfo" = "节点信息";
 "CandidateDetailVC_nodeUrl" = "节点地址";
 "CandidateDetailVC_nodeId" = "节点ID";
-"CandidateDetailVC_rewardRatio" = "分红比例";
+"CandidateDetailVC_rewardRatio" = "投票激励";
 "CandidateDetailVC_institutionalName" = "机构名称";
 "CandidateDetailVC_institutionalWebsite" = "机构官网";
 "CandidateDetailVC_nodeIntroduction" = "节点简介";
 "CandidateDetailVC_voteBtn_title" = "投票";
-"CandidateDetailVC_rankStatu_candidateFirst100" = "候选前100名";
-"CandidateDetailVC_rankStatu_alternativeFirst100" = "备选前100名";
+"CandidateDetailVC_rankStatu_candidateFirst100" = "提名节点";
+"CandidateDetailVC_rankStatu_alternativeFirst100" = "候选节点";
 
 //MyVoteListVC
 "MyVoteListVC_nav_title" = "我的投票";
 "MyVoteListVC_locked" = "投票锁定";
 "MyVoteListVC_validinvalid" = "有效票/失效票";
-"MyVoteListVC_reward" = "投票收益";
+"MyVoteListVC_reward" = "投票奖励";
 "MyVoteListVC_Empty_tips" = "暂无投票记录";
 
 //SingleVoteDetailListVC
@@ -590,7 +611,7 @@
 "SingleVoteDetailListVC_validinvalid" = "有效票/失效票";
 "SingleVoteDetailListVC_ticketPrice" = "票价";
 "SingleVoteDetailListVC_locked_release" = "投票锁定/已解除";
-"SingleVoteDetailListVC_reward" = "投票收益";
+"SingleVoteDetailListVC_reward" = "投票奖励";
 "SingleVoteDetailListVC_vote_wallet" = "投票钱包";
 "SingleVoteDetailListVC_expiredtime_1" = "预计过期时间";
 "SingleVoteDetailListVC_expiredtime_2" = "过期时间";
@@ -610,7 +631,7 @@
 //
 "VoteConfirm_title" = "投票信息";
 "VoteConfirm_payment_info" = "支付信息";
-"VoteConfirm_fee" = "交易费用";
+"VoteConfirm_fee_colon" = "交易费用：";
 "VoteConfirm_submitBtn_title" = "确定";
 "VoteConfirm_vote" = "投票";
 
@@ -619,3 +640,33 @@
 "fail" = "失败";
 
 "cannot_send_itself" = "无法发送给自己";
+
+
+//AssetViewController
+"Asset_segment_Transaction" = "交易";
+"Asset_segment_Send" = "发送";
+"Asset_segment_Receive" = "接收";
+
+//common
+"savetoaddressbook" = "保存至地址簿";
+
+"alert_walletnamecolon" = "钱包名称：";
+"alert_pwdcolon" = "密码：";
+"alert_quit_backup_yes" = "确定";
+"alert_quit_backup_no" = "取消";
+"alert_rename_wallet" = "修改钱包名称";
+"alert_rename_wallet_placeholder" = "钱包名称";
+"backup_quit_tip" = "您还未完成助记词备份操作，确定要退出备份操作吗？";
+"Send_transaction_alert_title" = "发送确认";
+
+"confirm_send_from" = "发送钱包：";
+
+"addressbook_wallet_name_with_Colon" = "钱包名称：";
+"addressbook_wallet_address_with_Colon" = "钱包地址：";
+
+"wallet_name_duplicate" = "钱包名称在本客户端已存在，不可重复";
+
+"scanviewcontroller_scan" = "放入框内 自动扫描";
+
+"watchJointWalletTip_Notice" = "提示";
+"watchJointWalletTip_message" = "关联的经典钱包已被删除，该钱包无法发起交易！";

@@ -27,7 +27,7 @@ class SharedWalletTransferVC: BaseViewController ,UITextViewDelegate,UITextField
         get{
             if self.submitGas == nil || self.confirmGas == nil{
                 return BigUIntZero
-            }
+            } 
             var total = BigUIntZero
             total.multiplyAndAdd(self.submitGas!, 1)
             if UIDisplay_addConfirmGas{
@@ -75,7 +75,7 @@ class SharedWalletTransferVC: BaseViewController ,UITextViewDelegate,UITextField
         super.viewDidLoad()
         initSubViews()
         initNavigationItem()
-        navigationItem.localizedText = "transferVC_nav_title"
+        super.leftNavigationTitle = "transferVC_nav_title"
         let _ = self.checkConfirmButtonAvaible(showTip : false)
         self.estimateSubmitAndConfirm(true)
     }
@@ -112,7 +112,7 @@ class SharedWalletTransferVC: BaseViewController ,UITextViewDelegate,UITextField
     
     func initNavigationItem(){
         let scanButton = UIButton(type: .custom)
-        scanButton.setImage(UIImage(named: "navScanWhite"), for: .normal)
+        scanButton.setImage(UIImage(named: "navScanBlack"), for: .normal)
         scanButton.addTarget(self, action: #selector(onNavRight), for: .touchUpInside)
         scanButton.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
         let rightBarButtonItem = UIBarButtonItem(customView: scanButton)
@@ -176,8 +176,8 @@ class SharedWalletTransferVC: BaseViewController ,UITextViewDelegate,UITextField
         confirmPopUpView = PopUpViewController()
         let confirmView = UIView.viewFromXib(theClass: TransferConfirmView.self) as! TransferConfirmView
         confirmView.submitBtn.addTarget(self, action: #selector(onSubmit), for: .touchUpInside)
-        confirmPopUpView!.setUpContentView(view: confirmView, size: CGSize(width: kUIScreenWidth, height: 314))
-        confirmPopUpView!.setCloseEvent(button: confirmView.closeButton)
+        confirmPopUpView!.setUpContentView(view: confirmView, size: CGSize(width: PopUpContentWidth, height: 314))
+        
         confirmView.totalLabel.text = transferView.sendAmoutTextField.text!.ATPSuffix()
         confirmView.toAddressLabel.text = transferView.toWalletAddressTextField.text!
         confirmView.feeLabel.text = transferView.feeLabel.text
@@ -188,7 +188,7 @@ class SharedWalletTransferVC: BaseViewController ,UITextViewDelegate,UITextField
         resignViewsFirstResponse()
         confirmPopUpView?.onDismissViewController()
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            self.showInputPswAlert()
+            //self.showInputPswAlert()
         }
     }
     
@@ -203,15 +203,15 @@ class SharedWalletTransferVC: BaseViewController ,UITextViewDelegate,UITextField
         
         if transferView.memoTextView.isFirstResponder {
             transferView.memoTextView.resignFirstResponder()
-        }
+        } 
     }
     
     @objc func onSwitchWallet(){
         let popUpVC = PopUpViewController()
         let view = UIView.viewFromXib(theClass: TransferSwitchWallet.self) as! TransferSwitchWallet
         view.selectedAddress = selectedAddress
-        view.type = 1
-        popUpVC.setUpContentView(view: view, size: CGSize(width: kUIScreenWidth, height: 289))
+        view.switchType = 1
+        popUpVC.setUpContentView(view: view, size: CGSize(width: PopUpContentWidth, height: 289))
         popUpVC.setCloseEvent(button: view.closeBtn)
         view.selectionCompletion = { wallet in
             if let wallet = wallet as? SWallet{
@@ -274,46 +274,6 @@ class SharedWalletTransferVC: BaseViewController ,UITextViewDelegate,UITextField
         
     }
     
-    // MARK: - PopUp
-    
-    func showInputPswAlert() {
-        
-        let alertC = PAlertController(title: Localized("alert_input_psw_title"), message: nil)
-        alertC.addTextField(text: "", placeholder: "", isSecureTextEntry: true)
-        
-        alertC.addAction(title: Localized("alert_cancelBtn_title")) {
-        }
-        
-        alertC.addAction(title: Localized("alert_confirmBtn_title")) { [weak self] in
-            
-            if !CommonService.isValidWalletPassword(alertC.textField?.text ?? "").0{
-                return
-            }
-            alertC.dismiss(animated: true, completion: nil)
-            
-            self?.showLoading()
-            let wallet = SWalletService.sharedInstance.getATPWalletByAddress(address: (self!.selectedWallet?.walletAddress)!)
-            WalletService.sharedInstance.exportPrivateKey(wallet: (wallet)!, password: (alertC.textField?.text)!, completion: { (pri, err) in
-                if (err == nil && (pri?.length)! > 0) {
-                    self?.doSubmitAndConfirm(pri!)
-                }else{
-                    self?.hideLoading()
-                    self?.showMessage(text: (err?.errorDescription)!)
-                }
-            })
-            
-        }
-        alertC.inputVerify = { input in
-            return CommonService.isValidWalletPassword(input).0
-        }
-        alertC.addActionEnableStyle(title: Localized("alert_confirmBtn_title"))
-        alertC.show(inViewController: self, animated: false)
-        alertC.textField?.becomeFirstResponder()
-        
-    }
-    
- 
-    
     func doSubmitAndConfirm(_ pri: String){
     
         let from = self.selectedWallet?.walletAddress
@@ -336,7 +296,7 @@ class SharedWalletTransferVC: BaseViewController ,UITextViewDelegate,UITextField
                                                         time: UInt64(time),
                                                         fee: fee,
                                                         completion: { (result, data) in
-                                                            self.hideLoading()
+                                                            self.hideLoadingHUD()
                                                             
                                                             switch result{
                                                             case .success:

@@ -13,12 +13,12 @@ class WallletPersistence {
     
     let realm: Realm
     
-    init(realm : Realm) {
+    init(realm : Realm) { 
         self.realm = realm
     }
     
     func save(wallet: Wallet) {
-
+        wallet.nodeURLStr = SettingService.getCurrentNodeURLString()
         try? realm.write {
             realm.add(wallet, update: true)
         }
@@ -40,17 +40,21 @@ class WallletPersistence {
     func getAll() -> [Wallet] {
 
         let res = realm.objects(Wallet.self).sorted(byKeyPath: "createTime")
-        let wallets = Array(res)
+        var wallets = Array(res)
+        wallets = wallets.filterArrayByCurrentNodeUrlString()
+        for item in wallets {
+            item.key = try? Keystore(contentsOf: URL(fileURLWithPath: keystoreFolderPath + "/\(item.keystorePath)"))
+        }
         return wallets.filter { (item) -> Bool in
             return item.uuid != ""
         }
     }
     
+    /*
     func get(for address: String) -> Wallet? {
-        
         return realm.object(ofType: Wallet.self, forPrimaryKey: address)
-        
     }
+    */
     
     
 }

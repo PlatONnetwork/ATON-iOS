@@ -57,14 +57,15 @@ class LanguageSettingVC: BaseViewController,UITableViewDelegate,UITableViewDataS
         let rightMenuButton = UIButton(type: .custom)
         rightMenuButton.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
         rightMenuButton.localizedNormalTitle = "SettingsVC_nodeSet_saveBtn_title"
-        rightMenuButton.setTitleColor(UIColor(rgb: 0xCDCDCD ), for: .normal)
+        rightMenuButton.setTitleColor(UIColor(rgb: 0x105CFE), for: .normal)
+        rightMenuButton.titleLabel?.font = UIFont.systemFont(ofSize: 13)
         rightMenuButton.addTarget(self, action: #selector(onNavRight), for: .touchUpInside)
         let rightBarButtonItem = UIBarButtonItem(customView: rightMenuButton)
         navigationItem.rightBarButtonItem = rightBarButtonItem
     }
     
     func initNavigationItems(){
-        navigationItem.localizedText = "LanguageSetting_VC_Title"
+        super.leftNavigationTitle = "LanguageSetting_VC_Title"
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

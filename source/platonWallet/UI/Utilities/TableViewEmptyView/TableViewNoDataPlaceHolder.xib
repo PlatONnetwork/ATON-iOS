@@ -13,42 +13,54 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="TableViewNoDataPlaceHolder" customModule="platonWallet" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="278"/>
+            <rect key="frame" x="0.0" y="0.0" width="375" height="331"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="imageEmptyPlaceholder" translatesAutoresizingMaskIntoConstraints="NO" id="e6x-EU-Z7E">
-                    <rect key="frame" x="97.5" y="49" width="180" height="180"/>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dqe-b1-Xs4">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="331"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="imageEmptyPlaceholder" translatesAutoresizingMaskIntoConstraints="NO" id="e6x-EU-Z7E">
+                            <rect key="frame" x="84.5" y="56" width="206" height="142"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="206" id="Czz-mo-t2j"/>
+                                <constraint firstAttribute="height" constant="142" id="NiO-XB-naK"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="- - " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R8P-nB-Ift">
+                            <rect key="frame" x="176" y="206" width="23" height="20"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                            <color key="textColor" red="0.38039215686274508" green="0.39215686274509803" blue="0.43137254901960786" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="walletDetailVC_no_transactions_text"/>
+                            </userDefinedRuntimeAttributes>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="180" id="Czz-mo-t2j"/>
-                        <constraint firstAttribute="height" constant="180" id="NiO-XB-naK"/>
+                        <constraint firstItem="R8P-nB-Ift" firstAttribute="centerX" secondItem="e6x-EU-Z7E" secondAttribute="centerX" id="7wc-vp-nI7"/>
+                        <constraint firstItem="e6x-EU-Z7E" firstAttribute="top" secondItem="dqe-b1-Xs4" secondAttribute="top" constant="56" id="M49-bG-chh"/>
+                        <constraint firstItem="R8P-nB-Ift" firstAttribute="top" secondItem="e6x-EU-Z7E" secondAttribute="bottom" constant="8" id="MBx-hw-hbl"/>
+                        <constraint firstItem="e6x-EU-Z7E" firstAttribute="centerX" secondItem="dqe-b1-Xs4" secondAttribute="centerX" id="hO6-Je-yhx"/>
                     </constraints>
-                </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="- - " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R8P-nB-Ift">
-                    <rect key="frame" x="175" y="237" width="25" height="21"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                    <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <nil key="highlightedColor"/>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="walletDetailVC_no_transactions_text"/>
-                    </userDefinedRuntimeAttributes>
-                </label>
+                </view>
             </subviews>
-            <color key="backgroundColor" red="0.10196078431372549" green="0.12941176470588237" blue="0.21176470588235294" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" red="0.97685080766677856" green="0.98394054174423218" blue="1" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
             <constraints>
-                <constraint firstItem="R8P-nB-Ift" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="Qub-YK-Anl"/>
-                <constraint firstItem="e6x-EU-Z7E" firstAttribute="centerY" secondItem="vUN-kp-3ea" secondAttribute="centerY" id="dlc-WC-t0v"/>
-                <constraint firstItem="e6x-EU-Z7E" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="hEx-by-Ux9"/>
-                <constraint firstItem="R8P-nB-Ift" firstAttribute="top" secondItem="e6x-EU-Z7E" secondAttribute="bottom" constant="8" id="zBp-IL-zqw"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="dqe-b1-Xs4" secondAttribute="bottom" id="AiT-Eo-8fI"/>
+                <constraint firstItem="dqe-b1-Xs4" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="Sla-ac-Asp"/>
+                <constraint firstItem="dqe-b1-Xs4" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="ewn-Nc-bwn"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="dqe-b1-Xs4" secondAttribute="trailing" id="vno-03-OAk"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
                 <outlet property="descriptionLabel" destination="R8P-nB-Ift" id="W11-S6-NRc"/>
             </connections>
-            <point key="canvasLocation" x="132" y="363.41829085457272"/>
+            <point key="canvasLocation" x="128.80000000000001" y="194.75262368815595"/>
         </view>
     </objects>
     <resources>
-        <image name="imageEmptyPlaceholder" width="190" height="180"/>
+        <image name="imageEmptyPlaceholder" width="206" height="142"/>
     </resources>
 </document>
