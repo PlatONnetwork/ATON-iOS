@@ -283,7 +283,6 @@
 		9ADE45212180074C006F1C81 /* ImportMnemonicOrPrivateKeyViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9ADE451F2180074C006F1C81 /* ImportMnemonicOrPrivateKeyViewController.xib */; };
 		9ADE4523218009DB006F1C81 /* PPasswordTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ADE4522218009DB006F1C81 /* PPasswordTextField.swift */; };
 		9AE31417218BEE1D00B5433F /* SettingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE31415218BEE1D00B5433F /* SettingTableViewController.swift */; };
-		9AE3141B218BF7EC00B5433F /* NodeSettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE3141A218BF7EC00B5433F /* NodeSettingViewController.swift */; };
 		9AE3141E218BFAC600B5433F /* NodeSettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE3141C218BFAC600B5433F /* NodeSettingTableViewCell.swift */; };
 		9AE3141F218BFAC600B5433F /* NodeSettingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AE3141D218BFAC600B5433F /* NodeSettingTableViewCell.xib */; };
 		9AE31422218C218100B5433F /* NodeInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE31421218C218100B5433F /* NodeInfo.swift */; };
@@ -625,7 +624,6 @@
 		9ADE451F2180074C006F1C81 /* ImportMnemonicOrPrivateKeyViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImportMnemonicOrPrivateKeyViewController.xib; sourceTree = "<group>"; };
 		9ADE4522218009DB006F1C81 /* PPasswordTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPasswordTextField.swift; sourceTree = "<group>"; };
 		9AE31415218BEE1D00B5433F /* SettingTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewController.swift; sourceTree = "<group>"; };
-		9AE3141A218BF7EC00B5433F /* NodeSettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeSettingViewController.swift; sourceTree = "<group>"; };
 		9AE3141C218BFAC600B5433F /* NodeSettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeSettingTableViewCell.swift; sourceTree = "<group>"; };
 		9AE3141D218BFAC600B5433F /* NodeSettingTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = NodeSettingTableViewCell.xib; sourceTree = "<group>"; };
 		9AE31421218C218100B5433F /* NodeInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NodeInfo.swift; path = platonWallet/Models/Setting/NodeInfo.swift; sourceTree = SOURCE_ROOT; };
@@ -1552,7 +1550,6 @@
 			isa = PBXGroup;
 			children = (
 				9AE31415218BEE1D00B5433F /* SettingTableViewController.swift */,
-				9AE3141A218BF7EC00B5433F /* NodeSettingViewController.swift */,
 				9A1F87B822014FD70002BE67 /* NodeSettingViewControllerV2.swift */,
 				9A9472F8221EB45300F8FEB9 /* NodeStoreService.swift */,
 			);
@@ -1985,7 +1982,6 @@
 				9ADE4501217DDA27006F1C81 /* UITextField+Extensions.swift in Sources */,
 				81718D8B222F6F6500DB04F6 /* MnemonicTextField.swift in Sources */,
 				813E287421D3ADE100C36A0F /* NodeVoteHeader.swift in Sources */,
-				9AE3141B218BF7EC00B5433F /* NodeSettingViewController.swift in Sources */,
 				9AF9AC242182E19600E97F07 /* PAlertController.swift in Sources */,
 				812002C221A3EB390050E1B0 /* layout.swift in Sources */,
 				819A434621D1FE2300E276C7 /* IPQuery.swift in Sources */,

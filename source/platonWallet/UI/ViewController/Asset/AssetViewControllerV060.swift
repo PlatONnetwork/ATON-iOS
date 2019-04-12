@@ -12,7 +12,7 @@ import RTRootNavigationController
 
 let AssetHeaderViewH = 168 - 44 + 20
 let AssetSectionViewH : CGFloat = 124
-
+ 
 class AssetViewControllerV060: BaseViewController ,PopupMenuTableDelegate{
     
     let transactionVC = AssetTransactionViewControllerV060()
@@ -93,8 +93,7 @@ class AssetViewControllerV060: BaseViewController ,PopupMenuTableDelegate{
         view.addSubview(scrollView)
         scrollView.canCancelContentTouches = true
         scrollView.delaysContentTouches = true
-        
-        
+
         
         if #available(iOS 11.0, *) {
             scrollView.contentInsetAdjustmentBehavior = .always
@@ -212,14 +211,8 @@ class AssetViewControllerV060: BaseViewController ,PopupMenuTableDelegate{
     }
      
     func initData(){
-        
         transactionVC.delegate = self
-        if headerView.dataSource.count > 0{
-            AssetVCSharedData.sharedData.selectedWallet = headerView.dataSource.first
-        }else{
-            AssetVCSharedData.sharedData.selectedWallet = nil
-        }
-        
+        AssetVCSharedData.sharedData.reloadWallets()
     }
     
     //hide animate

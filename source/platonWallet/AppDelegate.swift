@@ -43,12 +43,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LicenseVCDelegate {
         let controller = storyboard.instantiateViewController(withIdentifier: "LaunchViewController")
         self.window?.rootViewController = controller
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             self.initUI()
         }
-        
-        //RTRootNavigationController.doBadSwizzleStuff()
-        UIViewController.doBadSwizzleStuff()
         
         return true
     }

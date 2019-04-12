@@ -22,7 +22,7 @@ class AppFramework {
         RealmConfiguration()
         modulesConfigure()
         initBugly()
-        
+        doSwizzle()
     }
     
     func initweb3(){
@@ -108,5 +108,11 @@ class AppFramework {
         WalletService.sharedInstance.walletStorge = walletStorge
         
         
+    }
+    
+    func doSwizzle(){
+        
+        //RTRootNavigationController.doBadSwizzleStuff()
+        UIViewController.doBadSwizzleStuff()
     }
 }

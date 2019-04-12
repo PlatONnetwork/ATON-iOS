@@ -23,7 +23,21 @@ extension Array{
             }
             return false
         })
-
+    }
+    
+    mutating func walletCreateTimeSort(){
+        self.sort(by: { (obj1, obj2) -> Bool in
+            if let obj1 = obj1 as? Wallet, let obj2 = obj2 as? Wallet{
+                return obj1.createTime < obj2.createTime
+            }else if let obj1 = obj1 as? Wallet , let obj2 = obj2 as? SWallet{
+                return Int(obj1.createTime) < obj2.createTime
+            }else if let obj1 = obj1 as? SWallet , let obj2 = obj2 as? Wallet{
+                return obj1.createTime < Int(obj2.createTime)
+            }else if let obj1 = obj1 as? SWallet , let obj2 = obj2 as? SWallet{
+                return obj1.createTime < obj2.createTime
+            }
+            return false
+        })
     }
     
     mutating func userArrangementSort(){
