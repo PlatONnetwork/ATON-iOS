@@ -142,7 +142,7 @@ class CreateSharedWalletStep2ViewController: BaseViewController {
             if !checkInputValueIsValid(index: i) {
                 return (false,Localized("Common_checkInput"))
             }
-        }
+        } 
         
         var dic : Dictionary<String,Any> = [:]
         
@@ -247,6 +247,9 @@ class CreateSharedWalletStep2ViewController: BaseViewController {
         
         let alertVC = AlertStylePopViewController.initFromNib()
         self.passwordInputAlert = alertVC
+        alertVC.dismissCompletion = {
+            self.showLoadingHUD()
+        }
         let style = PAlertStyle.passwordInput(walletName: self.wallet?.name)
         alertVC.onAction(confirm: {[weak self] (text, _) -> (Bool)  in
             let valid = CommonService.isValidWalletPassword(text ?? "")
@@ -315,13 +318,10 @@ class CreateSharedWalletStep2ViewController: BaseViewController {
         addresses: addresses,
         require: require.uint64Value
         ) { (ret, obj) in
-            if let notnilAlertVC = self.passwordInputAlert{
-                notnilAlertVC.showLoadingHUD()
-            }
+            self.hideLoadingHUD()
             switch ret{
             case .success:
                 UIApplication.rootViewController().showMessage(text: Localized("Shared wallet create success"))
-                
                 self.navigationController?.popToRootViewController(animated: true)
             case .fail( let code, let errMsg):
                 if code == -111{

@@ -17,7 +17,7 @@ class NodeVoteSummaryParser : NSObject, Decodable {
         }
         container = container!
         for _ in 0..<container!.count! {
-            var subC = try? container?.nestedUnkeyedContainer()
+            let subC = try? container?.nestedUnkeyedContainer()
             guard subC != nil else{
                 continue
             }

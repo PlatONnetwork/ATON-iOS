@@ -38,15 +38,16 @@ class SettingService {
             return self.getCurrentNodeURLString()
         }
         
-        let semaphore = DispatchSemaphore(value: 1)
-        var URLString : String = ""
-        if semaphore.wait(timeout: .now() + 3) == DispatchTimeoutResult.timedOut{
-            return URLString
-        }
+        let semaphore = DispatchSemaphore(value: 0)
+        var URLString : String = DefaultAlphaNodeURL
         DispatchQueue.main.async {
             URLString = self.getCurrentNodeURLString()
             semaphore.signal()
         }
+        if semaphore.wait(timeout: .now() + 3) == DispatchTimeoutResult.timedOut{
+            return URLString
+        }
+        
         return URLString
     }
     

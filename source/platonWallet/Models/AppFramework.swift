@@ -75,23 +75,24 @@ class AppFramework {
             
             if schemaVersion < 6{ 
                 migration.enumerateObjects(ofType: Transaction.className(), { (old, new) in
-                    RealmHelper.doNodeULRStringMigration(old, new)
+                    RealmHelper.doNodeULRStringMigration_4_to_6(old, new)
                 })
                 
                 migration.enumerateObjects(ofType: Wallet.className(), { (old, new) in
-                    RealmHelper.doNodeULRStringMigration(old, new)
+                    RealmHelper.doNodeULRStringMigration_4_to_6(old, new)
+                    RealmHelper.classicwalletdoPrimaryKeyMigration_4_to_6(old, new)
                 })
                 
                 migration.enumerateObjects(ofType: AddressInfo.className(), { (old, new) in
-                    RealmHelper.doNodeULRStringMigration(old, new)
+                    RealmHelper.doNodeULRStringMigration_4_to_6(old, new)
                 })
                 
                 migration.enumerateObjects(ofType: SWallet.className(), { (old, new) in
-                    RealmHelper.doNodeULRStringMigration(old, new)
+                    RealmHelper.doNodeULRStringMigration_4_to_6(old, new)
                 })
                 
                 migration.enumerateObjects(ofType: STransaction.className(), { (old, new) in
-                    RealmHelper.doNodeULRStringMigration(old, new)
+                    RealmHelper.doNodeULRStringMigration_4_to_6(old, new)
                 })
                 
             }

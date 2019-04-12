@@ -139,7 +139,7 @@ class ImportMnemonicOrPrivateKeyViewController: BaseImportWalletViewController {
             return
         }
         
-        showLoadingHUD()
+        showLoadingHUD() 
         
         if importType == .mnemonic {
             let mnemonicString = self.mnemonicGridView?.getMnemonic()
@@ -166,7 +166,7 @@ class ImportMnemonicOrPrivateKeyViewController: BaseImportWalletViewController {
             return
         }
         showMessage(text: Localized("importWalletVC_success_tips"))
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.5, execute: {
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3, execute: {
             (UIApplication.shared.delegate as? AppDelegate)?.gotoMainTab()
         })
     }

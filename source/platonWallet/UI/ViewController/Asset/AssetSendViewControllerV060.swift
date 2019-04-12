@@ -615,7 +615,7 @@ extension AssetSendViewControllerV060{
                 self?.showMessageWithCodeAndMsg(code: code!, text: des!)
             }
             
-        })
+        }) 
     }
     
     

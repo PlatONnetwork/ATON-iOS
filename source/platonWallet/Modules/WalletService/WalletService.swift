@@ -174,7 +174,7 @@ public final class WalletService {
                 }
                 return
             }
-            
+             
             let wallet = Wallet(name: walletName, keystoreObject: keystore)
             
             DispatchQueue.main.async {
