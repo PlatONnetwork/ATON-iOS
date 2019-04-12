@@ -57,8 +57,6 @@ class SWalletService: BaseService{
     required override init() {
         super.init()
         refreshDB()
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(didSwitchNode), name: NSNotification.Name(NodeStoreService.didSwitchNodeNotification), object: nil)
     }
     
     func willOwnerWalletBeingDelete(ownerWallet : Wallet){
@@ -102,11 +100,7 @@ class SWalletService: BaseService{
         //update associated shared wallet transactions swallet delete tag
         STransferPersistence.updateSharedWalletDeleteTag(contractAddress: swallet.contractAddress, deleted: DeleteTag.YES)
         
-        if let selectedWallet = AssetVCSharedData.sharedData.selectedWallet as? SWallet{
-            if selectedWallet.contractAddress.ishexStringEqual(other: swallet.contractAddress){
-                AssetVCSharedData.sharedData.selectedWallet = nil
-            }
-        } 
+        AssetVCSharedData.sharedData.willDeleteWallet(object: swallet)
         
         RealmInstance?.beginWrite()
         RealmInstance?.delete(swallet)
@@ -1195,8 +1189,5 @@ class SWalletService: BaseService{
 //MARK: - Notification
 
 extension SWalletService{
-    @objc func didSwitchNode(){
-        self.refreshDB()
-        NotificationCenter.default.post(name: NSNotification.Name(updateWalletList_Notification), object: nil)
-    }
+    
 }

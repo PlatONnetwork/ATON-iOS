@@ -135,7 +135,7 @@ class NodeStoreService {
         SettingService.shareInstance.updateSelectedNode(node)
         
         self.nodeWillSuccessSwitch()
-        
+         
         NotificationCenter.default.post(name: NSNotification.Name(NodeStoreService.didSwitchNodeNotification), object: self, userInfo: ["node":node])
         
         selectedNodeBeforeEdit = nodeList.first(where: { (item) -> Bool in

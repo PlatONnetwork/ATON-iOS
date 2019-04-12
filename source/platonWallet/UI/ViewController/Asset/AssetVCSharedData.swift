@@ -25,12 +25,6 @@ class AssetVCSharedData{
         NotificationCenter.default.addObserver(self, selector: #selector(didSwithNode), name: NSNotification.Name(NodeStoreService.didSwitchNodeNotification), object: nil)
     }
     
-    //MARK: - Notification
-    
-    @objc func didSwithNode(){
-        let _ = self.walletList
-    }
-    
     var walletList: [Any]{
         get{
             var tmp : [Any] = []
@@ -55,7 +49,7 @@ class AssetVCSharedData{
                 }
                 return false
             }
-            unrangeWallets.txSort()
+            unrangeWallets.walletCreateTimeSort()
             
             var newSorted : [Any] = []
             newSorted.append(contentsOf: rangeWallets)
@@ -113,6 +107,42 @@ class AssetVCSharedData{
             return jWallet?.contractAddress
         }
         return ""
+    }
+    
+    //MARK: - Notification
+    
+    @objc func didSwithNode(){
+        self.reloadWallets()
+        NotificationCenter.default.post(name: NSNotification.Name(updateWalletList_Notification), object: nil)
+    }
+    
+    public func willDeleteWallet(object: AnyObject){
+        //issue mutiply thread access wallet object?
+        if let wallet = object as? Wallet{
+            if let selectedWallet = AssetVCSharedData.sharedData.selectedWallet as? Wallet{
+                if (selectedWallet.key?.address.ishexStringEqual(other: wallet.key?.address))!{
+                    AssetVCSharedData.sharedData.selectedWallet = nil
+                }
+            }
+        }else if let swallet = object as? SWallet{
+            if let selectedWallet = AssetVCSharedData.sharedData.selectedWallet as? SWallet{
+                if selectedWallet.contractAddress.ishexStringEqual(other: swallet.contractAddress){
+                    AssetVCSharedData.sharedData.selectedWallet = nil
+                }
+            } 
+        }
+        
+        self.reloadWallets()
+        NotificationCenter.default.post(name: NSNotification.Name(updateWalletList_Notification), object: nil)
+    }
+    
+    public func reloadWallets(){
+        let newList = self.walletList
+        if newList.count > 0{
+            self.selectedWallet = newList.first as AnyObject
+        }else{
+            self.selectedWallet = nil
+        }
     }
 }
 

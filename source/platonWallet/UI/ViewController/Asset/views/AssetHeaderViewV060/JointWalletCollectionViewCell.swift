@@ -31,7 +31,6 @@ class JointWalletCollectionViewCell: UICollectionViewCell {
         NotificationCenter.default.addObserver(self, selector: #selector(updateUnreadDot), name: Notification.Name(WillUpdateUnreadDot_Notification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(willDeleteWallet(_:)), name: Notification.Name(WillDeleateWallet_Notification), object: nil)
         
-        
     } 
     
     func setProgress(_ progress: CGFloat) {
@@ -114,6 +113,7 @@ class JointWalletCollectionViewCell: UICollectionViewCell {
     
     override func prepareForReuse() {
         self.redDot.isHidden = true
+        self.setProgress(1)
     }
 
 }
