@@ -204,7 +204,7 @@ extension AssetTransactionViewControllerV060{
     }
     
     @objc func updateWalletList(){
-        
+        self.refreshData()
     }
     
     

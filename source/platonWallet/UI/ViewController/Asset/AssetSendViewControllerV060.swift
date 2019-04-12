@@ -442,7 +442,6 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
         }
             
         let alertVC = AlertStylePopViewController.initFromNib()
-        passwordInputAlert = alertVC
         let style = PAlertStyle.passwordInput(walletName: AssetVCSharedData.sharedData.selectedWalletName)
         alertVC.onAction(confirm: {[weak self] (text, _) -> (Bool)  in
             let valid = CommonService.isValidWalletPassword(text ?? "")
@@ -450,10 +449,8 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
                 alertVC.showInputErrorTip(string: valid.1)
                 return false
             }
-            if let notnilAlertVC = self?.passwordInputAlert{
-                notnilAlertVC.showLoadingHUD()
-            }
             
+            alertVC.showLoadingHUD()
             WalletService.sharedInstance.exportPrivateKey(wallet: executorWallet!, password: (alertVC.textFieldInput?.text)!, completion: { (pri, err) in
                 
                 if (err == nil && (pri?.length)! > 0) {
@@ -672,6 +669,8 @@ extension AssetSendViewControllerV060{
         
         let fee = self.totalFee()
         
+        AssetViewControllerV060.getInstance()?.showLoadingHUD()
+        
         SWalletService.sharedInstance.submitTransaction(walltAddress: from!, 
                                                         privateKey: pri, 
                                                         contractAddress: contractAddress!,
@@ -685,9 +684,7 @@ extension AssetSendViewControllerV060{
                                                         time: UInt64(time),
                                                         fee: fee,
                                                         completion: {[weak self] (result, data) in
-                                                            if let notnilAlertVC = self?.passwordInputAlert{
-                                                                notnilAlertVC.hideLoadingHUD()
-                                                            }
+                                                            AssetViewControllerV060.getInstance()?.hideLoadingHUD()
                                                             switch result{
                                                             case .success:
                                                                 UIApplication.rootViewController().showMessage(text: Localized("transferVC_transfer_success_tip")); self?.navigationController?.popViewController(animated: true)
