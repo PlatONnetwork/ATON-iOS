@@ -10,20 +10,20 @@ import Foundation
 
 fileprivate let nodeURLReg = "^(http(s?)://)?([A-Z0-9a-z._%+-/:]{1,50})$"
 
-class NodeStore {
+class NodeStoreService {
     
     static let didEditStateChangeNotification = "didEditStateChangeNotification"
     static let didNodeListChangeNotification = "didNodeListChangeNotification"
     static let didSwitchNodeNotification = "didSwitchNodeNotification"
     static let selectedNodeUrlHadChangedNotification = "selectedNodeUrlHadChangedNotification"
     
-    static let share = NodeStore()
+    static let share = NodeStoreService()
     
     enum NodeError: Error {
         case urlIllegal
     }
     
-    enum NodeEditType {
+    enum NodeEditType { 
         case add
         case delete(index: Int)
     }
@@ -50,8 +50,8 @@ class NodeStore {
             }else {
                 editingNodeList.removeAll()
             }
-            
-            NotificationCenter.default.post(name: NSNotification.Name(NodeStore.didEditStateChangeNotification), object: self, userInfo: ["isEdit":isEdit])
+             
+            NotificationCenter.default.post(name: NSNotification.Name(NodeStoreService.didEditStateChangeNotification), object: self, userInfo: ["isEdit":isEdit])
         }
     }
     
@@ -106,13 +106,13 @@ class NodeStore {
                 if item.id == selectedNodeBeforeEdit.id && item.nodeURLStr != selectedNodeBeforeEdit.nodeURLStr {
                     
                     item.isSelected = false
-                    NotificationCenter.default.post(name: NSNotification.Name(NodeStore.selectedNodeUrlHadChangedNotification), object: self, userInfo: ["node":item ,"oldUrl":selectedNodeBeforeEdit.nodeURLStr])
+                    NotificationCenter.default.post(name: NSNotification.Name(NodeStoreService.selectedNodeUrlHadChangedNotification), object: self, userInfo: ["node":item ,"oldUrl":selectedNodeBeforeEdit.nodeURLStr])
                 }
                 SettingService.shareInstance.addOrUpdateNode(item)
             }
         }
         if nonNodeSelected {
-            NotificationCenter.default.post(name: NSNotification.Name(NodeStore.selectedNodeUrlHadChangedNotification), object: self, userInfo: ["node":editingNodeList[0]])
+            NotificationCenter.default.post(name: NSNotification.Name(NodeStoreService.selectedNodeUrlHadChangedNotification), object: self, userInfo: ["node":editingNodeList[0]])
         }
         
         
@@ -121,24 +121,32 @@ class NodeStore {
     
     func add() {
         editingNodeList.append(NodeInfo())
-        NotificationCenter.default.post(name: NSNotification.Name(NodeStore.didNodeListChangeNotification), object: self, userInfo: ["editType":NodeEditType.add])
+        NotificationCenter.default.post(name: NSNotification.Name(NodeStoreService.didNodeListChangeNotification), object: self, userInfo: ["editType":NodeEditType.add])
     }
     
     func delete(index: Int) {
         editingNodeList.remove(at: index)
-        NotificationCenter.default.post(name: NSNotification.Name(NodeStore.didNodeListChangeNotification), object: self, userInfo: ["editType":NodeEditType.delete(index: index)])
+        NotificationCenter.default.post(name: NSNotification.Name(NodeStoreService.didNodeListChangeNotification), object: self, userInfo: ["editType":NodeEditType.delete(index: index)])
     }
     
     func switchNode(node: NodeInfo) {
         
         SettingService.shareInstance.addOrUpdateNode(node)
         SettingService.shareInstance.updateSelectedNode(node)
-        NotificationCenter.default.post(name: NSNotification.Name(NodeStore.didSwitchNodeNotification), object: self, userInfo: ["node":node])
+        
+        self.nodeWillSuccessSwitch()
+        
+        NotificationCenter.default.post(name: NSNotification.Name(NodeStoreService.didSwitchNodeNotification), object: self, userInfo: ["node":node])
         
         selectedNodeBeforeEdit = nodeList.first(where: { (item) -> Bool in
             item.isSelected == true
         })!.copy() as? NodeInfo
         
+    }
+    
+    func nodeWillSuccessSwitch(){
+        WalletService.sharedInstance.refreshDB()
+        SWalletService.sharedInstance.refreshDB()
     }
     
     private func checkNodeUrl() -> Bool {

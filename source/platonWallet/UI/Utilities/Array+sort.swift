@@ -127,4 +127,27 @@ extension Array {
         }
         return newArr
     }
+    
+    func filterArrayByCurrentNodeUrlString() -> [Element]{
+        
+        return self.filter { item -> Bool in
+            if let castItem = item as? Wallet{
+                return castItem.nodeURLStr == SettingService.getCurrentNodeURLString()
+            }
+            if let castItem = item as? SWallet{
+                return castItem.nodeURLStr == SettingService.getCurrentNodeURLString()
+            }
+            if let castItem = item as? Transaction{
+                return castItem.nodeURLStr == SettingService.getCurrentNodeURLString()
+            }
+            if let castItem = item as? STransaction{
+                return castItem.nodeURLStr == SettingService.getCurrentNodeURLString()
+            }
+            if let castItem = item as? AddressInfo{
+                return castItem.nodeURLStr == SettingService.getCurrentNodeURLString()
+            }
+            return true
+        }
+       
+    }
 }

@@ -26,4 +26,12 @@ class RealmHelper {
         return defaultRealm
     }
      */
+    
+    public static func doNodeULRStringMigration(_ old: MigrationObject?, _ new: MigrationObject?){
+        if old != nil && new != nil{
+            if let emptyURLString = old!["nodeURLStr"] as? String,emptyURLString == ""{
+                new!["nodeURLStr"] = DefaultAlphaNodeURL
+            }
+        }
+    }
 }

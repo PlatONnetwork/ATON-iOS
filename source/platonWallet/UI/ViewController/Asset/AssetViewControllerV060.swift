@@ -162,6 +162,7 @@ class AssetViewControllerV060: BaseViewController ,PopupMenuTableDelegate{
         
         NotificationCenter.default.addObserver(self, selector: #selector(OnBeginEditing(_:)), name: UITextField.textDidBeginEditingNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(updateWalletList), name: Notification.Name(updateWalletList_Notification), object: nil)
+       
     }
     
     override func viewDidLayoutSubviews() {
@@ -218,7 +219,6 @@ class AssetViewControllerV060: BaseViewController ,PopupMenuTableDelegate{
         }else{
             AssetVCSharedData.sharedData.selectedWallet = nil
         }
-        
         
     }
     
@@ -603,4 +603,5 @@ extension AssetViewControllerV060{
         transactionVC.refreshData()
         self.checkAndSetNoWalletViewStyle()
     }
+    
 }

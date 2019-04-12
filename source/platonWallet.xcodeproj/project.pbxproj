@@ -220,7 +220,7 @@
 		9A79A095219BFFDD000EB4C5 /* CreateSharedWalletMemberTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A79A093219BFFDD000EB4C5 /* CreateSharedWalletMemberTableViewCell.swift */; };
 		9A79A096219BFFDD000EB4C5 /* CreateSharedWalletMemberTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A79A094219BFFDD000EB4C5 /* CreateSharedWalletMemberTableViewCell.xib */; };
 		9A831AEA224CAD1B00C91C72 /* WalletListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A831AE9224CAD1B00C91C72 /* WalletListViewController.swift */; };
-		9A9472F9221EB45300F8FEB9 /* NodeStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9472F8221EB45300F8FEB9 /* NodeStore.swift */; };
+		9A9472F9221EB45300F8FEB9 /* NodeStoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9472F8221EB45300F8FEB9 /* NodeStoreService.swift */; };
 		9AC60C13224E37FB00A5ED6A /* CreateAndInputWalletCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC60C11224E37FB00A5ED6A /* CreateAndInputWalletCollectionViewCell.swift */; };
 		9AC60C14224E37FB00A5ED6A /* CreateAndInputWalletCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AC60C12224E37FB00A5ED6A /* CreateAndInputWalletCollectionViewCell.xib */; };
 		9AC86E99224A1E6000315A79 /* VoteOverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC86E98224A1E6000315A79 /* VoteOverView.swift */; };
@@ -560,7 +560,7 @@
 		9A79A093219BFFDD000EB4C5 /* CreateSharedWalletMemberTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateSharedWalletMemberTableViewCell.swift; sourceTree = "<group>"; };
 		9A79A094219BFFDD000EB4C5 /* CreateSharedWalletMemberTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CreateSharedWalletMemberTableViewCell.xib; sourceTree = "<group>"; };
 		9A831AE9224CAD1B00C91C72 /* WalletListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WalletListViewController.swift; path = platonWallet/UI/ViewController/Setting/WalletListViewController.swift; sourceTree = SOURCE_ROOT; };
-		9A9472F8221EB45300F8FEB9 /* NodeStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeStore.swift; sourceTree = "<group>"; };
+		9A9472F8221EB45300F8FEB9 /* NodeStoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeStoreService.swift; sourceTree = "<group>"; };
 		9AC60C11224E37FB00A5ED6A /* CreateAndInputWalletCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAndInputWalletCollectionViewCell.swift; sourceTree = "<group>"; };
 		9AC60C12224E37FB00A5ED6A /* CreateAndInputWalletCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CreateAndInputWalletCollectionViewCell.xib; sourceTree = "<group>"; };
 		9AC86E98224A1E6000315A79 /* VoteOverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteOverView.swift; sourceTree = "<group>"; };
@@ -1554,7 +1554,7 @@
 				9AE31415218BEE1D00B5433F /* SettingTableViewController.swift */,
 				9AE3141A218BF7EC00B5433F /* NodeSettingViewController.swift */,
 				9A1F87B822014FD70002BE67 /* NodeSettingViewControllerV2.swift */,
-				9A9472F8221EB45300F8FEB9 /* NodeStore.swift */,
+				9A9472F8221EB45300F8FEB9 /* NodeStoreService.swift */,
 			);
 			path = SettingViewController;
 			sourceTree = "<group>";
@@ -2014,7 +2014,7 @@
 				817F88E72174724E0041B6A5 /* CreateIndividualWalletViewController.swift in Sources */,
 				81FCCCF12179B6710052FC29 /* AssetViewController.swift in Sources */,
 				813534C821AD4876000574A9 /* STransferPersistence.swift in Sources */,
-				9A9472F9221EB45300F8FEB9 /* NodeStore.swift in Sources */,
+				9A9472F9221EB45300F8FEB9 /* NodeStoreService.swift in Sources */,
 				9AF9AC212182E04000E97F07 /* PresentationManager.swift in Sources */,
 				81FCCD162179EA0F0052FC29 /* RealmHelper.swift in Sources */,
 				812002CC21A3F6430050E1B0 /* AddSharedWalletVC.swift in Sources */,

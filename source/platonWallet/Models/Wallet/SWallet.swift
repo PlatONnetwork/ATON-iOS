@@ -31,6 +31,8 @@ class SWallet: Object {
     
     @objc dynamic var contractAddress: String = ""
     
+    @objc dynamic var nodeURLStr: String = ""
+    
     @objc dynamic var createTime = Date().millisecondsSince1970
     
     @objc dynamic var updateTime = Date().millisecondsSince1970

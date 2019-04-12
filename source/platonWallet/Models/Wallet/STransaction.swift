@@ -135,6 +135,8 @@ class STransaction: Object {
     
     @objc dynamic var blockNumber : String?  = ""
     
+    @objc dynamic var nodeURLStr: String = ""
+    
     // txhash refers to the hash of confirmTransaction or revokeConfirmation
     @objc dynamic var txhash: String? = ""
     

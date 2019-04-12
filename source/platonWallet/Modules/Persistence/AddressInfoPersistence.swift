@@ -11,6 +11,7 @@ import Foundation
 class AddressInfoPersistence {
     
     public class func add(addrInfo : AddressInfo){
+        addrInfo.nodeURLStr = SettingService.getCurrentNodeURLString()
         try? RealmInstance!.write {
             RealmInstance!.add(addrInfo, update: true)
             NSLog("AddressInfo add")
@@ -40,7 +41,7 @@ class AddressInfoPersistence {
         //let r = RealmInstance!.objects(AddressInfo.self).filter(predicate).sorted(byKeyPath: "createTime")
         let r = RealmInstance!.objects(AddressInfo.self).filter(predicate)
         let array = Array(r)
-        return array
+        return array.filterArrayByCurrentNodeUrlString()
     }
     
     public class func delete(addrInfo: AddressInfo) {

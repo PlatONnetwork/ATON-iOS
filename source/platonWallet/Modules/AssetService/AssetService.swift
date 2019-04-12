@@ -30,7 +30,9 @@ class AssetService : BaseService{
         
         queue.async {
             for balanceObj in addresses {
-                
+                guard balanceObj != nil, balanceObj.address != nil else{
+                    continue
+                }
                 self.getBalance(address: balanceObj.address!) { result,balance in
                     
                     switch result{
@@ -69,7 +71,7 @@ class AssetService : BaseService{
             timer = Timer.scheduledTimer(timeInterval: TimeInterval(assetQueryTimerInterval), target: self, selector: #selector(timerFirer), userInfo: nil, repeats: true)
             timer?.fire()
         }
-        NotificationCenter.default.addObserver(self, selector: #selector(OnDidSwitchNode), name: NSNotification.Name(didswitchNode_Notification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(OnDidSwitchNode), name: NSNotification.Name(NodeStoreService.didSwitchNodeNotification), object: nil)
     }
     
     func getBalance(address : String,completion : @escaping (_ result : PlatonCommonResult, _ balance : WalletBalance?) -> ()) {

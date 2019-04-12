@@ -236,7 +236,7 @@ class NodeSettingViewController: BaseViewController {
                         self.hideLoadingHUD()
                         SettingService.shareInstance.addOrUpdateNode(item)
                         self.tableView.reloadData()
-                        NotificationCenter.default.post(name: NSNotification.Name(didswitchNode_Notification), object: nil)
+                        NotificationCenter.default.post(name: NSNotification.Name(NodeStoreService.didSwitchNodeNotification), object: nil)
                     }) {  
                         //node modify failed, auto recovery
                         self.hideLoadingHUD()

@@ -19,9 +19,6 @@ public final class WalletService {
     var walletStorge: WallletPersistence! {
         didSet {
             wallets = walletStorge.getAll()
-            for item in wallets {
-                item.key = try? Keystore(contentsOf: URL(fileURLWithPath: keystoreFolderPath + "/\(item.keystorePath)"))
-            }
         }
     }
     
@@ -43,6 +40,13 @@ public final class WalletService {
             try! fileManager.createDirectory(at: keystoreFolderURL, withIntermediateDirectories: false, attributes: nil)
         }
         
+        NotificationCenter.default.addObserver(self, selector: #selector(didSwitchNode), name: NSNotification.Name(NodeStoreService.didSwitchNodeNotification), object: nil)
+        
+    }
+    
+    func refreshDB(){
+        wallets.removeAll()
+        wallets.append(contentsOf: walletStorge.getAll())
     }
     
     func getWalletByAddress(address: String) -> Wallet?{
@@ -99,7 +103,7 @@ public final class WalletService {
     ///   - walletPassword: <#walletPassword description#>
     ///   - completion: <#completion description#>
     public func `import`(mnemonic: String ,passphrase: String = "", walletName: String, walletPassword: String, completion: @escaping (Wallet?, Error?) -> Void) {
-        
+         
         guard WalletUtil.isValidMnemonic(mnemonic) else {
             completion(nil, Error.invalidMnemonic)
             return
@@ -413,7 +417,7 @@ public final class WalletService {
         }
         
         let sameUuidWallet = wallets.first { (item) -> Bool in
-            item.uuid == wallet.uuid
+            item.uuid == wallet.uuid && item.nodeURLStr == wallet.nodeURLStr
         }
         
         if sameUuidWallet != nil {
@@ -431,6 +435,7 @@ public final class WalletService {
             throw WalletService.Error.keystoreFileSaveFailed
         }
         
+        /*
         if var paths = FileManager.default.subpaths(atPath: keystoreFolderPath) {
             paths.removeAll { (p) -> Bool in
                 p == fileName
@@ -441,6 +446,7 @@ public final class WalletService {
                 }
             }
         }
+    */
 
         wallet.keystorePath = fileName
         
@@ -451,7 +457,7 @@ public final class WalletService {
         walletStorge.save(wallet: wallet)
         
         wallets.removeAll { (item) -> Bool in
-            item.uuid == wallet.uuid
+            item.uuid == wallet.uuid && item.nodeURLStr == wallet.nodeURLStr
         }
         
         wallets.append(wallet)
@@ -498,5 +504,15 @@ extension WalletService {
                 return Localized("Invalid keystore")
             }
         }
+    }
+}
+
+//MARK: - Notification
+
+extension WalletService{
+    
+    @objc func didSwitchNode(){
+        self.refreshDB()
+        NotificationCenter.default.post(name: NSNotification.Name(updateWalletList_Notification), object: nil)
     }
 }

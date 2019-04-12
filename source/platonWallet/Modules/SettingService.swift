@@ -16,7 +16,7 @@ class SettingService {
     private init() {
         
     }
-    
+     
     func getSelectedNodes() -> NodeInfo? {
         
         let list = getNodes()
@@ -30,6 +30,31 @@ class SettingService {
         }
         
         return list[i]
+    }
+    
+    static func threadSafeGetCurrentNodeURLString() -> String{
+        
+        if Thread.current == .main{
+            return self.getCurrentNodeURLString()
+        }
+        
+        let semaphore = DispatchSemaphore(value: 1)
+        var URLString : String = ""
+        if semaphore.wait(timeout: .now() + 3) == DispatchTimeoutResult.timedOut{
+            return URLString
+        }
+        DispatchQueue.main.async {
+            URLString = self.getCurrentNodeURLString()
+            semaphore.signal()
+        }
+        return URLString
+    }
+    
+    static func getCurrentNodeURLString() -> String{
+        if let urlString = SettingService.shareInstance.getSelectedNodes()?.nodeURLStr{
+            return urlString
+        }
+        return DefaultAlphaNodeURL
     }
     
     func getNodes() -> [NodeInfo] {

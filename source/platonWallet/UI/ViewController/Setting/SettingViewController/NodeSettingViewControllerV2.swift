@@ -82,10 +82,10 @@ class NodeSettingViewControllerV2: BaseViewController {
         setupUI()
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame(_:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(editStateChange(_:)), name: NSNotification.Name(rawValue: NodeStore.didEditStateChangeNotification), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(nodeListChange(_:)), name: NSNotification.Name(rawValue: NodeStore.didNodeListChangeNotification), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(selectedNodeChange(_:)), name: NSNotification.Name(NodeStore.didSwitchNodeNotification), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(reconnectNode(_:)), name: NSNotification.Name(NodeStore.selectedNodeUrlHadChangedNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(editStateChange(_:)), name: NSNotification.Name(rawValue: NodeStoreService.didEditStateChangeNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(nodeListChange(_:)), name: NSNotification.Name(rawValue: NodeStoreService.didNodeListChangeNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(selectedNodeChange(_:)), name: NSNotification.Name(NodeStoreService.didSwitchNodeNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(reconnectNode(_:)), name: NSNotification.Name(NodeStoreService.selectedNodeUrlHadChangedNotification), object: nil)
         
     }
     
@@ -113,11 +113,11 @@ class NodeSettingViewControllerV2: BaseViewController {
     }
     
     @objc func nodeListChange(_ notify:Notification) {
-        let type = notify.userInfo?["editType"] as! NodeStore.NodeEditType
+        let type = notify.userInfo?["editType"] as! NodeStoreService.NodeEditType
         switch type {
         case .add:
             tableView.beginUpdates()
-            tableView.insertRows(at: [IndexPath(row: NodeStore.share.nodeCount()-1, section: 0)], with: .automatic)
+            tableView.insertRows(at: [IndexPath(row: NodeStoreService.share.nodeCount()-1, section: 0)], with: .automatic)
             tableView.endUpdates()
         case .delete(let index):
             let indexPath = IndexPath(row: index, section: 0)
@@ -165,9 +165,9 @@ class NodeSettingViewControllerV2: BaseViewController {
                 
             }else {
                 
-                NotificationCenter.default.post(name: NSNotification.Name(didswitchNode_Notification), object: nil)
+                NotificationCenter.default.post(name: NSNotification.Name(NodeStoreService.didSwitchNodeNotification), object: nil)
             }
-            NodeStore.share.switchNode(node: newNode)
+            NodeStoreService.share.switchNode(node: newNode)
             
         }
         
@@ -195,28 +195,28 @@ class NodeSettingViewControllerV2: BaseViewController {
     
     @objc func onRigthItemClick(_ sender: UIBarButtonItem) {
         
-        if NodeStore.share.isEdit { //save
+        if NodeStoreService.share.isEdit { //save
             do{
-                try NodeStore.share.save()
-            }catch NodeStore.NodeError.urlIllegal{
+                try NodeStoreService.share.save()
+            }catch NodeStoreService.NodeError.urlIllegal{
                 showMessage(text: Localized("SettingsVC_error_node_format"))
                 return
             }catch{
                 
             }
         }
-        NodeStore.share.isEdit = !NodeStore.share.isEdit
+        NodeStoreService.share.isEdit = !NodeStoreService.share.isEdit
         
     }
     
     @objc func onAddClick() {
         
-        NodeStore.share.add()
+        NodeStoreService.share.add()
         
     }
     
     @objc func onCancelEditClick() {
-        NodeStore.share.isEdit = false
+        NodeStoreService.share.isEdit = false
         
     }
     
@@ -225,19 +225,19 @@ class NodeSettingViewControllerV2: BaseViewController {
 extension NodeSettingViewControllerV2: UITableViewDelegate, UITableViewDataSource, NodeSettingTableViewCellDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return NodeStore.share.nodeCount()
+        return NodeStoreService.share.nodeCount()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "NodeSettingTableViewCell", for: indexPath) as! NodeSettingTableViewCell
-        let nodeInfo = NodeStore.share.item(index: indexPath.row)
+        let nodeInfo = NodeStoreService.share.item(index: indexPath.row)
 
-        let isEdit = NodeStore.share.isEdit
+        let isEdit = NodeStoreService.share.isEdit
         cell.setup(node: nodeInfo.nodeURLStr, isSelected: isEdit ? false : nodeInfo.isSelected, isEdit: nodeInfo.isDefault ? false : isEdit, desc: nodeInfo.desc)
         cell.delegate = self
         
-        if isEdit && indexPath.row == NodeStore.share.nodeCount() - 1 {
+        if isEdit && indexPath.row == NodeStoreService.share.nodeCount() - 1 {
             cell.nodeTF.becomeFirstResponder()
         }
         
@@ -250,13 +250,13 @@ extension NodeSettingViewControllerV2: UITableViewDelegate, UITableViewDataSourc
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        guard !NodeStore.share.isEdit else {
+        guard !NodeStoreService.share.isEdit else {
             return
         }
         
-        let didSelectNode = NodeStore.share.nodeList[indexPath.row]
+        let didSelectNode = NodeStoreService.share.nodeList[indexPath.row]
         
-        if didSelectNode.id == NodeStore.share.selectedNodeBeforeEdit.id {
+        if didSelectNode.id == NodeStoreService.share.selectedNodeBeforeEdit.id {
             return
         }
         
@@ -269,7 +269,7 @@ extension NodeSettingViewControllerV2: UITableViewDelegate, UITableViewDataSourc
             }
             self.hideLoadingHUD()
             self.showMessage(text: Localized("SettingsVC_nodeSet_switchSuccess_tips"))
-            NodeStore.share.switchNode(node: didSelectNode)
+            NodeStoreService.share.switchNode(node: didSelectNode)
             
         }) { [weak self] in
             
@@ -284,7 +284,7 @@ extension NodeSettingViewControllerV2: UITableViewDelegate, UITableViewDataSourc
         guard let indexPath = tableView .indexPath(for: cell) else {
             return
         }
-        NodeStore.share.delete(index: indexPath.row)
+        NodeStoreService.share.delete(index: indexPath.row)
         
     }
     
@@ -292,6 +292,6 @@ extension NodeSettingViewControllerV2: UITableViewDelegate, UITableViewDataSourc
         guard let indexPath = tableView .indexPath(for: cell) else {
             return
         }
-        NodeStore.share.editingNodeList[indexPath.row].nodeURLStr = cell.nodeTF.text!
+        NodeStoreService.share.editingNodeList[indexPath.row].nodeURLStr = cell.nodeTF.text!
     }
 }

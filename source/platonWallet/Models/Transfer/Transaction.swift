@@ -134,6 +134,8 @@ class Transaction : Object{
     
     @objc dynamic var extra: String?
     
+    @objc dynamic var nodeURLStr: String = ""
+    
     //to confirm send or receive
     var senderAddress: String?
     

@@ -643,7 +643,9 @@ extension AssetSendViewControllerV060{
         let memo = ""
         */
         let contractAddress = AssetVCSharedData.sharedData.jWallet?.contractAddress
-        
+        guard contractAddress != nil else {
+            return
+        }
         SWalletService.sharedInstance.estimateSubmitAndConfirm(walltAddress: from!, privateKey: "", contractAddress: contractAddress!, gasPrice: BigUIntZero, gas: BigUIntZero, memo: "", destination: DefaultAddress, value: BigUIntZero, len: BigUIntZero, time: 0, fee: BigUIntZero) { (result, data) in
             switch result{
             case .success:

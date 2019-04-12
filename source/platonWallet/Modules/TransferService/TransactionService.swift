@@ -406,7 +406,7 @@ class TransactionService : BaseService{
                         wallet?.creationStatus = ECreationStatus.initWallet_ReceiptGenerated.rawValue
                         NotificationCenter.default.post(name: NSNotification.Name(DidJointWalletUpdateProgress_Notification), object: wallet?.deployHash)
                         SWalletPersistence.add(swallet: wallet!)
-                        SWalletService.sharedInstance.reFreshDB()
+                        SWalletService.sharedInstance.refreshDB()
                         SWalletService.sharedInstance.removeFromCreatingWallets(swallet: wallet!)
                         //after update memory and db joint-wallets ,need to update asset list
                         DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {

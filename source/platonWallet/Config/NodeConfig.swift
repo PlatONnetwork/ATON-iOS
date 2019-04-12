@@ -13,7 +13,7 @@ let maxRequestContentLength = 1024 * 128
 
 let MinTransactionConfirmations = 1
 
-let DefaultNodeURL = "https://syde.platon.network/test"
+let DefaultAlphaNodeURL = "https://syde.platon.network/test"
 
 //balance query timer
 let assetQueryTimerEnable = true

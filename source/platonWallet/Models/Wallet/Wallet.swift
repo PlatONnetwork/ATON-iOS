@@ -26,6 +26,8 @@ public final class Wallet: Object {
     
     @objc dynamic var uuid: String = ""
     
+    @objc dynamic var primaryKeyIdentifier: String = ""
+    
     @objc dynamic var keystorePath: String = "" 
     
     @objc dynamic var createTime = Date().millisecondsSince1970
@@ -35,6 +37,8 @@ public final class Wallet: Object {
     @objc dynamic var name: String = ""
     
     @objc dynamic var avatar: String = ""
+    
+    @objc dynamic var nodeURLStr: String = ""
     
     @objc dynamic var userArrangementIndex = -1
     
@@ -68,6 +72,7 @@ public final class Wallet: Object {
         
         self.init()
         uuid = keystoreObject.address
+        primaryKeyIdentifier = keystoreObject.address + SettingService.threadSafeGetCurrentNodeURLString() 
         key = keystoreObject
         keystorePath = ""
         self.name = name
@@ -80,11 +85,11 @@ public final class Wallet: Object {
     }
     
     override public static func primaryKey() -> String? {
-        return "uuid"
+        return "primaryKeyIdentifier"
     }
 
     public static func == (lhs: Wallet, rhs: Wallet) -> Bool {
-        return lhs.uuid == rhs.uuid
+        return lhs.primaryKeyIdentifier == rhs.primaryKeyIdentifier
     }
     
     public func updateInfoFromPrivateKey(_ privateKey: String) {

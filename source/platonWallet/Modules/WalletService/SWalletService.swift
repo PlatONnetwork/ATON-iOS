@@ -56,7 +56,9 @@ class SWalletService: BaseService{
     
     required override init() {
         super.init()
-        reFreshDB()
+        refreshDB()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(didSwitchNode), name: NSNotification.Name(NodeStoreService.didSwitchNodeNotification), object: nil)
     }
     
     func willOwnerWalletBeingDelete(ownerWallet : Wallet){
@@ -109,7 +111,7 @@ class SWalletService: BaseService{
         RealmInstance?.beginWrite()
         RealmInstance?.delete(swallet)
         try? RealmInstance?.commitWrite()
-        SWalletService.sharedInstance.reFreshDB()
+        SWalletService.sharedInstance.refreshDB()
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
             //delay for UI datasouce updating
@@ -150,7 +152,7 @@ class SWalletService: BaseService{
     
 
     
-    func reFreshDB() {
+    func refreshDB() {
         wallets.removeAll()
         wallets.append(contentsOf: SWalletPersistence.getAll())
     }
@@ -394,7 +396,7 @@ class SWalletService: BaseService{
                                 let sw = SWallet(value: sharedWallet)
                                 sw.contractAddress = contractAddress!
                                 SWalletPersistence.add(swallet: sw)
-                                self.reFreshDB()
+                                self.refreshDB()
                                 self.successCompletionOnMain(obj: contractAddress as AnyObject, completion: &completion)
                             }
                         case .fail(let fret, let fdes):
@@ -852,7 +854,7 @@ class SWalletService: BaseService{
         }
         
     }
-
+ 
     
     func addShardWallet(contractAddress: String, sender: String,name:String, walletAddress: String, completion: PlatonCommonCompletion?){
         var completion = completion
@@ -959,7 +961,7 @@ class SWalletService: BaseService{
                     
                     swallet.owners.append(objectsIn: ownerAddrInfos)
                     SWalletPersistence.add(swallet: swallet)
-                    SWalletService.sharedInstance.reFreshDB()
+                    SWalletService.sharedInstance.refreshDB()
                     
                     //update associated shared wallet transactions swallet delete tag
                     STransferPersistence.updateSharedWalletDeleteTag(contractAddress: swallet.contractAddress, deleted: DeleteTag.NO)
@@ -1188,4 +1190,13 @@ class SWalletService: BaseService{
 
     
 
+}
+
+//MARK: - Notification
+
+extension SWalletService{
+    @objc func didSwitchNode(){
+        self.refreshDB()
+        NotificationCenter.default.post(name: NSNotification.Name(updateWalletList_Notification), object: nil)
+    }
 }

@@ -15,7 +15,7 @@ class VotePersistence {
         assert((singleVote.candidateId != nil), "candidate should not be empty")
         
         try? RealmInstance!.write {
-            RealmInstance!.add(singleVote)
+            RealmInstance!.add(singleVote) 
             NSLog("Tickets add")
         }
     }

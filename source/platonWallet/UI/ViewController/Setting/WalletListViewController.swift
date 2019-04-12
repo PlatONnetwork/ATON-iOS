@@ -15,7 +15,7 @@ class WalletListViewController: BaseViewController,TableViewReorderDelegate {
     var tableView: UITableView!
     
     var dataSource: [AnyObject] = []
-    
+     
     lazy var atpWalletEmptyView : WalletEmptyView! = {
         
         let view = WalletEmptyView(walletType: .ClassicWallet, createBtnClickHandler: { [weak self] in 

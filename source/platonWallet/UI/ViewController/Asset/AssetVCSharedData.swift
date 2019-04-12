@@ -21,6 +21,16 @@ class AssetVCSharedData{
     
     var walletChangeHandlers: Dictionary<String,DidSwithWalletHandler> = [:]
     
+    init() {
+        NotificationCenter.default.addObserver(self, selector: #selector(didSwithNode), name: NSNotification.Name(NodeStoreService.didSwitchNodeNotification), object: nil)
+    }
+    
+    //MARK: - Notification
+    
+    @objc func didSwithNode(){
+        let _ = self.walletList
+    }
+    
     var walletList: [Any]{
         get{
             var tmp : [Any] = []

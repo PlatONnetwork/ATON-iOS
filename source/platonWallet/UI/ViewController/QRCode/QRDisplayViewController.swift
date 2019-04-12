@@ -68,7 +68,7 @@ class QRDisplayViewController: BaseViewController {
         
         /*
         let node = SettingService.shareInstance.getSelectedNodes()
-        if node == nil || node?.nodeURLStr == DefaultNodeURL{
+        if node == nil || node?.nodeURLStr == DefaultAlphaNodeURL{
             return
         }
          */
