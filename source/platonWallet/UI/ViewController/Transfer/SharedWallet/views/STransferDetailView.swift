@@ -109,7 +109,10 @@ class STransferDetailView: UIView ,UITableViewDataSource,UITableViewDelegate{
         }
         
         dataSource.sort { (result1, result2) -> Bool in
-            return result1.operation > result2.operation
+            if result1.operation != result2.operation{
+                return result1.operation > result2.operation
+            }
+            return false
         }
         
         if transaction.transactionCategory != TransanctionCategory.ATPTransfer.rawValue{
@@ -299,7 +302,7 @@ class STransferDetailView: UIView ,UITableViewDataSource,UITableViewDelegate{
         let result = dataSource[indexPath.row]
         cell.updateCell(result: result, swallet: sw!)
         return cell
-    }
+    } 
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         

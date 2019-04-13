@@ -22,14 +22,11 @@
 		811925752237D521000A6CE9 /* CandidatesListFilterBarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 811925742237D521000A6CE9 /* CandidatesListFilterBarView.xib */; };
 		8120027B21A3BD530050E1B0 /* WalletDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8120027721A3BD520050E1B0 /* WalletDetailCell.swift */; };
 		8120027C21A3BD530050E1B0 /* WalletDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8120027821A3BD520050E1B0 /* WalletDetailCell.xib */; };
-		812002A921A3EB390050E1B0 /* ATPTransferViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8120028B21A3EB390050E1B0 /* ATPTransferViewController.swift */; };
 		812002AA21A3EB390050E1B0 /* TransferDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8120028D21A3EB390050E1B0 /* TransferDetailView.swift */; };
-		812002AB21A3EB390050E1B0 /* TransferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8120028E21A3EB390050E1B0 /* TransferView.swift */; };
 		812002AC21A3EB390050E1B0 /* SwitchWalletTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8120028F21A3EB390050E1B0 /* SwitchWalletTableViewCell.swift */; };
 		812002AD21A3EB390050E1B0 /* TransferDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8120029021A3EB390050E1B0 /* TransferDetailView.xib */; };
 		812002AE21A3EB390050E1B0 /* TransactionDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8120029121A3EB390050E1B0 /* TransactionDetailViewController.swift */; };
 		812002AF21A3EB390050E1B0 /* TransferSwitchWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8120029221A3EB390050E1B0 /* TransferSwitchWallet.swift */; };
-		812002B021A3EB390050E1B0 /* TransferView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8120029321A3EB390050E1B0 /* TransferView.xib */; };
 		812002B121A3EB390050E1B0 /* TransferSwitchWallet.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8120029421A3EB390050E1B0 /* TransferSwitchWallet.xib */; };
 		812002B221A3EB390050E1B0 /* TransferConfirmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8120029521A3EB390050E1B0 /* TransferConfirmView.swift */; };
 		812002B321A3EB390050E1B0 /* SwitchWalletTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8120029621A3EB390050E1B0 /* SwitchWalletTableViewCell.xib */; };
@@ -44,11 +41,8 @@
 		812002BC21A3EB390050E1B0 /* SWalletConfirmCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 812002A121A3EB390050E1B0 /* SWalletConfirmCell.xib */; };
 		812002BD21A3EB390050E1B0 /* STransferConfirmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812002A221A3EB390050E1B0 /* STransferConfirmView.swift */; };
 		812002BE21A3EB390050E1B0 /* STransferResultView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 812002A321A3EB390050E1B0 /* STransferResultView.xib */; };
-		812002BF21A3EB390050E1B0 /* SharedWalletTransferView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 812002A421A3EB390050E1B0 /* SharedWalletTransferView.xib */; };
-		812002C021A3EB390050E1B0 /* SharedWalletTransferView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812002A521A3EB390050E1B0 /* SharedWalletTransferView.swift */; };
 		812002C121A3EB390050E1B0 /* STransferConfirmView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 812002A621A3EB390050E1B0 /* STransferConfirmView.xib */; };
 		812002C221A3EB390050E1B0 /* layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812002A821A3EB390050E1B0 /* layout.swift */; };
-		812002C821A3EBA00050E1B0 /* SharedWalletTransferVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812002C721A3EBA00050E1B0 /* SharedWalletTransferVC.swift */; };
 		812002CC21A3F6430050E1B0 /* AddSharedWalletVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812002CA21A3F6430050E1B0 /* AddSharedWalletVC.swift */; };
 		812002CD21A3F6430050E1B0 /* AddSharedWalletVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 812002CB21A3F6430050E1B0 /* AddSharedWalletVC.xib */; };
 		812002D021A417120050E1B0 /* ByteHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812002CF21A417120050E1B0 /* ByteHelper.swift */; };
@@ -352,14 +346,11 @@
 		811925742237D521000A6CE9 /* CandidatesListFilterBarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CandidatesListFilterBarView.xib; sourceTree = "<group>"; };
 		8120027721A3BD520050E1B0 /* WalletDetailCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletDetailCell.swift; sourceTree = "<group>"; };
 		8120027821A3BD520050E1B0 /* WalletDetailCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WalletDetailCell.xib; sourceTree = "<group>"; };
-		8120028B21A3EB390050E1B0 /* ATPTransferViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ATPTransferViewController.swift; sourceTree = "<group>"; };
 		8120028D21A3EB390050E1B0 /* TransferDetailView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransferDetailView.swift; sourceTree = "<group>"; };
-		8120028E21A3EB390050E1B0 /* TransferView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransferView.swift; sourceTree = "<group>"; };
 		8120028F21A3EB390050E1B0 /* SwitchWalletTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwitchWalletTableViewCell.swift; sourceTree = "<group>"; };
 		8120029021A3EB390050E1B0 /* TransferDetailView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransferDetailView.xib; sourceTree = "<group>"; };
 		8120029121A3EB390050E1B0 /* TransactionDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionDetailViewController.swift; sourceTree = "<group>"; };
 		8120029221A3EB390050E1B0 /* TransferSwitchWallet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransferSwitchWallet.swift; sourceTree = "<group>"; };
-		8120029321A3EB390050E1B0 /* TransferView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransferView.xib; sourceTree = "<group>"; };
 		8120029421A3EB390050E1B0 /* TransferSwitchWallet.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TransferSwitchWallet.xib; sourceTree = "<group>"; };
 		8120029521A3EB390050E1B0 /* TransferConfirmView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransferConfirmView.swift; sourceTree = "<group>"; };
 		8120029621A3EB390050E1B0 /* SwitchWalletTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SwitchWalletTableViewCell.xib; sourceTree = "<group>"; };
@@ -374,11 +365,8 @@
 		812002A121A3EB390050E1B0 /* SWalletConfirmCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SWalletConfirmCell.xib; sourceTree = "<group>"; };
 		812002A221A3EB390050E1B0 /* STransferConfirmView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = STransferConfirmView.swift; sourceTree = "<group>"; };
 		812002A321A3EB390050E1B0 /* STransferResultView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = STransferResultView.xib; sourceTree = "<group>"; };
-		812002A421A3EB390050E1B0 /* SharedWalletTransferView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SharedWalletTransferView.xib; sourceTree = "<group>"; };
-		812002A521A3EB390050E1B0 /* SharedWalletTransferView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedWalletTransferView.swift; sourceTree = "<group>"; };
 		812002A621A3EB390050E1B0 /* STransferConfirmView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = STransferConfirmView.xib; sourceTree = "<group>"; };
 		812002A821A3EB390050E1B0 /* layout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = layout.swift; sourceTree = "<group>"; };
-		812002C721A3EBA00050E1B0 /* SharedWalletTransferVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedWalletTransferVC.swift; sourceTree = "<group>"; };
 		812002CA21A3F6430050E1B0 /* AddSharedWalletVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSharedWalletVC.swift; sourceTree = "<group>"; };
 		812002CB21A3F6430050E1B0 /* AddSharedWalletVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddSharedWalletVC.xib; sourceTree = "<group>"; };
 		812002CF21A417120050E1B0 /* ByteHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ByteHelper.swift; sourceTree = "<group>"; };
@@ -719,7 +707,6 @@
 		8120028A21A3EB390050E1B0 /* ATPWallet */ = {
 			isa = PBXGroup;
 			children = (
-				8120028B21A3EB390050E1B0 /* ATPTransferViewController.swift */,
 				8120029121A3EB390050E1B0 /* TransactionDetailViewController.swift */,
 				8120028C21A3EB390050E1B0 /* views */,
 			);
@@ -737,8 +724,6 @@
 				8120029021A3EB390050E1B0 /* TransferDetailView.xib */,
 				8120029221A3EB390050E1B0 /* TransferSwitchWallet.swift */,
 				8120029421A3EB390050E1B0 /* TransferSwitchWallet.xib */,
-				8120028E21A3EB390050E1B0 /* TransferView.swift */,
-				8120029321A3EB390050E1B0 /* TransferView.xib */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -749,7 +734,6 @@
 				8120029921A3EB390050E1B0 /* SharedWalletTransactionDetailVC.swift */,
 				8120029A21A3EB390050E1B0 /* ShareWalletConfirmVC.swift */,
 				8120029B21A3EB390050E1B0 /* views */,
-				812002C721A3EBA00050E1B0 /* SharedWalletTransferVC.swift */,
 			);
 			path = SharedWallet;
 			sourceTree = "<group>";
@@ -760,8 +744,6 @@
 				9AC86EA2224B67D000315A79 /* JointWalletCreationFeeConfirmView.swift */,
 				8120029E21A3EB390050E1B0 /* MemberOperTableViewCell.swift */,
 				8120029F21A3EB390050E1B0 /* MemberOperTableViewCell.xib */,
-				812002A521A3EB390050E1B0 /* SharedWalletTransferView.swift */,
-				812002A421A3EB390050E1B0 /* SharedWalletTransferView.xib */,
 				812002A221A3EB390050E1B0 /* STransferConfirmView.swift */,
 				812002A621A3EB390050E1B0 /* STransferConfirmView.xib */,
 				8120029C21A3EB390050E1B0 /* STransferDetailView.swift */,
@@ -1777,8 +1759,6 @@
 				811925752237D521000A6CE9 /* CandidatesListFilterBarView.xib in Resources */,
 				9AD11DE2218171CA002CD905 /* BackupMnemonicViewController.xib in Resources */,
 				8115BEAA218B04CD009FFE3B /* PlatonAssets in Resources */,
-				812002BF21A3EB390050E1B0 /* SharedWalletTransferView.xib in Resources */,
-				812002B021A3EB390050E1B0 /* TransferView.xib in Resources */,
 				9AD2863121D3598B009AB958 /* CandidatesTableViewCell.xib in Resources */,
 				812002CD21A3F6430050E1B0 /* AddSharedWalletVC.xib in Resources */,
 				9AE314352191734D00B5433F /* WalletSelectionView.xib in Resources */,
@@ -2044,7 +2024,6 @@
 				9AD11DE52181BC6F002CD905 /* VerifyMnemonicViewController.swift in Sources */,
 				81EE99ED217709FA008DF8CB /* BaseViewController.swift in Sources */,
 				81515BCF21C774D600054197 /* SharedPresentedVC.swift in Sources */,
-				812002C021A3EB390050E1B0 /* SharedWalletTransferView.swift in Sources */,
 				9ADB60C8223106710044918D /* AssetFeeViewV060.swift in Sources */,
 				9AF9AC142182E04000E97F07 /* PresentationController.swift in Sources */,
 				8115BC4B2188444E009FFE3B /* CopyButton.swift in Sources */,
@@ -2075,9 +2054,7 @@
 				81FCCCF22179B6710052FC29 /* AssetNavigationBarView.swift in Sources */,
 				9AC60C13224E37FB00A5ED6A /* CreateAndInputWalletCollectionViewCell.swift in Sources */,
 				8115BEAC218B1DDA009FFE3B /* TransactionListViewController.swift in Sources */,
-				812002C821A3EBA00050E1B0 /* SharedWalletTransferVC.swift in Sources */,
 				9ADE4507217ED02E006F1C81 /* CreateWalletSuccessViewController.swift in Sources */,
-				812002AB21A3EB390050E1B0 /* TransferView.swift in Sources */,
 				812002AF21A3EB390050E1B0 /* TransferSwitchWallet.swift in Sources */,
 				9A25B9BA2189B09200B9433A /* WalletEmptyView.swift in Sources */,
 				819A52302190623400E4C500 /* LaunchViewController.swift in Sources */,
@@ -2107,7 +2084,6 @@
 				9AC86EA3224B67D000315A79 /* JointWalletCreationFeeConfirmView.swift in Sources */,
 				81C1120E21AFBFDE00003E59 /* Router.swift in Sources */,
 				813E288021D4CC3500C36A0F /* SingleVoteDetailListVC.swift in Sources */,
-				812002A921A3EB390050E1B0 /* ATPTransferViewController.swift in Sources */,
 				9A79A095219BFFDD000EB4C5 /* CreateSharedWalletMemberTableViewCell.swift in Sources */,
 				81E2E8492186A5EE008B7504 /* AddressBookViewController.swift in Sources */,
 				819A434F21D1FF3000E276C7 /* Ticket.swift in Sources */,

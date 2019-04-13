@@ -73,7 +73,7 @@ class AppFramework {
                 }) 
             }
             
-            if schemaVersion < 6{ 
+            if oldSchemaVersion < 6{ 
                 migration.enumerateObjects(ofType: Transaction.className(), { (old, new) in
                     RealmHelper.doNodeULRStringMigration_4_to_6(old, new)
                 })

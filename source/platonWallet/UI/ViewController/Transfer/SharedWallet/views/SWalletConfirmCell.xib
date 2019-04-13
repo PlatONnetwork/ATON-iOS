@@ -20,10 +20,10 @@
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6Qd-XA-zEa">
-                        <rect key="frame" x="12" y="0.0" width="58" height="58"/>
+                        <rect key="frame" x="21" y="0.0" width="40" height="40"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="memberIconConfirm" translatesAutoresizingMaskIntoConstraints="NO" id="iEr-Uo-z52">
-                                <rect key="frame" x="19" y="19" width="20" height="20"/>
+                                <rect key="frame" x="10" y="10" width="20" height="20"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="20" id="Muc-wG-mNm"/>
@@ -33,15 +33,15 @@
                         </subviews>
                         <color key="backgroundColor" red="0.94117647058823528" green="0.94509803921568625" blue="0.96078431372549022" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstAttribute="width" constant="58" id="52X-EO-Mt2"/>
+                            <constraint firstAttribute="width" constant="40" id="52X-EO-Mt2"/>
                             <constraint firstAttribute="width" secondItem="6Qd-XA-zEa" secondAttribute="height" multiplier="1:1" id="7AR-Z9-sEC"/>
-                            <constraint firstAttribute="height" constant="58" id="PdF-mq-4oU"/>
+                            <constraint firstAttribute="height" constant="40" id="PdF-mq-4oU"/>
                             <constraint firstItem="iEr-Uo-z52" firstAttribute="centerX" secondItem="6Qd-XA-zEa" secondAttribute="centerX" id="guh-ef-4SF"/>
                             <constraint firstItem="iEr-Uo-z52" firstAttribute="centerY" secondItem="6Qd-XA-zEa" secondAttribute="centerY" id="xQ3-Qc-zfa"/>
                         </constraints>
                     </view>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="- -" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sgR-6W-VAq">
-                        <rect key="frame" x="0.0" y="58" width="82" height="20"/>
+                        <rect key="frame" x="0.0" y="40" width="82" height="20"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="20" id="7ew-pa-CNm"/>
                         </constraints>

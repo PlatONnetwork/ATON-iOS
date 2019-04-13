@@ -39,7 +39,7 @@ class SWalletConfirmCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.statusIconContainer.layer.masksToBounds = true
-        self.statusIconContainer.layer.cornerRadius = 58*0.5
+        self.statusIconContainer.layer.cornerRadius = 40*0.5
         
     }
     
@@ -84,7 +84,7 @@ class SWalletConfirmCell: UICollectionViewCell {
         }else{
             sender = swallet.walletAddress
         }
-        
+         
         if (result.walletAddress?.ishexStringEqual(other: sender))! &&
             transaction.txhash != nil &&
             (transaction.txhash?.count)! > 0 &&

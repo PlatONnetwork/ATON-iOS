@@ -20,7 +20,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
     var estimatedGas = BigUInt("210000")
     
     var gasPrice : BigUInt?{
-        get{ 
+        get{  
             //gas prise: 1gwei ~ 10gwei
             
             let mul = String(1 + 3 * (self.gasPriceLevel - 1))
@@ -465,6 +465,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
                         notnilAlertVC.hideLoadingHUD()
                     }
                     alertVC.showInputErrorTip(string: (err?.errorDescription)!)
+                    alertVC.hideLoadingHUD()
                 }
             })
             return false
@@ -556,7 +557,7 @@ extension AssetSendViewControllerV060{
         if let _ = AssetVCSharedData.sharedData.selectedWallet as? Wallet{
             return (self.gasPrice?.multiplied(by: self.estimatedGas!))!
         }else if let _ = AssetVCSharedData.sharedData.selectedWallet as? SWallet{
-            return BigUInt("0")!
+            return (self.gasPrice?.multiplied(by: self.estimatedGas!))!
         }
         return BigUInt("0")!
     }

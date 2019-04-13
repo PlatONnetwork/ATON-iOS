@@ -29,16 +29,16 @@ class RealmHelper {
     
     public static func doNodeULRStringMigration_4_to_6(_ old: MigrationObject?, _ new: MigrationObject?){
         if old != nil && new != nil{
-            if let emptyURLString = old!["nodeURLStr"] as? String,emptyURLString == ""{
-                new!["nodeURLStr"] = DefaultAlphaNodeURL
-            }
+            new!["nodeURLStr"] = DefaultAlphaNodeURL
         }
     }
     
     public static func classicwalletdoPrimaryKeyMigration_4_to_6(_ old: MigrationObject?, _ new: MigrationObject?){
         if old != nil && new != nil{
-            if let emptyURLString = old!["primaryKeyIdentifier"] as? String,emptyURLString == "",let address = old!["address"] as? String{
-                new!["primaryKeyIdentifier"] = address + DefaultAlphaNodeURL 
+            let path = old!["keystorePath"] as? String
+            let keystore = try? Keystore(contentsOf: URL(fileURLWithPath: keystoreFolderPath + "/" + path!))
+            if (path != nil && keystore != nil){
+                new!["primaryKeyIdentifier"] = keystore!.address + DefaultAlphaNodeURL
             }
         }
     }
