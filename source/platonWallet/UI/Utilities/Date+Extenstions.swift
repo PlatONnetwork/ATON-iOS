@@ -8,7 +8,12 @@
 
 import Foundation
 
+let dateFormatterInExtension = DateFormatter()
+let dateFormatterMutable = DateFormatter()
 extension Date {
+    
+    
+    
     var millisecondsSince1970:Int {
         return Int((self.timeIntervalSince1970 * 1000.0).rounded())
     }
@@ -19,29 +24,27 @@ extension Date {
     
     public static func toStanderTimeDescrition(millionSecondsTimeStamp : Int) -> String?{
         let date = Date(timeIntervalSince1970: (Double(millionSecondsTimeStamp) * 0.001))
-        let dateFormatter = DateFormatter()
+        
         
         let localZone = NSTimeZone.local
         /*
         let systemZone = NSTimeZone.system
         let defaultZone = NSTimeZone.default
          */
-        dateFormatter.timeZone = localZone
-        dateFormatter.locale = NSLocale.current
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm"
-        let strDate = dateFormatter.string(from: date)
+        dateFormatterInExtension.timeZone = localZone
+        dateFormatterInExtension.locale = NSLocale.current
+        dateFormatterInExtension.dateFormat = "yyyy-MM-dd HH:mm"
+        let strDate = dateFormatterInExtension.string(from: date)
         return strDate
     }
     
     public func toFormatter(_ formatter: String) -> String {
         
-        let dateFormatter = DateFormatter()
-        
         let localZone = NSTimeZone.local
-        dateFormatter.timeZone = localZone
-        dateFormatter.locale = NSLocale.current
-        dateFormatter.dateFormat = formatter
-        let strDate = dateFormatter.string(from: self)
+        dateFormatterMutable.timeZone = localZone
+        dateFormatterMutable.locale = NSLocale.current
+        dateFormatterMutable.dateFormat = formatter
+        let strDate = dateFormatterMutable.string(from: self)
         return strDate
     }
 }

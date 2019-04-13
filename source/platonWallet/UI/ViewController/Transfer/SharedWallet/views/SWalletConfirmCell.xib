@@ -33,7 +33,9 @@
                         </subviews>
                         <color key="backgroundColor" red="0.94117647058823528" green="0.94509803921568625" blue="0.96078431372549022" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstAttribute="width" constant="58" id="52X-EO-Mt2"/>
                             <constraint firstAttribute="width" secondItem="6Qd-XA-zEa" secondAttribute="height" multiplier="1:1" id="7AR-Z9-sEC"/>
+                            <constraint firstAttribute="height" constant="58" id="PdF-mq-4oU"/>
                             <constraint firstItem="iEr-Uo-z52" firstAttribute="centerX" secondItem="6Qd-XA-zEa" secondAttribute="centerX" id="guh-ef-4SF"/>
                             <constraint firstItem="iEr-Uo-z52" firstAttribute="centerY" secondItem="6Qd-XA-zEa" secondAttribute="centerY" id="xQ3-Qc-zfa"/>
                         </constraints>
@@ -51,13 +53,12 @@
             </view>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstItem="ZTg-uK-7eu" firstAttribute="trailing" secondItem="6Qd-XA-zEa" secondAttribute="trailing" constant="12" id="1gj-5e-SM7"/>
                 <constraint firstItem="sgR-6W-VAq" firstAttribute="top" secondItem="6Qd-XA-zEa" secondAttribute="bottom" id="7I9-Ee-x7C"/>
                 <constraint firstItem="sgR-6W-VAq" firstAttribute="leading" secondItem="ZTg-uK-7eu" secondAttribute="leading" id="8fN-wI-1mA"/>
+                <constraint firstItem="6Qd-XA-zEa" firstAttribute="centerX" secondItem="ZTg-uK-7eu" secondAttribute="centerX" id="RXU-hC-LvL"/>
                 <constraint firstItem="sgR-6W-VAq" firstAttribute="centerX" secondItem="ZTg-uK-7eu" secondAttribute="centerX" id="V5E-we-k9O"/>
                 <constraint firstItem="6Qd-XA-zEa" firstAttribute="top" secondItem="ZTg-uK-7eu" secondAttribute="top" id="Zn9-Eo-HHW"/>
                 <constraint firstItem="ZTg-uK-7eu" firstAttribute="trailing" secondItem="sgR-6W-VAq" secondAttribute="trailing" id="gdP-cC-xUA"/>
-                <constraint firstItem="6Qd-XA-zEa" firstAttribute="leading" secondItem="ZTg-uK-7eu" secondAttribute="leading" constant="12" id="lyN-cO-I42"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <size key="customSize" width="82" height="112"/>

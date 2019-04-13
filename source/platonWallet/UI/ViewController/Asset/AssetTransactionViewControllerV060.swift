@@ -138,7 +138,7 @@ extension AssetTransactionViewControllerV060{
         if let swallet = AssetVCSharedData.sharedData.selectedWallet as? SWallet{
             SWalletService.sharedInstance.getTransactionList(contractAddress: (swallet.contractAddress), sender: (swallet.walletAddress), from: 0, to: UInt64.max) { (ret, data) in
                 switch ret{
-                case .success:
+                case .success:   
                     do{}
                 case .fail(_, _):
                     do{}

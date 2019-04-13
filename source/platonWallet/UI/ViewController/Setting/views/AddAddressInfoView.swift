@@ -16,7 +16,7 @@ class AddAddressInfoView: UIView {
     
     @IBOutlet weak var confirmButton: UIButton!
     
-    @IBOutlet weak var scanButton: UIButton!
+    var scanButton: UIButton = UIButton(type: .custom)
     
     @IBOutlet weak var walletNameTip: UILabel!
     
@@ -36,6 +36,10 @@ class AddAddressInfoView: UIView {
 
         addressTipHeight.constant = 0
         walletNameTip.text = ""
+        scanButton.frame = CGRect(x: 0, y: 0, width: 30, height: 30)
+        scanButton.setImage(UIImage(named: "textField_icon_scan"), for: .normal)
+        addressField.rightView = scanButton
+        addressField.rightViewMode = .always
     
     }
     
@@ -45,7 +49,7 @@ class AddAddressInfoView: UIView {
         }
         
         if addressField.isFirstResponder {
-            addressField.resignFirstResponder()
+            addressField.resignFirstResponder() 
         }
     }
     
