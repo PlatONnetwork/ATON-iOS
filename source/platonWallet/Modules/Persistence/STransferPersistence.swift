@@ -15,11 +15,13 @@ class STransferPersistence {
         tx.from = tx.from?.lowercased()
         tx.to = tx.to?.lowercased()
         tx.nodeURLStr = SettingService.getCurrentNodeURLString()
-        if tx.transactionCategory == TransanctionCategory.ATPTransfer.rawValue{
-            
+
+        
+        if tx.transactionCategory == TransanctionCategory.ATPTransfer.rawValue{    
             //deprecated business requirements
             //let _ = tx.initAsUnread
-             
+            
+            let forCheckOutward = tx.contractAddress + "_" + tx.transactionID
             let predicate = NSPredicate(format: "transactionID = %@ AND transactionCategory = %d AND contractAddress contains[c] %@",
                                         tx.transactionID,
                                         tx.transactionType,
@@ -29,6 +31,11 @@ class STransferPersistence {
             if r.count == 1 {
                 let existed = r.first
                 RealmInstance?.beginWrite()
+                
+                if SWalletService.sharedInstance.outwardHash.contains(forCheckOutward) && existed?.readTag == ReadTag.UnRead.rawValue{
+                    //update outward mutisign transaction as readed
+                    existed?.readTag = ReadTag.Readed.rawValue
+                }
                 
                 if (tx.blockNumber?.length)! > 0{
                     existed?.blockNumber = tx.blockNumber
@@ -62,11 +69,17 @@ class STransferPersistence {
                 try? RealmInstance?.commitWrite()
 
             }else{
-                tx.readTag = ReadTag.UnRead.rawValue
+                if SWalletService.sharedInstance.outwardHash.contains(forCheckOutward){
+                    //update outward mutisign transaction as readed
+                    tx.readTag = ReadTag.Readed.rawValue
+                }else{
+                    tx.readTag = ReadTag.UnRead.rawValue
+                }
                 addWithoutDeduplication(tx: tx)
             }
             
         }else{
+            tx.readTag = ReadTag.Readed.rawValue
             addWithoutDeduplication(tx: tx)
         }
     }
@@ -186,10 +199,11 @@ class STransferPersistence {
                                     address,address,TransanctionCategory.ATPTransfer.rawValue)
         
         let r = RealmInstance!.objects(STransaction.self).filter(predicate).sorted(byKeyPath: "createTime", ascending: false)
-        var array : [STransaction] = [] 
+        var array : [STransaction] = []
         for item in r{
-            let w = SWalletService.sharedInstance.getATPWalletByAddress(address: item.ownerWalletAddress)
-            if w != nil{
+            let cw = SWalletService.sharedInstance.getATPWalletByAddress(address: item.ownerWalletAddress)
+            let jw = SWalletService.sharedInstance.getSWalletByContractAddress(contractAddress: item.contractAddress)
+            if cw != nil && jw != nil{
                 array.append(item)
             }
         }

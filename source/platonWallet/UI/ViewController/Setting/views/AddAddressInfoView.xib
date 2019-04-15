@@ -49,9 +49,6 @@
                     <textInputTraits key="textInputTraits"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="string" keyPath="LocalizePlaceholder" value="AddAddress_textFieldPlaceHolder_Wallet_Address"/>
-                        <userDefinedRuntimeAttribute type="number" keyPath="rightInset">
-                            <real key="value" value="30"/>
-                        </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </textField>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2Dk-05-8o5" customClass="PButton" customModule="platonWallet" customModuleProvider="target">
@@ -104,14 +101,6 @@
                         <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="addressbook_wallet_address_with_Colon"/>
                     </userDefinedRuntimeAttributes>
                 </label>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U1X-f3-UBe">
-                    <rect key="frame" x="325" y="121.5" width="36" height="36"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="36" id="59M-sw-s15"/>
-                        <constraint firstAttribute="height" constant="36" id="yE0-G6-uA6"/>
-                    </constraints>
-                    <state key="normal" image="textField_icon_scan"/>
-                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
@@ -133,8 +122,6 @@
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="2Dk-05-8o5" secondAttribute="bottom" constant="26" id="lDP-ul-8hx"/>
                 <constraint firstItem="RSS-NA-n3z" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="24" id="mrP-hL-sUL"/>
                 <constraint firstItem="s3g-nZ-maK" firstAttribute="top" secondItem="RSS-NA-n3z" secondAttribute="bottom" id="nzY-Rz-toC"/>
-                <constraint firstItem="U1X-f3-UBe" firstAttribute="centerY" secondItem="rqt-zJ-bm1" secondAttribute="centerY" id="ocS-Gv-7Fl"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="U1X-f3-UBe" secondAttribute="trailing" constant="14" id="pEa-LC-hbJ"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="rqt-zJ-bm1" secondAttribute="trailing" constant="16" id="sHs-1s-kBj"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="s3g-nZ-maK" secondAttribute="trailing" constant="16" id="sdS-qW-jnz"/>
                 <constraint firstItem="bQK-xQ-sMZ" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="uq9-IL-3HN"/>
@@ -151,13 +138,9 @@
                 <outlet property="addressTipHeight" destination="2kz-lP-tKB" id="8hX-9V-lDg"/>
                 <outlet property="confirmButton" destination="2Dk-05-8o5" id="CsC-aA-UT4"/>
                 <outlet property="nameTextField" destination="s3g-nZ-maK" id="K40-yk-FWP"/>
-                <outlet property="scanButton" destination="U1X-f3-UBe" id="Rek-9n-CcP"/>
                 <outlet property="walletNameTip" destination="J6a-W7-I4Z" id="Nrg-Hl-3le"/>
             </connections>
             <point key="canvasLocation" x="132" y="255.92203898050977"/>
         </view>
     </objects>
-    <resources>
-        <image name="textField_icon_scan" width="20" height="20"/>
-    </resources>
 </document>

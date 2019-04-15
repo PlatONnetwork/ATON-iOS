@@ -462,7 +462,7 @@ class STransaction: Object {
         let txComponets = concatenated.components(separatedBy: "|")
         if txComponets.count > 1{
             var dic: Dictionary<String,STransaction> = [:]
-            for item in txs{
+            for item in txs{ 
                 dic[item.transactionID] = item
             }  
             for item in txComponets{

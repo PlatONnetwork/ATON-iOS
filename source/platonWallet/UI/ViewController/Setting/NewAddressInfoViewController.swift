@@ -27,7 +27,7 @@ class NewAddressInfoViewController: BaseViewController , UITextFieldDelegate{
         initSubViews()
         initNavigationItem()
         contentView.addressField.text = defaultAddress
-        contentView.scanButton.addTarget(self, action: #selector(onConfirm), for: .touchUpInside)
+        contentView.scanButton.addTarget(self, action: #selector(onScanButton), for: .touchUpInside)
         self.autoAdjustInset()
         
         if fromScene == .edit {

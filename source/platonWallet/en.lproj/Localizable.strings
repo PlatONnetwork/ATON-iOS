@@ -672,3 +672,6 @@
 
 "watchJointWalletTip_Notice" = "Transaction initiation failed";
 "watchJointWalletTip_message" = "The associated Classic Wallet has been removed.";
+
+"data_parser_error" = "Data parser error.";
+"unknow_error" = "Unknow error.";

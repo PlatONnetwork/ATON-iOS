@@ -57,7 +57,7 @@
                                 <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="SharedWalletTransactionDetailVC_payment_des"/>
                             </userDefinedRuntimeAttributes>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qpM-IL-PHi" customClass="PButton" customModule="platonWallet" customModuleProvider="target">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qpM-IL-PHi" customClass="PButton" customModule="platonWallet" customModuleProvider="target">
                             <rect key="frame" x="16" y="153.5" width="343" height="44"/>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>

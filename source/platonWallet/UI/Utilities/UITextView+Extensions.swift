@@ -8,6 +8,7 @@
 
 import Foundation
 import Localize_Swift
+import UITextView_Placeholder
 
 private var AssociatedKey: UInt8 = 1
 private var AssociatedKey_Placeholder: UInt8 = 1

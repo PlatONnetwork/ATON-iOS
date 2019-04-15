@@ -11,7 +11,7 @@ import BigInt
 
 
 let dateFormatter = DateFormatter()
-
+let dateFormatter_greenwich = DateFormatter()
 extension String{
     
     func is40ByteAddress() -> Bool{
@@ -253,10 +253,10 @@ extension String{
     }
     
     func GreenwichTimeStamp() -> UInt64{
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        dateFormatter.timeZone = TimeZone(identifier: "UTC")
-        let date = dateFormatter.date(from: self)
+        
+        dateFormatter_greenwich.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        dateFormatter_greenwich.timeZone = TimeZone(identifier: "UTC")
+        let date = dateFormatter_greenwich.date(from: self)
         return UInt64((date?.timeIntervalSince1970)!)
     }
     

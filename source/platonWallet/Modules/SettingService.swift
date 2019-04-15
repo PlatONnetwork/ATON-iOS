@@ -39,7 +39,7 @@ class SettingService {
         }
         
         let semaphore = DispatchSemaphore(value: 0)
-        var URLString : String = DefaultAlphaNodeURL
+        var URLString : String = DefaultNodeURL_Alpha
         DispatchQueue.main.async {
             URLString = self.getCurrentNodeURLString()
             semaphore.signal()
@@ -55,7 +55,7 @@ class SettingService {
         if let urlString = SettingService.shareInstance.getSelectedNodes()?.nodeURLStr{
             return urlString
         }
-        return DefaultAlphaNodeURL
+        return DefaultNodeURL_Alpha
     }
     
     func getNodes() -> [NodeInfo] {

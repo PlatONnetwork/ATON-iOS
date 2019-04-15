@@ -196,7 +196,7 @@ class CandidateBasicInfo: Object {
     @objc dynamic var host: String? = ""
     @objc dynamic var port: String? = ""
     @objc dynamic var owner: String? = ""
-    
+    @objc dynamic var nodeURLStr: String = ""
     override public static func primaryKey() -> String? {
         return "id"
     }

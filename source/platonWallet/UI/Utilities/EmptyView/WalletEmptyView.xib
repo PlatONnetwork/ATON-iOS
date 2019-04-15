@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -22,7 +22,7 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_emptyWallet" translatesAutoresizingMaskIntoConstraints="NO" id="9dD-YY-J4a">
+                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="empty_no_wallet_icon" translatesAutoresizingMaskIntoConstraints="NO" id="9dD-YY-J4a">
                     <rect key="frame" x="84.5" y="108" width="206" height="142"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="142" id="BXo-Zm-wDh"/>
@@ -40,9 +40,13 @@
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="SLb-Q9-bs1"/>
                     </constraints>
-                    <state key="normal" title="Button">
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <state key="normal">
                         <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="localizedNormalTitle" value="IndividualWallet_EmptyView_createBtn_title"/>
+                    </userDefinedRuntimeAttributes>
                     <connections>
                         <action selector="onBtn1Click:" destination="-1" eventType="touchUpInside" id="onU-Q1-c8b"/>
                     </connections>
@@ -52,9 +56,13 @@
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="edH-Of-q6y"/>
                     </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
                     <state key="normal" title="Button">
                         <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="localizedNormalTitle" value="IndividualWallet_EmptyView_importBtn_title"/>
+                    </userDefinedRuntimeAttributes>
                     <connections>
                         <action selector="onBtn2Click:" destination="-1" eventType="touchUpInside" id="Oqr-hc-RVs"/>
                     </connections>
@@ -79,6 +87,6 @@
         </view>
     </objects>
     <resources>
-        <image name="icon_emptyWallet" width="206" height="142"/>
+        <image name="empty_no_wallet_icon" width="206" height="142"/>
     </resources>
 </document>

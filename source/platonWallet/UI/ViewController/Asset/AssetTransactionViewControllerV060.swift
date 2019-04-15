@@ -41,7 +41,7 @@ class AssetTransactionViewControllerV060: BaseViewController, EmptyDataSetDelega
         tableView.separatorStyle = .none
         tableView.showsVerticalScrollIndicator = false
         tableView.emptyDataSetView { [weak self] view in
-            view.customView(self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, nil))
+            view.customView(self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, nil,"empty_no_wallet_icon"))
         }
         tableView.emptyDataSetDelegate = self
         tableView.emptyDataSetSource = self
@@ -138,7 +138,7 @@ extension AssetTransactionViewControllerV060{
         if let swallet = AssetVCSharedData.sharedData.selectedWallet as? SWallet{
             SWalletService.sharedInstance.getTransactionList(contractAddress: (swallet.contractAddress), sender: (swallet.walletAddress), from: 0, to: UInt64.max) { (ret, data) in
                 switch ret{
-                case .success:
+                case .success:   
                     do{}
                 case .fail(_, _):
                     do{}
@@ -204,7 +204,7 @@ extension AssetTransactionViewControllerV060{
     }
     
     @objc func updateWalletList(){
-        
+        self.refreshData()
     }
     
     

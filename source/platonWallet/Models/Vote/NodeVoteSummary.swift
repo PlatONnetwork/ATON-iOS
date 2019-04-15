@@ -71,9 +71,7 @@ class NodeVoteSummary {
         if votes.count == 0{
             return []
         }
-        
-        var voteMap : Dictionary<String,[Ticket]> = [:]
-
+        var voteMap : Dictionary<String,[SingleVote]> = [:]
         
         let _ = votes.map { (singleVote) in
             guard let candidatedId = singleVote.candidateId else{
@@ -82,23 +80,17 @@ class NodeVoteSummary {
             }
             
             if var list = voteMap[candidatedId]{
-                if singleVote.tickets.count > 0{
-                    list.append(contentsOf: singleVote.tickets)
-                    voteMap[candidatedId] = list
-                }
-                
+                list.append(singleVote)
             }else{
-                var list : [Ticket] = []
-                if singleVote.tickets.count > 0{
-                    list.append(contentsOf: singleVote.tickets)
-                }
-                
+                var list : [SingleVote] = []
+                list.append(singleVote)
                 voteMap[candidatedId] = list
             }
         }
         
         let summaries = voteMap.map { item -> NodeVoteSummary in
             let nodevote = NodeVoteSummary()
+            nodevote.singleVote = item.value
             nodevote.CandidateId = item.key
             return nodevote
         }

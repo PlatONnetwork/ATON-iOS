@@ -269,6 +269,7 @@ class CreateSharedWalletStep2ViewController: BaseViewController {
                     if let notnilAlertVC = self?.passwordInputAlert{
                         notnilAlertVC.hideLoadingHUD()
                     }
+                    alertVC.hideLoadingHUD()
                     alertVC.showInputErrorTip(string: (err?.errorDescription)!)
                 }
             })
