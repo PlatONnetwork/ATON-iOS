@@ -670,3 +670,6 @@
 
 "watchJointWalletTip_Notice" = "提示";
 "watchJointWalletTip_message" = "关联的经典钱包已被删除，该钱包无法发起交易！";
+
+"data_parser_error" = "数据解析失败";
+"unknow_error" = "未知错误";

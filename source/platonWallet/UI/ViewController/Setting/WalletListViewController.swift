@@ -32,22 +32,6 @@ class WalletListViewController: BaseViewController,TableViewReorderDelegate {
         return view
     }()
     
-    lazy var sharedWalletEmptyView : WalletEmptyView! = {
-        
-        let view = WalletEmptyView(walletType: .JointWallet, createBtnClickHandler: { [weak self] in 
-            self?.createSharedWallet()
-            
-        }) { [weak self] in 
-            self?.addSharedWallet()
-        }
-        view.isHidden = true
-        self.view.addSubview(view)
-        view.snp.makeConstraints { (maker) in
-            maker.edges.equalToSuperview()
-        }
-        return view
-    }()
-    
     var currentType: WalletType = .ClassicWallet
 
 
@@ -72,13 +56,11 @@ class WalletListViewController: BaseViewController,TableViewReorderDelegate {
     func updateUI() {
         super.leftNavigationTitle = "WalletManagerDetailVC_title"
         if dataSource.count > 0 {
-            sharedWalletEmptyView.isHidden = true
             atpWalletEmptyView.isHidden = true
             tableView.isHidden = false
             tableView.reloadData()
         }else {
             atpWalletEmptyView.isHidden = false
-            sharedWalletEmptyView.isHidden = true
             tableView.isHidden = true
         }
         tableView.reloadData()

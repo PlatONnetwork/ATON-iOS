@@ -12,8 +12,6 @@ import platonWeb3
 
 class SingleVote: Object {
     
-    var tickets = List<Ticket>()
-    
     @objc dynamic var txHash: String = ""
     
     @objc dynamic var createTime = 0
@@ -29,6 +27,10 @@ class SingleVote: Object {
     @objc dynamic var totalTicketNum : String = ""
     
     @objc dynamic var validNum : String = ""
+    
+    @objc dynamic var nodeURLStr: String = ""
+    
+    @objc dynamic var isLocalData = false    
     
     var invalidNumber: Int{
         get{

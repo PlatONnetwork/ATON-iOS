@@ -13,11 +13,11 @@ let maxRequestContentLength = 1024 * 128
 
 let MinTransactionConfirmations = 1
 
-let DefaultAlphaNodeURL = "https://syde.platon.network/test"
+let DefaultNodeURL_Alpha = "https://syde.platon.network/test"
 
-let DefualtAlphaNodeURL_tmp = "https://test-amigo.platon.network/test"
+let DefaultNodeURL_Alpha_new = "https://test-amigo.platon.network/test"
 
-let DefualtBetaNodeNodeURL_tmp = "https://test-amigo.platon.network/test"
+let DefaultNodeURL_Beta = "https://test-amigo.platon.network/test"
 
 
 //balance query timer

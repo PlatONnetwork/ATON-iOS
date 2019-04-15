@@ -50,7 +50,7 @@ class SingleVoteDetailListVC : BaseViewController, UITableViewDelegate,UITableVi
         tableView.tableHeaderView = tableviewHeader()
         
         tableView.emptyDataSetView { [weak self] view in
-            view.customView(self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, Localized("MyVoteListVC_Empty_tips")))
+            view.customView(self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, Localized("MyVoteListVC_Empty_tips"),"empty_no_data_img"))
         }
     }
     

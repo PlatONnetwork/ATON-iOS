@@ -32,23 +32,19 @@ class WalletEmptyView: UIView {
             maker.edges.equalToSuperview()
         }
         setupUIFor(walletType)
-        btn1.style = .blue
-        btn2.style = .gray
+
+
     }
     
     func setupUIFor(_ type: WalletType) {
+        btn1.style = .blue
+        btn2.style = .gray
+        tipsLabel.localizedText = "IndividualWallet_EmptyView_tips"
         
-        if type == .ClassicWallet {
-            tipsLabel.localizedText = "IndividualWallet_EmptyView_tips" 
-            btn1.localizedNormalTitle = "IndividualWallet_EmptyView_createBtn_title"
-            btn2.localizedNormalTitle = "IndividualWallet_EmptyView_importBtn_title"
-
-        }else {
-            tipsLabel.localizedText = "SharedWallet_EmptyView_tips"
-            btn1.localizedNormalTitle = "SharedWallet_EmptyView_createBtn_title"
-            btn2.localizedNormalTitle = "SharedWallet_EmptyView_importBtn_title"
-        }
-        
+        DispatchQueue.main.async { [weak self] in
+            self?.btn1.setHorizontalLinerTitleAndImage(image: UIImage(named: "walletCreateIcon")!)
+            self?.btn2.setHorizontalLinerTitleAndImage(image: UIImage(named: "walletImportIcon")!)
+        }  
     }
     
     

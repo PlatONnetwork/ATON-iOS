@@ -84,7 +84,7 @@ class VoteManager: BaseService {
             
         }
 
-    }
+    } 
     
     func GetPoolRemainder(completion: PlatonCommonCompletion?){
         
@@ -127,8 +127,12 @@ class VoteManager: BaseService {
         
     }
     
-    func getMyVoteList(completion: PlatonCommonCompletion?){
-        self.getBatchVoteTransaction(completion: completion)   
+    func getMyVoteList(localDataCompletion: PlatonCommonCompletion?,centralDataCompletion: PlatonCommonCompletion?){
+        let summaries = NodeVoteSummary.parser(votes: VotePersistence.getAllSingleVotes())
+        if let localDataCompletion = localDataCompletion{
+            localDataCompletion(.success,summaries as AnyObject)
+        }
+        self.getBatchVoteTransaction(completion: centralDataCompletion)
     }
     
     func GetCandidateDetails(candidateId: String, completion: PlatonCommonCompletion?) {
@@ -278,17 +282,13 @@ class VoteManager: BaseService {
                 tx.transactionType = 2
                 TransferPersistence.add(tx: tx)
                 
-                //add SingleVote
-                let tickets = Ticket.generateTickets(txHash: txHashData, count: UInt32(count), owner: sender, candidateId: nodeId, price: String(price))
-                 
+                //add SingleVote 
                 let svote = SingleVote()
                 svote.txHash = txHashData.toHexString().add0x()
                 svote.candidateId = nodeId
                 svote.owner = sender
-                if tickets.count > 0{
-                    svote.tickets.append(objectsIn: tickets)
-                }
                 svote.createTime = Int(Date().timeIntervalSince1970)
+                svote.isLocalData = true
                 VotePersistence.add(singleVote: svote)
                 
                 self.successCompletionOnMain(obj: nil, completion: &completion)

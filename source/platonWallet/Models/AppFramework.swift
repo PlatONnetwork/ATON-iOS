@@ -62,7 +62,7 @@ class AppFramework {
 
                 migration.enumerateObjects(ofType: NodeInfo.className(), { (old, new) in
                     if old != nil && new != nil{
-                        if old!["nodeURLStr"] as! String == DefaultAlphaNodeURL {
+                        if old!["nodeURLStr"] as! String == DefaultNodeURL_Alpha {
                             new!["desc"] = "SettingsVC_nodeSet_defaultTestNetwork_title"
                             
                         }else if old!["nodeURLStr"] as! String == "192.168.9.73:6789" && old?["desc"] as? String == "SettingsVC_nodeSet_defaultTestNetwork_title"{
@@ -74,25 +74,25 @@ class AppFramework {
             }
             
             if oldSchemaVersion < 6{ 
-                migration.enumerateObjects(ofType: Transaction.className(), { (old, new) in
-                    RealmHelper.doNodeULRStringMigration_4_to_6(old, new)
+                migration.enumerateObjects(ofType: Transaction.className(), { (old, new) in  
+                    RealmHelper.doNodeULRStringMigration_below_6(old, new)
                 })
                 
                 migration.enumerateObjects(ofType: Wallet.className(), { (old, new) in
-                    RealmHelper.doNodeULRStringMigration_4_to_6(old, new)
-                    RealmHelper.classicwalletdoPrimaryKeyMigration_4_to_6(old, new)
+                    RealmHelper.doNodeULRStringMigration_below_6(old, new)
+                    RealmHelper.classicwalletdoPrimaryKeyMigration_below_6(old, new)
                 })
                 
                 migration.enumerateObjects(ofType: AddressInfo.className(), { (old, new) in
-                    RealmHelper.doNodeULRStringMigration_4_to_6(old, new)
+                    RealmHelper.doNodeULRStringMigration_below_6(old, new)
                 })
                 
                 migration.enumerateObjects(ofType: SWallet.className(), { (old, new) in
-                    RealmHelper.doNodeULRStringMigration_4_to_6(old, new)
+                    RealmHelper.doNodeULRStringMigration_below_6(old, new)
                 })
                 
                 migration.enumerateObjects(ofType: STransaction.className(), { (old, new) in
-                    RealmHelper.doNodeULRStringMigration_4_to_6(old, new)
+                    RealmHelper.doNodeULRStringMigration_below_6(old, new)
                 })
                 
             }

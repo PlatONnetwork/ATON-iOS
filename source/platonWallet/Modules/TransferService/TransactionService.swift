@@ -30,6 +30,7 @@ class TransactionService : BaseService{
     
     public override init() {
         super.init()
+        
         if blockNumberQueryTimerEnable {
             timer = Timer.scheduledTimer(timeInterval: TimeInterval(blockNumberQueryTimerInterval), target: self, selector: #selector(OnTimerFirer), userInfo: nil, repeats: true)
             timer?.fire()

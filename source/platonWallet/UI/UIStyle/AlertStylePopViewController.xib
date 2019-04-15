@@ -101,7 +101,7 @@
                                         <constraint firstItem="cq7-sk-5xg" firstAttribute="top" secondItem="vFV-ai-1Pe" secondAttribute="bottom" constant="2" id="r15-cZ-kyK"/>
                                     </constraints>
                                 </view>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bT0-K0-YLk" customClass="PButton" customModule="platonWallet" customModuleProvider="target">
+                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bT0-K0-YLk" customClass="PButton" customModule="platonWallet" customModuleProvider="target">
                                     <rect key="frame" x="24" y="204.5" width="221" height="44"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="44" id="YBv-D4-Sew"/>

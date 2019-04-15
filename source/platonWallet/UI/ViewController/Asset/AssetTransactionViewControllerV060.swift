@@ -41,7 +41,7 @@ class AssetTransactionViewControllerV060: BaseViewController, EmptyDataSetDelega
         tableView.separatorStyle = .none
         tableView.showsVerticalScrollIndicator = false
         tableView.emptyDataSetView { [weak self] view in
-            view.customView(self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, nil))
+            view.customView(self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, nil,"empty_no_wallet_icon"))
         }
         tableView.emptyDataSetDelegate = self
         tableView.emptyDataSetSource = self

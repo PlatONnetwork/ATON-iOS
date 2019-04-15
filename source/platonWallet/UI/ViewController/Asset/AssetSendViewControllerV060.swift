@@ -72,6 +72,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
         }
         walletView.endEditCompletion = {[weak self] text in
             let _ = self?.checkConfirmButtonAvailable()
+            let _ = self?.amountView.checkInvalidNow(showText: true)
         }
         return walletView 
         
@@ -117,6 +118,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
         
         amountView.endEditCompletion = {[weak self] text in
             let _ = self?.checkConfirmButtonAvailable()
+            let _ = self?.amountView.checkInvalidNow(showText: true)
         }
         
         return amountView
@@ -449,7 +451,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
                 alertVC.showInputErrorTip(string: valid.1)
                 return false
             }
-            
+             
             alertVC.showLoadingHUD()
             WalletService.sharedInstance.exportPrivateKey(wallet: executorWallet!, password: (alertVC.textFieldInput?.text)!, completion: { (pri, err) in
                 

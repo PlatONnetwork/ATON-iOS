@@ -120,13 +120,12 @@
                                 <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="transferVC_confirm_Fee"/>
                             </userDefinedRuntimeAttributes>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kOG-lR-uNM" customClass="PButton" customModule="platonWallet" customModuleProvider="target">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kOG-lR-uNM" customClass="PButton" customModule="platonWallet" customModuleProvider="target">
                             <rect key="frame" x="24" y="246" width="327" height="44"/>
                             <color key="backgroundColor" red="0.062745098040000002" green="0.36078431370000003" blue="0.99607843139999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="44" id="ZBg-HS-nHP"/>
                             </constraints>
-                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                             <state key="normal" title="Submit">
                                 <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>

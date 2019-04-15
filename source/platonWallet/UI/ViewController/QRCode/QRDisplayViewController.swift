@@ -68,7 +68,7 @@ class QRDisplayViewController: BaseViewController {
         
         /*
         let node = SettingService.shareInstance.getSelectedNodes()
-        if node == nil || node?.nodeURLStr == DefaultAlphaNodeURL{
+        if node == nil || node?.nodeURLStr == DefaultNodeURL_Alpha{
             return
         }
          */
@@ -145,13 +145,13 @@ class QRDisplayViewController: BaseViewController {
                 if let wallet = self.walletInstance as? Wallet{
                     self.sharedQRView.qrImageView.image = image
                     self.sharedQRView.walletAddress.text = wallet.key?.address
-                    self.sharedQRView.walletName.text = wallet.name
+                    //self.sharedQRView.walletName.text = wallet.name
                     self.sharedQRView.logoImage.image = UIImage(named: (wallet.key?.address.walletAddressLastCharacterAvatar())!)
                     
                 }else if let swallet = self.walletInstance as? SWallet{
                     self.sharedQRView.qrImageView.image = image
                     self.sharedQRView.walletAddress.text = swallet.contractAddress
-                    self.sharedQRView.walletName.text = swallet.name
+                    //self.sharedQRView.walletName.text = swallet.name
                     self.sharedQRView.logoImage.image = UIImage(named: (swallet.contractAddress.walletAddressLastCharacterAvatar()))
                 }
                 

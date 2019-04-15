@@ -86,7 +86,7 @@ class MyVoteListVC: BaseViewController,UITableViewDelegate,UITableViewDataSource
         tableView.registerCell(cellTypes: [NodeVoteTableViewCell.self])
         
         tableView.emptyDataSetView { [weak self] view in
-            view.customView(self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, Localized("MyVoteListVC_Empty_tips")))
+            view.customView(self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, Localized("MyVoteListVC_Empty_tips"),"empty_no_data_img"))
         }
         self.autoAdjustInset()
     }
@@ -115,9 +115,17 @@ class MyVoteListVC: BaseViewController,UITableViewDelegate,UITableViewDataSource
             }
         }
         
-         
-        VoteManager.sharedInstance.getMyVoteList { [weak self] (result, data) in
+        VoteManager.sharedInstance.getMyVoteList(localDataCompletion: {[weak self] (result, data) in
+            guard let self = self else { return }
+            //default is success
+            if let summaries = data as? [NodeVoteSummary]{
+                if showLoading && summaries.count > 0{
+                    self.hideLoadingHUD()
+                }
+                self.reloadWhenSuccessed(summaries: summaries)
+            }
             
+        }) {[weak self] (result, data) in
             guard let self = self else { return }
             
             if showLoading {
@@ -127,48 +135,27 @@ class MyVoteListVC: BaseViewController,UITableViewDelegate,UITableViewDataSource
             switch result{
                 
             case .success: 
-                
-                guard data != nil else {
+                guard data != nil, let summary = data as? [NodeVoteSummary], summary.count > 0 else {
                     return
                 }
+                self.reloadWhenSuccessed(summaries: summary)
                 
-                guard let summary = data as? [NodeVoteSummary], summary.count > 0 else {
-                    return
-                }
-                
-                /*
-                var empty = true
-                for s in summary {
-                    /*
-                    if s.tickets.count > 0 {
-                        empty = false
-                        break
-                    }
-                     */
-                }
-                guard !empty else {
-                    return
-                }
-                */ 
-                
-                self.dataSource = summary
-                
-                let nodeIds = summary.map({ (node) -> String in
-                    return node.CandidateId ?? ""
-                }) 
-                self.getCandidateDetail(ids: nodeIds)
-                
-                self.tableView.reloadData()
-                self.tableView.removeEmptyView()
-    
-     
-            case .fail(let ret, let msg):
-                self.showMessage(text: "getMyVoteList fail:\(ret ?? 0),\(msg ?? "")", delay: 3)
+            case .fail(_, let msg):
+                self.showMessage(text: "\(msg ?? "")", delay: 3)
             }
         }
         
     }
     
+    func reloadWhenSuccessed(summaries: [NodeVoteSummary]){
+        self.dataSource = summaries
+        let nodeIds = summaries.map({ (node) -> String in
+            return node.CandidateId ?? ""
+        }) 
+        self.getCandidateDetail(ids: nodeIds)
+        self.tableView.reloadData()
+        self.tableView.removeEmptyView()
+    }
     
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -202,8 +189,7 @@ class MyVoteListVC: BaseViewController,UITableViewDelegate,UITableViewDataSource
     @objc func onVote(_ sender: UIButton){
         
         showLoadingHUD()
-        let candidateId = dataSource[sender.tag].CandidateId!
-        
+
         VoteManager.sharedInstance.GetCandidateDetails(candidateId: dataSource[sender.tag].CandidateId!) { [weak self] (res, data) in
             self?.hideLoadingHUD()
             guard let self = self else { return }

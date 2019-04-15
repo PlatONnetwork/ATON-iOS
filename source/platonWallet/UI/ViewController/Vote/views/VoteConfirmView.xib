@@ -97,13 +97,12 @@
                                 <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="VoteConfirm_fee_colon"/>
                             </userDefinedRuntimeAttributes>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MRv-zA-xwb" customClass="PButton" customModule="platonWallet" customModuleProvider="target">
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MRv-zA-xwb" customClass="PButton" customModule="platonWallet" customModuleProvider="target">
                             <rect key="frame" x="16" y="198" width="343" height="44"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="44" id="tU5-D5-BTP"/>
                             </constraints>
-                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                             <state key="normal" title="Submit">
                                 <color key="titleColor" red="0.19215686274509802" green="0.42745098039215684" blue="0.93725490196078431" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
