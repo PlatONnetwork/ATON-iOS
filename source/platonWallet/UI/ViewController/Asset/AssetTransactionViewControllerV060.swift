@@ -41,7 +41,8 @@ class AssetTransactionViewControllerV060: BaseViewController, EmptyDataSetDelega
         tableView.separatorStyle = .none
         tableView.showsVerticalScrollIndicator = false
         tableView.emptyDataSetView { [weak self] view in
-            view.customView(self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, nil,"empty_no_wallet_icon"))
+            let holder = self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, nil,"empty_no_data_img") as? TableViewNoDataPlaceHolder
+            view.customView(holder)
         }
         tableView.emptyDataSetDelegate = self
         tableView.emptyDataSetSource = self
@@ -78,7 +79,14 @@ class AssetTransactionViewControllerV060: BaseViewController, EmptyDataSetDelega
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { 
             self.tableView.reloadData()
             self.assetHeaderHide = hide
+            if hide{
+                self.tableNodataHolderView.containerView.backgroundColor = .white 
+            }else{
+                self.tableNodataHolderView.containerView.backgroundColor = #colorLiteral(red: 0.9751496911, green: 0.984305203, blue: 1, alpha: 1) 
+            }
         }
+        
+        
     }
 
 
