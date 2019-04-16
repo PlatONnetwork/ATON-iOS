@@ -675,3 +675,7 @@
 
 "data_parser_error" = "Data parser error.";
 "unknow_error" = "Unknow error.";
+
+"send_wallet_colon" = "Wallet Address:";
+"send_amout_colon" = "Amout:";
+"send_sendAll" = "Send all";

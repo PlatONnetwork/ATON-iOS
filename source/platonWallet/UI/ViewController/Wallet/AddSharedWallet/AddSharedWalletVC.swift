@@ -130,11 +130,13 @@ class AddSharedWalletVC: BaseViewController, UITextFieldDelegate {
                 walletNameTip.isHidden = true
                 self.topToWalletTipView.priority = UILayoutPriority(rawValue: 998)
                 self.topToWalletTextField.priority = UILayoutPriority(rawValue: 999)
+                self.walletName.setBottomLineStyle(style: .Normal)
             }else {
                 walletNameTip.text = nameRes.1 ?? ""
                 walletNameTip.isHidden = false
                 self.topToWalletTipView.priority = UILayoutPriority(rawValue: 999)
                 self.topToWalletTextField.priority = UILayoutPriority(rawValue: 998)
+                self.walletName.setBottomLineStyle(style: .Error)
             }
             self.view.layoutIfNeeded() 
         }
@@ -148,9 +150,11 @@ class AddSharedWalletVC: BaseViewController, UITextFieldDelegate {
             
             if nameRes.0 {
                 contractAddrTip.isHidden = true
+                self.contractAddressField.setBottomLineStyle(style: .Normal)
             }else {
                 contractAddrTip.text = nameRes.1 ?? ""
                 contractAddrTip.isHidden = false
+                self.contractAddressField.setBottomLineStyle(style: .Error)
             }
             self.view.layoutIfNeeded()
         }
@@ -183,7 +187,7 @@ class AddSharedWalletVC: BaseViewController, UITextFieldDelegate {
         popUpVC.setCloseEvent(button: view.closeBtn)
         view.selectionCompletion = { wallet in
             popUpVC.onDismissViewController()
-            self.selectedWallet = wallet as? Wallet
+            self.selectedWallet = wallet as? Wallet 
         }
         popUpVC.show(inViewController: self)
         

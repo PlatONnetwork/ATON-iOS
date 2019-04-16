@@ -30,6 +30,7 @@ class CandidatesListFilterBarView: UIView {
     
     @IBOutlet weak var searchBtn: UIButton!
     
+    @IBOutlet weak var leftTitle: UILabel!
     @IBOutlet weak var searchTF: UITextFieldWithSearch!
     
     @IBOutlet weak var filterContainerLeading: NSLayoutConstraint!
@@ -228,7 +229,7 @@ class CandidatesListFilterBarView: UIView {
             }
             self.searchStyle = SearchStyle.searchTextFieldHide
             self.myvoteBtn.isHidden = false
-
+            self.leftTitle.isHidden = false
         }else{
             
             self.bottomSelectIndicator.isHidden = true
@@ -237,6 +238,7 @@ class CandidatesListFilterBarView: UIView {
             }
             self.searchStyle = SearchStyle.normal
             self.myvoteBtn.isHidden = true
+            self.leftTitle.isHidden = true
         }
         self.updateFilterButtonStyle()
     }

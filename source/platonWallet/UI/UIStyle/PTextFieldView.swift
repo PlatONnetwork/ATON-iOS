@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Localize_Swift
 
 enum CheckMode {
     case endEdit
@@ -53,17 +54,20 @@ class PTextFieldView: UIView {
     
     class func create(title: String) -> PTextFieldView {
         let textFieldView = UIView.viewFromXib(theClass: PTextFieldView.self) as! PTextFieldView
-        textFieldView.title.text = title
+        textFieldView.title.localizedText = title
         return textFieldView
     }
     
     func addAction(title: String? = nil, icon: UIImage? = nil, action:@escaping (()->Void)) {
         
         let btn = UIButton(type: .custom)
+        var itemWidth : CGFloat = 32
         if title != nil {
-            btn.setTitle(title, for: .normal)
+            btn.localizedNormalTitle = title
             btn.setTitleColor(common_blue_color, for: .normal)
             btn.titleLabel?.font = UIFont.systemFont(ofSize: 12)
+            let wordWidth = (Localized(title!) as NSString).boundingRect(with: CGSize(width: 300, height: 13), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 13)], context: nil).width
+            itemWidth = wordWidth
         }
         if icon != nil {
             btn.setImage(icon, for: .normal)
@@ -76,7 +80,7 @@ class PTextFieldView: UIView {
         btn.snp.makeConstraints { (make) in
             make.top.equalToSuperview().offset(24.5)
             make.height.equalTo(40)
-            make.width.equalTo(32)
+            make.width.equalTo(itemWidth)
             make.right.equalToSuperview().offset(-12 - (actions.count * 32))
         }
         
