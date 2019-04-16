@@ -55,6 +55,7 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
+                <outlet property="containerView" destination="dqe-b1-Xs4" id="h2P-bo-20G"/>
                 <outlet property="descriptionLabel" destination="R8P-nB-Ift" id="W11-S6-NRc"/>
                 <outlet property="imageView" destination="e6x-EU-Z7E" id="f4V-z3-utC"/>
             </connections>
