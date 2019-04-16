@@ -63,7 +63,7 @@ class CandidatesListViewController: BaseViewController {
                 filterBarView.setlayoutStyle(expand: true)
                 NotificationCenter.default.post(name: NSNotification.Name(ChangeCandidatesTableViewCellbackground), object: #colorLiteral(red: 0.9751496911, green: 0.984305203, blue: 1, alpha: 1))
             }
-            
+             
             
             let tabbarHeight = navigationController?.tabBarController?.tabBar.frame.size.height ?? 0
             if headerStyle == .VoteSummaryHeaderShow {

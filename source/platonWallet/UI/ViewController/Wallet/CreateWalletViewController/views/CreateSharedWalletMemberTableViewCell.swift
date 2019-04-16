@@ -67,7 +67,7 @@ class CreateSharedWalletMemberTableViewCell: UITableViewCell {
         view.addSubview(scan)
         
         let addressbook = UIButton(frame: CGRect(x: 50, y: 5, width: 30, height: 30))
-        addressbook.setImage(UIImage(named: "icon_addressBook_dark"), for: .normal)
+        addressbook.setImage(UIImage(named: "textField_icon_addressBook"), for: .normal)
         addressbook.addTarget(self, action: #selector(addressBook(_ :)), for: .touchUpInside)
         
         view.addSubview(addressbook)
