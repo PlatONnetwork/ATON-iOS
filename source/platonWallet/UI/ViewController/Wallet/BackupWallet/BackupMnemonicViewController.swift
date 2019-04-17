@@ -55,7 +55,8 @@ class BackupMnemonicViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.rt_navigationController.rt_disableInteractivePop = true
+        self.rt_disableInteractivePop = true
+        //self.rt_navigationController.rt_disableInteractivePop = true
         //addShadow()
     } 
     
@@ -89,14 +90,14 @@ class BackupMnemonicViewController: BaseViewController {
     }
     
     override func back() {
-        self.gotoMainTab()
+        self.gotoMainTabController()
     }
     
     func showChoiceView(){
         let alertVC = AlertStylePopViewController.initFromNib()
         alertVC.style = PAlertStyle.ChoiceView(message: "backup_quit_tip")
         alertVC.onAction(confirm: { (text, _) -> (Bool) in
-            self.gotoMainTab()
+            self.gotoMainTabController()
             return true
         }) { (_, _) -> (Bool) in
             return true
@@ -104,7 +105,7 @@ class BackupMnemonicViewController: BaseViewController {
         alertVC.showInViewController(viewController: self)
     }
     
-    func gotoMainTab(){
+    func gotoMainTabController(){
         self.afterBackupRouter()
     }
     

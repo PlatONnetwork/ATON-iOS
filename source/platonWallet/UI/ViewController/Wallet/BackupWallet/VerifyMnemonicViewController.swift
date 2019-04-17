@@ -137,6 +137,11 @@ class VerifyMnemonicViewController: BaseViewController,MnemonicGridViewDelegate 
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.rt_disableInteractivePop = true
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
@@ -261,8 +266,26 @@ class VerifyMnemonicViewController: BaseViewController,MnemonicGridViewDelegate 
         alertVC.showInViewController(viewController: self)
     }
     
-    override func back() {
-        (UIApplication.shared.delegate as? AppDelegate)?.gotoMainTab()
+    func showQuitBackupAlert(){
+        let alertVC = AlertStylePopViewController.initFromNib()
+        alertVC.style = PAlertStyle.ChoiceView(message: "backup_quit_tip")
+        alertVC.onAction(confirm: { (text, _) -> (Bool) in
+            self.gotoMain()
+            return true
+        }) { (_, _) -> (Bool) in
+            return true
+        }
+        alertVC.showInViewController(viewController: self)
+    }
+    
+    //MARK: - User Action
+    
+    override func onCustomBack(){
+        self.showQuitBackupAlert()
+    }
+    
+    func gotoMain() {
+        self.afterBackupRouter()
     }
     
 }
@@ -286,7 +309,7 @@ extension VerifyMnemonicViewController:UICollectionViewDelegate,UICollectionView
         } 
         cell.feedWord(words_disorder[indexPath.item], style: style)
         return cell
-    }
+    } 
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         

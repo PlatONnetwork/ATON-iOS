@@ -883,6 +883,7 @@ class SWalletService: BaseService{
                 case .success(_):
                     if resp.result?.bytes.count == 0{
                         self.failCompletionOnMainThread(code: -1, errorMsg: Localized("sharedWallet_sharedWallet_no_existed"), completion: &completion)
+                        return
                     }
                     let remoteData = Data((resp.result?.bytes)!)
                     
@@ -906,6 +907,7 @@ class SWalletService: BaseService{
             
             if !contractVerifyResult{
                 self.failCompletionOnMainThread(code: -1, errorMsg: Localized("sharedWallet_sharedWallet_no_existed"), completion: &completion)
+                return
             }
             
             
@@ -932,6 +934,7 @@ class SWalletService: BaseService{
             
             if swallet.required == 0{
                 self.failCompletionOnMainThread(code: -1, errorMsg: Localized("sharedWallet_sharedWallet_no_existed"), completion: &completion)
+                return
             }
             
             self.getOwners(contractAddress: contractAddress, from: sender) { (result, data) in
