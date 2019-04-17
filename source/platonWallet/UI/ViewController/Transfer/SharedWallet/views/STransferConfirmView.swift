@@ -123,15 +123,16 @@ class STransferConfirmView: UIView ,UICollectionViewDelegate,UICollectionViewDat
             }
         }
         dataSource.sort { (result1, result2) -> Bool in
-            return result1.operation > result2.operation
-        }
-        
-        dataSource.sort { (result1, result2) -> Bool in
-            if result1.operation == result2.operation &&
-                result1.operation == OperationAction.undetermined.rawValue &&
-                (result1.walletAddress?.ishexStringEqual(other: self.sw?.walletAddress))!{
+            if result1.operation != result2.operation{
+                return result1.operation > result2.operation
+            }
+            
+            if (result1.walletAddress?.ishexStringEqual(other: self.sw?.walletAddress))!{
+                return true
+            }else if (result2.walletAddress?.ishexStringEqual(other: self.sw?.walletAddress))!{
                 return true
             }
+            
             return false
         }
         
@@ -311,6 +312,7 @@ class STransferConfirmView: UIView ,UICollectionViewDelegate,UICollectionViewDat
                     completion((wallet?.key?.address)!, pri!)
                     alertVC.dismissWithCompletion()
                 }else{
+                    self?.viewController?.hideLoadingHUD()
                     alertVC.showInputErrorTip(string: (err?.errorDescription)!)
                 }
             })

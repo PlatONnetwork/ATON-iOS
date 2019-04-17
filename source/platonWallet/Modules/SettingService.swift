@@ -38,15 +38,16 @@ class SettingService {
             return self.getCurrentNodeURLString()
         }
         
-        let semaphore = DispatchSemaphore(value: 1)
-        var URLString : String = ""
-        if semaphore.wait(timeout: .now() + 3) == DispatchTimeoutResult.timedOut{
-            return URLString
-        }
+        let semaphore = DispatchSemaphore(value: 0)
+        var URLString : String = DefaultNodeURL_Alpha
         DispatchQueue.main.async {
             URLString = self.getCurrentNodeURLString()
             semaphore.signal()
         }
+        if semaphore.wait(timeout: .now() + 3) == DispatchTimeoutResult.timedOut{
+            return URLString
+        }
+        
         return URLString
     }
     
@@ -54,7 +55,7 @@ class SettingService {
         if let urlString = SettingService.shareInstance.getSelectedNodes()?.nodeURLStr{
             return urlString
         }
-        return DefaultAlphaNodeURL
+        return DefaultNodeURL_Alpha
     }
     
     func getNodes() -> [NodeInfo] {

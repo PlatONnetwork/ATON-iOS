@@ -97,7 +97,7 @@ class TransferDetailView: UIView {
                 let candidateInfo = VotePersistence.getCandidateInfoWithId(singleVote.candidateId ?? "")
                 nodeNameLabel.text = candidateInfo.name
                 nodeIdLabel.text = singleVote.candidateId?.add0x()
-                numOfTicketsLabel.text = "\(singleVote.tickets.count)"
+                numOfTicketsLabel.text = "\(singleVote.validNum)"
                 ticketPriceLabel.text = singleVote.deposit!.EnergonSuffix()
 
             }else {

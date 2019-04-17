@@ -49,7 +49,7 @@ class TransactionListViewController: BaseViewController,UITableViewDelegate,UITa
         
         super.leftNavigationTitle = "TransactionListVC_nav_title"
         tableView.emptyDataSetView { [weak self] view in
-            view.customView(self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, Localized("walletDetailVC_no_transactions_text")))
+            view.customView(self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, Localized("walletDetailVC_no_transactions_text"),"empty_no_data_img"))
         }
     }
     

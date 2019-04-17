@@ -303,12 +303,16 @@ class BaseViewController: UIViewController {
     @objc func back() {
         navigationController?.popViewController(animated: true)
     }
-    
-    func emptyViewForTableView(forEmptyDataSet scrollView: UIScrollView, _ description: String?) -> UIView? {
+     
+    func emptyViewForTableView(forEmptyDataSet scrollView: UIScrollView, _ description: String?, _ imageName: String?) -> UIView? {
         let holder = self.tableNodataHolderView
         if description != nil && description!.length > 0{
             holder.descriptionLabel.text = description
         }
+        if let imageName = imageName, imageName.count > 0{
+            holder.imageView.image = UIImage(named: imageName)
+        }
+        
         return holder
     }
     

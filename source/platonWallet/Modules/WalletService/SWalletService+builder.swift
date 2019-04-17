@@ -76,7 +76,7 @@ extension SWalletService{
     }
     
     func build_confirmTransaction(transactionID: UInt64) -> Bytes{
-        
+         
         let txid = Data.newData(unsignedLong: transactionID, bigEndian: true)
         let txTypePart = RLPItem(bytes: ExecuteCode.ContractExecute.DataValue.bytes)
         let funcItemPart = RLPItem(bytes: ("confirmTransaction".data(using: .utf8)?.bytes)!)

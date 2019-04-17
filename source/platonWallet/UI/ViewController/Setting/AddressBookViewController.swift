@@ -52,7 +52,7 @@ class AddressBookViewController: BaseViewController {
         
         tableView.registerCell(cellTypes: [AddressBookTableViewCell.self])
         tableView.emptyDataSetView { [weak self] view in
-            view.customView(self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, Localized("AddresssBookVC_empty_tip")))
+            view.customView(self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, Localized("AddresssBookVC_empty_tip"), "empty_no_data_img"))
         }
 //        if #available(iOS 11, *) {
 //            let guide = view.safeAreaLayoutGuide

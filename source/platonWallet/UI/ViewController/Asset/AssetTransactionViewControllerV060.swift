@@ -41,7 +41,8 @@ class AssetTransactionViewControllerV060: BaseViewController, EmptyDataSetDelega
         tableView.separatorStyle = .none
         tableView.showsVerticalScrollIndicator = false
         tableView.emptyDataSetView { [weak self] view in
-            view.customView(self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, nil))
+            let holder = self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, nil,"empty_no_data_img") as? TableViewNoDataPlaceHolder
+            view.customView(holder)
         }
         tableView.emptyDataSetDelegate = self
         tableView.emptyDataSetSource = self
@@ -78,7 +79,14 @@ class AssetTransactionViewControllerV060: BaseViewController, EmptyDataSetDelega
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { 
             self.tableView.reloadData()
             self.assetHeaderHide = hide
+            if hide{
+                self.tableNodataHolderView.containerView.backgroundColor = .white 
+            }else{
+                self.tableNodataHolderView.containerView.backgroundColor = #colorLiteral(red: 0.9751496911, green: 0.984305203, blue: 1, alpha: 1) 
+            }
         }
+        
+        
     }
 
 
@@ -138,7 +146,7 @@ extension AssetTransactionViewControllerV060{
         if let swallet = AssetVCSharedData.sharedData.selectedWallet as? SWallet{
             SWalletService.sharedInstance.getTransactionList(contractAddress: (swallet.contractAddress), sender: (swallet.walletAddress), from: 0, to: UInt64.max) { (ret, data) in
                 switch ret{
-                case .success:
+                case .success:   
                     do{}
                 case .fail(_, _):
                     do{}
@@ -204,7 +212,7 @@ extension AssetTransactionViewControllerV060{
     }
     
     @objc func updateWalletList(){
-        
+        self.refreshData()
     }
     
     

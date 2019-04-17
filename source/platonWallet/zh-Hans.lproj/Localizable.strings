@@ -81,7 +81,7 @@
 "transferVC_amout_empty_tip" = "发送数量为空";
 "transferVC_amout_amout_input_error" = "数额输入错误";
 "transferVC_transfer_success_tip" = "转账成功";
-"transferVC_transfer_balance" = "余额:";
+"transferVC_transfer_balance" = "余额：";
 "transferVC_transfer_SendAll" = "发送所有";
 "transferVC_Insufficient_balance" = "钱包余额不足";
 "transferVC_Insufficient_network_error" = "网络连接失败";
@@ -670,3 +670,10 @@
 
 "watchJointWalletTip_Notice" = "提示";
 "watchJointWalletTip_message" = "关联的经典钱包已被删除，该钱包无法发起交易！";
+
+"data_parser_error" = "数据解析失败";
+"unknow_error" = "未知错误";
+
+"send_wallet_colon" = "接收钱包地址：";
+"send_amout_colon" = "数量：";
+"send_sendAll" = "全部发送";

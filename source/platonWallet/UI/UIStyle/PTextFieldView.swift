@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Localize_Swift
 
 enum CheckMode {
     case endEdit
@@ -38,8 +39,6 @@ class PTextFieldView: UIView {
     
     var appendText = ""
     
-    
-    
     private var mode: CheckMode = .endEdit
     
     private var check:((String)->(correct:Bool, errMsg:String))?
@@ -50,21 +49,25 @@ class PTextFieldView: UIView {
         super.awakeFromNib()
         textField.delegate = self
         textField.textAlignment = .left
+        NotificationCenter.default.addObserver(self, selector: #selector(textDidBeginEditing(_:)), name: UITextField.textDidBeginEditingNotification, object: nil)
     }
     
     class func create(title: String) -> PTextFieldView {
         let textFieldView = UIView.viewFromXib(theClass: PTextFieldView.self) as! PTextFieldView
-        textFieldView.title.text = title
+        textFieldView.title.localizedText = title
         return textFieldView
     }
     
     func addAction(title: String? = nil, icon: UIImage? = nil, action:@escaping (()->Void)) {
         
         let btn = UIButton(type: .custom)
+        var itemWidth : CGFloat = 32
         if title != nil {
-            btn.setTitle(title, for: .normal)
+            btn.localizedNormalTitle = title
             btn.setTitleColor(common_blue_color, for: .normal)
             btn.titleLabel?.font = UIFont.systemFont(ofSize: 12)
+            let wordWidth = (Localized(title!) as NSString).boundingRect(with: CGSize(width: 300, height: 13), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 13)], context: nil).width
+            itemWidth = wordWidth
         }
         if icon != nil {
             btn.setImage(icon, for: .normal)
@@ -77,7 +80,7 @@ class PTextFieldView: UIView {
         btn.snp.makeConstraints { (make) in
             make.top.equalToSuperview().offset(24.5)
             make.height.equalTo(40)
-            make.width.equalTo(32)
+            make.width.equalTo(itemWidth)
             make.right.equalToSuperview().offset(-12 - (actions.count * 32))
         }
         
@@ -113,27 +116,31 @@ class PTextFieldView: UIView {
         actions[sender.tag]()
     }
     
-    private func startCheck(text: String, showErrorMsg: Bool = true) -> (correct:Bool, errMsg:String)? {
+    private func startCheck(text: String, showErrorMsg: Bool = true, isEditing: Bool = false) -> (correct:Bool, errMsg:String)? {
         guard check != nil else {
             return nil
-        } 
+        }
+                
         //let curState = internalHeight == 65.0 ? true:false
         let res = check!(text)
+        if !showErrorMsg{
+            return res
+        }
         if res.correct  {
-            line.backgroundColor = UIColor(rgb: 0xD5D8DF)
+            if isEditing{
+                line.backgroundColor = bottomLineEditingColor
+            }else{
+                line.backgroundColor = bottomLineNormalColor
+            }
+            
             internalHeight = 65.0
             tipsLabel.isHidden = true
             heightChange?(self)
         }else if !res.correct {
-            line.backgroundColor = UIColor(rgb: 0xF5302C)
             tipsLabel.isHidden = false
-            if showErrorMsg{
-                tipsLabel.text = res.errMsg
-                internalHeight = 90.0
-            }else{
-                line.backgroundColor = UIColor(rgb: 0xD5D8DF)
-                tipsLabel.text = ""
-            }
+            line.backgroundColor = bottomLineErrorColor
+            tipsLabel.text = res.errMsg
+            internalHeight = 90.0
             
             heightChange?(self)
         }
@@ -162,13 +169,13 @@ extension PTextFieldView: UITextFieldDelegate {
         if mode == .endEdit || mode == .all{
             let _ = startCheck(text: textField.text ?? "")
         }
-    }
+    } 
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if mode == .textChange || mode == .all {
             if let text = textField.text,let textRange = Range(range, in: text) {
                 let appendtext = text.replacingCharacters(in: textRange, with: string)
-                let _ = startCheck(text: appendtext)
+                let _ = startCheck(text: appendtext,isEditing: true)
             }
         }
         
@@ -189,6 +196,13 @@ extension PTextFieldView: UITextFieldDelegate {
             return false
         }
         return self.textFieldShouldReturnCompletion!(textField)
+    }
+    
+    //MARK: - TextField Notification
+    @objc func textDidBeginEditing(_ notification: Notification){
+        if let theTextField = notification.object as? UITextField, theTextField == self.textField{
+            line.backgroundColor = bottomLineEditingColor
+        } 
     }
     
 }

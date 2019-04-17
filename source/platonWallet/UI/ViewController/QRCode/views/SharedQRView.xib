@@ -17,26 +17,17 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="shareViewBG" translatesAutoresizingMaskIntoConstraints="NO" id="aFO-gb-fy9">
-                    <rect key="frame" x="24" y="88" width="327" height="503"/>
+                    <rect key="frame" x="14" y="76" width="347" height="527"/>
                 </imageView>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="walletAvatar_1" translatesAutoresizingMaskIntoConstraints="NO" id="89g-G0-ZBK">
-                    <rect key="frame" x="133.5" y="44" width="108" height="108"/>
+                    <rect key="frame" x="133.5" y="32" width="108" height="108"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="108" id="B2l-3W-5rC"/>
                         <constraint firstAttribute="height" constant="108" id="vHI-Qp-RSe"/>
                     </constraints>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yHi-zY-qaT">
-                    <rect key="frame" x="42" y="164" width="291" height="20"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="20" id="sen-nf-4I4"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <nil key="highlightedColor"/>
-                </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0x--" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K16-oX-koP">
-                    <rect key="frame" x="25" y="168" width="325" height="15"/>
+                    <rect key="frame" x="25" y="140" width="325" height="15"/>
                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                     <nil key="highlightedColor"/>
                 </label>
@@ -68,23 +59,20 @@
             <constraints>
                 <constraint firstItem="DCc-Ef-4Hw" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="6Sp-iA-Jrh"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="DCc-Ef-4Hw" secondAttribute="bottom" constant="21" id="6mt-cZ-Dm4"/>
-                <constraint firstItem="yHi-zY-qaT" firstAttribute="top" secondItem="89g-G0-ZBK" secondAttribute="bottom" constant="12" id="9Vz-Ni-rXH"/>
-                <constraint firstItem="yHi-zY-qaT" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="42" id="CDo-GY-v2S"/>
                 <constraint firstItem="uX9-gB-ZFf" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="ELe-tx-YYC"/>
-                <constraint firstItem="K16-oX-koP" firstAttribute="top" secondItem="89g-G0-ZBK" secondAttribute="bottom" constant="16" id="IV2-wa-JDE"/>
-                <constraint firstItem="89g-G0-ZBK" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="24" id="KvA-x9-rOa"/>
-                <constraint firstItem="uX9-gB-ZFf" firstAttribute="top" secondItem="K16-oX-koP" secondAttribute="bottom" constant="60" id="R6y-Yl-n8M"/>
+                <constraint firstItem="uX9-gB-ZFf" firstAttribute="top" secondItem="K16-oX-koP" secondAttribute="bottom" constant="88" id="FYY-Pg-vhs"/>
+                <constraint firstItem="K16-oX-koP" firstAttribute="top" secondItem="89g-G0-ZBK" secondAttribute="bottom" id="IV2-wa-JDE"/>
+                <constraint firstItem="89g-G0-ZBK" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="12" id="KvA-x9-rOa"/>
                 <constraint firstItem="89g-G0-ZBK" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="S3W-gN-LvU"/>
-                <constraint firstItem="aFO-gb-fy9" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="24" id="UCW-m6-hhB"/>
+                <constraint firstItem="aFO-gb-fy9" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="14" id="UCW-m6-hhB"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="6Dg-Ri-mAE" secondAttribute="trailing" constant="10" id="bIx-st-wZS"/>
-                <constraint firstItem="aFO-gb-fy9" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="68" id="c01-bP-L07"/>
+                <constraint firstItem="aFO-gb-fy9" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="56" id="c01-bP-L07"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="K16-oX-koP" secondAttribute="trailing" constant="25" id="d7h-WP-XyG"/>
                 <constraint firstItem="6Dg-Ri-mAE" firstAttribute="top" secondItem="uX9-gB-ZFf" secondAttribute="bottom" constant="14" id="fwl-qX-9eP"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="aFO-gb-fy9" secondAttribute="trailing" constant="24" id="hfV-eA-Qug"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="aFO-gb-fy9" secondAttribute="bottom" constant="68" id="kpz-BG-PwW"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="aFO-gb-fy9" secondAttribute="trailing" constant="14" id="hfV-eA-Qug"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="aFO-gb-fy9" secondAttribute="bottom" constant="56" id="kpz-BG-PwW"/>
                 <constraint firstItem="K16-oX-koP" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="lVO-so-OBr"/>
                 <constraint firstItem="6Dg-Ri-mAE" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="mns-He-RHe"/>
-                <constraint firstItem="yHi-zY-qaT" firstAttribute="centerX" secondItem="K16-oX-koP" secondAttribute="centerX" id="og3-KG-GcQ"/>
                 <constraint firstItem="6Dg-Ri-mAE" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="10" id="xvF-Xb-2dG"/>
                 <constraint firstItem="K16-oX-koP" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="25" id="zWl-87-v22"/>
             </constraints>
@@ -94,7 +82,6 @@
                 <outlet property="logoImage" destination="89g-G0-ZBK" id="QPf-Bv-PDF"/>
                 <outlet property="qrImageView" destination="uX9-gB-ZFf" id="hTo-p9-b5u"/>
                 <outlet property="walletAddress" destination="K16-oX-koP" id="igb-br-88O"/>
-                <outlet property="walletName" destination="yHi-zY-qaT" id="aUx-WX-kDd"/>
             </connections>
             <point key="canvasLocation" x="55.200000000000003" y="44.527736131934034"/>
         </view>

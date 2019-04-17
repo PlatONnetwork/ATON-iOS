@@ -20,7 +20,7 @@ class TransferPersistence {
         }
     }
     
-    
+     
     public class func getAll() -> [Transaction]{
         let r = RealmInstance!.objects(Transaction.self).sorted(byKeyPath: "createTime", ascending: false)
         let array = Array(r)

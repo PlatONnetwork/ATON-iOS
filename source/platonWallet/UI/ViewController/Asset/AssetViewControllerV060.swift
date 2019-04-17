@@ -200,6 +200,7 @@ class AssetViewControllerV060: BaseViewController ,PopupMenuTableDelegate{
             sectionView.isHidden = true
             self.scrollView.isScrollEnabled = false
             pageVC.pagesScrollview?.isScrollEnabled = false
+            self.transactionVC.tableNodataHolderView.imageView.image = UIImage(named: "empty_no_wallet_icon")
         }else{
             sectionView.snp.updateConstraints { (make) in
                 make.height.equalTo(AssetSectionViewH)
@@ -207,7 +208,9 @@ class AssetViewControllerV060: BaseViewController ,PopupMenuTableDelegate{
             sectionView.isHidden = false
             self.scrollView.isScrollEnabled = true
             pageVC.pagesScrollview?.isScrollEnabled = true
+            self.transactionVC.tableNodataHolderView.imageView.image = UIImage(named: "empty_no_data_img")
         }
+        
     }
      
     func initData(){
@@ -551,7 +554,10 @@ extension AssetViewControllerV060{
         guard let vc = self.getInstance() else{
             return
         }
-        vc.transactionVC.refreshData()
+        //wait for db writing
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { 
+            vc.transactionVC.refreshData()
+        }
     }
     
     static func gotoCreateClassicWallet(){

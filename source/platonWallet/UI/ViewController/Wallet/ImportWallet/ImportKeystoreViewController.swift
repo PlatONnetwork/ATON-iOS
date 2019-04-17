@@ -100,7 +100,7 @@ class ImportKeystoreViewController: BaseImportWalletViewController,UIScrollViewD
             }
 
             self?.showMessage(text: Localized("importWalletVC_success_tips"))
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.5, execute: {
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3, execute: {
                 (UIApplication.shared.delegate as? AppDelegate)?.gotoMainTab()
             })
             

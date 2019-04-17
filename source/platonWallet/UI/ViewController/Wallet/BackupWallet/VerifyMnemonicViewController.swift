@@ -283,7 +283,7 @@ extension VerifyMnemonicViewController:UICollectionViewDelegate,UICollectionView
         var style = OptionCollectionViewCell.Style.white
         if gridViewIndex != nil && (gridViewIndex?.length)! > 0{
             style = OptionCollectionViewCell.Style.gray
-        }
+        } 
         cell.feedWord(words_disorder[indexPath.item], style: style)
         return cell
     }

@@ -54,6 +54,9 @@ class SWalletService: BaseService{
     //memory initializing joint wallets
     var creatingWallets : [SWallet] = []
     
+    //format: contractAddress:transactionID e.g.:"0xabcef000000000000000000000000000000abcde_1"
+    var outwardHash : [String] = []
+    
     required override init() {
         super.init()
         refreshDB()
@@ -119,6 +122,15 @@ class SWalletService: BaseService{
         for wallet in WalletService.sharedInstance.wallets{
             if address.ishexStringEqual(other: wallet.key?.address) {
                 return wallet
+            }
+        }
+        return nil
+    }
+    
+    func getJointWalletByContractAddress(contractAddress: String) -> SWallet?{
+        for jointWallet in self.wallets{
+            if jointWallet.contractAddress.ishexStringEqual(other: contractAddress){
+                return jointWallet
             }
         }
         return nil
@@ -618,7 +630,7 @@ class SWalletService: BaseService{
             web3.eth.platonSendRawTransaction(contractAddress: contractAddress, data: data, sender: walltAddress, privateKey: privateKey, gasPrice: submitGasPrice, gas: submitGas,value: nil,  estimated: false,completion: { (result, data) in
                 switch result{
                 case .success:
-                    submitTxHash =  data?.hexString
+                    submitTxHash =  data?.hexString  
                     semaphore.signal()
                 case .fail(let code, let errMsg):
                     self.failCompletionOnMainThread(code: code!, errorMsg: errMsg!, completion: &completion)
@@ -672,7 +684,8 @@ class SWalletService: BaseService{
                     
                     let logdata = receipt.logs[0].data
                     let rlpItem = try? RLPDecoder().decode(logdata.bytes)
-                    transactionId = Data(bytes: rlpItem!.array![0].bytes!).safeGetUnsignedLong(at: 0, bigEndian: true)
+                    transactionId = Data(bytes: rlpItem!.array![0].bytes!).safeGetUnsignedLong(at: 0, bigEndian: true) 
+                    self.outwardHash.append(contractAddress + "_" + String(transactionId))
                     semaphore.signal()
                     
                 case .fail(let code, let error):

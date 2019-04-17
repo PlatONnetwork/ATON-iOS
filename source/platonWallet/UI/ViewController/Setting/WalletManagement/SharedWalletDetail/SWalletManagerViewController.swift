@@ -68,11 +68,9 @@ class SWalletManagerViewController: BaseViewController,UITableViewDataSource,UIT
             self.ownerNameLabel.text = swallet?.name
         }
         
-        self.ownerAddressLabel.text = swallet?.walletAddress
-        
         let wallet = SWalletService.sharedInstance.getATPWalletByAddress(address: (swallet?.walletAddress)!)
         ownerNameLabel.text = wallet?.name
-        ownerAddressLabel.text = swallet?.walletAddress
+        ownerAddressLabel.text = swallet?.walletAddress.addressForDisplay()
         
         super.leftNavigationTitle = swallet?.name
         walletName.text = swallet?.name

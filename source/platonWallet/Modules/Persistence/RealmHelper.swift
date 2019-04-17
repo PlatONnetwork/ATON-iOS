@@ -27,11 +27,20 @@ class RealmHelper {
     }
      */
     
-    public static func doNodeULRStringMigration(_ old: MigrationObject?, _ new: MigrationObject?){
+    public static func doNodeULRStringMigration_below_6(_ old: MigrationObject?, _ new: MigrationObject?){
         if old != nil && new != nil{
-            if let emptyURLString = old!["nodeURLStr"] as? String,emptyURLString == ""{
-                new!["nodeURLStr"] = DefaultAlphaNodeURL
+            new!["nodeURLStr"] = DefaultNodeURL_Alpha
+        }
+    }
+    
+    public static func classicwalletdoPrimaryKeyMigration_below_6(_ old: MigrationObject?, _ new: MigrationObject?){
+        if old != nil && new != nil{
+            let path = old!["keystorePath"] as? String
+            let keystore = try? Keystore(contentsOf: URL(fileURLWithPath: keystoreFolderPath + "/" + path!))
+            if (path != nil && keystore != nil){
+                new!["primaryKeyIdentifier"] = keystore!.address + DefaultNodeURL_Alpha
             }
         }
     }
+    
 }

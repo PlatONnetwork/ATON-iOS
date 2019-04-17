@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import Alamofire
+import Localize_Swift
 
 //let CentralizationURL = "http://192.168.9.190:18060/browser-server/"
 let CentralizationURL = "http://192.168.9.190:10061/a-api/"
@@ -50,9 +51,7 @@ extension VoteManager{
 
     }
     
-     
-    
-    public func getBatchVoteTransaction(pageNo:Int = 1, pageSize: Int = 1000, completion: PlatonCommonCompletion?) {
+    public func getBatchVoteTransaction(pageNo:Int = 1, pageSize: Int = 2^16, completion: PlatonCommonCompletion?) {
         var completion = completion
         var values : Dictionary<String,Any> = [:]
         var walletAddrs: [String] = []
@@ -80,7 +79,7 @@ extension VoteManager{
             case .success(let resp):
                 
                 guard let resp = resp as? [String:Any], let data = resp["data"] as? [Dictionary<String,Any>] else {
-                    self.failCompletionOnMainThread(code: -1, errorMsg: "", completion: &completion)
+                    self.failCompletionOnMainThread(code: -1, errorMsg: Localized("data_parser_error"), completion: &completion)
                     return
                 }
                 

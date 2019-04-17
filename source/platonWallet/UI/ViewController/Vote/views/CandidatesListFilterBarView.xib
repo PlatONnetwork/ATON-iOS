@@ -15,6 +15,7 @@
                 <outlet property="filterButtonContainer" destination="MNu-kS-L7I" id="0Tx-G4-Oys"/>
                 <outlet property="filterContainerLeading" destination="COi-0t-eoN" id="yFz-fV-mS1"/>
                 <outlet property="filterContainerTrailingToSuper" destination="T1I-o8-5R9" id="gbJ-Lt-tZR"/>
+                <outlet property="leftTitle" destination="eM1-rf-JaW" id="z3c-ud-7aA"/>
                 <outlet property="myvoteBtn" destination="NWU-cL-jaJ" id="TEk-CD-6OZ"/>
                 <outlet property="searchBtn" destination="hc5-KM-QTz" id="Nzu-Yw-xgf"/>
                 <outlet property="searchBtnTrailing" destination="IEc-oc-Xo0" id="CD9-0T-LXM"/>
@@ -127,17 +128,28 @@
                         <constraint firstItem="v8r-n9-4oa" firstAttribute="leading" secondItem="MNu-kS-L7I" secondAttribute="leading" constant="16" id="xYD-GS-H1a"/>
                     </constraints>
                 </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Vote" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eM1-rf-JaW">
+                    <rect key="frame" x="16" y="104" width="37" height="22"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="tabbar_candidate_title"/>
+                    </userDefinedRuntimeAttributes>
+                </label>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="MNu-kS-L7I" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="COi-0t-eoN"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="hc5-KM-QTz" secondAttribute="trailing" constant="16" id="IEc-oc-Xo0"/>
+                <constraint firstItem="eM1-rf-JaW" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="JdL-zf-DPf"/>
                 <constraint firstAttribute="trailing" secondItem="NWU-cL-jaJ" secondAttribute="trailing" constant="16" id="QU4-FM-WCH"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="NWU-cL-jaJ" secondAttribute="bottom" constant="49" id="SzB-xx-cNF"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="NWU-cL-jaJ" secondAttribute="bottom" constant="40" id="SzB-xx-cNF"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="MNu-kS-L7I" secondAttribute="trailing" constant="100" id="T1I-o8-5R9"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="fCV-ej-GGQ" secondAttribute="trailing" constant="50" id="W0z-yO-kEA"/>
                 <constraint firstItem="MNu-kS-L7I" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="ZuZ-cO-if9"/>
                 <constraint firstItem="fCV-ej-GGQ" firstAttribute="centerY" secondItem="hc5-KM-QTz" secondAttribute="centerY" id="aFP-kp-YZV"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="eM1-rf-JaW" secondAttribute="bottom" constant="40" id="cr9-eN-Z57"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="hc5-KM-QTz" secondAttribute="bottom" constant="9" id="dbk-rb-XyF"/>
                 <constraint firstItem="fCV-ej-GGQ" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="250" id="w1q-kO-PUR"/>
             </constraints>
