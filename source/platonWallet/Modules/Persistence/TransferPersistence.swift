@@ -11,43 +11,43 @@ import Foundation
 class TransferPersistence {
     
     public class func add(tx : Transaction){
-        tx.nodeURLStr = SettingService.getCurrentNodeURLString()
-        DispatchQueue.main.async {
-            try? RealmInstance!.write {
-                RealmInstance!.add(tx)
+        tx.nodeURLStr = SettingService.getCurrentNodeURLString()        
+        RealmWriteQueue.async {
+            let realm = RealmHelper.getWriteRealm()
+            try? realm.write {
+                realm.add(tx)
                 NSLog("TransferPersistence add")
             }
         }
     }
     
-     
     public class func getAll() -> [Transaction]{
-        let r = RealmInstance!.objects(Transaction.self).sorted(byKeyPath: "createTime", ascending: false)
+        let predicate = NSPredicate(format: "nodeURLStr == %@", SettingService.getCurrentNodeURLString())
+        let r = RealmInstance!.objects(Transaction.self).filter(predicate).sorted(byKeyPath: "createTime", ascending: false)
         let array = Array(r)
-        return array.filterArrayByCurrentNodeUrlString()
+        return array
     }
     
     public class func getAllByAddress(from : String) -> [Transaction]{
         
-        let predicate = NSPredicate(format: "from contains[cd] %@ OR to contains[cd] %@", from,from)
+        let predicate = NSPredicate(format: "(from contains[cd] %@ OR to contains[cd] %@) AND nodeURLStr == %@", from,from,SettingService.getCurrentNodeURLString())
         let r = RealmInstance!.objects(Transaction.self).filter(predicate).sorted(byKeyPath: "createTime", ascending: false)
         let array = Array(r)
-        return array.filterArrayByCurrentNodeUrlString()
+        return array
     }
     
     public class func getUnConfirmedTransactions() -> [Transaction]{
-        let predicate = NSPredicate(format: "txhash != %@ AND blockNumber == %@", "","")
+        let predicate = NSPredicate(format: "txhash != %@ AND blockNumber == %@ AND nodeURLStr == %@", "","",SettingService.getCurrentNodeURLString())
         let r = RealmInstance!.objects(Transaction.self).filter(predicate).sorted(byKeyPath: "createTime")
         let array = Array(r)
-        return array.filterArrayByCurrentNodeUrlString()
+        return array
     }
     
     public class func getByTxhash(_ hash : String?) -> Transaction?{
         
-        let predicate = NSPredicate(format: "txhash == %@", hash!)
+        let predicate = NSPredicate(format: "txhash == %@ AND nodeURLStr == %@", hash!,SettingService.getCurrentNodeURLString())
         let r = RealmInstance!.objects(Transaction.self).filter(predicate).sorted(byKeyPath: "createTime")
-        var array = Array(r)
-        array = array.filterArrayByCurrentNodeUrlString()
+        let array = Array(r)
         if array.count > 0{
             return array.first!
         }

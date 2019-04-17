@@ -151,7 +151,7 @@ class Candidate:NSObject, Decodable {
     }
     
     required init(from decoder: Decoder) throws {
-         
+          
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let depositStr = try? container.decode(Decimal.self, forKey: .deposit)
         deposit = BigUInt(depositStr?.description ?? "")

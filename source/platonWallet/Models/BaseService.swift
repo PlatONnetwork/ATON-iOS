@@ -19,6 +19,8 @@ enum PlatonCommonResult : Error{
 
 let onMainPerformTimeout = 2.0
 
+let serviceQueue = DispatchQueue(label: "com.service.base", qos: .userInitiated, attributes: .concurrent)
+
 typealias PlatonCommonCompletion = (_ result : PlatonCommonResult, _ obj : AnyObject?) -> ()
 
 class BaseService {

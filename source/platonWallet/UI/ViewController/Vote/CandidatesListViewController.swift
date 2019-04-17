@@ -97,12 +97,13 @@ class CandidatesListViewController: BaseViewController {
             refreshTableView()
         }
     }
-    
+     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.statusBarNeedTruncate = true
         initSubView()
         self.navigationController?.setNavigationBarHidden(true, animated: false)
+        NotificationCenter.default.addObserver(self, selector: #selector(onNodeSwitched), name: NSNotification.Name(NodeStoreService.didSwitchNodeNotification), object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -625,6 +626,15 @@ extension CandidatesListViewController: UITextFieldDelegate, HeaderViewProtocol 
     //MARK: HeaderViewProtocol
     func hideSearchTextField(_ textField: UITextField) {
         self.searchText = ""
+    }
+    
+    //MARK: - Notification
+    
+    @objc func onNodeSwitched(){
+        DispatchQueue.main.async {
+            self.dataSource.removeAll()
+            self.tableView.reloadData()
+        }
     }
     
     
