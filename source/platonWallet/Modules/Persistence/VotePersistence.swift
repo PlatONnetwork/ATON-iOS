@@ -11,12 +11,16 @@ import Foundation
 class VotePersistence {
     
     public class func add(singleVote : SingleVote){
-        assert((singleVote.candidateId != nil), "candidate should not be empty")
-        singleVote.nodeURLStr = SettingService.getCurrentNodeURLString()
-        try? RealmInstance!.write {
-            RealmInstance!.add(singleVote) 
-            NSLog("Tickets add")
+        RealmWriteQueue.async {
+            assert((singleVote.candidateId != nil), "candidate should not be empty")
+            singleVote.nodeURLStr = SettingService.getCurrentNodeURLString()
+            let realm = RealmHelper.getWriteRealm()
+            try? realm.write {
+                realm.add(singleVote) 
+                NSLog("Tickets add")
+            }
         }
+        
     }
     
     public class func getAllSingleVotes() -> [SingleVote]{
@@ -41,10 +45,14 @@ class VotePersistence {
     }
     
     public class func addCandidateInfo(_ candidate: CandidateBasicInfo) {
-        candidate.nodeURLStr = SettingService.getCurrentNodeURLString()
-        try? RealmInstance!.write {
-            RealmInstance!.add(candidate, update: true)
+        RealmWriteQueue.async {
+            let realm = RealmHelper.getWriteRealm()
+            candidate.nodeURLStr = SettingService.getCurrentNodeURLString()
+            try? realm.write {
+                realm.add(candidate, update: true)
+            }
         }
+        
     }
     
     

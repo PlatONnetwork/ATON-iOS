@@ -30,7 +30,8 @@ class NodeStoreService {
     
     var nodeList: [NodeInfo] {
         get { 
-            return SettingService.shareInstance.getNodes()
+            let nodes = SettingService.shareInstance.getNodes()
+            return nodes
         }
         
     }
@@ -56,6 +57,14 @@ class NodeStoreService {
     }
     
     private init() {
+        
+        //default setting 
+        let selectedNode = nodeList.filter { (item) -> Bool in
+            return item.isSelected
+        }
+        if selectedNode.count == 0 && nodeList.count > 0{
+            nodeList.first?.isSelected = true
+        }
         
         selectedNodeBeforeEdit = (nodeList.first(where: { (item) -> Bool in
             item.isSelected == true
@@ -133,6 +142,7 @@ class NodeStoreService {
         
         SettingService.shareInstance.addOrUpdateNode(node)
         SettingService.shareInstance.updateSelectedNode(node)
+        SettingService.shareInstance.currentNodeURL = node.nodeURLStr
         
         self.nodeWillSuccessSwitch()
          
