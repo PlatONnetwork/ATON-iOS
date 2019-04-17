@@ -30,6 +30,7 @@ target 'platonWallet' do
   pod 'Bugly'
   
   pod 'Alamofire'
+  pod 'Aspects'
   
   # Pods for platonWallet
   

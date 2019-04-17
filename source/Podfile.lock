@@ -1,5 +1,6 @@
 PODS:
   - Alamofire (4.8.2)
+  - Aspects (1.4.1)
   - BigInt (3.1.0):
     - SipHash (~> 1.2)
   - Bugly (2.5.0)
@@ -34,6 +35,7 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire
+  - Aspects
   - BigInt
   - Bugly
   - CryptoSwift (~> 0.10.0)
@@ -56,6 +58,7 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
+    - Aspects
     - BigInt
     - Bugly
     - CryptoSwift
@@ -87,6 +90,7 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
+  Aspects: 7595ba96a6727a58ebcbfc954497fc5d2fdde546
   BigInt: 76b5dfdfa3e2e478d4ffdf161aeede5502e2742f
   Bugly: 3ca9f255c01025582df26f9222893b383c7e4b4e
   CryptoSwift: 6c778d69282bed3b4e975ff97a79d074f20bb011
@@ -108,6 +112,6 @@ SPEC CHECKSUMS:
   TrezorCrypto: bfeea47a052dca2c77d4a39e1e183865e52de14d
   "UITextView+Placeholder": 0c3efd97f37ea64bde7f34cc6e90fe02e87b3909
 
-PODFILE CHECKSUM: 975c78549ea5d85178292b6c37583ca7ddbe0365
+PODFILE CHECKSUM: 6abc0066362723526f77ddb522046fea55ebc448
 
 COCOAPODS: 1.5.3
