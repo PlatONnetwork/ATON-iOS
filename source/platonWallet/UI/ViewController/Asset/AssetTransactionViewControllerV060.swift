@@ -62,6 +62,7 @@ class AssetTransactionViewControllerV060: BaseViewController, EmptyDataSetDelega
         }
         NotificationCenter.default.addObserver(self, selector: #selector(willDeleteWallet(_:)), name: NSNotification.Name(WillDeleateWallet_Notification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(updateWalletList), name: NSNotification.Name(updateWalletList_Notification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(nodeDidSwitch), name: NSNotification.Name(NodeStoreService.didSwitchNodeNotification), object: nil)
 
     }
     
@@ -215,7 +216,10 @@ extension AssetTransactionViewControllerV060{
         self.refreshData()
     }
     
-    
+    @objc func nodeDidSwitch(){
+        self.dataSource?.removeAll()
+        self.tableView.reloadData()
+    }
 
     
 }

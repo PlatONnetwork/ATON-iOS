@@ -71,8 +71,8 @@ class NodeInfoPersistence {
     }
     
     func add(node: NodeInfo) {
-        try? realm.write {
-            realm.add(node, update: true)
+        try? self.realm.write {
+            self.realm.add(node, update: true)
         }
     }
     

@@ -30,12 +30,11 @@
                         <outlet property="delegate" destination="-1" id="Hc9-wd-y3W"/>
                     </connections>
                 </tableView>
-                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e7a-oF-HjS" customClass="PButton" customModule="platonWallet" customModuleProvider="target">
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="e7a-oF-HjS" customClass="PButton" customModule="platonWallet" customModuleProvider="target">
                     <rect key="frame" x="16" y="613" width="343" height="40"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="cRv-dU-WkQ"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
                     <state key="normal" title="Button"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="string" keyPath="localizedNormalTitle" value="createWalletVC_createBtn_title"/>

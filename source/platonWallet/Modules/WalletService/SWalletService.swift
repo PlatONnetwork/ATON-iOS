@@ -398,7 +398,7 @@ class SWalletService: BaseService{
                             
                         case .success:
                             
-                            DispatchQueue.main.async {
+                            DispatchQueue.main.async { 
                                 let sw = SWallet(value: sharedWallet)
                                 sw.contractAddress = contractAddress!
                                 SWalletPersistence.add(swallet: sw)

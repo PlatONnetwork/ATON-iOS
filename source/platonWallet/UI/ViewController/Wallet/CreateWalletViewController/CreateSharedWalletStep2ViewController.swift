@@ -157,10 +157,16 @@ class CreateSharedWalletStep2ViewController: BaseViewController {
         return (true,"")
         
     }
+    
+    //MARK: - User Actions
  
     @IBAction func create(_ sender: Any) {
         
         view.endEditing(true)
+        
+        if self.createButton.style == .disable{
+            return
+        }
         
         let result = checkDataSourceIsValid()
         if !result.0 {

@@ -12,6 +12,18 @@ let ipGeoInfoVaildDuring = 3600 * 24
 
 class IPGeoPersistence {
     
+    class func add(infos: [IPGeoInfo], update: Bool = true) {
+        RealmWriteQueue.async {
+            let realm = RealmHelper.getWriteRealm()
+            for info in infos {
+                try? realm.write {
+                    realm.add(info, update: update)
+                }
+            }
+        }
+        
+    }
+    
     class func filter(isIncludedIp ip:[String]) -> [IPGeoInfo] {
         
         var predicate : NSPredicate?
@@ -19,15 +31,6 @@ class IPGeoPersistence {
         let r = RealmInstance!.objects(IPGeoInfo.self).filter(predicate!)
         return Array(r)
         
-    }
-    
-    class func add(infos: [IPGeoInfo], update: Bool = true) {
-        
-        for info in infos {
-            try? RealmInstance!.write {
-                RealmInstance!.add(info, update: update)
-            }
-        }
     }
     
     class func getIpInfo(_ ip: String) -> IPGeoInfo {

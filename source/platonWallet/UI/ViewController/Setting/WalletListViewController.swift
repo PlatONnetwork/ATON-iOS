@@ -192,8 +192,7 @@ extension WalletListViewController: UITableViewDelegate, UITableViewDataSource {
         let initItem = array[initialSourceIndexPath.row]
         array.remove(at: initialSourceIndexPath.row)
         array.insert(initItem, at: finalDestinationIndexPath.row)
-        
-        RealmHelper.r?.beginWrite()
+        RealmInstance?.beginWrite()
         for (i,element) in array.enumerated(){
             if let classicWallet = element as? Wallet{
                 classicWallet.userArrangementIndex = i
@@ -201,7 +200,7 @@ extension WalletListViewController: UITableViewDelegate, UITableViewDataSource {
                 jointWallet.userArrangementIndex = i
             }
         }
-        try? RealmHelper.r?.commitWrite()
+        try? RealmInstance?.commitWrite()
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { 
             self.dataSource.removeAll()

@@ -115,13 +115,13 @@ class VoteManager: BaseService {
         let data = self.build_CandidateList()
         
         web3CommonCall(contractAddress: candidateContract, data: data, completion: &completion) { (resp) in
-            do{
-                //let list:[Candidate] =  try JSONDecoder().decode([Candidate].self, from: resp.data(using: .utf8)!)
-                let obj =  try JSONDecoder().decode(CandidateParserContainerMatrix.self, from: resp.data(using: .utf8)!)
-                self.successCompletionOnMain(obj: obj.candidates as AnyObject, completion: &completion)
-
-            }catch {
-                self.failCompletionOnMainThread(code: -2, errorMsg: "data parse error!!!", completion: &completion)
+            serviceQueue.async {
+                do{
+                    let obj =  try JSONDecoder().decode(CandidateParserContainerMatrix.self, from: resp.data(using: .utf8)!)
+                    self.successCompletionOnMain(obj: obj.candidates as AnyObject, completion: &completion)
+                }catch {
+                    self.failCompletionOnMainThread(code: -2, errorMsg: "data parse error!!!", completion: &completion)
+                }
             }
         }
         
@@ -141,16 +141,18 @@ class VoteManager: BaseService {
         let data = build_GetCandidateDetails(candidateId: candidateId)
         
         web3CommonCall(contractAddress: candidateContract, data: data, completion: &completion) { (resp) in
-            do{
-                let desc = try JSONDecoder().decode(CandidateParserContainerArray.self, from: resp.data(using: .utf8)!)
-                if desc.candidates.count > 0{
-                    self.successCompletionOnMain(obj: desc.candidates.first as AnyObject, completion: &completion)
-                }else{
+            serviceQueue.async {
+                do{
+                    let desc = try JSONDecoder().decode(CandidateParserContainerArray.self, from: resp.data(using: .utf8)!)
+                    if desc.candidates.count > 0{
+                        self.successCompletionOnMain(obj: desc.candidates.first as AnyObject, completion: &completion)
+                    }else{
+                        self.failCompletionOnMainThread(code: -2, errorMsg: "data parse error!!!", completion: &completion)
+                    }
+                    
+                }catch {
                     self.failCompletionOnMainThread(code: -2, errorMsg: "data parse error!!!", completion: &completion)
                 }
-                
-            }catch {
-                self.failCompletionOnMainThread(code: -2, errorMsg: "data parse error!!!", completion: &completion)
             }
         }
         
@@ -163,15 +165,13 @@ class VoteManager: BaseService {
         let data = self.build_GetTicketDetail(ticketId: ticketId)
         
         web3CommonCall(contractAddress: votePoolingContract, data: data, completion: &completion) { (resp) in
-            do{
-                
-                let ticket = try JSONDecoder().decode(Ticket.self, from: resp.data(using: .utf8)!)
-                
-                self.successCompletionOnMain(obj: ticket as AnyObject, completion: &completion)
-                
-            }catch {
-                self.failCompletionOnMainThread(code: -2, errorMsg: "data parse error:\(error.localizedDescription)", completion: &completion)
-                
+            serviceQueue.async {
+                do{
+                    let ticket = try JSONDecoder().decode(Ticket.self, from: resp.data(using: .utf8)!)
+                    self.successCompletionOnMain(obj: ticket as AnyObject, completion: &completion)
+                }catch {
+                    self.failCompletionOnMainThread(code: -2, errorMsg: "data parse error:\(error.localizedDescription)", completion: &completion)
+                }
             }
         }
         
@@ -182,13 +182,13 @@ class VoteManager: BaseService {
         var completion = completion
         let data = self.build_GetBatchTicketDetail(ticketIds: ticketIds)
         web3CommonCall(contractAddress: votePoolingContract, data: data, completion: &completion) { (resp) in
-            do{
-                let arr = try JSONDecoder().decode([Ticket].self, from: resp.data(using: .utf8)!)
-                self.successCompletionOnMain(obj: arr as AnyObject, completion: &completion)
-                
-            }catch {
-                self.failCompletionOnMainThread(code: -2, errorMsg: "respData:\(resp) - parse error:\(error.localizedDescription)", completion: &completion)
-                
+            serviceQueue.async {
+                do{
+                    let arr = try JSONDecoder().decode([Ticket].self, from: resp.data(using: .utf8)!)
+                    self.successCompletionOnMain(obj: arr as AnyObject, completion: &completion)
+                }catch {
+                    self.failCompletionOnMainThread(code: -2, errorMsg: "respData:\(resp) - parse error:\(error.localizedDescription)", completion: &completion)   
+                }
             }
         }
         

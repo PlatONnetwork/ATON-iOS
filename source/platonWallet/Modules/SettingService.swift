@@ -12,9 +12,10 @@ class SettingService {
     
     var nodeStorge: NodeInfoPersistence!
     
+    var currentNodeURL : String?
+    
     static let shareInstance = SettingService()
     private init() {
-        
     }
      
     func getSelectedNodes() -> NodeInfo? {
@@ -52,10 +53,11 @@ class SettingService {
     }
     
     static func getCurrentNodeURLString() -> String{
-        if let urlString = SettingService.shareInstance.getSelectedNodes()?.nodeURLStr{
-            return urlString
+        
+        if SettingService.shareInstance.currentNodeURL == nil{
+            SettingService.shareInstance.currentNodeURL = SettingService.shareInstance.getSelectedNodes()?.nodeURLStr
         }
-        return DefaultNodeURL_Alpha
+        return SettingService.shareInstance.currentNodeURL!
     }
     
     func getNodes() -> [NodeInfo] {
