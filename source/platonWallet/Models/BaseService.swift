@@ -24,7 +24,7 @@ typealias PlatonCommonCompletion = (_ result : PlatonCommonResult, _ obj : AnyOb
 class BaseService {
     
     func timeOutCompletionOnMainThread(completion: inout PlatonCommonCompletion?){
-        if Thread.current == Thread.main{
+        if Thread.current.isMainThread {
             completion?(PlatonCommonResult.fail(-1, Localized("Request_timeout")),nil)
             completion = nil
         }else{
@@ -43,7 +43,7 @@ class BaseService {
     }
     
     func failCompletionOnMainThread(code: Int, errorMsg: String, completion: inout PlatonCommonCompletion?){
-        if Thread.current == Thread.main{
+        if Thread.current.isMainThread {
             completion?(PlatonCommonResult.fail(code, errorMsg),nil)
             completion = nil
         }else{
@@ -65,7 +65,7 @@ class BaseService {
     
     
     func failWithEmptyResponseCompletionOnMainThread(completion: inout PlatonCommonCompletion?){
-        if Thread.current == Thread.main{
+        if Thread.current.isMainThread {
             completion?(PlatonCommonResult.fail(-1, Localized("RPC_Response_empty")),nil)
             completion = nil
         }else{
@@ -84,7 +84,7 @@ class BaseService {
     }
     
     func successCompletionOnMain(obj : AnyObject?,completion: inout PlatonCommonCompletion?){
-        if Thread.current == Thread.main{
+        if Thread.current.isMainThread {
             completion?(PlatonCommonResult.success,obj)
             completion = nil
         }else{
