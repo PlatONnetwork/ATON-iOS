@@ -26,32 +26,21 @@
                                 <constraint firstAttribute="height" constant="220" id="b5K-Ae-dvw"/>
                             </constraints>
                         </imageView>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aGb-vB-2Kg">
-                            <rect key="frame" x="72.5" y="23" width="210" height="15"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="210" id="olS-t0-mhw"/>
-                            </constraints>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aGb-vB-2Kg">
+                            <rect key="frame" x="0.0" y="23" width="375" height="15"/>
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <color key="textColor" red="0.53725490196078429" green="0.5490196078431373" blue="0.61960784313725492" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="L5r-cc-RSN" customClass="CopyButton" customModule="platonWallet" customModuleProvider="target">
-                            <rect key="frame" x="287.5" y="19.5" width="50" height="22"/>
-                            <constraints>
-                                <constraint firstAttribute="width" constant="50" id="Sqf-3f-clg"/>
-                                <constraint firstAttribute="height" constant="22" id="cP1-fX-J6I"/>
-                            </constraints>
-                            <state key="normal" title="Button" image="copyIcon"/>
-                        </button>
                     </subviews>
                     <color key="backgroundColor" red="0.97610527276992798" green="0.9841117262840271" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstItem="aGb-vB-2Kg" firstAttribute="top" secondItem="tWg-EU-FDX" secondAttribute="top" constant="23" id="1YG-AD-u9R"/>
                         <constraint firstItem="Kn0-9p-pVo" firstAttribute="top" secondItem="aGb-vB-2Kg" secondAttribute="bottom" constant="15" id="D2V-fG-o0y"/>
-                        <constraint firstItem="L5r-cc-RSN" firstAttribute="centerY" secondItem="aGb-vB-2Kg" secondAttribute="centerY" id="NkY-o2-p7c"/>
+                        <constraint firstAttribute="trailing" secondItem="aGb-vB-2Kg" secondAttribute="trailing" id="SgE-1F-KAB"/>
                         <constraint firstItem="Kn0-9p-pVo" firstAttribute="centerX" secondItem="tWg-EU-FDX" secondAttribute="centerX" id="YJg-t5-srW"/>
-                        <constraint firstItem="L5r-cc-RSN" firstAttribute="leading" secondItem="aGb-vB-2Kg" secondAttribute="trailing" constant="5" id="a11-iP-xng"/>
-                        <constraint firstItem="aGb-vB-2Kg" firstAttribute="centerX" secondItem="tWg-EU-FDX" secondAttribute="centerX" constant="-10" id="ngM-hn-J8k"/>
+                        <constraint firstItem="aGb-vB-2Kg" firstAttribute="centerX" secondItem="tWg-EU-FDX" secondAttribute="centerX" id="ngM-hn-J8k"/>
+                        <constraint firstItem="aGb-vB-2Kg" firstAttribute="leading" secondItem="tWg-EU-FDX" secondAttribute="leading" id="xc2-TZ-8Xb"/>
                     </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wrd-6z-Uzs" customClass="PButton" customModule="platonWallet" customModuleProvider="target">
@@ -82,14 +71,10 @@
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <connections>
                 <outlet property="addressLabel" destination="aGb-vB-2Kg" id="ivF-8N-P6Q"/>
-                <outlet property="copyBtn" destination="L5r-cc-RSN" id="aq1-fk-XsQ"/>
                 <outlet property="qrCodeImageView" destination="Kn0-9p-pVo" id="3ZK-ep-YP6"/>
                 <outlet property="saveImgAndShreadBtn" destination="Wrd-6z-Uzs" id="ojt-N1-1fz"/>
             </connections>
             <point key="canvasLocation" x="132" y="262.66866566716647"/>
         </view>
     </objects>
-    <resources>
-        <image name="copyIcon" width="16" height="16"/>
-    </resources>
 </document>

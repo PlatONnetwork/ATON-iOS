@@ -13,14 +13,11 @@ class QRCodeView: UIView {
     @IBOutlet weak var qrCodeImageView: UIImageView!
     
     @IBOutlet weak var saveImgAndShreadBtn: PButton!
-    @IBOutlet weak var copyBtn: CopyButton!
     
     @IBOutlet weak var addressLabel: UILabel!
     
     override func awakeFromNib() {
-        
         saveImgAndShreadBtn.style = .blue
-        copyBtn.attachTextView = self.addressLabel
     }
     
     func hidePublicKeyArea() {

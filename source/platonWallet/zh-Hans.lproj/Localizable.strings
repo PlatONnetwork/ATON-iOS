@@ -156,7 +156,7 @@
 
 "createWalletSuccessVC_title" = "备份钱包";
 
-"importKeystoreVC_tips" = "使用Keystore导入的同时需要输入钱包密码进行解密，同时未来需要通过密码验证才能进行Energon发送、备份等操作。";
+"importKeystoreVC_tips" = "使用（.json）导入的同时需要输入钱包密码进行解密，同时未来需要通过密码验证才能进行Energon发送、备份等操作。";
 "importKeystoreVC_keystoreInput_placeholder" = "请输入钱包文件（.json）内容";
 "importKeystoreVC_nameInput_placeholder" = "设置钱包名称";
 "importKeystoreVC_pswInput_placeholder" = "钱包密码";
