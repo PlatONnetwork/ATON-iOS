@@ -1,5 +1,6 @@
 PODS:
-  - Alamofire (4.8.1)
+  - Alamofire (4.8.2)
+  - Aspects (1.4.1)
   - BigInt (3.1.0):
     - SipHash (~> 1.2)
   - Bugly (2.5.0)
@@ -12,11 +13,11 @@ PODS:
     - CryptoSwift
     - Localize-Swift
     - secp256k1.swift
-  - Realm (3.13.1):
-    - Realm/Headers (= 3.13.1)
-  - Realm/Headers (3.13.1)
-  - RealmSwift (3.13.1):
-    - Realm (= 3.13.1)
+  - Realm (3.14.1):
+    - Realm/Headers (= 3.14.1)
+  - Realm/Headers (3.14.1)
+  - RealmSwift (3.14.1):
+    - Realm (= 3.14.1)
   - RTRootNavigationController (0.7.1):
     - RTRootNavigationController/Core (= 0.7.1)
   - RTRootNavigationController/Core (0.7.1)
@@ -26,14 +27,15 @@ PODS:
   - SipHash (1.2.2)
   - SnapKit (4.0.1)
   - Spring (1.0.6)
-  - SwiftLint (0.30.1)
+  - SwiftLint (0.31.0)
   - SwiftReorder (6.0.2)
-  - SwipeCellKit (2.5.1)
+  - SwipeCellKit (2.5.2)
   - TrezorCrypto (0.0.9)
   - "UITextView+Placeholder (1.2.1)"
 
 DEPENDENCIES:
   - Alamofire
+  - Aspects
   - BigInt
   - Bugly
   - CryptoSwift (~> 0.10.0)
@@ -49,13 +51,14 @@ DEPENDENCIES:
   - Spring (from `https://github.com/MengTo/Spring.git`)
   - SwiftLint
   - SwiftReorder (~> 6.0)
-  - SwipeCellKit
+  - SwipeCellKit (= 2.5.2)
   - TrezorCrypto
   - "UITextView+Placeholder"
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
+    - Aspects
     - BigInt
     - Bugly
     - CryptoSwift
@@ -86,7 +89,8 @@ CHECKOUT OPTIONS:
     :git: https://github.com/MengTo/Spring.git
 
 SPEC CHECKSUMS:
-  Alamofire: 16ce2c353fb72865124ddae8a57c5942388f4f11
+  Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
+  Aspects: 7595ba96a6727a58ebcbfc954497fc5d2fdde546
   BigInt: 76b5dfdfa3e2e478d4ffdf161aeede5502e2742f
   Bugly: 3ca9f255c01025582df26f9222893b383c7e4b4e
   CryptoSwift: 6c778d69282bed3b4e975ff97a79d074f20bb011
@@ -94,20 +98,20 @@ SPEC CHECKSUMS:
   Localize-Swift: c798ec9286494866f7068f85f7c71283ac5bdab4
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
   platonWeb3: d84dd8430b71525d242a7e4b1cfc4561a92e81bc
-  Realm: 50071da38fe079e0735e47c9f2eae738c68c5996
-  RealmSwift: 8a1e6a02b7a08cd17a31e3115143fb69fe5f3fb9
+  Realm: e12c9c2387d05c5bba3a9c394838f5870e85763b
+  RealmSwift: a82eab9b04c3e1616082c7e17aa300740847769c
   RTRootNavigationController: afa6913402be26f8326f7f37fc1550aa67baddcc
   ScryptSwift: c771529fa895a563febe3184add81bbe5e2f85aa
   secp256k1.swift: a7e7a214f6db6ce5db32cc6b2b45e5c4dd633634
   SipHash: fad90a4683e420c52ef28063063dbbce248ea6d4
   SnapKit: 0de968a9fec17499afa29683b05d0c775b6d1c29
   Spring: 3d113f14575ef79aec9c5f906dfa4f5001c03254
-  SwiftLint: a54bf1fe12b55c68560eb2a7689dfc81458508f7
+  SwiftLint: 7a0227733d786395817373b2d0ca799fd0093ff3
   SwiftReorder: 60ef1faf6446cf68f9a647cb975530db8efd6620
-  SwipeCellKit: 30fd6a4f8a8b8ac864ea389c8b4c8bac5ba5471a
+  SwipeCellKit: a19e328c69c4ba983f317eeabf36ed299c69bfa4
   TrezorCrypto: bfeea47a052dca2c77d4a39e1e183865e52de14d
   "UITextView+Placeholder": 0c3efd97f37ea64bde7f34cc6e90fe02e87b3909
 
-PODFILE CHECKSUM: 6cb848ccc7965ce3cca2f38a4261ec935915f68a
+PODFILE CHECKSUM: 6abc0066362723526f77ddb522046fea55ebc448
 
 COCOAPODS: 1.5.3

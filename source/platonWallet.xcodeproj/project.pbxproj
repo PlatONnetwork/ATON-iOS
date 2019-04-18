@@ -98,6 +98,8 @@
 		81515BCF21C774D600054197 /* SharedPresentedVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81515BCE21C774D600054197 /* SharedPresentedVC.swift */; };
 		8156664721C1ECA3000E02D4 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8156664521C1ECA3000E02D4 /* AboutViewController.swift */; };
 		8156664821C1ECA3000E02D4 /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8156664621C1ECA3000E02D4 /* AboutViewController.xib */; };
+		8162F7BC22672F24001726C1 /* UIFont+ApsectsScaling.m in Sources */ = {isa = PBXBuildFile; fileRef = 8162F7BB22672F24001726C1 /* UIFont+ApsectsScaling.m */; };
+		8162F7BF22673887001726C1 /* UILabel+AspectsScaling.m in Sources */ = {isa = PBXBuildFile; fileRef = 8162F7BD22673887001726C1 /* UILabel+AspectsScaling.m */; };
 		81718D8B222F6F6500DB04F6 /* MnemonicTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81718D8A222F6F6500DB04F6 /* MnemonicTextField.swift */; };
 		81718D8D22312F9C00DB04F6 /* MnemonicGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81718D8C22312F9C00DB04F6 /* MnemonicGridView.swift */; };
 		81718D8F22312FB100DB04F6 /* MnemonicGridView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 81718D8E22312FB100DB04F6 /* MnemonicGridView.xib */; };
@@ -422,6 +424,11 @@
 		81515BCE21C774D600054197 /* SharedPresentedVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedPresentedVC.swift; sourceTree = "<group>"; };
 		8156664521C1ECA3000E02D4 /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		8156664621C1ECA3000E02D4 /* AboutViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AboutViewController.xib; sourceTree = "<group>"; };
+		8162F7AD22670F4B001726C1 /* platonWallet-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "platonWallet-Bridging-Header.h"; sourceTree = "<group>"; };
+		8162F7BA22672F24001726C1 /* UIFont+ApsectsScaling.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIFont+ApsectsScaling.h"; sourceTree = "<group>"; };
+		8162F7BB22672F24001726C1 /* UIFont+ApsectsScaling.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIFont+ApsectsScaling.m"; sourceTree = "<group>"; };
+		8162F7BD22673887001726C1 /* UILabel+AspectsScaling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+AspectsScaling.m"; sourceTree = "<group>"; };
+		8162F7BE22673887001726C1 /* UILabel+AspectsScaling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+AspectsScaling.h"; sourceTree = "<group>"; };
 		81718D8A222F6F6500DB04F6 /* MnemonicTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MnemonicTextField.swift; sourceTree = "<group>"; };
 		81718D8C22312F9C00DB04F6 /* MnemonicGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MnemonicGridView.swift; sourceTree = "<group>"; };
 		81718D8E22312FB100DB04F6 /* MnemonicGridView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MnemonicGridView.xib; sourceTree = "<group>"; };
@@ -1120,6 +1127,11 @@
 				817ABE7D21B776CC00E8030E /* UITabBar+Extensions.swift */,
 				812489E221BF4D2A000C2F03 /* Array+sort.swift */,
 				9A2DA84822561AD200368212 /* CustomLoading.swift */,
+				8162F7BA22672F24001726C1 /* UIFont+ApsectsScaling.h */,
+				8162F7BB22672F24001726C1 /* UIFont+ApsectsScaling.m */,
+				8162F7BE22673887001726C1 /* UILabel+AspectsScaling.h */,
+				8162F7BD22673887001726C1 /* UILabel+AspectsScaling.m */,
+				8162F7AD22670F4B001726C1 /* platonWallet-Bridging-Header.h */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -1693,6 +1705,7 @@
 				TargetAttributes = {
 					81C88E0021746B39005F17F7 = {
 						CreatedOnToolsVersion = 10.0;
+						LastSwiftMigration = 1010;
 					};
 					81C88E1421746B3B005F17F7 = {
 						CreatedOnToolsVersion = 10.0;
@@ -1838,6 +1851,7 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-platonWallet/Pods-platonWallet-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/Aspects/Aspects.framework",
 				"${BUILT_PRODUCTS_DIR}/BigInt/BigInt.framework",
 				"${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/EmptyDataSet-Swift/EmptyDataSet_Swift.framework",
@@ -1860,6 +1874,7 @@
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Aspects.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BigInt.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CryptoSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/EmptyDataSet_Swift.framework",
@@ -2045,6 +2060,7 @@
 				818A91382181AE6300D03D57 /* WalletBalance.swift in Sources */,
 				812002AC21A3EB390050E1B0 /* SwitchWalletTableViewCell.swift in Sources */,
 				81412EB421DC678F008B909C /* SingleVote.swift in Sources */,
+				8162F7BF22673887001726C1 /* UILabel+AspectsScaling.m in Sources */,
 				818A913D2181BC4800D03D57 /* ModulesDefinitions.swift in Sources */,
 				813E287021D3ADE100C36A0F /* NodeVoteTableViewCell.swift in Sources */,
 				81FCCCFB2179B6710052FC29 /* PersonalViewController.swift in Sources */,
@@ -2093,6 +2109,7 @@
 				9AD67AAA2174811300A8432F /* WalletService.swift in Sources */,
 				9A9E1FED2261D38F006749CF /* RealmResults+extensions.swift in Sources */,
 				9A25B9A72187090F00B9433A /* ExportPrivateKeyOrKeystoreViewController.swift in Sources */,
+				8162F7BC22672F24001726C1 /* UIFont+ApsectsScaling.m in Sources */,
 				819A52322190661D00E4C500 /* UIDevice+Extensions.swift in Sources */,
 				9AE3141E218BFAC600B5433F /* NodeSettingTableViewCell.swift in Sources */,
 				9ADE44E9217D78DE006F1C81 /* WalletCreateOrImportViewController.swift in Sources */,
@@ -2285,6 +2302,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.2;
 			};
 			name = Debug;
 		};
@@ -2340,6 +2358,7 @@
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 4.2;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -2349,6 +2368,7 @@
 			baseConfigurationReference = F765BC907C2CF2197870E967 /* Pods-platonWallet.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = VQHC4XR7AG;
@@ -2361,8 +2381,9 @@
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ju.platonWallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = JuWildCard;
+				PROVISIONING_PROFILE_SPECIFIER = yujinghan_dev;
 				SWIFT_COMPILATION_MODE = singlefile;
+				SWIFT_OBJC_BRIDGING_HEADER = "platonWallet/UI/Utilities/platonWallet-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2374,6 +2395,7 @@
 			baseConfigurationReference = F8363501D61110CEE9C78F79 /* Pods-platonWallet.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Juzix (Shenzhen) Technologies Co., Ltd (VQHC4XR7AG)";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = VQHC4XR7AG;
@@ -2386,6 +2408,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.ju.platonWallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = adhoc_WildCard_new;
+				SWIFT_OBJC_BRIDGING_HEADER = "platonWallet/UI/Utilities/platonWallet-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
