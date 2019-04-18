@@ -60,7 +60,7 @@ class VoteDetailCell: UITableViewCell {
         
         voteWalletAddressLabel.text = "\(singleVote.owner)(\(singleVote.walletName))"
         
-        expiredTime.text = Date(timeIntervalSince1970: TimeInterval(singleVote.createTime + TicketEffectivePeriod)).toFormatter("yyyy-MM-dd HH:mm:ss")
+        expiredTime.text = Date(timeIntervalSince1970: TimeInterval(singleVote.createTime + TicketEffectivePeriod)).toFormatter("yyyy-MM-dd HH:mm:ss") 
     }
     
 }

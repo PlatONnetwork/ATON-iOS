@@ -55,10 +55,12 @@ class TransactionCell: UITableViewCell {
     }
     
     func updateSTransactionStatus(tx : STransaction) {
+        let detachTx = tx.detached()
+        detachTx.labelDesciptionAndColor { (des, color) in
+            self.statusLabel.text = des
+            self.statusLabel.textColor = color
+        }
         
-        let (des,color) = tx.labelDesciptionAndColor()
-        statusLabel.text = des
-        statusLabel.textColor = color
         
     }
     

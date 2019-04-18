@@ -198,6 +198,8 @@
 		9A25B9BA2189B09200B9433A /* WalletEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A25B9B92189B09200B9433A /* WalletEmptyView.swift */; };
 		9A25B9BC2189B0A200B9433A /* WalletEmptyView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A25B9BB2189B0A200B9433A /* WalletEmptyView.xib */; };
 		9A2DA84922561AD200368212 /* CustomLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2DA84822561AD200368212 /* CustomLoading.swift */; };
+		9A36AFAE22675F5800B388A9 /* MigrateBelow6.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A36AFAD22675F5800B388A9 /* MigrateBelow6.swift */; };
+		9A36AFB022675F8000B388A9 /* MigrateBelow4.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A36AFAF22675F8000B388A9 /* MigrateBelow4.swift */; };
 		9A56557B217578EA002A1F6C /* Keystore.Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A56557A217578EA002A1F6C /* Keystore.Crypto.swift */; };
 		9A56557D2176CB05002A1F6C /* HDPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A56557C2176CB05002A1F6C /* HDPath.swift */; };
 		9A56557F21772DE3002A1F6C /* WalletUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A56557E21772DE2002A1F6C /* WalletUtil.swift */; };
@@ -532,6 +534,8 @@
 		9A25B9B92189B09200B9433A /* WalletEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletEmptyView.swift; sourceTree = "<group>"; };
 		9A25B9BB2189B0A200B9433A /* WalletEmptyView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WalletEmptyView.xib; sourceTree = "<group>"; };
 		9A2DA84822561AD200368212 /* CustomLoading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLoading.swift; sourceTree = "<group>"; };
+		9A36AFAD22675F5800B388A9 /* MigrateBelow6.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrateBelow6.swift; sourceTree = "<group>"; };
+		9A36AFAF22675F8000B388A9 /* MigrateBelow4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MigrateBelow4.swift; sourceTree = "<group>"; };
 		9A56557A217578EA002A1F6C /* Keystore.Crypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keystore.Crypto.swift; sourceTree = "<group>"; };
 		9A56557C2176CB05002A1F6C /* HDPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HDPath.swift; sourceTree = "<group>"; };
 		9A56557E21772DE2002A1F6C /* WalletUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletUtil.swift; sourceTree = "<group>"; };
@@ -1306,6 +1310,7 @@
 		81FCCD052179E9F10052FC29 /* Persistence */ = {
 			isa = PBXGroup;
 			children = (
+				9A36AFAC22675F0F00B388A9 /* migration */,
 				81FCCD062179E9F10052FC29 /* TransferPersistence.swift */,
 				81FCCD072179E9F10052FC29 /* AssetPersistence.swift */,
 				81FCCD082179E9F10052FC29 /* WallletPersistence.swift */,
@@ -1366,6 +1371,15 @@
 				9A25B9BB2189B0A200B9433A /* WalletEmptyView.xib */,
 			);
 			path = EmptyView;
+			sourceTree = "<group>";
+		};
+		9A36AFAC22675F0F00B388A9 /* migration */ = {
+			isa = PBXGroup;
+			children = (
+				9A36AFAD22675F5800B388A9 /* MigrateBelow6.swift */,
+				9A36AFAF22675F8000B388A9 /* MigrateBelow4.swift */,
+			);
+			path = migration;
 			sourceTree = "<group>";
 		};
 		9A79A08A219BC97B000EB4C5 /* views */ = {
@@ -1996,6 +2010,7 @@
 				81FCCD162179EA0F0052FC29 /* RealmHelper.swift in Sources */,
 				812002CC21A3F6430050E1B0 /* AddSharedWalletVC.swift in Sources */,
 				813E288721D5BF2300C36A0F /* VoteDetailCell.swift in Sources */,
+				9A36AFB022675F8000B388A9 /* MigrateBelow4.swift in Sources */,
 				8115BEAF218B2025009FFE3B /* TransactionCell.swift in Sources */,
 				812002BD21A3EB390050E1B0 /* STransferConfirmView.swift in Sources */,
 				817ABE2221B50C2A00E8030E /* UIApplication+Extensions.swift in Sources */,
@@ -2120,6 +2135,7 @@
 				9A1F87B922014FD70002BE67 /* NodeSettingViewControllerV2.swift in Sources */,
 				9A25B9B6218850B600B9433A /* AddWalletMenuViewController.swift in Sources */,
 				818A91412182C23300D03D57 /* NSDecimal+Swift.swift in Sources */,
+				9A36AFAE22675F5800B388A9 /* MigrateBelow6.swift in Sources */,
 				9AE31424218C27D400B5433F /* NodeInfoPersistence.swift in Sources */,
 				813C3412223A327300DE92F1 /* DropDownVIew.swift in Sources */,
 				9ADE4517217F0801006F1C81 /* MainImportWalletViewController.swift in Sources */,
@@ -2371,6 +2387,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = VQHC4XR7AG;
 				INFOPLIST_FILE = platonWallet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;

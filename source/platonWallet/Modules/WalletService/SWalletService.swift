@@ -1066,11 +1066,15 @@ class SWalletService: BaseService{
                             semaphore.signal()
                             return
                         }
+                        let swallet = SWalletService.sharedInstance.getSWalletByContractAddress(contractAddress: contractAddress)
+                        let detachedSwallet = swallet?.fullDetach()
+                        DispatchQueue.global().async {
+                            let rettxs = STransaction.sTrsancationParser(concatenated: concatenateString!, contractAddress: contractAddress, swallet: detachedSwallet)
+                            txs.removeAll()
+                            txs.append(contentsOf: rettxs)
+                            semaphore.signal()
+                        }
                         
-                        let rettxs = STransaction.sTrsancationParser(concatenated: concatenateString!, contractAddress: contractAddress)
-                        txs.removeAll()
-                        txs.append(contentsOf: rettxs)
-                        semaphore.signal()
                     }
                 case .fail(let code,let errorMsg):
                     self.failCompletionOnMainThread(code: code!, errorMsg: errorMsg!, completion: &completion)
@@ -1105,7 +1109,7 @@ class SWalletService: BaseService{
              
             web3.eth.platonCall(code: ExecuteCode.ContractExecute,contractAddress: contractAddress, functionName: "getMultiSigList", from: sender, params: [idsData!], outputs: [getMultiSigListParamter]) { (result, dataRet) in
                 semaphore.signal()
-                
+                 
                 switch result{
                 case .success:
                     

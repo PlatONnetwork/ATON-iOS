@@ -14,7 +14,7 @@ extension UIPageViewController {
         guard let currentViewController = self.viewControllers?.first else { return }
         guard let nextViewController = dataSource?.pageViewController(self, viewControllerAfter: currentViewController) else { return }
         setViewControllers([nextViewController], direction: .forward, animated: animated, completion: nil)
-    }
+    } 
     
     func goToPreviousPage(animated: Bool = true) {
         guard let currentViewController = self.viewControllers?.first else { return }

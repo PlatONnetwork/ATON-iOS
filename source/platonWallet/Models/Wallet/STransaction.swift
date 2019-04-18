@@ -38,7 +38,7 @@ enum TransanctionCategory : Int {
     case JointWalletApprove
     case JointWalletRevoke
     
-    
+     
     public var localizedDesciption: String? {
         
         switch self {
@@ -226,90 +226,80 @@ class STransaction: Object {
     }
     
     
-    func labelDesciptionAndColor() -> (String,UIColor) {
-        
-        var des : String = ""
-        var color : UIColor = .white
-        
-        if self.transactionCategory == TransanctionCategory.ATPTransfer.rawValue{
-            if (self.txhash?.length)! > 0{
-                
-                if (self.blockNumber?.length)! > 0{
-                    return self.labelDesciptionAndColorWithMinedTx()
-                    /*
-                    if (TransactionService.service.lastedBlockNumber != nil) && (TransactionService.service.lastedBlockNumber?.length)! > 0{
-                        let lastedBlockNumber = BigUInt(TransactionService.service.lastedBlockNumber!)
-                        let txBlockNumber = BigUInt((self.blockNumber)!)
-                        let blockDiff = BigUInt.safeSubStractToUInt64(a: lastedBlockNumber!, b: txBlockNumber!)
-                        if Int64(blockDiff) > MinTransactionConfirmations{
-                            return self.labelDesciptionAndColorWithMinedTx()
-                        }else{
-                            //block confirming or chain data rollback(debug)
-                            des = String(format: "%@(%d/%d)", Localized("walletDetailVC_tx_status_confirming"),blockDiff,MinTransactionConfirmations)
-                            color = UIColor(rgb: 0xFFED54)
-                        }
-                    }else{
-                        //network unreachable
-                        des = "--"
-                    }
-                     */
+    func labelDesciptionAndColor(_ completion: ((_ des: String,_ color: UIColor) -> () )?){
+        let detached = self.detached()
+        DispatchQueue.main.async {
+            var des : String = ""
+            var color : UIColor = .white 
+            
+            if detached.transactionCategory == TransanctionCategory.ATPTransfer.rawValue{
+                if (detached.txhash?.length)! > 0{
                     
-                }else{
-                    //still pending
-                    //pending
+                    if (detached.blockNumber?.length)! > 0{
+                        let ret = STransaction.labelDesciptionAndColorWithMinedTx(detached)
+                        des = ret.0
+                        color = ret.1
+                    }else{
+                        des = Localized("walletDetailVC_tx_status_pending")
+                        color = cell_Transaction_pending_color
+                    }
+                    
+                }else{ 
+                    let ret = STransaction.labelDesciptionAndColorWithMinedTx(detached)
+                    des = ret.0
+                    color = ret.1
+                }
+            }else if (detached.transactionCategory == TransanctionCategory.JointWalletCreation.rawValue ||
+                detached.transactionCategory == TransanctionCategory.JointWalletExecution.rawValue ||
+                detached.transactionCategory == TransanctionCategory.JointWalletSubmit.rawValue ||
+                detached.transactionCategory == TransanctionCategory.JointWalletApprove.rawValue ||
+                detached.transactionCategory == TransanctionCategory.JointWalletRevoke.rawValue) {
+                
+                if detached.isWaitForConfirmation{
                     des = Localized("walletDetailVC_tx_status_pending")
                     color = cell_Transaction_pending_color
+                }else{
+                    //success
+                    des = Localized("walletDetailVC_tx_status_success")
+                    color = cell_Transaction_success_color
                 }
-                
-            }else{
-                return self.labelDesciptionAndColorWithMinedTx()
             }
-        }else if (self.transactionCategory == TransanctionCategory.JointWalletCreation.rawValue ||
-            self.transactionCategory == TransanctionCategory.JointWalletExecution.rawValue ||
-            self.transactionCategory == TransanctionCategory.JointWalletSubmit.rawValue ||
-            self.transactionCategory == TransanctionCategory.JointWalletApprove.rawValue ||
-            self.transactionCategory == TransanctionCategory.JointWalletRevoke.rawValue) {
             
-            if self.isWaitForConfirmation{
-                des = Localized("walletDetailVC_tx_status_pending")
-                color = cell_Transaction_pending_color
-            }else{
-                //success
-                des = Localized("walletDetailVC_tx_status_success")
-                color = cell_Transaction_success_color
+            DispatchQueue.main.async {
+                if completion != nil{
+                    completion!(des,color)
+                }
             }
-
         }
         
-        return (des,color)
+       
     }
     
-    func labelDesciptionAndColorWithMinedTx() -> (String,UIColor) {
-        
+    public class func labelDesciptionAndColorWithMinedTx(_ tx: STransaction) -> (String,UIColor) {
         var des : String = ""
         var color : UIColor = .white
-        if self.executed{
+        if tx.executed{
             //success
             des = Localized("walletDetailVC_tx_status_success")
             color = cell_Transaction_success_color
         }else{
-            if self.signStatus == .reachRevoke{
+            if tx.signStatus == .reachRevoke{
                 //remain undetermind member can't reach the approve required number
                 des = Localized("Transaction.Fail")
                 color = cell_Transaction_fail_color
-            }else if self.signStatus == .reachApproval{
+            }else if tx.signStatus == .reachApproval{
                 //contract transfer fail
                 des = Localized("Transaction.Fail")
                 color = cell_Transaction_fail_color
-            }else if self.signStatus == .voting{
+            }else if tx.signStatus == .voting{
                 //signning(n/m)
                 var approveNumber = 0
-                for item in self.determinedResult{
+                for item in tx.determinedResult{
                     if item.operation == OperationAction.approval.rawValue{
                         approveNumber = approveNumber + 1
                     }
                 }
-                des = String(format: "%@(%d/%d)", Localized("walletDetailVC_no_transactions_Signing"),approveNumber,self.required)
+                des = String(format: "%@(%d/%d)", Localized("walletDetailVC_no_transactions_Signing"),approveNumber,tx.required)
                 color = cell_Transaction_pending_color
             }
         }
@@ -401,10 +391,9 @@ class STransaction: Object {
         return tx
     }
     
-    static func sTrsancationParser(concatenated : String,contractAddress : String) -> [STransaction]{
+    static func sTrsancationParser(concatenated : String,contractAddress : String,swallet: SWallet?) -> [STransaction]{
         var txs : [STransaction] = []
         let txComponents = concatenated.components(separatedBy: ":")
-        let swallet = SWalletService.sharedInstance.getSWalletByContractAddress(contractAddress: contractAddress)
         if swallet == nil{
             //shared wallet may been deleted
             return []
@@ -483,21 +472,6 @@ class STransaction: Object {
         
     }
     
-
-    required convenience init(swallet : SWallet){
-        self.init()
-        self.contractAddress = swallet.contractAddress
-        self.ownerWalletAddress = swallet.walletAddress
-        self.required = swallet.required
-        for item in swallet.owners {
-            let result = DeterminedResult()
-            result.operation = 0;
-            result.walletName = item.walletName
-            result.walletAddress = item.walletAddress
-            determinedResult.append(result)
-        }
-    }
-
     var initAsUnread : Bool{
         
         //set tx as unread if tx not executed and tx in ownerlists and voting
@@ -524,6 +498,29 @@ class STransaction: Object {
         
         return true
     }
+    
+    //MARK: - Constructor
+
+    required convenience init(swallet : SWallet){
+        self.init()
+        self.contractAddress = swallet.contractAddress
+        self.ownerWalletAddress = swallet.walletAddress
+        self.required = swallet.required
+        for item in swallet.owners {
+            let result = DeterminedResult()
+            result.operation = 0;
+            result.walletName = item.walletName
+            result.walletAddress = item.walletAddress
+            determinedResult.append(result)
+        }
+    }
+
+    public func remakeUUID(){
+        if self.transanctionCategoryLazy == .ATPTransfer{
+            self.uuid = self.contractAddress + "_" + self.transactionID
+        }
+    }
+
     
 }
 

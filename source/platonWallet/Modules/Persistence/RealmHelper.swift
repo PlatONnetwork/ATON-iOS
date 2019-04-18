@@ -13,28 +13,39 @@ public let RealmInstance = RealmHelper.getRealm()
  
 var RealmWriteQueue = DispatchQueue(label: "com.platon.RealmWriteQueue")
 
+var RealmReadeQueue = DispatchQueue(label: "com.platon.RealmReadQueue")
+
 class RealmHelper {
     
-    private static var readInstance : Realm?
-    private static var writeInstance : Realm?
+    private static var defaultRealm : Realm?
     
-
+    public static var readInstance : Realm?
+    
+    public static var writeInstance : Realm?
     
     public class func getRealm() -> Realm?{
-        return readInstance
+        return defaultRealm
     }
     
-    public class func getWriteRealm() -> Realm{
+    public class func initReadRealm(){
+        RealmReadeQueue.async {
+            readInstance = try? Realm(configuration: self.getConfig())
+        }
+    }
+    
+    public class func initWriteRealm(){
+        RealmWriteQueue.async {
+            writeInstance = try? Realm(configuration: self.getConfig()) 
+        }
+    }
+    
+    public class func getNewRealm() -> Realm{
         let realm = try? Realm(configuration: self.getConfig())
         return realm!
     }
     
-    public static func setReadInstance(r: Realm?){
-        readInstance = r
-    }
-    
-    public static func seWriteInstance(r: Realm?){
-        writeInstance = r
+    public static func setDefaultInstance(r: Realm?){
+        defaultRealm = r
     }
     
     /*
@@ -53,65 +64,18 @@ class RealmHelper {
         let schemaVersion: UInt64 = 6
         let config = Realm.Configuration(schemaVersion: schemaVersion, migrationBlock: { migration, oldSchemaVersion in
             
-            if oldSchemaVersion < 4 {
-                
-                migration.enumerateObjects(ofType: NodeInfo.className(), { (old, new) in
-                    if old != nil && new != nil{
-                        if old!["nodeURLStr"] as! String == DefaultNodeURL_Alpha {
-                            new!["desc"] = "SettingsVC_nodeSet_defaultTestNetwork_title"
-                            
-                        }else if old!["nodeURLStr"] as! String == "192.168.9.73:6789" && old?["desc"] as? String == "SettingsVC_nodeSet_defaultTestNetwork_title"{
-                            migration.delete(old!)
-                        }
-                    }
-                    
-                }) 
+            if oldSchemaVersion < 4 { 
+                self.migrationBelow4(migration: migration, schemaVersion: schemaVersion, oldSchemaVersion: oldSchemaVersion)
             }
             
             if oldSchemaVersion < 6{ 
-                migration.enumerateObjects(ofType: Transaction.className(), { (old, new) in  
-                    RealmHelper.doNodeULRStringMigration_below_6(old, new)
-                })
-                
-                migration.enumerateObjects(ofType: Wallet.className(), { (old, new) in
-                    RealmHelper.doNodeULRStringMigration_below_6(old, new)
-                    RealmHelper.classicwalletdoPrimaryKeyMigration_below_6(old, new)
-                })
-                
-                migration.enumerateObjects(ofType: AddressInfo.className(), { (old, new) in
-                    RealmHelper.doNodeULRStringMigration_below_6(old, new)
-                })
-                
-                migration.enumerateObjects(ofType: SWallet.className(), { (old, new) in
-                    RealmHelper.doNodeULRStringMigration_below_6(old, new)
-                })
-                
-                migration.enumerateObjects(ofType: STransaction.className(), { (old, new) in
-                    RealmHelper.doNodeULRStringMigration_below_6(old, new)
-                })
-                
+                RealmHelper.migrationBelow6(migration: migration, schemaVersion: schemaVersion, oldSchemaVersion: oldSchemaVersion)
             }
             
             
         })
         
         return config
-    }
-    
-    public static func doNodeULRStringMigration_below_6(_ old: MigrationObject?, _ new: MigrationObject?){
-        if old != nil && new != nil{
-            new!["nodeURLStr"] = DefaultNodeURL_Alpha
-        }
-    }
-    
-    public static func classicwalletdoPrimaryKeyMigration_below_6(_ old: MigrationObject?, _ new: MigrationObject?){
-        if old != nil && new != nil{
-            let path = old!["keystorePath"] as? String
-            let keystore = try? Keystore(contentsOf: URL(fileURLWithPath: keystoreFolderPath + "/" + path!))
-            if (path != nil && keystore != nil){
-                new!["primaryKeyIdentifier"] = keystore!.address + DefaultNodeURL_Alpha
-            }
-        }
     }
     
 }

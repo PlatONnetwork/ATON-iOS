@@ -57,11 +57,14 @@ class AppFramework {
 
         let readRealm = try? Realm(configuration: RealmHelper.getConfig())
         RealmWriteQueue.async {
-            let writeRealm = try? Realm(configuration: RealmHelper.getConfig())
-            RealmHelper.seWriteInstance(r: writeRealm)
+            RealmHelper.initWriteRealm()
         }
         
-        RealmHelper.setReadInstance(r: readRealm)
+        RealmReadeQueue.async {
+            RealmHelper.initReadRealm()
+        }
+        
+        RealmHelper.setDefaultInstance(r: readRealm)
         
         
         //set node storage first

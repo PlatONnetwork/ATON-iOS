@@ -37,7 +37,6 @@ class QRDisplayViewController: BaseViewController {
             qrCodeView.qrCodeImageView.image = qrImage
             qrCodeView.addressLabel.text = swallet.contractAddress
 //            qrCodeView.walletNameLabel.text = swallet.name
-            qrCodeView.hidePublicKeyArea()
         }
         
         qrCodeView.saveImgAndShreadBtn.addTarget(self, action: #selector(onSaveImgAndShared), for: .touchUpInside)

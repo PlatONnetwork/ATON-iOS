@@ -130,6 +130,15 @@ class SWallet: Object {
             return 100
         }
     }
+    
+    public func fullDetach() -> SWallet{
+        let result = self.detached()
+        let newOwner = Array(result.owners.map {$0.detached()})
+        result.owners.removeAll()
+        result.owners.append(objectsIn: newOwner)
+        
+        return result
+    }
 }
 
 

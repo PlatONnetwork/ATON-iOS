@@ -13,9 +13,9 @@ let maxRequestContentLength = 1024 * 128
 
 let MinTransactionConfirmations = 1
 
-let DefaultNodeURL_Alpha = "https://syde.platon.network/test"
+let DefaultNodeURL_Alpha_deprecated = "https://syde.platon.network/test"
 
-let DefaultNodeURL_Alpha_new = "https://test-amigo.platon.network/test"
+let DefaultNodeURL_Alpha = "https://test-amigo.platon.network/test"
 
 let DefaultNodeURL_Beta = "https://test-amigo.platon.network/test"
 
