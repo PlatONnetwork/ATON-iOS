@@ -76,3 +76,10 @@ fastlane/test_output
 # https://github.com/johnno1962/injectionforxcode
 
 iOSInjectionProject/
+
+Pods
+.DS_Store
+source/.DS_Store
+source/platonWallet.xcodeproj/xcuserdata/
+source/platonWallet.xcworkspace/xcuserdata/
+source/Pods/Pods.xcodeproj/xcuserdata
