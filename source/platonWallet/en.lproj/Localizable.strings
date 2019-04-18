@@ -601,10 +601,10 @@
 
 //MyVoteListVC
 "MyVoteListVC_nav_title" = "My vote";
-"MyVoteListVC_locked" = "locked";
+"MyVoteListVC_locked" = "locked(Energon)";
 "MyVoteListVC_validinvalid" = "valid/invalid";
-"MyVoteListVC_reward" = "Voting Reward";
-"MyVoteListVC_Empty_tips" = "No voting record";
+"MyVoteListVC_reward" = "Voting Reward(Energon)";
+"MyVoteListVC_Empty_tips" = "You haven`t voted yet";
 
 //SingleVoteDetailListVC
 "SingleVoteDetailListVC_nav_title" = "Vote detail";

@@ -152,8 +152,13 @@ class QRScannerViewController: BaseViewController,AVCaptureMetadataOutputObjects
     
     
     override func rt_customBackItem(withTarget target: Any!, action: Selector!) -> UIBarButtonItem! {
-        return UIBarButtonItem(image: UIImage(named: "navback"), style: .plain, target: self, action: #selector(back))
+        let barButtonItem = UIBarButtonItem(image: UIImage(named: "nav_back"), style: .plain, target: self, action: #selector(onNavigationBack))
+        barButtonItem.tintColor = .white
+        return barButtonItem
     }
+    
+    
+
     
     func checkCamareAuthStatus() {
         
@@ -221,6 +226,10 @@ class QRScannerViewController: BaseViewController,AVCaptureMetadataOutputObjects
         scanLine.removeAllAnimations()
         scanLine.isHidden = true
         
+    }
+    
+    @objc func onNavigationBack() {
+        navigationController?.popViewController(animated: true)
     }
     
 //    func addLayer(){

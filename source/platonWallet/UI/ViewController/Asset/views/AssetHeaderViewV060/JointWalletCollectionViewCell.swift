@@ -63,6 +63,7 @@ class JointWalletCollectionViewCell: UICollectionViewCell {
     func updateWallet(walletObj: SWallet){
         
         jointWallet = walletObj
+        self.updateUnreadDot()
         
         self.walletNameBGLabel.text = walletObj.name
         self.walletNameLabel.text = walletObj.name

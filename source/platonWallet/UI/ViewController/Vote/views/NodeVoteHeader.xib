@@ -35,8 +35,8 @@
                                         <constraint firstAttribute="width" constant="1" id="suT-go-Tsk"/>
                                     </constraints>
                                 </view>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="locked" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7C3-Qv-Uoo">
-                                    <rect key="frame" x="45" y="48" width="35" height="14"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="locked(Energon)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7C3-Qv-Uoo">
+                                    <rect key="frame" x="19" y="48" width="86.5" height="14"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                     <color key="textColor" red="0.38039215686274508" green="0.39215686274509803" blue="0.43137254901960786" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <color key="highlightedColor" red="0.77254901960784317" green="0.79607843137254897" blue="0.86274509803921573" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -58,6 +58,47 @@
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fpw-uH-ENN">
                             <rect key="frame" x="125" y="0.0" width="125" height="88"/>
                             <subviews>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qhg-vR-4Jr" userLabel="sepline">
+                                    <rect key="frame" x="124" y="32" width="1" height="24"/>
+                                    <color key="backgroundColor" red="0.89411764705882346" green="0.90588235294117647" blue="0.95294117647058818" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="24" id="e6E-11-H7i"/>
+                                        <constraint firstAttribute="width" constant="1" id="eie-jz-Z0X"/>
+                                    </constraints>
+                                </view>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AEh-jH-xD5">
+                                    <rect key="frame" x="56" y="24" width="13" height="16"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                    <color key="highlightedColor" red="0.7725490196" green="0.79607843140000001" blue="0.86274509799999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="reward(Energon)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YCU-QQ-7Wt">
+                                    <rect key="frame" x="18.5" y="48" width="88" height="14"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                    <color key="textColor" red="0.38039215686274508" green="0.39215686274509803" blue="0.43137254901960786" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <color key="highlightedColor" red="0.7725490196" green="0.79607843140000001" blue="0.86274509799999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <userDefinedRuntimeAttributes>
+                                        <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="MyVoteListVC_reward"/>
+                                    </userDefinedRuntimeAttributes>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstItem="YCU-QQ-7Wt" firstAttribute="top" secondItem="AEh-jH-xD5" secondAttribute="bottom" constant="8" id="EtU-F0-wre"/>
+                                <constraint firstItem="YCU-QQ-7Wt" firstAttribute="centerX" secondItem="fpw-uH-ENN" secondAttribute="centerX" id="KVF-dg-loN"/>
+                                <constraint firstItem="qhg-vR-4Jr" firstAttribute="centerY" secondItem="fpw-uH-ENN" secondAttribute="centerY" id="OPl-MA-CYU"/>
+                                <constraint firstItem="AEh-jH-xD5" firstAttribute="top" secondItem="fpw-uH-ENN" secondAttribute="top" constant="24" id="TsW-v2-Rv1"/>
+                                <constraint firstItem="AEh-jH-xD5" firstAttribute="centerX" secondItem="fpw-uH-ENN" secondAttribute="centerX" id="maL-gg-ch2"/>
+                                <constraint firstAttribute="trailing" secondItem="qhg-vR-4Jr" secondAttribute="trailing" id="y6k-qy-TmF"/>
+                            </constraints>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gnd-7l-uZB">
+                            <rect key="frame" x="250" y="0.0" width="125" height="88"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-/-" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KUG-D8-sTY">
+                                    <rect key="frame" x="54" y="24" width="17" height="16"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                    <color key="highlightedColor" red="0.7725490196" green="0.79607843140000001" blue="0.86274509799999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="valide/invalid" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pqb-G8-FdW">
                                     <rect key="frame" x="28.5" y="48" width="68" height="14"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="11"/>
@@ -67,54 +108,13 @@
                                         <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="MyVoteListVC_validinvalid"/>
                                     </userDefinedRuntimeAttributes>
                                 </label>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qhg-vR-4Jr" userLabel="sepline">
-                                    <rect key="frame" x="124" y="32" width="1" height="24"/>
-                                    <color key="backgroundColor" red="0.89411764705882346" green="0.90588235294117647" blue="0.95294117647058818" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="24" id="e6E-11-H7i"/>
-                                        <constraint firstAttribute="width" constant="1" id="eie-jz-Z0X"/>
-                                    </constraints>
-                                </view>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-/-" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KUG-D8-sTY">
-                                    <rect key="frame" x="54" y="24" width="17" height="16"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                    <color key="highlightedColor" red="0.7725490196" green="0.79607843140000001" blue="0.86274509799999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </label>
                             </subviews>
                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <constraints>
-                                <constraint firstItem="qhg-vR-4Jr" firstAttribute="centerY" secondItem="fpw-uH-ENN" secondAttribute="centerY" id="OPl-MA-CYU"/>
-                                <constraint firstItem="Pqb-G8-FdW" firstAttribute="centerX" secondItem="fpw-uH-ENN" secondAttribute="centerX" id="bZv-2X-p4H"/>
-                                <constraint firstItem="Pqb-G8-FdW" firstAttribute="top" secondItem="KUG-D8-sTY" secondAttribute="bottom" constant="8" id="ghJ-jN-kq5"/>
-                                <constraint firstItem="KUG-D8-sTY" firstAttribute="top" secondItem="fpw-uH-ENN" secondAttribute="top" constant="24" id="teF-zv-OcX"/>
-                                <constraint firstItem="KUG-D8-sTY" firstAttribute="centerX" secondItem="fpw-uH-ENN" secondAttribute="centerX" id="xUi-iF-l0c"/>
-                                <constraint firstAttribute="trailing" secondItem="qhg-vR-4Jr" secondAttribute="trailing" id="y6k-qy-TmF"/>
-                            </constraints>
-                        </view>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Gnd-7l-uZB">
-                            <rect key="frame" x="250" y="0.0" width="125" height="88"/>
-                            <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="reward" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YCU-QQ-7Wt">
-                                    <rect key="frame" x="44.5" y="48" width="36" height="14"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                                    <color key="textColor" red="0.38039215686274508" green="0.39215686274509803" blue="0.43137254901960786" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <color key="highlightedColor" red="0.7725490196" green="0.79607843140000001" blue="0.86274509799999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    <userDefinedRuntimeAttributes>
-                                        <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="MyVoteListVC_reward"/>
-                                    </userDefinedRuntimeAttributes>
-                                </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AEh-jH-xD5">
-                                    <rect key="frame" x="56" y="24" width="13" height="16"/>
-                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                    <color key="highlightedColor" red="0.7725490196" green="0.79607843140000001" blue="0.86274509799999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </label>
-                            </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <constraints>
-                                <constraint firstItem="AEh-jH-xD5" firstAttribute="top" secondItem="Gnd-7l-uZB" secondAttribute="top" constant="24" id="AXD-LL-IF0"/>
-                                <constraint firstItem="YCU-QQ-7Wt" firstAttribute="top" secondItem="AEh-jH-xD5" secondAttribute="bottom" constant="8" id="EKq-fI-AMN"/>
-                                <constraint firstItem="YCU-QQ-7Wt" firstAttribute="centerX" secondItem="Gnd-7l-uZB" secondAttribute="centerX" id="Ehu-Bo-90o"/>
-                                <constraint firstItem="AEh-jH-xD5" firstAttribute="centerX" secondItem="Gnd-7l-uZB" secondAttribute="centerX" id="iei-dg-UI0"/>
+                                <constraint firstItem="Pqb-G8-FdW" firstAttribute="top" secondItem="KUG-D8-sTY" secondAttribute="bottom" constant="8" id="2gg-5e-qXe"/>
+                                <constraint firstItem="KUG-D8-sTY" firstAttribute="top" secondItem="Gnd-7l-uZB" secondAttribute="top" constant="24" id="Zct-cg-QdE"/>
+                                <constraint firstItem="KUG-D8-sTY" firstAttribute="centerX" secondItem="Gnd-7l-uZB" secondAttribute="centerX" id="nxK-nw-kGc"/>
+                                <constraint firstItem="Pqb-G8-FdW" firstAttribute="centerX" secondItem="Gnd-7l-uZB" secondAttribute="centerX" id="prY-5Y-QUr"/>
                             </constraints>
                         </view>
                     </subviews>

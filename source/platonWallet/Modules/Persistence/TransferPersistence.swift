@@ -13,7 +13,7 @@ class TransferPersistence {
     public class func add(tx : Transaction){
         tx.nodeURLStr = SettingService.getCurrentNodeURLString()        
         RealmWriteQueue.async {
-            let realm = RealmHelper.getWriteRealm()
+            let realm = RealmHelper.getNewRealm()
             try? realm.write {
                 realm.add(tx)
                 NSLog("TransferPersistence add")
@@ -36,11 +36,14 @@ class TransferPersistence {
         return array
     }
     
-    public class func getUnConfirmedTransactions() -> [Transaction]{
-        let predicate = NSPredicate(format: "txhash != %@ AND blockNumber == %@ AND nodeURLStr == %@", "","",SettingService.getCurrentNodeURLString())
-        let r = RealmInstance!.objects(Transaction.self).filter(predicate).sorted(byKeyPath: "createTime")
-        let array = Array(r)
-        return array
+    public class func getUnConfirmedTransactions(_ completion: @escaping ([Transaction]) -> () ){
+        RealmReadeQueue.async {
+            let predicate = NSPredicate(format: "txhash != %@ AND blockNumber == %@ AND nodeURLStr == %@", "","",SettingService.getCurrentNodeURLString())
+            let realm = RealmHelper.getNewRealm()
+            let r = realm.objects(Transaction.self).filter(predicate).sorted(byKeyPath: "createTime")
+            let array = Array(r)
+            completion(array)
+        }
     }
     
     public class func getByTxhash(_ hash : String?) -> Transaction?{

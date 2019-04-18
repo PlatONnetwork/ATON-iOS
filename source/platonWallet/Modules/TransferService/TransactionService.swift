@@ -48,7 +48,7 @@ class TransactionService : BaseService{
         
         if pendingTransactionPollingTimerEnable{
             pendingTransactionPollingTimer = Timer.scheduledTimer(timeInterval: TimeInterval(pendingTransactionPollingTimerInterval), target: self, selector: #selector( OnPendingTxPolling), userInfo: nil, repeats: true)
-            pendingTransactionPollingTimer?.fire()
+            pendingTransactionPollingTimer?.fire() 
         }
         
         self.getEthGasPrice(completion: nil)
@@ -102,107 +102,104 @@ class TransactionService : BaseService{
     }
      
     func EnergonTransferPooling(){
-        let txs = TransferPersistence.getUnConfirmedTransactions()
-        for item in txs{
-            guard (item.txhash != nil) else{
-                continue
-            }
-            guard TransanctionType(rawValue: item.transactionType) != .Vote else {
-                continue
-            }
-            let byteCode = try! EthereumData(ethereumValue: item.txhash!)
-            let data = try! EthereumData(ethereumValue: byteCode)
-            
-            web3.eth.getTransactionReceipt(transactionHash: data) { (txResp) in
-                switch txResp.status{
-                case .success(_):
-                    DispatchQueue.main.async {
-                        RealmInstance?.beginWrite()
-                        item.blockNumber = String(txResp.result??.blockNumber.quantity ?? BigUInt(0))
-                        item.confirmTimes = 0
-                        item.gasUsed = String(txResp.result??.gasUsed.quantity ?? BigUInt(0))
-                        try? RealmInstance?.commitWrite()
-                        NotificationCenter.default.post(name: NSNotification.Name(DidUpdateTransactionByHashNotification), object: item.txhash)
-                    }
-                case .failure(_):
-                    do{}
+        TransferPersistence.getUnConfirmedTransactions { (txs) in
+            for item in txs{
+                guard (item.txhash != nil) else{
+                    continue
                 }
+                guard TransanctionType(rawValue: item.transactionType) != .Vote else {
+                    continue
+                }
+                let byteCode = try! EthereumData(ethereumValue: item.txhash!)
+                let data = try! EthereumData(ethereumValue: byteCode)
+                let newItem = Transaction.init(value: item)
+                newItem.txhash = item.txhash
+                web3.eth.getTransactionReceipt(transactionHash: data) { (txResp) in
+                    switch txResp.status{
+                    case .success(_):
+                        let realm = RealmHelper.getNewRealm()
+                        try? realm.write {
+                            newItem.blockNumber = String(txResp.result??.blockNumber.quantity ?? BigUInt(0))
+                            newItem.confirmTimes = 0
+                            newItem.gasUsed = String(txResp.result??.gasUsed.quantity ?? BigUInt(0))
+                            realm.add(newItem, update: true)
+                        }
+                        let hash = newItem.txhash
+                        DispatchQueue.main.async {
+                            NotificationCenter.default.post(name: NSNotification.Name(DidUpdateTransactionByHashNotification), object: hash)
+                        }
+                    case .failure(_):
+                        do{}
+                    }
+                }
+                
             }
-            
         }
+
     }
      
     func VotePooling(){
-        let txs = TransferPersistence.getUnConfirmedTransactions()
-        for item in txs{
-            guard (item.txhash != nil) else{
-                continue
-            }
-            guard TransanctionType(rawValue: item.transactionType) == .Vote else {
-                continue
-            }
-            let byteCode = try! EthereumData(ethereumValue: item.txhash!)
-            let data = try! EthereumData(ethereumValue: byteCode)
-            
-            web3.eth.getTransactionReceipt(transactionHash: data) { (txResp) in
-                switch txResp.status{
-                case .success(let resp): 
-                    guard let receipt = resp, receipt.logs.count > 0, receipt.logs[0].data.hex().count > 0 else{
-                        return
-                    }
-                    
-                    guard let rlpItem = try? RLPDecoder().decode(receipt.logs[0].data.bytes), let respBytes = rlpItem.array?[0].bytes else {
-                        return
-                    }
-                    
-                    guard let dic = try? JSONSerialization.jsonObject(with: Data(bytes: respBytes), options: .mutableContainers) as? [String:Any] else{
-                        return
-                    }
-                    
-                    guard let responseJson = String(bytes: respBytes, encoding: .utf8) else{
-                        return
-                    }  
-                    DispatchQueue.main.async {
-                        
-                        guard let singleVote = VotePersistence.getSingleVotesByTxHash(item.txhash!) else {
+        TransferPersistence.getUnConfirmedTransactions { (txs) in
+            for item in txs{
+                guard (item.txhash != nil) else{
+                    continue
+                }
+                guard TransanctionType(rawValue: item.transactionType) == .Vote else {
+                    continue
+                }
+                let byteCode = try! EthereumData(ethereumValue: item.txhash!)
+                let data = try! EthereumData(ethereumValue: byteCode)
+                let newItem = Transaction.init(value: item)
+                newItem.txhash = item.txhash
+                web3.eth.getTransactionReceipt(transactionHash: data) { (txResp) in
+                    switch txResp.status{
+                    case .success(let resp): 
+                        guard let receipt = resp, receipt.logs.count > 0, receipt.logs[0].data.hex().count > 0 else{
                             return
                         }
-                        
-                        
-                        guard let dataString = dic?["Data"] as? String,
-                            dataString.split(separator: ":").count == 2,
-                            let validCountStr = String(dataString.split(separator: ":")[0]) as? String,
-                            let priceStr = String(dataString.split(separator: ":")[1]) as? String else{
-                                return
+                        guard let rlpItem = try? RLPDecoder().decode(receipt.logs[0].data.bytes), let respBytes = rlpItem.array?[0].bytes else {
+                            return
                         }
-                        
-                        try? RealmInstance?.write {
-                            item.blockNumber = String(receipt.blockNumber.quantity)
-                            item.gasUsed = String(receipt.gasUsed.quantity)
-                            item.extra = responseJson
+                        guard let dic = try? JSONSerialization.jsonObject(with: Data(bytes: respBytes), options: .mutableContainers) as? [String:Any] else{
+                            return
+                        }
+                        guard let responseJson = String(bytes: respBytes, encoding: .utf8) else{
+                            return
+                        }  
+                        DispatchQueue.main.async {
                             
-                            singleVote.validNum = validCountStr
-                            singleVote.deposit = priceStr 
-                            
-                            /*
-                            if singleVote.tickets.count > count {  
-                                item.value = String(EthereumQuantity(quantity: BigUInt(singleVote.tickets[0].deposit!)!.multiplied(by: BigUInt(count))).quantity)
-                                let startIndex = singleVote.tickets.count - count
-                                let endIndex = singleVote.tickets.count
-                                let tickets = singleVote.tickets[startIndex..<endIndex]
-                                RealmInstance?.delete(tickets)
+                            guard let dataString = dic?["Data"] as? String,
+                                dataString.split(separator: ":").count == 2,
+                                let validCountStr = String(dataString.split(separator: ":")[0]) as? String,
+                                let priceStr = String(dataString.split(separator: ":")[1]) as? String else{
+                                    return
                             }
-                            */
+                            
+                            RealmWriteQueue.async {
+                                let realm = RealmHelper.getNewRealm()
+                                let hash = newItem.hash
+                                try? realm.write {
+                                    newItem.blockNumber = String(receipt.blockNumber.quantity)
+                                    newItem.gasUsed = String(receipt.gasUsed.quantity)
+                                    newItem.extra = responseJson
+                                    realm.add(newItem, update: true)
+                                }
+                                DispatchQueue.main.async {
+                                    NotificationCenter.default.post(name: NSNotification.Name(DidUpdateVoteTransactionByHashNotification), object: hash)
+                                }
+                            }
+                            
+                            
                         }
-                        NotificationCenter.default.post(name: NSNotification.Name(DidUpdateVoteTransactionByHashNotification), object: item.txhash)
-                    }
-                    
-                case .failure(_):
-                    do{}
-                }
-            }
                         
+                    case .failure(_):
+                        do{}
+                    }
+                }
+                
+            }
         }
+
     }
     
     

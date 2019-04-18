@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 fileprivate let nodeURLReg = "^(http(s?)://)?([A-Z0-9a-z._%+-/:]{1,50})$"
 
@@ -157,6 +158,10 @@ class NodeStoreService {
     func nodeWillSuccessSwitch(){
         WalletService.sharedInstance.refreshDB()
         SWalletService.sharedInstance.refreshDB()
+        
+        if AssetVCSharedData.sharedData.walletList.count == 0{
+            (UIApplication.shared.delegate as? AppDelegate)?.gotoWalletCreateVC()
+        }
     }
     
     private func checkNodeUrl() -> Bool {

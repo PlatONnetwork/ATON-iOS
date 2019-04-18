@@ -44,7 +44,6 @@ class WalletDetailCell: UITableViewCell {
     }
     
     func updateTransferCell(txAny : AnyObject?, walletAny : AnyObject?) {
-        
         if let tx = txAny as? Transaction{
             updateCellWithAPTTransfer(tx: tx, anyWallet: walletAny)
         }else if let stx = txAny as? STransaction{
@@ -61,44 +60,9 @@ class WalletDetailCell: UITableViewCell {
         if let w = anyWallet as? Wallet {
             self.unreadTag.isHidden = true
             tx.senderAddress = w.key?.address
-            //classic wallet' transaction
-//            if (tx.from?.ishexStringEqual(other: w.key?.address))! {
-//                transferAmoutLabel.text = "-" + (tx.valueDescription)!.ATPSuffix()
-//                txIcon.image = UIImage(named: "walletSendIcon")
-//                
-////                txTypeLabel.text = Localized("walletDetailVC_tx_type_send")
-////                txTypeLabel.text = tx.transactionStauts.localizeTitle
-//            }else {
-//                transferAmoutLabel.text = "+" + (tx.valueDescription)!.ATPSuffix()
-//                txIcon.image = UIImage(named: "walletRecvIcon")
-//                
-////                txTypeLabel.text = tx.transactionStauts.localizeTitle
-////                if tx.blockNumber != nil && (tx.blockNumber?.length)! > 0{
-////                    txTypeLabel.localizedText = "walletDetailVC_tx_type_receive"
-////                }else{
-////                    txTypeLabel.localizedText = "TransactionListVC_Receiving"
-////                }
-////                txTypeLabel.localizedText = "walletDetailVC_tx_type_receive"
-//            }
         }else if let ws = anyWallet as? SWallet {
             //joint wallet' transaction
             tx.senderAddress = ws.contractAddress
-//            if (tx.from?.ishexStringEqual(other: ws.contractAddress))! {
-//                transferAmoutLabel.text = "-" + (tx.valueDescription)!.ATPSuffix()
-//                txIcon.image = UIImage(named: "walletSendIcon")
-//                txTypeLabel.text = Localized("walletDetailVC_tx_type_send")
-//                
-//            }else{
-//                transferAmoutLabel.text = "+" + (tx.valueDescription)!.ATPSuffix()
-//                txIcon.image = UIImage(named: "walletRecvIcon")
-//                
-////                if tx.blockNumber != nil && (tx.blockNumber?.length)! > 0{
-////                    txTypeLabel.localizedText = "walletDetailVC_tx_type_receive"
-////                }else{
-////                    txTypeLabel.localizedText = "TransactionListVC_Receiving"
-////                }
-//
-//            }
         }
         
         switch tx.transactionStauts {
@@ -207,10 +171,12 @@ class WalletDetailCell: UITableViewCell {
         case .none:
             txIcon.image = UIImage(named: "")
         }
-        
-        let (des,color) = tx.labelDesciptionAndColor()
-        statusLabel.text = des
-        statusLabel.textColor = color
+        let detachTx = tx.detached()
+        detachTx.labelDesciptionAndColor {[weak self] (des,color) in
+            self?.statusLabel.text = des
+            self?.statusLabel.textColor = color
+        }
+
         
         guard (tx.createTime > 0) else{
             timeLabel.text = "--:--:-- --:--"

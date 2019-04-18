@@ -14,7 +14,7 @@ class VotePersistence {
         RealmWriteQueue.async {
             assert((singleVote.candidateId != nil), "candidate should not be empty")
             singleVote.nodeURLStr = SettingService.getCurrentNodeURLString()
-            let realm = RealmHelper.getWriteRealm()
+            let realm = RealmHelper.getNewRealm()
             try? realm.write {
                 realm.add(singleVote) 
                 NSLog("Tickets add")
@@ -46,7 +46,7 @@ class VotePersistence {
     
     public class func addCandidateInfo(_ candidate: CandidateBasicInfo) {
         RealmWriteQueue.async {
-            let realm = RealmHelper.getWriteRealm()
+            let realm = RealmHelper.getNewRealm()
             candidate.nodeURLStr = SettingService.getCurrentNodeURLString()
             try? realm.write {
                 realm.add(candidate, update: true)

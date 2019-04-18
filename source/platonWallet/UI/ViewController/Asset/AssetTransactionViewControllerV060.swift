@@ -63,6 +63,7 @@ class AssetTransactionViewControllerV060: BaseViewController, EmptyDataSetDelega
         NotificationCenter.default.addObserver(self, selector: #selector(willDeleteWallet(_:)), name: NSNotification.Name(WillDeleateWallet_Notification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(updateWalletList), name: NSNotification.Name(updateWalletList_Notification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(nodeDidSwitch), name: NSNotification.Name(NodeStoreService.didSwitchNodeNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didUpdateSharedWalletTransaction), name: NSNotification.Name(DidUpdateSharedWalletTransactionList_Notification), object: nil)
 
     }
     
@@ -135,7 +136,6 @@ extension AssetTransactionViewControllerV060{
     }
     
     func initJointData() {
-        NotificationCenter.default.addObserver(self, selector: #selector(didUpdateSharedWalletTransaction), name: NSNotification.Name(DidUpdateSharedWalletTransactionList_Notification), object: nil)
         self.didUpdateSharedWalletTransaction()
     }
     

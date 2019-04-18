@@ -536,9 +536,13 @@ extension AssetSendViewControllerV060{
     //MARK : - Notification
     
     @objc func DidNodeGasPriceUpdate(){
-        let feeString = self.totalFee().divide(by: ETHToWeiMultiplier
-            , round: 18)
-        self.feeView.fee.text = feeString.ATPSuffix()
+        DispatchQueue.global().async {
+            let feeString = self.totalFee().divide(by: ETHToWeiMultiplier
+                , round: 18)
+            DispatchQueue.main.async {
+                self.feeView.fee.text = feeString.ATPSuffix()
+            }
+        }
     }
     
     func checkSufficient(text: String?) -> (Bool, String){

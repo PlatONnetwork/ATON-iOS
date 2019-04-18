@@ -174,19 +174,22 @@ class TransferDetailView: UIView {
     }
     
     func updateStatus(tx : STransaction){
-        let style = tx.labelDesciptionAndColor()
-        statusLabel.localizedText = style.0
-        statusLabel.textColor = style.1
-        if (tx.blockNumber?.length)! > 0{
-            //success
-            statusIconImageVIew.image = UIImage(named: "statusSuccess")
-            self.pendingLoadingImage.isHidden = true
-        }else{
-            //confirming
-            statusIconImageVIew.image = UIImage(named: "statusPending")
-            self.pendingLoadingImage.isHidden = false
-            self.pendingLoadingImage.rotate()
-        }
+        let detachTx = tx.detached()
+        detachTx.labelDesciptionAndColor {[weak self] (des,color) in
+            self?.statusLabel.localizedText = des
+            self?.statusLabel.textColor = color
+            if (tx.blockNumber?.length)! > 0{
+                //success
+                self?.statusIconImageVIew.image = UIImage(named: "statusSuccess")
+                self?.pendingLoadingImage.isHidden = true
+            }else{
+                //confirming
+                self?.statusIconImageVIew.image = UIImage(named: "statusPending")
+                self?.pendingLoadingImage.isHidden = false
+                self?.pendingLoadingImage.rotate()
+            }
+        } 
+        
     }
     
 }

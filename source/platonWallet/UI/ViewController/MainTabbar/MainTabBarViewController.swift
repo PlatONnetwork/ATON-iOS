@@ -17,7 +17,7 @@ extension UITabBarController {
         static var orgFrameView:     UInt8 = 0
         static var movedFrameView:   UInt8 = 1
     }
-    
+     
     var orgFrameView:CGRect? {
         get { return objc_getAssociatedObject(self, &AssociatedKeys.orgFrameView) as? CGRect }
         set { objc_setAssociatedObject(self, &AssociatedKeys.orgFrameView, newValue, .OBJC_ASSOCIATION_COPY) }
@@ -137,7 +137,7 @@ class MainTabBarViewController: UITabBarController {
         tabBarViewController.viewControllers = [assetNav,candidateListNav,personalNav]
         
         tabBarViewController.tabBar.layer.borderWidth = 1
-        tabBarViewController.tabBar.layer.borderColor = UIColor.white.cgColor
+        tabBarViewController.tabBar.layer.borderColor = UIColor.clear.cgColor
         tabBarViewController.tabBar.clipsToBounds = true
         
         return tabBarViewController
@@ -165,7 +165,7 @@ class MainTabBarViewController: UITabBarController {
             sepline.backgroundColor = UIColor(rgb: 0xF2F5FA)
             sepline.snp.makeConstraints { (make) in
                 make.leading.trailing.top.equalToSuperview()
-                make.height.equalTo(2)
+                make.height.equalTo(1)
             }
         }
         //self.tabBar.bringSubviewToFront(sepline)

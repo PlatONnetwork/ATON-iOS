@@ -97,8 +97,8 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="x1Q-QQ-Yhv" userLabel="middle">
                                 <rect key="frame" x="92.5" y="0.0" width="93" height="54"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="locked" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="9d3-Fx-0MO" userLabel="locked">
-                                        <rect key="frame" x="0.0" y="6" width="29" height="11"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="locked(energon)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="9d3-Fx-0MO" userLabel="locked">
+                                        <rect key="frame" x="0.0" y="6" width="72.5" height="11"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="9"/>
                                         <color key="textColor" red="0.53725490196078429" green="0.5490196078431373" blue="0.61960784313725492" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>

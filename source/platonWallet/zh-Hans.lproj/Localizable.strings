@@ -601,10 +601,10 @@
 
 //MyVoteListVC
 "MyVoteListVC_nav_title" = "我的投票";
-"MyVoteListVC_locked" = "投票锁定";
+"MyVoteListVC_locked" = "投票锁定(Energon)";
 "MyVoteListVC_validinvalid" = "有效票/失效票";
-"MyVoteListVC_reward" = "投票奖励";
-"MyVoteListVC_Empty_tips" = "暂无投票记录";
+"MyVoteListVC_reward" = "投票奖励(Energon)";
+"MyVoteListVC_Empty_tips" = "您还没有投票";
 
 //SingleVoteDetailListVC
 "SingleVoteDetailListVC_nav_title" = "投票详情";

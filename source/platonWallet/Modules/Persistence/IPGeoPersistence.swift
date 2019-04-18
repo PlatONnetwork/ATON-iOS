@@ -14,7 +14,7 @@ class IPGeoPersistence {
     
     class func add(infos: [IPGeoInfo], update: Bool = true) {
         RealmWriteQueue.async {
-            let realm = RealmHelper.getWriteRealm()
+            let realm = RealmHelper.getNewRealm()
             for info in infos {
                 try? realm.write {
                     realm.add(info, update: update)

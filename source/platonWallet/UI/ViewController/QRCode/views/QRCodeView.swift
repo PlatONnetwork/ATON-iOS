@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Localize_Swift
 
 class QRCodeView: UIView {
     
@@ -18,9 +19,18 @@ class QRCodeView: UIView {
     
     override func awakeFromNib() {
         saveImgAndShreadBtn.style = .blue
+        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(onLongPress))
+        longPress.minimumPressDuration = 1
+        qrCodeImageView.isUserInteractionEnabled = true
+        qrCodeImageView.addGestureRecognizer(longPress)
     }
     
-    func hidePublicKeyArea() {
+    @objc func onLongPress(){
+        if (addressLabel.text?.length)! > 0 {
+            let pasteboard = UIPasteboard.general
+            pasteboard.string = addressLabel.text
+            UIApplication.shared.keyWindow?.rootViewController?.showMessage(text: Localized("ExportVC_copy_success"))
+        }
     }
     
     
