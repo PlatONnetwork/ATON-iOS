@@ -161,8 +161,8 @@ class NodeStoreService {
         
         if AssetVCSharedData.sharedData.walletList.count == 0{
             (UIApplication.shared.delegate as? AppDelegate)?.gotoWalletCreateVC()
-        }
-    }
+        } 
+    } 
     
     private func checkNodeUrl() -> Bool {
         

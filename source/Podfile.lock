@@ -37,7 +37,7 @@ DEPENDENCIES:
   - Alamofire
   - Aspects
   - BigInt
-  - Bugly
+  - Bugly (= 2.5.0)
   - CryptoSwift (~> 0.10.0)
   - EmptyDataSet-Swift (~> 4.2.0)
   - Localize-Swift (~> 2.0)
@@ -45,7 +45,7 @@ DEPENDENCIES:
   - platonWeb3 (~> 0.4.0)
   - RealmSwift (= 3.13.1)
   - RTRootNavigationController
-  - ScryptSwift
+  - ScryptSwift (= 0.0.1)
   - secp256k1.swift (~> 0.1)
   - SnapKit (~> 4.0.0)
   - Spring (from `https://github.com/MengTo/Spring.git`)
@@ -112,6 +112,6 @@ SPEC CHECKSUMS:
   TrezorCrypto: bfeea47a052dca2c77d4a39e1e183865e52de14d
   "UITextView+Placeholder": 0c3efd97f37ea64bde7f34cc6e90fe02e87b3909
 
-PODFILE CHECKSUM: fc77197cd4c1216e1a6e7831f6b03253ed555336
+PODFILE CHECKSUM: 587e6d4c9fed486ced9f6608871e7deb7fb72e22
 
 COCOAPODS: 1.5.3
