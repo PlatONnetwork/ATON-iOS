@@ -1,5 +1,5 @@
 PODS:
-  - Alamofire (4.8.2)
+  - Alamofire (4.8.1)
   - Aspects (1.4.1)
   - BigInt (3.1.0):
     - SipHash (~> 1.2)
@@ -27,16 +27,16 @@ PODS:
   - SipHash (1.2.2)
   - SnapKit (4.0.1)
   - Spring (1.0.6)
-  - SwiftLint (0.31.0)
+  - SwiftLint (0.30.1)
   - SwiftReorder (6.0.2)
-  - SwipeCellKit (2.5.2)
+  - SwipeCellKit (2.5.1)
   - TrezorCrypto (0.0.9)
   - "UITextView+Placeholder (1.2.1)"
 
 DEPENDENCIES:
-  - Alamofire
-  - Aspects
-  - BigInt
+  - Alamofire (= 4.8.1)
+  - Aspects (= 1.4.1)
+  - BigInt (= 3.1.0)
   - Bugly (= 2.5.0)
   - CryptoSwift (~> 0.10.0)
   - EmptyDataSet-Swift (~> 4.2.0)
@@ -44,16 +44,16 @@ DEPENDENCIES:
   - MBProgressHUD (~> 1.1.0)
   - platonWeb3 (~> 0.4.0)
   - RealmSwift (= 3.13.1)
-  - RTRootNavigationController
+  - RTRootNavigationController (= 0.7.1)
   - ScryptSwift (= 0.0.1)
   - secp256k1.swift (~> 0.1)
   - SnapKit (~> 4.0.0)
   - Spring (from `https://github.com/MengTo/Spring.git`)
-  - SwiftLint
+  - SwiftLint (= 0.30.1)
   - SwiftReorder (~> 6.0)
-  - SwipeCellKit (= 2.5.2)
-  - TrezorCrypto
-  - "UITextView+Placeholder"
+  - SwipeCellKit (= 2.5.1)
+  - TrezorCrypto (= 0.0.9)
+  - "UITextView+Placeholder (= 1.2.1)"
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -89,7 +89,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/MengTo/Spring.git
 
 SPEC CHECKSUMS:
-  Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
+  Alamofire: 16ce2c353fb72865124ddae8a57c5942388f4f11
   Aspects: 7595ba96a6727a58ebcbfc954497fc5d2fdde546
   BigInt: 76b5dfdfa3e2e478d4ffdf161aeede5502e2742f
   Bugly: 3ca9f255c01025582df26f9222893b383c7e4b4e
@@ -106,12 +106,12 @@ SPEC CHECKSUMS:
   SipHash: fad90a4683e420c52ef28063063dbbce248ea6d4
   SnapKit: 0de968a9fec17499afa29683b05d0c775b6d1c29
   Spring: 3d113f14575ef79aec9c5f906dfa4f5001c03254
-  SwiftLint: 7a0227733d786395817373b2d0ca799fd0093ff3
+  SwiftLint: a54bf1fe12b55c68560eb2a7689dfc81458508f7
   SwiftReorder: 60ef1faf6446cf68f9a647cb975530db8efd6620
-  SwipeCellKit: a19e328c69c4ba983f317eeabf36ed299c69bfa4
+  SwipeCellKit: 30fd6a4f8a8b8ac864ea389c8b4c8bac5ba5471a
   TrezorCrypto: bfeea47a052dca2c77d4a39e1e183865e52de14d
   "UITextView+Placeholder": 0c3efd97f37ea64bde7f34cc6e90fe02e87b3909
 
-PODFILE CHECKSUM: 587e6d4c9fed486ced9f6608871e7deb7fb72e22
+PODFILE CHECKSUM: 6fa45d0e19ab5feba6df4f5cd81bb86b2d59b18e
 
 COCOAPODS: 1.5.3
