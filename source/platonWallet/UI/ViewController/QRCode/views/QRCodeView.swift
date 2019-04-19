@@ -19,13 +19,13 @@ class QRCodeView: UIView {
     
     override func awakeFromNib() {
         saveImgAndShreadBtn.style = .blue
-        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(onLongPress))
-        longPress.minimumPressDuration = 1
-        qrCodeImageView.isUserInteractionEnabled = true
-        qrCodeImageView.addGestureRecognizer(longPress)
+        let tap = UITapGestureRecognizer(target: self, action: #selector(onTap))
+        tap.numberOfTapsRequired = 1
+        addressLabel.isUserInteractionEnabled = true
+        addressLabel.addGestureRecognizer(tap)
     }
     
-    @objc func onLongPress(){
+    @objc func onTap(){
         if (addressLabel.text?.length)! > 0 {
             let pasteboard = UIPasteboard.general
             pasteboard.string = addressLabel.text

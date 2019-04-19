@@ -196,7 +196,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
             let _ = self.checkConfirmButtonAvailable()
         }
     }
-     
+       
     func refreshData(){
         NotificationCenter.default.addObserver(self, selector: #selector(DidNodeGasPriceUpdate), name: NSNotification.Name(DidNodeGasPriceUpdateNotification), object: nil)
         guard AssetVCSharedData.sharedData.selectedWallet != nil else {
@@ -285,7 +285,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
                     self?.walletAddressView.cleanErrorState()
                     let _ = self?.checkConfirmButtonAvailable()
                 }else{
-                    //self.showMessage(text: Localized("QRScan_failed_tips"))
+                    AssetViewControllerV060.getInstance()?.showMessage(text: Localized("QRScan_failed_tips"))
                 }
                 AssetViewControllerV060.popViewController()
             }
@@ -374,9 +374,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
             confirmView.hideExecutor()
             confirmView.totalLabel.text = amountView.textField.text!
             confirmView.toAddressLabel.text = walletAddressView.textField.text!
-            confirmView.feeLabel.text = balanceLabel.text
             confirmView.walletName.text = wallet.name
-            
             let feeString = self.totalFee().divide(by: ETHToWeiMultiplier
                 , round: 18)
             confirmView.feeLabel.text = feeString.ATPSuffix()
@@ -384,17 +382,18 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
         }else if let swallet = AssetVCSharedData.sharedData.selectedWallet as? SWallet{
             
             guard let owner = WalletService.sharedInstance.getWalletByAddress(address: swallet.walletAddress) else{
-                self.showMessage(text: "wallet not exist")
+                AssetViewControllerV060.getInstance()?.showAlertWithRedTitle(localizedTitle: "watchJointWalletTip_Notice", localizedMessage: "watchJointWalletTip_message")
                 return
             }
             
             confirmPopUpView!.setUpContentView(view: confirmView, size: CGSize(width: PopUpContentWidth, height: 391))
             confirmView.totalLabel.text = amountView.textField.text!
             confirmView.toAddressLabel.text = walletAddressView.textField.text!
-            confirmView.feeLabel.text = balanceLabel.text
             confirmView.executorLabel.text = owner.name
             confirmView.walletName.text = AssetVCSharedData.sharedData.selectedWalletName
-
+            let feeString = self.totalFee().divide(by: ETHToWeiMultiplier
+                , round: 18)
+            confirmView.feeLabel.text = feeString.ATPSuffix()
         }
             
         confirmPopUpView!.show(inViewController: self)

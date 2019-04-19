@@ -124,6 +124,7 @@ class CreateSharedWalletStep1ViewController: BaseViewController {
         let popUpVC = PopUpViewController()
         let view = UIView.viewFromXib(theClass: TransferSwitchWallet.self) as! TransferSwitchWallet
         view.selectedAddress = selectedAddress
+        view.refresh()
         popUpVC.setUpContentView(view: view, size: CGSize(width: PopUpContentWidth, height: 265))
         popUpVC.setCloseEvent(button: view.closeBtn)
         view.selectionCompletion = { wallet in

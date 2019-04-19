@@ -11,17 +11,21 @@ import Localize_Swift
 
 let TransferSwitchWalletHeight = kUIScreenHeight * 0.4
 
+enum WalletListType {
+    case ClassWallet,JointWallet,ALL
+}
+
 class TransferSwitchWallet: UIView,UITableViewDataSource,UITableViewDelegate {
     
     @IBOutlet weak var closeBtn: UIButton!
     
     var selectionCompletion : ((_ wallet : AnyObject?) -> ())?
     
-    var switchType = 0
+    var walletListType : WalletListType = .ClassWallet
     
     var selectedAddress : String?
     
-    var checkBalance: Bool = true
+    var checkSufficient: Bool = true
 
     let tableView = UITableView()
     
@@ -42,24 +46,33 @@ class TransferSwitchWallet: UIView,UITableViewDataSource,UITableViewDelegate {
         tableView.delegate = self
         tableView.separatorStyle = .none
         tableView.registerCell(cellTypes: [SwitchWalletTableViewCell.self])
-        self.refresh()
     } 
-    
+     
     func refresh(){
         dataSourse.removeAll()
-        if switchType == 0{ 
+        if walletListType == .ClassWallet{ 
             var wallets = AssetVCSharedData.sharedData.walletList.filterClassicWallet
             wallets.userArrangementSort()
-            for item in wallets{
-                if item.WalletBalanceStatus() == .Sufficient{
-                    dataSourse.append(item)
+            if self.checkSufficient{
+                for item in wallets{
+                    if item.WalletBalanceStatus() == .Sufficient{
+                        dataSourse.append(item)
+                    }
                 }
+            }else{
+                dataSourse.append(contentsOf: wallets)
             }
+            
         }else{
-            for item in SWalletService.sharedInstance.wallets{
-                if item.WalletBalanceStatus() == .Sufficient{
-                    dataSourse.append(item)
+            let swallets = SWalletService.sharedInstance.wallets
+            if self.checkSufficient{
+                for item in swallets{
+                    if item.WalletBalanceStatus() == .Sufficient{
+                        dataSourse.append(item)
+                    }
                 }
+            }else{
+                dataSourse.append(contentsOf: swallets)
             }
         }
         self.tableView.reloadData()
@@ -71,7 +84,7 @@ class TransferSwitchWallet: UIView,UITableViewDataSource,UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: SwitchWalletTableViewCell.self)) as! SwitchWalletTableViewCell
-        if switchType == 0{
+        if walletListType == .ClassWallet{
             guard let wallet = dataSourse[indexPath.row] as? Wallet else{
                 return SwitchWalletTableViewCell()
             }
@@ -113,7 +126,7 @@ class TransferSwitchWallet: UIView,UITableViewDataSource,UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         if (selectionCompletion != nil) {
-            if switchType == 0{
+            if walletListType == .ClassWallet{
                 let wallet = dataSourse[indexPath.row]
                 selectionCompletion!(wallet)
             }else{

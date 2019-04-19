@@ -348,8 +348,11 @@
 "SettingsVC_nodeSet_cancelBtn_title" = "取消";
 "SettingsVC_nodeSet_edit_title" = "编辑节点";
 "SettingsVC_nodeSet_addBtn_title" = "添加";
-"SettingsVC_nodeSet_defaultMainNetwork_title" = "默认主网络";
-"SettingsVC_nodeSet_defaultTestNetwork_title" = "默认测试网络";
+"SettingsVC_nodeSet_defaultMainNetwork_title" = "(默认主网络)";
+"SettingsVC_nodeSet_defaultTestNetwork_title" = "(默认测试网络)";
+
+"SettingsVC_nodeSet_defaultTestNetwork_Amigo_des" = "(Amigo测试网)";
+"SettingsVC_nodeSet_defaultTestNetwork_Batalla_des" = "(Batalla测试网)";
 "SettingsVC_nodeSet_switchSuccess_tips" = "节点切换成功";
 "SettingsVC_nodeSet_switchFail_tips" = "节点切换失败";
 "SettingsVC_nodeSet_recovery_tips" = "节点连接失败，已还原修改";

@@ -17,7 +17,9 @@ private let defalutNodes = [
 */
 
 private let defalutNodes = [
-    (nodeURL: DefaultNodeURL_Alpha, desc: "SettingsVC_nodeSet_defaultTestNetwork_title", isSelected: true)]
+    (nodeURL: DefaultNodeURL_Alpha, desc: "SettingsVC_nodeSet_defaultTestNetwork_Amigo_des", isSelected: true),
+    (nodeURL: DefaultNodeURL_Beta, desc: "SettingsVC_nodeSet_defaultTestNetwork_Batalla_des", isSelected: false)
+]
 
 class NodeInfoPersistence {
     
@@ -27,30 +29,34 @@ class NodeInfoPersistence {
         self.realm = realm
         NodeInfo.realm = realm
         let nodes = getAll()
-        if nodes.count == 0 {
+        let nodeIdentifiers = nodes.map({$0.nodeURLStr})
+        
+        if nodes.count < 2 {
             for node in defalutNodes {
+                guard !nodeIdentifiers.contains(node.nodeURL) else{
+                    continue
+                }
                 add(node: NodeInfo(nodeURLStr: node.nodeURL, desc: node.desc, isSelected: node.isSelected, isDefault: true))
             }
-        }else {
-            var existSelected = false
+        }
+        
+        var existSelected = false
+        for item in nodes {
+            if item.isSelected {
+                existSelected = true
+                break
+            }
+        }
+        
+        if !existSelected {
             for item in nodes {
-                if item.isSelected {
-                    existSelected = true
+                if item.nodeURLStr == DefaultNodeURL_Alpha{
+                    try? realm.write {
+                        item.isSelected = true
+                    }
                     break
                 }
             }
-            
-            if !existSelected {
-                for item in nodes {
-                    if item.nodeURLStr == DefaultNodeURL_Alpha{
-                        try? realm.write {
-                            item.isSelected = true
-                        }
-                        break
-                    }
-                }
-            }
-            
         }
     }
     

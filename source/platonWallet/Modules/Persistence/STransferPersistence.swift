@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RealmSwift
 
 class STransferPersistence {
     
@@ -31,10 +32,11 @@ class STransferPersistence {
             let realm = RealmHelper.getNewRealm()
             try? realm.write {
                 realm.add(txCopy, update: true)
+                print("stransaction: add")
             }
         }
     }
-    
+     
     public class func update(tx : STransaction){
         try? RealmInstance!.write {
             RealmInstance?.add(tx, update: true)
@@ -42,9 +44,17 @@ class STransferPersistence {
     }
     
     public class func updateAsRead(tx : STransaction){
-        RealmInstance?.beginWrite()
-        tx.readTag = ReadTag.Readed.rawValue
-        try? RealmInstance?.commitWrite()
+        let uuid = tx.uuid
+        RealmWriteQueue.async {
+            let realm = RealmHelper.getNewRealm()
+            let obj = realm.object(ofType: STransaction.self, forPrimaryKey: uuid)
+            guard let theObj = obj else{
+                return
+            }
+            try? realm.write {
+                theObj.readTag = ReadTag.Readed.rawValue
+            }   
+        }
     }
     
     public class func updateJointWalletCreation(contractAddress: String,hash: String){
@@ -94,7 +104,7 @@ class STransferPersistence {
     
     public class func getAllTransactionForTransactionList() -> [STransaction]{
        
-        let predicate = NSPredicate(format: "nodeURLStr == %@", SettingService.getCurrentNodeURLString())
+        let predicate = NSPredicate(format: "nodeURLStr = %@", SettingService.getCurrentNodeURLString())
         let r = RealmInstance!.objects(STransaction.self).filter(predicate).sorted(byKeyPath: "createTime", ascending: false)
 
         var filterArray = Array<STransaction>()
@@ -231,23 +241,24 @@ class STransferPersistence {
     //MARK: - Private Method
     
     private class func updateEnergoTransfer(tx: STransaction){
-        RealmReadeQueue.async {
+        RealmWriteQueue.async {
             tx.remakeUUID()
             let forCheckOutward = tx.contractAddress + "_" + tx.transactionID
-            let predicate = NSPredicate(format: "transactionID = %@ AND transactionCategory = %d AND contractAddress contains[c] %@ ",
+            let predicate = NSPredicate(format: "transactionID = %@ AND transactionCategory = %d AND (contractAddress contains[c] %@ OR contractAddress = %@) ",
                                         tx.transactionID,
                                         tx.transactionCategory,
+                                        tx.contractAddress,
                                         tx.contractAddress
             )
             let realm = RealmHelper.getNewRealm()
             let r = realm.objects(STransaction.self).filter(predicate).sorted(byKeyPath: "createTime", ascending: false)
-            if r.count > 1 {
+            if r.count >= 1 {
                 let existed = r.first
                 let detachdexisted = STransaction.init(value: existed!)
                 //uuid is primary key
                 detachdexisted.uuid = tx.uuid
+                tx.readTag = detachdexisted.readTag
                 self.updateWithExist(detachdexisted: detachdexisted, tx: tx, forCheckOutward: forCheckOutward)
-                
             }else{
                 if SWalletService.sharedInstance.outwardHash.contains(forCheckOutward){
                     //update outward mutisign transaction as readed
@@ -261,49 +272,60 @@ class STransferPersistence {
 
     }
     
-    private class func updateWithExist(detachdexisted: STransaction, tx: STransaction,forCheckOutward: String){
-        RealmReadeQueue.async {
-            let realm = RealmHelper.getNewRealm()
-            try? realm.write {
-
-                if SWalletService.sharedInstance.outwardHash.contains(forCheckOutward) && detachdexisted.readTag == ReadTag.UnRead.rawValue{
-                    //update outward mutisign transaction as readed
-                    detachdexisted.readTag = ReadTag.Readed.rawValue
-                }
-                
-                if (tx.blockNumber?.length)! > 0{
-                    detachdexisted.blockNumber = tx.blockNumber
-                }
-                
-                if (tx.txhash?.length)! > 0{
-                    detachdexisted.txhash = tx.txhash
-                }
-                
-                if tx.contractAddress.length != 0 && detachdexisted.contractAddress.length == 0{
-                    detachdexisted.contractAddress = tx.contractAddress
-                }
-                
-                var dic: Dictionary<String,DeterminedResult> = [:]
-                for item in tx.determinedResult{
-                    dic[(item.walletAddress?.lowercased())!] = item
-                }
-                
-                for item in (detachdexisted.determinedResult){
-                    if (item.walletAddress != nil && !(item.walletAddress?.hasPrefix("0x"))!){
-                        item.walletAddress = "0x" + item.walletAddress!
-                    }
-                    guard let match = dic[item.walletAddress!.lowercased()] else{
-                        continue
-                    }
-                    item.operation = match.operation
-                } 
-                
-                detachdexisted.pending = tx.pending
-                detachdexisted.executed = tx.executed
-                realm.add(detachdexisted, update: true)
+    private class func updateWithExist(detachdexisted: STransaction, tx: STransaction,forCheckOutward: String){ 
+        RealmWriteQueue.async {
+            let writeRealm = RealmHelper.getNewRealm()
+            guard !writeRealm.isInWriteTransaction else{
+                return
             }
-
+            
+            let tmp = writeRealm.object(ofType: STransaction.self, forPrimaryKey: detachdexisted.uuid)
+            guard let detachdexisted = tmp else{
+                return
+            }
+            
+            writeRealm.beginWrite()
+            if SWalletService.sharedInstance.outwardHash.contains(forCheckOutward) && detachdexisted.readTag == ReadTag.UnRead.rawValue{
+                //update outward mutisign transaction as readed
+                detachdexisted.readTag = ReadTag.Readed.rawValue
+            }
+            
+            if (tx.blockNumber?.length)! > 0{
+                detachdexisted.blockNumber = tx.blockNumber
+            }
+            
+            if (tx.txhash?.length)! > 0{
+                detachdexisted.txhash = tx.txhash
+            }
+            
+            if tx.contractAddress.length != 0 && detachdexisted.contractAddress.length == 0{
+                detachdexisted.contractAddress = tx.contractAddress
+            }
+            
+            var dic: Dictionary<String,DeterminedResult> = [:]
+            for item in tx.determinedResult{
+                dic[(item.walletAddress?.lowercased())!] = item
+            }
+            
+            for item in (detachdexisted.determinedResult){
+                if (item.walletAddress != nil && !(item.walletAddress?.hasPrefix("0x"))!){
+                    item.walletAddress = "0x" + item.walletAddress!
+                }
+                guard let match = dic[item.walletAddress!.lowercased()] else{
+                    continue
+                }
+                item.operation = match.operation
+            } 
+            
+            detachdexisted.pending = tx.pending
+            detachdexisted.executed = tx.executed
+            try? writeRealm.commitWrite()
+//            try? writeRealm.write {
+//                writeRealm.add(detachdexisted, update: true)
+//            }
         }
+     
     }
+    
     
 }

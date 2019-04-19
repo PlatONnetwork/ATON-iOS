@@ -363,8 +363,10 @@
 "SettingsVC_nodeSet_cancelBtn_title" = "Cancel";
 "SettingsVC_nodeSet_edit_title" = "Edit Node";
 "SettingsVC_nodeSet_addBtn_title" = "Add";
-"SettingsVC_nodeSet_defaultMainNetwork_title" = "Default main network";
-"SettingsVC_nodeSet_defaultTestNetwork_title" = "Default test network";
+"SettingsVC_nodeSet_defaultMainNetwork_title" = "(Default main network)";
+"SettingsVC_nodeSet_defaultTestNetwork_title" = "(Default test network)";
+"SettingsVC_nodeSet_defaultTestNetwork_Amigo_des" = "(Amigo Testnet)";
+"SettingsVC_nodeSet_defaultTestNetwork_Batalla_des" = "(Batalla Testnet)";
 "SettingsVC_nodeSet_switchSuccess_tips" = "Node switch Succeed";
 "SettingsVC_nodeSet_switchFail_tips" = "Node switch Failed";
 "SettingsVC_nodeSet_recovery_tips" = "Node connect failed";

@@ -11,7 +11,7 @@ import Localize_Swift
 import RTRootNavigationController
 
 let AssetHeaderViewH = 168 - 44 + 20
-let AssetSectionViewH : CGFloat = 124
+let AssetSectionViewH : CGFloat = 124 
  
 class AssetViewControllerV060: BaseViewController ,PopupMenuTableDelegate{
     
@@ -234,6 +234,7 @@ class AssetViewControllerV060: BaseViewController ,PopupMenuTableDelegate{
                 DispatchQueue.main.async {
                     self.scrollView.isScrollEnabled = true
                 }
+
                 view.backgroundColor = .white
                 sectionView.backgroundColor = .white
                 sectionView.grayoutBackground.backgroundColor = .white
@@ -362,12 +363,8 @@ extension AssetViewControllerV060 : UIScrollViewDelegate,ChildScrollViewDidScrol
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         //print("scrollview Didcroll:\(scrollView.contentOffset.y)")
         
-        let rec = sectionView.convert(sectionView.bounds, to: view)
-        print("sectionView y:\(rec.origin.y)")
-        
-//        if rec.origin.y > 0 && rec.origin.y < (UIDevice.notchHeight + 20) && !self.assetHeaderStyle!.0{
-//            self.updatePageViewConstraint(headerHide: true)
-//        }
+        //let rec = sectionView.convert(sectionView.bounds, to: view)
+        //print("sectionView y:\(rec.origin.y)")
         
         if (!scrollEnable || scrollView.contentOffset.y >= CGFloat(AssetHeaderViewH)) {
             //scrollView.setContentOffset(CGPoint(x: 0, y: AssetHeaderViewH - 20), animated: false)

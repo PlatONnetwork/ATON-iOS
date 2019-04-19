@@ -56,9 +56,8 @@ class WalletDetailCell: UITableViewCell {
     }
 
     func updateCellWithAPTTransfer(tx : Transaction, anyWallet : AnyObject?) {
-      
+        self.unreadTag.isHidden = true
         if let w = anyWallet as? Wallet {
-            self.unreadTag.isHidden = true
             tx.senderAddress = w.key?.address
         }else if let ws = anyWallet as? SWallet {
             //joint wallet' transaction
