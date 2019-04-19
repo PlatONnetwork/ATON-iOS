@@ -82,7 +82,7 @@ class AssetSectionViewV060: UIView {
         //self.forgroundOffset.constant = -sectionHeight
         //self.forgroundView.layer.mask = maskLayer
         
-        updateWaleltInfo()
+        updateWaleltInfo() 
         AssetVCSharedData.sharedData.registerHandler(object: self) {[weak self] in
             self?.updateWaleltInfo()
         }

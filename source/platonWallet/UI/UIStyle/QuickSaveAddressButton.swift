@@ -55,7 +55,7 @@ class QuickSaveAddressButton: UIButton {
     }
     
     func quickSave(address: String?, name: String?){
-        guard address != nil, name != nil, address!.is40ByteAddress(),!AddressBookService.service.getAll().contains(where: {($0.walletAddress?.ishexStringEqual(other: address!))!}) else{
+        guard address != nil, name != nil,CommonService.checkNewAddressName(name).0, address!.is40ByteAddress(),!AddressBookService.service.getAll().contains(where: {($0.walletAddress?.ishexStringEqual(other: address!))!}) else{
             return
         }
         let addressInfo = AddressInfo()

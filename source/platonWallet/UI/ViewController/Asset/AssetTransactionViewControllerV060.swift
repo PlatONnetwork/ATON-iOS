@@ -26,7 +26,7 @@ class AssetTransactionViewControllerV060: BaseViewController, EmptyDataSetDelega
     
     weak var delegate: ChildScrollViewDidScrollDelegate?
     
-    var dataSource : [AnyObject]? = []
+    var dataSource : [AnyObject]? = [] 
     
     var walletAddress : String?
     
@@ -54,6 +54,7 @@ class AssetTransactionViewControllerV060: BaseViewController, EmptyDataSetDelega
             self?.refreshData()
             self?.tableView.reloadData()
         }
+        self.setplaceHolderBG(hide: true,tableView: tableView)
          
         if #available(iOS 11.0, *) {
             tableView.contentInsetAdjustmentBehavior = .never
@@ -81,16 +82,9 @@ class AssetTransactionViewControllerV060: BaseViewController, EmptyDataSetDelega
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { 
             self.tableView.reloadData()
             self.assetHeaderHide = hide
-            if hide{
-                self.tableNodataHolderView.containerView.backgroundColor = .white 
-            }else{
-                self.tableNodataHolderView.containerView.backgroundColor = #colorLiteral(red: 0.9751496911, green: 0.984305203, blue: 1, alpha: 1) 
-            }
+            self.setplaceHolderBG(hide: hide,tableView: self.tableView)
         }
-        
-        
     }
-
 
 }
 
@@ -223,7 +217,7 @@ extension AssetTransactionViewControllerV060{
 
     
 }
-
+ 
 extension AssetTransactionViewControllerV060: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return dataSource?.count ?? 0

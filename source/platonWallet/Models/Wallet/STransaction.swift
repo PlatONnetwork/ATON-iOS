@@ -149,7 +149,12 @@ class STransaction: Object {
     @objc dynamic var required = 0
     
     
-    @objc dynamic var readTag = 0
+    @objc dynamic var readTag = 0{
+        didSet{
+            if readTag == 1{
+            }
+        }
+    }
     
     //if shared wallet has been delete, swalletDelete = 1
     @objc dynamic var swalletDelete = 0
@@ -227,7 +232,7 @@ class STransaction: Object {
     
     
     func labelDesciptionAndColor(_ completion: ((_ des: String,_ color: UIColor) -> () )?){
-        let detached = self.detached()
+        let detached = self
         DispatchQueue.main.async {
             var des : String = ""
             var color : UIColor = .white 
@@ -514,7 +519,7 @@ class STransaction: Object {
             determinedResult.append(result)
         }
     }
-
+ 
     public func remakeUUID(){
         if self.transanctionCategoryLazy == .ATPTransfer{
             self.uuid = self.contractAddress + "_" + self.transactionID

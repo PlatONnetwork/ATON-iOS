@@ -90,7 +90,7 @@ class AddressBookViewController: BaseViewController {
         let newAddrInfo = NewAddressInfoViewController()
         navigationController?.pushViewController(newAddrInfo, animated: true)
     }
-
+ 
 }
 
 

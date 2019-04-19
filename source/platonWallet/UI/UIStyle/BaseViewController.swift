@@ -327,17 +327,19 @@ class BaseViewController: UIViewController {
 //MARK: - EmptyDataSetSource
 
 extension BaseViewController{
-    
-//    func customView(forEmptyDataSet scrollView: UIScrollView) -> UIView?{
-//        let view = UIView(frame: CGRect(x: 0, y: 0, width: 100, height: 100))
-//        view.backgroundColor = .red
-//        return view
-//    }
-//    func verticalOffset(forEmptyDataSet scrollView: UIScrollView) -> CGFloat{
-//        return 0
-//    }
-//    func spaceHeight(forEmptyDataSet scrollView: UIScrollView) -> CGFloat{
-//        return 0
-//    }
+    func setplaceHolderBG(hide: Bool,tableView: UITableView){
+        if hide{
+            self.tableNodataHolderView.containerView.backgroundColor = #colorLiteral(red: 0.9751496911, green: 0.984305203, blue: 1, alpha: 1)
+            self.tableNodataHolderView.backgroundColor = #colorLiteral(red: 0.9751496911, green: 0.984305203, blue: 1, alpha: 1)
+            tableView.backgroundColor = #colorLiteral(red: 0.9751496911, green: 0.984305203, blue: 1, alpha: 1)
+        }else{
+            self.tableNodataHolderView.containerView.backgroundColor = #colorLiteral(red: 0.9751496911, green: 0.984305203, blue: 1, alpha: 1)
+            self.tableNodataHolderView.backgroundColor = #colorLiteral(red: 0.9751496911, green: 0.984305203, blue: 1, alpha: 1)
+            tableView.backgroundColor = #colorLiteral(red: 0.9751496911, green: 0.984305203, blue: 1, alpha: 1)
+        }
+    }
     
 }
+
+
+

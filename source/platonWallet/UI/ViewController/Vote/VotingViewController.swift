@@ -73,6 +73,7 @@ class VotingViewController0 : BaseViewController {
         let popUpVC = PopUpViewController()
         let view = UIView.viewFromXib(theClass: TransferSwitchWallet.self) as! TransferSwitchWallet
         view.selectedAddress = selectedWallet?.key?.address
+        view.refresh()
         popUpVC.setUpContentView(view: view, size: CGSize(width: PopUpContentWidth, height: 289))
         popUpVC.setCloseEvent(button: view.closeBtn)
         view.selectionCompletion = { [weak self] wallet in

@@ -15,6 +15,7 @@ class AddSharedWalletVC: BaseViewController, UITextFieldDelegate {
     @IBOutlet weak var walletName: PTextFieldWithPadding!
     
     @IBOutlet weak var walletNameTip: UILabel!
+    
     @IBOutlet weak var walletAddress: UILabel!
     
     @IBOutlet weak var chooseWalletBtn: UIButton!
@@ -34,10 +35,6 @@ class AddSharedWalletVC: BaseViewController, UITextFieldDelegate {
     @IBOutlet weak var topToWalletTextField: NSLayoutConstraint!
     
     @IBOutlet weak var topToWalletTipView: NSLayoutConstraint!
-    
-    
-    
-    
     
     var selectedAddress : String?
     
@@ -60,7 +57,6 @@ class AddSharedWalletVC: BaseViewController, UITextFieldDelegate {
         
         super.leftNavigationTitle = "AddSharedWalletVC_title"
         initSubViews()
-        initNavigationItem()
         
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(onTap))
         self.view.addGestureRecognizer(tapGestureRecognizer)
@@ -97,26 +93,7 @@ class AddSharedWalletVC: BaseViewController, UITextFieldDelegate {
     }
     
     func initSubViews() {
-
-        let chooseWalletImgView = UIImageView(image: UIImage(named: "chooseWallet"))
-        chooseWalletBtn.addSubview(chooseWalletImgView)
-        chooseWalletImgView.snp.makeConstraints { (make) in
-            make.leading.equalTo(chooseWalletBtn).offset(2)
-            make.size.equalTo(CGSize(width: 16, height: 16))
-            make.centerY.equalTo(chooseWalletBtn)
-        }
-        
-        let Label = UILabel()
-        Label.localizedText = "AddSharedWalletVC_Change"
-        Label.textColor = UIColor(rgb: 0x1b2137)
-        Label.font = UIFont.systemFont(ofSize: 14)
-        chooseWalletBtn.addSubview(Label)
-        Label.snp.makeConstraints { (make) in
-            make.leading.equalTo(chooseWalletImgView.snp_leadingMargin).offset(10)
-            make.centerY.equalTo(chooseWalletBtn)
-            make.trailing.equalTo(chooseWalletBtn)
-        }
-         
+        chooseWalletBtn.setupSwitchWalletStyle()
         contractAddressField.bottomSeplineView?.snp.updateConstraints { (make) in
             make.trailing.equalTo(5+30+30)
         }
@@ -162,18 +139,6 @@ class AddSharedWalletVC: BaseViewController, UITextFieldDelegate {
         return nameRes.0
     }
     
-
-
-    func initNavigationItem(){
-        /*
-        let scanButton = UIButton(type: .custom)
-        scanButton.setImage(UIImage(named: "navScanBlack"), for: .normal)
-        scanButton.addTarget(self, action: #selector(onNavRight), for: .touchUpInside)
-        scanButton.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
-        let rightBarButtonItem = UIBarButtonItem(customView: scanButton)
-        navigationItem.rightBarButtonItem = rightBarButtonItem
-         */
-    }
     
     // MARK: - Button Actions
     
@@ -182,7 +147,8 @@ class AddSharedWalletVC: BaseViewController, UITextFieldDelegate {
         let popUpVC = PopUpViewController()
         let view = UIView.viewFromXib(theClass: TransferSwitchWallet.self) as! TransferSwitchWallet
         view.selectedAddress = selectedAddress
-        view.checkBalance = false
+        view.checkSufficient = false
+        view.refresh()
         popUpVC.setUpContentView(view: view, size: CGSize(width: PopUpContentWidth, height: 289))
         popUpVC.setCloseEvent(button: view.closeBtn)
         view.selectionCompletion = { wallet in
@@ -192,12 +158,6 @@ class AddSharedWalletVC: BaseViewController, UITextFieldDelegate {
         popUpVC.show(inViewController: self)
         
     }
-    
-    
-    @objc func onNavRight(){
- 
-    }
-    
     
     @IBAction func onScan(_ sender: Any) {
         let scanner = QRScannerViewController()
@@ -226,7 +186,6 @@ class AddSharedWalletVC: BaseViewController, UITextFieldDelegate {
         navigationController?.pushViewController(addressBookVC, animated: true)
     }
     
-    
     @IBAction func onConfirm(_ sender: Any) {
         
         if !self.checkConfirmButtonEnable(){
@@ -254,7 +213,6 @@ class AddSharedWalletVC: BaseViewController, UITextFieldDelegate {
     }
     
     
-    
     func textFieldDidEndEditing(_ textField: UITextField) {
         
         if textField == walletName {
@@ -266,10 +224,7 @@ class AddSharedWalletVC: BaseViewController, UITextFieldDelegate {
     }
     
     
-    
-    @objc func keyboardWillHide(){
-        
-    }
+    @objc func keyboardWillHide(){}
     
     func checkConfirmButtonEnable() -> Bool{
         if checkWalletNameValidation() && checkContractValidation(){

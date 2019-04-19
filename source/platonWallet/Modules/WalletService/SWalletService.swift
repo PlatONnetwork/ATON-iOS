@@ -1129,7 +1129,7 @@ class SWalletService: BaseService{
                     for item in txsWithStatus{
                         item.contractAddress = contractAddress
                         item.transactionCategory = TransanctionCategory.ATPTransfer.rawValue
-                        STransferPersistence.add(tx: item)
+                        STransferPersistence.add(tx: item) 
                     }
                     NotificationCenter.default.post(name: NSNotification.Name(DidUpdateSharedWalletTransactionList_Notification), object: nil, userInfo: nil)
                     NotificationCenter.default.post(name: NSNotification.Name(WillUpdateUnreadDot_Notification), object: nil, userInfo: nil)

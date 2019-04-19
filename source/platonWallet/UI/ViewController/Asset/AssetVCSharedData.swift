@@ -24,7 +24,7 @@ class AssetVCSharedData{
     init() {
         NotificationCenter.default.addObserver(self, selector: #selector(didSwithNode), name: NSNotification.Name(NodeStoreService.didSwitchNodeNotification), object: nil)
     }
-    
+     
     var walletList: [Any]{
         get{
             var tmp : [Any] = []
@@ -72,7 +72,7 @@ class AssetVCSharedData{
                 
                 return
             }
-            for (_,v) in walletChangeHandlers.enumerated(){
+            for (k,v) in walletChangeHandlers.enumerated(){
                 v.value()
             }
         }
@@ -152,21 +152,18 @@ extension AssetVCSharedData{
         guard object != nil,handle != nil else {
             return
         }
-        var tmp = object
-        withUnsafePointer(to: &tmp) {
-            let address = String(format: "%p", $0)
-            guard address != nil && address.length > 0 else{
-                return
-            }
-            walletChangeHandlers[address] = handle
+        let address = String(format: "%d", (object?.hash)!)
+        guard address.length > 0 else{
+            return
         }
+        walletChangeHandlers[address] = handle
     }
     
     func removeHandler(object: AnyObject?){
         var tmp = object
         withUnsafePointer(to: &tmp) {
             let address = String(format: "%p", $0)
-            guard address != nil && address.length > 0 else{
+            guard address.length > 0 else{
                 return
             }
             walletChangeHandlers.removeValue(forKey: address)

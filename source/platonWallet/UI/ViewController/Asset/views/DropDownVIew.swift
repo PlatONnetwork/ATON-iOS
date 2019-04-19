@@ -80,7 +80,7 @@ public class PopupMenuTable: UIView {
         }
     }
     
-    
+     
     // MARK: - Initialization
     
     public init(menuArray: [MenuItem], arrowPoint: CGPoint,

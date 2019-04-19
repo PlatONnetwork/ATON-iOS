@@ -51,13 +51,12 @@ class CandidatesListViewController: BaseViewController {
              
             print("headerStyle didset to :\(headerStyle)")
             if headerStyle == .VoteSummaryHeaderShow{
-                
-                //scrollContainer.contentSize = CGSize(width: kUIScreenWidth, height:kUIScreenHeight + headerViewHeight)
+                self.setplaceHolderBG(hide: true,tableView: self.tableView)
                 self.scrollContainer.setContentOffset(CGPoint(x: self.scrollContainer.contentOffset.x, y: 0), animated: true)
                 filterBarView.setlayoutStyle(expand: false)
                 NotificationCenter.default.post(name: NSNotification.Name(ChangeCandidatesTableViewCellbackground), object: UIColor.white)
             }else if headerStyle == .VoteSummaryHide{
-                //scrollContainer.contentSize = CGSize(width: kUIScreenWidth, height:kUIScreenHeight + headerViewHeight + self.filterBarView.hideNavViewHeight.constant)
+                self.setplaceHolderBG(hide:false ,tableView: self.tableView)
                 self.scrollContainer.setContentOffset(CGPoint(x: self.scrollContainer.contentOffset.x, y: headerViewHeight), animated: true)
                 self.tableView.isScrollEnabled = true
                 filterBarView.setlayoutStyle(expand: true)
@@ -176,7 +175,7 @@ class CandidatesListViewController: BaseViewController {
             scrollContainer.contentInsetAdjustmentBehavior = .always
         } else {
             automaticallyAdjustsScrollViewInsets = false
-        }
+        } 
         
         headerView = CandidatesListHeaderView(frame: .zero)
         headerView.myVoteButton.addTarget(self, action: #selector(onMyVote), for: .touchUpInside)
@@ -215,6 +214,11 @@ class CandidatesListViewController: BaseViewController {
         tableView.backgroundColor = UIViewController_backround
         tableView.tableFooterView = UIView()
         scrollContainer.addSubview(tableView)
+        
+        tableView.emptyDataSetView { [weak self] view in
+            let holder = self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, nil,"empty_no_data_img") as? TableViewNoDataPlaceHolder
+            view.customView(holder)
+        }
         
         tableView.snp.makeConstraints { (make) in
             make.top.equalTo(filterBarView.snp_bottomMargin).offset(10)

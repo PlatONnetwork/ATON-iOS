@@ -13,7 +13,7 @@ import Spring
 protocol HeaderViewProtocol: AnyObject {
     func hideSearchTextField(_ textField: UITextField);
 }
-
+ 
 enum SearchStyle {
     case normal, searching, searchTextFieldHide
 }
@@ -100,7 +100,7 @@ class CandidatesListFilterBarView: UIView {
         
         self.filterButtonContainer.addSubview(bottomSelectIndicator)
         bottomSelectIndicator.backgroundColor = UIColor(rgb: 0x105CFE)
-        self.updateFilterIndicator(index: 0)
+        self.updateFilterIndicator(index: 0,animated: false)
         
         self.bottomSelectIndicator.isHidden = true
         
@@ -267,8 +267,9 @@ class CandidatesListFilterBarView: UIView {
     }
      
     //MARK: - Indicator
-    func updateFilterIndicator(index: Int){
+    func updateFilterIndicator(index: Int, animated: Bool = true){
         self.bottomSelectIndicator.snp.removeConstraints()
+        
         UIView.animate(withDuration: 0.2) { 
             self.bottomSelectIndicator.snp.makeConstraints { (make) in
                 let alignView : UIView = self.filterButtons[index]
@@ -277,8 +278,10 @@ class CandidatesListFilterBarView: UIView {
                 make.width.equalTo(width)
                 make.bottom.equalToSuperview()
                 make.height.equalTo(2)
-            }   
-            self.layoutIfNeeded()
+            }
+            if animated{
+                self.layoutIfNeeded()
+            }
         }
     }
     

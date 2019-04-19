@@ -36,6 +36,7 @@ extension RealmHelper{
             if old != nil && new != nil{
                 if let nodeURL = old!["nodeURLStr"] as? String, nodeURL == DefaultNodeURL_Alpha_deprecated{
                     new!["nodeURLStr"] = DefaultNodeURL_Alpha
+                    new!["desc"] = "SettingsVC_nodeSet_defaultTestNetwork_Amigo_des"
                 }
             }
             

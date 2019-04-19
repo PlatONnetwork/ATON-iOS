@@ -95,6 +95,8 @@ extension UIButton {
         Label.localizedText = "transferVC_switch_des"
         Label.textColor = UIColor(rgb: 0x105CFE)
         Label.font = UIFont.systemFont(ofSize: 12)
+        Label.textAlignment = .right
+        Label.sizeToFit()
         self.addSubview(Label)
         Label.snp.makeConstraints { (make) in
             make.trailing.equalTo(self).offset(-16)

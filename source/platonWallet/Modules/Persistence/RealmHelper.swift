@@ -11,9 +11,11 @@ import RealmSwift
 
 public let RealmInstance = RealmHelper.getRealm()
  
-var RealmWriteQueue = DispatchQueue(label: "com.platon.RealmWriteQueue")
+//var RealmWriteQueue = DispatchQueue(label: "com.platon.RealmWriteQueue")
+//var RealmReadeQueue = DispatchQueue(label: "com.platon.RealmReadQueue")
 
-var RealmReadeQueue = DispatchQueue(label: "com.platon.RealmReadQueue")
+var RealmWriteQueue = DispatchQueue(label: "com.platon.RealmWriteQueue", qos: .userInitiated, attributes: .concurrent)
+var RealmReadeQueue = DispatchQueue(label: "com.platon.RealmReadQueue", qos: .userInitiated, attributes: .concurrent)
 
 class RealmHelper {
     

@@ -17,7 +17,7 @@ let DefaultNodeURL_Alpha_deprecated = "https://syde.platon.network/test"
 
 let DefaultNodeURL_Alpha = "https://test-amigo.platon.network/test"
 
-let DefaultNodeURL_Beta = "https://test-amigo.platon.network/test"
+let DefaultNodeURL_Beta = "https://test-beta.platon.network/test"
 
 
 //balance query timer
