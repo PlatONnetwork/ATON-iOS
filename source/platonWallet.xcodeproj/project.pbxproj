@@ -98,8 +98,6 @@
 		81515BCF21C774D600054197 /* SharedPresentedVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81515BCE21C774D600054197 /* SharedPresentedVC.swift */; };
 		8156664721C1ECA3000E02D4 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8156664521C1ECA3000E02D4 /* AboutViewController.swift */; };
 		8156664821C1ECA3000E02D4 /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8156664621C1ECA3000E02D4 /* AboutViewController.xib */; };
-		8162F7BC22672F24001726C1 /* UIFont+ApsectsScaling.m in Sources */ = {isa = PBXBuildFile; fileRef = 8162F7BB22672F24001726C1 /* UIFont+ApsectsScaling.m */; };
-		8162F7BF22673887001726C1 /* UILabel+AspectsScaling.m in Sources */ = {isa = PBXBuildFile; fileRef = 8162F7BD22673887001726C1 /* UILabel+AspectsScaling.m */; };
 		81718D8B222F6F6500DB04F6 /* MnemonicTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81718D8A222F6F6500DB04F6 /* MnemonicTextField.swift */; };
 		81718D8D22312F9C00DB04F6 /* MnemonicGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81718D8C22312F9C00DB04F6 /* MnemonicGridView.swift */; };
 		81718D8F22312FB100DB04F6 /* MnemonicGridView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 81718D8E22312FB100DB04F6 /* MnemonicGridView.xib */; };
@@ -107,6 +105,10 @@
 		817ABE2621B50E0D00E8030E /* JointWalletCreationFeeConfirmView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 817ABE2521B50E0D00E8030E /* JointWalletCreationFeeConfirmView.xib */; };
 		817ABE7E21B776CC00E8030E /* UITabBar+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817ABE7D21B776CC00E8030E /* UITabBar+Extensions.swift */; };
 		817F88E72174724E0041B6A5 /* CreateIndividualWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817F88E62174724E0041B6A5 /* CreateIndividualWalletViewController.swift */; };
+		81806F532269B7A00072026A /* UIButton+AspectsScaling.m in Sources */ = {isa = PBXBuildFile; fileRef = 81806F522269B7A00072026A /* UIButton+AspectsScaling.m */; };
+		81806F562269B9830072026A /* UILabel+Aspects.m in Sources */ = {isa = PBXBuildFile; fileRef = 81806F552269B9830072026A /* UILabel+Aspects.m */; };
+		81806F592269BB2C0072026A /* UITextField+AspectsScaling.m in Sources */ = {isa = PBXBuildFile; fileRef = 81806F582269BB2C0072026A /* UITextField+AspectsScaling.m */; };
+		81806F5C2269BB410072026A /* UITextView+AspectsScaling.m in Sources */ = {isa = PBXBuildFile; fileRef = 81806F5B2269BB410072026A /* UITextView+AspectsScaling.m */; };
 		818A9136217F59E600D03D57 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818A9135217F59E600D03D57 /* File.swift */; };
 		818A91382181AE6300D03D57 /* WalletBalance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818A91372181AE6300D03D57 /* WalletBalance.swift */; };
 		818A913B2181B7DF00D03D57 /* Web3Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818A913A2181B7DF00D03D57 /* Web3Helper.swift */; };
@@ -427,10 +429,6 @@
 		8156664521C1ECA3000E02D4 /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		8156664621C1ECA3000E02D4 /* AboutViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AboutViewController.xib; sourceTree = "<group>"; };
 		8162F7AD22670F4B001726C1 /* platonWallet-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "platonWallet-Bridging-Header.h"; sourceTree = "<group>"; };
-		8162F7BA22672F24001726C1 /* UIFont+ApsectsScaling.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIFont+ApsectsScaling.h"; sourceTree = "<group>"; };
-		8162F7BB22672F24001726C1 /* UIFont+ApsectsScaling.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIFont+ApsectsScaling.m"; sourceTree = "<group>"; };
-		8162F7BD22673887001726C1 /* UILabel+AspectsScaling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UILabel+AspectsScaling.m"; sourceTree = "<group>"; };
-		8162F7BE22673887001726C1 /* UILabel+AspectsScaling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+AspectsScaling.h"; sourceTree = "<group>"; };
 		81718D8A222F6F6500DB04F6 /* MnemonicTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MnemonicTextField.swift; sourceTree = "<group>"; };
 		81718D8C22312F9C00DB04F6 /* MnemonicGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MnemonicGridView.swift; sourceTree = "<group>"; };
 		81718D8E22312FB100DB04F6 /* MnemonicGridView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MnemonicGridView.xib; sourceTree = "<group>"; };
@@ -438,6 +436,14 @@
 		817ABE2521B50E0D00E8030E /* JointWalletCreationFeeConfirmView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = JointWalletCreationFeeConfirmView.xib; sourceTree = "<group>"; };
 		817ABE7D21B776CC00E8030E /* UITabBar+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITabBar+Extensions.swift"; sourceTree = "<group>"; };
 		817F88E62174724E0041B6A5 /* CreateIndividualWalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateIndividualWalletViewController.swift; sourceTree = "<group>"; };
+		81806F512269B7A00072026A /* UIButton+AspectsScaling.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIButton+AspectsScaling.h"; sourceTree = "<group>"; };
+		81806F522269B7A00072026A /* UIButton+AspectsScaling.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIButton+AspectsScaling.m"; sourceTree = "<group>"; };
+		81806F542269B9830072026A /* UILabel+Aspects.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UILabel+Aspects.h"; sourceTree = "<group>"; };
+		81806F552269B9830072026A /* UILabel+Aspects.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UILabel+Aspects.m"; sourceTree = "<group>"; };
+		81806F572269BB2C0072026A /* UITextField+AspectsScaling.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UITextField+AspectsScaling.h"; sourceTree = "<group>"; };
+		81806F582269BB2C0072026A /* UITextField+AspectsScaling.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UITextField+AspectsScaling.m"; sourceTree = "<group>"; };
+		81806F5A2269BB410072026A /* UITextView+AspectsScaling.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UITextView+AspectsScaling.h"; sourceTree = "<group>"; };
+		81806F5B2269BB410072026A /* UITextView+AspectsScaling.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UITextView+AspectsScaling.m"; sourceTree = "<group>"; };
 		818A9135217F59E600D03D57 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		818A91372181AE6300D03D57 /* WalletBalance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletBalance.swift; sourceTree = "<group>"; };
 		818A913A2181B7DF00D03D57 /* Web3Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Web3Helper.swift; sourceTree = "<group>"; };
@@ -1131,10 +1137,14 @@
 				817ABE7D21B776CC00E8030E /* UITabBar+Extensions.swift */,
 				812489E221BF4D2A000C2F03 /* Array+sort.swift */,
 				9A2DA84822561AD200368212 /* CustomLoading.swift */,
-				8162F7BA22672F24001726C1 /* UIFont+ApsectsScaling.h */,
-				8162F7BB22672F24001726C1 /* UIFont+ApsectsScaling.m */,
-				8162F7BE22673887001726C1 /* UILabel+AspectsScaling.h */,
-				8162F7BD22673887001726C1 /* UILabel+AspectsScaling.m */,
+				81806F542269B9830072026A /* UILabel+Aspects.h */,
+				81806F552269B9830072026A /* UILabel+Aspects.m */,
+				81806F512269B7A00072026A /* UIButton+AspectsScaling.h */,
+				81806F522269B7A00072026A /* UIButton+AspectsScaling.m */,
+				81806F572269BB2C0072026A /* UITextField+AspectsScaling.h */,
+				81806F582269BB2C0072026A /* UITextField+AspectsScaling.m */,
+				81806F5A2269BB410072026A /* UITextView+AspectsScaling.h */,
+				81806F5B2269BB410072026A /* UITextView+AspectsScaling.m */,
 				8162F7AD22670F4B001726C1 /* platonWallet-Bridging-Header.h */,
 			);
 			path = Utilities;
@@ -2037,6 +2047,7 @@
 				9ADE4523218009DB006F1C81 /* PPasswordTextField.swift in Sources */,
 				8148F01721BA487800045546 /* SWalletService+builder.swift in Sources */,
 				812002B721A3EB390050E1B0 /* STransferDetailView.swift in Sources */,
+				81806F5C2269BB410072026A /* UITextView+AspectsScaling.m in Sources */,
 				812D94BD218FCFF4002A48B0 /* LanguageSettingTableViewCell.swift in Sources */,
 				81FCCD112179E9F20052FC29 /* WallletPersistence.swift in Sources */,
 				9A096A3421E5C3D9008A1308 /* VoteConfirmView.swift in Sources */,
@@ -2075,7 +2086,6 @@
 				818A91382181AE6300D03D57 /* WalletBalance.swift in Sources */,
 				812002AC21A3EB390050E1B0 /* SwitchWalletTableViewCell.swift in Sources */,
 				81412EB421DC678F008B909C /* SingleVote.swift in Sources */,
-				8162F7BF22673887001726C1 /* UILabel+AspectsScaling.m in Sources */,
 				818A913D2181BC4800D03D57 /* ModulesDefinitions.swift in Sources */,
 				813E287021D3ADE100C36A0F /* NodeVoteTableViewCell.swift in Sources */,
 				81FCCCFB2179B6710052FC29 /* PersonalViewController.swift in Sources */,
@@ -2085,6 +2095,7 @@
 				81FCCCF22179B6710052FC29 /* AssetNavigationBarView.swift in Sources */,
 				9AC60C13224E37FB00A5ED6A /* CreateAndInputWalletCollectionViewCell.swift in Sources */,
 				8115BEAC218B1DDA009FFE3B /* TransactionListViewController.swift in Sources */,
+				81806F532269B7A00072026A /* UIButton+AspectsScaling.m in Sources */,
 				9ADE4507217ED02E006F1C81 /* CreateWalletSuccessViewController.swift in Sources */,
 				812002AF21A3EB390050E1B0 /* TransferSwitchWallet.swift in Sources */,
 				9A25B9BA2189B09200B9433A /* WalletEmptyView.swift in Sources */,
@@ -2098,6 +2109,7 @@
 				81FCCCF32179B6710052FC29 /* AssetTableHeader.swift in Sources */,
 				9A79A08C219BCA74000EB4C5 /* CustomPickerView.swift in Sources */,
 				9A25B9B1218805D800B9433A /* PasswordStrengthView.swift in Sources */,
+				81806F592269BB2C0072026A /* UITextField+AspectsScaling.m in Sources */,
 				81FCCCFC2179B6710052FC29 /* MainTabBarViewController.swift in Sources */,
 				9AC86E99224A1E6000315A79 /* VoteOverView.swift in Sources */,
 				9AE31417218BEE1D00B5433F /* SettingTableViewController.swift in Sources */,
@@ -2124,7 +2136,6 @@
 				9AD67AAA2174811300A8432F /* WalletService.swift in Sources */,
 				9A9E1FED2261D38F006749CF /* RealmResults+extensions.swift in Sources */,
 				9A25B9A72187090F00B9433A /* ExportPrivateKeyOrKeystoreViewController.swift in Sources */,
-				8162F7BC22672F24001726C1 /* UIFont+ApsectsScaling.m in Sources */,
 				819A52322190661D00E4C500 /* UIDevice+Extensions.swift in Sources */,
 				9AE3141E218BFAC600B5433F /* NodeSettingTableViewCell.swift in Sources */,
 				9ADE44E9217D78DE006F1C81 /* WalletCreateOrImportViewController.swift in Sources */,
@@ -2158,6 +2169,7 @@
 				81EE99C62175E563008DF8CB /* UIStyle.swift in Sources */,
 				814980F921913AA7009F99EE /* SharedCollectionViewCell.swift in Sources */,
 				818D74EE21843A8900EB1402 /* QRDisplayViewController.swift in Sources */,
+				81806F562269B9830072026A /* UILabel+Aspects.m in Sources */,
 				9AF9AC222182E04000E97F07 /* PopupDialogContainerView.swift in Sources */,
 				9AF9AC192182E04000E97F07 /* PopupDialogOverlayView.swift in Sources */,
 				814980FC2191714D009F99EE /* SettingFooter.swift in Sources */,
@@ -2385,7 +2397,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = VQHC4XR7AG;
@@ -2398,7 +2410,7 @@
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ju.platonWallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = adhoc_WildCard_new;
+				PROVISIONING_PROFILE_SPECIFIER = yujinghan_dev;
 				SWIFT_COMPILATION_MODE = singlefile;
 				SWIFT_OBJC_BRIDGING_HEADER = "platonWallet/UI/Utilities/platonWallet-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";

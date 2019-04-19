@@ -1,8 +1,8 @@
 //
-//  UILabel+AspectsScaling.h
+//  UITextField+AspectsScaling.h
 //  platonWallet
 //
-//  Created by Admin on 17/4/2019.
+//  Created by Admin on 19/4/2019.
 //  Copyright © 2019 ju. All rights reserved.
 //
 
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface UILabel (AspectsScaling)
+@interface UITextField (AspectsScaling)
 
 @end
 
