@@ -18,7 +18,6 @@ class NodeSettingTableViewCell: UITableViewCell, UITextFieldDelegate {
 
     @IBOutlet weak var nodeTF: UITextField!
     
-    
     @IBOutlet weak var sublabel: UILabel!
     
     @IBOutlet weak var selectionImgV: UIImageView!
@@ -26,6 +25,8 @@ class NodeSettingTableViewCell: UITableViewCell, UITextFieldDelegate {
     @IBOutlet weak var deleteBtn: UIButton!
     
     @IBOutlet weak var hideDeleteBtnConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var textFieldWidth: NSLayoutConstraint!
     
     weak var delegate: NodeSettingTableViewCellDelegate?
     
@@ -44,20 +45,50 @@ class NodeSettingTableViewCell: UITableViewCell, UITextFieldDelegate {
         
         //nodeTF.text = desc.length > 0 ? node + "  (\(Localized(desc)))" : node
         nodeTF.text = node
-        sublabel.text = Localized(desc)
+        
         nodeTF.delegate = self
         nodeTF.isEnabled = isEdit
         selectionImgV.isHidden = !isSelected
         deleteBtn.isHidden = !isEdit
-        if isEdit {
-            contentView.backgroundColor = UIColor(rgb: 0xffffff)
-        }else {
-            contentView.backgroundColor = UIColor(rgb: 0xffffff)
+        
+        if isEdit{
+            textFieldWidth.constant = kUIScreenWidth - 16 - 16 - 42
+            sublabel.attributedText = nil
+            sublabel.text = ""
+            nodeTF.text = node
+        }else{
+            textFieldWidth.constant = 0
+            let desloc = Localized(desc)
+            let text = desc.length > 0 ? node + "\(desloc)" : node
+            let desrange = NSRange(location: 0, length: node.length)
+            let attributedString = NSMutableAttributedString(string: text)
+            attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.black, range: desrange)
+            attributedString.addAttribute(NSAttributedString.Key.font, value: UIFont.systemFont(ofSize: 14), range: desrange)
+            if desloc.length > 0{
+                let desrange = NSRange(location: node.length, length: desloc.length)
+                attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor(rgb: 0x898C9E), range: desrange)
+                attributedString.addAttribute(NSAttributedString.Key.font, value: UIFont.systemFont(ofSize: 12), range: desrange)
+            }
+            sublabel.attributedText = attributedString
+            if isEdit {
+                contentView.backgroundColor = UIColor(rgb: 0xffffff)
+            }else {
+                contentView.backgroundColor = UIColor(rgb: 0xffffff)
+            }
         }
+        
+
         UIView.animate(withDuration: 0.25) { 
-            self.hideDeleteBtnConstraint.priority = isEdit ? .defaultLow : .defaultHigh
+            
+            if isEdit{
+                self.hideDeleteBtnConstraint.priority = UILayoutPriority(999)
+                self.hideDeleteBtnConstraint.constant = 16 + 42
+            }else{
+                self.hideDeleteBtnConstraint.priority = UILayoutPriority(999)
+                self.hideDeleteBtnConstraint.constant = 16
+            }
             self.layoutIfNeeded()
-        }
+        } 
 
     }
     

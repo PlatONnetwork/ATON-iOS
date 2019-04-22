@@ -133,9 +133,11 @@ class CandidatesListViewController: BaseViewController {
         NSLog("content height:%f", self.scrollContainer.contentSize.height)
         
         if #available(iOS 11.0, *) {
-            print("adjustedContentInset:\(scrollContainer.adjustedContentInset)")
+            print("scrollContainer.adjustedContentInset:\(scrollContainer.adjustedContentInset)")
+            print("tableView.adjustedContentInset:\(tableView.adjustedContentInset)")
         } else {
-            // Fallback on earlier versions
+            print("scrollContainer.contentInset:\(scrollContainer.contentInset)")
+            print("tableView.contentInset:\(tableView.contentInset)")
         }
     }
     
@@ -215,13 +217,19 @@ class CandidatesListViewController: BaseViewController {
         tableView.tableFooterView = UIView()
         scrollContainer.addSubview(tableView)
         
+        /*
         tableView.emptyDataSetView { [weak self] view in
             let holder = self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, nil,"empty_no_data_img") as? TableViewNoDataPlaceHolder
             view.customView(holder)
         }
+         */
         
         tableView.snp.makeConstraints { (make) in
-            make.top.equalTo(filterBarView.snp_bottomMargin).offset(10)
+            if #available(iOS 11.0, *) {
+                make.top.equalTo(filterBarView.safeAreaLayoutGuide.snp.bottom)
+            } else {
+                make.top.equalTo(filterBarView.snp_bottomMargin).offset(0)
+            }
             make.leading.bottom.trailing.equalToSuperview()
             make.width.equalTo(kUIScreenWidth)
             make.height.equalTo(100)

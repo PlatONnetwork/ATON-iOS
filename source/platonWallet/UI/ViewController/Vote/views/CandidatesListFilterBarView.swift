@@ -211,7 +211,7 @@ class CandidatesListFilterBarView: UIView {
                 btn.scaleY = scaleFactor
                 btn.x = xoffset
             }
-            
+             
             btn.curve = "spring"
             btn.duration = 1.0
             btn.damping = 1.0

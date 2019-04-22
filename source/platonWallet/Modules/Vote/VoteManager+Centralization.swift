@@ -14,17 +14,37 @@ import Localize_Swift
 //let CentralizationURL = "http://192.168.9.190:18060/browser-server/"
 let CentralizationURL = "http://192.168.9.190:10061/a-api/"
 let chaindId = "203"
+let DefaultCentralizationURL = "https://aton.platon.network/"
 
 extension VoteManager{
     
+    public func getCentralizationURL() -> String{
+        let url = SettingService.getCurrentNodeURLString()
+        if url == DefaultNodeURL_Alpha{
+            return DefaultCentralizationURL + "api-" + self.getChainID() + "/api/"
+        }else if url == DefaultNodeURL_Beta{
+            return DefaultCentralizationURL + "api-" + self.getChainID() + "/api/"
+        }
+        return DefaultCentralizationURL + "api-" + self.getChainID() + "/api/"
+    }
+    
+    public func getChainID() -> String{
+        let url = SettingService.getCurrentNodeURLString()
+        if url == DefaultNodeURL_Alpha{
+            return "103"
+        }else if url == DefaultNodeURL_Beta{
+            return "104"
+        }
+        return "203"
+    } 
     
     public func getBatchVoteSummary(addressList: [String], completion: PlatonCommonCompletion?) {
         var completion = completion
         var values : Dictionary<String,Any> = [:]
         
-        values["cid"] = chaindId
+        values["cid"] = self.getChainID()
         values["addressList"] = addressList
-        let url = CentralizationURL + "api/getBatchVoteSummary"
+        let url = self.getCentralizationURL() + "getBatchVoteSummary" 
         
         var request = URLRequest(url: try! url.asURL())
         request.httpBody = try! JSONSerialization.data(withJSONObject: values)
@@ -51,7 +71,7 @@ extension VoteManager{
 
     }
     
-    public func getBatchVoteTransaction(pageNo:Int = 1, pageSize: Int = 2^16, completion: PlatonCommonCompletion?) {
+    public func getBatchVoteTransaction(pageNo:Int = 1, pageSize: Int = 2<<16, completion: PlatonCommonCompletion?) {
         var completion = completion
         var values : Dictionary<String,Any> = [:]
         var walletAddrs: [String] = []
@@ -65,20 +85,19 @@ extension VoteManager{
         values["pageNo"] = pageNo
         values["pageSize"] = pageSize
          
-        let url = CentralizationURL + "api/getBatchVoteTransaction"
+        let url = self.getCentralizationURL() + "getBatchVoteTransaction"
         
         var request = URLRequest(url: try! url.asURL())
         request.httpBody = try! JSONSerialization.data(withJSONObject: values)
         request.httpMethod = "POST"
         request.timeoutInterval = 10
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
         Alamofire.request(request).responseJSON { (response) in
             switch response.result{
                 
             case .success(let resp):
                 
-                guard let resp = resp as? [String:Any], let data = resp["data"] as? [Dictionary<String,Any>] else {
+                guard let respd = resp as? [String:Any], let data = respd["data"] as? [Dictionary<String,Any>] else {
                     self.failCompletionOnMainThread(code: -1, errorMsg: Localized("data_parser_error"), completion: &completion)
                     return
                 }

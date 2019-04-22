@@ -12,6 +12,12 @@ let bottomLineNormalColor = UIColor(rgb: 0xD5D8DF)
 let bottomLineEditingColor = UIColor(rgb: 0x0077FF)
 let bottomLineErrorColor = UIColor(rgb: 0xF5302C)
 
+enum TextFiledStyle {
+    case Editing
+    case Normal
+    case Error
+}
+
 enum TextFieldBottomLineStyle {
     case Normal,Editing,Error
 }

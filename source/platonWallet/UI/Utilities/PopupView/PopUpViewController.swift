@@ -47,7 +47,7 @@ class PopUpViewController: UIViewController {
             make.centerX.equalTo(bgView)
             make.bottom.equalTo(bgView.snp.bottom).offset(size.height)
             make.width.equalTo(size.width)
-            make.height.equalTo(size.height)
+            make.height.equalTo(size.height + (ScreenDesignRatio == 1 ? 0 : 10))
         })
         
         bgView.addSubview(dismissView)

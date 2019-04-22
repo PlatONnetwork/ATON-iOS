@@ -40,8 +40,8 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
     
     
     func gasPricegweiValueMutiply10() -> Int{
-        self.feeView.levelView.levelChanged = { level in 
-            print("level: \(level)")
+        self.feeView.levelView.levelChanged = {[weak self] level in 
+            //print("level: \(level)")
         }
         //let gweiValueMutiply10 = Int(transferView.feeSlider.value/18.0) * 18 + 10
         let gweiValueMutiply10 = 100
@@ -72,7 +72,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
         }
         walletView.endEditCompletion = {[weak self] text in
             let _ = self?.checkConfirmButtonAvailable()
-            let _ = self?.amountView.checkInvalidNow(showText: true)
+            let _ = self?.amountView.checkInvalidNow(showErrorMsg: false)
         }
         return walletView 
         
@@ -118,7 +118,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
         
         amountView.endEditCompletion = {[weak self] text in
             let _ = self?.checkConfirmButtonAvailable()
-            let _ = self?.amountView.checkInvalidNow(showText: true)
+            let _ = self?.amountView.checkInvalidNow(showErrorMsg: false)
         }
         
         return amountView
@@ -296,9 +296,11 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(onTap(gesture:)))
         self.view.addGestureRecognizer(tapGesture)
         
-        self.feeView.levelView.levelChanged = { level in 
-            self.gasPriceLevel = level
-            self.DidNodeGasPriceUpdate()
+        self.feeView.levelView.levelChanged = {[weak self] level in 
+            self?.gasPriceLevel = level
+            self?.DidNodeGasPriceUpdate()
+            let _ = self?.amountView.checkInvalidNow(showErrorMsg: true)
+            let _ = self?.checkConfirmButtonAvailable()
         }
         self.DidNodeGasPriceUpdate()
         self.checkQuickAddAddress()
@@ -415,7 +417,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
     
     func checkConfirmButtonAvailable() -> Bool{
         self.checkQuickAddAddress()
-        if self.amountView.checkInvalidNow(showText: false)!.0 && self.walletAddressView.checkInvalidNow(showText: false)!.0{
+        if self.amountView.checkInvalidNow(showErrorMsg: false)!.0 && self.walletAddressView.checkInvalidNow(showErrorMsg: false)!.0{
             self.sendBtn.style = .blue
             return true
         }
@@ -593,8 +595,10 @@ extension AssetSendViewControllerV060{
             self.resportSufficiency(isSufficient: false)
             return
         }
+        
         self.resportSufficiency(isSufficient: true)
         amountView.textField.text = maxSendAmout?.divide(by: ETHToWeiMultiplier, round: 8).balanceFixToDisplay(maxRound: 8)
+        let _ = amountView.checkInvalidNow(showErrorMsg: true)
         let _ = self.checkConfirmButtonAvailable()
     }
     
