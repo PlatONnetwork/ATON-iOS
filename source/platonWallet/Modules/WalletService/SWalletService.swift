@@ -1113,29 +1113,33 @@ class SWalletService: BaseService{
                 switch result{
                 case .success:
                     
-                    guard let data = dataRet as? Dictionary<String, Any> else {
-                        completion?(.success,[] as AnyObject)
-                        completion = nil
-                        return
+                    DispatchQueue.global().async {
+                        guard let data = dataRet as? Dictionary<String, Any> else {
+                            completion?(.success,[] as AnyObject)
+                            completion = nil
+                            return
+                        }
+                        let concatenateString = data[paramter.name] as? String
+                        guard concatenateString != nil,(concatenateString?.length)! > 0 else{
+                            completion?(.success,[] as AnyObject)
+                            completion = nil
+                            return
+                        } 
+                        
+                        let txsWithStatus = STransaction.sTransactionParse(txs: txs, concatenated: concatenateString!)
+                        for item in txsWithStatus{
+                            item.contractAddress = contractAddress
+                            item.transactionCategory = TransanctionCategory.ATPTransfer.rawValue
+                            STransferPersistence.add(tx: item) 
+                        }
+                        DispatchQueue.main.async {
+                            NotificationCenter.default.post(name: NSNotification.Name(DidUpdateSharedWalletTransactionList_Notification), object: nil, userInfo: nil)
+                            NotificationCenter.default.post(name: NSNotification.Name(WillUpdateUnreadDot_Notification), object: nil, userInfo: nil)
+                            completion?(.success,txsWithStatus as AnyObject)
+                            completion = nil
+                        }
                     }
-                    let concatenateString = data[paramter.name] as? String
-                    guard concatenateString != nil,(concatenateString?.length)! > 0 else{
-                        completion?(.success,[] as AnyObject)
-                        completion = nil
-                        return
-                    } 
-                    
-                    let txsWithStatus = STransaction.sTransactionParse(txs: txs, concatenated: concatenateString!)
-                    for item in txsWithStatus{
-                        item.contractAddress = contractAddress
-                        item.transactionCategory = TransanctionCategory.ATPTransfer.rawValue
-                        STransferPersistence.add(tx: item) 
-                    }
-                    NotificationCenter.default.post(name: NSNotification.Name(DidUpdateSharedWalletTransactionList_Notification), object: nil, userInfo: nil)
-                    NotificationCenter.default.post(name: NSNotification.Name(WillUpdateUnreadDot_Notification), object: nil, userInfo: nil)
-                    
-                    completion?(.success,txsWithStatus as AnyObject)
-                    completion = nil
+
                     
                 case .fail(let code, let errMsg):
                     do{

@@ -47,3 +47,6 @@ let common_blue_color = UIColor(rgb: 0x105CFE)
 let cell_Transaction_success_color = UIColor(red: 48, green: 159, blue: 36, alpha: 1)
 let cell_Transaction_fail_color = UIColor(red: 240, green: 45, blue: 54, alpha: 1)
 let cell_Transaction_pending_color = UIColor(red: 33, green: 83, blue: 254, alpha: 1)
+
+
+let ScreenDesignRatio = UIScreen.main.bounds.size.width / CGFloat(375)

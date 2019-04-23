@@ -15,6 +15,9 @@ enum CheckMode {
     case all
 }
 
+
+
+
 class PTextFieldView: UIView {
     
     @IBOutlet weak var title: UILabel!
@@ -97,11 +100,11 @@ class PTextFieldView: UIView {
         self.heightChange = heightChange
     }
     
-    public func checkInvalidNow(showText: Bool) -> (correct:Bool, errMsg:String)? {
+    public func checkInvalidNow(showErrorMsg: Bool) -> (correct:Bool, errMsg:String)? {
         if self.check == nil{
             assert(false, "Fatal Error:no check logic")
         } 
-        return self.startCheck(text: self.textField.text ?? "" , showErrorMsg: false)
+        return self.startCheck(text: self.textField.text ?? "" , showErrorMsg: showErrorMsg)
     }
     
     public func cleanErrorState(){
@@ -127,22 +130,10 @@ class PTextFieldView: UIView {
             return res
         }
         if res.correct  {
-            if isEditing{
-                line.backgroundColor = bottomLineEditingColor
-            }else{
-                line.backgroundColor = bottomLineNormalColor
-            }
-            
-            internalHeight = 65.0
-            tipsLabel.isHidden = true
-            heightChange?(self)
+            self.setTextFieldStyle(style: isEditing ? .Editing : .Normal, notifyHeightChange: true)
         }else if !res.correct {
-            tipsLabel.isHidden = false
-            line.backgroundColor = bottomLineErrorColor
             tipsLabel.text = res.errMsg
-            internalHeight = 90.0
-            
-            heightChange?(self)
+            self.setTextFieldStyle(style: .Error, notifyHeightChange: true)
         }
         return res
     }
@@ -201,8 +192,27 @@ extension PTextFieldView: UITextFieldDelegate {
     //MARK: - TextField Notification
     @objc func textDidBeginEditing(_ notification: Notification){
         if let theTextField = notification.object as? UITextField, theTextField == self.textField{
-            line.backgroundColor = bottomLineEditingColor
+            self.setTextFieldStyle(style: .Editing,notifyHeightChange: true)
         } 
     }
     
+    func setTextFieldStyle(style: TextFiledStyle,notifyHeightChange: Bool = false,isEditing: Bool = false){
+        if style == TextFiledStyle.Editing{
+            internalHeight = 65.0
+            tipsLabel.isHidden = true
+            line.backgroundColor = bottomLineEditingColor
+        }else if style == TextFiledStyle.Normal{
+            internalHeight = 65.0
+            tipsLabel.isHidden = true
+            line.backgroundColor = bottomLineNormalColor
+        }else if style == TextFiledStyle.Error{
+            tipsLabel.isHidden = false
+            line.backgroundColor = bottomLineErrorColor
+            internalHeight = 90.0
+        }
+        
+        if notifyHeightChange{
+            heightChange?(self)
+        }
+    }
 }
