@@ -116,4 +116,20 @@ class CandidatesListHeaderView: UIView {
         progressView.progress = curVoteRate ?? 0
         
     }
+    
+    func updateHeaderViewStyle(_ alpha: CGFloat) {
+        ticketPrice.alpha = alpha
+        voteNumberLabel.alpha = alpha
+        bgImageView.alpha = alpha
+        progressView.alpha = alpha
+        
+        if alpha < 0.2 {
+            voteRateLabel.text = Localized("CandidateListVC_title")
+            myVoteButton.isHidden = true
+        } else {
+            let voteRate = curVoteRate == nil ? "-%":String(format: "%.2f%%", curVoteRate! * 100)
+            voteRateLabel.text = Localized("CandidateListVC_voteRate_desc", arguments: voteRate)
+            myVoteButton.isHidden = false
+        }
+    }
 }

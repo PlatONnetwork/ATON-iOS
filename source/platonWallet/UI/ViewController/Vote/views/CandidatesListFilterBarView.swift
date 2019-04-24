@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import Spring
+import Localize_Swift
 
 protocol HeaderViewProtocol: AnyObject {
     func hideSearchTextField(_ textField: UITextField);
@@ -26,16 +27,12 @@ extension NSLayoutConstraint {
 
 class CandidatesListFilterBarView: UIView {
     
-    @IBOutlet var filterButtons: [SpringButton]!
+    var filterButtons: [SpringButton] = []
     
     @IBOutlet weak var searchBtn: UIButton!
     
-    @IBOutlet weak var leftTitle: UILabel!
+//    @IBOutlet weak var leftTitle: UILabel!
     @IBOutlet weak var searchTF: UITextFieldWithSearch!
-    
-    @IBOutlet weak var filterContainerLeading: NSLayoutConstraint!
-    
-    @IBOutlet weak var filterContainerTrailingToSuper: NSLayoutConstraint!
     
     @IBOutlet weak var searchTextFieldLeading: NSLayoutConstraint!
     
@@ -43,7 +40,7 @@ class CandidatesListFilterBarView: UIView {
     
     @IBOutlet weak var searchBtnTrailing: NSLayoutConstraint!
     
-    @IBOutlet weak var myvoteBtn: UIButton!
+//    @IBOutlet weak var myvoteBtn: UIButton!
     
     var bottomSelectIndicator : UIView = UIView(frame: .zero)
     
@@ -65,6 +62,69 @@ class CandidatesListFilterBarView: UIView {
         //initSubViews()
     }
     
+    private func factorySpringButton(title titleString: String) -> SpringButton {
+        let springButton = SpringButton(type: UIButton.ButtonType.custom)
+        springButton.setTitle(titleString, for: .normal)
+        springButton.setTitleColor(.black, for: .normal)
+        springButton.setTitleColor(UIColor(hex: "105cfe"), for: .selected)
+        springButton.titleLabel?.font = UIFont.systemFont(ofSize: 13)
+        springButton.translatesAutoresizingMaskIntoConstraints = false
+        return springButton
+    }
+    
+    private func factoryButtonSpaceView() -> UIView {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }
+    
+    private func initFilterContainerSubViews() {
+        let defaultButton = factorySpringButton(title: Localized("CandidateListVC_defaultBtn_title"))
+        let rewardButton = factorySpringButton(title: Localized("CandidateListVC_bonusBtn_title"))
+        let locationButton = factorySpringButton(title: Localized("CandidateListVC_areaBtn_title"))
+        
+        filterButtons.append(defaultButton)
+        filterButtons.append(rewardButton)
+        filterButtons.append(locationButton)
+        
+        let spaceOneView = factoryButtonSpaceView()
+        let spaceTwoView = factoryButtonSpaceView()
+        
+        filterButtonContainer.addSubview(defaultButton)
+        filterButtonContainer.addSubview(rewardButton)
+        filterButtonContainer.addSubview(locationButton)
+        filterButtonContainer.addSubview(spaceOneView)
+        filterButtonContainer.addSubview(spaceTwoView)
+        
+        defaultButton.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(0)
+            make.centerY.equalToSuperview()
+            make.trailing.equalTo(spaceOneView.snp.leading)
+        }
+        
+        spaceOneView.snp.makeConstraints { make in
+            make.width.equalTo(spaceTwoView.snp.width)
+            make.centerY.equalToSuperview()
+        }
+        
+        rewardButton.snp.makeConstraints { make in
+            make.leading.equalTo(spaceOneView.snp.trailing)
+            make.centerY.equalToSuperview()
+            make.trailing.equalTo(spaceTwoView.snp.leading)
+        }
+        
+        spaceTwoView.snp.makeConstraints { make in
+            make.width.equalTo(spaceOneView.snp.width)
+            make.centerY.equalToSuperview()
+        }
+        
+        locationButton.snp.makeConstraints { make in
+            make.leading.equalTo(spaceTwoView.snp.trailing)
+            make.centerY.equalToSuperview()
+            make.trailing.equalToSuperview().offset(0)
+        }
+    }
+    
     
     private func initSubViews() {
         
@@ -73,6 +133,8 @@ class CandidatesListFilterBarView: UIView {
         view.snp.makeConstraints { (maker) in
             maker.edges.equalToSuperview()
         }
+        
+        initFilterContainerSubViews()
         
         let leftView = UIImageView(image: UIImage(named: "vote_search_icon_s"), highlightedImage: nil)
         leftView.frame = CGRect(x: 5, y: 5, width: 12, height: 12)
@@ -122,8 +184,7 @@ class CandidatesListFilterBarView: UIView {
                 self.searchTF.isHidden = true
                 
                 //button container
-                self.filterContainerLeading.constant = 0
-                self.filterContainerTrailingToSuper.constant = 100
+                self.filterButtonContainer.alpha = 1.0
                 //search textfield
                 self.searchTextFieldLeading.constant = kUIScreenWidth
                 self.searchTextFieldTrailing.constant = 0
@@ -131,13 +192,11 @@ class CandidatesListFilterBarView: UIView {
                 self.searchBtnTrailing.constant = 16
                 
             }else if searchStyle == .searching{
-                
                 self.searchBtn.isHidden = true
                 self.searchTF.isHidden = false
                 
                 //button container
-                self.filterContainerLeading.constant = -kUIScreenWidth
-                self.filterContainerTrailingToSuper.constant = kUIScreenWidth
+                self.filterButtonContainer.alpha = 0.0
                 //search textfield
                 self.searchTextFieldLeading.constant = 16
                 self.searchTextFieldTrailing.constant = 16
@@ -150,8 +209,8 @@ class CandidatesListFilterBarView: UIView {
                 self.searchTF.isHidden = true
                 
                 //button container
-                self.filterContainerLeading.constant = 0
-                self.filterContainerTrailingToSuper.constant = 0
+                self.filterButtonContainer.alpha = 1.0
+                
                 //search textfield
                 self.searchTextFieldLeading.constant = kUIScreenWidth
                 self.searchTextFieldTrailing.constant = 0
@@ -220,25 +279,35 @@ class CandidatesListFilterBarView: UIView {
         }
     }
     
+    func updateLayoutstyle(_ offset: CGFloat) {
+        print("ofsset: \(offset)")
+        searchBtn.alpha = offset
+        filterButtonContainer.snp.updateConstraints { make in
+            let constant = 40 + ((1-offset) * ((kUIScreenWidth/2.0) - 38 - 40))
+            make.trailing.equalTo(self.snp.centerX).offset(constant)
+            make.leading.equalToSuperview().offset(16 + (1-offset) * (38-16))
+        }
+    }
+    
     func setlayoutStyle(expand: Bool){
         self.barHeaderExpand = expand
         if expand{
             self.bottomSelectIndicator.isHidden = false
-            self.snp.updateConstraints { (make) in
-                make.height.equalTo(filterBarExpandHeight)
-            }
+//            self.snp.updateConstraints { (make) in
+//                make.height.equalTo(filterBarExpandHeight)
+//            }
             self.searchStyle = SearchStyle.searchTextFieldHide
-            self.myvoteBtn.isHidden = false
-            self.leftTitle.isHidden = false
+//            self.myvoteBtn.isHidden = false
+//            self.leftTitle.isHidden = false
         }else{
             
             self.bottomSelectIndicator.isHidden = true
-            self.snp.updateConstraints { (make) in
-                make.height.equalTo(filterBarShrinkHeight)
-            }
+//            self.snp.updateConstraints { (make) in
+//                make.height.equalTo(filterBarShrinkHeight)
+//            }
             self.searchStyle = SearchStyle.normal
-            self.myvoteBtn.isHidden = true
-            self.leftTitle.isHidden = true
+//            self.myvoteBtn.isHidden = true
+//            self.leftTitle.isHidden = true
         }
         self.updateFilterButtonStyle()
     }

@@ -21,6 +21,7 @@ extension UIDevice {
         return false
     }
     
+    // status bar height
     class var notchHeight: CGFloat{
         if #available(iOS 11.0, tvOS 11.0, *) {
             // with home indicator: 34.0 on iPhone X, XS, XS Max, XR.
