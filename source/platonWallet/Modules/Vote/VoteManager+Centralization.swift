@@ -15,6 +15,7 @@ import Localize_Swift
 let CentralizationURL = "http://192.168.9.190:10061/a-api/"
 let chaindId = "203"
 let DefaultCentralizationURL = "https://aton.platon.network/"
+let requestTimeout : TimeInterval = 30
 
 extension VoteManager{
     
@@ -50,7 +51,7 @@ extension VoteManager{
         request.httpBody = try! JSONSerialization.data(withJSONObject: values)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.timeoutInterval = 10
+        request.timeoutInterval = requestTimeout
         
         Alamofire.request(request).responseJSON { (response) in
             switch response.result{
@@ -91,7 +92,7 @@ extension VoteManager{
         var request = URLRequest(url: try! url.asURL())
         request.httpBody = try! JSONSerialization.data(withJSONObject: values)
         request.httpMethod = "POST"
-        request.timeoutInterval = 10
+        request.timeoutInterval = requestTimeout
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         Alamofire.request(request).responseString { str in
             print("getBatchVoteTransaction response:\(str)")
