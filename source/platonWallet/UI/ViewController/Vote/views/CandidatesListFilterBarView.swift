@@ -103,6 +103,7 @@ class CandidatesListFilterBarView: UIView {
         for item in self.filterButtons{
             if item.tag == 0{
                 self.updateFilterIndicator(index: 0,animated: false, sender: item)
+                self.updateSelectedBtn(item)
             }
         }
     

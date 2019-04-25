@@ -197,7 +197,6 @@ class CandidatesListViewController: BaseViewController {
         }
         filterBarView.searchTF.delegate = self
         filterBarView.searchTF.returnKeyType = .search
-        filterBarView.updateSelectedBtn(filterBarView.filterButtons[0])
         filterBarView.myvoteBtn.addTarget(self, action: #selector(onMyVote), for: .touchUpInside)
         
         scrollContainer.addSubview(filterBarView)
