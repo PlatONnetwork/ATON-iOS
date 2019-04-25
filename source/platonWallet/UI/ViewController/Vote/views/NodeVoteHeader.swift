@@ -18,8 +18,8 @@ class NodeVoteHeader: UIView {
     
     func updateView(_ summary: MyVoteStatic){
         validandinvalidTicketNum.text = String(format: "%d/%d", summary.validNum,summary.inValidNum)
-        lockedAsset.text = summary.locktotal.divide(by: oneMultiplier, round: 4).EnergonSuffix()
-        reward.text = summary.earnings.divide(by: ETHToWeiMultiplier, round: 4).EnergonSuffix()
+        lockedAsset.text = summary.locktotal.divide(by: oneMultiplier, round: 4)
+        reward.text = summary.earnings.divide(by: ETHToWeiMultiplier, round: 4)
     }
 
 }

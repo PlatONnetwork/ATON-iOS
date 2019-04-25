@@ -13,11 +13,14 @@ class TransferPersistence {
     public class func add(tx : Transaction){
         tx.nodeURLStr = SettingService.getCurrentNodeURLString()        
         RealmWriteQueue.async {
-            let realm = RealmHelper.getNewRealm()
-            try? realm.write {
-                realm.add(tx)
-                NSLog("TransferPersistence add")
-            }
+            autoreleasepool(invoking: {
+                let realm = RealmHelper.getNewRealm()
+                try? realm.write {
+                    realm.add(tx)
+                    NSLog("TransferPersistence add")
+                }
+            })
+            
         }
     }
     

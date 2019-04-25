@@ -85,7 +85,7 @@
                                 <userDefinedRuntimeAttribute type="string" keyPath="localizedNormalTitle" value="CandidateListVC_defaultBtn_title"/>
                             </userDefinedRuntimeAttributes>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="999" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Iwa-bo-5Pa" customClass="SpringButton" customModule="Spring">
+                        <button opaque="NO" tag="1" contentMode="scaleToFill" horizontalCompressionResistancePriority="999" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Iwa-bo-5Pa" customClass="SpringButton" customModule="Spring">
                             <rect key="frame" x="97" y="7" width="65" height="28"/>
                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                             <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -99,7 +99,7 @@
                                 <userDefinedRuntimeAttribute type="string" keyPath="localizedNormalTitle" value="CandidateListVC_bonusBtn_title"/>
                             </userDefinedRuntimeAttributes>
                         </button>
-                        <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="999" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8nX-QF-iCw" customClass="SpringButton" customModule="Spring">
+                        <button opaque="NO" tag="2" contentMode="scaleToFill" horizontalCompressionResistancePriority="999" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8nX-QF-iCw" customClass="SpringButton" customModule="Spring">
                             <rect key="frame" x="178" y="7" width="65" height="28"/>
                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                             <color key="tintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

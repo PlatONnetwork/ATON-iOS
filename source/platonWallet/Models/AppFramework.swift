@@ -17,12 +17,15 @@ class AppFramework {
     
     static let sharedInstance = AppFramework()
     
-    func initialize(){
+    func initialize() -> Bool{
         languageSetting()
-        RealmConfiguration()
-        modulesConfigure()
         initBugly()
         doSwizzle()
+        if !RealmConfiguration(){
+            return false
+        }
+        modulesConfigure()
+        return true
     }
     
     func initweb3(){
@@ -53,11 +56,14 @@ class AppFramework {
         
     }
     
-    func RealmConfiguration() { 
 
+    func RealmConfiguration() -> Bool {
+        
         let readRealm = try? Realm(configuration: RealmHelper.getConfig())
         RealmWriteQueue.async {
-            RealmHelper.initWriteRealm()
+            autoreleasepool(invoking: {
+                RealmHelper.initWriteRealm()
+            })
         }
         
         RealmReadeQueue.async {
@@ -66,13 +72,18 @@ class AppFramework {
         
         RealmHelper.setDefaultInstance(r: readRealm)
         
-        
+        guard readRealm != nil else {
+            print("realm open fail")
+            return false
+        }
         //set node storage first
         let nodeStorge = NodeInfoPersistence(realm: RealmInstance!)
         SettingService.shareInstance.nodeStorge = nodeStorge
         
         let walletStorge = WallletPersistence(realm: RealmInstance!)
         WalletService.sharedInstance.walletStorge = walletStorge
+        
+        return true
         
     }
     

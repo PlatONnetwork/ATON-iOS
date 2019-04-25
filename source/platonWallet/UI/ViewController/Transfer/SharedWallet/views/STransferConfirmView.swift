@@ -50,7 +50,7 @@ class STransferConfirmView: UIView ,UICollectionViewDelegate,UICollectionViewDat
     
     @IBOutlet weak var priceLabel: UILabel!
     
-    @IBOutlet weak var walletNameLabel: UILabel!
+    @IBOutlet weak var fromWalletName: UILabel!
     
     @IBOutlet weak var operationAreaHeight: NSLayoutConstraint!
     
@@ -222,9 +222,9 @@ class STransferConfirmView: UIView ,UICollectionViewDelegate,UICollectionViewDat
         }else{
             self.priceLabel.text = ""
         }
-        
-        self.walletNameLabel.text = sw?.name
-        
+    
+        self.fromWalletName.text = sw?.name
+    
         self.typeLabel.text = tx.transanctionTypeLazy?.localizedDesciption
         
     }

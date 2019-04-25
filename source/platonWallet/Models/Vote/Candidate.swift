@@ -14,6 +14,7 @@ import RealmSwift
 enum RankStatus {
     case candidateFirst100
     case alternativeFirst100
+    case validator
     
     func desc() -> String {
         switch self {
@@ -21,6 +22,8 @@ enum RankStatus {
             return Localized("CandidateDetailVC_rankStatu_candidateFirst100")
         case .alternativeFirst100:
             return Localized("CandidateDetailVC_rankStatu_alternativeFirst100")
+        case .validator:
+            return Localized("CandidateDetailVC_rankStatu_Validator")
         }
     }
 }

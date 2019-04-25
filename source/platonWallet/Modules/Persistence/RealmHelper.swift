@@ -37,7 +37,10 @@ class RealmHelper {
     
     public class func initWriteRealm(){
         RealmWriteQueue.async {
-            writeInstance = try? Realm(configuration: self.getConfig()) 
+            autoreleasepool(invoking: {
+                writeInstance = try? Realm(configuration: self.getConfig())
+            })
+            
         }
     }
     
@@ -64,6 +67,7 @@ class RealmHelper {
     public class func getConfig() -> Realm.Configuration{
         //v0.6.0 update scheme version to 6
         let schemaVersion: UInt64 = 6
+        
         let config = Realm.Configuration(schemaVersion: schemaVersion, migrationBlock: { migration, oldSchemaVersion in
             
             if oldSchemaVersion < 4 { 
@@ -75,7 +79,12 @@ class RealmHelper {
             }
             
             
+        },shouldCompactOnLaunch: {(totalBytes, usedBytes) in
+            //set db max size as 500M
+            let oneHundredMB = 500 * 1024 * 1024
+            return (totalBytes > oneHundredMB) && (Double(usedBytes) / Double(totalBytes)) < 0.5
         })
+        
         
         return config
     }

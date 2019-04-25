@@ -104,7 +104,7 @@ struct CommonService {
             }
         }
 
-        return (true, nil)
+        return (true, "")
         
     }
     

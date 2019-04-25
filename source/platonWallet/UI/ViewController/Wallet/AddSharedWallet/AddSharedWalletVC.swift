@@ -166,7 +166,8 @@ class AddSharedWalletVC: BaseViewController, UITextFieldDelegate {
             if result.is40ByteAddress(){
                 self?.contractAddressField.text = result
                 self?.keyboardWillHide()
-                let _  = self?.checkContractValidation()
+                let _  = self?.checkContractValidation(showErrorMsg: true)
+                let _ = self?.checkConfirmButtonEnable()
             }else{
                 self?.showMessage(text: Localized("QRScan_failed_tips"))
             }

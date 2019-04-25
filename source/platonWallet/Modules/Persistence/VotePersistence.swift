@@ -12,13 +12,15 @@ class VotePersistence {
     
     public class func add(singleVote : SingleVote){
         RealmWriteQueue.async {
-            assert((singleVote.candidateId != nil), "candidate should not be empty")
-            singleVote.nodeURLStr = SettingService.getCurrentNodeURLString()
-            let realm = RealmHelper.getNewRealm()
-            try? realm.write {
-                realm.add(singleVote) 
-                NSLog("Tickets add")
-            }
+            autoreleasepool(invoking: {
+                assert((singleVote.candidateId != nil), "candidate should not be empty")
+                singleVote.nodeURLStr = SettingService.getCurrentNodeURLString()
+                let realm = RealmHelper.getNewRealm()
+                try? realm.write {
+                    realm.add(singleVote) 
+                    NSLog("Tickets add")
+                }
+            })
         }
         
     }
@@ -46,11 +48,13 @@ class VotePersistence {
     
     public class func addCandidateInfo(_ candidate: CandidateBasicInfo) {
         RealmWriteQueue.async {
-            let realm = RealmHelper.getNewRealm()
-            candidate.nodeURLStr = SettingService.getCurrentNodeURLString()
-            try? realm.write {
-                realm.add(candidate, update: true)
-            }
+            autoreleasepool(invoking: {
+                let realm = RealmHelper.getNewRealm()
+                candidate.nodeURLStr = SettingService.getCurrentNodeURLString()
+                try? realm.write {
+                    realm.add(candidate, update: true)
+                }
+            })
         }
         
     }

@@ -11,10 +11,13 @@ import Foundation
 class AssetPersistence {
     public class func add(addrInfo : AddressInfo){
         RealmWriteQueue.async {
-            try? RealmInstance!.write {
-                RealmInstance!.add(addrInfo)
-                NSLog("AddressInfo add")
-            }
+            autoreleasepool(invoking: {
+                try? RealmInstance!.write {
+                    RealmInstance!.add(addrInfo)
+                    NSLog("AddressInfo add")
+                }
+            })
+            
         }
     }
     

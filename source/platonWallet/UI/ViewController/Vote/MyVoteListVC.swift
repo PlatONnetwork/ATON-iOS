@@ -25,11 +25,11 @@ class MyVoteListVC: BaseViewController,UITableViewDelegate,UITableViewDataSource
         initSubViews()
         
         NotificationCenter.default.addObserver(self, selector: #selector(didReceiveVoteTransactionUpdate(_:)), name:NSNotification.Name(DidUpdateVoteTransactionByHashNotification) , object: nil)
+        getData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        getData()
     }
     
     @objc func didReceiveVoteTransactionUpdate(_ notify: Notification) {
@@ -118,12 +118,14 @@ class MyVoteListVC: BaseViewController,UITableViewDelegate,UITableViewDataSource
         VoteManager.sharedInstance.getMyVoteList(localDataCompletion: {[weak self] (result, data) in
             guard let self = self else { return }
             //default is success
+            /*
             if let summaries = data as? [NodeVoteSummary]{
                 if showLoading && summaries.count > 0{
                     self.hideLoadingHUD()
                 }
                 self.reloadWhenSuccessed(summaries: summaries)
             }
+             */
             
         }) {[weak self] (result, data) in
             guard let self = self else { return }
@@ -196,7 +198,7 @@ class MyVoteListVC: BaseViewController,UITableViewDelegate,UITableViewDataSource
             switch res{
             case .success:
                 guard let candidate = data as? Candidate, candidate.candidateId == self.dataSource[sender.tag].CandidateId else {
-                    self.showMessage(text: "data parse error", delay: 3)
+                    self.showMessage(text: Localized("data_parser_error"), delay: 3)
                     return
                 }
                 let voteVC = VotingViewController0()

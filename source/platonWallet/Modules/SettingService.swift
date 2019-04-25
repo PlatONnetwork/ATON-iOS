@@ -10,7 +10,7 @@ import Foundation
 
 class SettingService {
     
-    var nodeStorge: NodeInfoPersistence!
+    var nodeStorge: NodeInfoPersistence?
     
     var currentNodeURL : String?
     
@@ -57,22 +57,24 @@ class SettingService {
         if SettingService.shareInstance.currentNodeURL == nil{
             SettingService.shareInstance.currentNodeURL = SettingService.shareInstance.getSelectedNodes()?.nodeURLStr
         }
+        guard SettingService.shareInstance.currentNodeURL != nil else{
+            return DefaultNodeURL_Alpha_deprecated
+        }
         return SettingService.shareInstance.currentNodeURL!
     }
     
     func getNodes() -> [NodeInfo] {
-        
-        return nodeStorge.getAll()
+        return nodeStorge?.getAll() ?? []
         
     }
     
     func addOrUpdateNode(_ node: NodeInfo) {
         
-        nodeStorge.add(node: node)
+        nodeStorge?.add(node: node)
     }
     
     func deleteNodeList(_ list: [NodeInfo]) {
-        nodeStorge.deleteList(list)
+        nodeStorge?.deleteList(list)
     }
     
 //    func updateNode(_ node: NodeInfo, isSelected: Bool) {
@@ -83,15 +85,15 @@ class SettingService {
     func updateSelectedNode(_ node: NodeInfo) {
         getNodes().forEach { (item) in
             if item.id == node.id {
-                nodeStorge.update(node: item, isSelected: true)
+                nodeStorge?.update(node: item, isSelected: true)
             }else {
-                nodeStorge.update(node: item, isSelected: false)
+                nodeStorge?.update(node: item, isSelected: false)
             }
         }
     }
     
     func deleteNode(_ node: NodeInfo) {
-        nodeStorge.delete(node: node)
+        nodeStorge?.delete(node: node)
     }
     
     
