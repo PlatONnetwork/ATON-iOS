@@ -14,11 +14,14 @@ class PasswordAuthViewController: BaseViewController {
     @IBOutlet weak var addressContainer: UIView!
     
     @IBOutlet weak var walletName: UILabel!
+    
     @IBOutlet weak var address: UILabel!
     
     @IBOutlet weak var chooseWalletBtn: UIButton!
     
     @IBOutlet weak var unlockBtn: PButton!
+    
+    @IBOutlet weak var walletIcon: UIImageView!
     
     @IBOutlet weak var pswTF: PTextFieldWithPadding!
     
@@ -28,6 +31,7 @@ class PasswordAuthViewController: BaseViewController {
         didSet {
             walletName.text = selectedWallet.name
             address.text = selectedWallet.key?.address
+            walletIcon.image = selectedWallet.image()
         }
     }
     
@@ -38,18 +42,41 @@ class PasswordAuthViewController: BaseViewController {
 
         setupUI()
         selectedWallet = WalletService.sharedInstance.wallets[0] 
+        unlockBtn.style = .disable
+//
+//        pswTF.checkInput(mode: .textChange, check: {[weak self] (text) -> (Bool, String) in
+//            let ret = CommonService.isValidWalletPassword(text)
+//            if ret.0{
+//                self?.unlockBtn.style = .blue
+//            }else{
+//                self?.unlockBtn.style = .disable
+//            }
+//            //away set as Editting
+//            self?.pswTF.setBottomLineStyle(style: .Editing)
+//            return (ret.0,ret.1 ?? "")
+//        }) { (view) in
+//            
+//        }
+        
+        pswTF.endEditCompletion = {[weak self] text in
+            let ret = CommonService.isValidWalletPassword(text)
+            if ret.0{
+                self?.unlockBtn.style = .blue
+            }else{
+                self?.unlockBtn.style = .disable
+            }
+            self?.pswTF.setBottomLineStyle(style: .Normal)
+        }
         
     }
 
-    func setupUI() {
+    func setupUI() { 
 
         super.leftNavigationTitle = "PasswordAuthVC_title"
         
         endEditingWhileTapBackgroundView = true
         addressContainer.layer.cornerRadius = 5.0
         addressContainer.layer.masksToBounds = true
-        
-        unlockBtn.isEnabled = false
         
         chooseWalletBtn.setupSwitchWalletStyle()
     }
@@ -73,9 +100,18 @@ class PasswordAuthViewController: BaseViewController {
     
     @IBAction func switchWallet(_ sender: Any) {
         
-        WalletSelectionView.show(inViewController: self, lastSelectedWallet: selectedWallet) { [weak self](newWallet) in
-            self?.selectedWallet = newWallet
+        let popUpVC = PopUpViewController()
+        let view = UIView.viewFromXib(theClass: TransferSwitchWallet.self) as! TransferSwitchWallet
+        view.selectedAddress = self.selectedWallet.key?.address
+        view.checkSufficient = false
+        view.refresh()
+        popUpVC.setUpContentView(view: view, size: CGSize(width: PopUpContentWidth, height: 289))
+        popUpVC.setCloseEvent(button: view.closeBtn)
+        view.selectionCompletion = { wallet in
+            popUpVC.onDismissViewController()
+            self.selectedWallet = wallet as? Wallet 
         }
+        popUpVC.show(inViewController: self)
     }
   
 
@@ -85,7 +121,11 @@ extension PasswordAuthViewController: UITextFieldDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         DispatchQueue.main.asyncAfter(deadline: .now()+0.2) { 
-            self.unlockBtn.isEnabled = self.pswTF.text!.length > 5
+            if CommonService.isValidWalletPassword(self.pswTF.text ?? "").0{
+                self.unlockBtn.style = .blue
+            }else{
+                self.unlockBtn.style = .disable
+            }
         }
         return true
     }

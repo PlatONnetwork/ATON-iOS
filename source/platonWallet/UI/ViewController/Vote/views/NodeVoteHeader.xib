@@ -71,8 +71,8 @@
                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                     <color key="highlightedColor" red="0.7725490196" green="0.79607843140000001" blue="0.86274509799999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="reward(Energon)" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YCU-QQ-7Wt">
-                                    <rect key="frame" x="18.5" y="48" width="88" height="14"/>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Voting Reward(Energon)" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="6" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YCU-QQ-7Wt">
+                                    <rect key="frame" x="2" y="48" width="121" height="14"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                     <color key="textColor" red="0.38039215686274508" green="0.39215686274509803" blue="0.43137254901960786" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     <color key="highlightedColor" red="0.7725490196" green="0.79607843140000001" blue="0.86274509799999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -87,7 +87,9 @@
                                 <constraint firstItem="YCU-QQ-7Wt" firstAttribute="centerX" secondItem="fpw-uH-ENN" secondAttribute="centerX" id="KVF-dg-loN"/>
                                 <constraint firstItem="qhg-vR-4Jr" firstAttribute="centerY" secondItem="fpw-uH-ENN" secondAttribute="centerY" id="OPl-MA-CYU"/>
                                 <constraint firstItem="AEh-jH-xD5" firstAttribute="top" secondItem="fpw-uH-ENN" secondAttribute="top" constant="24" id="TsW-v2-Rv1"/>
+                                <constraint firstAttribute="trailing" secondItem="YCU-QQ-7Wt" secondAttribute="trailing" constant="2" id="WrV-79-Pz6"/>
                                 <constraint firstItem="AEh-jH-xD5" firstAttribute="centerX" secondItem="fpw-uH-ENN" secondAttribute="centerX" id="maL-gg-ch2"/>
+                                <constraint firstItem="YCU-QQ-7Wt" firstAttribute="leading" secondItem="fpw-uH-ENN" secondAttribute="leading" constant="2" id="ums-De-65z"/>
                                 <constraint firstAttribute="trailing" secondItem="qhg-vR-4Jr" secondAttribute="trailing" id="y6k-qy-TmF"/>
                             </constraints>
                         </view>

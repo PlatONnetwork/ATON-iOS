@@ -12,6 +12,7 @@ class SWalletPersistence {
      
     public class func add(swallet : SWallet){
         swallet.nodeURLStr = SettingService.getCurrentNodeURLString()
+        
         try? RealmInstance!.write {
             RealmInstance!.add(swallet)
         }

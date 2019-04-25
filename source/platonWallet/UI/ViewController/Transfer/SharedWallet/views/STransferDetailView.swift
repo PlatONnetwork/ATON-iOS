@@ -53,6 +53,8 @@ class STransferDetailView: UIView ,UITableViewDataSource,UITableViewDelegate{
     
     @IBOutlet weak var hashContainer: UIView!
     
+    
+    
     @IBOutlet weak var hashDesHeight: NSLayoutConstraint!
     
     @IBOutlet weak var hashContainerHeight: NSLayoutConstraint!
@@ -153,7 +155,7 @@ class STransferDetailView: UIView ,UITableViewDataSource,UITableViewDelegate{
         
         var approvals = 0
         for item in tx.determinedResult{
-            if item.operation == OperationAction.approval.rawValue || item.operation == OperationAction.revoke.rawValue{
+            if item.operation == OperationAction.approval.rawValue{
                 approvals = approvals + 1
             }
         }

@@ -285,20 +285,22 @@ class CandidatesListViewController: BaseViewController {
             showLoadingHUD()
         }
         
-        VoteManager.sharedInstance.CandidateList { [weak self] (res, data) in
+        VoteManager.sharedInstance.GetVotePageCandidateList { [weak self] (res, tumpleDdata) in
              
             guard let self = self else { return }
-            
+             
             switch res {
             case .success:
-                guard var list = data as? [Candidate] else {
+                guard let data = tumpleDdata as? ([Candidate],[String]) else{
                     return
                 }
-                list.sort(by: { (e1, e2) -> Bool in
-                    return e1.deposit! > e2.deposit!
-                })
+                guard var list = data.0 as? [Candidate] else {
+                    return
+                }
                 
-                list = list.count > 200 ? Array(list[0..<200]) : list
+                list.candidateSort()
+                
+                //list = list.count > 200 ? Array(list[0..<200]) : list
                 
                 for i in 0..<list.count {
                     list[i].rankByDeposit = UInt16(i + 1)
@@ -311,14 +313,14 @@ class CandidatesListViewController: BaseViewController {
                         self.hideLoadingHUD()
                     }
                     
-                    dividenominatedandwaitingCandidateslistPool()
+                    dividenominatedandwaitingCandidateslistPool(validatorId: data.1)
                     
                     self.isQuerying = false 
                     
                     self.startSort()
                 })
                 
-                func dividenominatedandwaitingCandidateslistPool() {
+                func dividenominatedandwaitingCandidateslistPool(validatorId: [String]) {
                     let first100 = list.count > 100 ? Array(list[0..<100]) : list
                     self.nominateNodeList = first100.filter { (item) -> Bool in
                         item.tickets ?? 0 >= kCandidateMinNumOfTickets
@@ -333,6 +335,14 @@ class CandidatesListViewController: BaseViewController {
                     for item in self.waitingCandidateslist {
                         item.rankStatus = .alternativeFirst100
                     }
+                    
+                    for item in self.nominateNodeList{
+                        if validatorId.contains(item.candidateId ?? ""){
+                            item.rankStatus = .validator
+                        }
+                    }
+                    
+                    
                 }
             case .fail(_, _):
                 self.isQuerying = false
@@ -382,16 +392,10 @@ class CandidatesListViewController: BaseViewController {
     }
     
     @objc func sortTypeChange(_ sender: UIButton) {
-        
-        for i in 0..<filterBarView.filterButtons.count {
-            if sender == filterBarView.filterButtons[i] {
-                filterBarView.updateFilterIndicator(index: i)
-                sortType = CandidatesListSortType(rawValue: i) ?? .default
-                break
-            }
-        }
+        filterBarView.updateFilterIndicator(index: sender.tag, sender: sender)
+        sortType = CandidatesListSortType(rawValue: sender.tag) ?? .default
         filterBarView.updateSelectedBtn(sender)
-        
+        print("sortType:\(sortType)")
         startSort()
     }
     
@@ -410,9 +414,7 @@ class CandidatesListViewController: BaseViewController {
             dataSource = sortedCandidatesList
         }
 
-        if !isScrolling{
-            tableView.reloadData()
-        }
+        tableView.reloadData()
         
     }
     
@@ -421,7 +423,9 @@ class CandidatesListViewController: BaseViewController {
         switch type {
         case .default:
             
-            return nominateNodeList + waitingCandidateslist
+            var dataSource = nominateNodeList + waitingCandidateslist
+            dataSource.candidateSort()
+            return dataSource
             
         case .reward:
             
@@ -429,7 +433,7 @@ class CandidatesListViewController: BaseViewController {
             list.sort { (e1, e2) -> Bool in
                 
                 if e1.fee ?? 0 != e2.fee ?? 0 {
-                    return e1.fee ?? 0 > e2.fee ?? 0 
+                    return e1.fee ?? 0 < e2.fee ?? 0 
                 }else if e1.deposit! != e2.deposit! {
                     return e1.deposit! > e2.deposit!
                 }else if e1.tickets ?? 0 != e2.tickets ?? 0 {

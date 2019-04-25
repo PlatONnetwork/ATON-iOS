@@ -32,6 +32,7 @@ class PTextFieldWithPadding: UITextField {
     
     var bottomSeplineStyleChangeWithErrorTip : Bool = true
     
+    var endEditCompletion: ((_ string : String) -> ())?
     
     @IBInspectable public var bottomInset: CGFloat {
         get { return inputAreaPadding.bottom }
@@ -194,6 +195,11 @@ class PTextFieldWithPadding: UITextField {
             if mode == .endEdit {
                 startCheck(text: textField.text ?? "")
             }
+            guard self.endEditCompletion != nil else {
+                return 
+            }
+            
+            self.endEditCompletion!(textField.text!)
         }
     }
     

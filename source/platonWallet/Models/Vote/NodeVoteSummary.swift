@@ -46,7 +46,7 @@ class MyVoteStatic {
         node.earnings = total_earnings
         node.validNum = total_validNum
         node.inValidNum = total_TicketNum - total_validNum
-        
+         
         return node
         
     }
@@ -150,10 +150,18 @@ class NodeVoteSummary {
             sum.assetOflocked = String(voteStaked)
             sum.validCount = validTicketCount
             sum.invalidCount = invalidTicketCount
-            sum.CandidateId = key
+            if key.hasPrefix("0x") && key.length > 2{
+                sum.CandidateId = key.substr(2, key.length - 2)
+            }else{
+                sum.CandidateId = key
+            }
             
             var svproperty : [SingleVote] = []
+            
             svproperty.append(contentsOf: element)
+            svproperty.sort { (v1, v2) -> Bool in
+                return v1.createTime > v2.createTime
+            }
             sum.singleVote = svproperty
             
             /*
@@ -164,6 +172,12 @@ class NodeVoteSummary {
             summaries.append(sum)
         }
         
+        summaries.sort { (s1, s2) -> Bool in
+            guard s1.singleVote.count > 0, s2.singleVote.count > 0, let singleV1 = s1.singleVote.first, let singleV2 = s2.singleVote.first else{
+                return true
+            }
+            return singleV1.createTime > singleV2.createTime
+        }
         
         
         return summaries

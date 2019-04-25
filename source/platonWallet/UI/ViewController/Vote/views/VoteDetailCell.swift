@@ -19,10 +19,9 @@ class VoteDetailCell: UITableViewCell {
     
     @IBOutlet weak var lockedAndReleaseLabel: UILabel!
     
-    //@IBOutlet weak var rewardLabel: UILabel!
+    @IBOutlet weak var rewardLabel: UILabel!
     
     @IBOutlet weak var voteWalletAddressLabel: UILabel!
-    
     
     @IBOutlet weak var expiredTime: UILabel!
     
@@ -56,7 +55,9 @@ class VoteDetailCell: UITableViewCell {
     
         lockedAndReleaseLabel.text = String(format: "%@/%@", lockedDes,releaseDes)
         
-        //rewardLabel.text = singleVote.voteEarnings?.EnergonSuffix()
+        let rewardBig = BigUInt(singleVote.voteEarnings ?? "0")?.divide(by: ETHToWeiMultiplier, round: 4) ?? "0"
+        
+        rewardLabel.text = rewardBig.EnergonSuffix()
         
         voteWalletAddressLabel.text = "\(singleVote.owner)(\(singleVote.walletName))"
         

@@ -521,8 +521,9 @@
 "SharedWalletTransactionDetailVC_payment_content" = "创建合约手续费";
 "SharedWalletTransactionDetailVC_payment_submit" = "创建";
 
-"SharedWalletTransactionDetailVC_execute_contract" = "执行合约";
+"SharedWalletTransactionDetailVC_execute_contract" = "执行联名钱包";
 "SharedWalletTransactionDetailVC_payment_execute_contract" = "执行合约手续费";
+"SharedWalletTransactionDetailVC_execute_PayType" = "类型";
 "SharedWalletTransactionDetailVC_payment_confirm" = "确定";
 "exceed max input" = "超过最大输入";
 
@@ -601,6 +602,7 @@
 "CandidateDetailVC_voteBtn_title" = "投票";
 "CandidateDetailVC_rankStatu_candidateFirst100" = "提名节点";
 "CandidateDetailVC_rankStatu_alternativeFirst100" = "候选节点";
+"CandidateDetailVC_rankStatu_Validator" = "验证节点";
 
 //MyVoteListVC
 "MyVoteListVC_nav_title" = "我的投票";
@@ -632,9 +634,9 @@
 "VotingViewController_success_tips" = "投票成功";
 
 //
-"VoteConfirm_title" = "投票信息";
-"VoteConfirm_payment_info" = "支付信息";
-"VoteConfirm_fee_colon" = "交易费用：";
+"VoteConfirm_title" = "投票确认";
+"VoteConfirm_payment_info" = "类型：";
+"VoteConfirm_fee_colon" = "手续费：";
 "VoteConfirm_submitBtn_title" = "确定";
 "VoteConfirm_vote" = "投票";
 
@@ -672,7 +674,7 @@
 "scanviewcontroller_scan" = "放入框内 自动扫描";
 
 "watchJointWalletTip_Notice" = "提示";
-"watchJointWalletTip_message" = "关联的经典钱包已被删除，该钱包无法发起交易！";
+"watchJointWalletTip_message" = "关联的普通钱包已被删除，该钱包无法发起交易！";
 
 "data_parser_error" = "数据解析失败";
 "unknow_error" = "未知错误";

@@ -23,12 +23,13 @@
                             <rect key="frame" x="0.0" y="0.0" width="375" height="124"/>
                         </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B3J-mx-Pm5">
-                            <rect key="frame" x="16" y="8" width="343" height="21.5"/>
+                            <rect key="frame" x="16" y="16" width="343" height="21.5"/>
                             <fontDescription key="fontDescription" type="system" pointSize="18"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="--" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="5Yn-ie-17K">
-                            <rect key="frame" x="16" y="37.5" width="343" height="86.5"/>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="5Yn-ie-17K">
+                            <rect key="frame" x="16" y="45.5" width="343" height="54.5"/>
+                            <string key="text">0xa6ef31a2006f55f5039e23ccccef343e735d56699bde947cfe253d441f5f291561640a8e2bbaf8a85a8a367b939efcef6f80ae28d2bd3d0b21bdac01c3aa6f2f</string>
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <color key="textColor" red="0.53725490196078429" green="0.5490196078431373" blue="0.61960784313725492" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
@@ -36,7 +37,7 @@
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="bottom" secondItem="5Yn-ie-17K" secondAttribute="bottom" id="1av-xq-a1s"/>
+                        <constraint firstAttribute="bottom" secondItem="5Yn-ie-17K" secondAttribute="bottom" constant="24" id="1av-xq-a1s"/>
                         <constraint firstAttribute="trailing" secondItem="B3J-mx-Pm5" secondAttribute="trailing" constant="16" id="3MS-yT-r0w"/>
                         <constraint firstItem="5Yn-ie-17K" firstAttribute="top" secondItem="B3J-mx-Pm5" secondAttribute="bottom" constant="8" id="6y6-zA-Lev"/>
                         <constraint firstAttribute="trailing" secondItem="5Yn-ie-17K" secondAttribute="trailing" constant="16" id="OvY-np-JwE"/>
@@ -45,7 +46,7 @@
                         <constraint firstItem="frM-3r-ACN" firstAttribute="leading" secondItem="fbj-Lx-YFU" secondAttribute="leading" id="dGn-9c-Ghh"/>
                         <constraint firstItem="frM-3r-ACN" firstAttribute="top" secondItem="fbj-Lx-YFU" secondAttribute="top" id="fq6-70-Czr"/>
                         <constraint firstAttribute="bottom" secondItem="frM-3r-ACN" secondAttribute="bottom" id="qcC-m7-Q3D"/>
-                        <constraint firstItem="B3J-mx-Pm5" firstAttribute="top" secondItem="fbj-Lx-YFU" secondAttribute="top" constant="8" id="vMo-KW-fSf"/>
+                        <constraint firstItem="B3J-mx-Pm5" firstAttribute="top" secondItem="fbj-Lx-YFU" secondAttribute="top" constant="16" id="vMo-KW-fSf"/>
                         <constraint firstItem="B3J-mx-Pm5" firstAttribute="leading" secondItem="fbj-Lx-YFU" secondAttribute="leading" constant="16" id="xvZ-CN-1bA"/>
                     </constraints>
                 </view>

@@ -134,10 +134,9 @@ class VotingViewController0 : BaseViewController {
                 self.confirmPopUpView = PopUpViewController()
                 let confirmView = UIView.viewFromXib(theClass: VoteConfirmView.self) as! VoteConfirmView
                 confirmView.submitBtn.addTarget(self, action: #selector(self.onSubmit), for: .touchUpInside)
-                self.confirmPopUpView.setUpContentView(view: confirmView, size: CGSize(width: PopUpContentWidth, height: 345))
+                self.confirmPopUpView.setUpContentView(view: confirmView, size: CGSize(width: PopUpContentWidth, height: 325))
                 self.confirmPopUpView.setCloseEvent(button: confirmView.closeBtn)
                 confirmView.totalLabel.text = VoteManager.sharedInstance.ticketPrice!.multiplied(by: numOfTickets).convertToEnergon(round: 8)
-                confirmView.walletAddressLabel.text = self.selectedWallet?.key?.address
                 confirmView.walletName.text = self.selectedWallet?.name
                 confirmView.feeLabel.text = TransactionService.service.ethGasPrice!.multiplied(by: BigUInt(deploy_UseStipulatedGas)).convertToEnergon(round: 8).ATPSuffix()
                 self.confirmPopUpView.show(inViewController: self)

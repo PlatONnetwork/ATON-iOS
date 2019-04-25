@@ -34,17 +34,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LicenseVCDelegate {
     var laContext = LAContext()
     
     var verifyWindow: UIWindow?
-
+ 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
-        AppFramework.sharedInstance.initialize()
+        let status = AppFramework.sharedInstance.initialize()
         
         let storyboard = UIStoryboard(name: "LaunchScreen", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "LaunchViewController")
         self.window?.rootViewController = controller
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            self.initUI()
+            self.initUI(initSuccess:status)
         }
         
         return true
@@ -54,7 +54,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LicenseVCDelegate {
         (UIApplication.shared.value(forKey: "statusBar") as? UIView)?.backgroundColor = .clear
     }
     
-    func initUI() {
+    func initUI(initSuccess: Bool) {
         
         self.initStatusBar()
         
@@ -70,7 +70,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LicenseVCDelegate {
         }
          */
         
-        gotoNextVC()
+        gotoNextVC(initSuccess:initSuccess)
         
         checkIsOpenLocalAuth()
     }
@@ -115,7 +115,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LicenseVCDelegate {
         verifyWindow!.isHidden = false
     }
     
-    private func gotoNextVC() {
+    private func gotoNextVC(initSuccess: Bool = true) {
+        
+        if !initSuccess{
+            return
+        }
         
         if WalletService.sharedInstance.wallets.count > 0 || SWalletService.sharedInstance.wallets.count > 0  {
             gotoMainTab()

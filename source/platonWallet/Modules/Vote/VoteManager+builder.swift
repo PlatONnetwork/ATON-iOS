@@ -60,6 +60,11 @@ extension VoteManager{
         return build_commonInternalCall(funcName: "GetCandidateList")
     }
     
+    func build_GetVerifiersList() -> Data{
+        
+        return build_commonInternalCall(funcName: "GetVerifiersList")
+    }
+    
     func build_GetTicketDetail(ticketId: String) -> Data{
         
         return build_commonInternalCall(funcName: "GetTicketDetail", param: ticketId)

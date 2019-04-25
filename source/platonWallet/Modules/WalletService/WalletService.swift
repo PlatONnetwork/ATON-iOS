@@ -16,9 +16,9 @@ public final class WalletService {
     
     let keystoreFolderURL : URL
     
-    var walletStorge: WallletPersistence! {
+    var walletStorge: WallletPersistence? {
         didSet {
-            wallets = walletStorge.getAll()
+            wallets = walletStorge?.getAll() ?? []
         }
     }
     
@@ -44,7 +44,7 @@ public final class WalletService {
     
     func refreshDB(){
         wallets.removeAll()
-        wallets.append(contentsOf: walletStorge.getAll())
+        wallets.append(contentsOf: walletStorge?.getAll() ?? [])
     }
     
     func getWalletByAddress(address: String) -> Wallet?{
@@ -369,7 +369,7 @@ public final class WalletService {
         wallets.removeAll { (item) -> Bool in
             return item == wallet
         }
-        walletStorge.delete(wallet: wallet)        
+        walletStorge?.delete(wallet: wallet)        
         AssetVCSharedData.sharedData.willDeleteWallet(object: wallet as AnyObject)
         
         //delete associated shared wallets
@@ -379,7 +379,7 @@ public final class WalletService {
     
     public func updateWalletName(_ wallet: Wallet, name: String) {
 
-        walletStorge.updateWalletName(wallet: wallet, name: name)
+        walletStorge?.updateWalletName(wallet: wallet, name: name)
     }
     
     
@@ -447,7 +447,7 @@ public final class WalletService {
             fatalError("walletStorge must not be nil!")
         }
         
-        walletStorge.save(wallet: wallet)
+        walletStorge?.save(wallet: wallet)
         
         wallets.removeAll { (item) -> Bool in
             item.uuid == wallet.uuid && item.nodeURLStr == wallet.nodeURLStr

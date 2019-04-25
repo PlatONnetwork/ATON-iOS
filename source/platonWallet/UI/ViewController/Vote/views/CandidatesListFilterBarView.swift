@@ -100,8 +100,12 @@ class CandidatesListFilterBarView: UIView {
         
         self.filterButtonContainer.addSubview(bottomSelectIndicator)
         bottomSelectIndicator.backgroundColor = UIColor(rgb: 0x105CFE)
-        self.updateFilterIndicator(index: 0,animated: false)
-        
+        for item in self.filterButtons{
+            if item.tag == 0{
+                self.updateFilterIndicator(index: 0,animated: false, sender: item)
+            }
+        }
+    
         self.bottomSelectIndicator.isHidden = true
         
         NotificationCenter.default.addObserver(self, selector: #selector(onTextBeginEnding(_:)), name: UITextField.textDidBeginEditingNotification, object: nil)
@@ -267,12 +271,12 @@ class CandidatesListFilterBarView: UIView {
     }
      
     //MARK: - Indicator
-    func updateFilterIndicator(index: Int, animated: Bool = true){
+    func updateFilterIndicator(index: Int, animated: Bool = true,sender: UIButton){
         self.bottomSelectIndicator.snp.removeConstraints()
         
         UIView.animate(withDuration: 0.2) { 
             self.bottomSelectIndicator.snp.makeConstraints { (make) in
-                let alignView : UIView = self.filterButtons[index]
+                let alignView : UIView = sender
                 let width = kUIScreenWidth * 0.3333
                 make.centerX.equalTo(alignView)
                 make.width.equalTo(width)

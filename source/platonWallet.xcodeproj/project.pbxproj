@@ -217,6 +217,7 @@
 		9A831AEA224CAD1B00C91C72 /* WalletListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A831AE9224CAD1B00C91C72 /* WalletListViewController.swift */; };
 		9A9472F9221EB45300F8FEB9 /* NodeStoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9472F8221EB45300F8FEB9 /* NodeStoreService.swift */; };
 		9A9E1FED2261D38F006749CF /* RealmResults+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9E1FEC2261D38F006749CF /* RealmResults+extensions.swift */; };
+		9AA49EEE22706572001ABB44 /* RealmWriteThread.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA49EED22706572001ABB44 /* RealmWriteThread.swift */; };
 		9AC60C13224E37FB00A5ED6A /* CreateAndInputWalletCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC60C11224E37FB00A5ED6A /* CreateAndInputWalletCollectionViewCell.swift */; };
 		9AC60C14224E37FB00A5ED6A /* CreateAndInputWalletCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AC60C12224E37FB00A5ED6A /* CreateAndInputWalletCollectionViewCell.xib */; };
 		9AC86E99224A1E6000315A79 /* VoteOverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC86E98224A1E6000315A79 /* VoteOverView.swift */; };
@@ -288,8 +289,6 @@
 		9AE3142C21912BD300B5433F /* BiometricsAuthViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AE3142A21912BD300B5433F /* BiometricsAuthViewController.xib */; };
 		9AE3142F2191457300B5433F /* PasswordAuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE3142D2191457300B5433F /* PasswordAuthViewController.swift */; };
 		9AE314302191457400B5433F /* PasswordAuthViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AE3142E2191457300B5433F /* PasswordAuthViewController.xib */; };
-		9AE314332191733A00B5433F /* WalletSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE314322191733A00B5433F /* WalletSelectionView.swift */; };
-		9AE314352191734D00B5433F /* WalletSelectionView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AE314342191734D00B5433F /* WalletSelectionView.xib */; };
 		9AE3143821917C3600B5433F /* WalletSelectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE3143621917C3600B5433F /* WalletSelectionTableViewCell.swift */; };
 		9AE3143921917C3600B5433F /* WalletSelectionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AE3143721917C3600B5433F /* WalletSelectionTableViewCell.xib */; };
 		9AEF471021F9C9A9008A3640 /* IPGeoPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AEF470F21F9C9A9008A3640 /* IPGeoPersistence.swift */; };
@@ -557,6 +556,7 @@
 		9A831AE9224CAD1B00C91C72 /* WalletListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WalletListViewController.swift; path = platonWallet/UI/ViewController/Setting/WalletListViewController.swift; sourceTree = SOURCE_ROOT; };
 		9A9472F8221EB45300F8FEB9 /* NodeStoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeStoreService.swift; sourceTree = "<group>"; };
 		9A9E1FEC2261D38F006749CF /* RealmResults+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RealmResults+extensions.swift"; sourceTree = "<group>"; };
+		9AA49EED22706572001ABB44 /* RealmWriteThread.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmWriteThread.swift; sourceTree = "<group>"; };
 		9AC60C11224E37FB00A5ED6A /* CreateAndInputWalletCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAndInputWalletCollectionViewCell.swift; sourceTree = "<group>"; };
 		9AC60C12224E37FB00A5ED6A /* CreateAndInputWalletCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CreateAndInputWalletCollectionViewCell.xib; sourceTree = "<group>"; };
 		9AC86E98224A1E6000315A79 /* VoteOverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteOverView.swift; sourceTree = "<group>"; };
@@ -630,8 +630,6 @@
 		9AE3142A21912BD300B5433F /* BiometricsAuthViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BiometricsAuthViewController.xib; sourceTree = "<group>"; };
 		9AE3142D2191457300B5433F /* PasswordAuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordAuthViewController.swift; sourceTree = "<group>"; };
 		9AE3142E2191457300B5433F /* PasswordAuthViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PasswordAuthViewController.xib; sourceTree = "<group>"; };
-		9AE314322191733A00B5433F /* WalletSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletSelectionView.swift; sourceTree = "<group>"; };
-		9AE314342191734D00B5433F /* WalletSelectionView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WalletSelectionView.xib; sourceTree = "<group>"; };
 		9AE3143621917C3600B5433F /* WalletSelectionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletSelectionTableViewCell.swift; sourceTree = "<group>"; };
 		9AE3143721917C3600B5433F /* WalletSelectionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WalletSelectionTableViewCell.xib; sourceTree = "<group>"; };
 		9AEF470F21F9C9A9008A3640 /* IPGeoPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IPGeoPersistence.swift; sourceTree = "<group>"; };
@@ -1332,6 +1330,7 @@
 				819A435021D235E800E276C7 /* VotePersistence.swift */,
 				9AEF470F21F9C9A9008A3640 /* IPGeoPersistence.swift */,
 				9A9E1FEC2261D38F006749CF /* RealmResults+extensions.swift */,
+				9AA49EED22706572001ABB44 /* RealmWriteThread.swift */,
 			);
 			path = Persistence;
 			sourceTree = "<group>";
@@ -1585,8 +1584,6 @@
 		9AE314312191730900B5433F /* views */ = {
 			isa = PBXGroup;
 			children = (
-				9AE314322191733A00B5433F /* WalletSelectionView.swift */,
-				9AE314342191734D00B5433F /* WalletSelectionView.xib */,
 				9AE3143621917C3600B5433F /* WalletSelectionTableViewCell.swift */,
 				9AE3143721917C3600B5433F /* WalletSelectionTableViewCell.xib */,
 			);
@@ -1798,7 +1795,6 @@
 				8115BEAA218B04CD009FFE3B /* PlatonAssets in Resources */,
 				9AD2863121D3598B009AB958 /* CandidatesTableViewCell.xib in Resources */,
 				812002CD21A3F6430050E1B0 /* AddSharedWalletVC.xib in Resources */,
-				9AE314352191734D00B5433F /* WalletSelectionView.xib in Resources */,
 				81EE99BE21757E40008DF8CB /* Localizable.strings in Resources */,
 				9ADB60B8222E806B0044918D /* AssetSendViewControllerV060.xib in Resources */,
 				812002C121A3EB390050E1B0 /* STransferConfirmView.xib in Resources */,
@@ -2001,6 +1997,7 @@
 				819A522B2190319A00E4C500 /* UITextView+Extensions.swift in Sources */,
 				81FCCD122179E9F20052FC29 /* TransactionService.swift in Sources */,
 				81E2E8582186BA96008B7504 /* AddAddressInfoView.swift in Sources */,
+				9AA49EEE22706572001ABB44 /* RealmWriteThread.swift in Sources */,
 				9A2DA84922561AD200368212 /* CustomLoading.swift in Sources */,
 				9AC86E9B224A1EE000315A79 /* VoteManager+Centralization.swift in Sources */,
 				81EE99CD2175F4BC008DF8CB /* PTextFieldWithPadding.swift in Sources */,
@@ -2081,7 +2078,6 @@
 				81E2E8542186B92E008B7504 /* AddressInfoPersistence.swift in Sources */,
 				9AE3142B21912BD300B5433F /* BiometricsAuthViewController.swift in Sources */,
 				812A7EDC219EA6A900BE9C1C /* SharedWalletMemberCell.swift in Sources */,
-				9AE314332191733A00B5433F /* WalletSelectionView.swift in Sources */,
 				9AD2863421D37487009AB958 /* CandidateDetailViewController.swift in Sources */,
 				818A91382181AE6300D03D57 /* WalletBalance.swift in Sources */,
 				812002AC21A3EB390050E1B0 /* SwitchWalletTableViewCell.swift in Sources */,

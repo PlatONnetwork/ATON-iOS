@@ -464,11 +464,14 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
                 alertVC.showInputErrorTip(string: valid.1)
                 return false
             }
-             
+              
             alertVC.showLoadingHUD()
             WalletService.sharedInstance.exportPrivateKey(wallet: executorWallet!, password: (alertVC.textFieldInput?.text)!, completion: { (pri, err) in
                 
                 if (err == nil && (pri?.length)! > 0) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: { 
+                        AssetViewControllerV060.getInstance()?.showLoadingHUD()
+                    })
                     if self?.walletType == WalletType.ClassicWallet{
                         self?.doClassicTransfer(pri: pri!, data: nil)
                     }else{
@@ -622,9 +625,7 @@ extension AssetSendViewControllerV060{
         let memo = ""
         
         let _ = TransactionService.service.sendAPTTransfer(from: from!, to: to, amount: amount, InputGasPrice: self.gasPrice!, estimatedGas: String(self.estimatedGas!), memo: memo, pri: pri, completion: {[weak self] (result, txHash) in
-            if let notnilAlertVC = self?.passwordInputAlert{
-                notnilAlertVC.hideLoadingHUD()
-            }
+            AssetViewControllerV060.getInstance()?.hideLoadingHUD()
             switch result{
             case .success:
                 self?.didTransferSuccess()
@@ -690,8 +691,6 @@ extension AssetSendViewControllerV060{
         let contractAddress = AssetVCSharedData.sharedData.jWallet?.contractAddress
         
         let fee = self.totalFee()
-        
-        AssetViewControllerV060.getInstance()?.showLoadingHUD()
         
         SWalletService.sharedInstance.submitTransaction(walltAddress: from!, 
                                                         privateKey: pri, 

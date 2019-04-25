@@ -15,6 +15,7 @@ import Localize_Swift
 let CentralizationURL = "http://192.168.9.190:10061/a-api/"
 let chaindId = "203"
 let DefaultCentralizationURL = "https://aton.platon.network/"
+let requestTimeout : TimeInterval = 30
 
 extension VoteManager{
     
@@ -50,7 +51,7 @@ extension VoteManager{
         request.httpBody = try! JSONSerialization.data(withJSONObject: values)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.timeoutInterval = 10
+        request.timeoutInterval = requestTimeout
         
         Alamofire.request(request).responseJSON { (response) in
             switch response.result{
@@ -64,8 +65,8 @@ extension VoteManager{
                 let nodesum = MyVoteStatic.parserAllNodeSummary(mapArray: data)
                 self.successCompletionOnMain(obj: nodesum as AnyObject, completion: &completion)
                 
-            case .failure(_):
-                self.failCompletionOnMainThread(code: -1, errorMsg: "", completion: &completion)
+            case .failure(let error):
+                self.failCompletionOnMainThread(code: -1, errorMsg: error.localizedDescription, completion: &completion)
             }
         }
 
@@ -77,21 +78,25 @@ extension VoteManager{
         var walletAddrs: [String] = []
         
         for item in WalletService.sharedInstance.wallets{
-            walletAddrs.append((item.key?.address)!)
+            walletAddrs.append((item.key?.address.lowercased())!)
+            walletAddrs.append((item.key?.address.lowercased())!)
         }
         
-        values["cid"] = chaindId
+        values["cid"] = self.getChainID()
         values["walletAddrs"] = walletAddrs
         values["pageNo"] = pageNo
         values["pageSize"] = pageSize
          
         let url = self.getCentralizationURL() + "getBatchVoteTransaction"
-        
+         
         var request = URLRequest(url: try! url.asURL())
         request.httpBody = try! JSONSerialization.data(withJSONObject: values)
         request.httpMethod = "POST"
-        request.timeoutInterval = 10
+        request.timeoutInterval = requestTimeout
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        Alamofire.request(request).responseString { str in
+            print("getBatchVoteTransaction response:\(str)")
+        }
         Alamofire.request(request).responseJSON { (response) in
             switch response.result{
                 
@@ -102,11 +107,13 @@ extension VoteManager{
                     return
                 }
                 
-                let nodesum = NodeVoteSummary.parserWithDicArray(mapArray: data)
-                self.successCompletionOnMain(obj: nodesum as AnyObject, completion: &completion)
+                DispatchQueue.global().async {
+                    let nodesum = NodeVoteSummary.parserWithDicArray(mapArray: data)
+                    self.successCompletionOnMain(obj: nodesum as AnyObject, completion: &completion)
+                }
                 
-            case .failure(_):
-                self.failCompletionOnMainThread(code: -1, errorMsg: "", completion: &completion)
+            case .failure(let error):
+                self.failCompletionOnMainThread(code: -1, errorMsg: error.localizedDescription, completion: &completion)
             }
         }
     }

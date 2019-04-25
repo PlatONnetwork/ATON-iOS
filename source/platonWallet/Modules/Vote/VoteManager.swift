@@ -51,7 +51,7 @@ class VoteManager: BaseService {
             return nil
         }
         return Float(ticketPoolUsageNum!) / Float(kTicketsPoolCapacity)
-    }
+    } 
     
     public override init(){
         super.init()
@@ -76,7 +76,7 @@ class VoteManager: BaseService {
         web3CommonCall(contractAddress: votePoolingContract, data: data, completion: &completion) { (resp) in
             
             guard let price = BigUInt(resp) else {
-                self.failCompletionOnMainThread(code: -2, errorMsg: "data parse Error", completion: &completion)
+                self.failCompletionOnMainThread(code: -2, errorMsg: Localized("data_parser_error"), completion: &completion)
                 return
             }
             self.ticketPrice = price
@@ -108,22 +108,48 @@ class VoteManager: BaseService {
         }
         
     }
- 
-    func CandidateList(completion: PlatonCommonCompletion?)  {
+  
+    func GetVotePageCandidateList(completion: PlatonCommonCompletion?)  {
 
         var completion = completion 
         let data = self.build_CandidateList()
         
-        web3CommonCall(contractAddress: candidateContract, data: data, completion: &completion) { (resp) in
-            serviceQueue.async {
-                do{
-                    let obj =  try JSONDecoder().decode(CandidateParserContainerMatrix.self, from: resp.data(using: .utf8)!)
-                    self.successCompletionOnMain(obj: obj.candidates as AnyObject, completion: &completion)
-                }catch {
-                    self.failCompletionOnMainThread(code: -2, errorMsg: "data parse error!!!", completion: &completion)
+        web3.eth.platonCall(contractAddress: candidateContract, data: self.build_GetVerifiersList(), from: nil, gas: nil, gasPrice: nil, value: nil, outputs: [SolidityFunctionParameter(name: "", type: .string)]) { (VerifiersListresp, VerifiersListdata) in
+            switch VerifiersListresp{
+                
+            case .success:
+                var verifyList : Array<Candidate> = []
+                guard let vresp = VerifiersListdata as? Dictionary<String, String>,let valueJSON = vresp[""] else{
+                    self.failCompletionOnMainThread(code: -2, errorMsg: Localized("data_parser_error"), completion: &completion)
+                    return
                 }
+                
+                self.web3CommonCall(contractAddress: candidateContract, data: data, completion: &completion) { (resp) in
+                    serviceQueue.async {
+                        do{
+                            let vlist =  try JSONDecoder().decode([Candidate].self, from: valueJSON.data(using: .utf8)!)
+                            if (vlist.count) > 0{
+                                verifyList.append(contentsOf: vlist)
+                            }
+                            let vids = verifyList.map({ candidate -> String in
+                                return candidate.candidateId ?? ""
+                            })
+                            let allList =  try JSONDecoder().decode(CandidateParserContainerMatrix.self, from: resp.data(using: .utf8)!)
+                            verifyList.append(contentsOf: allList.candidates)
+                            
+                            let result = verifyList.filterDuplicates({$0.candidateId})
+                            self.successCompletionOnMain(obj: (result,vids) as AnyObject, completion: &completion)
+                        }catch {
+                            self.failCompletionOnMainThread(code: -2, errorMsg: Localized("data_parser_error"), completion: &completion)
+                        }
+                    }
+                }
+            case .fail(let code, let msg):
+                self.failCompletionOnMainThread(code: code ?? -1, errorMsg: msg ?? Localized("data_parser_error"), completion: &completion)
             }
         }
+        
+
         
     }
     
@@ -147,11 +173,11 @@ class VoteManager: BaseService {
                     if desc.candidates.count > 0{
                         self.successCompletionOnMain(obj: desc.candidates.first as AnyObject, completion: &completion)
                     }else{
-                        self.failCompletionOnMainThread(code: -2, errorMsg: "data parse error!!!", completion: &completion)
+                        self.failCompletionOnMainThread(code: -2, errorMsg: Localized("data_parser_error"), completion: &completion)
                     }
                     
                 }catch {
-                    self.failCompletionOnMainThread(code: -2, errorMsg: "data parse error!!!", completion: &completion)
+                    self.failCompletionOnMainThread(code: -2, errorMsg: Localized("data_parser_error"), completion: &completion)
                 }
             }
         }
@@ -170,7 +196,7 @@ class VoteManager: BaseService {
                     let ticket = try JSONDecoder().decode(Ticket.self, from: resp.data(using: .utf8)!)
                     self.successCompletionOnMain(obj: ticket as AnyObject, completion: &completion)
                 }catch {
-                    self.failCompletionOnMainThread(code: -2, errorMsg: "data parse error:\(error.localizedDescription)", completion: &completion)
+                    self.failCompletionOnMainThread(code: -2, errorMsg: Localized("data_parser_error"), completion: &completion)
                 }
             }
         }
@@ -187,7 +213,7 @@ class VoteManager: BaseService {
                     let arr = try JSONDecoder().decode([Ticket].self, from: resp.data(using: .utf8)!)
                     self.successCompletionOnMain(obj: arr as AnyObject, completion: &completion)
                 }catch {
-                    self.failCompletionOnMainThread(code: -2, errorMsg: "respData:\(resp) - parse error:\(error.localizedDescription)", completion: &completion)   
+                    self.failCompletionOnMainThread(code: -2, errorMsg: Localized("data_parser_error"), completion: &completion)   
                 }
             }
         }
@@ -213,7 +239,7 @@ class VoteManager: BaseService {
                 
                 self.successCompletionOnMain(obj: resp as AnyObject, completion: &completion)
             }catch {
-                self.failCompletionOnMainThread(code: -2, errorMsg: "data parse error:\(error.localizedDescription)", completion: &completion)
+                self.failCompletionOnMainThread(code: -2, errorMsg: Localized("data_parser_error"), completion: &completion)
                 
             }
             
@@ -234,7 +260,7 @@ class VoteManager: BaseService {
                 
                 self.successCompletionOnMain(obj: dic as AnyObject, completion: &completion)
             }catch {
-                self.failCompletionOnMainThread(code: -2, errorMsg: "data parse error:\(error.localizedDescription)", completion: &completion)
+                self.failCompletionOnMainThread(code: -2, errorMsg: Localized("data_parser_error"), completion: &completion)
                 
             }
         }
@@ -250,7 +276,7 @@ class VoteManager: BaseService {
                 
                 self.successCompletionOnMain(obj: dic as AnyObject, completion: &completion)
             }catch {
-                self.failCompletionOnMainThread(code: -2, errorMsg: "data parse error:\(error.localizedDescription)", completion: &completion)
+                self.failCompletionOnMainThread(code: -2, errorMsg: Localized("data_parser_error"), completion: &completion)
                 
             }
         }
@@ -267,7 +293,7 @@ class VoteManager: BaseService {
             case .success:
                  
                 guard let txHashData = data else {
-                    self.failCompletionOnMainThread(code: -1, errorMsg: "data parse error!", completion: &completion)
+                    self.failCompletionOnMainThread(code: -1, errorMsg: Localized("data_parser_error"), completion: &completion)
                     return
                 }
                 //add Transaction
@@ -381,13 +407,13 @@ class VoteManager: BaseService {
             case .success:
                 
                 guard let dic = data as? [String:String], let resp = dic[""] else {
-                    self.failCompletionOnMainThread(code: -2, errorMsg: "data parse Error", completion: &completion)
+                    self.failCompletionOnMainThread(code: -2, errorMsg: Localized("data_parser_error"), completion: &completion)
                     return
                 }
                 successCallback(resp)
                 
             case .fail(let code, let msg):
-                self.failCompletionOnMainThread(code: code ?? -1, errorMsg: msg ?? "failed", completion: &completion)
+                self.failCompletionOnMainThread(code: code ?? -1, errorMsg: msg ?? Localized("data_parser_error"), completion: &completion)
             }
             
         }
