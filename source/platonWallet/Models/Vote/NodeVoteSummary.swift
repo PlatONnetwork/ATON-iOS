@@ -150,7 +150,11 @@ class NodeVoteSummary {
             sum.assetOflocked = String(voteStaked)
             sum.validCount = validTicketCount
             sum.invalidCount = invalidTicketCount
-            sum.CandidateId = key
+            if key.hasPrefix("0x") && key.length > 2{
+                sum.CandidateId = key.substr(2, key.length - 2)
+            }else{
+                sum.CandidateId = key
+            }
             
             var svproperty : [SingleVote] = []
             
