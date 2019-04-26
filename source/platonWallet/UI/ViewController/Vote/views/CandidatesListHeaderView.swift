@@ -41,12 +41,16 @@ class CandidatesListHeaderView: UIView {
     @IBOutlet weak var myVoteButton: UIButton!
     @IBOutlet weak var iconImg: UIImageView!
     @IBOutlet weak var progressView: UIProgressView!
+    @IBOutlet weak var myVoteLabel: UILabel!
     
     @IBOutlet weak var bgImageView: UIImageView!
     private var curTicketPrice: String?
     private var curTicketPriceUpward: Bool = false
     private var curPoll: Int?
     private var curVoteRate: Float?
+    
+    @IBOutlet weak var contentHeightConstant: NSLayoutConstraint!
+    
     
     var gradientImage : UIImage = UIImage()
     
@@ -68,7 +72,6 @@ class CandidatesListHeaderView: UIView {
                                                   locations: nil)!
             self.progressView.progressImage = gradientImage
         }
-        
     }
     
     private func initView() {
@@ -79,6 +82,9 @@ class CandidatesListHeaderView: UIView {
         view.snp.makeConstraints { (maker) in
             maker.edges.equalToSuperview()
         }
+//        voteRateLabel.snp.updateConstraints { make in
+//            make.top.equalToSuperview().offset(44 + kStatusBarHeight)
+//        }
         self.bgImageView.isUserInteractionEnabled = true
         
         update()
@@ -115,5 +121,44 @@ class CandidatesListHeaderView: UIView {
 //        iconImg.image = curTicketPriceUpward ? UIImage(named: "vote_triangle_up") : UIImage(named: "vote_triangle_down")
         progressView.progress = curVoteRate ?? 0
         
+    }
+    
+    func updateHeaderViewStyle(_ alpha: CGFloat) {
+        
+        self.ticketPrice.alpha = alpha
+        self.voteNumberLabel.alpha = alpha
+        self.bgImageView.alpha = alpha
+        self.progressView.alpha = alpha
+        
+        if alpha >= 0.9 {
+            let voteRate = self.curVoteRate == nil ? "-%":String(format: "%.2f%%", self.curVoteRate! * 100)
+            self.voteRateLabel.text = Localized("CandidateListVC_voteRate_desc", arguments: voteRate)
+            self.myVoteButton.setImage(UIImage(named: "myvoteBtn"), for: .normal)
+            self.myVoteLabel.transform = CGAffineTransform.identity
+        } else if alpha <= 1.5 {
+            self.voteRateLabel.text = Localized("CandidateListVC_title")
+            self.myVoteButton.setImage(nil, for: .normal)
+            self.myVoteLabel.transform = CGAffineTransform(scaleX: 1.4, y: 1.4)
+        }
+        
+//        UIView.animate(withDuration: 0.3, animations: {
+//            
+//
+////            self.contentHeightConstant.constant = headerViewHeight - yOffset
+//            self.layoutIfNeeded()
+//
+//        }) { _ in
+//            if alpha > 0.0 {
+//                let voteRate = self.curVoteRate == nil ? "-%":String(format: "%.2f%%", self.curVoteRate! * 100)
+//                self.voteRateLabel.text = Localized("CandidateListVC_voteRate_desc", arguments: voteRate)
+//                self.myVoteButton.setImage(UIImage(named: "myvoteBtn"), for: .normal)
+//                self.myVoteLabel.transform = CGAffineTransform.identity
+//
+//            } else {
+//                self.voteRateLabel.text = Localized("CandidateListVC_title")
+//                self.myVoteButton.setImage(nil, for: .normal)
+//                self.myVoteLabel.transform = CGAffineTransform(scaleX: 1.4, y: 1.4)
+//            }
+//        }
     }
 }
