@@ -160,7 +160,6 @@ class CandidatesListFilterBarView: UIView {
         
         self.addSubview(bottomSelectIndicator)
         bottomSelectIndicator.backgroundColor = UIColor(rgb: 0x105CFE)
-<<<<<<< HEAD
         bottomSelectIndicator.snp.makeConstraints { make in
             make.height.equalTo(2)
             make.bottom.equalToSuperview()
@@ -169,16 +168,6 @@ class CandidatesListFilterBarView: UIView {
         }
         
 //        self.bottomSelectIndicator.isHidden = true
-=======
-        for item in self.filterButtons{
-            if item.tag == 0{
-                self.updateFilterIndicator(index: 0,animated: false, sender: item)
-                self.updateSelectedBtn(item)
-            }
-        }
-    
-        self.bottomSelectIndicator.isHidden = true
->>>>>>> upstream/master
         
         NotificationCenter.default.addObserver(self, selector: #selector(onTextBeginEnding(_:)), name: UITextField.textDidBeginEditingNotification, object: nil)
 
@@ -360,7 +349,6 @@ class CandidatesListFilterBarView: UIView {
         
         self.searchStyle = .normal
     }
-<<<<<<< HEAD
     
     func updateFilterIndicator(index: Int, animated: Bool = true){
         bottomSelectIndicator.snp.updateConstraints { make in
@@ -371,23 +359,6 @@ class CandidatesListFilterBarView: UIView {
         if animated {
             UIView.animate(withDuration: 0.3, animations: {
                 self.bottomSelectIndicator.alpha = 1.0
-=======
-     
-    //MARK: - Indicator
-    func updateFilterIndicator(index: Int, animated: Bool = true,sender: UIButton){
-        self.bottomSelectIndicator.snp.removeConstraints()
-        
-        UIView.animate(withDuration: 0.2) { 
-            self.bottomSelectIndicator.snp.makeConstraints { (make) in
-                let alignView : UIView = sender
-                let width = kUIScreenWidth * 0.3333
-                make.centerX.equalTo(alignView)
-                make.width.equalTo(width)
-                make.bottom.equalToSuperview()
-                make.height.equalTo(2)
-            }
-            if animated{
->>>>>>> upstream/master
                 self.layoutIfNeeded()
             }) { (finished) in
                 
