@@ -23,32 +23,32 @@ let DefaultNodeURL_Beta = "https://test-beta.platon.network/test"
 //balance query timer
 let assetQueryTimerEnable = true
 
-let assetQueryTimerInterval = 5
+let assetQueryTimerInterval = 8
 
 //tiemr query block number
 let blockNumberQueryTimerEnable = true
 
-let blockNumberQueryTimerInterval = 5
+let blockNumberQueryTimerInterval = 8
 
 //polling all joint walelt's transactions
 let allJointWalletPollingTxsTimerEnable = true
 
-let allJointWalletPollingTxsTimerInterval = 5
+let allJointWalletPollingTxsTimerInterval = 8
 
 //polling single joint wallet's transactions in ViewController
 let jointWalletUpdateTxListTimerEnable = true
 
-let jointWalletUpdateTxListTimerInterval = 6
+let jointWalletUpdateTxListTimerInterval = 8
 
 //monitor the status of the joint wallet’s creation
 let jointWalletCreationTimerEnable = true
 
-let JointWalletCreationTimerInterval = 5
+let JointWalletCreationTimerInterval = 8
 
 //pending transaction polling
 let pendingTransactionPollingTimerEnable = true
 
-let pendingTransactionPollingTimerInterval = 5
+let pendingTransactionPollingTimerInterval = 8
 
 let DefaultRPCTimeOut = 30.0
 

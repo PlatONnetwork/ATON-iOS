@@ -103,7 +103,7 @@ class SingleVoteDetailListVC : BaseViewController, UITableViewDelegate,UITableVi
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         //return 226
-        return 252
+        return 255  
     }
     
     

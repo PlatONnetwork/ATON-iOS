@@ -81,7 +81,7 @@ class AssetService : BaseService{
         } catch {
             
         }
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { 
             web3.eth.getBalance(address: ea!, block: .latest) { resp in
                 DispatchQueue.main.async {
                     switch resp.status{

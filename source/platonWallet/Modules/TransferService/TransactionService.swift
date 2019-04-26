@@ -176,17 +176,19 @@ class TransactionService : BaseService{
                             }
                             
                             RealmWriteQueue.async {
-                                let realm = RealmHelper.getNewRealm()
-                                let hash = newItem.hash
-                                try? realm.write {
-                                    newItem.blockNumber = String(receipt.blockNumber.quantity)
-                                    newItem.gasUsed = String(receipt.gasUsed.quantity)
-                                    newItem.extra = responseJson
-                                    realm.add(newItem, update: true)
-                                }
-                                DispatchQueue.main.async {
-                                    NotificationCenter.default.post(name: NSNotification.Name(DidUpdateVoteTransactionByHashNotification), object: hash)
-                                }
+                                autoreleasepool(invoking: {
+                                    let realm = RealmHelper.getNewRealm()
+                                    let hash = newItem.hash
+                                    try? realm.write {
+                                        newItem.blockNumber = String(receipt.blockNumber.quantity)
+                                        newItem.gasUsed = String(receipt.gasUsed.quantity)
+                                        newItem.extra = responseJson
+                                        realm.add(newItem, update: true)
+                                    }
+                                    DispatchQueue.main.async {
+                                        NotificationCenter.default.post(name: NSNotification.Name(DidUpdateVoteTransactionByHashNotification), object: hash)
+                                    }
+                                })
                             }
                             
                             

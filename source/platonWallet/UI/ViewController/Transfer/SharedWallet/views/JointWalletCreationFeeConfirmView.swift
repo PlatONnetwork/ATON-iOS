@@ -32,6 +32,8 @@ class JointWalletCreationFeeConfirmView: UIView {
     @IBOutlet weak var paymentInfo: UILabel!
     
     @IBOutlet weak var executorName: UILabel!
+
+    @IBOutlet weak var payInfoDes: UILabel!
     
     override func awakeFromNib() {
         self.submitButton.style = .blue
@@ -41,6 +43,7 @@ class JointWalletCreationFeeConfirmView: UIView {
         if type == .ExecuteContract{
             titleDescription.localizedText = "SharedWalletTransactionDetailVC_execute_contract"
             paymentInfo.localizedText = "SharedWalletTransactionDetailVC_payment_execute_contract"
+            payInfoDes.localizedText = "SharedWalletTransactionDetailVC_execute_PayType"
             submitButton.localizedNormalTitle = "SharedWalletTransactionDetailVC_payment_confirm"
         }
     }

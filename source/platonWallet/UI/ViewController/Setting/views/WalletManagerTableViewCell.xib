@@ -91,7 +91,7 @@
                                     <constraint firstItem="397-W0-exX" firstAttribute="top" secondItem="jek-JH-Jpe" secondAttribute="top" id="vYt-5F-rjr"/>
                                 </constraints>
                             </view>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="home_jointWallet_icon_normal" translatesAutoresizingMaskIntoConstraints="NO" id="Ged-ds-IcA" customClass="home_jointWallet_icon_normal">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="home_jointWallet_icon_normal" translatesAutoresizingMaskIntoConstraints="NO" id="Ged-ds-IcA">
                                 <rect key="frame" x="39" y="32" width="12" height="12"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="12" id="3SR-ch-jni"/>

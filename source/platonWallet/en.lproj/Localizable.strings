@@ -528,6 +528,7 @@
 
 
 "SharedWalletTransactionDetailVC_execute_contract" = "Execute Contract-Confirm";
+"SharedWalletTransactionDetailVC_execute_PayType" = "Type";
 "SharedWalletTransactionDetailVC_payment_execute_contract" = "Execute Contract fee";
 "SharedWalletTransactionDetailVC_payment_confirm" = "Submit";
 
@@ -600,6 +601,7 @@
 "CandidateDetailVC_voteBtn_title" = "Vote";
 "CandidateDetailVC_rankStatu_candidateFirst100" = "Nominees";
 "CandidateDetailVC_rankStatu_alternativeFirst100" = "Candidates";
+"CandidateDetailVC_rankStatu_Validator" = "Validator Node";
 
 //MyVoteListVC
 "MyVoteListVC_nav_title" = "My vote";
@@ -625,13 +627,13 @@
 "VotingViewController_vote_price" = "Ticket Price";
 "VotingViewController_vote_total_pay" = "Total payment";
 "VotingViewController_confirm" = "Confirm";
-"VotingViewController_insufficient_balance_tips" = "Insufficient balance!";
+"VotingViewController_insufficient_balance_tips" = "Balance insufficient";
 "VotingViewController_exceed_limit_tips" = "Votes exceed the limit of the ticket pool";
 "VotingViewController_success_tips" = "success";
 
 //VoteConfirm
 "VoteConfirm_title" = "Voting Confirmation";
-"VoteConfirm_payment_info" = "Information";
+"VoteConfirm_payment_info" = "Type:";
 "VoteConfirm_fee_colon" = "Fee:";
 "VoteConfirm_submitBtn_title" = "Confirm";
 "VoteConfirm_vote" = "Vote";
@@ -675,7 +677,7 @@
 "watchJointWalletTip_Notice" = "Transaction initiation failed";
 "watchJointWalletTip_message" = "The associated Classic Wallet has been removed.";
 
-"data_parser_error" = "Data parser error.";
+"data_parser_error" = "Data parsing error.";
 "unknow_error" = "Unknow error.";
 
 "send_wallet_colon" = "Wallet Address:";

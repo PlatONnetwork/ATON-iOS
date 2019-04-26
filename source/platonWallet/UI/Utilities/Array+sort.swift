@@ -82,6 +82,29 @@ extension Array where Element == Any {
     }
 }
 
+extension Array where Element == Candidate{
+    mutating func candidateSort(){
+        let ticketPrice = BigUInt(VoteManager.sharedInstance.ticketPrice ?? BigUInt("0")!)
+        self.sort { (c1, c2) -> Bool in
+            var bigLeft = BigUInt(c1.deposit ?? BigUInt("0")!)
+            bigLeft.multiplyAndAdd(ticketPrice.multiplied(by: BigUInt(c1.tickets ?? 0)), 1)
+            var bigRight = BigUInt(c2.deposit ?? BigUInt("0")!)
+            bigRight.multiplyAndAdd(ticketPrice.multiplied(by: BigUInt(c2.tickets ?? 0)), 1)
+            if String(bigLeft) != String(bigRight){
+                return !bigLeft.subtractReportingOverflow(bigRight)
+            }
+            return c1.extra?.time ?? 0 < c2.extra?.time ?? 0
+        }
+        /*
+        self.map({ item in
+            var bigRight = BigUInt(item.deposit ?? BigUInt("0")!)
+            bigRight.multiplyAndAdd(ticketPrice.multiplied(by: BigUInt(item.tickets ?? 0)), 1)
+            print("AfterSort:" + String(bigRight))
+        })
+         */
+    }
+}
+
 extension Array where Element == Ticket {
     
     var validTicketCount : Int{
@@ -163,5 +186,21 @@ extension Array {
             return true
         }
        
+    }
+    
+   
+}
+
+extension Array {
+    
+    func filterDuplicates<E: Equatable>(_ filter: (Element) -> E) -> [Element] {
+        var result = [Element]()
+        for value in self {
+            let key = filter(value)
+            if !result.map({filter($0)}).contains(key) {
+                result.append(value)
+            }
+        }
+        return result
     }
 }

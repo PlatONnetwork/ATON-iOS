@@ -12,6 +12,12 @@ let bottomLineNormalColor = UIColor(rgb: 0xD5D8DF)
 let bottomLineEditingColor = UIColor(rgb: 0x0077FF)
 let bottomLineErrorColor = UIColor(rgb: 0xF5302C)
 
+enum TextFiledStyle {
+    case Editing
+    case Normal
+    case Error
+}
+
 enum TextFieldBottomLineStyle {
     case Normal,Editing,Error
 }
@@ -26,6 +32,7 @@ class PTextFieldWithPadding: UITextField {
     
     var bottomSeplineStyleChangeWithErrorTip : Bool = true
     
+    var endEditCompletion: ((_ string : String) -> ())?
     
     @IBInspectable public var bottomInset: CGFloat {
         get { return inputAreaPadding.bottom }
@@ -188,6 +195,11 @@ class PTextFieldWithPadding: UITextField {
             if mode == .endEdit {
                 startCheck(text: textField.text ?? "")
             }
+            guard self.endEditCompletion != nil else {
+                return 
+            }
+            
+            self.endEditCompletion!(textField.text!)
         }
     }
     

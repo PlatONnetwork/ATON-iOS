@@ -155,6 +155,7 @@
                 <outlet property="closeButton" destination="Jbh-2H-r1L" id="N5a-m5-iZq"/>
                 <outlet property="executorName" destination="HOU-ja-H5N" id="MjE-or-rci"/>
                 <outlet property="feeLabel" destination="BZj-R0-ye9" id="muX-MP-h0h"/>
+                <outlet property="payInfoDes" destination="dAB-wy-ume" id="asP-Pa-BsV"/>
                 <outlet property="paymentInfo" destination="47H-2M-hdj" id="raE-G1-nh9"/>
                 <outlet property="submitButton" destination="qpM-IL-PHi" id="t6S-W3-KDx"/>
                 <outlet property="titleDescription" destination="vRT-9n-aeA" id="abF-Rd-iJj"/>

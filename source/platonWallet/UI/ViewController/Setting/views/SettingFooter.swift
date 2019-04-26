@@ -33,25 +33,25 @@ class SettingFooter: UIView {
         switch button.tag {
         case 1:
             do {
-                url = "https://medium.com/"
+                url = "https://medium.com/@PlatON_Network/"
             }
         case 2:
             do {
-                url = "https://www.reddit.com/"
+                url = "https://reddit.com/user/PlatON_Network/"
                 
             }
         case 3:
             do {
-                url = "https://www.facebook.com/"
+                url = "https://facebook.com/PlatONNetwork/"
                 
             }
         case 4:
             do {
-                url = "https://twitter.com/"
+                url = "https://twitter.com/PlatON_Network/"
             }
         case 5:
             do {
-                url = "https://github.com/"
+                url = "https://github.com/PlatONnetwork/"
             }
         case 6:
             do {
@@ -59,7 +59,7 @@ class SettingFooter: UIView {
             }
         case 7:
             do {
-                url = "https://telegram.org/"
+                url = "https://t.me/PlatONHK/"
                 
             }
         default:

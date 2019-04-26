@@ -20,7 +20,7 @@ class WallletPersistence {
     func save(wallet: Wallet) {
         wallet.nodeURLStr = SettingService.getCurrentNodeURLString()
         try? realm.write {
-            realm.add(wallet, update: true)
+            realm.add(wallet, update: true) 
         }
 
     }

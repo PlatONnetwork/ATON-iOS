@@ -381,7 +381,7 @@ class STransaction: Object {
         if txStatusComponets.count < 3{
             return tx
         }
-        
+         
         assert(tx.determinedResult.count > 0, "sTransactionParse tx.determinedResult.count")
         for item in tx.determinedResult{
             let trim0xAddr = item.walletAddress?.replacingOccurrences(of: "0x", with: "").lowercased()
