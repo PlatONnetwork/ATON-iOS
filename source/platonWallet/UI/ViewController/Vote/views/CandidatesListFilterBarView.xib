@@ -13,6 +13,8 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CandidatesListFilterBarView" customModule="platonWallet" customModuleProvider="target">
             <connections>
                 <outlet property="filterButtonContainer" destination="MNu-kS-L7I" id="0Tx-G4-Oys"/>
+                <outlet property="filterContainerLeading" destination="COi-0t-eoN" id="FhY-y4-eD7"/>
+                <outlet property="filterContainerTrailing" destination="T1I-o8-5R9" id="HHb-mx-Prs"/>
                 <outlet property="searchBtn" destination="hc5-KM-QTz" id="Nzu-Yw-xgf"/>
                 <outlet property="searchBtnTrailing" destination="IEc-oc-Xo0" id="CD9-0T-LXM"/>
                 <outlet property="searchTF" destination="fCV-ej-GGQ" id="Sox-Y1-jQv"/>
@@ -22,11 +24,11 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="CandidatesListFilterBarView" customModule="platonWallet" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="355" height="52"/>
+            <rect key="frame" x="0.0" y="0.0" width="355" height="42"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="搜索框" placeholder="1" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fCV-ej-GGQ" customClass="UITextFieldWithSearch" customModule="platonWallet" customModuleProvider="target">
-                    <rect key="frame" x="250" y="15" width="55" height="32"/>
+                    <rect key="frame" x="250" y="5" width="55" height="32"/>
                     <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
@@ -39,7 +41,7 @@
                     </userDefinedRuntimeAttributes>
                 </textField>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hc5-KM-QTz">
-                    <rect key="frame" x="309" y="19" width="30" height="24"/>
+                    <rect key="frame" x="309" y="9" width="30" height="24"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="24" id="GI2-UJ-Oew"/>
                         <constraint firstAttribute="width" constant="30" id="cZx-XJ-HB5"/>
@@ -52,7 +54,7 @@
                     </connections>
                 </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MNu-kS-L7I" userLabel="filterButtonContainer">
-                    <rect key="frame" x="16" y="10" width="201.5" height="42"/>
+                    <rect key="frame" x="16" y="0.0" width="201.5" height="42"/>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="42" id="2QM-lA-Dr4"/>

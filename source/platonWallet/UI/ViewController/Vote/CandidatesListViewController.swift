@@ -15,23 +15,19 @@ enum CandidatesListSortType: Int {
     case `default` = 0,reward,location
 }
 
-enum HeaderStyle {
-    case VoteSummaryHeaderShow,VoteSummaryHide
-}
-
 let headerViewHeight: CGFloat = 149.0 + UIDevice.notchHeight
 let filterBarShrinkHeight : CGFloat = 42.0
 let filterBarExpandHeight : CGFloat = 108
+let kAnimateScrollHeight: CGFloat = 63.0
+
 
 class CandidatesListViewController: BaseViewController {
     
-    var scrollContainer = CandidateScrollContainer()
     var headerView: CandidatesListHeaderView!
     var filterBarView: CandidatesListFilterBarView!
     var tableView: MultiGestureTableView!
     var sortType: CandidatesListSortType = .default
     var timer: Timer?
-    var scrollContentSize: CGSize?
     
     //
     var nominateNodeList: [Candidate] = []
@@ -45,39 +41,6 @@ class CandidatesListViewController: BaseViewController {
     var filteredCandidateList: [Candidate] = []
     
     var isScrolling : Bool = false
-    
-    var headerStyle : HeaderStyle = .VoteSummaryHeaderShow {
-        
-        didSet {
-             
-            print("headerStyle didset to :\(headerStyle)")
-            if headerStyle == .VoteSummaryHeaderShow{
-                self.setplaceHolderBG(hide: true,tableView: self.tableView)
-//                self.scrollContainer.setContentOffset(CGPoint(x: self.scrollContainer.contentOffset.x, y: 0), animated: true)
-//                filterBarView.setlayoutStyle(expand: false)
-                NotificationCenter.default.post(name: NSNotification.Name(ChangeCandidatesTableViewCellbackground), object: UIColor.white)
-            }else if headerStyle == .VoteSummaryHide{
-                self.setplaceHolderBG(hide:false ,tableView: self.tableView)
-//                self.scrollContainer.setContentOffset(CGPoint(x: self.scrollContainer.contentOffset.x, y: headerViewHeight), animated: true)
-                self.tableView.isScrollEnabled = true
-//                filterBarView.setlayoutStyle(expand: true)
-                NotificationCenter.default.post(name: NSNotification.Name(ChangeCandidatesTableViewCellbackground), object: #colorLiteral(red: 0.9751496911, green: 0.984305203, blue: 1, alpha: 1))
-            }
-             
-            
-            let tabbarHeight = navigationController?.tabBarController?.tabBar.frame.size.height ?? 0
-            if headerStyle == .VoteSummaryHeaderShow {
-                tableView.snp.updateConstraints { (make) in
-                    make.height.equalTo(kUIScreenHeight - filterBarExpandHeight - tabbarHeight)
-                }
-            }else{
-                tableView.snp.updateConstraints { (make) in
-                    make.height.equalTo(kUIScreenHeight - tabbarHeight - headerViewHeight)
-                }
-            }
-            
-        }
-    }
     
     var isFirstQuery = true
     
@@ -131,13 +94,11 @@ class CandidatesListViewController: BaseViewController {
         tableView.tableHeaderView = header
         */
         
-        NSLog("content height:%f", self.scrollContainer.contentSize.height)
-        
-        if #available(iOS 11.0, *) {
-            print("adjustedContentInset:\(scrollContainer.adjustedContentInset)")
-        } else {
-            // Fallback on earlier versions
-        }
+//        if #available(iOS 11.0, *) {
+//            print("adjustedContentInset:\(scrollContainer.adjustedContentInset)")
+//        } else {
+//            // Fallback on earlier versions
+//        }
     }
     
     
@@ -147,47 +108,27 @@ class CandidatesListViewController: BaseViewController {
         let tmpView = UIView(frame: CGRect(x: 0, y: 0, width: 1, height: 1))
         view.addSubview(tmpView)
         
-        scrollContainer.delegate = self
-        view.addSubview(scrollContainer)
+        tableView = MultiGestureTableView(frame: .zero)
+        tableView.showsVerticalScrollIndicator = false
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.register(UINib(nibName: "CandidatesTableViewCell", bundle: nil), forCellReuseIdentifier: "CandidatesTableViewCell")
+        tableView.separatorStyle = .none
+        tableView.backgroundColor = UIViewController_backround
+        tableView.tableFooterView = UIView()
+        view.addSubview(tableView)
         
-        self.scrollContainer.canCancelContentTouches = true
-        self.scrollContainer.delaysContentTouches = true
-        
-        let usingSafeArealayout = false
-        scrollContainer.snp.makeConstraints { (make) in
-            if usingSafeArealayout{
-                make.leading.trailing.equalToSuperview()
-                if #available(iOS 11.0, *) {
-                    make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-                } else {
-                    make.top.equalToSuperview()
-                }
-                if #available(iOS 11.0, *) {
-                    make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
-                } else {
-                    make.bottom.equalToSuperview()
-                }
-            }else{
-                make.edges.equalToSuperview()
-            }
-        }
-        
-        if #available(iOS 11.0, *) {
-            scrollContainer.contentInsetAdjustmentBehavior = .always
-        } else {
-            automaticallyAdjustsScrollViewInsets = false
-        } 
         
         headerView = CandidatesListHeaderView(frame: .zero)
         headerView.myVoteButton.addTarget(self, action: #selector(onMyVote), for: .touchUpInside)
-        scrollContainer.addSubview(headerView) 
+        view.addSubview(headerView)
         headerView.snp.makeConstraints({ (maker) in
-            maker.top.equalToSuperview().offset(0)
+            maker.top.equalToSuperview().offset(-kStatusBarHeight)
             maker.leading.equalToSuperview().offset(0)
             maker.trailing.equalToSuperview().offset(0)
-            maker.width.equalTo(kUIScreenWidth)
             maker.height.equalTo(headerViewHeight)
         })
+        
         
         filterBarView = CandidatesListFilterBarView(frame: .zero)
         filterBarView.delegate = self
@@ -197,37 +138,30 @@ class CandidatesListViewController: BaseViewController {
         filterBarView.searchTF.delegate = self
         filterBarView.searchTF.returnKeyType = .search
         filterBarView.updateSelectedBtn(filterBarView.filterButtons[0])
-//        filterBarView.myvoteBtn.addTarget(self, action: #selector(onMyVote), for: .touchUpInside)
         
-        scrollContainer.addSubview(filterBarView)
+        view.addSubview(filterBarView)
         filterBarView.snp.makeConstraints { (make) in
             make.leading.trailing.equalToSuperview()
-            make.top.equalTo(headerView.snp_bottomMargin)
+            make.top.equalTo(headerView.snp.bottom)
             make.height.equalTo(filterBarShrinkHeight)
         }
         
-        tableView = MultiGestureTableView(frame: .zero)
-        tableView.showsVerticalScrollIndicator = false
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.register(UINib(nibName: "CandidatesTableViewCell", bundle: nil), forCellReuseIdentifier: "CandidatesTableViewCell")
-        tableView.separatorStyle = .none
-        tableView.backgroundColor = UIViewController_backround
-        tableView.tableFooterView = UIView()
-        scrollContainer.addSubview(tableView)
+        
         
         tableView.emptyDataSetView { [weak self] view in
             let holder = self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, nil,"empty_no_data_img") as? TableViewNoDataPlaceHolder
             view.customView(holder)
+            view.isScrollAllowed(true)
+            if let contentInset = self?.tableView.contentInset {
+                view.verticalOffset(-contentInset.top/2.0)
+            }
         }
         
+        tableView.contentInset = UIEdgeInsets(top: headerViewHeight + filterBarShrinkHeight - kStatusBarHeight, left: 0, bottom: 0, right: 0)
         tableView.snp.makeConstraints { (make) in
-            make.top.equalTo(filterBarView.snp_bottomMargin).offset(10)
+            make.top.equalToSuperview()
             make.leading.bottom.trailing.equalToSuperview()
-            make.width.equalTo(kUIScreenWidth)
-            make.height.equalTo(100)
         }
-        self.headerStyle = HeaderStyle.VoteSummaryHeaderShow
     }
     
     @objc func onMyVote(){
@@ -466,6 +400,12 @@ class CandidatesListViewController: BaseViewController {
         }
     }
     
+//    override func viewWillLayoutSubviews() {
+//        scrollContainer.contentSize = CGSize(width: scrollContainer.frame.width, height: tableView.contentSize.height + headerView.frame.height + filterBarView.frame.height + kStatusBarHeight + 1)
+//        super.viewWillLayoutSubviews()
+//
+//    }
+    
 }
 
 
@@ -524,28 +464,26 @@ extension CandidatesListViewController: UIScrollViewDelegate {
     }
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         self.isScrolling = true
-        
-        let actualPosition = scrollView.panGestureRecognizer.translation(in: scrollView.superview)
-        if scrollView == scrollContainer{
-            scrollContentSize = scrollView.contentSize
-        
+//        let actualPosition = scrollView.panGestureRecognizer.translation(in: scrollView.superview)
+//        if scrollView == scrollContainer{
 //            if (actualPosition.y > 0){
 //                if self.headerStyle == HeaderStyle.VoteSummaryHide{
 //                    self.scrollContainer.isScrollEnabled = true
 //                }
+//                self.scrollContainer.isScrollEnabled = true
 //            }else{}
-        }else if scrollView == self.tableView{
-            if (actualPosition.y >= 0.0){
-                
-                if self.headerStyle == HeaderStyle.VoteSummaryHide{
-                    DispatchQueue.main.async {
-                        self.scrollContainer.isScrollEnabled = true
-                    }
-                }
-            }else{
-                
-            }
-        }
+//        }else if scrollView == self.tableView{
+//            if (actualPosition.y >= 0.0){
+//
+//                if self.headerStyle == HeaderStyle.VoteSummaryHide{
+//                    DispatchQueue.main.async {
+//                        self.scrollContainer.isScrollEnabled = true
+//                    }
+//                }
+//            }else{
+//
+//            }
+//        }
         
     }
     
@@ -557,71 +495,61 @@ extension CandidatesListViewController: UIScrollViewDelegate {
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         
         //filterBarView.changeLayoutWhileScrolling(offset: 138 - scrollView.contentOffset.y)
-        
-        if scrollView == scrollContainer{
-            print("didend: \(scrollView.panGestureRecognizer.translation(in: scrollView.superview).y)")
+//        if scrollView == scrollContainer{
 //            if scrollView.panGestureRecognizer.translation(in: scrollView.superview).y > 0{
 //                self.headerStyle = .VoteSummaryHeaderShow
 //            }else{
 //                self.headerStyle = .VoteSummaryHide
 //            }
-        }
-        if !decelerate{
-            self.isScrolling = false
-        }
+//        }
+//        if !decelerate{
+//            self.isScrolling = false
+//        }
     }
     
 
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         let yOffset = scrollView.contentOffset.y
-        print("yoffset: \(yOffset)")
-        if scrollView == scrollContainer{
-            if yOffset > 0 {
-                if yOffset < 52 {
-                    let alpha = (52 - min(yOffset, headerViewHeight))/52.0
-                    headerView.updateHeaderViewStyle(alpha)
-                    filterBarView.updateLayoutstyle(alpha)
-                }
-                
+        if scrollView == tableView{
+            let xOffset = scrollView.contentInset.top + yOffset
+            if xOffset < kAnimateScrollHeight {
                 
                 headerView.snp.updateConstraints { make in
-                    if yOffset < 52 {
-                        make.height.equalTo(headerViewHeight - min(yOffset, headerViewHeight))
-                    }
-                    make.top.equalToSuperview().offset(max(0, min(yOffset, 52.0)))
+                    make.height.equalTo(headerViewHeight - xOffset)
                 }
                 
-                if yOffset >= 52.0 {
-                    if let contentSize = scrollContentSize {
-                        scrollView.contentSize = CGSize(width: contentSize.width, height: contentSize.height - 52)
-                    }
-                    
-                    DispatchQueue.main.async {
-//                        scrollView.setContentOffset(CGPoint(x: scrollView.contentOffset.x, y: headerViewHeight), animated: false)
-//                        scrollView.isScrollEnabled = false
-                    }
+                var alpha = (kAnimateScrollHeight - xOffset)/kAnimateScrollHeight*1.0
+                if alpha < 0.0 {
+                    alpha = 0.0
+                } else if alpha > 1.0 {
+                    alpha = 1.0
                 }
+
+                headerView.updateHeaderViewStyle(alpha)
+                filterBarView.updateLayoutstyle(alpha)
+                
+                if alpha == 0.0 {
+                    self.setplaceHolderBG(hide:false ,tableView: self.tableView)
+                    NotificationCenter.default.post(name: NSNotification.Name(ChangeCandidatesTableViewCellbackground), object: #colorLiteral(red: 0.9751496911, green: 0.984305203, blue: 1, alpha: 1))
+                } else if alpha == 1.0 {
+                    self.setplaceHolderBG(hide: true,tableView: self.tableView)
+                    NotificationCenter.default.post(name: NSNotification.Name(ChangeCandidatesTableViewCellbackground), object: UIColor.white)
+                }
+            } else {
+                headerView.snp.updateConstraints { make in
+                    make.height.equalTo(headerViewHeight - kAnimateScrollHeight)
+                }
+                
+                headerView.updateHeaderViewStyle(0.0)
+                filterBarView.updateLayoutstyle(0.0)
+                
+                self.setplaceHolderBG(hide:false ,tableView: self.tableView)
+                NotificationCenter.default.post(name: NSNotification.Name(ChangeCandidatesTableViewCellbackground), object: #colorLiteral(red: 0.9751496911, green: 0.984305203, blue: 1, alpha: 1))
             }
-        }else if scrollView == tableView{
+            
             if scrollView.isDragging{
                 self.isScrolling = true
-            }
-            
-//            if scrollView.isDragging && self.headerStyle == .VoteSummaryHide{
-//                self.scrollContainer.setContentOffset(CGPoint(x: self.scrollContainer.contentOffset.x, y: headerViewHeight), animated: false)
-//            }
-//
-//            if self.headerStyle == .VoteSummaryHide{
-//                if yOffset > 5.0{
-//                    self.scrollContainer.isScrollEnabled = false
-//                }else{
-//                    self.scrollContainer.isScrollEnabled = true
-//                }
-//            }
-            
-            if self.headerStyle == HeaderStyle.VoteSummaryHeaderShow{
-                tableView.setContentOffset(.zero, animated: false)
             }
         }
     }

@@ -13,7 +13,9 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CandidatesListHeaderView" customModule="platonWallet" customModuleProvider="target">
             <connections>
                 <outlet property="bgImageView" destination="Znh-Pr-9Md" id="irq-hu-Tiy"/>
+                <outlet property="contentHeightConstant" destination="ZTh-XU-xUn" id="bPB-zn-6NM"/>
                 <outlet property="myVoteButton" destination="Wz2-8u-Cjz" id="LyE-tj-UVm"/>
+                <outlet property="myVoteLabel" destination="fMF-bu-JzW" id="Ytz-QF-Rhg"/>
                 <outlet property="progressView" destination="m0d-ko-Tgf" id="W2R-t6-pfK"/>
                 <outlet property="ticketPrice" destination="s7n-ky-Puo" id="JAo-lW-7ty"/>
                 <outlet property="voteNumberLabel" destination="gm0-dP-tBG" id="9ew-DX-NX4"/>
@@ -27,14 +29,17 @@
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="voteHeaderBG" translatesAutoresizingMaskIntoConstraints="NO" id="Znh-Pr-9Md">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="149"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="149" id="ZTh-XU-xUn"/>
+                    </constraints>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="投票率：21.21%" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ohh-aE-LbZ">
-                    <rect key="frame" x="16" y="40" width="122" height="21"/>
+                    <rect key="frame" x="16" y="44" width="122" height="24"/>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" progress="0.32000000000000001" translatesAutoresizingMaskIntoConstraints="NO" id="m0d-ko-Tgf">
-                    <rect key="frame" x="10" y="85" width="355" height="4"/>
+                    <rect key="frame" x="10" y="92" width="355" height="4"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="4" id="ZBn-OH-rca"/>
                     </constraints>
@@ -42,7 +47,7 @@
                     <color key="trackTintColor" red="0.89411764705882346" green="0.90980392156862744" blue="0.94509803921568625" alpha="1" colorSpace="calibratedRGB"/>
                 </progressView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gm0-dP-tBG">
-                    <rect key="frame" x="16" y="105" width="36" height="17"/>
+                    <rect key="frame" x="16" y="112" width="36" height="17"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <color key="textColor" red="0.53725490196078429" green="0.5490196078431373" blue="0.61960784313725492" alpha="1" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
@@ -54,7 +59,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Pi2-eG-NPa" userLabel="myvoteContainer">
-                    <rect key="frame" x="293" y="40.5" width="66" height="20"/>
+                    <rect key="frame" x="293" y="46" width="66" height="20"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wz2-8u-Cjz" userLabel="Myvote">
                             <rect key="frame" x="0.0" y="0.0" width="66" height="20"/>
@@ -90,18 +95,18 @@
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Znh-Pr-9Md" secondAttribute="trailing" id="0my-ri-8y5"/>
+                <constraint firstAttribute="bottom" relation="lessThanOrEqual" secondItem="Ohh-aE-LbZ" secondAttribute="bottom" constant="81" id="0nz-E3-Fwk"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="s7n-ky-Puo" secondAttribute="bottom" constant="20" id="28w-o6-Czy"/>
-                <constraint firstItem="m0d-ko-Tgf" firstAttribute="top" secondItem="Ohh-aE-LbZ" secondAttribute="bottom" constant="24" id="3uG-ro-WNZ"/>
                 <constraint firstItem="gm0-dP-tBG" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="9qR-u7-Hj3"/>
                 <constraint firstItem="Ohh-aE-LbZ" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="D5a-D2-QmU"/>
                 <constraint firstItem="m0d-ko-Tgf" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="10" id="DCk-hT-1Xw"/>
                 <constraint firstItem="Znh-Pr-9Md" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="JQr-gf-Awh"/>
                 <constraint firstItem="gm0-dP-tBG" firstAttribute="top" secondItem="m0d-ko-Tgf" secondAttribute="bottom" constant="16" id="Jyf-ZQ-5bd"/>
-                <constraint firstItem="Ohh-aE-LbZ" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="40" id="Naj-0u-Wst"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="s7n-ky-Puo" secondAttribute="trailing" constant="16" id="Uwv-l1-wt5"/>
                 <constraint firstItem="Znh-Pr-9Md" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="a65-bR-ecO"/>
+                <constraint firstItem="Ohh-aE-LbZ" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="44" id="aKJ-Fz-ooD"/>
                 <constraint firstItem="Pi2-eG-NPa" firstAttribute="centerY" secondItem="Ohh-aE-LbZ" secondAttribute="centerY" id="cAK-JC-iJo"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="gm0-dP-tBG" secondAttribute="bottom" priority="250" constant="20" id="foO-pJ-iQZ"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="gm0-dP-tBG" secondAttribute="bottom" constant="20" id="foO-pJ-iQZ"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="Znh-Pr-9Md" secondAttribute="bottom" id="gAU-wj-gxz"/>
                 <constraint firstAttribute="trailing" secondItem="m0d-ko-Tgf" secondAttribute="trailing" constant="10" id="jG4-42-zRo"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Pi2-eG-NPa" secondAttribute="trailing" constant="16" id="xXF-Lh-98L"/>

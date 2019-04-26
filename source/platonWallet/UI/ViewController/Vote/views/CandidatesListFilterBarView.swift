@@ -38,6 +38,10 @@ class CandidatesListFilterBarView: UIView {
     
     @IBOutlet weak var searchTextFieldTrailing: NSLayoutConstraint!
     
+    @IBOutlet weak var filterContainerLeading: NSLayoutConstraint!
+    
+    @IBOutlet weak var filterContainerTrailing: NSLayoutConstraint!
+    
     @IBOutlet weak var searchBtnTrailing: NSLayoutConstraint!
     
 //    @IBOutlet weak var myvoteBtn: UIButton!
@@ -51,6 +55,7 @@ class CandidatesListFilterBarView: UIView {
     weak var delegate: HeaderViewProtocol?
     
     var barHeaderExpand : Bool = false
+    
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -72,23 +77,16 @@ class CandidatesListFilterBarView: UIView {
         return springButton
     }
     
-    private func factoryButtonSpaceView() -> UIView {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }
-    
     private func initFilterContainerSubViews() {
         let defaultButton = factorySpringButton(title: Localized("CandidateListVC_defaultBtn_title"))
         let rewardButton = factorySpringButton(title: Localized("CandidateListVC_bonusBtn_title"))
         let locationButton = factorySpringButton(title: Localized("CandidateListVC_areaBtn_title"))
+        let spaceOneView = UIView()
+        let spaceTwoView = UIView()
         
         filterButtons.append(defaultButton)
         filterButtons.append(rewardButton)
         filterButtons.append(locationButton)
-        
-        let spaceOneView = factoryButtonSpaceView()
-        let spaceTwoView = factoryButtonSpaceView()
         
         filterButtonContainer.addSubview(defaultButton)
         filterButtonContainer.addSubview(rewardButton)
@@ -160,11 +158,16 @@ class CandidatesListFilterBarView: UIView {
         searchTF.backgroundColor = .white
         searchTF.text = ""
         
-        self.filterButtonContainer.addSubview(bottomSelectIndicator)
+        self.addSubview(bottomSelectIndicator)
         bottomSelectIndicator.backgroundColor = UIColor(rgb: 0x105CFE)
-        self.updateFilterIndicator(index: 0,animated: false)
+        bottomSelectIndicator.snp.makeConstraints { make in
+            make.height.equalTo(2)
+            make.bottom.equalToSuperview()
+            make.width.equalTo(0)
+            make.leading.equalToSuperview().offset(-38)
+        }
         
-        self.bottomSelectIndicator.isHidden = true
+//        self.bottomSelectIndicator.isHidden = true
         
         NotificationCenter.default.addObserver(self, selector: #selector(onTextBeginEnding(_:)), name: UITextField.textDidBeginEditingNotification, object: nil)
 
@@ -233,11 +236,6 @@ class CandidatesListFilterBarView: UIView {
             if btn.isSelected{
                 selectedButton = btn
             }
-            if self.barHeaderExpand{
-                btn.contentHorizontalAlignment = .center
-            }else{
-                btn.contentHorizontalAlignment = .left
-            }
         }
         guard selectedButton != nil else{
             return
@@ -279,13 +277,30 @@ class CandidatesListFilterBarView: UIView {
         }
     }
     
+    
+    
     func updateLayoutstyle(_ offset: CGFloat) {
-        print("ofsset: \(offset)")
-        searchBtn.alpha = offset
+        self.searchBtn.alpha = offset
+        
+        // 计算出左右边距距离，为中间间距的1/2
+        let itemWidth = kUIScreenWidth/3.0
+        let buttonTitleLabelWidth = self.filterButtons.first?.titleLabel?.frame.width
+        let spaceWidth = (itemWidth - buttonTitleLabelWidth!)/2.0
+        
+        let constant = 40 + (offset * ((kUIScreenWidth/2.0) - spaceWidth - 40))
+        
         filterButtonContainer.snp.updateConstraints { make in
-            let constant = 40 + ((1-offset) * ((kUIScreenWidth/2.0) - 38 - 40))
-            make.trailing.equalTo(self.snp.centerX).offset(constant)
-            make.leading.equalToSuperview().offset(16 + (1-offset) * (38-16))
+            make.leading.equalToSuperview().offset(16 + (1-offset) * (spaceWidth-16))
+            make.trailing.equalToSuperview().offset(-constant)
+        }
+        
+        self.searchStyle = offset == 0.0 ? .searchTextFieldHide : .normal
+        
+        for (index, btn) in self.filterButtons.enumerated() {
+            if btn.isSelected{
+                self.updateFilterIndicator(index: index, animated: true)
+                break
+            }
         }
     }
     
@@ -334,26 +349,21 @@ class CandidatesListFilterBarView: UIView {
         
         self.searchStyle = .normal
     }
-     
-    //MARK: - Indicator
+    
     func updateFilterIndicator(index: Int, animated: Bool = true){
-        self.bottomSelectIndicator.snp.removeConstraints()
+        bottomSelectIndicator.snp.updateConstraints { make in
+            make.width.equalTo(searchStyle == .searchTextFieldHide ? self.frame.width/3.0 : 0.0)
+            make.leading.equalToSuperview().offset(searchStyle == .searchTextFieldHide ? (self.frame.width*CGFloat(index))/3.0 : 0)
+        }
         
-        UIView.animate(withDuration: 0.2) { 
-            self.bottomSelectIndicator.snp.makeConstraints { (make) in
-                let alignView : UIView = self.filterButtons[index]
-                let width = kUIScreenWidth * 0.3333
-                make.centerX.equalTo(alignView)
-                make.width.equalTo(width)
-                make.bottom.equalToSuperview()
-                make.height.equalTo(2)
-            }
-            if animated{
+        if animated {
+            UIView.animate(withDuration: 0.3, animations: {
+                self.bottomSelectIndicator.alpha = 1.0
                 self.layoutIfNeeded()
+            }) { (finished) in
+                
             }
         }
     }
-    
-    
 
 }
