@@ -130,7 +130,7 @@ extension AddressBookViewController:UITableViewDataSource,UITableViewDelegate,Sw
             AddressBookService.service.delete(addressInfo: self.dataSource![indexPath.row])
             self.dataSource?.remove(at: indexPath.row)
             action.fulfill(with: .delete)
-            
+            self.tableView.reloadData()
         }
         deleteAction.backgroundColor = UIColor(rgb: 0xF5302C)
         deleteAction.textColor = UIColor(rgb: 0xFAFAFA)   
