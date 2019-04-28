@@ -86,7 +86,6 @@ extension UIButton {
     
     func setupSwitchWalletStyle(){
         self.addMaskView(corners: [.bottomRight,.topRight], cornerRadiiV: 5)
-        
         let chooseWalletImgView = UIImageView(image: UIImage(named: "chooseWallet"))
         self.addSubview(chooseWalletImgView)
        
@@ -100,7 +99,7 @@ extension UIButton {
         self.addSubview(Label)
         Label.snp.makeConstraints { (make) in
             make.trailing.equalTo(self).offset(-16)
-            make.leading.equalTo(chooseWalletImgView.snp.trailing).offset(6)
+            make.leading.equalTo(chooseWalletImgView.snp.trailing).offset(5)
             make.centerY.equalTo(self)
         }
         
