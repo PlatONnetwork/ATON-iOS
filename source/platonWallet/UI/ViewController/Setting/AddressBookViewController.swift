@@ -38,6 +38,9 @@ class AddressBookViewController: BaseViewController {
     
     func initSubViews() {
         
+        // tableview滚动会显示导行栏透明的情况，可修改基类处理，暂定在该页面处理
+        navigationController?.navigationBar.isTranslucent = false
+        
         view.backgroundColor = UIViewController_backround
         tableView = UITableView()
         tableView.backgroundColor = UIViewController_backround
@@ -130,7 +133,7 @@ extension AddressBookViewController:UITableViewDataSource,UITableViewDelegate,Sw
             AddressBookService.service.delete(addressInfo: self.dataSource![indexPath.row])
             self.dataSource?.remove(at: indexPath.row)
             action.fulfill(with: .delete)
-            
+            self.tableView.reloadData()
         }
         deleteAction.backgroundColor = UIColor(rgb: 0xF5302C)
         deleteAction.textColor = UIColor(rgb: 0xFAFAFA)   

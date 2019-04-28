@@ -47,11 +47,11 @@
                                 <color key="textColor" red="0.38039215686274508" green="0.39215686274509803" blue="0.43137254901960786" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Nos-5Y-gVg">
-                                <rect key="frame" x="285.5" y="37.5" width="18.5" height="18.5"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_swallet_edit" translatesAutoresizingMaskIntoConstraints="NO" id="Nos-5Y-gVg">
+                                <rect key="frame" x="284" y="36" width="20" height="20"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="18.399999999999999" id="lXU-cg-Cof"/>
-                                    <constraint firstAttribute="height" constant="18.399999999999999" id="tvv-Sm-A7G"/>
+                                    <constraint firstAttribute="width" constant="20" id="lXU-cg-Cof"/>
+                                    <constraint firstAttribute="height" constant="20" id="tvv-Sm-A7G"/>
                                 </constraints>
                             </imageView>
                         </subviews>
@@ -86,4 +86,7 @@
             <point key="canvasLocation" x="132.80000000000001" y="167.31634182908547"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <image name="icon_swallet_edit" width="20" height="20"/>
+    </resources>
 </document>

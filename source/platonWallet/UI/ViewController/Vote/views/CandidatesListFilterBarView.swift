@@ -251,7 +251,7 @@ class CandidatesListFilterBarView: UIView {
             scaleFactor = 1.0
             xoffset = 0.0
         }else{
-            scaleFactor = 1.15
+            scaleFactor = 1.23
             xoffset = 5
         }
         
