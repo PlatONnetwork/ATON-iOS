@@ -48,7 +48,7 @@
 "navigationbar_wallet_title" = "Classic Wallet";
 "navigationbar_sharedwallet_title" = "Joint Wallet";
 
-"asset_header_total_asset" = "Total";
+"asset_header_total_asset" = "Total Energon";
 
 //transfer viewController
 "transferVC_nav_title" = "Send";
@@ -683,3 +683,6 @@
 "send_wallet_colon" = "Wallet Address:";
 "send_amout_colon" = "Amout:";
 "send_sendAll" = "Send all";
+
+"send_address_placeholder" = "Input wallet address";
+"send_amount_placeholder" = "Input Amount";

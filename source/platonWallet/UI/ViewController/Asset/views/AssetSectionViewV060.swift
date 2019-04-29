@@ -111,6 +111,7 @@ class AssetSectionViewV060: UIView {
             CATransaction.commit()
         }
          */
+        print("walletnamefont: \(walletName.font)")
     }
     
     
