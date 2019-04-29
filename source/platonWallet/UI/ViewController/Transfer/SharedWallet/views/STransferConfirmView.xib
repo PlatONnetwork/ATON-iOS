@@ -208,8 +208,8 @@
                                                 <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="MemberSignDetailVC_value"/>
                                             </userDefinedRuntimeAttributes>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Energon Price:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cGC-1P-6ty" userLabel="PriceDes">
-                                            <rect key="frame" x="10" y="252" width="320" height="15"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Energon Price:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cGC-1P-6ty" userLabel="PriceDes">
+                                            <rect key="frame" x="16" y="252" width="314" height="15"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="15" id="ont-xt-Zzj"/>
                                             </constraints>
@@ -259,7 +259,7 @@
                                         <constraint firstItem="QLY-y3-Mfd" firstAttribute="leading" secondItem="cGC-1P-6ty" secondAttribute="trailing" constant="16" id="QJv-y7-mCB"/>
                                         <constraint firstItem="UBo-gT-x6h" firstAttribute="leading" secondItem="03r-cQ-aBh" secondAttribute="leading" constant="16" id="SV6-tC-HED"/>
                                         <constraint firstItem="Sl6-tz-tbH" firstAttribute="top" secondItem="2AD-6T-Kgz" secondAttribute="bottom" constant="16" id="Squ-3M-2Ry"/>
-                                        <constraint firstItem="cGC-1P-6ty" firstAttribute="leading" secondItem="03r-cQ-aBh" secondAttribute="leading" constant="10" id="TGB-zP-VVo"/>
+                                        <constraint firstItem="cGC-1P-6ty" firstAttribute="leading" secondItem="03r-cQ-aBh" secondAttribute="leading" constant="16" id="TGB-zP-VVo"/>
                                         <constraint firstItem="cwY-Oq-LBw" firstAttribute="leading" secondItem="Sl6-tz-tbH" secondAttribute="trailing" constant="16" id="Wht-GV-GJe"/>
                                         <constraint firstItem="UBo-gT-x6h" firstAttribute="top" secondItem="Sl6-tz-tbH" secondAttribute="bottom" constant="16" id="Xd2-Cd-BS4"/>
                                         <constraint firstAttribute="trailing" secondItem="AeD-oB-Ijs" secondAttribute="trailing" constant="16" id="a3C-c9-men"/>

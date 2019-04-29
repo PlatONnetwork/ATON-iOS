@@ -361,6 +361,18 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
         if !self.checkConfirmButtonAvailable(){
             return
         }
+        let toAddress = self.walletAddressView.textField.text ?? ""
+        if let wallet = AssetVCSharedData.sharedData.selectedWallet as? Wallet{
+            if toAddress.ishexStringEqual(other: wallet.key?.address){
+                AssetViewControllerV060.getInstance()?.showMessage(text: Localized("cannot_send_itself"))
+                return
+            }
+        }else if let swallet = AssetVCSharedData.sharedData.selectedWallet as? SWallet{
+            if (toAddress.ishexStringEqual(other: swallet.contractAddress)){
+                AssetViewControllerV060.getInstance()?.showMessage(text: Localized("cannot_send_itself"))
+                return
+            }
+        }
         
         confirmPopUpView = PopUpViewController()
         let confirmView = UIView.viewFromXib(theClass: TransferConfirmView.self) as! TransferConfirmView
@@ -449,7 +461,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
     
     func showPasswordInputPswAlert() { 
         
-        var executorWallet : Wallet?
+        var executorWallet : Wallet? 
         if let w = AssetVCSharedData.sharedData.selectedWallet as? Wallet{
             executorWallet = w
         }else{
@@ -625,7 +637,7 @@ extension AssetSendViewControllerV060{
         let memo = ""
         
         let _ = TransactionService.service.sendAPTTransfer(from: from!, to: to, amount: amount, InputGasPrice: self.gasPrice!, estimatedGas: String(self.estimatedGas!), memo: memo, pri: pri, completion: {[weak self] (result, txHash) in
-            AssetViewControllerV060.getInstance()?.hideLoadingHUD()
+            AssetViewControllerV060.getInstance()?.hideLoadingHUD(delay: 0.2)
             switch result{
             case .success:
                 self?.didTransferSuccess()
@@ -705,7 +717,7 @@ extension AssetSendViewControllerV060{
                                                         time: UInt64(time),
                                                         fee: fee,
                                                         completion: {[weak self] (result, data) in
-                                                            AssetViewControllerV060.getInstance()?.hideLoadingHUD()
+                                                        AssetViewControllerV060.getInstance()?.hideLoadingHUD(delay: 0.2)
                                                             switch result{
                                                             case .success:
                                                                 UIApplication.rootViewController().showMessage(text: Localized("transferVC_transfer_success_tip")); self?.navigationController?.popViewController(animated: true)

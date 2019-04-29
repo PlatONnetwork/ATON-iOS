@@ -174,7 +174,7 @@
                                                 <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="TransactionDetailVC_value"/>
                                             </userDefinedRuntimeAttributes>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Energon Price:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cGC-1P-6ty" userLabel="PriceDes">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Energon Price:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cGC-1P-6ty" userLabel="PriceDes">
                                             <rect key="frame" x="16" y="254" width="321" height="17"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <color key="textColor" red="0.38039215686274508" green="0.39215686274509803" blue="0.43137254901960786" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

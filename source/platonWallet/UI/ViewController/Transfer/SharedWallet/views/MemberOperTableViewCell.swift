@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Localize_Swift
 
 class MemberOperTableViewCell: UITableViewCell {
 
@@ -29,12 +30,25 @@ class MemberOperTableViewCell: UITableViewCell {
         let copyResult = DeterminedResult(value: result as Any)
         
         for item in (swallet.owners){ 
-            if item.walletAddress == copyResult.walletAddress{
-                copyResult.walletName = item.walletName
+            if (item.walletAddress?.ishexStringEqual(other: copyResult.walletAddress))!{
+                if (item.walletAddress?.ishexStringEqual(other: swallet.walletAddress))!{
+                    copyResult.walletName = Localized("MemberSignDetailVC_YOU")
+                }else{
+                    copyResult.walletName = item.walletName
+                }
             }
         }
         
-        walletName.text = copyResult.walletName
+        if copyResult.walletName == nil || copyResult.walletName?.length == 0{
+            if copyResult.walletAddress?.ishexStringEqual(other: swallet.walletAddress) ?? false{
+                walletName.text = Localized("MemberSignDetailVC_YOU")
+            }else{
+                walletName.text = Localized("sharedWalletDefaltMemberName") + String(result.nameIndex)
+            }
+        }else{
+            walletName.text = copyResult.walletName
+        }
+        
         walletAddress.text = copyResult.walletAddress
         
         if result.operation == OperationAction.approval.rawValue{
