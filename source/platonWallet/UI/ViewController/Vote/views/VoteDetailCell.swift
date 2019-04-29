@@ -40,7 +40,7 @@ class VoteDetailCell: UITableViewCell {
     }
     
     func updateCell(singleVote: SingleVote){
-       
+        
         voteDateLabel.text = Date(timeIntervalSince1970: TimeInterval(singleVote.createTime)).toFormatter("yyyy-MM-dd HH:mm:ss")
         let validNumber = Int(singleVote.validNum) ?? 0
         let invalidNumber = singleVote.invalidNumber
@@ -55,7 +55,7 @@ class VoteDetailCell: UITableViewCell {
     
         lockedAndReleaseLabel.text = String(format: "%@/%@", lockedDes,releaseDes)
         
-        let rewardBig = BigUInt(singleVote.voteEarnings ?? "0")?.divide(by: ETHToWeiMultiplier, round: 4) ?? "0"
+        let rewardBig = BigUInt.safeInit(str: singleVote.voteEarnings ?? "0").divide(by: ETHToWeiMultiplier, round: 4)
         
         rewardLabel.text = rewardBig.EnergonSuffix()
         

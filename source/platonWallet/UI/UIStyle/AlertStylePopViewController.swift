@@ -106,6 +106,7 @@ class AlertStylePopViewController: UIViewController,UITextFieldDelegate {
 
         self.titleLabel.localizedText  = ""
         self.textFieldInput.delegate = self
+        self.textFieldInput.autocorrectionType = .no
         self.textFieldInput.tintColor = UIColor(rgb: 0x0077FF)
         self.errorLabel.text = ""
         
@@ -219,7 +220,7 @@ class AlertStylePopViewController: UIViewController,UITextFieldDelegate {
             } 
         }
         
-    }
+    } 
     
     func configCommonInputWithMessage(){
         self.imageIcon.image = UIImage(named: "alertEditImage")
@@ -405,7 +406,7 @@ internal extension AlertStylePopViewController {
 
         let p2 = self.whiteContentView.convert(self.whiteContentView.bounds, to: self.view)
         let m = kUIScreenHeight - p2.maxY
-        let whiteContentBottomToKeyboardView = -30 + (m - keyboardHeight)
+        let whiteContentBottomToKeyboardView = (m - keyboardHeight)// - 30
         self.contentCenterYConstraint.constant = whiteContentBottomToKeyboardView - 5
         UIView.animate(withDuration: 0.35,
                        delay: 0,

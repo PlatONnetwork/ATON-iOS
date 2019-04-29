@@ -161,17 +161,13 @@ class VotingViewController0 : BaseViewController {
                 alertVC.showInputErrorTip(string: valid.1)
                 return false
             }
-            if let notnilAlertVC = self?.passwordInputAlert{
-                notnilAlertVC.showLoadingHUD()
-            }
+            alertVC.showLoadingHUD()
             WalletService.sharedInstance.exportPrivateKey(wallet: self!.selectedWallet!, password: (alertVC.textFieldInput?.text)!, completion: { (pri, err) in
                 if (err == nil && (pri?.length)! > 0) {
                     self?.doVote(pri!)
                     alertVC.dismissWithCompletion()
                 }else{
-                    if let notnilAlertVC = self?.passwordInputAlert{
-                        notnilAlertVC.hideLoadingHUD()
-                    }
+                    alertVC.hideLoadingHUD()
                     self?.showMessage(text: (err?.errorDescription)!)
                 }
             })
@@ -186,11 +182,10 @@ class VotingViewController0 : BaseViewController {
     }
     
     func doVote(_ pri: String){
-         
+
+        self.showLoadingHUD()
         VoteManager.sharedInstance.VoteTicket(count: UInt64(self.votingView.voteNumber!.text!)!, price: VoteManager.sharedInstance.ticketPrice!, nodeId: (self.candidate?.candidateId)!, sender: (self.selectedWallet?.key?.address)!, privateKey: pri, gasPrice: TransactionService.service.ethGasPrice!, gas: deploy_UseStipulatedGas) {[weak self] (result, data) in
-            if let notnilAlertVC = self?.passwordInputAlert{
-                notnilAlertVC.showLoadingHUD()
-            }
+            self?.hideLoadingHUD()
             switch result{
             case .success:
                 self?.navigationController?.popViewController(animated: true)

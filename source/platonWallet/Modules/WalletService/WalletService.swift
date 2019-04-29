@@ -41,7 +41,7 @@ public final class WalletService {
         }
         
     }
-    
+     
     func refreshDB(){
         wallets.removeAll()
         wallets.append(contentsOf: walletStorge?.getAll() ?? [])
