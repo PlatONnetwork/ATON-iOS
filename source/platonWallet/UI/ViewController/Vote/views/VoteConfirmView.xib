@@ -122,7 +122,7 @@
                             <color key="textColor" red="0.3803921569" green="0.3921568627" blue="0.43137254899999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                             <userDefinedRuntimeAttributes>
-                                <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="transferVC_confirm_From"/>
+                                <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="vote_confirm_from"/>
                             </userDefinedRuntimeAttributes>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="JJ" textAlignment="right" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fUJ-9M-2jb">

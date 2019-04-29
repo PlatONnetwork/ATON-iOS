@@ -52,7 +52,7 @@ class STransferDetailView: UIView ,UITableViewDataSource,UITableViewDelegate{
     @IBOutlet weak var hashDes: UILabel!
     
     @IBOutlet weak var hashContainer: UIView!
-    
+     
     
     
     @IBOutlet weak var hashDesHeight: NSLayoutConstraint!

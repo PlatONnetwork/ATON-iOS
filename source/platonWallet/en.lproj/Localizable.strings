@@ -237,7 +237,8 @@
 "PersonalVC_nav_title" = "Me";
 
 "PersonalVC_cell_wallet_manager" = "Wallet Manage";
-"PersonalVC_cell_wallet_Transactions" = "Transactions";
+//"PersonalVC_cell_wallet_Transactions" = "Transactions";
+"PersonalVC_cell_wallet_Transactions" = "Txn";
 "PersonalVC_cell_wallet_address_book" = "Address Book";
 "PersonalVC_cell_wallet_setting" = "Settings";
 "PersonalVC_cell_wallet_help" = "Help";
@@ -683,3 +684,4 @@
 "send_wallet_colon" = "Wallet Address:";
 "send_amout_colon" = "Amout:";
 "send_sendAll" = "Send all";
+"vote_confirm_from" = "From:";

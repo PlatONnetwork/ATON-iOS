@@ -144,7 +144,7 @@ class TransactionService : BaseService{
                 guard (item.txhash != nil) else{
                     continue
                 }
-                guard TransanctionType(rawValue: item.transactionType) == .Vote else {
+                guard TransanctionType(rawValue: item.transactionType) == .Vote else { 
                     continue
                 }
                 let byteCode = try! EthereumData(ethereumValue: item.txhash!)
@@ -178,8 +178,7 @@ class TransactionService : BaseService{
                             RealmWriteQueue.async {
                                 autoreleasepool(invoking: {
                                     let realm = RealmHelper.getNewRealm()
-                                    let hash = newItem.hash
-                                    
+                                    let hash = newItem.txhash
                                     
                                     let singleVote = realm.object(ofType: SingleVote.self, forPrimaryKey: newItem.txhash)
                                     
@@ -190,9 +189,12 @@ class TransactionService : BaseService{
                                         realm.add(newItem, update: true)
                                         if singleVote != nil{
                                             singleVote?.deposit = priceStr
+                                            singleVote?.validNum = validCountStr
                                             realm.add(singleVote!, update: true)
                                             DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: { 
                                                 NotificationCenter.default.post(name: NSNotification.Name(DidUpdateVoteTransactionByHashNotification), object: hash)
+                                                NotificationCenter.default.post(name: NSNotification.Name(DidUpdateTransactionByHashNotification), object: hash)
+                                                
                                             })
                                         }
                                     }
