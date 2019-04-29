@@ -98,7 +98,7 @@ class TransferDetailView: UIView {
                 nodeNameLabel.text = candidateInfo.name
                 nodeIdLabel.text = singleVote.candidateId?.add0x()
                 numOfTicketsLabel.text = "\(singleVote.validNum)"
-                ticketPriceLabel.text = singleVote.deposit!.EnergonSuffix()
+                ticketPriceLabel.text = BigUInt.safeInit(str: singleVote.deposit ?? "").divide(by: ETHToWeiMultiplier, round: 4).EnergonSuffix()
 
             }else {
                 voteExtraView.isHidden = true
