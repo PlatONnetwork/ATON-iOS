@@ -56,6 +56,9 @@ class TransferDetailView: UIView {
     
     @IBOutlet weak var valueTitle: UILabel!
     
+    @IBOutlet weak var walletNameLabel: UILabel!
+    
+    
     @IBOutlet weak var showVoteExtraViewConstraint: NSLayoutConstraint!
     
     override func awakeFromNib() {
@@ -82,7 +85,6 @@ class TransferDetailView: UIView {
     func updateContent(tx : AnyObject,wallet : Wallet?){
         
         if let tx = tx as? Transaction{
- 
             if TransanctionType(rawValue: tx.transactionType) == .Vote {
                 voteExtraView.isHidden = false
                 showVoteExtraViewConstraint.priority = .defaultHigh
@@ -97,8 +99,17 @@ class TransferDetailView: UIView {
                 let candidateInfo = VotePersistence.getCandidateInfoWithId(singleVote.candidateId ?? "")
                 nodeNameLabel.text = candidateInfo.name
                 nodeIdLabel.text = singleVote.candidateId?.add0x()
-                numOfTicketsLabel.text = "\(singleVote.validNum)"
-                ticketPriceLabel.text = BigUInt.safeInit(str: singleVote.deposit ?? "").divide(by: ETHToWeiMultiplier, round: 4).EnergonSuffix()
+                if singleVote.validNum.count > 0{
+                    numOfTicketsLabel.text = "\(singleVote.validNum)"
+                }else{
+                    numOfTicketsLabel.text = "-"
+                }
+                if (singleVote.deposit?.count)! > 0{
+                    ticketPriceLabel.text = BigUInt.safeInit(str: singleVote.deposit ?? "").divide(by: ETHToWeiMultiplier, round: 4).EnergonSuffix()
+                }else{
+                    ticketPriceLabel.text = "-".EnergonSuffix()
+                }
+                
 
             }else {
                 voteExtraView.isHidden = true
@@ -111,17 +122,12 @@ class TransferDetailView: UIView {
             fromLabel.text = tx.from
             toLabel.text = tx.to
             valueLabel.text = tx.valueDescription!.ATPSuffix()
-            
             feeLabel.text = tx.feeDescription?.ATPSuffix()
-            /*
-            if (tx.memo?.length)! > 0{
-                memoContent.text = tx.memo
-            }else{
-                memoContent.localizedText = "TransactionDetailVC_memo_none"
-            }
-            */
             
-//                tx.transanctionTypeLazy?.localizedDesciption
+            
+            if let w = WalletService.sharedInstance.getWalletByAddress(address: tx.from ?? ""){
+                self.walletNameLabel.text = w.name
+            }
             updateStatus(tx: tx)
         }else if let tx = tx as? STransaction{
             
@@ -171,7 +177,7 @@ class TransferDetailView: UIView {
         }
 
         
-    }
+    } 
     
     func updateStatus(tx : STransaction){
         let detachTx = tx.detached()

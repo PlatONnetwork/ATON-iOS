@@ -682,3 +682,4 @@
 "send_wallet_colon" = "接收钱包地址：";
 "send_amout_colon" = "数量：";
 "send_sendAll" = "全部发送";
+"vote_confirm_from" = "支付钱包：";

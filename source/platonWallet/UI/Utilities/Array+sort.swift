@@ -180,9 +180,7 @@ extension Array {
             if let castItem = item as? STransaction{
                 return castItem.nodeURLStr == SettingService.getCurrentNodeURLString()
             }
-            if let castItem = item as? AddressInfo{
-                return castItem.nodeURLStr == SettingService.getCurrentNodeURLString()
-            }
+
             return true
         }
        

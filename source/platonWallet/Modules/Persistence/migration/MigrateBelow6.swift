@@ -38,7 +38,7 @@ extension RealmHelper{
         })
         */
         
-        migration.deleteData(forType: AddressInfo.className())
+        //migration.deleteData(forType: AddressInfo.className())
         migration.deleteData(forType: Transaction.className())
         migration.deleteData(forType: SWallet.className())
         migration.deleteData(forType: STransaction.className())

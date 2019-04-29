@@ -129,7 +129,7 @@ class VotingViewController0 : BaseViewController {
                     self.showMessage(text: Localized("RPC_Response_serverError"), delay: 3)
                     TransactionService.service.getEthGasPrice(completion: nil)
                     return
-                }
+                } 
                  
                 self.confirmPopUpView = PopUpViewController()
                 let confirmView = UIView.viewFromXib(theClass: VoteConfirmView.self) as! VoteConfirmView
