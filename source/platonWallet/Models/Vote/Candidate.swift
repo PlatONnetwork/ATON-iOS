@@ -11,7 +11,7 @@ import BigInt
 import Localize_Swift
 import RealmSwift
 
-enum RankStatus {
+enum RankStatus : Int{
     case candidateFirst100
     case alternativeFirst100
     case validator
@@ -104,7 +104,7 @@ class Candidate:NSObject, Decodable {
     
     var tickets: UInt16?
     
-    var rankStatus: RankStatus = .candidateFirst100
+    var rankStatus: RankStatus = .alternativeFirst100
     
     var rankByDeposit: UInt16?
     

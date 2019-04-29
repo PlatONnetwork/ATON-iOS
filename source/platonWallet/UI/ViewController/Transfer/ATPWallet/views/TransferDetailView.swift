@@ -109,8 +109,6 @@ class TransferDetailView: UIView {
                 }else{
                     ticketPriceLabel.text = "-".EnergonSuffix()
                 }
-                
-
             }else {
                 voteExtraView.isHidden = true
                 showVoteExtraViewConstraint.priority = .defaultLow
@@ -143,17 +141,11 @@ class TransferDetailView: UIView {
             
             valueLabel.text = "-"
             feeLabel.text = tx.feeDescription!.ATPSuffix()
-            
-            /*
-            if tx.memo?.length != nil && (tx.memo?.length)! > 0{
-                memoContent.text = tx.memo
-            }else{
-                memoContent.localizedText = "TransactionDetailVC_memo_none"
-            }
-             */
-            
             transactionTypeLabel.text = tx.typeLocalization
             updateStatus(tx: tx)
+            if let w = WalletService.sharedInstance.getWalletByAddress(address: tx.ownerWalletAddress){
+                self.walletNameLabel.text = w.name
+            }
         }
         
     }

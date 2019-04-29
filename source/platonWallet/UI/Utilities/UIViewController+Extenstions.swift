@@ -70,14 +70,16 @@ extension UIViewController {
         }*/
     }
     
-    func hideLoadingHUD(animated: Bool = true) {
-        self.isInCustomLoading = false
-        CustomLoading.hideLoading(viewController: self)
-        /*
-        DispatchQueue.main.async {
-            MBProgressHUD.hide(for: self.view, animated: animated)
+    func hideLoadingHUD(animated: Bool = true,delay: Double = 0) {
+        if delay == 0{
+            self.isInCustomLoading = false
+            CustomLoading.hideLoading(viewController: self)
+        }else{
+            DispatchQueue.main.asyncAfter(deadline: .now() + delay) { 
+                self.isInCustomLoading = false
+                CustomLoading.hideLoading(viewController: self)
+            }        
         }
-         */
     }
     
     func showMessage(text: String, delay: TimeInterval = 0.8) {

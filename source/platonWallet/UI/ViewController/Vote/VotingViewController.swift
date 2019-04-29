@@ -168,7 +168,8 @@ class VotingViewController0 : BaseViewController {
                     alertVC.dismissWithCompletion()
                 }else{
                     alertVC.hideLoadingHUD()
-                    self?.showMessage(text: (err?.errorDescription)!)
+                    alertVC.showInputErrorTip(string: (err?.errorDescription)!)
+                    //self?.showMessage(text: (err?.errorDescription)!)
                 }
             })
             return false

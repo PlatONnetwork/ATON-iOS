@@ -250,7 +250,7 @@ class CandidatesListViewController: BaseViewController {
                     let first100 = list.count > 100 ? Array(list[0..<100]) : list
                     self.nominateNodeList = first100.filter { (item) -> Bool in
                         item.tickets ?? 0 >= kCandidateMinNumOfTickets
-                    }
+                    } 
                     for item in self.nominateNodeList {
                         item.rankStatus = .candidateFirst100
                     }

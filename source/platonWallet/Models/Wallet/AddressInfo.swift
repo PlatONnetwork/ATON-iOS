@@ -24,6 +24,9 @@ class AddressInfo : Object{
     @objc dynamic var createTime = Date().millisecondsSince1970
     @objc dynamic var updateTime = Date().millisecondsSince1970
     
+    //defualt wallet name e.g. user1 user2
+    var nameIndex = 0
+    
     override public static func primaryKey() -> String? {
         return "uuid"
     }
