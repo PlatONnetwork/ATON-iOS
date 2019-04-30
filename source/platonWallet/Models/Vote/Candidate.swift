@@ -12,15 +12,15 @@ import Localize_Swift
 import RealmSwift
 
 enum RankStatus : Int{
-    case candidateFirst100
-    case alternativeFirst100
+    case waitingCandidate
+    case nomimated
     case validator
     
     func desc() -> String {
         switch self {
-        case .candidateFirst100:
+        case .nomimated:
             return Localized("CandidateDetailVC_rankStatu_candidateFirst100")
-        case .alternativeFirst100:
+        case .waitingCandidate:
             return Localized("CandidateDetailVC_rankStatu_alternativeFirst100")
         case .validator:
             return Localized("CandidateDetailVC_rankStatu_Validator")
@@ -104,7 +104,7 @@ class Candidate:NSObject, Decodable {
     
     var tickets: UInt16?
     
-    var rankStatus: RankStatus = .alternativeFirst100
+    var rankStatus: RankStatus = .waitingCandidate
     
     var rankByDeposit: UInt16?
     

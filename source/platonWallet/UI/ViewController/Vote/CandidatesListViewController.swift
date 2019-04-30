@@ -224,9 +224,7 @@ class CandidatesListViewController: BaseViewController {
                     return
                 }
                 
-                list.candidateSort()
-                
-                //list = list.count > 200 ? Array(list[0..<200]) : list
+                list = list.count > 200 ? Array(list[0..<200]) : list
                 
                 for i in 0..<list.count {
                     list[i].rankByDeposit = UInt16(i + 1)
@@ -252,14 +250,14 @@ class CandidatesListViewController: BaseViewController {
                         item.tickets ?? 0 >= kCandidateMinNumOfTickets
                     } 
                     for item in self.nominateNodeList {
-                        item.rankStatus = .candidateFirst100
+                        item.rankStatus = .nomimated
                     }
                     self.waitingCandidateslist = list.filter { (item) -> Bool in
                         item.tickets ?? 0 < kCandidateMinNumOfTickets
                     }
                     self.waitingCandidateslist = self.waitingCandidateslist.count > 100 ? Array(self.waitingCandidateslist[0..<100]) : self.waitingCandidateslist
                     for item in self.waitingCandidateslist {
-                        item.rankStatus = .alternativeFirst100
+                        item.rankStatus = .waitingCandidate
                     }
                     
                     for item in self.nominateNodeList{
@@ -354,9 +352,8 @@ class CandidatesListViewController: BaseViewController {
         
         switch type {
         case .default:
-            
-            var dataSource = nominateNodeList + waitingCandidateslist
-            dataSource.candidateSort()
+            nominateNodeList.candidateSortByDepositAmout()
+            let dataSource = nominateNodeList + waitingCandidateslist
             return dataSource
             
         case .reward:
