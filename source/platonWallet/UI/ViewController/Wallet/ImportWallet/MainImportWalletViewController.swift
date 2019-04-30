@@ -78,6 +78,7 @@ class MainImportWalletViewController: BaseViewController,UIScrollViewDelegate,Im
         view.addSubview(headerView)
         headerView.snp.makeConstraints { (maker) in
             //maker.top.equalToSuperview().offset(44 + 20 + UIDevice.notchHeight)
+//            maker.top.equalToSuperview()
             if #available(iOS 11.0, *) {
                 maker.top.equalTo(view.safeAreaLayoutGuide.snp.top)
             } else {

@@ -49,6 +49,8 @@ class CandidatesListHeaderView: UIView {
     private var curPoll: Int?
     private var curVoteRate: Float?
     
+    private var isHideUI: Bool = false
+    
     @IBOutlet weak var contentHeightConstant: NSLayoutConstraint!
     
     
@@ -111,8 +113,11 @@ class CandidatesListHeaderView: UIView {
         let poll = curPoll == nil ? "-":"\(curPoll!)"
         let ticketPrice = "\(curTicketPrice ?? "-")".ATPSuffix()
         
-        voteRateLabel.text = Localized("CandidateListVC_header_desc", arguments: voteRate, poll, ticketPrice)
-        voteRateLabel.text = Localized("CandidateListVC_voteRate_desc", arguments: voteRate)
+        // update为界面定时刷新数据，但在滚动时候数据展示有变化，在其他数据隐藏情况下不更新该字段
+        if !isHideUI {
+            voteRateLabel.text = Localized("CandidateListVC_voteRate_desc", arguments: voteRate)
+        }
+        
         voteNumberLabel.text = Localized("CandidateListVC_VoteNumber_desc", arguments: poll)
         self.ticketPrice.text = Localized("CandidateListVC_TicketPrice_desc", arguments: ticketPrice)
         
@@ -129,16 +134,17 @@ class CandidatesListHeaderView: UIView {
         self.voteNumberLabel.alpha = alpha
         self.bgImageView.alpha = alpha
         self.progressView.alpha = alpha
-        
         if alpha >= 0.9 {
             let voteRate = self.curVoteRate == nil ? "-%":String(format: "%.2f%%", self.curVoteRate! * 100)
             self.voteRateLabel.text = Localized("CandidateListVC_voteRate_desc", arguments: voteRate)
             self.myVoteButton.setImage(UIImage(named: "myvoteBtn"), for: .normal)
             self.myVoteLabel.transform = CGAffineTransform.identity
+            isHideUI = false
         } else if alpha <= 1.5 {
             self.voteRateLabel.text = Localized("CandidateListVC_title")
             self.myVoteButton.setImage(nil, for: .normal)
             self.myVoteLabel.transform = CGAffineTransform(scaleX: 1.4, y: 1.4)
+            isHideUI = true
         }
         
 //        UIView.animate(withDuration: 0.3, animations: {
