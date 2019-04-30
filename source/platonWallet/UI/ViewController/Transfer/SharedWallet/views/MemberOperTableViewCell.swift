@@ -25,7 +25,7 @@ class MemberOperTableViewCell: UITableViewCell {
         copyButton.attachTextView = walletAddress
     }
 
-    func updateCell(result: DeterminedResult, swallet: SWallet) {
+    func updateCell(result: DeterminedResult, swallet: SWallet,nameMap: [String:Int]) {
         
         let copyResult = DeterminedResult(value: result as Any)
         
@@ -43,7 +43,9 @@ class MemberOperTableViewCell: UITableViewCell {
             if copyResult.walletAddress?.ishexStringEqual(other: swallet.walletAddress) ?? false{
                 walletName.text = Localized("MemberSignDetailVC_YOU")
             }else{
-                walletName.text = Localized("sharedWalletDefaltMemberName") + String(result.nameIndex)
+                let index = nameMap[copyResult.walletAddress!] as? Int
+                 ?? 0
+                walletName.text = Localized("sharedWalletDefaltMemberName") + String(index)
             }
         }else{
             walletName.text = copyResult.walletName

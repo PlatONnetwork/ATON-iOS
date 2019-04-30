@@ -27,7 +27,6 @@ class DeterminedResult : AddressInfo{
             return OperationAction(rawValue: operation)!
         }
     }
-    
 }
 
 enum TransanctionCategory : Int {
@@ -524,6 +523,19 @@ class STransaction: Object {
         if self.transanctionCategoryLazy == .ATPTransfer{
             self.uuid = self.contractAddress + "_" + self.transactionID
         }
+    }
+    
+    public func initMemberNameIndexWithOwnerWalletAddress(owner: String?) -> [String:Int]{
+        
+        var index = 0
+        var nameMap : [String: Int] = [:]
+        for item in self.determinedResult{
+            if !(item.walletAddress?.ishexStringEqual(other: owner ?? ""))!{
+                index = index + 1
+                nameMap[item.walletAddress!] = index
+            }
+        }
+        return nameMap
     }
 
     

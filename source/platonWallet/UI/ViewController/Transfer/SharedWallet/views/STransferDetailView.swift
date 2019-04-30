@@ -65,6 +65,7 @@ class STransferDetailView: UIView ,UITableViewDataSource,UITableViewDelegate{
     
     var dataSource : [DeterminedResult] = []
     
+    var nameMap : [String: Int] = [:]
     
     override func awakeFromNib() {
         self.hashDes.isHidden = true
@@ -97,25 +98,14 @@ class STransferDetailView: UIView ,UITableViewDataSource,UITableViewDelegate{
     }
     
     func updateUI(transaction : STransaction, swallet: SWallet){
+        nameMap = transaction.initMemberNameIndexWithOwnerWalletAddress(owner: swallet.walletAddress)
         t = transaction
         newTableView(t: t!)
         sw = swallet
         
         dataSource.removeAll()
-        var index = 0
         for item in transaction.determinedResult{
             if item.operation != OperationAction.undetermined.rawValue{
-                /*
-                if item.walletName == nil || item.walletName?.length == 0{
-                    if (item.walletAddress?.ishexStringEqual(other: swallet.walletAddress))!{
-                        //
-                    }else{
-                        index = index + 1
-                        item.nameIndex = index
-                    }
-                }
-                 */
-                
                 dataSource.append(item)
             }
         }
@@ -312,7 +302,7 @@ class STransferDetailView: UIView ,UITableViewDataSource,UITableViewDelegate{
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: MemberOperTableViewCell.self), for: indexPath) as! MemberOperTableViewCell
         let result = dataSource[indexPath.row]
-        cell.updateCell(result: result, swallet: sw!)
+        cell.updateCell(result: result, swallet: sw!,nameMap: nameMap)
         return cell
     } 
     
