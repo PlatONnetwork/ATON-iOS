@@ -37,8 +37,7 @@ class WalletListViewController: BaseViewController,TableViewReorderDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // tableview滚动会显示导行栏透明的情况，可修改基类处理，暂定在该页面处理
-        navigationController?.navigationBar.isTranslucent = false
+        
         setupUI()
         initSubView()
     }
