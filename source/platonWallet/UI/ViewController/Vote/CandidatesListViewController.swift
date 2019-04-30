@@ -57,6 +57,8 @@ class CandidatesListViewController: BaseViewController {
             guard sortedCandidatesList.count > 0 else {
                 return
             }
+            print("sortedCandidatesList: ----")
+            print(sortedCandidatesList)
             refreshTableView()
         }
     }
@@ -118,6 +120,21 @@ class CandidatesListViewController: BaseViewController {
         tableView.tableFooterView = UIView()
         view.addSubview(tableView)
         
+        tableView.emptyDataSetView { [weak self] view in
+            let holder = self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, nil,"empty_no_data_img") as? TableViewNoDataPlaceHolder
+            view.customView(holder)
+            view.isScrollAllowed(true)
+            if let contentInset = self?.tableView.contentInset {
+                view.verticalOffset(-contentInset.top/2.0)
+            }
+        }
+        
+        tableView.contentInset = UIEdgeInsets(top: headerViewHeight + filterBarShrinkHeight - kStatusBarHeight, left: 0, bottom: 0, right: 0)
+        tableView.snp.makeConstraints { (make) in
+            make.top.equalToSuperview()
+            make.leading.bottom.trailing.equalToSuperview()
+        }
+        
         
         headerView = CandidatesListHeaderView(frame: .zero)
         headerView.myVoteButton.addTarget(self, action: #selector(onMyVote), for: .touchUpInside)
@@ -148,20 +165,7 @@ class CandidatesListViewController: BaseViewController {
         
         
         
-        tableView.emptyDataSetView { [weak self] view in
-            let holder = self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, nil,"empty_no_data_img") as? TableViewNoDataPlaceHolder
-            view.customView(holder)
-            view.isScrollAllowed(true)
-            if let contentInset = self?.tableView.contentInset {
-                view.verticalOffset(-contentInset.top/2.0)
-            }
-        }
         
-        tableView.contentInset = UIEdgeInsets(top: headerViewHeight + filterBarShrinkHeight - kStatusBarHeight, left: 0, bottom: 0, right: 0)
-        tableView.snp.makeConstraints { (make) in
-            make.top.equalToSuperview()
-            make.leading.bottom.trailing.equalToSuperview()
-        }
     }
     
     @objc func onMyVote(){
@@ -332,7 +336,7 @@ class CandidatesListViewController: BaseViewController {
             }
         }
         filterBarView.updateSelectedBtn(sender)
-        
+
         startSort()
     }
     
@@ -350,7 +354,8 @@ class CandidatesListViewController: BaseViewController {
         }else {
             dataSource = sortedCandidatesList
         }
-
+        
+        
         tableView.reloadData()
         
     }
@@ -479,6 +484,9 @@ extension CandidatesListViewController: UIScrollViewDelegate {
     }
     func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         self.isScrolling = true
+        if filterBarView.searchTF.isEditing {
+            filterBarView.searchTF.resignFirstResponder()
+        }
 //        let actualPosition = scrollView.panGestureRecognizer.translation(in: scrollView.superview)
 //        if scrollView == scrollContainer{
 //            if (actualPosition.y > 0){
@@ -525,6 +533,7 @@ extension CandidatesListViewController: UIScrollViewDelegate {
 
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        
         let yOffset = scrollView.contentOffset.y
         if scrollView == tableView{
             let xOffset = scrollView.contentInset.top + yOffset
@@ -535,14 +544,18 @@ extension CandidatesListViewController: UIScrollViewDelegate {
                 }
                 
                 var alpha = (kAnimateScrollHeight - xOffset)/kAnimateScrollHeight*1.0
+                print("scroll alpha value: \(alpha)")
                 if alpha < 0.0 {
                     alpha = 0.0
                 } else if alpha > 1.0 {
                     alpha = 1.0
                 }
 
-                headerView.updateHeaderViewStyle(alpha)
-                filterBarView.updateLayoutstyle(alpha)
+                if !filterBarView.searchTF.isEditing {
+                    headerView.updateHeaderViewStyle(alpha)
+                    filterBarView.updateLayoutstyle(alpha)
+                }
+                
                 
                 if alpha == 0.0 {
                     self.setplaceHolderBG(hide:false ,tableView: self.tableView)

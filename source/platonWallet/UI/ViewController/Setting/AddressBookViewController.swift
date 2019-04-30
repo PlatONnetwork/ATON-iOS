@@ -155,9 +155,12 @@ extension AddressBookViewController:UITableViewDataSource,UITableViewDelegate,Sw
     }
     
     func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
+        
         var options = SwipeOptions()
         options.maximumButtonWidth = 60
-        options.expansionStyle = .destructive
+        
+        //设置expansionstyle会左拉到底会自动删除
+//        options.expansionStyle = expansionStyle
         options.transitionStyle = .border
         return options
     }

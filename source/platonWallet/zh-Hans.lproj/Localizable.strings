@@ -48,7 +48,7 @@
 "navigationbar_wallet_title" = "普通钱包";
 "navigationbar_sharedwallet_title" = "联名钱包";
 
-"asset_header_total_asset" = "总计";
+"asset_header_total_asset" = "总计Energon";
 
 //transfer viewController
 "transferVC_nav_title" = "发送 Energon";
@@ -404,7 +404,7 @@
 
 "CreateSharedWalletVC_Select Owner colon" = "选择关联钱包：";
 "CreateSharedWalletVC_Shared Owners colon" = "联名用户数量：";
-"CreateSharedWalletVC_Required Signatures colon" = "所需签名书：";
+"CreateSharedWalletVC_Required Signatures colon" = "所需签名数：";
 
 "CreateSharedWalletVC_Next" = "下一步";
 "CreateSharedWalletVC_member" = "成员";
@@ -682,4 +682,7 @@
 "send_wallet_colon" = "接收钱包地址：";
 "send_amout_colon" = "数量：";
 "send_sendAll" = "全部发送";
+
+"send_address_placeholder" = "输入钱包地址";
+"send_amount_placeholder" = "输入发送数量";
 "vote_confirm_from" = "支付钱包：";
