@@ -35,6 +35,11 @@ class CreateWalletSuccessViewController: BaseViewController {
         return leftBarButtonItem
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.rt_disableInteractivePop = true
+    } 
+    
     @IBAction func startBackup(_ sender: Any) {
         delegate?.startBackup()
     }

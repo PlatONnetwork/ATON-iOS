@@ -85,6 +85,7 @@ class TransferDetailView: UIView {
     func updateContent(tx : AnyObject,wallet : Wallet?){
         
         if let tx = tx as? Transaction{
+            tx.senderAddress = wallet?.key?.address
             if TransanctionType(rawValue: tx.transactionType) == .Vote {
                 voteExtraView.isHidden = false
                 showVoteExtraViewConstraint.priority = .defaultHigh

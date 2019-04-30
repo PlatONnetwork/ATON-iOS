@@ -200,7 +200,7 @@ class Transaction : Object{
         get{
             let type = TransanctionType(rawValue: transactionType) ?? .Send
             if type == .Send {
-                if senderAddress == from {
+                if senderAddress != nil && (senderAddress?.ishexStringEqual(other: from))! {
                     return .Send
                 }else {
                     return .Receive

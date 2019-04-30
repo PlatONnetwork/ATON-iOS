@@ -123,11 +123,12 @@ class TransactionService : BaseService{
                             newItem.confirmTimes = 0
                             newItem.gasUsed = String(txResp.result??.gasUsed.quantity ?? BigUInt(0))
                             realm.add(newItem, update: true)
+                            let hash = newItem.txhash
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: { 
+                                NotificationCenter.default.post(name: NSNotification.Name(DidUpdateTransactionByHashNotification), object: hash)
+                            })
                         }
-                        let hash = newItem.txhash
-                        DispatchQueue.main.async {
-                            NotificationCenter.default.post(name: NSNotification.Name(DidUpdateTransactionByHashNotification), object: hash)
-                        }
+                        
                     case .failure(_):
                         do{}
                     }
@@ -191,7 +192,7 @@ class TransactionService : BaseService{
                                             singleVote?.deposit = priceStr
                                             singleVote?.validNum = validCountStr
                                             realm.add(singleVote!, update: true)
-                                            DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: { 
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: { 
                                                 NotificationCenter.default.post(name: NSNotification.Name(DidUpdateVoteTransactionByHashNotification), object: hash)
                                                 NotificationCenter.default.post(name: NSNotification.Name(DidUpdateTransactionByHashNotification), object: hash)
                                                 
