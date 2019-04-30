@@ -685,3 +685,4 @@
 
 "send_address_placeholder" = "输入钱包地址";
 "send_amount_placeholder" = "输入发送数量";
+"vote_confirm_from" = "支付钱包：";

@@ -14,7 +14,7 @@ import platonWeb3
 
 class TransactionService : BaseService{
 
-    static let service = TransactionService()
+    static let service = TransactionService() 
     
     var timer : Timer? = nil
     
@@ -71,7 +71,7 @@ class TransactionService : BaseService{
     }
     
     @objc func OnJointWalletCreationTimer(){
-        self.JointWalletCreationPooling()
+        self.JointWalletCreationPolling()
     }
     
     @objc func OnAllJointWalletPollingTxs(){
@@ -80,8 +80,8 @@ class TransactionService : BaseService{
     
     @objc func OnPendingTxPolling(){
         self.EnergonTransferPooling()
-        self.JointWalletTransferPooling()
-        self.VotePooling()
+        self.JointWalletTransferPolling()
+        self.VotePolling()
     }
     
     //MARK: - Polling method
@@ -138,13 +138,13 @@ class TransactionService : BaseService{
 
     }
      
-    func VotePooling(){
+    func VotePolling(){
         TransferPersistence.getUnConfirmedTransactions { (txs) in
             for item in txs{
                 guard (item.txhash != nil) else{
                     continue
                 }
-                guard TransanctionType(rawValue: item.transactionType) == .Vote else {
+                guard TransanctionType(rawValue: item.transactionType) == .Vote else { 
                     continue
                 }
                 let byteCode = try! EthereumData(ethereumValue: item.txhash!)
@@ -178,16 +178,28 @@ class TransactionService : BaseService{
                             RealmWriteQueue.async {
                                 autoreleasepool(invoking: {
                                     let realm = RealmHelper.getNewRealm()
-                                    let hash = newItem.hash
+                                    let hash = newItem.txhash
+                                    
+                                    let singleVote = realm.object(ofType: SingleVote.self, forPrimaryKey: newItem.txhash)
+                                    
                                     try? realm.write {
                                         newItem.blockNumber = String(receipt.blockNumber.quantity)
                                         newItem.gasUsed = String(receipt.gasUsed.quantity)
                                         newItem.extra = responseJson
                                         realm.add(newItem, update: true)
+                                        if singleVote != nil{
+                                            singleVote?.deposit = priceStr
+                                            singleVote?.validNum = validCountStr
+                                            realm.add(singleVote!, update: true)
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: { 
+                                                NotificationCenter.default.post(name: NSNotification.Name(DidUpdateVoteTransactionByHashNotification), object: hash)
+                                                NotificationCenter.default.post(name: NSNotification.Name(DidUpdateTransactionByHashNotification), object: hash)
+                                                
+                                            })
+                                        }
                                     }
-                                    DispatchQueue.main.async {
-                                        NotificationCenter.default.post(name: NSNotification.Name(DidUpdateVoteTransactionByHashNotification), object: hash)
-                                    }
+                                    
+                                    
                                 })
                             }
                             
@@ -205,7 +217,7 @@ class TransactionService : BaseService{
     }
     
     
-    func JointWalletTransferPooling(){
+    func JointWalletTransferPolling(){
         let txs = STransferPersistence.getUnConfirmedTransactions()
         for item in txs{
             guard (item.txhash != nil) else{
@@ -350,21 +362,21 @@ class TransactionService : BaseService{
         }
     }
     
-    func JointWalletCreationPooling(){
+    func JointWalletCreationPolling(){
         
         for jointWallet in SWalletService.sharedInstance.creatingWallets{
             
             if jointWallet.creationStatus == ECreationStatus.deploy_HashGenerated.rawValue{
-                self.poolingDeployReception(wallet: jointWallet)
+                self.DeployJointWalletReceiptPolling(wallet: jointWallet)
             }else if jointWallet.creationStatus == ECreationStatus.deploy_ReceiptGenerated.rawValue{
                 SWalletService.sharedInstance.initSharedWallet(wallet: jointWallet, completion: nil)
             }else if jointWallet.creationStatus == ECreationStatus.initWallet_HashGenerated.rawValue{
-                self.poolingInitWalletReception(wallet: jointWallet)
+                self.InitJointWalletReceiptPolling(wallet: jointWallet)
             }
         }
     }
     
-    func poolingDeployReception(wallet: SWallet?){
+    func DeployJointWalletReceiptPolling(wallet: SWallet?){
     
         let hash = try? EthereumData(bytes: EthereumData(bytes: Data(hex: (wallet?.deployHash)!).bytes))
         web3.eth.getTransactionReceipt(transactionHash: hash!) { (receptionResp) in
@@ -393,7 +405,7 @@ class TransactionService : BaseService{
     }
  
      
-    func poolingInitWalletReception(wallet: SWallet?){
+    func InitJointWalletReceiptPolling(wallet: SWallet?){
          
         let hash = try? EthereumData(bytes: EthereumData(bytes: Data(hex: (wallet?.initWalletHash)!).bytes))
         web3.eth.getTransactionReceipt(transactionHash: hash!) { (receptionResp) in

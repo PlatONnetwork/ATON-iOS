@@ -12,7 +12,7 @@ import Alamofire
 import Localize_Swift
 
 //let CentralizationURL = "http://192.168.9.190:18060/browser-server/"
-let CentralizationURL = "http://192.168.9.190:10061/a-api/"
+let DEBUG_CentralizationURL = "http://192.168.9.190:10061/api-203/api/"
 let chaindId = "203"
 let DefaultCentralizationURL = "https://aton.platon.network/"
 let requestTimeout : TimeInterval = 30
@@ -25,6 +25,9 @@ extension VoteManager{
             return DefaultCentralizationURL + "api-" + self.getChainID() + "/api/"
         }else if url == DefaultNodeURL_Beta{
             return DefaultCentralizationURL + "api-" + self.getChainID() + "/api/"
+        }else if url == "http://192.168.120.81:6789"{
+            
+            return DEBUG_CentralizationURL
         }
         return DefaultCentralizationURL + "api-" + self.getChainID() + "/api/"
     }
@@ -36,7 +39,7 @@ extension VoteManager{
         }else if url == DefaultNodeURL_Beta{
             return "104"
         }
-        return "203"
+        return chaindId
     } 
     
     public func getBatchVoteSummary(addressList: [String], completion: PlatonCommonCompletion?) {
@@ -78,8 +81,7 @@ extension VoteManager{
         var walletAddrs: [String] = []
         
         for item in WalletService.sharedInstance.wallets{
-            walletAddrs.append((item.key?.address.lowercased())!)
-            walletAddrs.append((item.key?.address.lowercased())!)
+            walletAddrs.append((item.key?.address)!)
         }
         
         values["cid"] = self.getChainID()

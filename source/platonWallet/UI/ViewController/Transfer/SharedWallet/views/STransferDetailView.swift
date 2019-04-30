@@ -53,8 +53,6 @@ class STransferDetailView: UIView ,UITableViewDataSource,UITableViewDelegate{
     
     @IBOutlet weak var hashContainer: UIView!
     
-    
-    
     @IBOutlet weak var hashDesHeight: NSLayoutConstraint!
     
     @IBOutlet weak var hashContainerHeight: NSLayoutConstraint!
@@ -104,8 +102,20 @@ class STransferDetailView: UIView ,UITableViewDataSource,UITableViewDelegate{
         sw = swallet
         
         dataSource.removeAll()
+        var index = 0
         for item in transaction.determinedResult{
             if item.operation != OperationAction.undetermined.rawValue{
+                /*
+                if item.walletName == nil || item.walletName?.length == 0{
+                    if (item.walletAddress?.ishexStringEqual(other: swallet.walletAddress))!{
+                        //
+                    }else{
+                        index = index + 1
+                        item.nameIndex = index
+                    }
+                }
+                 */
+                
                 dataSource.append(item)
             }
         }

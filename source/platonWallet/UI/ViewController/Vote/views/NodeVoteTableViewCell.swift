@@ -27,7 +27,7 @@ class NodeVoteTableViewCell: UITableViewCell {
     @IBOutlet weak var location: UILabel!
     
     var candidateId : String?
-    
+     
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .none
@@ -69,10 +69,10 @@ class NodeVoteTableViewCell: UITableViewCell {
         location.text = "(\(ipInfo.localizeCountryName ?? Localized("IP_location_unknown")))"
         validandinvalidTicketNum.text = String(format: "%d/%d", nodeVote.validCount,nodeVote.invalidCount)
         
-        let lockedB = BigUInt(nodeVote.assetOflocked ?? "0")!
-        let lockedS = lockedB.divide(by: ETHToWeiMultiplier, round: 8)
+        let lockedB = BigUInt.safeInit(str: nodeVote.assetOflocked ?? "0")
+        let lockedS = lockedB.divide(by: ETHToWeiMultiplier, round: 4)
         lockedAsset.text = lockedS
-        let earningsDes = BigUInt.safeInit(str: nodeVote.voteEarnings).divide(by: ETHToWeiMultiplier, round: 8)
+        let earningsDes = BigUInt.safeInit(str: nodeVote.voteEarnings).divide(by: ETHToWeiMultiplier, round: 4)
         reward.text = earningsDes
     }
     

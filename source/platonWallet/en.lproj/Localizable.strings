@@ -237,7 +237,8 @@
 "PersonalVC_nav_title" = "Me";
 
 "PersonalVC_cell_wallet_manager" = "Wallet Manage";
-"PersonalVC_cell_wallet_Transactions" = "Transactions";
+//"PersonalVC_cell_wallet_Transactions" = "Transactions";
+"PersonalVC_cell_wallet_Transactions" = "Txn";
 "PersonalVC_cell_wallet_address_book" = "Address Book";
 "PersonalVC_cell_wallet_setting" = "Settings";
 "PersonalVC_cell_wallet_help" = "Help";
@@ -580,7 +581,7 @@
 "CandidateListVC_cell_desc" = "Reward Ratio：%@ | Staked：%@";
 "CandidateListVC_empty_desc" = "No Result!";
 "CandidateListVC_vote_noWallet_tips" = "Please create a wallet first";
-"CandidateListVC_vote_insufficient_balance_tips" = "Insufficient balance to vote";
+"CandidateListVC_vote_insufficient_balance_tips" = "The wallet balance is insufficient to vote";
 "CandidateListVC_rightBtn_title" = "My Vote";
 
 "IP_location_unknown" = "*Unknown";
@@ -686,3 +687,4 @@
 
 "send_address_placeholder" = "Input wallet address";
 "send_amount_placeholder" = "Input Amount";
+"vote_confirm_from" = "From:";

@@ -243,18 +243,18 @@ class CandidatesListViewController: BaseViewController {
                         self.hideLoadingHUD()
                     }
                     
-                    dividenominatedandwaitingCandidateslistPool(validatorId: data.1)
+                    dividenominatedandwaitingCandidateslistPool(validatorIds: data.1)
                     
                     self.isQuerying = false 
                     
                     self.startSort()
                 })
                 
-                func dividenominatedandwaitingCandidateslistPool(validatorId: [String]) {
+                func dividenominatedandwaitingCandidateslistPool(validatorIds: [String]) {
                     let first100 = list.count > 100 ? Array(list[0..<100]) : list
                     self.nominateNodeList = first100.filter { (item) -> Bool in
                         item.tickets ?? 0 >= kCandidateMinNumOfTickets
-                    }
+                    } 
                     for item in self.nominateNodeList {
                         item.rankStatus = .candidateFirst100
                     }
@@ -267,7 +267,12 @@ class CandidatesListViewController: BaseViewController {
                     }
                     
                     for item in self.nominateNodeList{
-                        if validatorId.contains(item.candidateId ?? ""){
+                        if validatorIds.contains(item.candidateId ?? ""){
+                            item.rankStatus = .validator
+                        }
+                    }
+                    for item in self.waitingCandidateslist{
+                        if validatorIds.contains(item.candidateId ?? ""){
                             item.rankStatus = .validator
                         }
                     }

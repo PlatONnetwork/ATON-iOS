@@ -380,6 +380,11 @@
                                                 <constraint firstAttribute="trailing" secondItem="0zH-M0-1ke" secondAttribute="trailing" id="w2n-mG-pUV"/>
                                             </constraints>
                                         </view>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="--" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="A8H-u2-UZ1" userLabel="walletName">
+                                            <rect key="frame" x="330" y="16" width="13" height="17"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
@@ -417,6 +422,7 @@
                                         <constraint firstItem="fhh-gT-Cdj" firstAttribute="top" secondItem="cHS-D5-wfH" secondAttribute="bottom" id="j9P-5g-krb"/>
                                         <constraint firstItem="lT7-9Z-cd3" firstAttribute="top" secondItem="Trv-3F-NW2" secondAttribute="bottom" constant="12" id="pRe-mh-dbQ"/>
                                         <constraint firstItem="hnJ-l1-UVh" firstAttribute="top" secondItem="pWF-VR-2hv" secondAttribute="top" constant="16" id="pVD-34-wNI"/>
+                                        <constraint firstAttribute="trailing" secondItem="A8H-u2-UZ1" secondAttribute="trailing" id="pdp-zq-gr4"/>
                                         <constraint firstAttribute="trailing" secondItem="g0D-Vm-x3T" secondAttribute="trailing" id="qgc-2d-DBX"/>
                                         <constraint firstItem="hnJ-l1-UVh" firstAttribute="leading" secondItem="pWF-VR-2hv" secondAttribute="leading" id="r4Y-wE-nDr"/>
                                         <constraint firstItem="39w-lR-fBs" firstAttribute="leading" secondItem="pWF-VR-2hv" secondAttribute="leading" id="sv7-ky-ioe"/>
@@ -424,6 +430,7 @@
                                         <constraint firstItem="g0D-Vm-x3T" firstAttribute="centerY" secondItem="h41-Ki-Fak" secondAttribute="centerY" id="tSB-3D-AtI"/>
                                         <constraint firstItem="clW-XL-K1s" firstAttribute="top" secondItem="Mw7-VZ-529" secondAttribute="bottom" constant="16" id="u8X-mC-McI"/>
                                         <constraint firstItem="Trv-3F-NW2" firstAttribute="top" secondItem="Oh0-G8-y4R" secondAttribute="bottom" priority="250" constant="16" id="ubc-Cc-HFB"/>
+                                        <constraint firstItem="A8H-u2-UZ1" firstAttribute="centerY" secondItem="hnJ-l1-UVh" secondAttribute="centerY" id="uzv-M1-d8y"/>
                                         <constraint firstAttribute="trailing" secondItem="SiB-wH-sCv" secondAttribute="trailing" id="vQq-Iq-8HE"/>
                                         <constraint firstItem="lT7-9Z-cd3" firstAttribute="leading" secondItem="pWF-VR-2hv" secondAttribute="leading" id="vYn-XX-yhd"/>
                                         <constraint firstItem="myg-kz-wB5" firstAttribute="centerY" secondItem="lT7-9Z-cd3" secondAttribute="centerY" id="vkM-9O-uzn"/>
@@ -501,6 +508,7 @@
                 <outlet property="valueLabel" destination="KtY-Fv-LTV" id="110-CB-EOr"/>
                 <outlet property="valueTitle" destination="Trv-3F-NW2" id="cvW-5g-VBN"/>
                 <outlet property="voteExtraView" destination="Oh0-G8-y4R" id="xde-yA-3Gk"/>
+                <outlet property="walletNameLabel" destination="A8H-u2-UZ1" id="FsX-cY-3dT"/>
             </connections>
             <point key="canvasLocation" x="127.2" y="189.3553223388306"/>
         </view>
