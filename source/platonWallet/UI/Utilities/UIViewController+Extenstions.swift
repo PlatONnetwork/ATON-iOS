@@ -133,9 +133,7 @@ extension UIViewController {
                 alertVC.showInputErrorTip(string: valid.1)
                 return false
             }
-            self?.showLoadingHUD()
             WalletService.sharedInstance.exportMnemonic(wallet: wallet, password: text!, completion: { (res, error) in
-                self?.hideLoadingHUD()
                 if (error == nil && (res!.length) > 0) {
                     let vc = BackupMnemonicViewController()
                     vc.mnemonic = res
@@ -145,7 +143,6 @@ extension UIViewController {
                     self?.rt_navigationController!.pushViewController(vc, animated: true)
                     alertVC.dismissWithCompletion()
                 }else{
-                    self?.hideLoadingHUD()
                     alertVC.showInputErrorTip(string: error?.errorDescription)
                 }
             })

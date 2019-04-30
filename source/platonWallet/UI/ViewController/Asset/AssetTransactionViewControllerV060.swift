@@ -253,6 +253,7 @@ extension AssetTransactionViewControllerV060: UITableViewDelegate, UITableViewDa
         }else if let tx = tx as? Transaction{
             let transferVC = TransactionDetailViewController()
             transferVC.transaction = tx
+            transferVC.wallet = AssetVCSharedData.sharedData.cWallet
             AssetViewControllerV060.pushViewController(viewController: transferVC)
         }
     }
