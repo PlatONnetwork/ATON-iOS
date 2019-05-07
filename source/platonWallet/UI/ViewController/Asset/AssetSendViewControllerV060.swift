@@ -59,7 +59,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
         
     lazy var walletAddressView = { () -> PTextFieldView in 
         let walletView = PTextFieldView.create(title: "send_wallet_colon")
-        walletView.textField.placeholder = Localized("send_address_placeholder")
+        walletView.textField.LocalizePlaceholder = "send_address_placeholder"
         walletView.checkInput(mode: .endEdit, check: {[weak self] (text) -> (Bool, String) in
             self?.checkQuickAddAddress()
             return CommonService.checkTransferAddress(text: text)
@@ -90,7 +90,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
     lazy var amountView = { () -> PTextFieldView in 
         
         let amountView = PTextFieldView.create(title: "send_amout_colon")
-        amountView.textField.placeholder = Localized("send_amount_placeholder")
+        amountView.textField.LocalizePlaceholder = "send_amount_placeholder"
         
         amountView.addAction(title: "send_sendAll", action: {[weak self] in
             self?.onSendAll()

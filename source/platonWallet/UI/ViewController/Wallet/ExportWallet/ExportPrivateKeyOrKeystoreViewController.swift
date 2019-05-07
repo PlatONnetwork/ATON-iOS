@@ -114,7 +114,7 @@ class ExportPrivateKeyOrKeystoreViewController: BaseViewController {
         headerView.snp.makeConstraints { (maker) in
             maker.left.right.equalToSuperview()
             maker.height.equalTo(42)
-            maker.top.equalToSuperview().offset(62)
+            maker.top.equalToSuperview()
         }
         
         pageVC.setViewControllers([viewControllers[currentIndex]], direction: .forward, animated: false, completion: nil)
