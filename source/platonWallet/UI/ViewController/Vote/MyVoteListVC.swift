@@ -93,14 +93,17 @@ class MyVoteListVC: BaseViewController,UITableViewDelegate,UITableViewDataSource
     
     
     func getData(showLoading: Bool = true) {
+        let addressStrs = AssetVCSharedData.sharedData.walletList.filterClassicWallet.map { cwallet in
+            return cwallet.key!.address
+        }
+        guard addressStrs.count > 0 else {
+            return
+        }
         
         if showLoading {
             self.showLoadingHUD()
         }
         
-        let addressStrs = AssetVCSharedData.sharedData.walletList.filterClassicWallet.map { cwallet in
-            return cwallet.key!.address
-        }
         if addressStrs.count > 0{
             VoteManager.sharedInstance.getBatchVoteSummary(addressList: addressStrs) {[weak self] (result, resp) in
                 switch result{
@@ -116,16 +119,6 @@ class MyVoteListVC: BaseViewController,UITableViewDelegate,UITableViewDataSource
         }
         
         VoteManager.sharedInstance.getMyVoteList(localDataCompletion: {[weak self] (result, data) in
-            guard let self = self else { return }
-            //default is success
-            /*
-            if let summaries = data as? [NodeVoteSummary]{
-                if showLoading && summaries.count > 0{
-                    self.hideLoadingHUD()
-                }
-                self.reloadWhenSuccessed(summaries: summaries)
-            }
-             */
             
         }) {[weak self] (result, data) in
             guard let self = self else { return }
@@ -189,6 +182,12 @@ class MyVoteListVC: BaseViewController,UITableViewDelegate,UITableViewDataSource
     //MARK: - UIButton Action
     
     @objc func onVote(_ sender: UIButton){
+        
+        let res = VoteManager.sharedInstance.checkMyWalletBalanceIsEnoughToVote()
+        guard res.canVote else {
+            self.showMessage(text: res.errMsg, delay: 3)
+            return
+        }
         
         showLoadingHUD()
 
