@@ -26,7 +26,7 @@ class MemberOperTableViewCell: UITableViewCell {
     }
 
     func updateCell(result: DeterminedResult, swallet: SWallet,nameMap: [String:Int]) {
-        
+         
         let copyResult = DeterminedResult(value: result as Any)
         
         for item in (swallet.owners){ 

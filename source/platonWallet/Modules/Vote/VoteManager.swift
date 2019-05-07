@@ -377,7 +377,7 @@ class VoteManager: BaseService {
             
             return (false, Localized("CandidateListVC_vote_noWallet_tips"))
         }
-        
+         
         var insufficientBalance = true
         for wallet in wallets {
             
