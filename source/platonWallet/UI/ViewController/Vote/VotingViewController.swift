@@ -94,6 +94,54 @@ class VotingViewController0 : BaseViewController {
         view.endEditing(true)
         
         showLoadingHUD()
+        
+        self.checkVoteEnable { (enable,errorMsg) in
+            if enable{
+                self.getTicketPrice()
+            }else{
+                self.hideLoadingHUD()
+                self.showMessage(text: errorMsg ?? "", delay: 2)
+            }
+        }
+    }
+    
+    func checkVoteEnable(completion:@escaping (_ enable: Bool, _ errorMsg: String?) -> Void){
+        VoteManager.sharedInstance.getVerifyListWithCompletion {[weak self] (result, VerifiersListdata) in
+            guard let self = self else {
+                return
+            }
+            switch result{
+            case .success:
+                VoteManager.sharedInstance.GetCandidateTicketCount(candidateIds: [(self.candidate?.candidateId)!]) { (getTicketCoutRes, getTicketCoutData) in
+                    switch getTicketCoutRes{
+                        
+                    case .success:
+                        guard let vidsMap = VerifiersListdata as? [String] else{
+                            completion(true,"")
+                            return
+                        }
+                        
+                        if var ticketNumsMap = getTicketCoutData as? [String:Int]{
+                            if let ticketCount = ticketNumsMap[(self.candidate?.candidateId)!],vidsMap.contains((self.candidate?.candidateId)!),ticketCount == 0 {
+                                completion(false,Localized("node_quit_consensus_tip"))
+                            }else{
+                                completion(true,"")
+                            }
+                        }else{
+                            completion(true,"")
+                        }
+                        
+                    case .fail(_, let msg):
+                        completion(false,msg)
+                    }
+                }
+            case .fail(_, let msg):
+                completion(false,msg)
+            }
+        }
+    }
+    
+    func getTicketPrice(){
         VoteManager.sharedInstance.GetTicketPrice { [weak self] (res, _) in
             
             guard let self = self else {return}
@@ -130,7 +178,7 @@ class VotingViewController0 : BaseViewController {
                     TransactionService.service.getEthGasPrice(completion: nil)
                     return
                 } 
-                 
+                
                 self.confirmPopUpView = PopUpViewController()
                 let confirmView = UIView.viewFromXib(theClass: VoteConfirmView.self) as! VoteConfirmView
                 confirmView.submitBtn.addTarget(self, action: #selector(self.onSubmit), for: .touchUpInside)
@@ -140,15 +188,13 @@ class VotingViewController0 : BaseViewController {
                 confirmView.walletName.text = self.selectedWallet?.name
                 confirmView.feeLabel.text = TransactionService.service.ethGasPrice!.multiplied(by: BigUInt(deploy_UseStipulatedGas)).convertToEnergon(round: 8).ATPSuffix()
                 self.confirmPopUpView.show(inViewController: self)
-
+                
             case .fail(_, let msg):
                 self.showMessage(text: msg ?? "", delay: 2)
             }
- 
+            
         }
-
     }
-    
     
     func showPasswordInputPswAlert() {
         

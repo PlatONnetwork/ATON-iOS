@@ -230,12 +230,6 @@ class CandidatesListViewController: BaseViewController {
                 
                 list.candidateSort()
                 
-                //list = list.count > 200 ? Array(list[0..<200]) : list
-                
-                for i in 0..<list.count {
-                    list[i].rankByDeposit = UInt16(i + 1)
-                }
-                
                 self.setCandidateAreaInfo(list: list)
                 self.queryCandidateTicketCount(list: list, completion: { (newList) in
                 
@@ -277,6 +271,12 @@ class CandidatesListViewController: BaseViewController {
                         }
                     }
                     
+                    self.nominateNodeList.candidateSort()
+                    self.waitingCandidateslist.candidateSort()
+                    let sortedRankList = self.nominateNodeList + self.waitingCandidateslist
+                    for i in 0..<sortedRankList.count {
+                        sortedRankList[i].rankByDeposit = UInt16(i + 1)
+                    }
                     
                 }
             case .fail(_, _):
@@ -364,9 +364,7 @@ class CandidatesListViewController: BaseViewController {
         
         switch type {
         case .default:
-            
-            var dataSource = nominateNodeList + waitingCandidateslist
-            dataSource.candidateSort()
+            let dataSource = nominateNodeList + waitingCandidateslist
             return dataSource
             
         case .reward:
@@ -457,7 +455,7 @@ extension CandidatesListViewController: UITableViewDelegate, UITableViewDataSour
             self.navigationController?.pushViewController(votingVC, animated: true)
         }
         
-        return cell
+        return cell 
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

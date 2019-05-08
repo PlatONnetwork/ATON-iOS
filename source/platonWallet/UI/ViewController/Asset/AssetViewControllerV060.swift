@@ -201,6 +201,8 @@ class AssetViewControllerV060: BaseViewController ,PopupMenuTableDelegate{
             self.scrollView.isScrollEnabled = false
             pageVC.pagesScrollview?.isScrollEnabled = false
             self.transactionVC.tableNodataHolderView.imageView.image = UIImage(named: "empty_no_wallet_icon")
+            self.transactionVC.dataSource?.removeAll()
+            self.transactionVC.tableView.reloadData()
         }else{
             sectionView.snp.updateConstraints { (make) in
                 make.height.equalTo(AssetSectionViewH)

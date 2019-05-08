@@ -688,3 +688,4 @@
 "send_address_placeholder" = "Input wallet address";
 "send_amount_placeholder" = "Input Amount";
 "vote_confirm_from" = "From:";
+"node_quit_consensus_tip" = "Node has exited consensus,voting failed";
