@@ -84,3 +84,10 @@ else
     git push origin --tags
 fi
 
+
+OverTheAir_IPA_Directory="~/Documents/Website/ipa"
+if [ -d $OverTheAir_IPA_Directory ]; then
+	let srcipa=./builds/$output_directory/$ipaName
+	echo srcipa:$srcipa
+	cp $srcipa $OverTheAir_IPA_Directory
+fi

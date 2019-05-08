@@ -2432,7 +2432,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.ju.platonWallet;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = adhoc_WildCard_new;
+				PROVISIONING_PROFILE_SPECIFIER = adhoc_WildCard_match;
 				SWIFT_OBJC_BRIDGING_HEADER = "platonWallet/UI/Utilities/platonWallet-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 4.2;
