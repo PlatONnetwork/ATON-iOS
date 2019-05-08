@@ -90,7 +90,7 @@ extension Array where Element == Candidate{
             if (c1.rankStatus == .candidateFirst100 && c2.rankStatus == .alternativeFirst100) ||
                 (c2.rankStatus == .candidateFirst100 && c1.rankStatus == .alternativeFirst100)
             {
-                return c1.rankStatus.rawValue < c2.rankStatus.rawValue
+                return c1.rankStatus.rawValue < c2.rankStatus.rawValue 
             }
             
             var bigLeft = BigUInt(c1.deposit ?? BigUInt("0")!)

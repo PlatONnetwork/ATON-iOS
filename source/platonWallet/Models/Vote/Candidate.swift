@@ -111,7 +111,8 @@ class Candidate:NSObject, Decodable {
     //like: 80%
     var rewardRate: String {
         get {
-            return String(format: "%.2f%%", Float(10000 - (fee ?? 0))/Float(100))
+            let rate = Float(10000 - (fee ?? 0))/Float(100)
+            return String(format: "%d%%", Int(rate))
         }
         
     }
