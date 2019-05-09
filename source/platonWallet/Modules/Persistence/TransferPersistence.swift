@@ -25,10 +25,16 @@ class TransferPersistence {
     }
     
     public class func getAll() -> [Transaction]{
+        let wallets = AssetVCSharedData.sharedData.walletList.filterClassicWallet
+        let addresses = wallets.map { w -> String in
+            return (w.key?.address)!.lowercased()
+        }
         let predicate = NSPredicate(format: "nodeURLStr == %@", SettingService.getCurrentNodeURLString())
         let r = RealmInstance!.objects(Transaction.self).filter(predicate).sorted(byKeyPath: "createTime", ascending: false)
         let array = Array(r)
-        return array
+        return array.filter { t -> Bool in
+            return addresses.contains(t.from?.lowercased() ?? "")
+        }
     }
     
     public class func getAllByAddress(from : String) -> [Transaction]{
