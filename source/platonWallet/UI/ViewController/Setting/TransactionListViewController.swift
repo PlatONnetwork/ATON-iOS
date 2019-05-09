@@ -22,10 +22,17 @@ class TransactionListViewController: BaseViewController,UITableViewDelegate,UITa
     }
     
     func initData(){
+        
+        if AssetVCSharedData.sharedData.walletList.count == 0{
+            dataSource.removeAll()
+            tableView.reloadData()
+            return
+        }
+        
         dataSource.removeAll()
         let data = TransferPersistence.getAll()
         dataSource.append(contentsOf: data)
-        
+         
         let sdata = STransferPersistence.getAllTransactionForTransactionList()
         dataSource.append(contentsOf: sdata)
         dataSource.txSort()
