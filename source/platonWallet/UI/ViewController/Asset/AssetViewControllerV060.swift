@@ -73,6 +73,11 @@ class AssetViewControllerV060: BaseViewController ,PopupMenuTableDelegate{
         super.viewDidLoad()
         initData()
         initUI()
+        
+//        let refreshControl = UIRefreshControl()
+//        refreshControl.attributedTitle = NSAttributedString(string: "pull down ...")
+//        scrollView.addSubview(refreshControl)
+//        refreshControl.beginRefreshing()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -382,7 +387,7 @@ extension AssetViewControllerV060 : UIScrollViewDelegate,ChildScrollViewDidScrol
         //print("childScrollViewDidScroll:\(yoffset)")
         if yoffset <= 0 {
             scrollEnable = true
-            childScrollView.setContentOffset(.zero, animated: false)
+//            childScrollView.setContentOffset(.zero, animated: false)
         }else {
             let rec = sectionView.convert(sectionView.bounds, to: view)
             if scrollEnable && rec.origin.y > 0 && !(self.assetHeaderStyle?.hide)!{
@@ -399,10 +404,8 @@ extension AssetViewControllerV060 : UIScrollViewDelegate,ChildScrollViewDidScrol
     @objc func onMenu(){
         var menuArray: [MenuItem] = []
         let menu1 = MenuItem(icon: UIImage(named: "img-more-classic-create"), title: Localized("AddWalletMenuVC_createIndividualWallet_title"))
-        let menu2 = MenuItem(icon: UIImage(named: "img-more-Joint-create"), title: Localized("AddWalletMenuVC_createSharedWallet_title"))
         let menu3 = MenuItem(icon: UIImage(named: "img-more-classic-import"), title: Localized("AddWalletMenuVC_importIndividualWallet_title"))
-        let menu4 = MenuItem(icon: UIImage(named: "img-more-Joint-add"), title: Localized("AddWalletMenuVC_addSharedWallet_title"))
-        menuArray = [menu1, menu2, menu3, menu4]
+        menuArray = [menu1, menu3]
         let menu = PopupMenuTable(menuArray: menuArray, arrowPoint: CGPoint(x: UIScreen.main.bounds.width - 30, y: 64 + UIDevice.notchHeight))
         menu.popUp()
         menu.delegate = self
@@ -451,11 +454,7 @@ extension AssetViewControllerV060 : UIScrollViewDelegate,ChildScrollViewDidScrol
         case 0:
             createIndividualWallet()
         case 1:
-            createSharedWallet()
-        case 2:
             importIndividualWallet()
-        case 3:
-            addSharedWallet()
         default:
             do{}
         }
@@ -467,22 +466,10 @@ extension AssetViewControllerV060 : UIScrollViewDelegate,ChildScrollViewDidScrol
         navigationController?.pushViewController(createWalletVC, animated: true)
     }
     
-    func createSharedWallet() {
-        let vc = CreateSharedWalletStep1ViewController()
-        vc.hidesBottomBarWhenPushed = true
-        navigationController?.pushViewController(vc, animated: true)
-    }
-    
     func importIndividualWallet() {
         let importWallet = MainImportWalletViewController()
         importWallet.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(importWallet, animated: true)
-    }
-    
-    func addSharedWallet() {
-        let addSharedWallet = AddSharedWalletVC()
-        addSharedWallet.hidesBottomBarWhenPushed = true
-        navigationController?.pushViewController(addSharedWallet, animated: true)
     }
 }
 

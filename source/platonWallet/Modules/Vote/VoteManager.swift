@@ -37,20 +37,20 @@ class VoteManager: BaseService {
     
     var ticketPrice : BigUInt?
     
-    var ticketPoolRemainder: String?
-    
-    var ticketPoolUsageNum: Int? {
-        guard let poolRemainder = Int(ticketPoolRemainder ?? "") else {
-            return nil
-        }
-        return kTicketsPoolCapacity - poolRemainder
+    var ticketPoolRemainder: Int? {
+        guard let usageNum = ticketPoolUsageNum else { return nil }
+        return ticketsPoolCapacity - usageNum
     }
+    
+    var ticketsPoolCapacity: Int = kTicketsPoolCapacity
+    
+    var ticketPoolUsageNum: Int?
     
     var ticketPoolUsageRate: Float? {
         guard ticketPoolUsageNum != nil else {
             return nil
         }
-        return Float(ticketPoolUsageNum!) / Float(kTicketsPoolCapacity)
+        return Float(ticketPoolUsageNum!) / Float(ticketsPoolCapacity)
     } 
     
     public override init(){
@@ -91,10 +91,10 @@ class VoteManager: BaseService {
         var completion = completion
         let data = build_GetPoolRemainder()
         
-        web3CommonCall(contractAddress: votePoolingContract, data: data, completion: &completion) { (resp) in
-            self.ticketPoolRemainder = resp
-            self.successCompletionOnMain(obj: resp as AnyObject, completion: &completion)
-        }
+//        web3CommonCall(contractAddress: votePoolingContract, data: data, completion: &completion) { (resp) in
+//            self.ticketPoolRemainder = resp
+//            self.successCompletionOnMain(obj: resp as AnyObject, completion: &completion)
+//        }
     }
     
     func GetCandidateEpoch(candidateId: String, completion: PlatonCommonCompletion?) {
@@ -316,6 +316,8 @@ class VoteManager: BaseService {
                 svote.createTime = Int(Date().timeIntervalSince1970)
                 svote.isLocalData = true
                 VotePersistence.add(singleVote: svote)
+                
+                NotificationCenter.default.post(name: NSNotification.Name(DidAddVoteTransactionNotification), object: nil)
                 
                 self.successCompletionOnMain(obj: nil, completion: &completion)
                 

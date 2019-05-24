@@ -8,6 +8,7 @@
 
 import Foundation
 import BigInt
+import Realm
 import RealmSwift
 import Localize_Swift
 
@@ -18,6 +19,18 @@ let GMultiplier = "1000000000"
 let THE8powerof10 = "100000000"
 let THE9powerof10 = "1000000000"
 let THE18powerof10 = "1000000000000000000"
+
+enum TxType: String, Decodable {
+    case transfer
+    case MPCtransaction
+    case contractCreate
+    case voteTicket
+    case transactionExecute
+    case candidateDeposit
+    case candidateApplyWithdraw
+    case candidateWithdraw
+    case unknown
+}
 
 
 enum TransanctionType: Int {
@@ -100,7 +113,7 @@ enum TransactionStatus {
     
 }
 
-class Transaction : Object{
+class Transaction : Object, Decodable {
     
     @objc dynamic var txhash : String? = ""
     
@@ -136,6 +149,16 @@ class Transaction : Object{
     
     @objc dynamic var nodeURLStr: String = ""
     
+    var sequence: String?
+    
+    var txType: TxType? = .unknown
+    
+    var actualTxCost: String? = ""
+    
+    var transactionIndex: Int = 0
+    
+    var txReceiptStatus: Int = -1 //-1为处理中，兼容本地缓存的数据，后台只返回1：成功 0：失败
+    
     //to confirm send or receive
     var senderAddress: String?
     
@@ -143,29 +166,50 @@ class Transaction : Object{
         get {
             switch transanctionTypeLazy {
             case .Send:
-                if blockNumber?.length ?? 0 > 0 {
+                if txReceiptStatus == 0 {
+                    return .sendFailed
+                } else if txReceiptStatus == 1 {
                     return .sendSucceed
-                }else {
+                } else {
                     return .sending
                 }
+//                if blockNumber?.length ?? 0 > 0 {
+//                    return .sendSucceed
+//                }else {
+//                    return .sending
+//                }
             case .Receive:
-                if blockNumber?.length ?? 0 > 0 {
+                if txReceiptStatus == 0 {
+                    return .receiveFailed
+                } else if txReceiptStatus == 1 {
                     return .receiveSucceed
-                }else {
+                } else {
                     return .receiving
-                } 
+                }
+//                if blockNumber?.length ?? 0 > 0 {
+//                    return .receiveSucceed
+//                }else {
+//                    return .receiving
+//                } 
             case .Vote:
-                guard extra != nil else {
-                    return .voting
-                }
-                guard let dic = try? JSONSerialization.jsonObject(with: extra!.data(using: .utf8) ?? Data(), options: .mutableContainers) as? [String:Any], let ret = dic?["Ret"] as? Bool else {
-                    return .voting
-                }
-               
-                if ret == true{
+                if txReceiptStatus == 0 {
+                    return .voteFailed
+                } else if txReceiptStatus == 1 {
                     return .voteSucceed
+                } else {
+                    return .voting
                 }
-                return .voteFailed
+//                guard extra != nil else {
+//                    return .voting
+//                }
+//                guard let dic = try? JSONSerialization.jsonObject(with: extra!.data(using: .utf8) ?? Data(), options: .mutableContainers) as? [String:Any], let ret = dic?["Ret"] as? Bool else {
+//                    return .voting
+//                }
+//
+//                if ret == true{
+//                    return .voteSucceed
+//                }
+//                return .voteFailed
             }
         }
     }
@@ -196,17 +240,43 @@ class Transaction : Object{
         }
     }
     
+    
     var transanctionTypeLazy : TransanctionType {
         get{
-            let type = TransanctionType(rawValue: transactionType) ?? .Send
-            if type == .Send {
+            switch txType! {
+            case .transfer:
                 if senderAddress != nil && (senderAddress?.ishexStringEqual(other: from))! {
                     return .Send
-                }else {
+                } else {
                     return .Receive
                 }
-            }else {
-                return type
+            case .MPCtransaction:
+                return .Send
+            case .contractCreate:
+                return .Send
+            case .voteTicket:
+                return .Vote
+            case .transactionExecute:
+                return .Send
+            case .candidateDeposit:
+                return .Send
+            case .candidateApplyWithdraw:
+                return .Send
+            case .candidateWithdraw:
+                return .Send
+            case .unknown:
+                return .Send
+            default:
+                let type = TransanctionType(rawValue: transactionType) ?? .Send
+                if type == .Send {
+                    if senderAddress != nil && (senderAddress?.ishexStringEqual(other: from))! {
+                        return .Send
+                    }else {
+                        return .Receive
+                    }
+                }else {
+                    return type
+                }
             }
         }
     }
@@ -243,11 +313,89 @@ class Transaction : Object{
     }
     
     override public static func ignoredProperties() ->[String] {
-        return ["sharedWalletOwners","sharedWalletConOwners","sharedWalletRejectOwners","valueDescription","senderAddress"]
+        return ["sharedWalletOwners","sharedWalletConOwners","sharedWalletRejectOwners","valueDescription","senderAddress", "sequence", "actualTxCost"]
     }
     
     override public static func primaryKey() -> String? {
         return "txhash"
     }
     
+    enum CodingKeys: String, CodingKey {
+        case actualTxCost
+        case txhash = "hash"
+        case from
+        case to
+        case blockHash
+        case blockNumber
+        case value
+        case gasUsed = "energonUsed"
+        case gasPrice = "energonPrice"
+        case sequence
+        case txType
+        case confirmTimes = "timestamp"
+        case transactionIndex
+        case txReceiptStatus
+        case extra = "txInfo"
+    }
+    
+    required convenience init(from decoder: Decoder) throws {
+        self.init()
+        
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        blockNumber = try? container.decode(String.self, forKey: .blockNumber)
+        txhash = try? container.decode(String.self, forKey: .txhash)
+        from = try? container.decode(String.self, forKey: .from)
+        to = try? container.decode(String.self, forKey: .to)
+        blockHash = try? container.decode(String.self, forKey: .blockHash)
+        value = try? container.decode(String.self, forKey: .value)
+        gasUsed = try? container.decode(String.self, forKey: .gasUsed)
+        gasPrice = try? container.decode(String.self, forKey: .gasPrice)
+        sequence = try? container.decode(String.self, forKey: .sequence)
+        txType = try? container.decode(TxType.self, forKey: .txType)
+        let timeStampString = try? container.decode(String.self, forKey: .confirmTimes)
+        if let ts = Int(timeStampString ?? "0") {
+            confirmTimes = ts
+        }
+        actualTxCost = try? container.decode(String.self, forKey: .actualTxCost)
+        let indexString = try? container.decode(String.self, forKey: .transactionIndex)
+        if let index = Int(indexString ?? "0") {
+            transactionIndex = index
+        }
+        let txReceiptStatusString = try? container.decode(String.self, forKey: .txReceiptStatus)
+        if let status = Int(txReceiptStatusString ?? "0") {
+            txReceiptStatus = status
+        }
+        
+        extra = try? container.decode(String.self, forKey: .extra)
+    }
+    
+}
+
+class VoteTicket: Decodable {
+    var price: String?
+    var count: String?
+    var nodeId: String?
+    var nodeName: String?
+    var deposit: String?
+}
+
+class VoteTicketInfo: Decodable {
+    var functionName: String?
+    var parameters: VoteTicket?
+    var type: String?
+}
+
+class CandidateDeposit: Decodable {
+    var owner: String?
+    var Extra: String?
+    var port: String?
+    var fee: String?
+    var host: String?
+    var nodeId: String?
+}
+
+class CandidateDepositInfo: Decodable {
+    var functionName: String?
+    var parameters: CandidateDeposit?
+    var type: String?
 }

@@ -53,6 +53,9 @@ class CandidatesListHeaderView: UIView {
     
     @IBOutlet weak var contentHeightConstant: NSLayoutConstraint!
     
+    @IBOutlet weak var voteRateLabelTopConstant: NSLayoutConstraint!
+    @IBOutlet weak var voteRateLabelBottomConstant: NSLayoutConstraint!
+    
     
     var gradientImage : UIImage = UIImage()
     
@@ -146,25 +149,5 @@ class CandidatesListHeaderView: UIView {
             self.myVoteLabel.transform = CGAffineTransform(scaleX: 1.4, y: 1.4)
             isHideUI = true
         }
-        
-//        UIView.animate(withDuration: 0.3, animations: {
-//            
-//
-////            self.contentHeightConstant.constant = headerViewHeight - yOffset
-//            self.layoutIfNeeded()
-//
-//        }) { _ in
-//            if alpha > 0.0 {
-//                let voteRate = self.curVoteRate == nil ? "-%":String(format: "%.2f%%", self.curVoteRate! * 100)
-//                self.voteRateLabel.text = Localized("CandidateListVC_voteRate_desc", arguments: voteRate)
-//                self.myVoteButton.setImage(UIImage(named: "myvoteBtn"), for: .normal)
-//                self.myVoteLabel.transform = CGAffineTransform.identity
-//
-//            } else {
-//                self.voteRateLabel.text = Localized("CandidateListVC_title")
-//                self.myVoteButton.setImage(nil, for: .normal)
-//                self.myVoteLabel.transform = CGAffineTransform(scaleX: 1.4, y: 1.4)
-//            }
-//        }
     }
 }

@@ -10,12 +10,13 @@ import Foundation
 import UIKit
 import Localize_Swift
 import platonWeb3
+import MJRefresh
 
 enum CandidatesListSortType: Int {
     case `default` = 0,reward,location
 }
 
-let headerViewHeight: CGFloat = 149.0 + UIDevice.notchHeight
+let headerViewHeight: CGFloat = 149.0 + kStatusBarHeight
 let filterBarShrinkHeight : CGFloat = 42.0
 let filterBarExpandHeight : CGFloat = 108
 let kAnimateScrollHeight: CGFloat = 63.0
@@ -62,10 +63,18 @@ class CandidatesListViewController: BaseViewController {
             refreshTableView()
         }
     }
+    
+    lazy var refreshHeader: MJRefreshHeader = {
+        let header = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(fetchData))!
+        header.lastUpdatedTimeLabel.isHidden = true
+        return header
+    }()
      
     override func viewDidLoad() {
         super.viewDidLoad()
         self.statusBarNeedTruncate = true
+        
+        
         initSubView()
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         NotificationCenter.default.addObserver(self, selector: #selector(onNodeSwitched), name: NSNotification.Name(NodeStoreService.didSwitchNodeNotification), object: nil)
@@ -129,7 +138,7 @@ class CandidatesListViewController: BaseViewController {
             }
         }
         
-        tableView.contentInset = UIEdgeInsets(top: headerViewHeight + filterBarShrinkHeight - kStatusBarHeight, left: 0, bottom: 0, right: 0)
+        tableView.contentInset = UIEdgeInsets(top: headerViewHeight + filterBarShrinkHeight - 2*kStatusBarHeight, left: 0, bottom: 0, right: 0)
         tableView.snp.makeConstraints { (make) in
             make.top.equalToSuperview()
             make.leading.bottom.trailing.equalToSuperview()
@@ -165,7 +174,13 @@ class CandidatesListViewController: BaseViewController {
         
         
         
+        tableView.mj_header = refreshHeader
+        tableView.mj_header.beginRefreshing()
         
+    }
+    
+    @objc func fetchData() {
+        tableView.mj_header.endRefreshing()
     }
     
     @objc func onMyVote(){
@@ -201,6 +216,7 @@ class CandidatesListViewController: BaseViewController {
 
     }
     
+    
     private func updateTicketPriceAndPoolNum() {
         headerView.updateTicketPrice(VoteManager.sharedInstance.ticketPrice?.convertToEnergon(round: 4), isUpward: true)
         headerView.updatePoll(VoteManager.sharedInstance.ticketPoolUsageNum, voteRate: VoteManager.sharedInstance.ticketPoolUsageRate)
@@ -215,22 +231,14 @@ class CandidatesListViewController: BaseViewController {
             showLoadingHUD()
         }
         
-        VoteManager.sharedInstance.GetVotePageCandidateList { [weak self] (res, tumpleDdata) in
-             
+        VoteManager.sharedInstance.GetBatchNodeList { [weak self] (result, data) in
             guard let self = self else { return }
-             
-            switch res {
+            switch result {
             case .success:
-                guard let data = tumpleDdata as? ([Candidate],[String]) else{
-                    return
-                }
-                guard var list = data.0 as? [Candidate] else {
-                    return
-                }
+                
+                guard var list = (data as? CandidateResponse)?.list else { return }
                 
                 list.candidateSort()
-                
-                //list = list.count > 200 ? Array(list[0..<200]) : list
                 
                 for i in 0..<list.count {
                     list[i].rankByDeposit = UInt16(i + 1)
@@ -238,66 +246,126 @@ class CandidatesListViewController: BaseViewController {
                 
                 self.setCandidateAreaInfo(list: list)
                 self.queryCandidateTicketCount(list: list, completion: { (newList) in
-                
+                    
                     if (self.isFirstQuery) {
                         self.hideLoadingHUD()
                     }
                     
-                    dividenominatedandwaitingCandidateslistPool(validatorIds: data.1)
+                    dividenominatedandwaitingCandidateslistPool(validatorIds: [])
                     
-                    self.isQuerying = false 
+                    self.isQuerying = false
                     
                     self.startSort()
                 })
-                
+                self.updateTicketPriceAndPoolNum()
                 func dividenominatedandwaitingCandidateslistPool(validatorIds: [String]) {
                     let first100 = list.count > 100 ? Array(list[0..<100]) : list
                     self.nominateNodeList = first100.filter { (item) -> Bool in
-                        item.tickets ?? 0 >= kCandidateMinNumOfTickets
-                    } 
-                    for item in self.nominateNodeList {
-                        item.rankStatus = .candidateFirst100
+                        item.ticketCount ?? 0 >= kCandidateMinNumOfTickets
                     }
                     self.waitingCandidateslist = list.filter { (item) -> Bool in
-                        item.tickets ?? 0 < kCandidateMinNumOfTickets
+                        item.ticketCount ?? 0 < kCandidateMinNumOfTickets
                     }
                     self.waitingCandidateslist = self.waitingCandidateslist.count > 100 ? Array(self.waitingCandidateslist[0..<100]) : self.waitingCandidateslist
-                    for item in self.waitingCandidateslist {
-                        item.rankStatus = .alternativeFirst100
-                    }
-                    
-                    for item in self.nominateNodeList{
-                        if validatorIds.contains(item.candidateId ?? ""){
-                            item.rankStatus = .validator
-                        }
-                    }
-                    for item in self.waitingCandidateslist{
-                        if validatorIds.contains(item.candidateId ?? ""){
-                            item.rankStatus = .validator
-                        }
-                    }
-                    
-                    
                 }
+                
+                break
             case .fail(_, _):
                 self.isQuerying = false
                 if (self.isFirstQuery) {
                     self.hideLoadingHUD()
                 }
-            
+                break
             }
+            
         }
+        
+//        VoteManager.sharedInstance.GetVotePageCandidateList { [weak self] (res, tumpleDdata) in
+//
+//            guard let self = self else { return }
+//
+//            switch res {
+//            case .success:
+//                guard let data = tumpleDdata as? ([Candidate],[String]) else{
+//                    return
+//                }
+//                guard var list = data.0 as? [Candidate] else {
+//                    return
+//                }
+//
+//                list.candidateSort()
+//
+//                //list = list.count > 200 ? Array(list[0..<200]) : list
+//
+//                for i in 0..<list.count {
+//                    list[i].rankByDeposit = UInt16(i + 1)
+//                }
+//
+//                self.setCandidateAreaInfo(list: list)
+//                self.queryCandidateTicketCount(list: list, completion: { (newList) in
+//
+//                    if (self.isFirstQuery) {
+//                        self.hideLoadingHUD()
+//                    }
+//
+////                    self.tableView.mj_header.endRefreshing()
+//
+//                    dividenominatedandwaitingCandidateslistPool(validatorIds: data.1)
+//
+//                    self.isQuerying = false
+//
+//                    self.startSort()
+//                })
+//
+//                func dividenominatedandwaitingCandidateslistPool(validatorIds: [String]) {
+//                    let first100 = list.count > 100 ? Array(list[0..<100]) : list
+//                    self.nominateNodeList = first100.filter { (item) -> Bool in
+//                        item.tickets ?? 0 >= kCandidateMinNumOfTickets
+//                    }
+//                    for item in self.nominateNodeList {
+//                        item.rankStatus = .candidateFirst100
+//                    }
+//                    self.waitingCandidateslist = list.filter { (item) -> Bool in
+//                        item.tickets ?? 0 < kCandidateMinNumOfTickets
+//                    }
+//                    self.waitingCandidateslist = self.waitingCandidateslist.count > 100 ? Array(self.waitingCandidateslist[0..<100]) : self.waitingCandidateslist
+//                    for item in self.waitingCandidateslist {
+//                        item.rankStatus = .alternativeFirst100
+//                    }
+//
+//                    for item in self.nominateNodeList{
+//                        if validatorIds.contains(item.candidateId ?? ""){
+//                            item.rankStatus = .validator
+//                        }
+//                    }
+//                    for item in self.waitingCandidateslist{
+//                        if validatorIds.contains(item.candidateId ?? ""){
+//                            item.rankStatus = .validator
+//                        }
+//                    }
+//
+//
+//                }
+//            case .fail(_, _):
+//                self.isQuerying = false
+//                if (self.isFirstQuery) {
+//                    self.hideLoadingHUD()
+//                }
+//
+//            }
+//        }
     }
     
+    // yuham qa
     func setCandidateAreaInfo(list: [Candidate]) {
         
         let ips = list.map { (e) -> String in
-            return e.host ?? ""
+            return e.nodeUrl ?? ""
         }
         
         let ipGeoInfoDic = IPQuery.sharedInstance.getIPGeoInfoFromDB(ipList: ips)
         for candidate in list {
-            candidate.area = ipGeoInfoDic[candidate.host ?? ""]
+            candidate.area = ipGeoInfoDic[candidate.nodeUrl ?? ""]
         }
         
     }
@@ -314,7 +382,7 @@ class CandidatesListViewController: BaseViewController {
                 if let ticketNums = data as? [String:Int] {
                     for i in 0..<list.count {
                         if let candidateId = list[i].candidateId, let num = ticketNums[candidateId] {
-                            list[i].tickets = UInt16(num)
+                            list[i].ticketCount = UInt16(num)
                         }
                     }
                 }
@@ -365,8 +433,8 @@ class CandidatesListViewController: BaseViewController {
         switch type {
         case .default:
             
-            var dataSource = nominateNodeList + waitingCandidateslist
-            dataSource.candidateSort()
+            let dataSource = nominateNodeList + waitingCandidateslist
+//            dataSource.candidateSort()
             return dataSource
             
         case .reward:
@@ -374,14 +442,12 @@ class CandidatesListViewController: BaseViewController {
             var list = nominateNodeList + waitingCandidateslist
             list.sort { (e1, e2) -> Bool in
                 
-                if e1.fee ?? 0 != e2.fee ?? 0 {
-                    return e1.fee ?? 0 < e2.fee ?? 0 
+                if e1.reward ?? 0 != e2.reward ?? 0 {
+                    return e1.reward ?? 0 < e2.reward ?? 0
                 }else if e1.deposit! != e2.deposit! {
                     return e1.deposit! > e2.deposit!
-                }else if e1.tickets ?? 0 != e2.tickets ?? 0 {
-                    return e1.tickets ?? 0 > e2.tickets ?? 0
                 }else {
-                    return e1.blockNumber! < e2.blockNumber!
+                    return e1.ticketCount ?? 0 > e2.ticketCount ?? 0
                 }
             }
             return list
@@ -413,7 +479,7 @@ class CandidatesListViewController: BaseViewController {
     
     private func filterBySearchText() {
         filteredCandidateList = sortedCandidatesList.filter { (candidate) -> Bool in
-            if (candidate.extra?.nodeName!.uppercased() ?? "").range(of: self.searchText.uppercased()) != nil {
+            if (candidate.name!.uppercased() ?? "").range(of: self.searchText.uppercased()) != nil {
                 return true
             }
             return false
@@ -530,21 +596,29 @@ extension CandidatesListViewController: UIScrollViewDelegate {
 //        }
     }
     
-
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+    }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         
         let yOffset = scrollView.contentOffset.y
         if scrollView == tableView{
-            let xOffset = scrollView.contentInset.top + yOffset
-            if xOffset < kAnimateScrollHeight {
+            let xOffset: CGFloat = -scrollView.contentInset.top - yOffset
+            print("xOffset: ", xOffset)
+            if xOffset <= kStatusBarHeight {
+                headerView.voteRateLabelTopConstant.priority = UILayoutPriority.defaultHigh
+                headerView.voteRateLabelBottomConstant.priority = UILayoutPriority.defaultLow
                 
+                
+                let offset = max((xOffset - kStatusBarHeight), -kAnimateScrollHeight)
                 headerView.snp.updateConstraints { make in
-                    make.height.equalTo(headerViewHeight - xOffset)
+                    make.top.equalToSuperview().offset(-kStatusBarHeight)
+                    make.height.equalTo(headerViewHeight + offset)
                 }
                 
-                var alpha = (kAnimateScrollHeight - xOffset)/kAnimateScrollHeight*1.0
-                print("scroll alpha value: \(alpha)")
+                var alpha = (kAnimateScrollHeight + (xOffset - kStatusBarHeight))/kAnimateScrollHeight*1.0
                 if alpha < 0.0 {
                     alpha = 0.0
                 } else if alpha > 1.0 {
@@ -555,8 +629,8 @@ extension CandidatesListViewController: UIScrollViewDelegate {
                     headerView.updateHeaderViewStyle(alpha)
                     filterBarView.updateLayoutstyle(alpha)
                 }
-                
-                
+
+
                 if alpha == 0.0 {
                     self.setplaceHolderBG(hide:false ,tableView: self.tableView)
                     NotificationCenter.default.post(name: NSNotification.Name(ChangeCandidatesTableViewCellbackground), object: #colorLiteral(red: 0.9751496911, green: 0.984305203, blue: 1, alpha: 1))
@@ -565,17 +639,13 @@ extension CandidatesListViewController: UIScrollViewDelegate {
                     NotificationCenter.default.post(name: NSNotification.Name(ChangeCandidatesTableViewCellbackground), object: UIColor.white)
                 }
             } else {
+                headerView.voteRateLabelTopConstant.priority = UILayoutPriority.defaultLow
+                headerView.voteRateLabelBottomConstant.priority = UILayoutPriority.defaultHigh
+                
                 headerView.snp.updateConstraints { make in
-                    make.height.equalTo(headerViewHeight - kAnimateScrollHeight)
+                    make.top.equalToSuperview().offset(xOffset - 2*kStatusBarHeight)
                 }
-                
-                headerView.updateHeaderViewStyle(0.0)
-                filterBarView.updateLayoutstyle(0.0)
-                
-                self.setplaceHolderBG(hide:false ,tableView: self.tableView)
-                NotificationCenter.default.post(name: NSNotification.Name(ChangeCandidatesTableViewCellbackground), object: #colorLiteral(red: 0.9751496911, green: 0.984305203, blue: 1, alpha: 1))
             }
-            
             if scrollView.isDragging{
                 self.isScrolling = true
             }

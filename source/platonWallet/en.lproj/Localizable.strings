@@ -46,7 +46,6 @@
 "tabbar_candidate_title" = "Vote";
 
 "navigationbar_wallet_title" = "Classic Wallet";
-"navigationbar_sharedwallet_title" = "Joint Wallet";
 
 "asset_header_total_asset" = "Total Energon";
 
@@ -299,9 +298,7 @@
 //AddWalletMenuVC
 
 "AddWalletMenuVC_createIndividualWallet_title" = "Create Classic Wallet";
-"AddWalletMenuVC_createSharedWallet_title" = "Create Joint Wallet";
 "AddWalletMenuVC_importIndividualWallet_title" = "Import Classic Wallet";
-"AddWalletMenuVC_addSharedWallet_title" = "Add Joint Wallet";
 
 "Invalid password" = "Password Incorrect";
 "Invalid wallet" = "Invalid wallet";
@@ -319,10 +316,6 @@
 "IndividualWallet_EmptyView_createBtn_title" = "Create Classic Wallet";
 "IndividualWallet_EmptyView_importBtn_title" = "Import Classic Wallet";
 
-"SharedWallet_EmptyView_tips" = "You don’t have any Joint Wallet";
-"SharedWallet_EmptyView_createBtn_title" = "Create";
-"SharedWallet_EmptyView_importBtn_title" = "Import";
-
 
 
 //TransactionListViewController
@@ -332,8 +325,6 @@
 "TransactionListVC_Receiving" = "Receiving";
 "TransactionListVC_Received" = "Received";
 "TransactionListVC_Vote" = "Vote";
-"TransactionListVC_JointWalletCreation" = "Joint Wallet Creation";
-"TransactionListVC_JointWalletExecution" = "Joint Wallet Execution";
 
 "TransactionStatus_sending_title" = "Sending";
 "TransactionStatus_sendSucceed_title" = "Sent";
@@ -412,14 +403,11 @@
 
 //CreateSharedWalletVC
 "Wallet name" = "Wallet name";
-"CreateSharedWalletVC_Create Shared Wallet" = "Create Joint Wallet";
 
 "CreateSharedWalletVC_Select Owner" = "Select Owner";
-"CreateSharedWalletVC_Shared Owners" = "Joint Owners";
 "CreateSharedWalletVC_Required Signatures" = "Required Signatures";
 
 "CreateSharedWalletVC_Select Owner colon" = "Select Owner:";
-"CreateSharedWalletVC_Shared Owners colon" = "Joint Owners:";
 "CreateSharedWalletVC_Required Signatures colon" = "Required Signatures:";
 
 
@@ -442,13 +430,10 @@
 
 //shared Wallet detail
 "SharedWalletVC_title" = "Manage";
-"Members_Des" = "Members";
 "SharedWallet_delete" = "Delete";
 "Owner_Des" = "Owner";
-"JointWalletManagement_Joint_Owner" = "Joint Wallet";
 
 //add shared wallet
-"AddSharedWalletVC_title" = "Add Joint Wallet";
 
 "AddSharedWalletVC_wallet_Name_Des" = "Name";
 "AddSharedWalletVC_name_palceholder" = "Name of wallet";
@@ -457,21 +442,15 @@
 "AddSharedWalletVC_walletName_Des" = "Wallet name";
 "AddSharedWalletVC_Change" = "Change";
 
-"AddSharedWalletVC_addr" = "Wallet address";
-"AddSharedWalletVC_addr_placeholder" = "Set wallet address";
 "AddSharedWalletVC_add" = "Add";
 "sharedWallet_sharedWallet_no_existed" = "Add fail,Joint wallet not existed";
 
-"sharedWallet_sharedWallet_forbidden" = "Not the associated wallet, unable to add";
-
 "sharedWalletDefaltMemberName" = "user";
-"sharedWallet_sharedWallet_existed" = "Joint wallet existed";
 
 
 //Member Sign Detail VC
 "MemberSignDetailVC_nav_title" = "Transaction Detail";
 
-"MemberSignDetailVC_Confirms" = "Transaction confirmation";
 "MemberSignDetailVC_Total" = "Total";
 "MemberSignDetailVC_Agree" = "Agree";
 "MemberSignDetailVC_reject" = "Reject";
@@ -528,7 +507,6 @@
 "exceed max input" = "Exceed max input";
 
 
-"SharedWalletTransactionDetailVC_execute_contract" = "Execute Contract-Confirm";
 "SharedWalletTransactionDetailVC_execute_PayType" = "Type";
 "SharedWalletTransactionDetailVC_payment_execute_contract" = "Execute Contract fee";
 "SharedWalletTransactionDetailVC_payment_confirm" = "Submit";
@@ -559,8 +537,6 @@
 
 
 "SharedWallet_create_with_insufficient_balance" = "Insufficient wallet balance, can't create";
-
-"Shared wallet create success" = "Joint wallet create success";
 
 //About
 "AboutVC_nav_title" = "About";

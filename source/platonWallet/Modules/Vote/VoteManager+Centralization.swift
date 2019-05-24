@@ -10,27 +10,13 @@ import Foundation
 import UIKit
 import Alamofire
 import Localize_Swift
+import BigInt
 
 //let CentralizationURL = "http://192.168.9.190:18060/browser-server/"
-let DEBUG_CentralizationURL = "http://192.168.9.190:10061/api-203/api/"
 let chaindId = "203"
-let DefaultCentralizationURL = "https://aton.platon.network/"
 let requestTimeout : TimeInterval = 30
 
 extension VoteManager{
-    
-    public func getCentralizationURL() -> String{
-        let url = SettingService.getCurrentNodeURLString()
-        if url == DefaultNodeURL_Alpha{
-            return DefaultCentralizationURL + "api-" + self.getChainID() + "/api/"
-        }else if url == DefaultNodeURL_Beta{
-            return DefaultCentralizationURL + "api-" + self.getChainID() + "/api/"
-        }else if url == "http://192.168.120.81:6789"{
-            
-            return DEBUG_CentralizationURL
-        }
-        return DefaultCentralizationURL + "api-" + self.getChainID() + "/api/"
-    }
     
     public func getChainID() -> String{
         let url = SettingService.getCurrentNodeURLString()
@@ -40,20 +26,90 @@ extension VoteManager{
             return "104"
         }
         return chaindId
-    } 
+    }
+    
+    public func GetBatchMyVoteNodeList(addressList: [String], completion: PlatonCommonCompletion?) {
+        var completion = completion
+        
+        let url = SettingService.getCentralizationURL() + "/node/listUserVoteNode"
+        var parameters : Dictionary<String,Any> = [:]
+        parameters["walletAddrs"] = addressList
+        
+        var request = URLRequest(url: try! url.asURL())
+        request.httpBody = try! JSONSerialization.data(withJSONObject: parameters)
+        request.httpMethod = "POST"
+        request.timeoutInterval = requestTimeout
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue(SettingService.getChainID(), forHTTPHeaderField: "x-aton-cid")
+        Alamofire.request(request).responseString { str in
+            print("getBatchVoteTransaction response:\(str)")
+        }
+        
+        Alamofire.request(request).responseData { response in
+            switch response.result {
+            case .success(let data):
+                do {
+                    let decoder = JSONDecoder()
+                    let response = try decoder.decode(NoteVoteResponse.self, from: data)
+                    self.successCompletionOnMain(obj: response as AnyObject, completion: &completion)
+                } catch let err {
+                    print("Err", err)
+                    self.failCompletionOnMainThread(code: -1, errorMsg: err.localizedDescription, completion: &completion)
+                }
+            case .failure(let error):
+                self.failCompletionOnMainThread(code: -1, errorMsg: error.localizedDescription, completion: &completion)
+                break;
+            }
+        }
+    }
+    
+    public func GetBatchVoteNodeTransactionList(beginSequence: Int, listSize: Int, nodeId: String, direction: String, addressList: [String], completion: PlatonCommonCompletion?) {
+        var completion = completion
+        var parameters : Dictionary<String,Any> = [:]
+        parameters["beginSequence"] = beginSequence
+        parameters["listSize"] = listSize
+        parameters["nodeId"] = nodeId
+        parameters["direction"] = direction
+        parameters["walletAddrs"] = addressList
+        
+        let url = SettingService.getCentralizationURL() + "/transaction/listVote"
+        var request = URLRequest(url: try! url.asURL())
+        request.httpBody = try! JSONSerialization.data(withJSONObject: parameters)
+        request.httpMethod = "POST"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue(SettingService.getChainID(), forHTTPHeaderField: "x-aton-cid")
+        request.timeoutInterval = requestTimeout
+        
+        Alamofire.request(request).responseData { (response) in
+            switch response.result {
+            case .success(let data):
+                do {
+                    let decoder = JSONDecoder()
+                    let response = try decoder.decode(VoteTransactionResponse.self, from: data)
+                    self.successCompletionOnMain(obj: response as AnyObject, completion: &completion)
+                } catch let err {
+                    print("Err", err)
+                    self.failCompletionOnMainThread(code: -1, errorMsg: err.localizedDescription, completion: &completion)
+                }
+            case .failure(let error):
+                self.failCompletionOnMainThread(code: -1, errorMsg: error.localizedDescription, completion: &completion)
+            }
+        }
+    }
     
     public func getBatchVoteSummary(addressList: [String], completion: PlatonCommonCompletion?) {
         var completion = completion
         var values : Dictionary<String,Any> = [:]
         
-        values["cid"] = self.getChainID()
+        values["cid"] = SettingService.getChainID()
         values["addressList"] = addressList
-        let url = self.getCentralizationURL() + "getBatchVoteSummary" 
+        let url = SettingService.getCentralizationURL() + "/api/getBatchVoteSummary"
         
         var request = URLRequest(url: try! url.asURL())
         request.httpBody = try! JSONSerialization.data(withJSONObject: values)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue(SettingService.getChainID(), forHTTPHeaderField: "x-aton-cid")
         request.timeoutInterval = requestTimeout
         
         Alamofire.request(request).responseJSON { (response) in
@@ -89,7 +145,7 @@ extension VoteManager{
         values["pageNo"] = pageNo
         values["pageSize"] = pageSize
          
-        let url = self.getCentralizationURL() + "getBatchVoteTransaction"
+        let url = SettingService.getCentralizationURL() + "/api/getBatchVoteTransaction"
          
         var request = URLRequest(url: try! url.asURL())
         request.httpBody = try! JSONSerialization.data(withJSONObject: values)
@@ -116,6 +172,42 @@ extension VoteManager{
                 
             case .failure(let error):
                 self.failCompletionOnMainThread(code: -1, errorMsg: error.localizedDescription, completion: &completion)
+            }
+        }
+    }
+    
+    public func GetBatchNodeList(completion: PlatonCommonCompletion?) {
+        var completion = completion
+        
+        let url = SettingService.getCentralizationURL() + "/node/list"
+        
+        var request = URLRequest(url: try! url.asURL())
+        request.httpBody = try! JSONSerialization.data(withJSONObject: [:])
+        request.httpMethod = "POST"
+        request.timeoutInterval = requestTimeout
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue(SettingService.getChainID(), forHTTPHeaderField: "x-aton-cid")
+        Alamofire.request(request).responseString { str in
+            print("getBatchVoteTransaction response:\(str)")
+        }
+        
+        Alamofire.request(request).responseData { response in
+            switch response.result {
+            case .success(let data):
+                do {
+                    let decoder = JSONDecoder()
+                    let response = try decoder.decode(CandidateResponse.self, from: data)
+                    self.ticketPrice = BigUInt(response.ticketPrice ?? "0")
+                    self.ticketsPoolCapacity = response.totalCount
+                    self.ticketPoolUsageNum = response.voteCount
+                    self.successCompletionOnMain(obj: response as AnyObject, completion: &completion)
+                } catch let err {
+                    print("Err", err)
+                    self.failCompletionOnMainThread(code: -1, errorMsg: err.localizedDescription, completion: &completion)
+                }
+            case .failure(let error):
+                self.failCompletionOnMainThread(code: -1, errorMsg: error.localizedDescription, completion: &completion)
+                break;
             }
         }
     }

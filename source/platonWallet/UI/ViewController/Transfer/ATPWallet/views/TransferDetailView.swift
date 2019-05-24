@@ -82,21 +82,35 @@ class TransferDetailView: UIView {
 //        }
 //    }
     
-    func updateContent(tx : AnyObject,wallet : Wallet?){
-        
-        if let tx = tx as? Transaction{
-            tx.senderAddress = wallet?.key?.address
-            if TransanctionType(rawValue: tx.transactionType) == .Vote {
-                voteExtraView.isHidden = false
-                showVoteExtraViewConstraint.priority = .defaultHigh
-                valueTitle.text = Localized("TransactionDetailVC_voteStaked")
+    func updateContent(tx : Transaction){
+        if tx.txType == .voteTicket {
+            voteExtraView.isHidden = false
+            showVoteExtraViewConstraint.priority = .defaultHigh
+            valueTitle.text = Localized("TransactionDetailVC_voteStaked")
+            
+            if let txInfo = tx.extra, let data = txInfo.data(using: .utf8) {
+                let decoder = JSONDecoder()
+                let voteTicketInfo = try? decoder.decode(VoteTicketInfo.self, from: data)
+                
+                nodeNameLabel.text = voteTicketInfo?.parameters?.nodeName
+                nodeIdLabel.text = voteTicketInfo?.parameters?.nodeId
+                numOfTicketsLabel.text = voteTicketInfo?.parameters?.count
+                
+                if voteTicketInfo?.parameters?.price?.count ?? 0 > 0 {
+                    ticketPriceLabel.text = BigUInt.safeInit(str: voteTicketInfo?.parameters?.price ?? "").divide(by: ETHToWeiMultiplier, round: 4).EnergonSuffix()
+                } else {
+                    ticketPriceLabel.text = "-".EnergonSuffix()
+                }
+                
+            } else {
                 guard let singleVote = VotePersistence.getSingleVotesByTxHash(tx.txhash!) else {
                     nodeNameLabel.text = "-"
                     nodeIdLabel.text = "-"
                     numOfTicketsLabel.text = "-"
                     ticketPriceLabel.text = "-"
                     return
-                } 
+                }
+                
                 let candidateInfo = VotePersistence.getCandidateInfoWithId(singleVote.candidateId ?? "")
                 nodeNameLabel.text = candidateInfo.name
                 nodeIdLabel.text = singleVote.candidateId?.add0x()
@@ -110,44 +124,29 @@ class TransferDetailView: UIView {
                 }else{
                     ticketPriceLabel.text = "-".EnergonSuffix()
                 }
-            }else {
-                voteExtraView.isHidden = true
-                showVoteExtraViewConstraint.priority = .defaultLow
-                valueTitle.text = Localized("TransactionDetailVC_value")
             }
-            
-            hashContent.text = tx.txhash?.add0x()
-            timeLabel.text = Date.toStanderTimeDescrition(millionSecondsTimeStamp: tx.createTime)
-            fromLabel.text = tx.from
-            toLabel.text = tx.to
-            valueLabel.text = tx.valueDescription!.ATPSuffix()
-            feeLabel.text = tx.feeDescription?.ATPSuffix()
-            
-            
-            if let w = WalletService.sharedInstance.getWalletByAddress(address: tx.from ?? ""){
-                self.walletNameLabel.text = w.name
-            }
-            updateStatus(tx: tx)
-        }else if let tx = tx as? STransaction{
-            
-            hashContent.text = tx.txhash
-            timeLabel.text = Date.toStanderTimeDescrition(millionSecondsTimeStamp: tx.createTime)
-            fromLabel.text = tx.from
-            
-            if (tx.to?.is40ByteAddress())!{
-                toLabel.text = tx.to
-            }else{
-                toLabel.text = DefaultAddress
-            }
-            
-            valueLabel.text = "-"
-            feeLabel.text = tx.feeDescription!.ATPSuffix()
-            transactionTypeLabel.text = tx.typeLocalization
-            updateStatus(tx: tx)
-            if let w = WalletService.sharedInstance.getWalletByAddress(address: tx.ownerWalletAddress){
-                self.walletNameLabel.text = w.name
-            }
+        } else {
+            voteExtraView.isHidden = true
+            showVoteExtraViewConstraint.priority = .defaultLow
+            valueTitle.text = Localized("TransactionDetailVC_value")
         }
+        
+        hashContent.text = tx.txhash?.add0x()
+        if tx.confirmTimes != 0 {
+            timeLabel.text = Date.toStanderTimeDescrition(millionSecondsTimeStamp: tx.confirmTimes)
+        } else {
+            timeLabel.text = Date.toStanderTimeDescrition(millionSecondsTimeStamp: tx.createTime)
+        }
+        fromLabel.text = tx.from
+        toLabel.text = tx.to
+        valueLabel.text = tx.valueDescription!.ATPSuffix()
+        feeLabel.text = tx.feeDescription?.ATPSuffix()
+        
+        
+        if let w = WalletService.sharedInstance.getWalletByAddress(address: tx.from ?? ""){
+            self.walletNameLabel.text = w.name
+        }
+        updateStatus(tx: tx)
         
     }
     
@@ -169,25 +168,6 @@ class TransferDetailView: UIView {
             statusIconImageVIew.image = UIImage(named: "statusFail")
         }
 
-        
-    } 
-    
-    func updateStatus(tx : STransaction){
-        let detachTx = tx.detached()
-        detachTx.labelDesciptionAndColor {[weak self] (des,color) in
-            self?.statusLabel.localizedText = des
-            self?.statusLabel.textColor = color
-            if (tx.blockNumber?.length)! > 0{
-                //success
-                self?.statusIconImageVIew.image = UIImage(named: "statusSuccess")
-                self?.pendingLoadingImage.isHidden = true
-            }else{
-                //confirming
-                self?.statusIconImageVIew.image = UIImage(named: "statusPending")
-                self?.pendingLoadingImage.isHidden = false
-                self?.pendingLoadingImage.rotate()
-            }
-        } 
         
     }
     

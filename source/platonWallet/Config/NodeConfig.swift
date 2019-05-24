@@ -20,9 +20,6 @@ let DefaultNodeURL_Alpha = "https://test-amigo.platon.network/test"
 let DefaultNodeURL_Beta = "https://test-beta.platon.network/test"
 
 
-//balance query timer
-let assetQueryTimerEnable = true
-
 let assetQueryTimerInterval = 8
 
 //tiemr query block number

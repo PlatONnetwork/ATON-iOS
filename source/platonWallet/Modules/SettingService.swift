@@ -63,6 +63,35 @@ class SettingService {
         return SettingService.shareInstance.currentNodeURL!
     }
     
+    
+    static func getCentralizationURL() -> String {
+        let DEBUG_CentralizationURL = "http://192.168.9.190:10061/app-203/v060"
+        let DefaultCentralizationURL = "https://aton.platon.network/"
+        
+        let url = self.getCurrentNodeURLString()
+        if url == DefaultNodeURL_Alpha{
+            return DefaultCentralizationURL + "api-" + self.getChainID() + "/api/"
+        }else if url == DefaultNodeURL_Beta{
+            return DefaultCentralizationURL + "api-" + self.getChainID() + "/api/"
+        }else if url == "http://192.168.120.81:6789"{
+            return DEBUG_CentralizationURL
+        }
+        return DefaultCentralizationURL + "api-" + self.getChainID() + "/api/"
+    }
+    
+    // v0.6.2 新增获取链ID
+    static func getChainID() -> String {
+        let url = getCurrentNodeURLString()
+        switch url {
+        case DefaultNodeURL_Alpha:
+            return "103"
+        case DefaultNodeURL_Beta:
+            return "104"
+        default:
+            return chaindId
+        }
+    }
+    
     func getNodes() -> [NodeInfo] {
         return nodeStorge?.getAll() ?? []
         

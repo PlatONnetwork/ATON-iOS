@@ -382,6 +382,10 @@ public final class WalletService {
         walletStorge?.updateWalletName(wallet: wallet, name: name)
     }
     
+    public func updateWalletBalance(_ wallet: Wallet, balance: String) {
+        walletStorge?.updateWalletBalance(wallet: wallet, balance: balance)
+    }
+    
     
     /// Generates a unique file name for an address.
     func generateFileName(identifier: String, date: Date = Date(), timeZone: TimeZone = .current) -> String {

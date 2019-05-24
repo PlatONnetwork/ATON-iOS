@@ -51,7 +51,7 @@ class VotingView: UIView ,UITextFieldDelegate{
     }
     
     func updateWithCandidate(candidate: Candidate){
-        nodeNameLabel.text = candidate.extra?.nodeName
+        nodeNameLabel.text = candidate.name
         nodeIdLabel.text = candidate.candidateId?.add0x()
     }
     

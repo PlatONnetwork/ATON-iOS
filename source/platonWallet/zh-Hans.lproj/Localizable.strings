@@ -22,7 +22,7 @@
 ///wallet common input placeholder
 "wallet_nameInput_placeholder" = "设置钱包名称";
 "wallet_pswInput_placeholder" = "设置钱包密码（不少于6位）";
-"wallet_pswConfirmInput_placeholder" = "重复钱包密码";
+"wallet_pswConfirmInput_placeholder" = "确认钱包密码";
 "wallet_psw_advise" = "*不少于6位字符，建议混合大小写、数字、特殊字符";
 
 ///wallet common input illegal tips
@@ -30,7 +30,7 @@
 "wallet_nameInput_lengthIllegal_tips" = "请输入1~12位钱包名称！";
 "wallet_pswInput_empty_tips" = "密码不能为空！";
 "wallet_pswInput_lengthIllegal_tips" = "密码长度至少6个字符！";
-"wallet_pswConfirmInput_empty_tips" = "重复密码不能为空！";
+"wallet_pswConfirmInput_empty_tips" = "确认密码不能为空！";
 "wallet_pswConfirmInput_mismatch_tips" = "两次密码不一致！";
 
 //createWalletVC
@@ -46,7 +46,6 @@
 "tabbar_candidate_title" = "投票";
 
 "navigationbar_wallet_title" = "普通钱包";
-"navigationbar_sharedwallet_title" = "联名钱包";
 
 "asset_header_total_asset" = "总计Energon";
 
@@ -286,9 +285,7 @@
 //AddWalletMenuVC
 
 "AddWalletMenuVC_createIndividualWallet_title" = "创建普通钱包";
-"AddWalletMenuVC_createSharedWallet_title" = "创建联名钱包";
 "AddWalletMenuVC_importIndividualWallet_title" = "导入普通钱包";
-"AddWalletMenuVC_addSharedWallet_title" = "添加联名钱包";
 
 
 "Invalid password" = "密码错误";
@@ -307,10 +304,6 @@
 "IndividualWallet_EmptyView_createBtn_title" = "创建普通钱包";
 "IndividualWallet_EmptyView_importBtn_title" = "导入普通钱包";
 
-"SharedWallet_EmptyView_tips" = "还没有联名钱包";
-"SharedWallet_EmptyView_createBtn_title" = "创建联名钱包";
-"SharedWallet_EmptyView_importBtn_title" = "添加联名钱包";
-
 //TransactionListViewController
 "TransactionListVC_nav_title" = "交易记录";
 "TransactionListVC_Sending" = "发送";
@@ -318,8 +311,6 @@
 "TransactionListVC_Receiving" = "接收";
 "TransactionListVC_Received" = "接收";
 "TransactionListVC_Vote" = "投票";
-"TransactionListVC_JointWalletCreation" = "创建联名钱包";
-"TransactionListVC_JointWalletExecution" = "执行联名钱包";
 
 "TransactionStatus_sending_title" = "发送";
 "TransactionStatus_sendSucceed_title" = "发送";
@@ -397,13 +388,10 @@
 
 //CreateSharedWalletVC
 "Wallet name" = "钱包名称";
-"CreateSharedWalletVC_Create Shared Wallet" = "创建联名钱包";
 "CreateSharedWalletVC_Select Owner" = "选择关联钱包";
-"CreateSharedWalletVC_Shared Owners" = "联名用户数量";
 "CreateSharedWalletVC_Required Signatures" = "所需签名数";
 
 "CreateSharedWalletVC_Select Owner colon" = "选择关联钱包：";
-"CreateSharedWalletVC_Shared Owners colon" = "联名用户数量：";
 "CreateSharedWalletVC_Required Signatures colon" = "所需签名数：";
 
 "CreateSharedWalletVC_Next" = "下一步";
@@ -430,15 +418,12 @@
 
 //shared Wallet detail
 "SharedWalletVC_title" = "管理钱包";
-"Members_Des" = "联名用户";
 "SharedWallet_delete" = "删除钱包";
 "Owner_Des" = "关联普通钱包";
-"JointWalletManagement_Joint_Owner" = "联名用户";
 
 
 
 //add shared wallet
-"AddSharedWalletVC_title" = "添加联名钱包";
 
 "AddSharedWalletVC_wallet_Name_Des" = "钱包名称";
 "AddSharedWalletVC_name_palceholder" = "请输入钱包名称";
@@ -448,20 +433,14 @@
 "AddSharedWalletVC_Change" = "切换钱包";
 
 "AddSharedWalletVC_addr" = "钱包地址";
-"AddSharedWalletVC_addr_placeholder" = "输入联名钱包地址";
-"AddSharedWalletVC_add" = "添加联名钱包";
 
 "sharedWalletDefaltMemberName" = "用户";
 "MemberSignDetailVC_YOU" = "你";
-"sharedWallet_sharedWallet_existed" = "联名钱包已存在";
 "sharedWallet_sharedWallet_no_existed" = "添加失败，地址不存在";
-
-"sharedWallet_sharedWallet_forbidden" = "非联名用户钱包，无法添加";
 
 //Member Sign Detail VC
 "MemberSignDetailVC_nav_title" = "交易详情";
 
-"MemberSignDetailVC_Confirms" = "联名钱包交易确认";
 "MemberSignDetailVC_Total" = "总数量";
 "MemberSignDetailVC_Agree" = "确认";
 "MemberSignDetailVC_reject" = "拒绝";
@@ -521,7 +500,6 @@
 "SharedWalletTransactionDetailVC_payment_content" = "创建合约手续费";
 "SharedWalletTransactionDetailVC_payment_submit" = "创建";
 
-"SharedWalletTransactionDetailVC_execute_contract" = "执行联名钱包";
 "SharedWalletTransactionDetailVC_payment_execute_contract" = "执行合约手续费";
 "SharedWalletTransactionDetailVC_execute_PayType" = "类型";
 "SharedWalletTransactionDetailVC_payment_confirm" = "确定";
@@ -555,8 +533,6 @@
 
 
 
-
-"Shared wallet create success" = "联名钱包创建成功";
 
 
 //About

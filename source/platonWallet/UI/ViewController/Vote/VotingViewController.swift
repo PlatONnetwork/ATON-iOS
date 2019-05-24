@@ -31,6 +31,9 @@ class VotingViewController0 : BaseViewController {
         }
     }
     
+    var voteCompletion: (() -> Void)?
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         initSubView()
@@ -120,7 +123,8 @@ class VotingViewController0 : BaseViewController {
                     self.showMessage(text: Localized("VotingViewController_insufficient_balance_tips"), delay: 3)
                     return
                 }
-                guard Int(VoteManager.sharedInstance.ticketPoolRemainder ?? "0")! >= Int(self.votingView.voteNumber.text!)! else {
+                
+                guard VoteManager.sharedInstance.ticketPoolRemainder ?? 0 >= Int(self.votingView.voteNumber.text!)! else {
                     self.showMessage(text: Localized("VotingViewController_exceed_limit_tips"), delay: 3)
                     return
                 }
@@ -187,6 +191,11 @@ class VotingViewController0 : BaseViewController {
         self.showLoadingHUD()
         VoteManager.sharedInstance.VoteTicket(count: UInt64(self.votingView.voteNumber!.text!)!, price: VoteManager.sharedInstance.ticketPrice!, nodeId: (self.candidate?.candidateId)!, sender: (self.selectedWallet?.key?.address)!, privateKey: pri, gasPrice: TransactionService.service.ethGasPrice!, gas: deploy_UseStipulatedGas) {[weak self] (result, data) in
             self?.hideLoadingHUD()
+            
+            DispatchQueue.main.async {
+                self?.voteCompletion?()
+            }
+            
             switch result{
             case .success:
                 self?.navigationController?.popViewController(animated: true)

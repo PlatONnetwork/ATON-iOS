@@ -42,6 +42,8 @@ public final class Wallet: Object {
     
     @objc dynamic var userArrangementIndex = -1
     
+    @objc dynamic var balance: String = ""
+    
     var type: WalletType = .ClassicWallet
     
     public var key: Keystore?

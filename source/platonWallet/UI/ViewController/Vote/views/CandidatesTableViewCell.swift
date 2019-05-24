@@ -66,9 +66,13 @@ class CandidatesTableViewCell: UITableViewCell {
 
     
     func feedData(_ candidate: Candidate, onVoteHandler:@escaping (()->Void)) {
-
-        candidateNameLabel.text = candidate.extra?.nodeName ?? ""
-        locationLabel.text = "(\(candidate.countryName))"
+        candidateNameLabel.text = candidate.name ?? ""
+        if let countryName = candidate.getNodeCountryName() {
+            locationLabel.text = "(" + countryName + ")"
+        } else {
+            locationLabel.text = ""
+        }
+        
         let rewardRate = candidate.rewardRate
         let staked = (candidate.deposit?.convertToEnergon(round: 4) ?? "-").ATPSuffix()
         descLabel.text = Localized("CandidateListVC_cell_desc", arguments: rewardRate, staked)

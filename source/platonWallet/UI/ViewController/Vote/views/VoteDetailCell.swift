@@ -39,14 +39,14 @@ class VoteDetailCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func updateCell(singleVote: SingleVote){
+    func updateCell(voteTransaction: VoteTransaction){
         
-        voteDateLabel.text = Date(timeIntervalSince1970: TimeInterval(singleVote.createTime)).toFormatter("yyyy-MM-dd HH:mm:ss")
-        let validNumber = Int(singleVote.validNum) ?? 0
-        let invalidNumber = singleVote.invalidNumber
+        voteDateLabel.text = Date(timeIntervalSince1970: (TimeInterval(voteTransaction.transactionTime ?? "0") ?? 0)/1000.0).toFormatter("yyyy-MM-dd HH:mm:ss")
+        let validNumber = Int(voteTransaction.validNum ?? "0") ?? 0
+        let invalidNumber = voteTransaction.invalidNumber
         validInvalidLabel.text = String(format: "%d/%d", validNumber, invalidNumber)
         
-        let price = BigUInt(singleVote.deposit ?? "0")!
+        let price = BigUInt(voteTransaction.price ?? "0")!
         let priceDes = price.divide(by: ETHToWeiMultiplier, round: 8).EnergonSuffix()
         ticketPriceLabel.text = priceDes
         
@@ -55,13 +55,13 @@ class VoteDetailCell: UITableViewCell {
     
         lockedAndReleaseLabel.text = String(format: "%@/%@", lockedDes,releaseDes)
         
-        let rewardBig = BigUInt.safeInit(str: singleVote.voteEarnings ?? "0").divide(by: ETHToWeiMultiplier, round: 4)
+        let rewardBig = BigUInt.safeInit(str: voteTransaction.earnings ?? "0").divide(by: ETHToWeiMultiplier, round: 4)
         
         rewardLabel.text = rewardBig.EnergonSuffix()
         
-        voteWalletAddressLabel.text = "\(singleVote.owner)(\(singleVote.walletName))"
+        voteWalletAddressLabel.text = "\(String(describing: voteTransaction.walletAddress ?? "0"))(\(voteTransaction.walletName))"
         
-        expiredTime.text = Date(timeIntervalSince1970: TimeInterval(singleVote.createTime + TicketEffectivePeriod)).toFormatter("yyyy-MM-dd HH:mm:ss") 
+        expiredTime.text = Date(timeIntervalSince1970: (TimeInterval(voteTransaction.deadLine ?? "0") ?? 0)/1000.0).toFormatter("yyyy-MM-dd HH:mm:ss")
     }
     
 }

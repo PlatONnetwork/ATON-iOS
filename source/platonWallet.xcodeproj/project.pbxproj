@@ -145,6 +145,9 @@
 		81C88E0C21746B3B005F17F7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 81C88E0B21746B3B005F17F7 /* Assets.xcassets */; };
 		81C88E0F21746B3B005F17F7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81C88E0D21746B3B005F17F7 /* LaunchScreen.storyboard */; };
 		81C88E1A21746B3B005F17F7 /* platonWalletUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C88E1921746B3B005F17F7 /* platonWalletUITests.swift */; };
+		81CB8ADB228A9564009E8AA0 /* TransactionService+Centralization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CB8ADA228A9564009E8AA0 /* TransactionService+Centralization.swift */; };
+		81CB8ADD228EA99C009E8AA0 /* TransactionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CB8ADC228EA99B009E8AA0 /* TransactionResponse.swift */; };
+		81CD551A229278A800A961B7 /* CandidateResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CD5519229278A800A961B7 /* CandidateResponse.swift */; };
 		81D16B5A21832AE200A283AF /* QRScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D16B5921832AE200A283AF /* QRScannerViewController.swift */; };
 		81E072B6223A5DD1003F6A28 /* QuickSaveAddressButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E072B5223A5DD1003F6A28 /* QuickSaveAddressButton.swift */; };
 		81E072B9223A8359003F6A28 /* AlertStylePopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E072B7223A8359003F6A28 /* AlertStylePopViewController.swift */; };
@@ -483,6 +486,9 @@
 		81C88E1521746B3B005F17F7 /* platonWalletUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = platonWalletUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		81C88E1921746B3B005F17F7 /* platonWalletUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = platonWalletUITests.swift; sourceTree = "<group>"; };
 		81C88E1B21746B3B005F17F7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		81CB8ADA228A9564009E8AA0 /* TransactionService+Centralization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TransactionService+Centralization.swift"; sourceTree = "<group>"; };
+		81CB8ADC228EA99B009E8AA0 /* TransactionResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionResponse.swift; sourceTree = "<group>"; };
+		81CD5519229278A800A961B7 /* CandidateResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandidateResponse.swift; sourceTree = "<group>"; };
 		81D16B5921832AE200A283AF /* QRScannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRScannerViewController.swift; sourceTree = "<group>"; };
 		81E072B5223A5DD1003F6A28 /* QuickSaveAddressButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickSaveAddressButton.swift; sourceTree = "<group>"; };
 		81E072B7223A8359003F6A28 /* AlertStylePopViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertStylePopViewController.swift; sourceTree = "<group>"; };
@@ -952,6 +958,7 @@
 				819A434E21D1FF3000E276C7 /* Ticket.swift */,
 				81412EB321DC678F008B909C /* SingleVote.swift */,
 				9AC86E98224A1E6000315A79 /* VoteOverView.swift */,
+				81CD5519229278A800A961B7 /* CandidateResponse.swift */,
 			);
 			path = Vote;
 			sourceTree = "<group>";
@@ -1192,6 +1199,7 @@
 			isa = PBXGroup;
 			children = (
 				81FCCCFD2179C5FB0052FC29 /* Transaction.swift */,
+				81CB8ADC228EA99B009E8AA0 /* TransactionResponse.swift */,
 			);
 			path = Transfer;
 			sourceTree = "<group>";
@@ -1339,6 +1347,7 @@
 			isa = PBXGroup;
 			children = (
 				81FCCD0A2179E9F10052FC29 /* TransactionService.swift */,
+				81CB8ADA228A9564009E8AA0 /* TransactionService+Centralization.swift */,
 			);
 			path = TransferService;
 			sourceTree = "<group>";
@@ -1877,6 +1886,7 @@
 				"${BUILT_PRODUCTS_DIR}/EmptyDataSet-Swift/EmptyDataSet_Swift.framework",
 				"${BUILT_PRODUCTS_DIR}/Localize-Swift/Localize_Swift.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/MJRefresh/MJRefresh.framework",
 				"${BUILT_PRODUCTS_DIR}/RTRootNavigationController/RTRootNavigationController.framework",
 				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
 				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
@@ -1900,6 +1910,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/EmptyDataSet_Swift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Localize_Swift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MJRefresh.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RTRootNavigationController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
@@ -2023,6 +2034,7 @@
 				817ABE2221B50C2A00E8030E /* UIApplication+Extensions.swift in Sources */,
 				81FCCD102179E9F20052FC29 /* AssetPersistence.swift in Sources */,
 				812002BB21A3EB390050E1B0 /* SWalletConfirmCell.swift in Sources */,
+				81CB8ADB228A9564009E8AA0 /* TransactionService+Centralization.swift in Sources */,
 				9ADB60B3222E801C0044918D /* AssetTransactionViewControllerV060.swift in Sources */,
 				81FCCCDB2179B3F10052FC29 /* AppFramework.swift in Sources */,
 				9A11FC482181E90C002D9A96 /* LeftAlignLayout.swift in Sources */,
@@ -2105,6 +2117,7 @@
 				81FCCCF32179B6710052FC29 /* AssetTableHeader.swift in Sources */,
 				9A79A08C219BCA74000EB4C5 /* CustomPickerView.swift in Sources */,
 				9A25B9B1218805D800B9433A /* PasswordStrengthView.swift in Sources */,
+				81CD551A229278A800A961B7 /* CandidateResponse.swift in Sources */,
 				81806F592269BB2C0072026A /* UITextField+AspectsScaling.m in Sources */,
 				81FCCCFC2179B6710052FC29 /* MainTabBarViewController.swift in Sources */,
 				9AC86E99224A1E6000315A79 /* VoteOverView.swift in Sources */,
@@ -2144,6 +2157,7 @@
 				818A91412182C23300D03D57 /* NSDecimal+Swift.swift in Sources */,
 				9A36AFAE22675F5800B388A9 /* MigrateBelow6.swift in Sources */,
 				9AE31424218C27D400B5433F /* NodeInfoPersistence.swift in Sources */,
+				81CB8ADD228EA99C009E8AA0 /* TransactionResponse.swift in Sources */,
 				813C3412223A327300DE92F1 /* DropDownVIew.swift in Sources */,
 				9ADE4517217F0801006F1C81 /* MainImportWalletViewController.swift in Sources */,
 				81FCCD0F2179E9F20052FC29 /* TransferPersistence.swift in Sources */,

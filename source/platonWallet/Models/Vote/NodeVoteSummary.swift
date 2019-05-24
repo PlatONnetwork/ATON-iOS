@@ -8,6 +8,7 @@
 
 import Foundation
 import BigInt
+import Localize_Swift
 
 class MyVoteStatic {
     
@@ -51,6 +52,49 @@ class MyVoteStatic {
         
     }
     
+}
+
+class NodeVote: Decodable {
+    var nodeId: String?
+    var name: String?
+    var countryCode: String?
+    var validNum: String?
+    var totalTicketNum: String?
+    var locked: String?
+    var earnings: String?
+    var transactionTime: String?
+    var isValid: String?
+    
+    var invalidTicketNum: Int {
+        get {
+            guard let totalNum = Int(totalTicketNum ?? "0") else { return 0 }
+            guard let validNum = Int(validNum ?? "0") else { return totalNum }
+            return totalNum - validNum
+        }
+    }
+    
+}
+
+class NoteVoteResponse: Decodable {
+    var errMsg: String = ""
+    var code: Int = 0
+    var data: [NodeVote] = []
+}
+
+extension NodeVote {
+    func getNodeCountryName() -> String? {
+        guard let code = countryCode else { return nil }
+        let path = Bundle.main.path(forResource: "PlatonAssets/country", ofType: "json")
+        guard let data = try? Data(contentsOf: URL(fileURLWithPath: path!)), let json = try? JSONSerialization.jsonObject(with: data, options: []) as? Dictionary<String, Any> else { return nil }
+        guard let array = json?["countrys"] as? [Dictionary<String, Any>] else { return nil }
+        
+        let results = array.filter { ($0["_id"] as? String)! == code }
+        if Localize.currentLanguage() == "en" {
+            return results.first?["Name_en"] as? String
+        } else {
+            return results.first?["Name_zh"] as? String
+        }
+    }
 }
 
 class NodeVoteSummary {

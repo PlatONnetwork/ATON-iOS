@@ -35,6 +35,7 @@ target 'platonWallet' do
   # Pods for platonWallet
   
   pod 'platonWeb3', '~> 0.4.0'
+  pod 'MJRefresh'
 
   target 'platonWalletTests' do
       inherit! :search_paths

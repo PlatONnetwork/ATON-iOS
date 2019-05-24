@@ -11,8 +11,7 @@ import Localize_Swift
 
 class TransactionDetailViewController: BaseViewController {
     
-    public var transaction : AnyObject?
-    public var wallet : Wallet?
+    public var transaction : Transaction?
     
     let transferDetailView = UIView.viewFromXib(theClass: TransferDetailView.self) as! TransferDetailView
 
@@ -28,12 +27,15 @@ class TransactionDetailViewController: BaseViewController {
         guard let hash = notification.object as? String  else {
             return
         }
-        if hash.ishexStringEqual(other: transaction?.txhash){
-            let tx = TransferPersistence.getByTxhash(transaction?.txhash)
-            if tx != nil{
-                transferDetailView.updateContent(tx: tx! as AnyObject,wallet : wallet ?? nil)
-            }
-        }
+        
+        //yujinghan waiting fix
+        
+//        if hash.ishexStringEqual(other: transaction?.txhash){
+//            let tx = TransferPersistence.getByTxhash(transaction?.txhash)
+//            if tx != nil{
+//                transferDetailView.updateContent(tx: tx! as AnyObject,wallet : wallet ?? nil)
+//            }
+//        }
         
     }
     
@@ -42,6 +44,7 @@ class TransactionDetailViewController: BaseViewController {
         transferDetailView.snp.makeConstraints { (make) in
                 make.leading.trailing.top.bottom.equalTo(view)
             }
-        transferDetailView.updateContent(tx: transaction! as AnyObject,wallet : wallet ?? nil)
+        
+        transferDetailView.updateContent(tx: transaction!)
     }
 }

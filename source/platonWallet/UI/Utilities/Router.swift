@@ -24,13 +24,13 @@ extension BaseViewController{
             return vc
              */
             let vc = TransactionDetailViewController()
-            vc.transaction = stransaction
+//            vc.transaction = stransaction
             var wallet = WalletService.sharedInstance.getWalletByAddress(address: stransaction.ownerWalletAddress)
             if wallet == nil{
                 //wallet dosen't exist
                 wallet = Wallet()
             }
-            vc.wallet = wallet
+//            vc.wallet = wallet
             return vc
         }
         

@@ -36,6 +36,13 @@ class WallletPersistence {
             wallet.name = name
         })
     }
+    
+    // 0.6.2更新 增加余额缓存
+    func updateWalletBalance(wallet: Wallet, balance: String) {
+        try? realm.write {
+            wallet.balance = balance
+        }
+    }
         
     func getAll() -> [Wallet] {
 

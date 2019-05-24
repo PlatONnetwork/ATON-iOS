@@ -15,11 +15,11 @@ class SingleVoteDetailListVC : BaseViewController, UITableViewDelegate,UITableVi
     
     var tableViewHeader : VoteDetailHeader?
     
-    var candidate : CandidateBasicInfo?
+//    var candidate : CandidateBasicInfo?
     
-    var voteSum : NodeVoteSummary?
+    var nodeVote: NodeVote?
     
-    var dataSource : [SingleVote] = []
+    var dataSource : [VoteTransaction] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,21 +75,37 @@ class SingleVoteDetailListVC : BaseViewController, UITableViewDelegate,UITableVi
     func initData(){
         
         
-        guard let candidate = candidate else {
+        guard let node = nodeVote else {
             return
         }
-        tableViewHeader?.updateView(candidate)
+        tableViewHeader?.updateView(node)
         dataSource.removeAll()
-        let singlevotes = voteSum?.singleVote as! [SingleVote]
-        dataSource.append(contentsOf: singlevotes)
+        fetchData()
+//        let singlevotes = voteSum?.singleVote as! [SingleVote]
+//        dataSource.append(contentsOf: singlevotes)
   
+    }
+    
+    func fetchData() {
+        guard let nodeId = nodeVote?.nodeId else { return }
+        let addressStrs = AssetVCSharedData.sharedData.walletList.filterClassicWallet.map { cwallet in
+            return cwallet.key!.address
+        }
+        VoteManager.sharedInstance.GetBatchVoteNodeTransactionList(beginSequence: -1, listSize: 100, nodeId: nodeId, direction: "new", addressList: addressStrs) { [weak self] (result, response) in
+            switch result {
+            case .success:
+                guard let voteTransactionResponse = (response as? VoteTransactionResponse) else { return }
+                self?.dataSource.append(contentsOf: voteTransactionResponse.data)
+                self?.tableView.reloadData()
+            case .fail(_, let err):
+                break
+            }
+        }
     }
      
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell : VoteDetailCell = tableView.dequeueReusableCell(withIdentifier: String(describing: VoteDetailCell.self)) as! VoteDetailCell
-
-        cell.updateCell(singleVote: dataSource[indexPath.section])
-
+        cell.updateCell(voteTransaction: dataSource[indexPath.section])
         return cell
     }
     

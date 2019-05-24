@@ -24,24 +24,11 @@ class TransactionCell: UITableViewCell {
         selectionStyle = .none
     }
 
-    func updateCell(tx : AnyObject?){ 
-        if let tx = tx as? Transaction{
-            
-            updateTransactionStatus(tx: tx)
-            amoutLabel.text = "-" + (tx.valueDescription)!.ATPSuffix()
-            timeLabel.text = Date.toStanderTimeDescrition(millionSecondsTimeStamp: Int((tx.createTime)))
-            
-        }else if let tx = tx as? STransaction{
-            updateSTransactionStatus(tx: tx)
-            typeLabel.text = tx.typeLocalization
-            timeLabel.text = Date.toStanderTimeDescrition(millionSecondsTimeStamp: Int((tx.createTime)))
-            if tx.transanctionCategoryLazy == .ATPTransfer{
-                amoutLabel.text = "-" + (tx.valueDescription)!.ATPSuffix()
-            }else{
-                amoutLabel.text = (tx.valueDescription)!.ATPSuffix()
-            }
-            
-        }
+    
+    func updateCell(tx : Transaction){
+        updateTransactionStatus(tx: tx)
+        amoutLabel.text = "-" + (tx.valueDescription)!.ATPSuffix()
+        timeLabel.text = Date.toStanderTimeDescrition(millionSecondsTimeStamp: tx.confirmTimes)
     }
  
     

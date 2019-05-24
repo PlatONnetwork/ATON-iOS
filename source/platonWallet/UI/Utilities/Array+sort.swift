@@ -87,20 +87,20 @@ extension Array where Element == Candidate{
         let ticketPrice = BigUInt(VoteManager.sharedInstance.ticketPrice ?? BigUInt("0")!)
         self.sort { (c1, c2) -> Bool in
             
-            if (c1.rankStatus == .candidateFirst100 && c2.rankStatus == .alternativeFirst100) ||
-                (c2.rankStatus == .candidateFirst100 && c1.rankStatus == .alternativeFirst100)
-            {
-                return c1.rankStatus.rawValue < c2.rankStatus.rawValue
-            }
+//            if (c1.rankStatus == .candidateFirst100 && c2.rankStatus == .alternativeFirst100) ||
+//                (c2.rankStatus == .candidateFirst100 && c1.rankStatus == .alternativeFirst100)
+//            {
+//                return c1.rankStatus.rawValue < c2.rankStatus.rawValue
+//            }
             
             var bigLeft = BigUInt(c1.deposit ?? BigUInt("0")!)
-            bigLeft.multiplyAndAdd(ticketPrice.multiplied(by: BigUInt(c1.tickets ?? 0)), 1)
+            bigLeft.multiplyAndAdd(ticketPrice.multiplied(by: BigUInt(c1.ticketCount ?? 0)), 1)
             var bigRight = BigUInt(c2.deposit ?? BigUInt("0")!)
-            bigRight.multiplyAndAdd(ticketPrice.multiplied(by: BigUInt(c2.tickets ?? 0)), 1)
+            bigRight.multiplyAndAdd(ticketPrice.multiplied(by: BigUInt(c2.ticketCount ?? 0)), 1)
             if String(bigLeft) != String(bigRight){
                 return !bigLeft.subtractReportingOverflow(bigRight)
             }
-            return c1.extra?.time ?? 0 < c2.extra?.time ?? 0
+            return c1.joinTime ?? 0 < c2.joinTime ?? 0
         }
         /*
         self.map({ item in
@@ -209,3 +209,26 @@ extension Array {
         return result
     }
 }
+
+// 过滤掉Hash重复的数据，且以有sequence值优先入列
+extension Array where Element == Transaction {
+    @discardableResult
+    func removingDuplicates() -> [Transaction] {
+        let confirmTxHashes = filter { $0.sequence != nil }.map { $0.txhash! }
+        
+        return filter {
+            confirmTxHashes.contains($0.txhash!)
+        }
+    }
+    
+    func firstTransactionNoNilSequence() -> Transaction? {
+        for item in self {
+            if item.sequence != nil {
+                return item
+            }
+        }
+        return nil
+    }
+}
+
+
