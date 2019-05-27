@@ -66,6 +66,7 @@ class CandidatesListViewController: BaseViewController {
     
     lazy var refreshHeader: MJRefreshHeader = {
         let header = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(fetchData))!
+        header.ignoredScrollViewContentInsetTop = headerViewHeight + 20
         header.lastUpdatedTimeLabel.isHidden = true
         return header
     }()

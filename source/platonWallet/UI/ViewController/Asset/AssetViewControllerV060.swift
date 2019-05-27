@@ -9,6 +9,7 @@
 import UIKit
 import Localize_Swift
 import RTRootNavigationController
+import MJRefresh
 
 let AssetHeaderViewH = 168 - 44 + 20
 let AssetSectionViewH : CGFloat = 124 
@@ -54,6 +55,11 @@ class AssetViewControllerV060: BaseViewController ,PopupMenuTableDelegate{
         
         return [transactionVC,sendVC,recvVC]
         
+    }()
+    
+    lazy var refreshHeader: MJRefreshNormalHeader = {
+        let header = MJRefreshNormalHeader()
+        return header
     }()
     
     var tmpChildVCIndex: Int = 0
@@ -166,6 +172,9 @@ class AssetViewControllerV060: BaseViewController ,PopupMenuTableDelegate{
         
         NotificationCenter.default.addObserver(self, selector: #selector(OnBeginEditing(_:)), name: UITextField.textDidBeginEditingNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(updateWalletList), name: Notification.Name(updateWalletList_Notification), object: nil)
+        
+//        scrollView.mj_header = refreshHeader
+//        scrollView.mj_header.beginRefreshing()
        
     }
     
@@ -226,41 +235,41 @@ class AssetViewControllerV060: BaseViewController ,PopupMenuTableDelegate{
     //hide animate
     var assetHeaderStyle: (hide: Bool,animated: Bool)?{
         didSet{
-            print("headerStyle:\(String(describing: assetHeaderStyle))")
-            let hide = assetHeaderStyle?.0 ?? false
-            let animated = assetHeaderStyle?.1 ?? false
-            
-            
-            
-            if hide{
-                
-                scrollView.setContentOffset(CGPoint(x: 0, y: AssetHeaderViewH), animated: animated)
-                sectionView.backgroundColor = .white
-                DispatchQueue.main.async {
-                    self.scrollView.isScrollEnabled = true
-                }
-
-                view.backgroundColor = .white
-                sectionView.backgroundColor = .white
-                sectionView.grayoutBackground.backgroundColor = .white
-                sectionView.bottomSepline.backgroundColor = #colorLiteral(red: 0.9751496911, green: 0.984305203, blue: 1, alpha: 1)
-
-            }else{
-                
-                sectionView.backgroundColor = UIColor(red: 247, green: 250, blue: 255, alpha: 1)
-                
-                scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: animated)
-                DispatchQueue.main.async {
-                    self.scrollView.isScrollEnabled = true
-                }
-                view.backgroundColor = .white
-                sectionView.backgroundColor = #colorLiteral(red: 0.9751496911, green: 0.984305203, blue: 1, alpha: 1)
-                sectionView.grayoutBackground.backgroundColor = #colorLiteral(red: 0.9751496911, green: 0.984305203, blue: 1, alpha: 1)
-                sectionView.bottomSepline.backgroundColor = #colorLiteral(red: 0.9215686275, green: 0.9333333333, blue: 0.9568627451, alpha: 1)
-            }
-            
-            transactionVC.setHeaderStyle(hide: hide)
-            self.updatePageViewConstraint(headerHide: hide)
+//            print("headerStyle:\(String(describing: assetHeaderStyle))")
+//            let hide = assetHeaderStyle?.0 ?? false
+//            let animated = assetHeaderStyle?.1 ?? false
+//
+//
+//
+//            if hide{
+//
+//                scrollView.setContentOffset(CGPoint(x: 0, y: AssetHeaderViewH), animated: animated)
+//                sectionView.backgroundColor = .white
+//                DispatchQueue.main.async {
+//                    self.scrollView.isScrollEnabled = true
+//                }
+//
+//                view.backgroundColor = .white
+//                sectionView.backgroundColor = .white
+//                sectionView.grayoutBackground.backgroundColor = .white
+//                sectionView.bottomSepline.backgroundColor = #colorLiteral(red: 0.9751496911, green: 0.984305203, blue: 1, alpha: 1)
+//
+//            }else{
+//
+//                sectionView.backgroundColor = UIColor(red: 247, green: 250, blue: 255, alpha: 1)
+//
+//                scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: animated)
+//                DispatchQueue.main.async {
+//                    self.scrollView.isScrollEnabled = true
+//                }
+//                view.backgroundColor = .white
+//                sectionView.backgroundColor = #colorLiteral(red: 0.9751496911, green: 0.984305203, blue: 1, alpha: 1)
+//                sectionView.grayoutBackground.backgroundColor = #colorLiteral(red: 0.9751496911, green: 0.984305203, blue: 1, alpha: 1)
+//                sectionView.bottomSepline.backgroundColor = #colorLiteral(red: 0.9215686275, green: 0.9333333333, blue: 0.9568627451, alpha: 1)
+//            }
+//
+//            transactionVC.setHeaderStyle(hide: hide)
+//            self.updatePageViewConstraint(headerHide: hide)
             
         }
     }
@@ -366,35 +375,35 @@ extension AssetViewControllerV060 : UIScrollViewDelegate,ChildScrollViewDidScrol
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        //print("scrollview Didcroll:\(scrollView.contentOffset.y)")
+        print("scrollview Didcroll:\(scrollView.contentOffset.y)")
         
         //let rec = sectionView.convert(sectionView.bounds, to: view)
         //print("sectionView y:\(rec.origin.y)")
         
-        if (!scrollEnable || scrollView.contentOffset.y >= CGFloat(AssetHeaderViewH)) {
-            //scrollView.setContentOffset(CGPoint(x: 0, y: AssetHeaderViewH - 20), animated: false)
-            DispatchQueue.main.async {
-                scrollView.setContentOffset(CGPoint(x: 0, y: AssetHeaderViewH), animated: false)
-            }
-            if !(self.assetHeaderStyle?.hide)!{
-                self.assetHeaderStyle = (true,false)
-            }
-        }
-    } 
+//        if (!scrollEnable || scrollView.contentOffset.y >= CGFloat(AssetHeaderViewH)) {
+//            //scrollView.setContentOffset(CGPoint(x: 0, y: AssetHeaderViewH - 20), animated: false)
+//            DispatchQueue.main.async {
+//                scrollView.setContentOffset(CGPoint(x: 0, y: AssetHeaderViewH), animated: false)
+//            }
+//            if !(self.assetHeaderStyle?.hide)!{
+//                self.assetHeaderStyle = (true,false)
+//            }
+//        }
+    }
     
     func childScrollViewDidScroll(childScrollView: UIScrollView) {
         let yoffset = childScrollView.contentOffset.y
         //print("childScrollViewDidScroll:\(yoffset)")
         if yoffset <= 0 {
-            scrollEnable = true
+//            scrollEnable = true
 //            childScrollView.setContentOffset(.zero, animated: false)
         }else {
-            let rec = sectionView.convert(sectionView.bounds, to: view)
-            if scrollEnable && rec.origin.y > 0 && !(self.assetHeaderStyle?.hide)!{
-                childScrollView.setContentOffset(.zero, animated: false)
-            }else {
-                scrollEnable = false
-            }
+//            let rec = sectionView.convert(sectionView.bounds, to: view)
+//            if scrollEnable && rec.origin.y > 0 && !(self.assetHeaderStyle?.hide)!{
+//                childScrollView.setContentOffset(.zero, animated: false)
+//            }else {
+//                scrollEnable = false
+//            }
         }
 
     }
