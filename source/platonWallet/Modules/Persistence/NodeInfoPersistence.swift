@@ -62,7 +62,7 @@ class NodeInfoPersistence {
     
     func getAll() -> [NodeInfo] {
         
-        let res = realm.objects(NodeInfo.self).sorted(byKeyPath: "id")
+        let res = RealmHelper.getNewRealm().objects(NodeInfo.self).sorted(byKeyPath: "id")
         guard res.count > 0 else {
             return []
         }

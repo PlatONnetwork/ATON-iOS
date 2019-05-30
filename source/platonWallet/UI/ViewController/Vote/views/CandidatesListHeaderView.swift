@@ -43,20 +43,17 @@ class CandidatesListHeaderView: UIView {
     @IBOutlet weak var progressView: UIProgressView!
     @IBOutlet weak var myVoteLabel: UILabel!
     
-    @IBOutlet weak var bgImageView: UIImageView!
+    lazy var bgImageView = { () -> UIImageView in
+        let imageView = UIImageView(image: UIImage(named: "voteHeaderBG"))
+        return imageView
+    }()
+
     private var curTicketPrice: String?
     private var curTicketPriceUpward: Bool = false
     private var curPoll: Int?
     private var curVoteRate: Float?
     
     private var isHideUI: Bool = false
-    
-    @IBOutlet weak var contentHeightConstant: NSLayoutConstraint!
-    
-    @IBOutlet weak var voteRateLabelTopConstant: NSLayoutConstraint!
-    @IBOutlet weak var voteRateLabelBottomConstant: NSLayoutConstraint!
-    
-    
     var gradientImage : UIImage = UIImage()
     
     override init(frame: CGRect) {
@@ -80,6 +77,11 @@ class CandidatesListHeaderView: UIView {
     }
     
     private func initView() {
+        backgroundColor = .white
+        addSubview(bgImageView)
+        bgImageView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
         
         let view = Bundle.main.loadNibNamed("CandidatesListHeaderView", owner: self, options: nil)?.first as! UIView
         view.layer.cornerRadius = 4
@@ -90,7 +92,7 @@ class CandidatesListHeaderView: UIView {
 //        voteRateLabel.snp.updateConstraints { make in
 //            make.top.equalToSuperview().offset(44 + kStatusBarHeight)
 //        }
-        self.bgImageView.isUserInteractionEnabled = true
+//        self.bgImageView.isUserInteractionEnabled = true
         
         update()
     }

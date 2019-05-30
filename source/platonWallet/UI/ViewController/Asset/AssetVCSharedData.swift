@@ -72,7 +72,7 @@ class AssetVCSharedData{
                 
                 return
             }
-            for (k,v) in walletChangeHandlers.enumerated(){
+            for (_,v) in walletChangeHandlers.enumerated(){
                 v.value()
             }
         }

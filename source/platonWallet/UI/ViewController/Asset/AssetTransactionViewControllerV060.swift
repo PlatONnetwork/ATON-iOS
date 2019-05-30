@@ -8,6 +8,7 @@
 
 import UIKit
 import EmptyDataSet_Swift
+import MJRefresh
 
 protocol ChildScrollViewDidScrollDelegate: AnyObject {
     func childScrollViewDidScroll(childScrollView: UIScrollView)
@@ -30,12 +31,20 @@ class AssetTransactionViewControllerV060: BaseViewController, EmptyDataSetDelega
     
     var localDataSource = [String: [Transaction]]()
     
-    
     var walletAddress : String?
     
     var transactionsTimer: Timer? = nil
     
     var assetHeaderHide = false
+    
+    weak var parentController: AssetViewControllerV060?
+    
+    lazy var refreshFooterView: MJRefreshAutoNormalFooter = {
+        let view = MJRefreshAutoNormalFooter(refreshingTarget: self, refreshingAction: #selector(fetchTransactionMore))!
+        return view
+    }()
+    
+    let listSize = 20
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,6 +52,7 @@ class AssetTransactionViewControllerV060: BaseViewController, EmptyDataSetDelega
         tableView.dataSource = self
         tableView.separatorStyle = .none
         tableView.showsVerticalScrollIndicator = false
+        tableView.alwaysBounceVertical = false
         tableView.emptyDataSetView { [weak self] view in
             let holder = self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, nil,"empty_no_data_img") as? TableViewNoDataPlaceHolder
             view.customView(holder)
@@ -68,15 +78,10 @@ class AssetTransactionViewControllerV060: BaseViewController, EmptyDataSetDelega
         NotificationCenter.default.addObserver(self, selector: #selector(updateWalletList), name: NSNotification.Name(updateWalletList_Notification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(nodeDidSwitch), name: NSNotification.Name(NodeStoreService.didSwitchNodeNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(initClassicData), name: NSNotification.Name(DidAddVoteTransactionNotification), object: nil)
-    }
-   
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+        
+        tableView.mj_footer = refreshFooterView
+        
+        
     }
     
     func setHeaderStyle(hide: Bool){
@@ -96,6 +101,8 @@ extension AssetTransactionViewControllerV060{
     func refreshData(){
         commonInit()
         initClassicData()
+        fetchDataByWalletChanged()
+        
         if AssetVCSharedData.sharedData.walletList.count == 0{
             self.tableNodataHolderView.descriptionLabel.localizedText = "IndividualWallet_EmptyView_tips"
         }else{
@@ -149,28 +156,49 @@ extension AssetTransactionViewControllerV060{
         self.tableView.reloadData()
     }
     
-    
-    
     func fetchTransaction(beginSequence: Int, direction: String) {
         guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return }
-        TransactionService.service.getBatchTransaction(addresses: [selectedAddress], beginSequence: beginSequence, listSize: 20, direction: direction) { (result, response) in
+        TransactionService.service.getBatchTransaction(addresses: [selectedAddress], beginSequence: beginSequence, listSize: listSize, direction: direction) { (result, response) in
+            
+            // 结束顶层下拉刷新的状态
+            self.parentController?.endFetchData()
+            self.tableView.mj_footer.endRefreshing()
+            
             switch result {
             case .success:
+                // 下拉刷新时，先请除非本地缓存的数据
                 if beginSequence == -1 {
                     let _ = self.dataSource[selectedAddress]?.filter { $0.sequence != nil }
                     self.tableView.reloadData()
                 }
                 
-                guard let transactions = response as? [Transaction], transactions.count > 0 else { return }
+                // 返回的交易数据条数为0，则显示无加载更多
+                guard let transactions = response as? [Transaction], transactions.count > 0 else {
+                    self.tableView.mj_footer.endRefreshingWithNoMoreData()
+                    self.tableView.mj_footer.isHidden = (self.dataSource[selectedAddress]?.count == 0)
+                    return
+                }
+                
                 if beginSequence != -1 && direction == "new" {
                     AssetService.sharedInstace.fetchWalletBanlance()
                 }
                 
                 guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return }
                 if let existTxs = self.dataSource[selectedAddress], existTxs.count > 0 {
-                    let txHashes = transactions.map { $0.txhash! }
                     
-                    self.dataSource[selectedAddress] = self.dataSource[selectedAddress]?.filter { !txHashes.contains($0.txhash!) }
+                    let txHashes = transactions.map { $0.txhash! }
+                    self.dataSource[selectedAddress] = self.dataSource[selectedAddress]?.filter {
+                        if txHashes.contains($0.txhash!) {
+                            // 当数组的数据sequence为空，则代表是从本地拿的，应该从本地删除
+                            if $0.sequence == nil {
+                                TransferPersistence.delete($0)
+                            }
+                            return false
+                        } else {
+                            return true
+                        }
+                    }
+                    
                     if direction == "new" && beginSequence > -1 {
                         self.dataSource[selectedAddress]?.insert(contentsOf: transactions, at: 0)
                     } else {
@@ -180,19 +208,59 @@ extension AssetTransactionViewControllerV060{
                     self.dataSource[selectedAddress] = transactions
                 }
                 
-//                self.dataSource[selectedAddress]?.removingDuplicates()
+                if transactions.count < self.listSize {
+                    self.tableView.mj_footer.endRefreshingWithNoMoreData()
+                } else {
+                    self.tableView.mj_footer.resetNoMoreData()
+                }
+                self.tableView.mj_footer.isHidden = (self.dataSource[selectedAddress]?.count == 0)
                 self.tableView.reloadData()
             case .fail(_, let error):
+                self.tableView.mj_footer.isHidden = (self.dataSource[selectedAddress]?.count == 0)
                 break
             }
         }
+    }
+    
+    
+}
+
+// 下拉刷新及加载更多
+extension AssetTransactionViewControllerV060 {
+    func fetchDataByWalletChanged() {
+        guard parentController?.refreshHeader.isRefreshing == false else { return }
+        guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return }
+        guard let count = self.dataSource[selectedAddress]?.count, count <= 0 else {
+            pollingWalletTransactions()
+            return
+        }
+        parentController?.refreshHeader.beginRefreshing()
     }
     
     func fetchTransactionLastest() {
         fetchTransaction(beginSequence: -1, direction: "new")
     }
     
+    @objc func fetchTransactionMore() {
+        guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else {
+            self.tableView.mj_footer.endRefreshing()
+            return
+        }
+        guard let lastTransaction = dataSource[selectedAddress]?.last else {
+            fetchTransactionLastest()
+            return
+        }
+        
+        guard let sequenceString = lastTransaction.sequence, let sequence = Int(sequenceString) else {
+            self.tableView.mj_footer.endRefreshing()
+            return
+        }
+        fetchTransaction(beginSequence: sequence, direction: "old")
+    }
+    
     @objc func pollingWalletTransactions() {
+        // 如果z当前正处于下拉刷新y或者加载更多状态，则忽略定时器触发的刷新
+        guard parentController?.refreshHeader.isRefreshing == false && refreshFooterView.isRefreshing == false else { return }
         guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return }
         guard let lastestTransaction = dataSource[selectedAddress]?.firstTransactionNoNilSequence() else {
             fetchTransactionLastest()
@@ -201,19 +269,6 @@ extension AssetTransactionViewControllerV060{
         
         guard let sequence = Int(lastestTransaction.sequence ?? "0") else { return }
         fetchTransaction(beginSequence: sequence, direction: "new")
-    }
-    
-    func fetchTransactionMore() {
-        guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return }
-        guard let lastTransaction = dataSource[selectedAddress]?.last else {
-            fetchTransactionLastest()
-            return
-        }
-        
-        guard let sequenceString = lastTransaction.sequence, let sequence = Int(sequenceString) else {
-            return
-        }
-        fetchTransaction(beginSequence: sequence, direction: "old")
     }
 }
  

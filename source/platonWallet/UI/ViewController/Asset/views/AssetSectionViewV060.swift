@@ -45,12 +45,6 @@ class AssetSectionViewV060: UIView {
     
     
     
-    
-    
-    
-    
-    
-    
     @IBOutlet weak var backupContainer: UIView!
     
     
@@ -92,26 +86,6 @@ class AssetSectionViewV060: UIView {
         self.updateBottonIndicator(index: 0)
         
         NotificationCenter.default.addObserver(self, selector: #selector(didUpdateAllAsset), name: NSNotification.Name(DidUpdateAllAssetNotification), object: nil)
-    }
-    
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        /*
-        if let futureMask = self.forgroundView.layer.mask {
-            CATransaction.setDisableActions(true)
-            if self.isDraging{
-                futureMask.frame = self.maskPositionWithIndex(index: self.selectedIndex)
-            }else{
-                CATransaction.setAnimationDuration(0.15)
-                CATransaction.setCompletionBlock {
-                    CATransaction.setAnimationDuration(0.15)
-                    futureMask.frame = self.maskPositionWithIndex(index: self.selectedIndex)
-                }
-            }
-            CATransaction.commit()
-        }
-         */
-        print("walletnamefont: \(walletName.font)")
     }
     
     

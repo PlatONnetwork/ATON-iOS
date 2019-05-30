@@ -340,6 +340,15 @@
 "TransactionStatus_succeed_desc" = "Success";
 "TransactionStatus_failed_desc" = "Failed";
 
+"TransactionStatus_transfer_title" = "transfer";
+"TransactionStatus_MPCtransaction_title" = "MPCtransaction";
+"TransactionStatus_contractCreate_title" = "contractCreate";
+"TransactionStatus_voteTicket_title" = "voteTicket";
+"TransactionStatus_transactionExecute_title" = "transactionExecute";
+"TransactionStatus_candidateDeposit_title" = "candidateDeposit";
+"TransactionStatus_candidateApplyWithdraw_title" = "candidateApplyWithdraw";
+"TransactionStatus_candidateWithdraw_title" = "candidateWithdraw";
+"TransactionStatus_unknown_title" = "unknown";
 
 
 

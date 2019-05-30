@@ -79,7 +79,7 @@ class AppFramework {
         //set node storage first
         let nodeStorge = NodeInfoPersistence(realm: RealmInstance!)
         SettingService.shareInstance.nodeStorge = nodeStorge
-        
+
         let walletStorge = WallletPersistence(realm: RealmInstance!)
         WalletService.sharedInstance.walletStorge = walletStorge
         

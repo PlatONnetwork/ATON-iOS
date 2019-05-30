@@ -26,9 +26,7 @@ class CandidatesListViewController: BaseViewController {
     
     var headerView: CandidatesListHeaderView!
     var filterBarView: CandidatesListFilterBarView!
-    var tableView: MultiGestureTableView!
     var sortType: CandidatesListSortType = .default
-    var timer: Timer?
     
     //
     var nominateNodeList: [Candidate] = []
@@ -64,17 +62,41 @@ class CandidatesListViewController: BaseViewController {
         }
     }
     
-    lazy var refreshHeader: MJRefreshHeader = {
+    lazy var refreshHeader: MJRefreshNormalHeader = {
         let header = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(fetchData))!
-        header.ignoredScrollViewContentInsetTop = headerViewHeight + 20
-        header.lastUpdatedTimeLabel.isHidden = true
+        header.frame = CGRect(x: 0, y: -54, width: view.frame.width, height: 54)
+        var frame = header.stateLabel.frame
+        frame.origin.y = kStatusBarHeight
+        header.stateLabel.frame = frame
         return header
+    }()
+    
+    lazy var tableHeaderView: UIView = {
+        let view = UIView()
+        return view
+    }()
+    
+    lazy var tableView = { () -> MultiGestureTableView in
+        let tbView = MultiGestureTableView(frame: .zero)
+        tbView.showsVerticalScrollIndicator = false
+        tbView.delegate = self
+        tbView.dataSource = self
+        tbView.register(UINib(nibName: "CandidatesTableViewCell", bundle: nil), forCellReuseIdentifier: "CandidatesTableViewCell")
+        tbView.separatorStyle = .none
+        tbView.backgroundColor = UIViewController_backround
+        tbView.tableFooterView = UIView()
+        return tbView
     }()
      
     override func viewDidLoad() {
         super.viewDidLoad()
         self.statusBarNeedTruncate = true
         
+//        if #available(iOS 11.0, *) {
+//            tableView.contentInsetAdjustmentBehavior = .never
+//        } else {
+//            automaticallyAdjustsScrollViewInsets = false
+//        }
         
         initSubView()
         self.navigationController?.setNavigationBarHidden(true, animated: false)
@@ -83,34 +105,11 @@ class CandidatesListViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        startPolling()
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        stopPolling()
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        /*
-        let header = headerView
-        var height = header!.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
-        var newFrame = header!.frame
-        if height == 0.0{
-            height = 129
+        guard !tableView.mj_header.isRefreshing else {
+            return
         }
-        newFrame.size.height = height;
-        header!.frame = newFrame
-        tableView.tableHeaderView = header
-        */
-        
-//        if #available(iOS 11.0, *) {
-//            print("adjustedContentInset:\(scrollContainer.adjustedContentInset)")
-//        } else {
-//            // Fallback on earlier versions
-//        }
+
+        tableView.mj_header.beginRefreshing()
     }
     
     
@@ -120,16 +119,7 @@ class CandidatesListViewController: BaseViewController {
         let tmpView = UIView(frame: CGRect(x: 0, y: 0, width: 1, height: 1))
         view.addSubview(tmpView)
         
-        tableView = MultiGestureTableView(frame: .zero)
-        tableView.showsVerticalScrollIndicator = false
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.register(UINib(nibName: "CandidatesTableViewCell", bundle: nil), forCellReuseIdentifier: "CandidatesTableViewCell")
-        tableView.separatorStyle = .none
-        tableView.backgroundColor = UIViewController_backround
-        tableView.tableFooterView = UIView()
         view.addSubview(tableView)
-        
         tableView.emptyDataSetView { [weak self] view in
             let holder = self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, nil,"empty_no_data_img") as? TableViewNoDataPlaceHolder
             view.customView(holder)
@@ -139,18 +129,24 @@ class CandidatesListViewController: BaseViewController {
             }
         }
         
-        tableView.contentInset = UIEdgeInsets(top: headerViewHeight + filterBarShrinkHeight - 2*kStatusBarHeight, left: 0, bottom: 0, right: 0)
         tableView.snp.makeConstraints { (make) in
-            make.top.equalToSuperview()
+            make.top.equalToSuperview().offset(-kStatusBarHeight)
             make.leading.bottom.trailing.equalToSuperview()
         }
         
+        tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: headerViewHeight+filterBarShrinkHeight))
+        tableView.tableHeaderView?.addSubview(tableHeaderView)
+        tableHeaderView.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.height.equalTo(headerViewHeight+filterBarShrinkHeight)
+            make.leading.trailing.equalToSuperview()
+        }
         
         headerView = CandidatesListHeaderView(frame: .zero)
         headerView.myVoteButton.addTarget(self, action: #selector(onMyVote), for: .touchUpInside)
         view.addSubview(headerView)
         headerView.snp.makeConstraints({ (maker) in
-            maker.top.equalToSuperview().offset(-kStatusBarHeight)
+            maker.top.equalTo(tableHeaderView.snp.top)
             maker.leading.equalToSuperview().offset(0)
             maker.trailing.equalToSuperview().offset(0)
             maker.height.equalTo(headerViewHeight)
@@ -165,7 +161,6 @@ class CandidatesListViewController: BaseViewController {
         filterBarView.searchTF.delegate = self
         filterBarView.searchTF.returnKeyType = .search
         filterBarView.updateSelectedBtn(filterBarView.filterButtons[0])
-        
         view.addSubview(filterBarView)
         filterBarView.snp.makeConstraints { (make) in
             make.leading.trailing.equalToSuperview()
@@ -173,15 +168,46 @@ class CandidatesListViewController: BaseViewController {
             make.height.equalTo(filterBarShrinkHeight)
         }
         
-        
-        
+        refreshHeader.addObserver(self, forKeyPath: "state", options: [.new, .old], context: nil)
         tableView.mj_header = refreshHeader
         tableView.mj_header.beginRefreshing()
+
+    }
+    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if keyPath == "state" {
+            let newValue = change?[NSKeyValueChangeKey.newKey] as? Int
+            let oldValue = change?[NSKeyValueChangeKey.oldKey] as? Int
+            
+            if newValue == 1 && oldValue == 3 {
+                headerView.snp.updateConstraints { make in
+                    make.top.equalTo(tableHeaderView.snp.top)
+                }
+                
+                UIView.animate(withDuration: TimeInterval(MJRefreshSlowAnimationDuration), animations: {
+                    self.view.layoutIfNeeded()
+                }) { (_) in
+                    
+                }
+            }
+            
+            if newValue == 3 && oldValue == 2 {
+                UIView.animate(withDuration: TimeInterval(MJRefreshFastAnimationDuration), animations: {
+                    self.view.layoutIfNeeded()
+                }) { (_) in
+                    
+                }
+            }
+        }
         
     }
     
     @objc func fetchData() {
-        tableView.mj_header.endRefreshing()
+        updateTicketPriceAndPoolNum()
+        
+        if !isQuerying {
+            queryCandidatesList()
+        }
     }
     
     @objc func onMyVote(){
@@ -194,27 +220,6 @@ class CandidatesListViewController: BaseViewController {
         let myvote = MyVoteListVC()
         myvote.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(myvote, animated: true)
-    }
-    
-    func startPolling() {
-        timer = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(queryDataAndUpdate), userInfo: nil, repeats: true)
-        timer?.fire()
-    }
-    
-    func stopPolling() {
-        timer?.invalidate()
-        timer = nil
-    }
-    
-    
-    @objc func queryDataAndUpdate() {
-        
-        updateTicketPriceAndPoolNum()
-        
-        if !isQuerying {
-            queryCandidatesList()
-        }
-
     }
     
     
@@ -234,6 +239,8 @@ class CandidatesListViewController: BaseViewController {
         
         VoteManager.sharedInstance.GetBatchNodeList { [weak self] (result, data) in
             guard let self = self else { return }
+            self.tableView.mj_header.endRefreshing()
+            
             switch result {
             case .success:
                 
@@ -280,81 +287,6 @@ class CandidatesListViewController: BaseViewController {
             }
             
         }
-        
-//        VoteManager.sharedInstance.GetVotePageCandidateList { [weak self] (res, tumpleDdata) in
-//
-//            guard let self = self else { return }
-//
-//            switch res {
-//            case .success:
-//                guard let data = tumpleDdata as? ([Candidate],[String]) else{
-//                    return
-//                }
-//                guard var list = data.0 as? [Candidate] else {
-//                    return
-//                }
-//
-//                list.candidateSort()
-//
-//                //list = list.count > 200 ? Array(list[0..<200]) : list
-//
-//                for i in 0..<list.count {
-//                    list[i].rankByDeposit = UInt16(i + 1)
-//                }
-//
-//                self.setCandidateAreaInfo(list: list)
-//                self.queryCandidateTicketCount(list: list, completion: { (newList) in
-//
-//                    if (self.isFirstQuery) {
-//                        self.hideLoadingHUD()
-//                    }
-//
-////                    self.tableView.mj_header.endRefreshing()
-//
-//                    dividenominatedandwaitingCandidateslistPool(validatorIds: data.1)
-//
-//                    self.isQuerying = false
-//
-//                    self.startSort()
-//                })
-//
-//                func dividenominatedandwaitingCandidateslistPool(validatorIds: [String]) {
-//                    let first100 = list.count > 100 ? Array(list[0..<100]) : list
-//                    self.nominateNodeList = first100.filter { (item) -> Bool in
-//                        item.tickets ?? 0 >= kCandidateMinNumOfTickets
-//                    }
-//                    for item in self.nominateNodeList {
-//                        item.rankStatus = .candidateFirst100
-//                    }
-//                    self.waitingCandidateslist = list.filter { (item) -> Bool in
-//                        item.tickets ?? 0 < kCandidateMinNumOfTickets
-//                    }
-//                    self.waitingCandidateslist = self.waitingCandidateslist.count > 100 ? Array(self.waitingCandidateslist[0..<100]) : self.waitingCandidateslist
-//                    for item in self.waitingCandidateslist {
-//                        item.rankStatus = .alternativeFirst100
-//                    }
-//
-//                    for item in self.nominateNodeList{
-//                        if validatorIds.contains(item.candidateId ?? ""){
-//                            item.rankStatus = .validator
-//                        }
-//                    }
-//                    for item in self.waitingCandidateslist{
-//                        if validatorIds.contains(item.candidateId ?? ""){
-//                            item.rankStatus = .validator
-//                        }
-//                    }
-//
-//
-//                }
-//            case .fail(_, _):
-//                self.isQuerying = false
-//                if (self.isFirstQuery) {
-//                    self.hideLoadingHUD()
-//                }
-//
-//            }
-//        }
     }
     
     // yuham qa
@@ -603,35 +535,34 @@ extension CandidatesListViewController: UIScrollViewDelegate {
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if refreshHeader.isRefreshing {
+            return
+        }
         
         let yOffset = scrollView.contentOffset.y
+        print("xOffset: ", yOffset)
         if scrollView == tableView{
-            let xOffset: CGFloat = -scrollView.contentInset.top - yOffset
-            print("xOffset: ", xOffset)
-            if xOffset <= kStatusBarHeight {
-                headerView.voteRateLabelTopConstant.priority = UILayoutPriority.defaultHigh
-                headerView.voteRateLabelBottomConstant.priority = UILayoutPriority.defaultLow
-                
-                
-                let offset = max((xOffset - kStatusBarHeight), -kAnimateScrollHeight)
+            if yOffset >= 0 {
+                let offset = min(yOffset, kAnimateScrollHeight)
                 headerView.snp.updateConstraints { make in
-                    make.top.equalToSuperview().offset(-kStatusBarHeight)
-                    make.height.equalTo(headerViewHeight + offset)
+                    make.top.equalTo(tableHeaderView.snp.top).offset(yOffset)
+                    make.height.equalTo(headerViewHeight - offset)
                 }
                 
-                var alpha = (kAnimateScrollHeight + (xOffset - kStatusBarHeight))/kAnimateScrollHeight*1.0
+                
+                var alpha = 1.0 - offset/kAnimateScrollHeight*1.0
                 if alpha < 0.0 {
                     alpha = 0.0
                 } else if alpha > 1.0 {
                     alpha = 1.0
                 }
-
+                
                 if !filterBarView.searchTF.isEditing {
                     headerView.updateHeaderViewStyle(alpha)
                     filterBarView.updateLayoutstyle(alpha)
                 }
-
-
+                
+                
                 if alpha == 0.0 {
                     self.setplaceHolderBG(hide:false ,tableView: self.tableView)
                     NotificationCenter.default.post(name: NSNotification.Name(ChangeCandidatesTableViewCellbackground), object: #colorLiteral(red: 0.9751496911, green: 0.984305203, blue: 1, alpha: 1))
@@ -640,13 +571,9 @@ extension CandidatesListViewController: UIScrollViewDelegate {
                     NotificationCenter.default.post(name: NSNotification.Name(ChangeCandidatesTableViewCellbackground), object: UIColor.white)
                 }
             } else {
-                headerView.voteRateLabelTopConstant.priority = UILayoutPriority.defaultLow
-                headerView.voteRateLabelBottomConstant.priority = UILayoutPriority.defaultHigh
                 
-                headerView.snp.updateConstraints { make in
-                    make.top.equalToSuperview().offset(xOffset - 2*kStatusBarHeight)
-                }
             }
+            
             if scrollView.isDragging{
                 self.isScrolling = true
             }

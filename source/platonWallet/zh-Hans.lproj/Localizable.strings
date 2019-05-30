@@ -326,6 +326,16 @@
 "TransactionStatus_succeed_desc" = "成功";
 "TransactionStatus_failed_desc" = "失败";
 
+"TransactionStatus_transfer_title" = "转账";
+"TransactionStatus_MPCtransaction_title" = "MPC交易";
+"TransactionStatus_contractCreate_title" = "合约创建";
+"TransactionStatus_voteTicket_title" = "投票";
+"TransactionStatus_transactionExecute_title" = "合约执行";
+"TransactionStatus_candidateDeposit_title" = "质押";
+"TransactionStatus_candidateApplyWithdraw_title" = "减持质押";
+"TransactionStatus_candidateWithdraw_title" = "提取质押";
+"TransactionStatus_unknown_title" = "其他";
+
 
 //SettingsVC
 "SettingsVC_title" = "设置";

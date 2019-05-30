@@ -101,37 +101,15 @@ class MyVoteListVC: BaseViewController,UITableViewDelegate,UITableViewDataSource
     func getData(showLoading: Bool = true) {
         
         
-        var addressStrs = AssetVCSharedData.sharedData.walletList.filterClassicWallet.map { cwallet in
+        let addressStrs = AssetVCSharedData.sharedData.walletList.filterClassicWallet.map { cwallet in
             return cwallet.key!.address
         }
         guard addressStrs.count > 0 else {
             return
         }
-        
-        if showLoading {
-            self.showLoadingHUD()
-        }
-        
-        if addressStrs.count > 0{
-            VoteManager.sharedInstance.getBatchVoteSummary(addressList: addressStrs) {[weak self] (result, resp) in
-                switch result{
-                    
-                case .success:
-                    if let sum = resp as? MyVoteStatic{
-                        self?.headerView?.updateView(sum)
-                    }
-                case .fail(_, _):
-                    do{}
-                }
-            }
-        }
 
         VoteManager.sharedInstance.GetBatchMyVoteNodeList(addressList: addressStrs) { [weak self] (result, response) in
             guard let self = self else { return }
-            
-            if showLoading {
-                self.hideLoadingHUD()
-            }
             
             self.refreshHeader.endRefreshing()
             switch result{
@@ -140,6 +118,8 @@ class MyVoteListVC: BaseViewController,UITableViewDelegate,UITableViewDataSource
                 guard response != nil, let nodeVoteResponse = response as? NoteVoteResponse, nodeVoteResponse.data.count > 0 else {
                     return
                 }
+                
+                self.headerView?.updateView(nodeVoteResponse.voteStatic)
                 self.reloadWhenSuccessed(nodeVotes: nodeVoteResponse.data)
                 
             case .fail(_, let msg):
@@ -192,8 +172,6 @@ class MyVoteListVC: BaseViewController,UITableViewDelegate,UITableViewDataSource
             return
         }
         
-//        showLoadingHUD()
-        
         let vote = dataSource[sender.tag]
         let candidate = Candidate()
         candidate.candidateId = vote.nodeId
@@ -205,29 +183,6 @@ class MyVoteListVC: BaseViewController,UITableViewDelegate,UITableViewDataSource
             self?.tableView.mj_header.beginRefreshing()
         }
         self.navigationController?.pushViewController(voteVC, animated: true)
-
-//        VoteManager.sharedInstance.GetCandidateDetails(candidateId: dataSource[sender.tag].nodeId!) { [weak self] (res, data) in
-//            self?.hideLoadingHUD()
-//            guard let self = self else { return }
-//            switch res{
-//            case .success:
-//                guard let candidate = data as? Candidate, candidate.candidateId == self.dataSource[sender.tag].nodeId else {
-//                    self.showMessage(text: Localized("data_parser_error"), delay: 3)
-//                    return
-//                }
-//                let voteVC = VotingViewController0()
-//                voteVC.candidate = candidate
-//                voteVC.voteCompletion = { [weak self] in
-//                    self?.tableView.mj_header.beginRefreshing()
-//                }
-//                self.navigationController?.pushViewController(voteVC, animated: true)
-//            default:
-//                self.showMessage(text: "failed", delay: 3)
-//                break
-//            }
-//
-//        }
-        
     }
     
     deinit {

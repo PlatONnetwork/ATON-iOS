@@ -195,6 +195,7 @@ class NodeSettingViewControllerV2: BaseViewController {
     
     @objc func onRigthItemClick(_ sender: UIBarButtonItem) {
         
+        view.becomeFirstResponder()
         if NodeStoreService.share.isEdit { //save
             do{
                 try NodeStoreService.share.save()
@@ -292,6 +293,11 @@ extension NodeSettingViewControllerV2: UITableViewDelegate, UITableViewDataSourc
         guard let indexPath = tableView .indexPath(for: cell) else {
             return
         }
+        
+        if indexPath.row >= NodeStoreService.share.editingNodeList.count {
+            return
+        }
+        
         NodeStoreService.share.editingNodeList[indexPath.row].nodeURLStr = cell.nodeTF.text!
     }
 }

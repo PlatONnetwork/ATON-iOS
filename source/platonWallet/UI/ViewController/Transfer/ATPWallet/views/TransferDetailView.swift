@@ -91,17 +91,15 @@ class TransferDetailView: UIView {
             if let txInfo = tx.extra, let data = txInfo.data(using: .utf8) {
                 let decoder = JSONDecoder()
                 let voteTicketInfo = try? decoder.decode(VoteTicketInfo.self, from: data)
-                
                 nodeNameLabel.text = voteTicketInfo?.parameters?.nodeName
                 nodeIdLabel.text = voteTicketInfo?.parameters?.nodeId
-                numOfTicketsLabel.text = voteTicketInfo?.parameters?.count
-                
-                if voteTicketInfo?.parameters?.price?.count ?? 0 > 0 {
-                    ticketPriceLabel.text = BigUInt.safeInit(str: voteTicketInfo?.parameters?.price ?? "").divide(by: ETHToWeiMultiplier, round: 4).EnergonSuffix()
+                numOfTicketsLabel.text = String(describing: voteTicketInfo?.parameters?.count ?? 0)
+
+                if voteTicketInfo?.parameters?.price?.description.count ?? 0 > 0 {
+                    ticketPriceLabel.text = BigUInt.safeInit(str: voteTicketInfo?.parameters?.price?.description ?? "").divide(by: ETHToWeiMultiplier, round: 4).EnergonSuffix()
                 } else {
                     ticketPriceLabel.text = "-".EnergonSuffix()
                 }
-                
             } else {
                 guard let singleVote = VotePersistence.getSingleVotesByTxHash(tx.txhash!) else {
                     nodeNameLabel.text = "-"
@@ -151,8 +149,13 @@ class TransferDetailView: UIView {
     }
     
     func updateStatus(tx : Transaction){
-         
-        transactionTypeLabel.text = tx.transactionStauts.localizeTitle
+        
+        if tx.txType == .transfer  {
+            transactionTypeLabel.text = tx.transactionStauts.localizeTitle
+        } else {
+            transactionTypeLabel.text = tx.txType?.localizeTitle
+        }
+        
         statusLabel.text = tx.transactionStauts.localizeDescAndColor.0
         statusLabel.textColor = .black
         switch tx.transactionStauts {

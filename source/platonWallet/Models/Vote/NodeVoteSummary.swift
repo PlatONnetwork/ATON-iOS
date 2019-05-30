@@ -10,6 +10,8 @@ import Foundation
 import BigInt
 import Localize_Swift
 
+
+
 class MyVoteStatic {
     
     var locktotal = BigUInt("0")!
@@ -17,40 +19,6 @@ class MyVoteStatic {
     
     var validNum = 0
     var inValidNum = 0
-    
-    
-    static func parserAllNodeSummary(mapArray: [Dictionary<String,Any>]) -> MyVoteStatic{
-        
-        //let jsond = try? JSONSerialization.data(withJSONObject: mapArray, options: [])
-        //let s = String(data: jsond!, encoding: .utf8)
-        
-        let node = MyVoteStatic()
-        var total_locked = BigUInt("0")!
-        var total_earnings = BigUInt("0")!
-        var total_TicketNum = 0
-        var total_validNum = 0
-        
-        for item in mapArray{
-            
-            let locked = BigUInt.safeInit(str: item["locked"] as? String)
-            let earnings = BigUInt.safeInit(str: item["earnings"] as? String)
-            let totalTicketNum = Int(item["totalTicketNum"] as? String ?? "0")!
-            let validNum = Int(item["validNum"] as? String ?? "0")!
-            
-            total_locked.multiplyAndAdd(locked, 1)
-            total_earnings.multiplyAndAdd(earnings, 1)
-            total_TicketNum += totalTicketNum
-            total_validNum += validNum
-        }
-        
-        node.locktotal = total_locked
-        node.earnings = total_earnings
-        node.validNum = total_validNum
-        node.inValidNum = total_TicketNum - total_validNum
-         
-        return node
-        
-    }
     
 }
 
@@ -79,6 +47,34 @@ class NoteVoteResponse: Decodable {
     var errMsg: String = ""
     var code: Int = 0
     var data: [NodeVote] = []
+    
+    var voteStatic: MyVoteStatic {
+        get {
+            let totalLocked = data.reduce(BigUIntZero, { (result, next) -> BigUInt in
+                return result + BigUInt.safeInit(str: next.locked)
+            })
+            
+            let totalEarnings = data.reduce(BigUIntZero) { (result, next) -> BigUInt in
+                return result + BigUInt.safeInit(str: next.earnings)
+            }
+            
+            let totalValidNum = data.reduce(0) { (result, next) -> Int in
+                return result + Int(next.validNum ?? "0")!
+            }
+            
+            let totalTicketNum = data.reduce(0) { (result, next) -> Int in
+                return result + Int(next.totalTicketNum ?? "0")!
+            }
+            
+            let voteStatic = MyVoteStatic()
+            voteStatic.locktotal = totalLocked
+            voteStatic.earnings = totalEarnings
+            voteStatic.validNum = totalValidNum
+            voteStatic.inValidNum = totalTicketNum - totalValidNum
+            
+            return voteStatic
+        }
+    }
 }
 
 extension NodeVote {
@@ -140,7 +136,6 @@ class NodeVoteSummary {
         }
         
         return summaries
-
     }
     
 

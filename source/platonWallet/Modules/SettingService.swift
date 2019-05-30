@@ -57,9 +57,11 @@ class SettingService {
         if SettingService.shareInstance.currentNodeURL == nil{
             SettingService.shareInstance.currentNodeURL = SettingService.shareInstance.getSelectedNodes()?.nodeURLStr
         }
+        
         guard SettingService.shareInstance.currentNodeURL != nil else{
             return DefaultNodeURL_Alpha_deprecated
         }
+        
         return SettingService.shareInstance.currentNodeURL!
     }
     
@@ -70,13 +72,13 @@ class SettingService {
         
         let url = self.getCurrentNodeURLString()
         if url == DefaultNodeURL_Alpha{
-            return DefaultCentralizationURL + "api-" + self.getChainID() + "/api/"
+            return DefaultCentralizationURL + "api-" + self.getChainID() + "/v060"
         }else if url == DefaultNodeURL_Beta{
-            return DefaultCentralizationURL + "api-" + self.getChainID() + "/api/"
+            return DefaultCentralizationURL + "api-" + self.getChainID() + "/v060"
         }else if url == "http://192.168.120.81:6789"{
             return DEBUG_CentralizationURL
         }
-        return DefaultCentralizationURL + "api-" + self.getChainID() + "/api/"
+        return DefaultCentralizationURL + "api-" + self.getChainID() + "/v060"
     }
     
     // v0.6.2 新增获取链ID
@@ -84,11 +86,11 @@ class SettingService {
         let url = getCurrentNodeURLString()
         switch url {
         case DefaultNodeURL_Alpha:
-            return "103"
+            return "203"
         case DefaultNodeURL_Beta:
-            return "104"
+            return "204"
         default:
-            return chaindId
+            return "203"
         }
     }
     
@@ -105,11 +107,6 @@ class SettingService {
     func deleteNodeList(_ list: [NodeInfo]) {
         nodeStorge?.deleteList(list)
     }
-    
-//    func updateNode(_ node: NodeInfo, isSelected: Bool) {
-//        
-//        nodeStorge.update(node: node, isSelected: isSelected)
-//    }
     
     func updateSelectedNode(_ node: NodeInfo) {
         getNodes().forEach { (item) in

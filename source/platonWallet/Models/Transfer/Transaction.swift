@@ -30,6 +30,30 @@ enum TxType: String, Decodable {
     case candidateApplyWithdraw
     case candidateWithdraw
     case unknown
+    
+    var localizeTitle: String {
+        switch self {
+        case .transfer:
+            return Localized("TransactionStatus_transfer_title")
+        case .MPCtransaction:
+            return Localized("TransactionStatus_MPCtransaction_title")
+        case .contractCreate:
+            return Localized("TransactionStatus_contractCreate_title")
+        case .voteTicket:
+            return Localized("TransactionStatus_voteTicket_title")
+        case .transactionExecute:
+            return Localized("TransactionStatus_transactionExecute_title")
+        case .candidateDeposit:
+            return Localized("TransactionStatus_candidateDeposit_title")
+        case .candidateApplyWithdraw:
+            return Localized("TransactionStatus_candidateApplyWithdraw_title")
+        case .candidateWithdraw:
+            return Localized("TransactionStatus_candidateWithdraw_title")
+        case .unknown:
+            return Localized("TransactionStatus_unknown_title")
+        }
+    }
+    
 }
 
 
@@ -173,11 +197,6 @@ class Transaction : Object, Decodable {
                 } else {
                     return .sending
                 }
-//                if blockNumber?.length ?? 0 > 0 {
-//                    return .sendSucceed
-//                }else {
-//                    return .sending
-//                }
             case .Receive:
                 if txReceiptStatus == 0 {
                     return .receiveFailed
@@ -186,11 +205,6 @@ class Transaction : Object, Decodable {
                 } else {
                     return .receiving
                 }
-//                if blockNumber?.length ?? 0 > 0 {
-//                    return .receiveSucceed
-//                }else {
-//                    return .receiving
-//                } 
             case .Vote:
                 if txReceiptStatus == 0 {
                     return .voteFailed
@@ -199,17 +213,6 @@ class Transaction : Object, Decodable {
                 } else {
                     return .voting
                 }
-//                guard extra != nil else {
-//                    return .voting
-//                }
-//                guard let dic = try? JSONSerialization.jsonObject(with: extra!.data(using: .utf8) ?? Data(), options: .mutableContainers) as? [String:Any], let ret = dic?["Ret"] as? Bool else {
-//                    return .voting
-//                }
-//
-//                if ret == true{
-//                    return .voteSucceed
-//                }
-//                return .voteFailed
             }
         }
     }
@@ -372,8 +375,8 @@ class Transaction : Object, Decodable {
 }
 
 class VoteTicket: Decodable {
-    var price: String?
-    var count: String?
+    var price: Decimal?
+    var count: Int?
     var nodeId: String?
     var nodeName: String?
     var deposit: String?
@@ -381,8 +384,8 @@ class VoteTicket: Decodable {
 
 class VoteTicketInfo: Decodable {
     var functionName: String?
-    var parameters: VoteTicket?
     var type: String?
+    var parameters: VoteTicket?
 }
 
 class CandidateDeposit: Decodable {

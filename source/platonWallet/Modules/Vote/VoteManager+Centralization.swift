@@ -13,20 +13,9 @@ import Localize_Swift
 import BigInt
 
 //let CentralizationURL = "http://192.168.9.190:18060/browser-server/"
-let chaindId = "203"
 let requestTimeout : TimeInterval = 30
 
 extension VoteManager{
-    
-    public func getChainID() -> String{
-        let url = SettingService.getCurrentNodeURLString()
-        if url == DefaultNodeURL_Alpha{
-            return "103"
-        }else if url == DefaultNodeURL_Beta{
-            return "104"
-        }
-        return chaindId
-    }
     
     public func GetBatchMyVoteNodeList(addressList: [String], completion: PlatonCommonCompletion?) {
         var completion = completion
@@ -97,39 +86,39 @@ extension VoteManager{
         }
     }
     
-    public func getBatchVoteSummary(addressList: [String], completion: PlatonCommonCompletion?) {
-        var completion = completion
-        var values : Dictionary<String,Any> = [:]
-        
-        values["cid"] = SettingService.getChainID()
-        values["addressList"] = addressList
-        let url = SettingService.getCentralizationURL() + "/api/getBatchVoteSummary"
-        
-        var request = URLRequest(url: try! url.asURL())
-        request.httpBody = try! JSONSerialization.data(withJSONObject: values)
-        request.httpMethod = "POST"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue(SettingService.getChainID(), forHTTPHeaderField: "x-aton-cid")
-        request.timeoutInterval = requestTimeout
-        
-        Alamofire.request(request).responseJSON { (response) in
-            switch response.result{
-                
-            case .success(let resp):
-                
-                guard let respmap = resp as? [String:Any], let data = respmap["data"] as? [Dictionary<String,Any>] else {
-                    self.failCompletionOnMainThread(code: -1, errorMsg: "", completion: &completion)
-                    return
-                }
-                let nodesum = MyVoteStatic.parserAllNodeSummary(mapArray: data)
-                self.successCompletionOnMain(obj: nodesum as AnyObject, completion: &completion)
-                
-            case .failure(let error):
-                self.failCompletionOnMainThread(code: -1, errorMsg: error.localizedDescription, completion: &completion)
-            }
-        }
-
-    }
+//    public func getBatchVoteSummary(addressList: [String], completion: PlatonCommonCompletion?) {
+//        var completion = completion
+//        var values : Dictionary<String,Any> = [:]
+//        
+//        values["cid"] = SettingService.getChainID()
+//        values["addressList"] = addressList
+//        let url = SettingService.getCentralizationURL() + "/api/getBatchVoteSummary"
+//        
+//        var request = URLRequest(url: try! url.asURL())
+//        request.httpBody = try! JSONSerialization.data(withJSONObject: values)
+//        request.httpMethod = "POST"
+//        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+//        request.setValue(SettingService.getChainID(), forHTTPHeaderField: "x-aton-cid")
+//        request.timeoutInterval = requestTimeout
+//        
+//        Alamofire.request(request).responseJSON { (response) in
+//            switch response.result{
+//                
+//            case .success(let resp):
+//                
+//                guard let respmap = resp as? [String:Any], let data = respmap["data"] as? [Dictionary<String,Any>] else {
+//                    self.failCompletionOnMainThread(code: -1, errorMsg: "", completion: &completion)
+//                    return
+//                }
+//                let nodesum = MyVoteStatic.parserAllNodeSummary(mapArray: data)
+//                self.successCompletionOnMain(obj: nodesum as AnyObject, completion: &completion)
+//                
+//            case .failure(let error):
+//                self.failCompletionOnMainThread(code: -1, errorMsg: error.localizedDescription, completion: &completion)
+//            }
+//        }
+//
+//    }
     
     public func getBatchVoteTransaction(pageNo:Int = 1, pageSize: Int = 2<<16, completion: PlatonCommonCompletion?) {
         var completion = completion
@@ -140,7 +129,7 @@ extension VoteManager{
             walletAddrs.append((item.key?.address)!)
         }
         
-        values["cid"] = self.getChainID()
+        values["cid"] = SettingService.getChainID()
         values["walletAddrs"] = walletAddrs
         values["pageNo"] = pageNo
         values["pageSize"] = pageSize
