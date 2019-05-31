@@ -52,7 +52,7 @@ class AssetTransactionViewControllerV060: BaseViewController, EmptyDataSetDelega
         tableView.dataSource = self
         tableView.separatorStyle = .none
         tableView.showsVerticalScrollIndicator = false
-        tableView.alwaysBounceVertical = false
+//        tableView.alwaysBounceVertical = false
         tableView.emptyDataSetView { [weak self] view in
             let holder = self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, nil,"empty_no_data_img") as? TableViewNoDataPlaceHolder
             view.customView(holder)
@@ -230,6 +230,8 @@ extension AssetTransactionViewControllerV060 {
     func fetchDataByWalletChanged() {
         guard parentController?.refreshHeader.isRefreshing == false else { return }
         guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return }
+        self.tableView.mj_footer.isHidden = (self.dataSource[selectedAddress]?.count == 0)
+        
         guard let count = self.dataSource[selectedAddress]?.count, count <= 0 else {
             pollingWalletTransactions()
             return

@@ -41,6 +41,32 @@ class NodeVote: Decodable {
         }
     }
     
+    enum CodingKeys: String, CodingKey {
+        case nodeId
+        case name
+        case countryCode
+        case validNum
+        case totalTicketNum
+        case locked
+        case earnings
+        case transactionTime
+        case isValid
+    }
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        nodeId = try? container.decode(String.self, forKey: .nodeId)
+        name = try? container.decode(String.self, forKey: .name)
+        countryCode = try? container.decode(String.self, forKey: .countryCode)
+        validNum = try? container.decode(String.self, forKey: .validNum)
+        totalTicketNum = try? container.decode(String.self, forKey: .totalTicketNum)
+        locked = try? container.decode(String.self, forKey: .locked)
+        earnings = try? container.decode(String.self, forKey: .earnings)
+        transactionTime = try? container.decode(String.self, forKey: .transactionTime)
+        isValid = try? container.decode(String.self, forKey: .isValid)
+        
+    }
+    
 }
 
 class NoteVoteResponse: Decodable {

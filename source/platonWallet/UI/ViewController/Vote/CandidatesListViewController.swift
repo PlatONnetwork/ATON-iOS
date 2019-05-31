@@ -171,7 +171,6 @@ class CandidatesListViewController: BaseViewController {
         refreshHeader.addObserver(self, forKeyPath: "state", options: [.new, .old], context: nil)
         tableView.mj_header = refreshHeader
         tableView.mj_header.beginRefreshing()
-
     }
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {

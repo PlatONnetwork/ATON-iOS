@@ -22,7 +22,7 @@
 ///wallet common input placeholder
 "wallet_nameInput_placeholder" = "Name of Wallet";
 "wallet_pswInput_placeholder" = "Set password";
-"wallet_pswConfirmInput_placeholder" = "Repeat password";
+"wallet_pswConfirmInput_placeholder" = "Confirm password";
 "wallet_psw_advise" = "*At least 6 characters,recommended to mix uppercase and lowercase alphabets,numbers and symbols";
 
 ///wallet common input illegal tips
@@ -555,9 +555,9 @@
 //Vote
 "CandidateListVC_title" = "Vote";
 "CandidateListVC_header_desc" = "Vote Rate：%@ | Votes：%@ | Ticket Price：%@";
-"CandidateListVC_voteRate_desc" = "投票率：%@ ";
-"CandidateListVC_VoteNumber_desc" = "已投票：%@";
-"CandidateListVC_TicketPrice_desc" = "票价：%@";
+"CandidateListVC_voteRate_desc" = "Vote Rate：%@ ";
+"CandidateListVC_VoteNumber_desc" = "Voted：%@";
+"CandidateListVC_TicketPrice_desc" = "Ticket Price：%@";
 "CandidateListVC_defaultBtn_title" = "Default";
 "CandidateListVC_bonusBtn_title" = "Reward";
 "CandidateListVC_areaBtn_title" = "Location";
@@ -573,7 +573,7 @@
 
 "CandidateDetailVC_title" = "Node Information";
 "CandidateDetailVC_joinTime" = "Join time:%@";
-"CandidateDetailVC_rank" = "Staked Ranking";
+"CandidateDetailVC_rank" = "Ranking";
 "CandidateDetailVC_staked" = "Staked";
 "CandidateDetailVC_tickets" = "Tickets";
 "CandidateDetailVC_ticketAge" = "Ticket Age";
@@ -607,7 +607,7 @@
 "SingleVoteDetailListVC_expiredtime_2" = "expired time";
 
 //VotingViewController
-"VotingViewController_nav_title" = "Node detail";
+"VotingViewController_nav_title" = "Vote";
 "VotingViewController_vote_wallet_name" = "Vote wallet";
 "VotingViewController_vote_number" = "Ticket Number";
 "VotingViewController_vote_price" = "Ticket Price";

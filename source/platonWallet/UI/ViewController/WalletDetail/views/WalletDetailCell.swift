@@ -67,16 +67,13 @@ class WalletDetailCell: UITableViewCell {
         case .voting,.voteSucceed,.voteFailed:
             transferAmoutLabel.text = "-" + (tx.valueDescription)!.ATPSuffix()
             txIcon.image = UIImage(named: "walletVote")
- 
         }
 
-        txTypeLabel.text = tx.transactionStauts.localizeTitle
+        txTypeLabel.text = tx.txType == .transfer ? tx.transactionStauts.localizeTitle : tx.txType?.localizeTitle
         let (des,color) = tx.transactionStauts.localizeDescAndColor
         statusLabel.text = des
         statusLabel.textColor = color
         
-        print("====================")
-        print(tx.confirmTimes)
         guard (tx.confirmTimes != 0) else{
             guard tx.createTime != 0 else {
                 timeLabel.text = "--:--:-- --:--"

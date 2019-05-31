@@ -138,7 +138,7 @@ class TransferDetailView: UIView {
         fromLabel.text = tx.from
         toLabel.text = tx.to
         valueLabel.text = tx.valueDescription!.ATPSuffix()
-        feeLabel.text = tx.feeDescription?.ATPSuffix()
+        feeLabel.text = tx.actualTxCostDescription?.ATPSuffix()
         
         
         if let w = WalletService.sharedInstance.getWalletByAddress(address: tx.from ?? ""){

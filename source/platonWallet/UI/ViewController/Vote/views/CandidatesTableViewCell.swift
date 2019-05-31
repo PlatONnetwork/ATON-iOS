@@ -52,26 +52,14 @@ class CandidatesTableViewCell: UITableViewCell {
         
         rightView.addMaskView(corners: [.topRight,.bottomRight], cornerRadiiV: 4)
     }
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
     
     @IBAction func vote(_ sender: Any) {
         voteHandler?()
     }
     
-
-    
     func feedData(_ candidate: Candidate, onVoteHandler:@escaping (()->Void)) {
         candidateNameLabel.text = candidate.name ?? ""
-        if let countryName = candidate.getNodeCountryName() {
-            locationLabel.text = "(" + countryName + ")"
-        } else {
-            locationLabel.text = ""
-        }
+        locationLabel.text = "(" + candidate.countryName + ")"
         
         let rewardRate = candidate.rewardRate
         let staked = (candidate.deposit?.convertToEnergon(round: 4) ?? "-").ATPSuffix()

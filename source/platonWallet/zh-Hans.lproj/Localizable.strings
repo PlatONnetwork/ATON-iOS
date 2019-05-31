@@ -203,7 +203,7 @@
 
 "alert_screenshot_privateKey_ban_msg" = "如果有人获取了你的私钥，将可以直接获取你的资产！请确保私钥存放在安全的地方。";
 "alert_backupMnemonic_ban_msg" = "如果有人获取了你的助记词，将可以直接获取你的资产！请抄写下助记词并存放在安全的地方。";
-"alert_screenshot_keystore_ban_msg" = "如果有人获取了你的Keystore，将可以直接获取你的资产！请确保Keystore存放在安全的地方。";
+"alert_screenshot_keystore_ban_msg" = "如果有人获取了你的钱包文件(.json)，将可以直接获取你的资产！请确保钱包文件(.json)存放在安全的地方。";
 "alert_screenshot_ban_confirmBtn_title" = "我知道了";
 "alert_backupFailed_title" = "验证失败";
 "alert_backupFailed_msg" = "请检查助记词顺序！";
@@ -253,9 +253,9 @@
 
 
 //ExportKeystoreVC
-"ExportKeystoreVC_title" = "导出Keystore";
-"ExportKeystoreVC_note" = "注意：不要截图，请检查周围，以防他人偷看或拍摄，请妥善保管Keystore，切勿存储在网盘中";
-"ExportKeystoreVC_tab1_title" = "Keystore";
+"ExportKeystoreVC_title" = "导出钱包文件(.json)";
+"ExportKeystoreVC_note" = "注意：不要截图，请检查周围，以防他人偷看或拍摄，请妥善保管钱包文件，切勿存储在网盘中";
+"ExportKeystoreVC_tab1_title" = "钱包文件(.json)";
 "ExportKeystoreVC_tab2_title" = "二维码";
 
 "ExportVC_copyBtn_title" = "复制";
@@ -574,7 +574,7 @@
 
 "CandidateDetailVC_title" = "节点详情";
 "CandidateDetailVC_joinTime" = "加入时间：%@";
-"CandidateDetailVC_rank" = "质押排名";
+"CandidateDetailVC_rank" = "排名";
 "CandidateDetailVC_staked" = "质押金";
 "CandidateDetailVC_tickets" = "得票数";
 "CandidateDetailVC_ticketAge" = "实时票龄";

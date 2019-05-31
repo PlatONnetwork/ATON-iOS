@@ -55,6 +55,7 @@ class VoteDetailCell: UITableViewCell {
     
         lockedAndReleaseLabel.text = String(format: "%@/%@", lockedDes,releaseDes)
         
+        print("earning == ", voteTransaction.earnings)
         let rewardBig = BigUInt.safeInit(str: voteTransaction.earnings ?? "0").divide(by: ETHToWeiMultiplier, round: 4)
         
         rewardLabel.text = rewardBig.EnergonSuffix()

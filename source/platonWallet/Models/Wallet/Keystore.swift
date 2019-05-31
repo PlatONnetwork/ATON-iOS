@@ -12,7 +12,7 @@ import TrezorCrypto
 //import Web3
 import ScryptSwift
 
-let HDPATH = "m/44'/206'/0'/0/0"
+let HDPATH = "m/44'/266'/0'/0/0"
 
 public struct Keystore {
     

@@ -243,6 +243,13 @@ class Transaction : Object, Decodable {
         }
     }
     
+    var actualTxCostDescription: String? {
+        get {
+            let cost = BigUInt.safeInit(str: actualTxCost).divide(by: ETHToWeiMultiplier, round: 8)
+            return cost
+        }
+    }
+    
     
     var transanctionTypeLazy : TransanctionType {
         get{

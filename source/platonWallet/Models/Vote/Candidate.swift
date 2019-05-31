@@ -212,7 +212,7 @@ class Candidate:NSObject, Decodable {
           
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let depositStr = try? container.decode(String.self, forKey: .deposit)
-        deposit = BigUInt(hexString: depositStr ?? "")
+        deposit = BigUInt.safeInit(str: depositStr ?? "0")
 //        deposit = BigUInt(depositStr?.description ?? "")
 //        let blockNumberStr = try? container.decode(Decimal.self, forKey: .blockNumber)
 //        blockNumber = BigUInt(blockNumberStr?.description ?? "")
@@ -241,7 +241,7 @@ class Candidate:NSObject, Decodable {
         }
         
         if let ticketCountString = try? container.decode(String.self, forKey: .ticketCount) {
-            ticketCount = UInt16(hexString: ticketCountString)
+            ticketCount = UInt16(ticketCountString)
         } else {
             ticketCount = 0
         }
@@ -256,15 +256,6 @@ class Candidate:NSObject, Decodable {
         orgWebsite = try? container.decode(String.self, forKey: .orgWebsite)
         intro = try? container.decode(String.self, forKey: .intro)
         nodeUrl = try? container.decode(String.self, forKey: .nodeUrl)
-        
-//        let info = CandidateBasicInfo()
-//        info.id = candidateId ?? ""
-//        info.name = extra?.nodeName
-//        info.avatar = extra?.nodePortrait
-//        info.host = host
-//        info.port = port
-//        info.owner = owner
-//        VotePersistence.addCandidateInfo(info)
     }
     
     
