@@ -250,7 +250,6 @@ class Transaction : Object, Decodable {
         }
     }
     
-    
     var transanctionTypeLazy : TransanctionType {
         get{
             switch txType! {

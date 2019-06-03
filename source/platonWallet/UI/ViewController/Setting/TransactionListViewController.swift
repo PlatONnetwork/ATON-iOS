@@ -20,7 +20,6 @@ class TransactionListViewController: BaseViewController,UITableViewDelegate,UITa
     
     lazy var refreshHeader: MJRefreshHeader = {
         let header = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(fetchTransactionLastest))!
-        header.lastUpdatedTimeLabel.isHidden = true
         return header
     }()
     
@@ -32,30 +31,40 @@ class TransactionListViewController: BaseViewController,UITableViewDelegate,UITa
     override func viewDidLoad() {
         super.viewDidLoad()
         initSubView()
-        fetchTransactionLastest()
+        tableView.mj_header.beginRefreshing()
     }
     
     @objc func fetchTransactionLastest() {
-        fetchTransaction(beginSequence: -1, direction: "new")
+        let addressStrs = AssetVCSharedData.sharedData.walletList.filterClassicWallet.map { cwallet in
+            return cwallet.key!.address
+        }
+        guard addressStrs.count > 0 else {
+            self.tableView.mj_header.endRefreshing()
+            self.tableView.mj_footer.endRefreshing()
+            return
+        }
+        fetchTransaction(addressStrs: addressStrs, beginSequence: -1, direction: "new")
     }
     
     @objc func fetchTransactionMore() {
+        let addressStrs = AssetVCSharedData.sharedData.walletList.filterClassicWallet.map { cwallet in
+            return cwallet.key!.address
+        }
+        guard addressStrs.count > 0 else {
+            self.tableView.mj_header.endRefreshing()
+            self.tableView.mj_footer.endRefreshing()
+            return
+        }
+        
         guard let lastTransaction = dataSource.last else {
             return
         }
         
         guard let sequence = Int(lastTransaction.sequence ?? "0") else { return }
-        fetchTransaction(beginSequence: sequence, direction: "old")
+        fetchTransaction(addressStrs: addressStrs, beginSequence: sequence, direction: "old")
     }
     
-    func fetchTransaction(beginSequence: Int, direction: String) {
-        let addressStrs = AssetVCSharedData.sharedData.walletList.filterClassicWallet.map { cwallet in
-            return cwallet.key!.address
-        }
-        guard addressStrs.count > 0 else {
-            return
-        }
-        
+    func fetchTransaction(addressStrs: [String], beginSequence: Int, direction: String) {
         TransactionService.service.getBatchTransaction(addresses: addressStrs, beginSequence: beginSequence, listSize: listSize, direction: direction) { (result, response) in
             
             self.tableView.mj_header.endRefreshing()
@@ -115,7 +124,6 @@ class TransactionListViewController: BaseViewController,UITableViewDelegate,UITa
         tableView.mj_header = refreshHeader
         tableView.mj_footer = refreshFooter
         tableView.mj_footer.isHidden = true
-        tableView.mj_header.beginRefreshing()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

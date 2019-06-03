@@ -47,7 +47,6 @@
 		812002CD21A3F6430050E1B0 /* AddSharedWalletVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 812002CB21A3F6430050E1B0 /* AddSharedWalletVC.xib */; };
 		812002D021A417120050E1B0 /* ByteHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812002CF21A417120050E1B0 /* ByteHelper.swift */; };
 		812002D321A551160050E1B0 /* MockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812002D221A551160050E1B0 /* MockData.swift */; };
-		8120D4E222A131BB00F68498 /* NSBundle+Hook_MJ.m in Sources */ = {isa = PBXBuildFile; fileRef = 8120D4E122A131BB00F68498 /* NSBundle+Hook_MJ.m */; };
 		812489E321BF4D2A000C2F03 /* Array+sort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812489E221BF4D2A000C2F03 /* Array+sort.swift */; };
 		812A7ED8219EA6A900BE9C1C /* WalletManagerDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 812A7ED0219EA6A800BE9C1C /* WalletManagerDetailViewController.xib */; };
 		812A7ED9219EA6A900BE9C1C /* WalletManagerDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812A7ED1219EA6A800BE9C1C /* WalletManagerDetailViewController.swift */; };
@@ -146,6 +145,9 @@
 		81C88E0C21746B3B005F17F7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 81C88E0B21746B3B005F17F7 /* Assets.xcassets */; };
 		81C88E0F21746B3B005F17F7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81C88E0D21746B3B005F17F7 /* LaunchScreen.storyboard */; };
 		81C88E1A21746B3B005F17F7 /* platonWalletUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C88E1921746B3B005F17F7 /* platonWalletUITests.swift */; };
+		81C98FC522A5224F004B1668 /* MJRefreshStateHeader+Localize.m in Sources */ = {isa = PBXBuildFile; fileRef = 81C98FC422A5224F004B1668 /* MJRefreshStateHeader+Localize.m */; };
+		81C98FC822A5279E004B1668 /* NSBundle+Hook_MJ.m in Sources */ = {isa = PBXBuildFile; fileRef = 81C98FC722A5279E004B1668 /* NSBundle+Hook_MJ.m */; };
+		81C98FCB22A529E7004B1668 /* MJRefreshAutoStateFooter+Localize.m in Sources */ = {isa = PBXBuildFile; fileRef = 81C98FCA22A529E7004B1668 /* MJRefreshAutoStateFooter+Localize.m */; };
 		81CB8ADB228A9564009E8AA0 /* TransactionService+Centralization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CB8ADA228A9564009E8AA0 /* TransactionService+Centralization.swift */; };
 		81CB8ADD228EA99C009E8AA0 /* TransactionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CB8ADC228EA99B009E8AA0 /* TransactionResponse.swift */; };
 		81CD551A229278A800A961B7 /* CandidateResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CD5519229278A800A961B7 /* CandidateResponse.swift */; };
@@ -380,8 +382,6 @@
 		812002CB21A3F6430050E1B0 /* AddSharedWalletVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddSharedWalletVC.xib; sourceTree = "<group>"; };
 		812002CF21A417120050E1B0 /* ByteHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ByteHelper.swift; sourceTree = "<group>"; };
 		812002D221A551160050E1B0 /* MockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockData.swift; sourceTree = "<group>"; };
-		8120D4E022A131BB00F68498 /* NSBundle+Hook_MJ.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSBundle+Hook_MJ.h"; sourceTree = "<group>"; };
-		8120D4E122A131BB00F68498 /* NSBundle+Hook_MJ.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+Hook_MJ.m"; sourceTree = "<group>"; };
 		812489E221BF4D2A000C2F03 /* Array+sort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+sort.swift"; sourceTree = "<group>"; };
 		812A7ED0219EA6A800BE9C1C /* WalletManagerDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WalletManagerDetailViewController.xib; sourceTree = "<group>"; };
 		812A7ED1219EA6A800BE9C1C /* WalletManagerDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletManagerDetailViewController.swift; sourceTree = "<group>"; };
@@ -489,6 +489,12 @@
 		81C88E1521746B3B005F17F7 /* platonWalletUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = platonWalletUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		81C88E1921746B3B005F17F7 /* platonWalletUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = platonWalletUITests.swift; sourceTree = "<group>"; };
 		81C88E1B21746B3B005F17F7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		81C98FC322A5224F004B1668 /* MJRefreshStateHeader+Localize.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MJRefreshStateHeader+Localize.h"; sourceTree = "<group>"; };
+		81C98FC422A5224F004B1668 /* MJRefreshStateHeader+Localize.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "MJRefreshStateHeader+Localize.m"; sourceTree = "<group>"; };
+		81C98FC622A5279E004B1668 /* NSBundle+Hook_MJ.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSBundle+Hook_MJ.h"; sourceTree = "<group>"; };
+		81C98FC722A5279E004B1668 /* NSBundle+Hook_MJ.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSBundle+Hook_MJ.m"; sourceTree = "<group>"; };
+		81C98FC922A529E7004B1668 /* MJRefreshAutoStateFooter+Localize.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MJRefreshAutoStateFooter+Localize.h"; sourceTree = "<group>"; };
+		81C98FCA22A529E7004B1668 /* MJRefreshAutoStateFooter+Localize.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "MJRefreshAutoStateFooter+Localize.m"; sourceTree = "<group>"; };
 		81CB8ADA228A9564009E8AA0 /* TransactionService+Centralization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TransactionService+Centralization.swift"; sourceTree = "<group>"; };
 		81CB8ADC228EA99B009E8AA0 /* TransactionResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionResponse.swift; sourceTree = "<group>"; };
 		81CD5519229278A800A961B7 /* CandidateResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandidateResponse.swift; sourceTree = "<group>"; };
@@ -1153,8 +1159,12 @@
 				81806F582269BB2C0072026A /* UITextField+AspectsScaling.m */,
 				81806F5A2269BB410072026A /* UITextView+AspectsScaling.h */,
 				81806F5B2269BB410072026A /* UITextView+AspectsScaling.m */,
-				8120D4E022A131BB00F68498 /* NSBundle+Hook_MJ.h */,
-				8120D4E122A131BB00F68498 /* NSBundle+Hook_MJ.m */,
+				81C98FC322A5224F004B1668 /* MJRefreshStateHeader+Localize.h */,
+				81C98FC422A5224F004B1668 /* MJRefreshStateHeader+Localize.m */,
+				81C98FC922A529E7004B1668 /* MJRefreshAutoStateFooter+Localize.h */,
+				81C98FCA22A529E7004B1668 /* MJRefreshAutoStateFooter+Localize.m */,
+				81C98FC622A5279E004B1668 /* NSBundle+Hook_MJ.h */,
+				81C98FC722A5279E004B1668 /* NSBundle+Hook_MJ.m */,
 				8162F7AD22670F4B001726C1 /* platonWallet-Bridging-Header.h */,
 			);
 			path = Utilities;
@@ -2011,6 +2021,7 @@
 				9AD67AAC2174865300A8432F /* Wallet.swift in Sources */,
 				9A79A088219ADD1F000EB4C5 /* CreateSharedWalletStep1ViewController.swift in Sources */,
 				819A522B2190319A00E4C500 /* UITextView+Extensions.swift in Sources */,
+				81C98FCB22A529E7004B1668 /* MJRefreshAutoStateFooter+Localize.m in Sources */,
 				81FCCD122179E9F20052FC29 /* TransactionService.swift in Sources */,
 				81E2E8582186BA96008B7504 /* AddAddressInfoView.swift in Sources */,
 				9AA49EEE22706572001ABB44 /* RealmWriteThread.swift in Sources */,
@@ -2080,6 +2091,7 @@
 				81EE99ED217709FA008DF8CB /* BaseViewController.swift in Sources */,
 				81515BCF21C774D600054197 /* SharedPresentedVC.swift in Sources */,
 				9ADB60C8223106710044918D /* AssetFeeViewV060.swift in Sources */,
+				81C98FC522A5224F004B1668 /* MJRefreshStateHeader+Localize.m in Sources */,
 				9AF9AC142182E04000E97F07 /* PresentationController.swift in Sources */,
 				8115BC4B2188444E009FFE3B /* CopyButton.swift in Sources */,
 				9AF9AC1C2182E04000E97F07 /* TransitionAnimator.swift in Sources */,
@@ -2132,7 +2144,6 @@
 				81C88E0521746B39005F17F7 /* AppDelegate.swift in Sources */,
 				81E2E85E2186E2C5008B7504 /* String+Extensions.swift in Sources */,
 				81E2E86421870956008B7504 /* BigUInt+Extenstions.swift in Sources */,
-				8120D4E222A131BB00F68498 /* NSBundle+Hook_MJ.m in Sources */,
 				819A433B21D089A500E276C7 /* Candidate.swift in Sources */,
 				812489E321BF4D2A000C2F03 /* Array+sort.swift in Sources */,
 				9AD2862921D242A7009AB958 /* CandidatesListViewController.swift in Sources */,
@@ -2202,6 +2213,7 @@
 				9AD11DE1218171CA002CD905 /* BackupMnemonicViewController.swift in Sources */,
 				9AF9AC152182E04000E97F07 /* UIImageView+Calculations.swift in Sources */,
 				8156664721C1ECA3000E02D4 /* AboutViewController.swift in Sources */,
+				81C98FC822A5279E004B1668 /* NSBundle+Hook_MJ.m in Sources */,
 				9ADE450C217ED3DC006F1C81 /* UIButton+Extensions.swift in Sources */,
 				9AF9AC1F2182E04000E97F07 /* TransitionAnimations.swift in Sources */,
 				9AF9AC202182E04000E97F07 /* PopupDialogDefaultButtons.swift in Sources */,

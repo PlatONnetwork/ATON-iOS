@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import Localize_Swift
 import MJRefresh
+import BigInt
 
 class MyVoteListVC: BaseViewController,UITableViewDelegate,UITableViewDataSource{
     
@@ -17,11 +18,12 @@ class MyVoteListVC: BaseViewController,UITableViewDelegate,UITableViewDataSource
     
     var headerView : NodeVoteHeader? = UIView.viewFromXib(theClass: NodeVoteHeader.self) as? NodeVoteHeader
     
+    var nvResponse: NoteVoteResponse?
+    
     var dataSource: [NodeVote] = []
     
     lazy var refreshHeader: MJRefreshHeader = {
         let header = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(fetchData))!
-        header.lastUpdatedTimeLabel.isHidden = true
         return header
     }()
     
@@ -30,7 +32,7 @@ class MyVoteListVC: BaseViewController,UITableViewDelegate,UITableViewDataSource
         initSubViews()
         
         NotificationCenter.default.addObserver(self, selector: #selector(didReceiveVoteTransactionUpdate(_:)), name:NSNotification.Name(DidUpdateVoteTransactionByHashNotification) , object: nil)
-        getData()
+        tableView.mj_header.beginRefreshing()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -38,7 +40,7 @@ class MyVoteListVC: BaseViewController,UITableViewDelegate,UITableViewDataSource
     }
     
     @objc func didReceiveVoteTransactionUpdate(_ notify: Notification) {
-        getData(showLoading: false)
+        fetchData()
     }
     
     
@@ -51,19 +53,6 @@ class MyVoteListVC: BaseViewController,UITableViewDelegate,UITableViewDataSource
         super.leftNavigationTitle = "MyVoteListVC_nav_title"
         
         view.backgroundColor = UIViewController_backround
-        
-        /*
-        view.addSubview(headerView!)
-        headerView!.snp.makeConstraints { (maker) in
-            if #available(iOS 11.0, *) {
-                maker.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-            } else {
-                maker.top.equalToSuperview()
-            }
-            maker.left.right.equalToSuperview()
-            maker.height.equalTo(88)
-        }
-        */
         
         tableView.backgroundColor = UIViewController_backround
         tableView.separatorStyle = .none
@@ -90,24 +79,22 @@ class MyVoteListVC: BaseViewController,UITableViewDelegate,UITableViewDataSource
         self.autoAdjustInset()
         
         tableView.mj_header = refreshHeader
-        tableView.mj_header.beginRefreshing()
+        
     }
     
     
     @objc func fetchData() {
-        getData(showLoading: false)
-    }
-    
-    func getData(showLoading: Bool = true) {
-        
-        
         let addressStrs = AssetVCSharedData.sharedData.walletList.filterClassicWallet.map { cwallet in
             return cwallet.key!.address
         }
         guard addressStrs.count > 0 else {
+            tableView.mj_header.endRefreshing()
             return
         }
-
+        getData(addressStrs: addressStrs, showLoading: false)
+    }
+    
+    func getData(addressStrs: [String], showLoading: Bool = true) {
         VoteManager.sharedInstance.GetBatchMyVoteNodeList(addressList: addressStrs) { [weak self] (result, response) in
             guard let self = self else { return }
             
@@ -118,8 +105,9 @@ class MyVoteListVC: BaseViewController,UITableViewDelegate,UITableViewDataSource
                 guard response != nil, let nodeVoteResponse = response as? NoteVoteResponse, nodeVoteResponse.data.count > 0 else {
                     return
                 }
+                self.nvResponse = nodeVoteResponse
                 
-                self.headerView?.updateView(nodeVoteResponse.voteStatic)
+                self.headerView?.voteStatic = nodeVoteResponse.voteStatic
                 self.reloadWhenSuccessed(nodeVotes: nodeVoteResponse.data)
                 
             case .fail(_, let msg):
@@ -179,8 +167,16 @@ class MyVoteListVC: BaseViewController,UITableViewDelegate,UITableViewDataSource
         
         let voteVC = VotingViewController0()
         voteVC.candidate = candidate
-        voteVC.voteCompletion = { [weak self] in
-            self?.tableView.mj_header.beginRefreshing()
+        voteVC.votedCompletion = { [weak self] (voteTicketPrice, voteNumber) in
+            let nodeVote = self?.dataSource[sender.tag]
+            self?.dataSource[sender.tag].totalTicketNum = String(Int(nodeVote?.totalTicketNum ?? "0")! + Int(voteNumber!))
+            self?.dataSource[sender.tag].validNum = String(Int(nodeVote?.validNum ?? "0")! + Int(voteNumber!))
+            self?.dataSource[sender.tag].locked = String(BigUInt.safeInit(str: nodeVote?.locked) + voteTicketPrice!.multiplied(by: BigUInt(integerLiteral: voteNumber!)))
+            self?.nvResponse?.data = self?.dataSource ?? []
+            self?.headerView?.voteStatic = self?.nvResponse?.voteStatic
+            
+            self?.tableView.reloadData()
+            
         }
         self.navigationController?.pushViewController(voteVC, animated: true)
     }

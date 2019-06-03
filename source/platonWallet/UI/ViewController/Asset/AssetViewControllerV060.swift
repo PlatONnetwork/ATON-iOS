@@ -322,11 +322,11 @@ extension AssetViewControllerV060 : UIScrollViewDelegate,ChildScrollViewDidScrol
                 
             }else{
                 print("self.scrollView Dragging up")
-                scrollView.isScrollEnabled = true
-                if (self.assetHeaderStyle?.0)!{
-                    self.scrollView.isScrollEnabled = false
-                    self.transactionVC.tableView.isScrollEnabled = true
-                }
+//                scrollView.isScrollEnabled = true
+//                if (self.assetHeaderStyle?.0)!{
+//                    self.scrollView.isScrollEnabled = false
+//                    self.transactionVC.tableView.isScrollEnabled = true
+//                }
                 
             }
         }

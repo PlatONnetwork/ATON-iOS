@@ -15,9 +15,10 @@ protocol ChildScrollViewDidScrollDelegate: AnyObject {
 }
 
 class MultiGestureTableView: UITableView {
+    var shouldRecognizeSimultaneously = true
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         //return true
-        return true
+        return shouldRecognizeSimultaneously
     } 
 }
 
@@ -80,8 +81,6 @@ class AssetTransactionViewControllerV060: BaseViewController, EmptyDataSetDelega
         NotificationCenter.default.addObserver(self, selector: #selector(initClassicData), name: NSNotification.Name(DidAddVoteTransactionNotification), object: nil)
         
         tableView.mj_footer = refreshFooterView
-        
-        
     }
     
     func setHeaderStyle(hide: Bool){

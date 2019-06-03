@@ -148,12 +148,10 @@ class Candidate:NSObject, Decodable {
     var nodeUrl: String?
     
     
-    
-    
     //like: 80%
     var rewardRate: String {
         get {
-            return String(format: "%.2f%%", Float(10000 - (reward ?? 0))/Float(100))
+            return String(format: "%.2f%%", (Float(reward ?? 0)/Float(10000)) * 100)
         }
         
     }

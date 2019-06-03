@@ -92,12 +92,6 @@ class CandidatesListViewController: BaseViewController {
         super.viewDidLoad()
         self.statusBarNeedTruncate = true
         
-//        if #available(iOS 11.0, *) {
-//            tableView.contentInsetAdjustmentBehavior = .never
-//        } else {
-//            automaticallyAdjustsScrollViewInsets = false
-//        }
-        
         initSubView()
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         NotificationCenter.default.addObserver(self, selector: #selector(onNodeSwitched), name: NSNotification.Name(NodeStoreService.didSwitchNodeNotification), object: nil)
@@ -245,7 +239,7 @@ class CandidatesListViewController: BaseViewController {
                 
                 guard var list = (data as? CandidateResponse)?.list else { return }
                 
-                list.candidateSort()
+//                list.candidateSort()
                 
                 for i in 0..<list.count {
                     list[i].rankByDeposit = UInt16(i + 1)
@@ -275,7 +269,6 @@ class CandidatesListViewController: BaseViewController {
                     }
                     self.waitingCandidateslist = self.waitingCandidateslist.count > 100 ? Array(self.waitingCandidateslist[0..<100]) : self.waitingCandidateslist
                 }
-                
                 break
             case .fail(_, _):
                 self.isQuerying = false

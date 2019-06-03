@@ -114,7 +114,7 @@
 
 "TransactionDetailVC_type" = "Type:";
 "TransactionDetailVC_time" = "Time:";
-"TransactionDetailVC_value" = "Value:";
+"TransactionDetailVC_value" = "Amount:";
 "TransactionDetailVC_energon_price" = "Fee:";
 "TransactionDetailVC_Wallet" = "Wallet:";
 "TransactionDetailVC_memo" = "Memo:";
@@ -169,7 +169,7 @@
 
 //importWalletVC
 "importWalletVC_title" = "Import Classic Wallet";
-"importWalletVC_tab_keystore" = "钱包文件（.json）";
+"importWalletVC_tab_keystore" = "Keystore";
 "importWalletVC_tab_mnemonic" = "Mnemonic phrase";
 "importWalletVC_tab_privateKey" = "Private Key";
 "importWalletVC_mnemonic_tips" = "Input the Mnemonic phrase. Please pay attention to case sensitivity and sequence.";

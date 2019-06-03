@@ -31,7 +31,8 @@ class VotingViewController0 : BaseViewController {
         }
     }
     
-    var voteCompletion: (() -> Void)?
+//    var voteCompletion: (() -> Void)?
+    var votedCompletion: ((_ ticketPrice: BigUInt?, _ voteNumber: UInt64?) -> ())?
     
     
     override func viewDidLoad() {
@@ -193,7 +194,8 @@ class VotingViewController0 : BaseViewController {
             self?.hideLoadingHUD()
             
             DispatchQueue.main.async {
-                self?.voteCompletion?()
+                self?.votedCompletion?(VoteManager.sharedInstance.ticketPrice, UInt64(self!.votingView.voteNumber!.text!)!)
+//                self?.voteCompletion?()
             }
             
             switch result{

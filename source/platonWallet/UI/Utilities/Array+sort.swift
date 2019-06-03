@@ -87,12 +87,6 @@ extension Array where Element == Candidate{
         let ticketPrice = BigUInt(VoteManager.sharedInstance.ticketPrice ?? BigUInt("0")!)
         self.sort { (c1, c2) -> Bool in
             
-//            if (c1.rankStatus == .candidateFirst100 && c2.rankStatus == .alternativeFirst100) ||
-//                (c2.rankStatus == .candidateFirst100 && c1.rankStatus == .alternativeFirst100)
-//            {
-//                return c1.rankStatus.rawValue < c2.rankStatus.rawValue
-//            }
-            
             var bigLeft = BigUInt(c1.deposit ?? BigUInt("0")!)
             bigLeft.multiplyAndAdd(ticketPrice.multiplied(by: BigUInt(c1.ticketCount ?? 0)), 1)
             var bigRight = BigUInt(c2.deposit ?? BigUInt("0")!)

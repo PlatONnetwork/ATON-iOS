@@ -609,7 +609,7 @@
 
 //VotingViewController
 
-"VotingViewController_nav_title" = "节点详情";
+"VotingViewController_nav_title" = "投票";
 "VotingViewController_vote_wallet_name" = "投票钱包";
 "VotingViewController_vote_number" = "投票数";
 "VotingViewController_vote_price" = "票价";
