@@ -170,8 +170,11 @@ extension AssetTransactionViewControllerV060{
                 }
                 
                 // 返回的交易数据条数为0，则显示无加载更多
+                
                 guard let transactions = response as? [Transaction], transactions.count > 0 else {
-                    self.tableView.mj_footer.endRefreshingWithNoMoreData()
+                    if direction == "old" || beginSequence == -1 {
+                        self.tableView.mj_footer.endRefreshingWithNoMoreData()
+                    }
                     self.tableView.mj_footer.isHidden = (self.dataSource[selectedAddress]?.count == 0)
                     return
                 }
@@ -188,7 +191,9 @@ extension AssetTransactionViewControllerV060{
                         if txHashes.contains($0.txhash!) {
                             // 当数组的数据sequence为空，则代表是从本地拿的，应该从本地删除
                             if $0.sequence == nil {
-                                TransferPersistence.delete($0)
+                                if TransferPersistence.getByTxhash($0.txhash) != nil {
+                                    TransferPersistence.delete($0)
+                                }
                             }
                             return false
                         } else {
@@ -225,15 +230,15 @@ extension AssetTransactionViewControllerV060{
 // 下拉刷新及加载更多
 extension AssetTransactionViewControllerV060 {
     func fetchDataByWalletChanged() {
-        guard parentController?.refreshHeader.isRefreshing == false else { return }
         guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return }
         self.tableView.mj_footer.isHidden = (self.dataSource[selectedAddress]?.count == 0)
-        
+        tableView.mj_footer.resetNoMoreData()
+        print("====================")
         guard let count = self.dataSource[selectedAddress]?.count, count <= 0 else {
             pollingWalletTransactions()
             return
         }
-        parentController?.refreshHeader.beginRefreshing()
+        fetchTransactionLastest()
     }
     
     func fetchTransactionLastest() {
@@ -258,8 +263,6 @@ extension AssetTransactionViewControllerV060 {
     }
     
     @objc func pollingWalletTransactions() {
-        // 如果z当前正处于下拉刷新y或者加载更多状态，则忽略定时器触发的刷新
-        guard parentController?.refreshHeader.isRefreshing == false && refreshFooterView.isRefreshing == false else { return }
         guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return }
         let transaction = dataSource[selectedAddress]?.filter { $0.sequence != nil }.first
         guard let lastestTransaction = transaction else {

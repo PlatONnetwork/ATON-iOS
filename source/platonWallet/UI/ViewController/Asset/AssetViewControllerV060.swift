@@ -139,7 +139,14 @@ class AssetViewControllerV060: BaseViewController ,PopupMenuTableDelegate{
         pageVC.setViewControllers([viewControllers[tmpChildVCIndex]], direction: .forward, animated: false, completion: nil)
         addChild(pageVC)
         scrollView.addSubview(pageVC.view)
-        self.updatePageViewConstraint(headerHide: true)
+        let tabbarHeight = (navigationController?.tabBarController?.tabBar.frame.size.height ?? 0)
+        pageVC.view.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalToSuperview()
+            make.width.equalTo(view)
+            make.top.equalTo(sectionView.snp.bottom).offset(0)
+            make.height.equalTo(kUIScreenHeight - 70 - tabbarHeight - CGFloat(AssetSectionViewH))
+        }
+//        self.updatePageViewConstraint(headerHide: false)
         
         pageVC.didScrolling = {[weak self] offset in
             //self?.sectionView.changingOffset(offset: offset, currentIndex: (self?.pageViewCurrentIndex)!,draging: (self?.pageVC.pagesScrollview?.isDragging)!)
@@ -189,7 +196,7 @@ class AssetViewControllerV060: BaseViewController ,PopupMenuTableDelegate{
     
     @objc func fetchData() {
         updateWalletList()
-        transactionVC.fetchTransactionLastest()
+//        transactionVC.fetchTransactionLastest()
     }
     
     func endFetchData() {
@@ -386,6 +393,7 @@ extension AssetViewControllerV060 : UIScrollViewDelegate,ChildScrollViewDidScrol
                 scrollEnable = false
             }
         }
+        scrollView.contentSize = CGSize(width: scrollView.contentSize.width, height: childScrollView.contentSize.height + CGFloat(AssetHeaderViewH) + CGFloat(AssetSectionViewH))
     }
     
     // MARK: - User Interaction
