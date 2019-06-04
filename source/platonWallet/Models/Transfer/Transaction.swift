@@ -274,8 +274,6 @@ class Transaction : Object, Decodable {
             case .candidateWithdraw:
                 return .Send
             case .unknown:
-                return .Send
-            default:
                 let type = TransanctionType(rawValue: transactionType) ?? .Send
                 if type == .Send {
                     if senderAddress != nil && (senderAddress?.ishexStringEqual(other: from))! {

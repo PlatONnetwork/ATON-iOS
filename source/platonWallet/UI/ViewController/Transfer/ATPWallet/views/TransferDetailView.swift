@@ -143,6 +143,10 @@ class TransferDetailView: UIView {
         
         if let w = WalletService.sharedInstance.getWalletByAddress(address: tx.from ?? ""){
             self.walletNameLabel.text = w.name
+        } else {
+            let walletNames = AddressBookService.service.getAll().filter { $0.walletAddress == tx.from }.map { $0.walletName }
+            guard walletNames.count > 0 else { return }
+            self.walletNameLabel.text = walletNames.first!
         }
         updateStatus(tx: tx)
         

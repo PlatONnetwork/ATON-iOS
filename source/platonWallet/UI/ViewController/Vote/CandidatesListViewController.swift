@@ -359,7 +359,6 @@ class CandidatesListViewController: BaseViewController {
         case .default:
             
             let dataSource = nominateNodeList + waitingCandidateslist
-//            dataSource.candidateSort()
             return dataSource
             
         case .reward:
@@ -368,7 +367,7 @@ class CandidatesListViewController: BaseViewController {
             list.sort { (e1, e2) -> Bool in
                 
                 if e1.reward ?? 0 != e2.reward ?? 0 {
-                    return e1.reward ?? 0 < e2.reward ?? 0
+                    return e1.reward ?? 0 > e2.reward ?? 0
                 }else if e1.deposit! != e2.deposit! {
                     return e1.deposit! > e2.deposit!
                 }else {

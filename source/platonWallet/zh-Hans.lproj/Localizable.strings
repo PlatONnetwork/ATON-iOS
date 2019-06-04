@@ -323,7 +323,7 @@
 "TransactionStatus_voteFailed_title" = "投票";
 
 "TransactionStatus_pending_desc" = "处理中";
-"TransactionStatus_succeed_desc" = "成功";
+"TransactionStatus_succeed_desc" = "已完成";
 "TransactionStatus_failed_desc" = "失败";
 
 "TransactionStatus_transfer_title" = "转账";

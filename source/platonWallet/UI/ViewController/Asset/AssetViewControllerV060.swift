@@ -139,7 +139,7 @@ class AssetViewControllerV060: BaseViewController ,PopupMenuTableDelegate{
         pageVC.setViewControllers([viewControllers[tmpChildVCIndex]], direction: .forward, animated: false, completion: nil)
         addChild(pageVC)
         scrollView.addSubview(pageVC.view)
-        self.updatePageViewConstraint(headerHide: false)
+        self.updatePageViewConstraint(headerHide: true)
         
         pageVC.didScrolling = {[weak self] offset in
             //self?.sectionView.changingOffset(offset: offset, currentIndex: (self?.pageViewCurrentIndex)!,draging: (self?.pageVC.pagesScrollview?.isDragging)!)
@@ -255,7 +255,7 @@ class AssetViewControllerV060: BaseViewController ,PopupMenuTableDelegate{
             }
 
             transactionVC.setHeaderStyle(hide: hide)
-            self.updatePageViewConstraint(headerHide: hide)
+//            self.updatePageViewConstraint(headerHide: hide)
 
         }
     }
@@ -313,56 +313,55 @@ extension AssetViewControllerV060: UIPageViewControllerDelegate, UIPageViewContr
 
 extension AssetViewControllerV060 : UIScrollViewDelegate,ChildScrollViewDidScrollDelegate {
     
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        let actualPosition = scrollView.panGestureRecognizer.translation(in: scrollView.superview)
-        if scrollView == self.scrollView{
-            
-            if (actualPosition.y >= 0.0){
-                print("self.scrollView Dragging down")
-                
-            }else{
-                print("self.scrollView Dragging up")
-//                scrollView.isScrollEnabled = true
-//                if (self.assetHeaderStyle?.0)!{
-//                    self.scrollView.isScrollEnabled = false
-//                    self.transactionVC.tableView.isScrollEnabled = true
-//                }
-                
-            }
-        }
-    }
-    
-    func scrollViewWillBeginDecelerating(_ scrollView: UIScrollView) {
-        if scrollView.isDragging && scrollView.isDecelerating{
-            if scrollView.contentOffset.y > CGFloat(AssetHeaderViewH) * 0.5{
-                self.assetHeaderStyle = (true,true)
-            }else{
-                self.assetHeaderStyle = (false,true)
-            }
-        }
-    }
-    
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        
-        if scrollView.panGestureRecognizer.translation(in: scrollView.superview).y > 0{
-            if (self.assetHeaderStyle?.hide)!{
-                self.assetHeaderStyle = (false,true)
-            }
-            
-        }else{
-            if !(self.assetHeaderStyle?.hide)!{
-                self.assetHeaderStyle = (true,true)
-            }
-        }
-        return
-    }
+//    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+//        let actualPosition = scrollView.panGestureRecognizer.translation(in: scrollView.superview)
+//        if scrollView == self.scrollView{
+//
+//            if (actualPosition.y >= 0.0){
+//                print("self.scrollView Dragging down")
+//
+//            }else{
+//                print("self.scrollView Dragging up")
+////                scrollView.isScrollEnabled = true
+////                if (self.assetHeaderStyle?.0)!{
+////                    self.scrollView.isScrollEnabled = false
+////                    self.transactionVC.tableView.isScrollEnabled = true
+////                }
+//
+//            }
+//        }
+//    }
+//
+//    func scrollViewWillBeginDecelerating(_ scrollView: UIScrollView) {
+//        if scrollView.isDragging && scrollView.isDecelerating{
+//            if scrollView.contentOffset.y > CGFloat(AssetHeaderViewH) * 0.5{
+//                self.assetHeaderStyle = (true,true)
+//            }else{
+//                self.assetHeaderStyle = (false,true)
+//            }
+//        }
+//    }
+//
+//    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+//
+//        if scrollView.panGestureRecognizer.translation(in: scrollView.superview).y > 0{
+//            if (self.assetHeaderStyle?.hide)!{
+//                self.assetHeaderStyle = (false,true)
+//            }
+//
+//        }else{
+//            if !(self.assetHeaderStyle?.hide)!{
+//                self.assetHeaderStyle = (true,true)
+//            }
+//        }
+//        return
+//    }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         //print("scrollview Didcroll:\(scrollView.contentOffset.y)")
         
         //let rec = sectionView.convert(sectionView.bounds, to: view)
         //print("sectionView y:\(rec.origin.y)")
-        
         if (!scrollEnable || scrollView.contentOffset.y >= CGFloat(AssetHeaderViewH)) {
             //scrollView.setContentOffset(CGPoint(x: 0, y: AssetHeaderViewH - 20), animated: false)
             DispatchQueue.main.async {
@@ -376,7 +375,6 @@ extension AssetViewControllerV060 : UIScrollViewDelegate,ChildScrollViewDidScrol
     
     func childScrollViewDidScroll(childScrollView: UIScrollView) {
         let yoffset = childScrollView.contentOffset.y
-        //print("childScrollViewDidScroll:\(yoffset)")
         if yoffset <= 0 {
             scrollEnable = true
             childScrollView.setContentOffset(.zero, animated: false)
@@ -388,7 +386,6 @@ extension AssetViewControllerV060 : UIScrollViewDelegate,ChildScrollViewDidScrol
                 scrollEnable = false
             }
         }
-
     }
     
     // MARK: - User Interaction

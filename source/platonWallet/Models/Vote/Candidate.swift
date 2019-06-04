@@ -211,24 +211,7 @@ class Candidate:NSObject, Decodable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let depositStr = try? container.decode(String.self, forKey: .deposit)
         deposit = BigUInt.safeInit(str: depositStr ?? "0")
-//        deposit = BigUInt(depositStr?.description ?? "")
-//        let blockNumberStr = try? container.decode(Decimal.self, forKey: .blockNumber)
-//        blockNumber = BigUInt(blockNumberStr?.description ?? "")
         candidateId = try? container.decode(String.self, forKey: .candidateId)
-//        host = try? container.decode(String.self, forKey: .host)
-//        port = try? container.decode(String.self, forKey: .port)
-//        owner = try? container.decode(String.self, forKey: .owner)
-//        from = try? container.decode(String.self, forKey: .from)
-//        let extraStr = try container.decode(String.self, forKey: .extra)
-//        do {
-//            txIndex = try container.decode(Int.self, forKey: .txIndex)
-//            extra = try JSONDecoder().decode(CandidateExtra.self, from: extraStr.data(using: .utf8)!)
-//        } catch  {
-//            print("candidate Extra filed:" + error.localizedDescription)
-//            return
-//        }
-        
-//        fee = try container.decode(UInt64.self, forKey: .fee)
         ranking = try container.decode(Int.self, forKey: .ranking)
         name = try? container.decode(String.self, forKey: .name)
         countryCode = try? container.decode(String.self, forKey: .countryCode)

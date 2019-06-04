@@ -35,7 +35,7 @@ let allJointWalletPollingTxsTimerInterval = 8
 //polling single joint wallet's transactions in ViewController
 let jointWalletUpdateTxListTimerEnable = true
 
-let jointWalletUpdateTxListTimerInterval = 8
+let jointWalletUpdateTxListTimerInterval = 10
 
 //monitor the status of the joint wallet’s creation
 let jointWalletCreationTimerEnable = true

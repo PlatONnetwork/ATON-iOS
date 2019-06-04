@@ -27,8 +27,16 @@ class TransactionCell: UITableViewCell {
     
     func updateCell(tx : Transaction){
         updateTransactionStatus(tx: tx)
-        amoutLabel.text = "-" + (tx.valueDescription)!.ATPSuffix()
         timeLabel.text = Date.toStanderTimeDescrition(millionSecondsTimeStamp: tx.confirmTimes)
+        
+        switch tx.transactionStauts {
+        case .sending,.sendSucceed,.sendFailed:
+            amoutLabel.text = "-" + (tx.valueDescription)!.ATPSuffix()
+        case .receiving,.receiveSucceed,.receiveFailed:
+            amoutLabel.text = "+" + (tx.valueDescription)!.ATPSuffix()
+        case .voting,.voteSucceed,.voteFailed:
+            amoutLabel.text = "-" + (tx.valueDescription)!.ATPSuffix()
+        }
     }
  
     

@@ -15,10 +15,8 @@ protocol ChildScrollViewDidScrollDelegate: AnyObject {
 }
 
 class MultiGestureTableView: UITableView {
-    var shouldRecognizeSimultaneously = true
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        //return true
-        return shouldRecognizeSimultaneously
+        return true
     } 
 }
 
@@ -263,7 +261,8 @@ extension AssetTransactionViewControllerV060 {
         // 如果z当前正处于下拉刷新y或者加载更多状态，则忽略定时器触发的刷新
         guard parentController?.refreshHeader.isRefreshing == false && refreshFooterView.isRefreshing == false else { return }
         guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return }
-        guard let lastestTransaction = dataSource[selectedAddress]?.firstTransactionNoNilSequence() else {
+        let transaction = dataSource[selectedAddress]?.filter { $0.sequence != nil }.first
+        guard let lastestTransaction = transaction else {
             fetchTransactionLastest()
             return
         }

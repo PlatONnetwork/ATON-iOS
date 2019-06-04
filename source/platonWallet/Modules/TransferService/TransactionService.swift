@@ -274,6 +274,7 @@ class TransactionService : BaseService{
                         ptx.gasPrice = String(gasPrice.quantity)
                         ptx.gas = String(txgas.quantity)
                         ptx.memo = memo
+                        ptx.transactionType = 0
                         TransferPersistence.add(tx: ptx)
                     }
                     self.successCompletionOnMain(obj: nil, completion: &completion)

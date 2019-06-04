@@ -214,15 +214,6 @@ extension Array where Element == Transaction {
             confirmTxHashes.contains($0.txhash!)
         }
     }
-    
-    func firstTransactionNoNilSequence() -> Transaction? {
-        for item in self {
-            if item.sequence != nil {
-                return item
-            }
-        }
-        return nil
-    }
 }
 
 

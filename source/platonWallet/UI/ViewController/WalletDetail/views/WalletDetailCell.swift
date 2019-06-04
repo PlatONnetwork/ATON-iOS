@@ -68,8 +68,13 @@ class WalletDetailCell: UITableViewCell {
             transferAmoutLabel.text = "-" + (tx.valueDescription)!.ATPSuffix()
             txIcon.image = UIImage(named: "walletVote")
         }
+        
+        if tx.txType == .unknown || tx.txType == .transfer {
+            txTypeLabel.text = tx.transactionStauts.localizeTitle
+        } else {
+            txTypeLabel.text = tx.txType?.localizeTitle
+        }
 
-        txTypeLabel.text = tx.txType == .transfer ? tx.transactionStauts.localizeTitle : tx.txType?.localizeTitle
         let (des,color) = tx.transactionStauts.localizeDescAndColor
         statusLabel.text = des
         statusLabel.textColor = color
