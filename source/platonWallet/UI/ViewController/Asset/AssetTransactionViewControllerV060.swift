@@ -96,6 +96,8 @@ class AssetTransactionViewControllerV060: BaseViewController, EmptyDataSetDelega
 extension AssetTransactionViewControllerV060{
     
     func refreshData(){
+        guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return }
+        dataSource[selectedAddress] = dataSource[selectedAddress]?.filter { !$0.isInvalidated }
         commonInit()
         initClassicData()
         fetchDataByWalletChanged()
@@ -118,12 +120,11 @@ extension AssetTransactionViewControllerV060{
         guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return }
         var transactions = TransferPersistence.getAllByAddress(from: selectedAddress)
         transactions.txSort()
-        
+        print("localtxs: ", transactions.map {$0.txhash!})
         guard let existTxs = dataSource[selectedAddress], existTxs.count > 0 else {
             dataSource[selectedAddress] = transactions
             return
         }
-        
         let txHashes = existTxs.map { $0.txhash! }
         let newTxs = transactions.filter { !txHashes.contains($0.txhash!) }
         dataSource[selectedAddress]?.insert(contentsOf: newTxs, at: 0)
@@ -163,14 +164,7 @@ extension AssetTransactionViewControllerV060{
             
             switch result {
             case .success:
-                // 下拉刷新时，先请除非本地缓存的数据
-                if beginSequence == -1 {
-                    let _ = self.dataSource[selectedAddress]?.filter { $0.sequence != nil }
-                    self.tableView.reloadData()
-                }
-                
                 // 返回的交易数据条数为0，则显示无加载更多
-                
                 guard let transactions = response as? [Transaction], transactions.count > 0 else {
                     if direction == "old" || beginSequence == -1 {
                         self.tableView.mj_footer.endRefreshingWithNoMoreData()
@@ -179,28 +173,26 @@ extension AssetTransactionViewControllerV060{
                     return
                 }
                 
+                // 下拉刷新时，先请除非本地缓存的数据
+                if beginSequence == -1 {
+                    self.dataSource[selectedAddress] = self.dataSource[selectedAddress]?.filter { $0.sequence == nil }
+                }
+                
                 if beginSequence != -1 && direction == "new" {
                     AssetService.sharedInstace.fetchWalletBanlance()
                 }
-                
+
                 guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return }
                 if let existTxs = self.dataSource[selectedAddress], existTxs.count > 0 {
-                    
                     let txHashes = transactions.map { $0.txhash! }
-                    self.dataSource[selectedAddress] = self.dataSource[selectedAddress]?.filter {
-                        if txHashes.contains($0.txhash!) {
-                            // 当数组的数据sequence为空，则代表是从本地拿的，应该从本地删除
-                            if $0.sequence == nil {
-                                if TransferPersistence.getByTxhash($0.txhash) != nil {
-                                    TransferPersistence.delete($0)
-                                }
-                            }
-                            return false
-                        } else {
-                            return true
-                        }
-                    }
                     
+                    let deleteTransactions = self.dataSource[selectedAddress]?.filter { txHashes.contains($0.txhash!) && $0.sequence == nil }
+                    self.dataSource[selectedAddress] = self.dataSource[selectedAddress]?.filter { !txHashes.contains($0.txhash!) }
+                    
+                    for delTransaction in deleteTransactions ?? [] {
+                        TransferPersistence.delete(delTransaction)
+                    }
+ 
                     if direction == "new" && beginSequence > -1 {
                         self.dataSource[selectedAddress]?.insert(contentsOf: transactions, at: 0)
                     } else {

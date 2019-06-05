@@ -42,6 +42,14 @@ class TransactionCell: UITableViewCell {
     
     func updateTransactionStatus(tx : Transaction) {
         tx.senderAddress = AssetVCSharedData.sharedData.selectedWalletAddress
+        if tx.txType == .transfer {
+            let addressStrs = AssetVCSharedData.sharedData.walletList.filterClassicWallet.map { cwallet in
+                return cwallet.key!.address
+            }
+            if addressStrs.contains(tx.from!) {
+                tx.senderAddress = tx.from
+            }
+        }
         typeLabel.text = tx.txType == .transfer ? tx.transactionStauts.localizeTitle : tx.txType?.localizeTitle
         statusLabel.text = tx.transactionStauts.localizeDescAndColor.0
         statusLabel.textColor = tx.transactionStauts.localizeDescAndColor.1
