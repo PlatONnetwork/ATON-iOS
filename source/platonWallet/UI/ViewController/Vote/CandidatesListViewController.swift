@@ -93,8 +93,17 @@ class CandidatesListViewController: BaseViewController {
         self.statusBarNeedTruncate = true
         
         initSubView()
+        
+        if #available(iOS 11.0, *) {
+            tableView.contentInsetAdjustmentBehavior = .never
+        } else {
+            automaticallyAdjustsScrollViewInsets = false
+        }
+        
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         NotificationCenter.default.addObserver(self, selector: #selector(onNodeSwitched), name: NSNotification.Name(NodeStoreService.didSwitchNodeNotification), object: nil)
+        
+        tableView.mj_header.beginRefreshing()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -164,7 +173,7 @@ class CandidatesListViewController: BaseViewController {
         
         refreshHeader.addObserver(self, forKeyPath: "state", options: [.new, .old], context: nil)
         tableView.mj_header = refreshHeader
-        tableView.mj_header.beginRefreshing()
+        
     }
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {

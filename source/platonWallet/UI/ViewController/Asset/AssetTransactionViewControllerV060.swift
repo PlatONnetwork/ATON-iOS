@@ -233,7 +233,6 @@ extension AssetTransactionViewControllerV060 {
         guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return }
         self.tableView.mj_footer.isHidden = (self.dataSource[selectedAddress]?.count == 0)
         tableView.mj_footer.resetNoMoreData()
-        print("====================")
         guard let count = self.dataSource[selectedAddress]?.count, count <= 0 else {
             pollingWalletTransactions()
             return
