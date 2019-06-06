@@ -85,7 +85,6 @@ class AssetViewControllerV060: BaseViewController ,PopupMenuTableDelegate{
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: false)
-        super.viewWillAppear(animated)
         headerView.shouldUpdateWalletList()
         sendVC.refreshData()
         transactionVC.refreshData()
@@ -103,7 +102,7 @@ class AssetViewControllerV060: BaseViewController ,PopupMenuTableDelegate{
         if #available(iOS 11.0, *) {
             scrollView.contentInsetAdjustmentBehavior = .always
         } else {
-            automaticallyAdjustsScrollViewInsets = true
+            automaticallyAdjustsScrollViewInsets = false
         }
         
         let usingsafeAutoLaoutGuide = true
@@ -114,7 +113,8 @@ class AssetViewControllerV060: BaseViewController ,PopupMenuTableDelegate{
                     make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
                     make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
                 } else {
-                    make.bottom.top.equalToSuperview()
+                    make.bottom.equalToSuperview()
+                    make.top.equalTo(topLayoutGuide.snp.bottom)
                 }
             }else{
                 make.edges.equalToSuperview()

@@ -16,13 +16,14 @@ enum CandidatesListSortType: Int {
     case `default` = 0,reward,location
 }
 
-let headerViewHeight: CGFloat = 149.0 + kStatusBarHeight
 let filterBarShrinkHeight : CGFloat = 42.0
 let filterBarExpandHeight : CGFloat = 108
 let kAnimateScrollHeight: CGFloat = 63.0
 
 
 class CandidatesListViewController: BaseViewController {
+    
+    var headerViewHeight: CGFloat = 149.0 + kStatusBarHeight
     
     var headerView: CandidatesListHeaderView!
     var filterBarView: CandidatesListFilterBarView!
@@ -56,7 +57,6 @@ class CandidatesListViewController: BaseViewController {
             guard sortedCandidatesList.count > 0 else {
                 return
             }
-            print("sortedCandidatesList: ----")
             print(sortedCandidatesList)
             refreshTableView()
         }
@@ -92,12 +92,17 @@ class CandidatesListViewController: BaseViewController {
         super.viewDidLoad()
         self.statusBarNeedTruncate = true
         
+        if #available(iOS 11.0, *) {
+        } else {
+            headerViewHeight = headerViewHeight - kStatusBarHeight
+        }
+        
         initSubView()
         
         if #available(iOS 11.0, *) {
             tableView.contentInsetAdjustmentBehavior = .never
         } else {
-            automaticallyAdjustsScrollViewInsets = false
+            automaticallyAdjustsScrollViewInsets = true
         }
         
         self.navigationController?.setNavigationBarHidden(true, animated: false)
@@ -106,8 +111,14 @@ class CandidatesListViewController: BaseViewController {
         tableView.mj_header.beginRefreshing()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        refreshHeader.removeObserver(self, forKeyPath: "state")
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        refreshHeader.addObserver(self, forKeyPath: "state", options: [.new, .old], context: nil)
         guard !tableView.mj_header.isRefreshing else {
             return
         }
@@ -117,8 +128,6 @@ class CandidatesListViewController: BaseViewController {
     
     
     func initSubView() {
-        
-        
         let tmpView = UIView(frame: CGRect(x: 0, y: 0, width: 1, height: 1))
         view.addSubview(tmpView)
         
@@ -133,7 +142,12 @@ class CandidatesListViewController: BaseViewController {
         }
         
         tableView.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(-kStatusBarHeight)
+            if #available(iOS 11.0, *) {
+                make.top.equalToSuperview().offset(-kStatusBarHeight)
+            } else {
+                make.top.equalToSuperview().offset(0)
+            }
+            
             make.leading.bottom.trailing.equalToSuperview()
         }
         
@@ -171,31 +185,25 @@ class CandidatesListViewController: BaseViewController {
             make.height.equalTo(filterBarShrinkHeight)
         }
         
-        refreshHeader.addObserver(self, forKeyPath: "state", options: [.new, .old], context: nil)
         tableView.mj_header = refreshHeader
-        
-    }
-
-    deinit {
-        refreshHeader.removeObserver(self, forKeyPath: "state")
     }
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if keyPath == "state" {
             let newValue = change?[NSKeyValueChangeKey.newKey] as? Int
             let oldValue = change?[NSKeyValueChangeKey.oldKey] as? Int
-            
+
             if newValue == 1 && oldValue == 3 {
                 headerView.snp.updateConstraints { make in
                     make.top.equalTo(tableHeaderView.snp.top)
                 }
-                
+
                 UIView.animate(withDuration: TimeInterval(MJRefreshSlowAnimationDuration), animations: { [weak self] in
                     if let strongeSelf = self {
                         strongeSelf.view.layoutIfNeeded()
                     }
                 }) { (_) in
-                    
+
                 }
             }
             
@@ -205,7 +213,7 @@ class CandidatesListViewController: BaseViewController {
                         strongeSelf.view.layoutIfNeeded()
                     }
                 }) { (_) in
-                    
+
                 }
             }
         }
@@ -240,7 +248,6 @@ class CandidatesListViewController: BaseViewController {
     }
     
     private func queryCandidatesList() {
-        
         isQuerying = true 
         
         if isFirstQuery {
@@ -587,10 +594,6 @@ extension CandidatesListViewController: UIScrollViewDelegate {
             }
         }
     }
-    
-    
-
-    
 }
 extension CandidatesListViewController: UITextFieldDelegate, HeaderViewProtocol {
     

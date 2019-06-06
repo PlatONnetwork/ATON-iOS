@@ -156,10 +156,16 @@ extension AssetTransactionViewControllerV060{
     
     func fetchTransaction(beginSequence: Int, direction: String) {
         guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return }
-        TransactionService.service.getBatchTransaction(addresses: [selectedAddress], beginSequence: beginSequence, listSize: listSize, direction: direction) { (result, response) in
+        TransactionService.service.getBatchTransaction(addresses: [selectedAddress], beginSequence: beginSequence, listSize: listSize, direction: direction) { [weak self] (result, response) in
+            
+            guard let self = self else {
+                return
+            }
             
             // 结束顶层下拉刷新的状态
-            self.parentController?.endFetchData()
+            if let parentCon = self.parentController {
+                parentCon.endFetchData()
+            }
             self.tableView.mj_footer.endRefreshing()
             
             switch result {
