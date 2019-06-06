@@ -43,7 +43,6 @@ class AppFramework {
     }
      
     func languageSetting() {
-        
         let defaullt = UserDefaults.standard.object(forKey: "LCLCurrentLanguageKey")
         if  defaullt == nil {
             let curlan = GetCurrentSystemSettingLanguage()
@@ -53,9 +52,7 @@ class AppFramework {
                 Localize.setCurrentLanguage("en")
             }
         }
-        
     }
-    
 
     func RealmConfiguration() -> Bool {
         

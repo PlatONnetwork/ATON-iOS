@@ -44,12 +44,13 @@ class TransactionCell: UITableViewCell {
         tx.senderAddress = AssetVCSharedData.sharedData.selectedWalletAddress
         if tx.txType == .transfer {
             let addressStrs = AssetVCSharedData.sharedData.walletList.filterClassicWallet.map { cwallet in
-                return cwallet.key!.address
+                return cwallet.key!.address.lowercased()
             }
-            if addressStrs.contains(tx.from!) {
+            if addressStrs.contains(tx.from!.lowercased()) {
                 tx.senderAddress = tx.from
             }
         }
+        
         typeLabel.text = tx.txType == .transfer ? tx.transactionStauts.localizeTitle : tx.txType?.localizeTitle
         statusLabel.text = tx.transactionStauts.localizeDescAndColor.0
         statusLabel.textColor = tx.transactionStauts.localizeDescAndColor.1

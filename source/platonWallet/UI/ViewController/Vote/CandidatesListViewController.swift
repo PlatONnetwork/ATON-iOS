@@ -175,6 +175,10 @@ class CandidatesListViewController: BaseViewController {
         tableView.mj_header = refreshHeader
         
     }
+
+    deinit {
+        refreshHeader.removeObserver(self, forKeyPath: "state")
+    }
     
     override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         if keyPath == "state" {
@@ -186,16 +190,20 @@ class CandidatesListViewController: BaseViewController {
                     make.top.equalTo(tableHeaderView.snp.top)
                 }
                 
-                UIView.animate(withDuration: TimeInterval(MJRefreshSlowAnimationDuration), animations: {
-                    self.view.layoutIfNeeded()
+                UIView.animate(withDuration: TimeInterval(MJRefreshSlowAnimationDuration), animations: { [weak self] in
+                    if let strongeSelf = self {
+                        strongeSelf.view.layoutIfNeeded()
+                    }
                 }) { (_) in
                     
                 }
             }
             
             if newValue == 3 && oldValue == 2 {
-                UIView.animate(withDuration: TimeInterval(MJRefreshFastAnimationDuration), animations: {
-                    self.view.layoutIfNeeded()
+                UIView.animate(withDuration: TimeInterval(MJRefreshFastAnimationDuration), animations: { [weak self] in
+                    if let strongeSelf = self {
+                        strongeSelf.view.layoutIfNeeded()
+                    }
                 }) { (_) in
                     
                 }

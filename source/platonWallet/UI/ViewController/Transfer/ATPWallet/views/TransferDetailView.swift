@@ -140,6 +140,7 @@ class TransferDetailView: UIView {
         valueLabel.text = tx.valueDescription!.ATPSuffix()
         feeLabel.text = tx.actualTxCostDescription?.ATPSuffix()
         
+        updateStatus(tx: tx)
         
         if let w = WalletService.sharedInstance.getWalletByAddress(address: tx.from ?? ""){
             self.walletNameLabel.text = w.name
@@ -148,8 +149,6 @@ class TransferDetailView: UIView {
             guard walletNames.count > 0 else { return }
             self.walletNameLabel.text = walletNames.first!
         }
-        updateStatus(tx: tx)
-        
     }
     
     func updateStatus(tx : Transaction){

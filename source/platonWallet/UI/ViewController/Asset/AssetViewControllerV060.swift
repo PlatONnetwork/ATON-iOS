@@ -103,7 +103,7 @@ class AssetViewControllerV060: BaseViewController ,PopupMenuTableDelegate{
         if #available(iOS 11.0, *) {
             scrollView.contentInsetAdjustmentBehavior = .always
         } else {
-            automaticallyAdjustsScrollViewInsets = false
+            automaticallyAdjustsScrollViewInsets = true
         }
         
         let usingsafeAutoLaoutGuide = true
