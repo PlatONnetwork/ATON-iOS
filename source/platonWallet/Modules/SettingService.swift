@@ -72,13 +72,13 @@ class SettingService {
         
         let url = self.getCurrentNodeURLString()
         if url == DefaultNodeURL_Alpha{
-            return DefaultCentralizationURL + "api-" + self.getChainID() + "/v060"
+            return DefaultCentralizationURL + "app-" + self.getChainID() + "/v060"
         }else if url == DefaultNodeURL_Beta{
-            return DefaultCentralizationURL + "api-" + self.getChainID() + "/v060"
+            return DefaultCentralizationURL + "app-" + self.getChainID() + "/v060"
         }else if url == "http://192.168.120.81:6789"{
             return DEBUG_CentralizationURL
         }
-        return DefaultCentralizationURL + "api-" + self.getChainID() + "/v060"
+        return DefaultCentralizationURL + "app-" + self.getChainID() + "/v060"
     }
     
     // v0.6.2 新增获取链ID
@@ -86,9 +86,9 @@ class SettingService {
         let url = getCurrentNodeURLString()
         switch url {
         case DefaultNodeURL_Alpha:
-            return "203"
+            return "103"
         case DefaultNodeURL_Beta:
-            return "204"
+            return "104"
         default:
             return "203"
         }
