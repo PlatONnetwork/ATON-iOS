@@ -49,8 +49,6 @@ class CandidatesListViewController: BaseViewController {
             isFirstQuery = false
         }
     }
-    
-    var isQuerying = false
    
     var searchText = "" {
         didSet {
@@ -206,7 +204,7 @@ class CandidatesListViewController: BaseViewController {
 
                 }
             }
-            
+
             if newValue == 3 && oldValue == 2 {
                 UIView.animate(withDuration: TimeInterval(MJRefreshFastAnimationDuration), animations: { [weak self] in
                     if let strongeSelf = self {
@@ -222,10 +220,7 @@ class CandidatesListViewController: BaseViewController {
     
     @objc func fetchData() {
         updateTicketPriceAndPoolNum()
-        
-        if !isQuerying {
-            queryCandidatesList()
-        }
+        queryCandidatesList()
     }
     
     @objc func onMyVote(){
@@ -248,38 +243,26 @@ class CandidatesListViewController: BaseViewController {
     }
     
     private func queryCandidatesList() {
-        isQuerying = true 
         
-        if isFirstQuery {
-            showLoadingHUD()
-        }
-        
-        VoteManager.sharedInstance.GetBatchNodeList { [weak self] (result, data) in
-            guard let self = self else { return }
+        VoteManager.sharedInstance.GetBatchNodeList { (result, data) in
             self.tableView.mj_header.endRefreshing()
             
             switch result {
             case .success:
-                
+
                 guard var list = (data as? CandidateResponse)?.list else { return }
-                
+
 //                list.candidateSort()
-                
+
                 for i in 0..<list.count {
                     list[i].rankByDeposit = UInt16(i + 1)
                 }
-                
+
                 self.setCandidateAreaInfo(list: list)
                 self.queryCandidateTicketCount(list: list, completion: { (newList) in
-                    
-                    if (self.isFirstQuery) {
-                        self.hideLoadingHUD()
-                    }
-                    
+
                     dividenominatedandwaitingCandidateslistPool(validatorIds: [])
-                    
-                    self.isQuerying = false
-                    
+
                     self.startSort()
                 })
                 self.updateTicketPriceAndPoolNum()
@@ -295,13 +278,9 @@ class CandidatesListViewController: BaseViewController {
                 }
                 break
             case .fail(_, _):
-                self.isQuerying = false
-                if (self.isFirstQuery) {
-                    self.hideLoadingHUD()
-                }
                 break
             }
-            
+
         }
     }
     
