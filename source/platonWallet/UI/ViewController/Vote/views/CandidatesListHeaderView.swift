@@ -109,7 +109,7 @@ class CandidatesListHeaderView: UIView {
     }
     
     private func update() {
-        let voteRate = curVoteRate == nil ? "-%":String(format: "%.2f%%", curVoteRate! * 100)
+        let voteRate = curVoteRate == nil ? "-%":String(format: "%.2f%%", round(curVoteRate! * 10000)/100)
         let poll = curPoll == nil ? "-":"\(curPoll!)"
         let ticketPrice = "\(curTicketPrice ?? "-")".ATPSuffix()
         

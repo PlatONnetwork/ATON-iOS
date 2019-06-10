@@ -55,7 +55,6 @@ class CandidatesListViewController: BaseViewController {
             guard sortedCandidatesList.count > 0 else {
                 return
             }
-            print(sortedCandidatesList)
             refreshTableView()
         }
     }
@@ -117,10 +116,14 @@ class CandidatesListViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         refreshHeader.addObserver(self, forKeyPath: "state", options: [.new, .old], context: nil)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         guard !tableView.mj_header.isRefreshing else {
             return
         }
-
+        
         tableView.mj_header.beginRefreshing()
     }
     
@@ -243,17 +246,13 @@ class CandidatesListViewController: BaseViewController {
     }
     
     private func queryCandidatesList() {
-        
-        VoteManager.sharedInstance.GetBatchNodeList { (result, data) in
+        VoteManager.sharedInstance.GetBatchNodeList { [weak self] (result, data) in
+            guard let self = self else { return }
             self.tableView.mj_header.endRefreshing()
-            
             switch result {
             case .success:
 
                 guard var list = (data as? CandidateResponse)?.list else { return }
-
-//                list.candidateSort()
-
                 for i in 0..<list.count {
                     list[i].rankByDeposit = UInt16(i + 1)
                 }
@@ -276,7 +275,6 @@ class CandidatesListViewController: BaseViewController {
                     }
                     self.waitingCandidateslist = self.waitingCandidateslist.count > 100 ? Array(self.waitingCandidateslist[0..<100]) : self.waitingCandidateslist
                 }
-                break
             case .fail(_, _):
                 break
             }
@@ -480,26 +478,6 @@ extension CandidatesListViewController: UIScrollViewDelegate {
         if filterBarView.searchTF.isEditing {
             filterBarView.searchTF.resignFirstResponder()
         }
-//        let actualPosition = scrollView.panGestureRecognizer.translation(in: scrollView.superview)
-//        if scrollView == scrollContainer{
-//            if (actualPosition.y > 0){
-//                if self.headerStyle == HeaderStyle.VoteSummaryHide{
-//                    self.scrollContainer.isScrollEnabled = true
-//                }
-//                self.scrollContainer.isScrollEnabled = true
-//            }else{}
-//        }else if scrollView == self.tableView{
-//            if (actualPosition.y >= 0.0){
-//
-//                if self.headerStyle == HeaderStyle.VoteSummaryHide{
-//                    DispatchQueue.main.async {
-//                        self.scrollContainer.isScrollEnabled = true
-//                    }
-//                }
-//            }else{
-//
-//            }
-//        }
         
     }
     
@@ -521,11 +499,6 @@ extension CandidatesListViewController: UIScrollViewDelegate {
 //        if !decelerate{
 //            self.isScrolling = false
 //        }
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
