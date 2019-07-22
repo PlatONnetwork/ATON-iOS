@@ -108,7 +108,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
             self?.textFieldViewUpdateHeight(view: view)
         })
         
-        amountView.shouldChangeCharactersCompletion = {[weak self] (concatenated,replacement) in
+        amountView.shouldChangeCharactersCompletion = { [weak self] (concatenated,replacement) in
             if replacement == ""{
                 return true
             }
@@ -118,9 +118,9 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
             return concatenated.trimNumberLeadingZero().isValidInputAmoutWith8DecimalPlace()
         }
         
-        amountView.endEditCompletion = {[weak self] text in
+        amountView.endEditCompletion = { [weak self] text in
             let _ = self?.checkConfirmButtonAvailable()
-            let _ = self?.amountView.checkInvalidNow(showErrorMsg: false)
+            let _ = amountView.checkInvalidNow(showErrorMsg: false)
         }
         
         return amountView
@@ -132,7 +132,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
         label.font = UIFont.systemFont(ofSize: 11)
         label.textColor = common_lightGray_color
         label.textAlignment = .right
-        label.text = Localized("transferVC_transfer_balance") + "- Energon"
+        label.text = Localized("transferVC_transfer_balance") + "- LAT"
         return label
     }()
     
@@ -593,9 +593,9 @@ extension AssetSendViewControllerV060{
     
     func totalFee() -> BigUInt{
         if let _ = AssetVCSharedData.sharedData.selectedWallet as? Wallet{
-            return (self.gasPrice?.multiplied(by: self.estimatedGas!))!
+            return (self.gasPrice?.multiplied(by: self.estimatedGas))!
         }else if let _ = AssetVCSharedData.sharedData.selectedWallet as? SWallet{
-            return (self.gasPrice?.multiplied(by: self.estimatedGas!))!
+            return (self.gasPrice?.multiplied(by: self.estimatedGas))!
         }
         return BigUInt("0")!
     }
@@ -640,7 +640,7 @@ extension AssetSendViewControllerV060{
         let amount = self.amountView.textField.text!
         let memo = ""
         
-        let _ = TransactionService.service.sendAPTTransfer(from: from!, to: to, amount: amount, InputGasPrice: self.gasPrice!, estimatedGas: String(self.estimatedGas!), memo: memo, pri: pri, completion: {[weak self] (result, txHash) in
+        let _ = TransactionService.service.sendAPTTransfer(from: from!, to: to, amount: amount, InputGasPrice: self.gasPrice!, estimatedGas: String(self.estimatedGas), memo: memo, pri: pri, completion: {[weak self] (result, txHash) in
             AssetViewControllerV060.getInstance()?.hideLoadingHUD(delay: 0.2)
             switch result{
             case .success:

@@ -190,7 +190,10 @@ class NodeSettingViewControllerV2: BaseViewController {
         tableView.snp.makeConstraints { (maker) in
             maker.edges.equalToSuperview()
         }
+        
+#if DEBUG
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightBarButton)
+#endif
     }
     
     @objc func onRigthItemClick(_ sender: UIBarButtonItem) {

@@ -8,7 +8,7 @@ target 'platonWallet' do
 
   pod 'Spring', :git => 'https://github.com/MengTo/Spring.git'
   pod 'RealmSwift', '3.13.1'
-  pod 'BigInt', '3.1.0', inhibit_warnings: true 
+  pod 'BigInt', '4.0', inhibit_warnings: true
   pod 'CryptoSwift', '~> 0.10.0'
   pod 'TrezorCrypto', '0.0.9', inhibit_warnings: true
   pod 'SwiftLint', '0.30.1'
@@ -19,7 +19,7 @@ target 'platonWallet' do
   pod 'UITextView+Placeholder', '1.2.1'
   pod 'MBProgressHUD', '~> 1.1.0'
   pod 'ScryptSwift', '0.0.1'
-  pod 'SwipeCellKit', '2.5.1'
+  pod 'SwipeCellKit', '2.5.4'
   pod 'EmptyDataSet-Swift', '~> 4.2.0'
   pod 'SwiftReorder', '~> 6.0'
   

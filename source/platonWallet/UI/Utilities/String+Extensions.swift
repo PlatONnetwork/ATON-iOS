@@ -218,7 +218,7 @@ extension String{
     
     
     func ATPSuffix() -> String {
-        return self + " Energon"
+        return self + " LAT"
     }
     
     func addressForDisplay() -> String{
@@ -232,7 +232,7 @@ extension String{
     }
     
     func EnergonSuffix() -> String {
-        return self + " Energon"
+        return self + " LAT"
     }
     
     func walletAddressLastCharacterAvatar() -> String{

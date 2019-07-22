@@ -47,7 +47,7 @@
 
 "navigationbar_wallet_title" = "Classic Wallet";
 
-"asset_header_total_asset" = "Total Energon";
+"asset_header_total_asset" = "Total LAT";
 
 //transfer viewController
 "transferVC_nav_title" = "Send";
@@ -71,7 +71,7 @@
 "transferVC_confirm_To" = "To:";
 "transferVC_confirm_Fee" = "Fee:";
 
-"transferVC_confirm_ATP_send" = "Energon Send";
+"transferVC_confirm_ATP_send" = "LAT Send";
 "transferVC_confirm_Submit" = "Submit";
 
 "transferVC_address_Incorrect_tip" = "Address is incorrect ";
@@ -143,7 +143,7 @@
 
 "QRViewSaveAndShared" = "Save image and Share";
 "QRViewSharedViewWalletName" = "Wallet name";
-"QRViewSharedViewReceive" = "Receive Energon";
+"QRViewSharedViewReceive" = "Receive LAT";
 
 "SharedWechatFriend" = "Wechat";
 "SharedWechatMoment" = "Moment";
@@ -152,7 +152,7 @@
 "SharedFacebook" = "Facebook";
 "SharedTwitter" = "Twitter";
 "SharedMore" = "More";
-"Receive_ATP" = "Receive Energon";
+"Receive_ATP" = "Receive LAT";
 "SharedQRViewSaving" = "Saving...";
 "SharedQRView_photolib_unauthorized_tips" = "Photo access was unauthorized,please check system settings and try again";
 
@@ -591,9 +591,9 @@
 
 //MyVoteListVC
 "MyVoteListVC_nav_title" = "My vote";
-"MyVoteListVC_locked" = "locked(Energon)";
+"MyVoteListVC_locked" = "locked(LAT)";
 "MyVoteListVC_validinvalid" = "valid/invalid";
-"MyVoteListVC_reward" = "Voting Reward(Energon)";
+"MyVoteListVC_reward" = "Voting Reward(LAT)";
 "MyVoteListVC_Empty_tips" = "You haven`t voted yet";
 
 //SingleVoteDetailListVC
@@ -658,7 +658,12 @@
 "wallet_name_duplicate" = "The name already exists on this APP, and can not be repeated";
 
 
-"scanviewcontroller_scan" = "Auto-scan in the frame";
+"scanviewcontroller_scan" = "Align the QR Code within the frame to scan";
+"scanviewcontroller_torch" = "Tap to turn light on";
+"scanviewcontroller_nav_right_item" = "Album";
+"scanviewcontroller_scan_loading" = "scaning";
+"scanviewcontroller_scan_result_notfound" = "No QR code found";
+
 
 "watchJointWalletTip_Notice" = "Transaction initiation failed";
 "watchJointWalletTip_message" = "The associated Classic Wallet has been removed.";
@@ -673,3 +678,5 @@
 "send_address_placeholder" = "Input wallet address";
 "send_amount_placeholder" = "Input Amount";
 "vote_confirm_from" = "From:";
+
+"createOrImport_guide_text" = "Have a wallet? Import using keystore(json),mnemonic phrase, private key.";

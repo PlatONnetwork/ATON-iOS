@@ -11,10 +11,7 @@ import UIKit
 import Localize_Swift
 
 fileprivate extension UIImage {
-    static func gradientImage(with bounds: CGRect,
-                              colors: [CGColor],
-                              locations: [NSNumber]?) -> UIImage? {
-        
+    convenience init?(with bounds: CGRect, colors: [CGColor], locations: [NSNumber]?) {
         let gradientLayer = CAGradientLayer()
         gradientLayer.frame = bounds
         gradientLayer.colors = colors
@@ -25,7 +22,27 @@ fileprivate extension UIImage {
                                          y: 0.5)
         
         UIGraphicsBeginImageContext(gradientLayer.bounds.size)
-        gradientLayer.render(in: UIGraphicsGetCurrentContext()!)
+        guard let context = UIGraphicsGetCurrentContext() else { return nil }
+        gradientLayer.render(in: context)
+        guard let image = UIGraphicsGetImageFromCurrentImageContext() else { return nil }
+        UIGraphicsEndImageContext()
+        self.init(cgImage: image.cgImage!)
+    }
+    static func gradientImage(with bounds: CGRect,
+                              colors: [CGColor],
+                              locations: [NSNumber]?) -> UIImage? {
+        guard let context = UIGraphicsGetCurrentContext() else { return nil }
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.frame = bounds
+        gradientLayer.colors = colors
+        // This makes it horizontal
+        gradientLayer.startPoint = CGPoint(x: 0.0,
+                                           y: 0.5)
+        gradientLayer.endPoint = CGPoint(x: 1.0,
+                                         y: 0.5)
+        
+        UIGraphicsBeginImageContext(gradientLayer.bounds.size)
+        gradientLayer.render(in: context)
         guard let image = UIGraphicsGetImageFromCurrentImageContext() else { return nil }
         UIGraphicsEndImageContext()
         return image
@@ -69,9 +86,10 @@ class CandidatesListHeaderView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         if progressView.frame.width != 0{
-            gradientImage = UIImage.gradientImage(with: progressView.frame,
-                                                  colors: [UIColor(rgb: 0x28ADFF).cgColor, UIColor(rgb: 0x105CFE).cgColor],
-                                                  locations: nil)!
+            gradientImage = UIImage(with: progressView.frame, colors: [UIColor(rgb: 0x28ADFF).cgColor, UIColor(rgb: 0x105CFE).cgColor], locations: nil) ?? UIImage()
+//            gradientImage = UIImage.gradientImage(with: progressView.frame,
+//                                                  colors: [UIColor(rgb: 0x28ADFF).cgColor, UIColor(rgb: 0x105CFE).cgColor],
+//                                                  locations: nil)!
             self.progressView.progressImage = gradientImage
         }
     }
@@ -109,7 +127,7 @@ class CandidatesListHeaderView: UIView {
     }
     
     private func update() {
-        let voteRate = curVoteRate == nil ? "-%":String(format: "%.2f%%", round(curVoteRate! * 10000)/100)
+        let voteRate = curVoteRate == nil ? "-%":String(format: "%.2f%%", Float(curVoteRate! * 100000)/1000)
         let poll = curPoll == nil ? "-":"\(curPoll!)"
         let ticketPrice = "\(curTicketPrice ?? "-")".ATPSuffix()
         

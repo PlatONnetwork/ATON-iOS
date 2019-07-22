@@ -9,7 +9,7 @@
 "loading" = "加载中...";
 
 "WelcomePage_create_wallet" = "创建钱包";
-"WelcomePage_import_wallet" = "恢复钱包";
+"WelcomePage_import_wallet" = "导入钱包";
 
 "password_strength_level_0" = "强度";
 "password_strength_level_1" = "弱";
@@ -34,7 +34,7 @@
 "wallet_pswConfirmInput_mismatch_tips" = "两次密码不一致！";
 
 //createWalletVC
-"createWalletVC_title" = "创建普通钱包";
+"createWalletVC_title" = "创建钱包";
 "createWalletVC_walletName" = "钱包名称:";
 "createWalletVC_password" = "设置密码:";
 
@@ -47,10 +47,10 @@
 
 "navigationbar_wallet_title" = "普通钱包";
 
-"asset_header_total_asset" = "总计Energon";
+"asset_header_total_asset" = "总计LAT";
 
 //transfer viewController
-"transferVC_nav_title" = "发送 Energon";
+"transferVC_nav_title" = "发送 LAT";
 "transferVC_wallet_address_des" = "钱包地址";
 "transferVC_wallet_address_placeholder" = "输入钱包地址";
 "transferVC_Amount_des" = "发送数额";
@@ -59,20 +59,20 @@
 "transferVC_Wallet_name_des" = "钱包名称";
 "transferVC_switch_des" = "切换钱包";
 "transferVC_switch_memo_placeholder" = "备注（选填）";
-"transferVC_selectFee_des" = "交易费用";
+"transferVC_selectFee_des" = "交易手续费";
 "transferVC_cheaper_des" = "更便宜";
 "transferVC_faster_des" = "更快捷";
 "transferVC_estima_des" = "预计交易确认时间：";
 
 "transferVC_confirm_title" = "发送确认";
 
-"transferVC_confirm_PayInfo" = "支付信息：";
+"transferVC_confirm_PayInfo" = "交易信息：";
 "transferVC_confirm_From" = "发送钱包：";
 "transferVC_confirm_executor" = "执行钱包：";
 "transferVC_confirm_To" = "接收地址：";
-"transferVC_confirm_Fee" = "交易费用：";
+"transferVC_confirm_Fee" = "交易手续费：";
 
-"transferVC_confirm_ATP_send" = "Energon 发送";
+"transferVC_confirm_ATP_send" = "LAT 发送";
 "transferVC_confirm_Submit" = "确定";
 
 "transferVC_address_Incorrect_tip" = "地址格式不正确 ";
@@ -135,7 +135,7 @@
 "QRView_transfer_tip" = "您正处于PlatON测试网络，切勿将真实的资产转账到当前测试网络钱包地址";
 "QRViewSaveAndShared" = "保存图片并分享";
 "QRViewSharedViewWalletName" = "钱包名称";
-"QRViewSharedViewReceive" = "接收Energon";
+"QRViewSharedViewReceive" = "接收LAT";
 
 
 "SharedWechatFriend" = "微信";
@@ -145,7 +145,7 @@
 "SharedFacebook" = "Facebook";
 "SharedTwitter" = "Twitter";
 "SharedMore" = "更多";
-"Receive_ATP" = "转入 Energon";
+"Receive_ATP" = "转入 LAT";
 "SharedQRViewSaving" = "保存中...";
 "SharedQRView_photolib_unauthorized_tips" = "照片写入权限受限，请至“系统-设置”授权后重试";
 
@@ -155,21 +155,21 @@
 
 "createWalletSuccessVC_title" = "备份钱包";
 
-"importKeystoreVC_tips" = "使用（.json）导入的同时需要输入钱包密码进行解密，同时未来需要通过密码验证才能进行Energon发送、备份等操作。";
+"importKeystoreVC_tips" = "使用（.json）导入的同时需要输入钱包密码进行解密，同时未来需要通过密码验证才能进行LAT发送、备份等操作。";
 "importKeystoreVC_keystoreInput_placeholder" = "请输入钱包文件（.json）内容";
 "importKeystoreVC_nameInput_placeholder" = "设置钱包名称";
 "importKeystoreVC_pswInput_placeholder" = "钱包密码";
 "importKeystoreVC_keystore_empty_tips" = "钱包文件(.json)不能为空！";
 
 //importWalletVC
-"importWalletVC_title" = "导入普通钱包";
+"importWalletVC_title" = "导入钱包";
 "importWalletVC_tab_keystore" = "钱包文件（.json）";
 "importWalletVC_tab_mnemonic" = "助记词";
 "importWalletVC_tab_privateKey" = "私钥";
 "importWalletVC_mnemonic_tips" = "请将记下的助记词按顺序填入以下表格中，在每个助记词输入完成后按“空格”键可以跳转到下个单词，使用助记词导入的同时需要设定钱包密码，未来需要通过密码验证才能够进行能量发送、备份等操作。";
 "importWalletVC_mnemonic_textView_placeholder" = "请输入助记词，用空格分割";
 
-"importWalletVC_privateKey_tips" = "使用私钥导入的同时需要设置钱包密码，未来需要通过密码验证才能够进行Energon发送、备份等操作。";
+"importWalletVC_privateKey_tips" = "使用私钥导入的同时需要设置钱包密码，未来需要通过密码验证才能够进行LAT发送、备份等操作。";
 "importWalletVC_privateKey_textView_placeholder" = "请输入私钥";
 "importWalletVC_importBtn_title" = "开始导入";
 "importWalletVC_success_tips" = "导入成功";
@@ -179,7 +179,7 @@
 
 //backupMnemonicVC
 "backupMnemonicVC_title" = "备份助记词";
-"backupMnemonicVC_tips1" = "请记住下方助记词，我们将在下一步进行验证";
+"backupMnemonicVC_tips1" = "请抄写下方助记词，我们将在下一步进行验证";
 "backupMnemonicVC_tips2" = "助记词用于恢复钱包或重置钱包密码，请将它准确抄写在纸上并存放在只有你知道的安全地点。";
 "backupMnemonicVC_nextBtn_title" = "下一步";
 
@@ -284,8 +284,8 @@
 
 //AddWalletMenuVC
 
-"AddWalletMenuVC_createIndividualWallet_title" = "创建普通钱包";
-"AddWalletMenuVC_importIndividualWallet_title" = "导入普通钱包";
+"AddWalletMenuVC_createIndividualWallet_title" = "创建钱包";
+"AddWalletMenuVC_importIndividualWallet_title" = "导入钱包";
 
 
 "Invalid password" = "密码错误";
@@ -301,8 +301,8 @@
 
 //WalletEmptyView
 "IndividualWallet_EmptyView_tips" = "还没有钱包";
-"IndividualWallet_EmptyView_createBtn_title" = "创建普通钱包";
-"IndividualWallet_EmptyView_importBtn_title" = "导入普通钱包";
+"IndividualWallet_EmptyView_createBtn_title" = "创建钱包";
+"IndividualWallet_EmptyView_importBtn_title" = "导入钱包";
 
 //TransactionListViewController
 "TransactionListVC_nav_title" = "交易记录";
@@ -516,7 +516,7 @@
 "exceed max input" = "超过最大输入";
 
 
-"create_Individual_first" = "请先创建普通钱包";
+"create_Individual_first" = "请先创建钱包";
 
 
 //individual wallet back up
@@ -592,9 +592,9 @@
 
 //MyVoteListVC
 "MyVoteListVC_nav_title" = "我的投票";
-"MyVoteListVC_locked" = "投票锁定(Energon)";
+"MyVoteListVC_locked" = "投票锁定(LAT)";
 "MyVoteListVC_validinvalid" = "有效票/失效票";
-"MyVoteListVC_reward" = "投票奖励(Energon)";
+"MyVoteListVC_reward" = "投票奖励(LAT)";
 "MyVoteListVC_Empty_tips" = "您还没有投票";
 
 //SingleVoteDetailListVC
@@ -657,7 +657,11 @@
 
 "wallet_name_duplicate" = "钱包名称在本客户端已存在，不可重复";
 
-"scanviewcontroller_scan" = "放入框内 自动扫描";
+"scanviewcontroller_scan" = "将二维码放入框内，即可自动扫描";
+"scanviewcontroller_torch" = "轻点照亮";
+"scanviewcontroller_nav_right_item" = "相册";
+"scanviewcontroller_scan_loading" = "扫描中";
+"scanviewcontroller_scan_result_notfound" = "未发现二维码";
 
 "watchJointWalletTip_Notice" = "提示";
 "watchJointWalletTip_message" = "关联的普通钱包已被删除，该钱包无法发起交易！";
@@ -672,3 +676,5 @@
 "send_address_placeholder" = "输入钱包地址";
 "send_amount_placeholder" = "输入发送数量";
 "vote_confirm_from" = "支付钱包：";
+
+"createOrImport_guide_text" = "已有钱包？使用钱包文件(json)、助记词、私钥导入";
