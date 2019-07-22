@@ -158,25 +158,92 @@ extension String{
      
      */
     func balanceFixToDisplay(maxRound : Int) -> String{
-        if  ((self.range(of: ".")?.lowerBound) != nil) {
-            
-            var key = "."
-            for _ in 0...(maxRound-1) {
-                key.append("0")
+//        if  ((self.range(of: ".")?.lowerBound) != nil) {
+//
+//            var key = "."
+//            for _ in 0...(maxRound-1) {
+//                key.append("0")
+//            }
+//
+//            let components = self.components(separatedBy: ".")
+//            if components.count > 1{
+//                if self.range(of: key)?.lowerBound != nil {
+//                    return components[0] + ".00"
+//                }else{
+//                    return self.trimDecimalTailingZero()
+//                }
+//            }
+//
+//            return self
+//        }
+        
+        return self.addMicrometerLevel(maxRound: maxRound)
+    }
+    
+    func addMicrometerLevel(maxRound : Int) -> String {
+        if self.count != 0 {
+            var integerPart:String?
+            var decimalPart = String()
+
+            // 先将传入的参数整体赋值给整数部分
+            integerPart =  self
+            // 然后再判断是否含有小数点(分割出整数和小数部分)
+            if self.contains(".") {
+                let segmentationArray = self.components(separatedBy: ".")
+                integerPart = segmentationArray.first
+                decimalPart = segmentationArray.last!
             }
-            
-            let components = self.components(separatedBy: ".")
-            if components.count > 1{
-                if self.range(of: key)?.lowerBound != nil {
-                    return components[0] + ".00"
-                }else{
-                    return self.trimDecimalTailingZero()
-                }
+
+
+
+            /**
+             创建临时存放余数的可变数组
+             */
+            let remainderMutableArray = NSMutableArray.init(capacity: 0)
+            // 创建一个临时存储商的变量
+            var discussValue:Int32 = 0
+
+            /**
+             对传入参数的整数部分进行千分拆分
+             */
+            repeat {
+                let tempValue = integerPart! as NSString
+                // 获取商
+                discussValue = tempValue.intValue / 1000
+                // 获取余数
+                let remainderValue = tempValue.intValue % 1000
+                // 将余数一字符串的形式添加到可变数组里面
+                let remainderStr = String(format: "%d", remainderValue)
+                remainderMutableArray.insert(remainderStr, at: 0)
+                // 将商重新复制
+                integerPart = String(format: "%d", discussValue)
+            } while discussValue>0
+
+            // 创建一个临时存储余数数组里的对象拼接起来的对象
+            var tempString = String()
+
+            if decimalPart.count > maxRound {
+                decimalPart = String(String(format: "%.\(maxRound)d", Int(decimalPart)!).prefix(maxRound))
+            } else if decimalPart.count < 2 {
+                decimalPart = String(format: "%02d", Int(decimalPart) ?? 0)
             }
-            
-            return self
+
+            /**
+             获取余数组里的余数
+             */
+            for i in 0..<remainderMutableArray.count {
+                // 判断余数数组是否遍历到最后一位
+                let param = (i != remainderMutableArray.count-1 ? "," : ".")
+                tempString = tempString + String(format: "%@%@", remainderMutableArray[i] as! String, param)
+            }
+            //  清楚一些数据
+            integerPart = nil
+            remainderMutableArray.removeAllObjects()
+            // 最后返回整数和小数的合并
+            return tempString as String + decimalPart
         }
-        return self + ".00"
+
+        return self
     }
     
     func trimDecimalTailingZero() -> String{
