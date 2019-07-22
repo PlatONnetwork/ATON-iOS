@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -26,13 +26,6 @@
                                 <constraint firstAttribute="height" constant="1" id="JLd-fe-Lee"/>
                             </constraints>
                         </view>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="walletAvatar_1" translatesAutoresizingMaskIntoConstraints="NO" id="JAH-9X-bxS">
-                            <rect key="frame" x="9" y="10.5" width="58" height="58"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="58" id="Cck-Yz-KKG"/>
-                                <constraint firstAttribute="width" constant="58" id="ycI-aZ-tA7"/>
-                            </constraints>
-                        </imageView>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="- -" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dUe-qb-Kw8">
                             <rect key="frame" x="76" y="16" width="19" height="20"/>
                             <fontDescription key="fontDescription" type="system" pointSize="16"/>
@@ -82,22 +75,30 @@
                                 <constraint firstAttribute="height" constant="21" id="tDx-xV-4kY"/>
                             </constraints>
                         </view>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RBA-1D-dQA">
+                            <rect key="frame" x="9" y="10.5" width="58" height="58"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="58" id="fTc-BW-Uq3"/>
+                                <constraint firstAttribute="width" constant="58" id="wOf-mw-x2Y"/>
+                            </constraints>
+                            <state key="normal" title="Button" image="walletAvatar_1"/>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="JaI-Nk-WUW" secondAttribute="trailing" constant="16" id="6fF-5n-mU5"/>
                         <constraint firstAttribute="trailing" secondItem="YtF-bK-ccn" secondAttribute="trailing" constant="16" id="ADQ-fN-Mwg"/>
-                        <constraint firstItem="JAH-9X-bxS" firstAttribute="leading" secondItem="iyZ-zG-P41" secondAttribute="leading" constant="9" id="CTD-XG-5or"/>
+                        <constraint firstItem="dUe-qb-Kw8" firstAttribute="leading" secondItem="RBA-1D-dQA" secondAttribute="trailing" constant="9" id="C8S-PX-xDa"/>
                         <constraint firstItem="dUe-qb-Kw8" firstAttribute="top" secondItem="iyZ-zG-P41" secondAttribute="top" constant="16" id="IbL-mP-1wq"/>
                         <constraint firstItem="JaI-Nk-WUW" firstAttribute="top" secondItem="dUe-qb-Kw8" secondAttribute="bottom" constant="7" id="PDo-0z-ntW"/>
-                        <constraint firstItem="JAH-9X-bxS" firstAttribute="top" secondItem="iyZ-zG-P41" secondAttribute="top" constant="10.5" id="RVv-8d-Yuc"/>
+                        <constraint firstItem="RBA-1D-dQA" firstAttribute="top" secondItem="iyZ-zG-P41" secondAttribute="top" constant="10.5" id="RIi-fD-2wi"/>
                         <constraint firstAttribute="bottom" secondItem="5u6-NX-WT2" secondAttribute="bottom" id="SRt-yr-Haf"/>
-                        <constraint firstItem="JaI-Nk-WUW" firstAttribute="leading" secondItem="JAH-9X-bxS" secondAttribute="trailing" constant="9" id="bX5-9V-JHh"/>
+                        <constraint firstItem="RBA-1D-dQA" firstAttribute="leading" secondItem="iyZ-zG-P41" secondAttribute="leading" constant="9" id="Xe1-CD-aDS"/>
                         <constraint firstItem="YtF-bK-ccn" firstAttribute="leading" secondItem="dUe-qb-Kw8" secondAttribute="trailing" constant="16" id="guC-ea-d4t"/>
+                        <constraint firstItem="JaI-Nk-WUW" firstAttribute="leading" secondItem="RBA-1D-dQA" secondAttribute="trailing" constant="9" id="l2S-DZ-iJF"/>
                         <constraint firstAttribute="trailing" secondItem="5u6-NX-WT2" secondAttribute="trailing" id="rSG-jJ-FEb"/>
                         <constraint firstItem="YtF-bK-ccn" firstAttribute="centerY" secondItem="dUe-qb-Kw8" secondAttribute="centerY" id="unB-AL-Fsu"/>
                         <constraint firstItem="5u6-NX-WT2" firstAttribute="leading" secondItem="iyZ-zG-P41" secondAttribute="leading" constant="76" id="vNb-B6-LJ0"/>
-                        <constraint firstItem="dUe-qb-Kw8" firstAttribute="leading" secondItem="JAH-9X-bxS" secondAttribute="trailing" constant="9" id="wjQ-hf-Sea"/>
                         <constraint firstAttribute="height" constant="79" id="yTH-c7-OwQ"/>
                     </constraints>
                 </view>
@@ -291,7 +292,7 @@
                 <outlet property="sendLabel" destination="OOS-VY-jSh" id="mPY-mD-kpk"/>
                 <outlet property="transactionLabel" destination="D3O-1K-MAt" id="Wq5-Eq-J0s"/>
                 <outlet property="txIcon" destination="Swe-MZ-pIc" id="slf-9V-X5X"/>
-                <outlet property="walletAvatar" destination="JAH-9X-bxS" id="gzV-1X-m12"/>
+                <outlet property="walletAvatar" destination="RBA-1D-dQA" id="lQ9-rA-sRA"/>
                 <outlet property="walletName" destination="dUe-qb-Kw8" id="25J-pd-k8V"/>
             </connections>
             <point key="canvasLocation" x="53.600000000000001" y="280.20989505247377"/>

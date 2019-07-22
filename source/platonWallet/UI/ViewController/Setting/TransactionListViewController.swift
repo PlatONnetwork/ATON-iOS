@@ -18,6 +18,8 @@ class TransactionListViewController: BaseViewController,UITableViewDelegate,UITa
     
     var dataSource : [Transaction] = []
     
+    var selectedWallet: Wallet?
+    
     lazy var refreshHeader: MJRefreshHeader = {
         let header = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(fetchTransactionLastest))!
         return header
@@ -35,9 +37,17 @@ class TransactionListViewController: BaseViewController,UITableViewDelegate,UITa
     }
     
     @objc func fetchTransactionLastest() {
-        let addressStrs = AssetVCSharedData.sharedData.walletList.filterClassicWallet.map { cwallet in
-            return cwallet.key!.address
+        var addressStrs: [String] = []
+        
+        if let wallet = selectedWallet {
+            addressStrs.append(wallet.key!.address)
+        } else {
+            let allLocalAddresses = AssetVCSharedData.sharedData.walletList.filterClassicWallet.map { cwallet in
+                return cwallet.key!.address
+            }
+            addressStrs.append(contentsOf: allLocalAddresses)
         }
+        
         guard addressStrs.count > 0 else {
             self.tableView.mj_header.endRefreshing()
             self.tableView.mj_footer.endRefreshing()

@@ -678,3 +678,5 @@
 "vote_confirm_from" = "支付钱包：";
 
 "createOrImport_guide_text" = "已有钱包？使用钱包文件(json)、助记词、私钥导入";
+
+"transaction_loadmore_text" = "查看更多交易";

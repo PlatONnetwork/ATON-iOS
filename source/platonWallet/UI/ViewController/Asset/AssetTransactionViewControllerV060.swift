@@ -38,8 +38,8 @@ class AssetTransactionViewControllerV060: BaseViewController, EmptyDataSetDelega
     
     weak var parentController: AssetViewControllerV060?
     
-    lazy var refreshFooterView: MJRefreshAutoNormalFooter = {
-        let view = MJRefreshAutoNormalFooter(refreshingTarget: self, refreshingAction: #selector(fetchTransactionMore))!
+    lazy var refreshFooterView: MJExtensionLoadMoreFooterView = {
+        let view = MJExtensionLoadMoreFooterView(refreshingTarget: self, refreshingAction: nil)!
         return view
     }()
     
@@ -78,6 +78,9 @@ class AssetTransactionViewControllerV060: BaseViewController, EmptyDataSetDelega
         NotificationCenter.default.addObserver(self, selector: #selector(nodeDidSwitch), name: NSNotification.Name(NodeStoreService.didSwitchNodeNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(initClassicData), name: NSNotification.Name(DidAddVoteTransactionNotification), object: nil)
         
+        refreshFooterView.loadMoreTapHandle = { [weak self] in
+            self?.goTransactionList()
+        }
         tableView.mj_footer = refreshFooterView
     }
     
@@ -166,16 +169,11 @@ extension AssetTransactionViewControllerV060{
             if let parentCon = self.parentController {
                 parentCon.endFetchData()
             }
-            self.tableView.mj_footer.endRefreshing()
             
             switch result {
             case .success:
                 // 返回的交易数据条数为0，则显示无加载更多
                 guard let transactions = response as? [Transaction], transactions.count > 0 else {
-                    if direction == "old" || beginSequence == -1 {
-                        self.tableView.mj_footer.endRefreshingWithNoMoreData()
-                    }
-                    self.tableView.mj_footer.isHidden = (self.dataSource[selectedAddress]?.count == 0)
                     return
                 }
                 
@@ -208,29 +206,24 @@ extension AssetTransactionViewControllerV060{
                     self.dataSource[selectedAddress] = transactions
                 }
                 
-                if transactions.count < self.listSize {
-                    self.tableView.mj_footer.endRefreshingWithNoMoreData()
-                } else {
-                    self.tableView.mj_footer.resetNoMoreData()
-                }
-                self.tableView.mj_footer.isHidden = (self.dataSource[selectedAddress]?.count == 0)
                 self.tableView.reloadData()
             case .fail(_, let error):
-                self.tableView.mj_footer.isHidden = (self.dataSource[selectedAddress]?.count == 0)
                 break
             }
         }
     }
     
-    
+    private func goTransactionList() {
+        let controller = TransactionListViewController()
+        controller.selectedWallet = AssetVCSharedData.sharedData.selectedWallet as? Wallet
+        navigationController?.pushViewController(controller, animated: true)
+    }
 }
 
 // 下拉刷新及加载更多
 extension AssetTransactionViewControllerV060 {
     func fetchDataByWalletChanged() {
         guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return }
-        self.tableView.mj_footer.isHidden = (self.dataSource[selectedAddress]?.count == 0)
-        tableView.mj_footer.resetNoMoreData()
         guard let count = self.dataSource[selectedAddress]?.count, count <= 0 else {
             pollingWalletTransactions()
             return
@@ -240,23 +233,6 @@ extension AssetTransactionViewControllerV060 {
     
     func fetchTransactionLastest() {
         fetchTransaction(beginSequence: -1, direction: "new")
-    }
-    
-    @objc func fetchTransactionMore() {
-        guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else {
-            self.tableView.mj_footer.endRefreshing()
-            return
-        }
-        guard let lastTransaction = dataSource[selectedAddress]?.last else {
-            fetchTransactionLastest()
-            return
-        }
-        
-        guard let sequenceString = lastTransaction.sequence, let sequence = Int(sequenceString) else {
-            self.tableView.mj_footer.endRefreshing()
-            return
-        }
-        fetchTransaction(beginSequence: sequence, direction: "old")
     }
     
     @objc func pollingWalletTransactions() {

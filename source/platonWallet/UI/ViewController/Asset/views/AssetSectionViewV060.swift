@@ -18,7 +18,7 @@ class AssetSectionViewV060: UIView {
     
     var walelt: AnyObject?
 
-    @IBOutlet weak var walletAvatar: UIImageView!
+    @IBOutlet weak var walletAvatar: UIButton!
     
     @IBOutlet weak var walletName: UILabel!
     
@@ -60,6 +60,8 @@ class AssetSectionViewV060: UIView {
     
     var onSelectItem : ((_ index: Int) -> Void)?
     
+    var onWalletAvatarTapAction: (() -> Void)?
+    
     @IBOutlet weak var grayoutBackground: UIView!
     
     var maskLayer : CALayer{
@@ -85,6 +87,8 @@ class AssetSectionViewV060: UIView {
         bottomSelectIndicator.backgroundColor = UIColor(rgb: 0x105CFE)
         self.updateBottonIndicator(index: 0)
         
+        walletAvatar.addTarget(self, action: #selector(walletAvatarTapAction), for: .touchUpInside)
+        
         NotificationCenter.default.addObserver(self, selector: #selector(didUpdateAllAsset), name: NSNotification.Name(DidUpdateAllAssetNotification), object: nil)
     }
     
@@ -97,6 +101,10 @@ class AssetSectionViewV060: UIView {
         maskLayer.backgroundColor = UIColor.red.cgColor
         maskLayer.cornerRadius = 52.0 * 0.5
         return maskLayer
+    }
+    
+    @objc private func walletAvatarTapAction() {
+        onWalletAvatarTapAction?()
     }
     
     private func updateBottonIndicator(index: Int){
@@ -213,7 +221,7 @@ class AssetSectionViewV060: UIView {
         guard AssetVCSharedData.sharedData.selectedWallet != nil else {
             self.walletName.text = "--"
             self.balanceLabel.text = "--"
-            self.walletAvatar.image = UIImage()
+            self.walletAvatar.setImage(UIImage(), for: .normal)
             self.backupContainer.isHidden = true
             return
         }
@@ -221,12 +229,12 @@ class AssetSectionViewV060: UIView {
         if let jwallet  = self.walelt as? SWallet{
             self.walletName.text = jwallet.name
             self.balanceLabel.text = jwallet.balanceDescription()
-            self.walletAvatar.image = jwallet.image()
+            self.walletAvatar.setImage(jwallet.image(), for: .normal)
             self.backupContainer.isHidden = true
         }else if let cwallet = self.walelt as? Wallet{
             self.walletName.text = cwallet.name
             self.balanceLabel.text = cwallet.balanceDescription()
-            self.walletAvatar.image = cwallet.image()
+            self.walletAvatar.setImage(cwallet.image(), for: .normal)
             self.backupContainer.isHidden = !cwallet.canBackupMnemonic
         }
     }

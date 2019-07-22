@@ -98,6 +98,7 @@
 		81515BCF21C774D600054197 /* SharedPresentedVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81515BCE21C774D600054197 /* SharedPresentedVC.swift */; };
 		8156664721C1ECA3000E02D4 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8156664521C1ECA3000E02D4 /* AboutViewController.swift */; };
 		8156664821C1ECA3000E02D4 /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8156664621C1ECA3000E02D4 /* AboutViewController.xib */; };
+		815968E422E5DABF0085195C /* MJExtensionLoadMoreFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815968E322E5DABF0085195C /* MJExtensionLoadMoreFooterView.swift */; };
 		81718D8B222F6F6500DB04F6 /* MnemonicTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81718D8A222F6F6500DB04F6 /* MnemonicTextField.swift */; };
 		81718D8D22312F9C00DB04F6 /* MnemonicGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81718D8C22312F9C00DB04F6 /* MnemonicGridView.swift */; };
 		81718D8F22312FB100DB04F6 /* MnemonicGridView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 81718D8E22312FB100DB04F6 /* MnemonicGridView.xib */; };
@@ -434,6 +435,7 @@
 		81515BCE21C774D600054197 /* SharedPresentedVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedPresentedVC.swift; sourceTree = "<group>"; };
 		8156664521C1ECA3000E02D4 /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		8156664621C1ECA3000E02D4 /* AboutViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AboutViewController.xib; sourceTree = "<group>"; };
+		815968E322E5DABF0085195C /* MJExtensionLoadMoreFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MJExtensionLoadMoreFooterView.swift; sourceTree = "<group>"; };
 		8162F7AD22670F4B001726C1 /* platonWallet-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "platonWallet-Bridging-Header.h"; sourceTree = "<group>"; };
 		81718D8A222F6F6500DB04F6 /* MnemonicTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MnemonicTextField.swift; sourceTree = "<group>"; };
 		81718D8C22312F9C00DB04F6 /* MnemonicGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MnemonicGridView.swift; sourceTree = "<group>"; };
@@ -1286,6 +1288,7 @@
 				9ADB60C5223103B10044918D /* AssetFeeViewV060.xib */,
 				9ADB60C7223106710044918D /* AssetFeeViewV060.swift */,
 				813C3411223A327300DE92F1 /* DropDownVIew.swift */,
+				815968E322E5DABF0085195C /* MJExtensionLoadMoreFooterView.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -2062,6 +2065,7 @@
 				819A52252190204500E4C500 /* UILabel+Extenstions.swift in Sources */,
 				9A79A07521956493000EB4C5 /* BaseImportWalletViewController.swift in Sources */,
 				9AE3142F2191457300B5433F /* PasswordAuthViewController.swift in Sources */,
+				815968E422E5DABF0085195C /* MJExtensionLoadMoreFooterView.swift in Sources */,
 				819A434921D1FE3500E276C7 /* IPGeoInfo.swift in Sources */,
 				9A25B99F2186DF9E00B9433A /* WalletManagerTableViewCell.swift in Sources */,
 				9A79A091219BF382000EB4C5 /* CreateSharedWalletStep2ViewController.swift in Sources */,

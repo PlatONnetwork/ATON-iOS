@@ -680,3 +680,5 @@
 "vote_confirm_from" = "From:";
 
 "createOrImport_guide_text" = "Have a wallet? Import using keystore(json),mnemonic phrase, private key.";
+
+"transaction_loadmore_text" = "View more transactions";

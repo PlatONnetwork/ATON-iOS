@@ -166,6 +166,13 @@ class AssetViewControllerV060: BaseViewController ,PopupMenuTableDelegate{
             }
             self?.pageViewCurrentIndex = index
         }
+        sectionView.onWalletAvatarTapAction = { [weak self] in
+            guard let self = self, let wallet = AssetVCSharedData.sharedData.selectedWallet as? Wallet else { return }
+            let detailVC = WalletManagerDetailViewController()
+            detailVC.wallet = wallet
+            detailVC.hidesBottomBarWhenPushed = true
+            self.navigationController?.pushViewController(detailVC, animated: true)
+        }
         
         assetHeaderStyle = (false,false)
         

@@ -322,6 +322,10 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
     }
     
     //MARK: - User Interaction
+    private func saveToAddressBook(addressText: String?, name: String?) {
+        quickSaveAddrBtn.quickSave(address: addressText, name: name)
+        quickSaveAddrBtn.checkAndUpdateStatus(address: addressText,name: name)
+    }
     
     @objc func onQuickAddAddress(){
         guard let addressText = walletAddressView.textField.text,addressText.is40ByteAddress() else{
@@ -330,6 +334,15 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
         if self.quickSaveAddrBtn.status == QuickSaveStatus.QuickSaveDisable{
             return
         }
+        
+        // 改地址已存在客户端，则直接写入
+        if let wallet = AssetVCSharedData.sharedData.walletList.filter({ ($0 as! Wallet).key!.address.ishexStringEqual(other: addressText)
+        }).first {
+            saveToAddressBook(addressText: addressText, name: (wallet as! Wallet).name)
+            return
+        }
+        
+        
         let alertVC = AlertStylePopViewController.initFromNib()
         let style = PAlertStyle.commonInputWithItemDes(itemDes: Localized("addressbook_wallet_address_with_Colon"),
                                            itemContent: addressText.addressForDisplay(),
@@ -349,8 +362,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
                 alertVC.showInputErrorTip(string: ret.1)
                 return false
             }else{
-                self?.quickSaveAddrBtn.quickSave(address: addressText, name: text)
-                self?.quickSaveAddrBtn.checkAndUpdateStatus(address: addressText,name: text)
+                self?.saveToAddressBook(addressText: addressText, name: text)
                 return true
             }
         }) { (_, _) -> (Bool) in
