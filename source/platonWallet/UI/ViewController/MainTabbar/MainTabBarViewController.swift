@@ -113,8 +113,9 @@ class MainTabBarViewController: UITabBarController {
         let assetVC = AssetViewControllerV060()
         let assetNav =  BaseNavigationController(rootViewController: assetVC)
 
-        let candidateVC = CandidatesListViewController()
-        let candidateListNav =  BaseNavigationController(rootViewController: candidateVC)
+        let stakingVC = StakingMainViewController()
+//        let candidateVC = CandidatesListViewController()
+        let candidateListNav =  BaseNavigationController(rootViewController: stakingVC)
         
         let personalVC = PersonalViewController()
         let personalNav = BaseNavigationController(rootViewController: personalVC)

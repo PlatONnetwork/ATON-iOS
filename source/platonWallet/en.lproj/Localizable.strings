@@ -97,7 +97,7 @@
 "walletDetailVC_tx_type_vote" = "Vote";
 "walletDetailVC_tx_transaction_title" = "Transactions";
 "walletDetailVC_balance" = "Balance";
-"walletDetailVC_send_button" = "Send";
+"walletDetailVC_send_button" = "NEXT";
 "walletDetailVC_receive_button" = "Receive";
 "walletDetailVC_vote_button" = "Vote";
 "walletDetailVC_no_transactions_text" = "No transactions";
@@ -682,3 +682,26 @@
 "createOrImport_guide_text" = "Have a wallet? Import using keystore(json),mnemonic phrase, private key.";
 
 "transaction_loadmore_text" = "View more transactions";
+
+"staking_main_delegate_text" = "My Delegations";
+"staking_main_validator_text" = "Validators";
+"staking_main_wallet_name" = "Wallet Name";
+"staking_main_delegate_text" = "Delegated";
+"staking_main_undelegating_text" = "Undelegating";
+"staking_main_delegate_detail" = "Details";
+"staking_main_delegate_total" = "Total Delegated";
+"staking_main_delegate_record" = "Record";
+"staking_main_delegate_faq" = "FAQ";
+"staking_main_delegate_tutorial" = "Tutorial";
+
+"staking_delegate_record_all" = "All";
+"staking_delegate_record_delegate" = "Delegate";
+"staking_delegate_record_undelegate" = "Undelegate";
+
+"staking_delegate_locked" = "Locked delegate";
+"staking_delegate_unlocked" = "Unlocked delegate";
+"staking_delegate_release" = "Released delegate";
+"staking_delegate_undelegating" = "Undelegating";
+
+"staking_delegate" = "Delegate";
+"staking_withdraw" = "Withdraw";

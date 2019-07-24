@@ -97,7 +97,7 @@
 "walletDetailVC_tx_type_vote" = "投票";
 "walletDetailVC_tx_transaction_title" = "交易记录";
 "walletDetailVC_balance" = "余额";
-"walletDetailVC_send_button" = "发送";
+"walletDetailVC_send_button" = "下一步";
 "walletDetailVC_receive_button" = "接收";
 "walletDetailVC_vote_button" = "投票";
 "walletDetailVC_no_transactions_text" = "暂无交易";
@@ -680,3 +680,26 @@
 "createOrImport_guide_text" = "已有钱包？使用钱包文件(json)、助记词、私钥导入";
 
 "transaction_loadmore_text" = "查看更多交易";
+
+"staking_main_delegate_text" = "我的委托";
+"staking_main_validator_text" = "验证节点";
+"staking_main_wallet_name" = "钱包名称";
+"staking_main_delegate_text" = "委托";
+"staking_main_undelegating_text" = "赎回中";
+"staking_main_delegate_detail" = "详情";
+"staking_main_delegate_total" = "总计委托";
+"staking_main_delegate_record" = "委托记录";
+"staking_main_delegate_faq" = "常见问题";
+"staking_main_delegate_tutorial" = "使用教程";
+
+"staking_delegate_record_all" = "全部";
+"staking_delegate_record_delegate" = "委托";
+"staking_delegate_record_undelegate" = "赎回委托";
+
+"staking_delegate_locked" = "已锁定委托";
+"staking_delegate_unlocked" = "未锁定委托";
+"staking_delegate_release" = "已解除委托";
+"staking_delegate_undelegating" = "赎回中委托";
+
+"staking_delegate" = "委托";
+"staking_withdraw" = "赎回委托";
