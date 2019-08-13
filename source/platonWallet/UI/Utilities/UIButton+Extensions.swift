@@ -134,6 +134,16 @@ class EnlargeTouchButton: UIButton {
 }
 
 extension UIButton {
+    func setCornerFullBackgroundColorStyle(_ image: UIImage?, _ title: String) {
+        self.layer.cornerRadius = 20.0
+        self.backgroundColor = common_blue_color
+        self.setTitleColor(.white, for: .normal)
+        self.setImage(image, for: .normal)
+        self.setTitle(title, for: .normal)
+        self.titleLabel?.font = UIFont.systemFont(ofSize: 15)
+        self.imageEdgeInsets = UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 0)
+    }
+    
     func setCornerLineStyle(_ image: UIImage?, _ title: String) {
         self.layer.cornerRadius = 20.0
         self.layer.borderColor = common_blue_color.cgColor

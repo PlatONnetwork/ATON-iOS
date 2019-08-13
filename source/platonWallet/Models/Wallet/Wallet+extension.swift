@@ -14,6 +14,20 @@ enum BalanceStatus {
 }
 
 extension Wallet{
+    func lockedBalanceDescription() -> String? {
+        guard let lockedBlc = AssetService.sharedInstace.assets[(self.key?.address)!],
+              let lockedBalanceStr = lockedBlc?.displayLockedValueWithRound(round: 8)?.balanceFixToDisplay(maxRound: 8) else {
+                if self.lockedBalance.count > 0 {
+                    return self.lockedBalance.ATPSuffix()
+                }
+                
+                return nil
+        }
+        
+        WalletService.sharedInstance.updateWalletLockedBalance(self, value: lockedBalanceStr)
+        return lockedBalanceStr.ATPSuffix()
+    }
+    
     func balanceDescription() -> String{
         guard
             let balance = AssetService.sharedInstace.assets[(self.key?.address)!],

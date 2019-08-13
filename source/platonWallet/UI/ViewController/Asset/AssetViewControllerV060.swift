@@ -173,6 +173,9 @@ class AssetViewControllerV060: BaseViewController ,PopupMenuTableDelegate{
             detailVC.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(detailVC, animated: true)
         }
+        sectionView.onLockedBalanceTapAction = { [weak self] in
+            self?.showMessage(text: Localized("wallet_balance_restricted_doubt"), delay: 2.0)
+        }
         
         assetHeaderStyle = (false,false)
         

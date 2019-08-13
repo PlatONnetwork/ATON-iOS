@@ -174,6 +174,7 @@ extension AssetTransactionViewControllerV060{
             case .success:
                 // 返回的交易数据条数为0，则显示无加载更多
                 guard let transactions = response as? [Transaction], transactions.count > 0 else {
+                    self.tableView.mj_footer.isHidden = (self.dataSource[selectedAddress]?.count ?? 0 < self.listSize)
                     return
                 }
                 
@@ -205,7 +206,7 @@ extension AssetTransactionViewControllerV060{
                 } else {
                     self.dataSource[selectedAddress] = transactions
                 }
-                
+                self.tableView.mj_footer.isHidden = (self.dataSource[selectedAddress]?.count ?? 0 < self.listSize)
                 self.tableView.reloadData()
             case .fail(_, let error):
                 break
@@ -216,6 +217,7 @@ extension AssetTransactionViewControllerV060{
     private func goTransactionList() {
         let controller = TransactionListViewController()
         controller.selectedWallet = AssetVCSharedData.sharedData.selectedWallet as? Wallet
+        controller.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(controller, animated: true)
     }
 }

@@ -124,9 +124,9 @@ class MainTabBarViewController: UITabBarController {
         assetNav.tabBarItem.selectedImage = UIImage(named: "tabbar_asset_selected")
         assetNav.tabBarItem.localizedText = "tabbar_asset_title"
         
-        candidateListNav.tabBarItem.image = UIImage(named: "tabbar_candidate_unselected")
-        candidateListNav.tabBarItem.selectedImage = UIImage(named: "tabbar_candidate_selected")
-        candidateListNav.tabBarItem.localizedText  = "tabbar_candidate_title"
+        candidateListNav.tabBarItem.image = UIImage(named: "tabbar_delegate_unselected")
+        candidateListNav.tabBarItem.selectedImage = UIImage(named: "tabbar_delegate_selected")
+        candidateListNav.tabBarItem.localizedText  = "tabbar_delegate_title"
      
         personalNav.tabBarItem.image = UIImage(named: "tabbar_personal_unselected")
         personalNav.tabBarItem.selectedImage = UIImage(named: "tabbar_personal_selected")

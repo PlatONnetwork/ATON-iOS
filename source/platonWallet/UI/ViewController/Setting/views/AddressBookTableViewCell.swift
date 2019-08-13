@@ -24,10 +24,15 @@ class AddressBookTableViewCell: SwipeTableViewCell {
         containerView.layer.masksToBounds = true
     }
  
-    func setUpdCell(addressInfo : AddressInfo)  {
+    func setUpdCell(addressInfo : AddressInfo, isForSelectMode: Bool)  {
         walletName.text = addressInfo.walletName
-        walletAddress.text = addressInfo.walletAddress
+        walletAddress.text = isForSelectMode ? addressInfo.walletAddress?.addressForDisplay() : addressInfo.walletAddress
         icon.image = UIImage(named: addressInfo.walletAddress?.walletAddressLastCharacterAvatar() ?? "walletAvatar_1")
+        if isForSelectMode && (AssetVCSharedData.sharedData.selectedWallet as! Wallet).key?.address.lowercased() == addressInfo.walletAddress?.lowercased() {
+            containerView.backgroundColor = UIColor(rgb: 0xdcdfe8, alpha: 0.4)
+        } else {
+            containerView.backgroundColor = UIViewController_backround
+        }
     }
     
 }

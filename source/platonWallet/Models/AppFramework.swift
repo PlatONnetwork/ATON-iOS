@@ -17,7 +17,7 @@ class AppFramework {
     
     static let sharedInstance = AppFramework()
     
-    func initialize() -> Bool{
+    func initialize() -> Bool {
         languageSetting()
         initBugly()
         doSwizzle()

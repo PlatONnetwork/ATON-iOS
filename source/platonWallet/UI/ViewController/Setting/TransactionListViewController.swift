@@ -14,7 +14,22 @@ class TransactionListViewController: BaseViewController,UITableViewDelegate,UITa
     
     let listSize = 20
 
-    let tableView = UITableView()
+    lazy var txnTableView = { () -> UITableView in
+        let tbView = UITableView(frame: .zero)
+        tbView.delegate = self
+        tbView.dataSource = self
+        tbView.register(WalletTableViewCell.self, forCellReuseIdentifier: "WalletTableViewCell")
+        tbView.separatorStyle = .none
+        tbView.backgroundColor = normal_background_color
+        tbView.registerCell(cellTypes: [TransactionCell.self])
+        tbView.rowHeight = 69.0
+        return tbView
+    }()
+    
+    lazy var dropdownListView = { () -> DropdownListView in
+        let view = DropdownListView(for: selectedWallet)
+        return view
+    }()
     
     var dataSource : [Transaction] = []
     
@@ -32,8 +47,10 @@ class TransactionListViewController: BaseViewController,UITableViewDelegate,UITa
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .white
+        
         initSubView()
-        tableView.mj_header.beginRefreshing()
+        txnTableView.mj_header.beginRefreshing()
     }
     
     @objc func fetchTransactionLastest() {
@@ -49,20 +66,28 @@ class TransactionListViewController: BaseViewController,UITableViewDelegate,UITa
         }
         
         guard addressStrs.count > 0 else {
-            self.tableView.mj_header.endRefreshing()
-            self.tableView.mj_footer.endRefreshing()
+            self.txnTableView.mj_header.endRefreshing()
+            self.txnTableView.mj_footer.endRefreshing()
             return
         }
         fetchTransaction(addressStrs: addressStrs, beginSequence: -1, direction: "new")
     }
     
     @objc func fetchTransactionMore() {
-        let addressStrs = AssetVCSharedData.sharedData.walletList.filterClassicWallet.map { cwallet in
-            return cwallet.key!.address
+        var addressStrs: [String] = []
+        
+        if let wallet = selectedWallet {
+            addressStrs.append(wallet.key!.address)
+        } else {
+            let allLocalAddresses = AssetVCSharedData.sharedData.walletList.filterClassicWallet.map { cwallet in
+                return cwallet.key!.address
+            }
+            addressStrs.append(contentsOf: allLocalAddresses)
         }
+        
         guard addressStrs.count > 0 else {
-            self.tableView.mj_header.endRefreshing()
-            self.tableView.mj_footer.endRefreshing()
+            self.txnTableView.mj_header.endRefreshing()
+            self.txnTableView.mj_footer.endRefreshing()
             return
         }
         
@@ -77,24 +102,25 @@ class TransactionListViewController: BaseViewController,UITableViewDelegate,UITa
     func fetchTransaction(addressStrs: [String], beginSequence: Int, direction: String) {
         TransactionService.service.getBatchTransaction(addresses: addressStrs, beginSequence: beginSequence, listSize: listSize, direction: direction) { (result, response) in
             
-            self.tableView.mj_header.endRefreshing()
-            self.tableView.mj_footer.endRefreshing()
+            self.txnTableView.mj_header.endRefreshing()
+            self.txnTableView.mj_footer.endRefreshing()
             
             switch result {
             case .success:
                 if beginSequence == -1 {
                     self.dataSource.removeAll()
-                    self.tableView.reloadData()
+                    self.txnTableView.reloadData()
                 }
                 
                 guard let transactions = response as? [Transaction], transactions.count > 0 else {
+                    self.txnTableView.mj_footer.isHidden = self.dataSource.count == 0
                     return
                 }
                 
                 if transactions.count >= self.listSize {
-                    self.tableView.mj_footer.resetNoMoreData()
+                    self.txnTableView.mj_footer.resetNoMoreData()
                 } else {
-                    self.tableView.mj_footer.endRefreshingWithNoMoreData()
+                    self.txnTableView.mj_footer.endRefreshingWithNoMoreData()
                 }
                 
                 if beginSequence != -1 && direction == "new" {
@@ -103,8 +129,8 @@ class TransactionListViewController: BaseViewController,UITableViewDelegate,UITa
                 }
                 
                 self.dataSource.append(contentsOf: transactions)
-                self.tableView.reloadData()
-                self.tableView.mj_footer.isHidden = self.dataSource.count == 0
+                self.txnTableView.reloadData()
+                self.txnTableView.mj_footer.isHidden = self.dataSource.count == 0
             case .fail(_, let error):
                 break
             }
@@ -113,31 +139,45 @@ class TransactionListViewController: BaseViewController,UITableViewDelegate,UITa
 
     func initSubView(){
         
-        tableView.backgroundColor = UIViewController_backround
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.separatorStyle = .none
+        navigationController?.view.addSubview(dropdownListView)
+        dropdownListView.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(UIApplication.shared.statusBarFrame.height + (navigationController?.navigationBar.frame.size.height ?? 44) + 7).priorityHigh()
+            make.leading.equalToSuperview().offset(10)
+            make.trailing.equalToSuperview().offset(-10)
+            make.height.equalTo(50)
+        }
+        dropdownListView.dropdownListDidHandle = { [weak self] wallet in
+            guard let self = self else { return }
+            self.selectedWallet = wallet
+            self.txnTableView.mj_header.beginRefreshing()
+        }
         
-        tableView.registerCell(cellTypes: [TransactionCell.self])
-        view.addSubview(tableView)
-        tableView.snp.makeConstraints { (make) in
-            make.top.bottom.equalToSuperview()
+        
+        view.addSubview(txnTableView)
+        txnTableView.snp.makeConstraints { (make) in
+            make.top.equalToSuperview().offset(50 + 7)
+            make.bottom.equalToSuperview()
             make.left.equalToSuperview().offset(0)
             make.right.equalToSuperview().offset(0)
         }
         
         super.leftNavigationTitle = "TransactionListVC_nav_title"
-        tableView.emptyDataSetView { [weak self] view in
-            view.customView(self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, Localized("walletDetailVC_no_transactions_text"),"empty_no_data_img"))
+        txnTableView.emptyDataSetView { [weak self] view in
+            let emptyView = self.self?.emptyViewForTableView(forEmptyDataSet: (self?.txnTableView)!, Localized("walletDetailVC_no_transactions_text"),"empty_no_data_img")
+            emptyView?.backgroundColor = normal_background_color
+            view.customView(emptyView)
+            view.backgroundColor = normal_background_color
         }
         
-        tableView.mj_header = refreshHeader
-        tableView.mj_footer = refreshFooter
-        tableView.mj_footer.isHidden = true
+        txnTableView.mj_header = refreshHeader
+        txnTableView.mj_footer = refreshFooter
+        txnTableView.mj_footer.isHidden = true
     }
-    
+}
+
+extension TransactionListViewController {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: TransactionCell.self)) as! TransactionCell 
+        let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: TransactionCell.self)) as! TransactionCell
         let tx = dataSource[indexPath.row]
         cell.updateCell(tx: tx)
         return cell
@@ -148,15 +188,10 @@ class TransactionListViewController: BaseViewController,UITableViewDelegate,UITa
         return dataSource.count
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 69
-    }
-    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let transferVC = TransactionDetailViewController()
         transferVC.transaction = dataSource[indexPath.row]
         transferVC.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(transferVC, animated: true)
     }
-
 }

@@ -8,10 +8,23 @@
 
 import Foundation
 import BigInt
+import Localize_Swift
 
 
 let dateFormatter = DateFormatter()
 let dateFormatter_greenwich = DateFormatter()
+
+extension String {
+    var vonToLAT: String {
+        guard let von = BigUInt(self) else {
+            return "0.00"
+        }
+        
+        let valueLAT = von.divide(by: ETHToWeiMultiplier, round: 8)
+        return valueLAT.displayForMicrometerLevel(maxRound: 8)
+    }
+}
+
 extension String{
     
     func is40ByteAddress() -> Bool{
@@ -177,24 +190,22 @@ extension String{
 //            return self
 //        }
         
-        return self.addMicrometerLevel(maxRound: maxRound)
+        return self.displayForMicrometerLevel(maxRound: maxRound)
     }
     
-    func addMicrometerLevel(maxRound : Int) -> String {
+    func displayForMicrometerLevel(maxRound : Int) -> String {
         if self.count != 0 {
             var integerPart:String?
             var decimalPart = String()
 
             // 先将传入的参数整体赋值给整数部分
-            integerPart =  self
+            integerPart = self
             // 然后再判断是否含有小数点(分割出整数和小数部分)
             if self.contains(".") {
                 let segmentationArray = self.components(separatedBy: ".")
                 integerPart = segmentationArray.first
                 decimalPart = segmentationArray.last!
             }
-
-
 
             /**
              创建临时存放余数的可变数组
@@ -213,11 +224,11 @@ extension String{
                 // 获取余数
                 let remainderValue = tempValue.intValue % 1000
                 // 将余数一字符串的形式添加到可变数组里面
-                let remainderStr = String(format: "%d", remainderValue)
+                let remainderStr = tempValue.length < 3 ? String(format: "%d", remainderValue) : String(format: "%03d", remainderValue)
                 remainderMutableArray.insert(remainderStr, at: 0)
                 // 将商重新复制
                 integerPart = String(format: "%d", discussValue)
-            } while discussValue>0
+            } while discussValue > 0
 
             // 创建一个临时存储余数数组里的对象拼接起来的对象
             var tempString = String()
@@ -225,7 +236,12 @@ extension String{
             if decimalPart.count > maxRound {
                 decimalPart = String(String(format: "%.\(maxRound)d", Int(decimalPart)!).prefix(maxRound))
             } else if decimalPart.count < 2 {
-                decimalPart = String(format: "%02d", Int(decimalPart) ?? 0)
+                decimalPart = String(format: "%d", Int(decimalPart) ?? 0)
+                if decimalPart.count < 2 {
+                    decimalPart.append("0")
+                } else {
+                    decimalPart.append("00")
+                }
             }
 
             /**
@@ -288,6 +304,16 @@ extension String{
         return self + " LAT"
     }
     
+    func addressForDisplayShort() -> String {
+        guard self.is40ByteAddress() else {
+            return self
+        }
+        if !self.hasPrefix("0x"){
+            return "0x" + self.substr(0, 2)! + "...." + self.substr(36, 4)!
+        }
+        return self.substr(0, 4)! + "...." + self.substr(38, 4)!
+    }
+    
     func addressForDisplay() -> String{
         guard self.is40ByteAddress() else {
             return self
@@ -329,5 +355,57 @@ extension String{
     
     static func walletRandomAvatar() -> String{
         return "walletAvatar_\(arc4random_uniform(14) + 1)"
+    }
+    
+    func inputAmountForMagnitude() -> String? {
+        if !isValidInputAmoutWith8DecimalPlace() && self.count == 0 {
+            return nil
+        }
+        
+        var integerPart: String?
+        integerPart = self
+        if self.contains(".") {
+            let segmentationArray = self.components(separatedBy: ".")
+            integerPart = segmentationArray.first
+        }
+        
+        guard let inte = integerPart, inte.count > 2 else {
+            return nil
+        }
+        
+        if integerPart?.count == 3 {
+            return Localized("input_amount_hundred")
+        } else if integerPart?.count == 4 {
+            return Localized("input_amount_thousand")
+        } else if integerPart?.count == 5 {
+            return Localized("input_amount_ten_thousand")
+        } else if integerPart?.count == 6 {
+            return Localized("input_amount_hundred_thousand")
+        } else if integerPart?.count == 7 {
+            return Localized("input_amount_million")
+        } else if integerPart?.count == 8 {
+            return Localized("input_amount_ten_million")
+        } else if integerPart?.count == 9 {
+            return Localized("input_amount_hundred_million")
+        } else if integerPart?.count == 10 {
+            return Localized("input_amount_billion")
+        } else if integerPart?.count == 11 {
+            return Localized("input_amount_ten_billion")
+        } else if integerPart?.count == 12 {
+            return Localized("input_amount_hundred_billion")
+        } else {
+            return Localized("input_amount_trillion")
+        }
+    }
+    
+    func addressDisplayInLocal() -> String? {
+        let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.key?.address.lowercased() == self.lowercased() }.first
+        if let wallet = localWallet {
+            return wallet.name + "(\(self.addressForDisplayShort()))"
+        } else {
+            let addressInfo = AddressBookService.service.getAll().filter { $0.walletAddress?.lowercased() == self.lowercased() }.first
+            guard let addressName = addressInfo?.walletName else { return self }
+            return addressName + "(\(self.addressForDisplayShort()))"
+        }
     }
 }

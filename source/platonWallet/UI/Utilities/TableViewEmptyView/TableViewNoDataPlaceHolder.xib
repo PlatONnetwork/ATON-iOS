@@ -36,7 +36,7 @@
                             </userDefinedRuntimeAttributes>
                         </label>
                     </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstItem="R8P-nB-Ift" firstAttribute="centerX" secondItem="e6x-EU-Z7E" secondAttribute="centerX" id="7wc-vp-nI7"/>
                         <constraint firstItem="e6x-EU-Z7E" firstAttribute="top" secondItem="dqe-b1-Xs4" secondAttribute="top" constant="56" id="M49-bG-chh"/>

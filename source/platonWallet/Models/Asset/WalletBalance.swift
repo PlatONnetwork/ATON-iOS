@@ -17,9 +17,25 @@ class WalletBalance {
     
     var balance : BigUInt?
     
+    var lockedBalance: BigUInt?
+    
     var updateTime : CLong = 0
     
     var walletType : WalletType = .ClassicWallet
+    
+    var lockedDescriptionString: String? {
+        get {
+            guard let lockedBlc = lockedBalance else { return "0" }
+            let ret = lockedBlc.divide(by: ETHToWeiMultiplier, round: 8)
+            return ret
+        }
+    }
+    
+    func displayLockedValueWithRound(round: Int) -> String? {
+        guard let lockedBlc = lockedBalance else { return "0" }
+        let ret = lockedBlc.divide(by: ETHToWeiMultiplier, round: round)
+        return ret
+    }
     
     var descriptionString : String?{
         get{

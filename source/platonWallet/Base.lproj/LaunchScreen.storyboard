@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="01J-lp-oVM">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -18,13 +18,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="LaunchLogo" translatesAutoresizingMaskIntoConstraints="NO" id="M1Y-lw-aU3">
-                                <rect key="frame" x="147.5" y="173" width="80" height="106"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="80" id="2Jw-2U-bnh"/>
-                                    <constraint firstAttribute="height" constant="106" id="dxd-bN-m9j"/>
-                                </constraints>
-                            </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Powered by PlatON" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aAb-Nd-RG5">
                                 <rect key="frame" x="133" y="632" width="109.5" height="15"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
@@ -33,9 +26,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="car-Cp-Psh" firstAttribute="top" secondItem="M1Y-lw-aU3" secondAttribute="top" constant="-153" id="B4d-OE-L8K"/>
                             <constraint firstItem="aAb-Nd-RG5" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="YYe-jx-7c7"/>
-                            <constraint firstItem="M1Y-lw-aU3" firstAttribute="centerX" secondItem="car-Cp-Psh" secondAttribute="centerX" id="dKW-Wr-tlm"/>
                             <constraint firstAttribute="bottom" secondItem="aAb-Nd-RG5" secondAttribute="bottom" constant="20" id="nWU-uY-fo7"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="car-Cp-Psh"/>
@@ -46,7 +37,4 @@
             <point key="canvasLocation" x="53" y="375"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="LaunchLogo" width="100" height="134"/>
-    </resources>
 </document>

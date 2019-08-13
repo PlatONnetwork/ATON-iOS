@@ -52,6 +52,11 @@ let cell_Transaction_pending_color = UIColor(red: 33, green: 83, blue: 254, alph
 
 let ScreenDesignRatio = UIScreen.main.bounds.size.width / CGFloat(375)
 
-let normal_background_color = UIColor(hex: "F9FBFF")
+let normal_background_color = UIColor(rgb: 0xF9FBFF)
 let common_line_color = UIColor(rgb: 0xE4E7F3)
+let text_blue_color = UIColor(rgb: 0x2A5FFE)
 
+let status_blue_color = UIColor(rgb: 0x4A90E2)
+let status_green_color = UIColor(rgb: 0x19A20E)
+let status_darkgray_color = UIColor(rgb: 0x525768)
+let status_lightgray_color = UIColor(rgb: 0x9EABBE)

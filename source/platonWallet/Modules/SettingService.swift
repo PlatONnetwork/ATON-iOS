@@ -10,6 +10,8 @@ import Foundation
 
 class SettingService {
     
+    static let debugBaseURL = "http://192.168.9.190:20060/app-203/v0700/"
+    
     var nodeStorge: NodeInfoPersistence?
     
     var currentNodeURL : String?

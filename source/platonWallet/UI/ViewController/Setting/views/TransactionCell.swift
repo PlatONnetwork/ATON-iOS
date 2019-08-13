@@ -21,6 +21,8 @@ class TransactionCell: UITableViewCell {
     @IBOutlet weak var statusLabel: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
+        contentView.backgroundColor = normal_background_color
+        backgroundColor = normal_background_color
         selectionStyle = .none
     }
 

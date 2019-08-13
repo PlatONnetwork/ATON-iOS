@@ -146,6 +146,14 @@ class AssetVCSharedData{
     }
 }
 
+extension AssetVCSharedData {
+    // 通过地址查询本地的账号名称
+    func getWalletName(for address: String) -> String? {
+        let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.key?.address == address }.first
+        return localWallet?.name
+    }
+}
+
 extension AssetVCSharedData{
     
     func registerHandler(object: AnyObject?, handle: DidSwithWalletHandler?){

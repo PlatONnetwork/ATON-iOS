@@ -36,6 +36,10 @@ target 'platonWallet' do
   
   pod 'platonWeb3', '~> 0.4.0'
   pod 'MJRefresh'
+  
+  # for launch animation
+  pod 'SVGAPlayer'
+  pod 'Kingfisher'
 
   target 'platonWalletTests' do
       inherit! :search_paths

@@ -20,40 +20,72 @@ let THE8powerof10 = "100000000"
 let THE9powerof10 = "1000000000"
 let THE18powerof10 = "1000000000000000000"
 
-enum TxType: String, Decodable {
-    case transfer
-    case MPCtransaction
+enum TxType: Int, Decodable {
+    case transfer = 0
     case contractCreate
-    case voteTicket
-    case transactionExecute
-    case candidateDeposit
-    case candidateApplyWithdraw
-    case candidateWithdraw
-    case unknown
+    case contractExecute
+    case otherReceive
+    case otherSend
+    case MPCtransaction
+    case stakingCreate = 1000
+    case stakingEdit
+    case stakingAdd
+    case stakingWithdraw
+    case delegateCreate
+    case delegateWithdraw
+    case submitText = 2000
+    case submitVersion
+    case submitParam
+    case voteForProposal
+    case declareVersion
+    case reportDuplicateSign = 3000
+    case createRestrictingPlan = 4000
+    case unknown = -1
     
     var localizeTitle: String {
         switch self {
         case .transfer:
             return Localized("TransactionStatus_transfer_title")
-        case .MPCtransaction:
-            return Localized("TransactionStatus_MPCtransaction_title")
         case .contractCreate:
             return Localized("TransactionStatus_contractCreate_title")
-        case .voteTicket:
-            return Localized("TransactionStatus_voteTicket_title")
-        case .transactionExecute:
-            return Localized("TransactionStatus_transactionExecute_title")
-        case .candidateDeposit:
-            return Localized("TransactionStatus_candidateDeposit_title")
-        case .candidateApplyWithdraw:
-            return Localized("TransactionStatus_candidateApplyWithdraw_title")
-        case .candidateWithdraw:
-            return Localized("TransactionStatus_candidateWithdraw_title")
+        case .contractExecute:
+            return Localized("TransactionStatus_contractExecute_title")
+        case .otherReceive:
+            return Localized("TransactionStatus_otherReceive_title")
+        case .otherSend:
+            return Localized("TransactionStatus_otherSend_title")
+        case .MPCtransaction:
+            return Localized("TransactionStatus_MPCtransaction_title")
+        case .stakingCreate:
+            return Localized("TransactionStatus_stakingCreate_title")
+        case .stakingEdit:
+            return Localized("TransactionStatus_stakingEdit_title")
+        case .stakingAdd:
+            return Localized("TransactionStatus_stakingAdd_title")
+        case .stakingWithdraw:
+            return Localized("TransactionStatus_stakingWithdraw_title")
+        case .delegateCreate:
+            return Localized("TransactionStatus_delegateCreate_title")
+        case .delegateWithdraw:
+            return Localized("TransactionStatus_delegateWithdraw_title")
+        case .submitText:
+            return Localized("TransactionStatus_submitText_title")
+        case .submitVersion:
+            return Localized("TransactionStatus_submitVersion_title")
+        case .submitParam:
+            return Localized("TransactionStatus_submitParam_title")
+        case .voteForProposal:
+            return Localized("TransactionStatus_voteForProposal_title")
+        case .declareVersion:
+            return Localized("TransactionStatus_declareVersion_title")
+        case .reportDuplicateSign:
+            return Localized("TransactionStatus_reportDuplicateSign_title")
+        case .createRestrictingPlan:
+            return Localized("TransactionStatus_createRestrictingPlan_title")
         case .unknown:
             return Localized("TransactionStatus_unknown_title")
         }
     }
-    
 }
 
 
@@ -186,6 +218,124 @@ class Transaction : Object, Decodable {
     //to confirm send or receive
     var senderAddress: String?
     
+    var toType: TransactionToType = .address
+    var direction: TransactionDirection = .unknown
+    
+    var nodeName: String?
+    var nodeId: String?
+    var lockAddress: String?
+    var reportType: String?
+    var version: String?
+    var githubId: String?
+    var proposalType: String?
+    var vote: String?
+    
+    override public static func ignoredProperties() ->[String] {
+        return ["sharedWalletOwners",
+                "sharedWalletConOwners",
+                "sharedWalletRejectOwners",
+                "valueDescription",
+                "senderAddress",
+                "sequence",
+                "actualTxCost",
+                "nodeName",
+                "nodeId",
+                "lockAddress",
+                "reportType",
+                "version",
+                "githubId",
+                "proposalType",
+                "vote"
+        ]
+    }
+    
+    override public static func primaryKey() -> String? {
+        return "txhash"
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case actualTxCost
+        case txhash = "hash"
+        case from
+        case to
+        case blockHash
+        case blockNumber
+        case value
+        case gasUsed = "energonUsed"
+        case gasPrice = "energonPrice"
+        case sequence
+        case txType
+        case confirmTimes = "timestamp"
+        case transactionIndex
+        case txReceiptStatus
+        case extra = "txInfo"
+    }
+    
+    required convenience init(from decoder: Decoder) throws {
+        self.init()
+        
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        blockNumber = try? container.decode(String.self, forKey: .blockNumber)
+        txhash = try? container.decode(String.self, forKey: .txhash)
+        from = try? container.decode(String.self, forKey: .from)
+        to = try? container.decode(String.self, forKey: .to)
+        blockHash = try? container.decode(String.self, forKey: .blockHash)
+        value = try? container.decode(String.self, forKey: .value)
+        gasUsed = try? container.decode(String.self, forKey: .gasUsed)
+        gasPrice = try? container.decode(String.self, forKey: .gasPrice)
+        sequence = try? container.decode(String.self, forKey: .sequence)
+        txType = (try? container.decode(TxType.self, forKey: .txType)) ?? .unknown
+        let timeStampString = try? container.decode(String.self, forKey: .confirmTimes)
+        if let ts = Int(timeStampString ?? "0") {
+            confirmTimes = ts
+        }
+        actualTxCost = try? container.decode(String.self, forKey: .actualTxCost)
+        let indexString = try? container.decode(String.self, forKey: .transactionIndex)
+        if let index = Int(indexString ?? "0") {
+            transactionIndex = index
+        }
+        let txReceiptStatusString = try? container.decode(String.self, forKey: .txReceiptStatus)
+        if let status = Int(txReceiptStatusString ?? "0") {
+            txReceiptStatus = status
+        }
+        
+        extra = try? container.decode(String.self, forKey: .extra)
+    }
+    
+}
+
+extension Transaction {
+    var actualTxCostDescription: String? {
+        get {
+            let cost = BigUInt.safeInit(str: actualTxCost).divide(by: ETHToWeiMultiplier, round: 8)
+            return cost
+        }
+    }
+    
+    var feeDescription : String?{
+        get{
+            var feeB : BigUInt?
+            guard gasUsed != nil, gasUsed != "" ,gasPrice != nil, gasPrice != "" else{
+                return "0.00"
+            }
+            
+            feeB = BigUInt(gasUsed!)?.multiplied(by: BigUInt(gasPrice!)!)
+            guard feeB != nil else{
+                return "0.00"
+            }
+            return feeB!.divide(by: ETHToWeiMultiplier, round: 8)
+        }
+    }
+    
+    var valueDescription : String?{
+        get{
+            guard value != nil else{
+                return "0.00"
+            }
+            return BigUInt(value!)?.divide(by: ETHToWeiMultiplier, round: 8)
+        }
+    }
+    
     var transactionStauts: TransactionStatus {
         get {
             switch transanctionTypeLazy {
@@ -217,39 +367,6 @@ class Transaction : Object, Decodable {
         }
     }
     
-    var valueDescription : String?{
-        get{
-            guard value != nil else{
-                return "0.00"
-            }
-            return BigUInt(value!)?.divide(by: ETHToWeiMultiplier, round: 8)
-        }
-    }
-    
-    var feeDescription : String?{
-        get{
-            var feeB : BigUInt?
-            guard gasUsed != nil, gasUsed != "" ,gasPrice != nil, gasPrice != "" else{
-                return "0.00"
-            }
-            
-            
-            feeB = BigUInt(gasUsed!)?.multiplied(by: BigUInt(gasPrice!)!)
-            guard feeB != nil else{
-                return "0.00"
-            }
-            return feeB!.divide(by: ETHToWeiMultiplier, round: 8)
-            
-        }
-    }
-    
-    var actualTxCostDescription: String? {
-        get {
-            let cost = BigUInt.safeInit(str: actualTxCost).divide(by: ETHToWeiMultiplier, round: 8)
-            return cost
-        }
-    }
-    
     var transanctionTypeLazy : TransanctionType {
         get{
             switch txType! {
@@ -259,21 +376,27 @@ class Transaction : Object, Decodable {
                 } else {
                     return .Receive
                 }
-            case .MPCtransaction:
+            case .otherReceive:
+                return .Receive
+            case .contractCreate,
+                 .contractExecute,
+                 .MPCtransaction,
+                 .otherSend,
+                 .stakingCreate,
+                 .stakingAdd,
+                 .stakingEdit,
+                 .stakingWithdraw,
+                 .delegateCreate,
+                 .delegateWithdraw,
+                 .submitText,
+                 .submitVersion,
+                 .submitParam,
+                 .voteForProposal,
+                 .reportDuplicateSign,
+                 .declareVersion,
+                 .createRestrictingPlan:
                 return .Send
-            case .contractCreate:
-                return .Send
-            case .voteTicket:
-                return .Vote
-            case .transactionExecute:
-                return .Send
-            case .candidateDeposit:
-                return .Send
-            case .candidateApplyWithdraw:
-                return .Send
-            case .candidateWithdraw:
-                return .Send
-            case .unknown:
+            default:
                 let type = TransanctionType(rawValue: transactionType) ?? .Send
                 if type == .Send {
                     if senderAddress != nil && (senderAddress?.ishexStringEqual(other: from))! {
@@ -318,64 +441,6 @@ class Transaction : Object, Decodable {
         }
         return (des,color)
     }
-    
-    override public static func ignoredProperties() ->[String] {
-        return ["sharedWalletOwners","sharedWalletConOwners","sharedWalletRejectOwners","valueDescription","senderAddress", "sequence", "actualTxCost"]
-    }
-    
-    override public static func primaryKey() -> String? {
-        return "txhash"
-    }
-    
-    enum CodingKeys: String, CodingKey {
-        case actualTxCost
-        case txhash = "hash"
-        case from
-        case to
-        case blockHash
-        case blockNumber
-        case value
-        case gasUsed = "energonUsed"
-        case gasPrice = "energonPrice"
-        case sequence
-        case txType
-        case confirmTimes = "timestamp"
-        case transactionIndex
-        case txReceiptStatus
-        case extra = "txInfo"
-    }
-    
-    required convenience init(from decoder: Decoder) throws {
-        self.init()
-        
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        blockNumber = try? container.decode(String.self, forKey: .blockNumber)
-        txhash = try? container.decode(String.self, forKey: .txhash)
-        from = try? container.decode(String.self, forKey: .from)
-        to = try? container.decode(String.self, forKey: .to)
-        blockHash = try? container.decode(String.self, forKey: .blockHash)
-        value = try? container.decode(String.self, forKey: .value)
-        gasUsed = try? container.decode(String.self, forKey: .gasUsed)
-        gasPrice = try? container.decode(String.self, forKey: .gasPrice)
-        sequence = try? container.decode(String.self, forKey: .sequence)
-        txType = try? container.decode(TxType.self, forKey: .txType)
-        let timeStampString = try? container.decode(String.self, forKey: .confirmTimes)
-        if let ts = Int(timeStampString ?? "0") {
-            confirmTimes = ts
-        }
-        actualTxCost = try? container.decode(String.self, forKey: .actualTxCost)
-        let indexString = try? container.decode(String.self, forKey: .transactionIndex)
-        if let index = Int(indexString ?? "0") {
-            transactionIndex = index
-        }
-        let txReceiptStatusString = try? container.decode(String.self, forKey: .txReceiptStatus)
-        if let status = Int(txReceiptStatusString ?? "0") {
-            txReceiptStatus = status
-        }
-        
-        extra = try? container.decode(String.self, forKey: .extra)
-    }
-    
 }
 
 class VoteTicket: Decodable {
@@ -406,3 +471,137 @@ class CandidateDepositInfo: Decodable {
     var parameters: CandidateDeposit?
     var type: String?
 }
+
+
+enum TransactionToType: String, Decodable {
+    case contract
+    case address
+}
+
+enum TransactionDirection: String, Decodable {
+    case unknown
+    case Sent
+    case Receive
+    
+    public var localizedDesciption: String? {
+        switch self {
+        case .Sent:
+            return Localized("walletDetailVC_tx_type_send")
+        case .Receive:
+            return Localized("walletDetailVC_tx_type_receive")
+        case .unknown:
+            return Localized("TransactionStatus_unknown_title")
+        }
+    }
+}
+
+extension Transaction {
+    var toAvatarImage: UIImage? {
+        switch txType! {
+        case .transfer,
+             .unknown:
+             let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.key?.address == to }.first
+             guard let wallet = localWallet else {
+                return UIImage(named: "walletAvatar_1")
+             }
+             return wallet.image()
+        default:
+            if toType == .contract {
+                return UIImage(named: "2.icon_Shared")
+            } else {
+                return UIImage(named: "2.icon_node")
+            }
+        }
+    }
+    
+    var fromAvatarImage: UIImage? {
+        let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.key?.address == from }.first
+        guard let wallet = localWallet else {
+            return UIImage(named: "walletAvatar_1")
+        }
+        return wallet.image()
+    }
+    
+    var toNameString: String? {
+        switch txType! {
+        case .transfer,
+             .unknown:
+            let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.key?.address.lowercased() == to?.lowercased() }.first
+            guard let wallet = localWallet else {
+                return to?.addressForDisplayShort()
+            }
+            return wallet.name
+        default:
+            return nodeName ?? to?.addressForDisplayShort()
+        }
+    }
+    
+    var fromNameString: String? {
+        let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.key?.address.lowercased() == from?.lowercased() }.first
+        guard let wallet = localWallet else {
+            return from?.addressForDisplayShort()
+        }
+        return wallet.name
+    }
+    
+    var valueString: (String?, UIColor?) {
+        if txReceiptStatus == -1 {
+            return (nil, nil)
+        }
+        
+        switch direction {
+        case .Sent:
+            guard let string = valueDescription else {
+                return (nil, nil)
+            }
+            return ("-" + string, UIColor(rgb: 0xff3b3b))
+        case .Receive:
+            guard let string = valueDescription else {
+                return (nil, nil)
+            }
+            return ("+" + string, UIColor(rgb: 0x19a20e))
+        default:
+            return (nil, nil)
+        }
+    }
+    
+    var toIconImage: UIImage? {
+        switch toType {
+        case .contract:
+            return UIImage(named: "2.icon_Shared2")
+        default:
+            return nil
+        }
+    }
+    
+    var amountTextColor: UIColor {
+        switch direction {
+        case .Receive:
+            return UIColor(rgb: 0x19a20e)
+        case .Sent:
+            return UIColor(rgb: 0xff3b3b)
+        default:
+            return UIColor(rgb: 0xb6bbd0)
+        }
+    }
+    
+    var txTypeIcon: UIImage? {
+        switch direction {
+        case .Receive:
+            if txType! == .transfer {
+                return UIImage(named: "txRecvSign")
+            }
+            return UIImage(named: "1.icon_Undelegate")
+        case .Sent:
+            if txType! == .transfer {
+                return UIImage(named: "txSendSign")
+            }
+            return UIImage(named: "1.icon_Delegate")
+        default:
+            return nil
+        }
+    }
+}
+
+
+

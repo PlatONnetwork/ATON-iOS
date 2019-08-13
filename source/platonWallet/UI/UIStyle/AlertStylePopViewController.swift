@@ -24,6 +24,7 @@ typealias ButtonActionBlock = (_ text: String?,_ userInfo: AnyObject? ) -> (Bool
 enum PAlertStyle{
     case passwordInput(walletName: String?)
     case AlertWithRedTitle(title: String?,message: String?) //no cancle button
+    case AlertWithText(attributedStrings: [NSAttributedString]?)
     case ChoiceView(message: String?) //no cancle button
     case commonInput(title: String?,placeHoder: String?,preInputText: String?)
     case commonInputWithItemDes(itemDes: String?,itemContent: String?,inputDes: String?,placeHoder: String?,preInputText: String?)
@@ -65,6 +66,7 @@ class AlertStylePopViewController: UIViewController,UITextFieldDelegate {
     @IBOutlet weak var textFieldContainer: UIView!
     
     @IBOutlet weak var messageLabelHideConstraint: NSLayoutConstraint!
+    @IBOutlet weak var messageLabelBottomConstraint: NSLayoutConstraint!
     
     //textFieldInputContainer - begin
     //@IBOutlet weak var item1Des: UILabel!
@@ -85,6 +87,7 @@ class AlertStylePopViewController: UIViewController,UITextFieldDelegate {
     @IBOutlet weak var confirmButton: PButton!
     
     @IBOutlet weak var confirmButtonBottomConstraint: NSLayoutConstraint!
+    
     
     @IBOutlet weak var cancelButton: UIButton!
     
@@ -135,6 +138,9 @@ class AlertStylePopViewController: UIViewController,UITextFieldDelegate {
             //self.item1Content.text = itemContent
             self.textInputDes.text = inputDes
             self.configCommonInputWithMessage()
+        case .AlertWithText(let attributedStrings)?:
+            self.titleLabel.localizedAttributedTexts = attributedStrings!
+            self.configAlertWithText()
         default:
             do{}
         }
@@ -174,6 +180,16 @@ class AlertStylePopViewController: UIViewController,UITextFieldDelegate {
             }
         }
         
+    }
+    
+    func configAlertWithText() {
+        self.titleLabel.numberOfLines = 0
+        self.imageIcon.image = UIImage(named: "3.icon-doubt")
+        self.confirmButton.localizedNormalTitle = "alert_confirmBtn_title"
+        self.hideCancelButton()
+        self.hideInputArea()
+        self.hideMessageLabel()
+        self.hideConfirmButton()
     }
     
     func configAlertWithRedTitle(){
@@ -267,6 +283,11 @@ class AlertStylePopViewController: UIViewController,UITextFieldDelegate {
     func hideCancelButton(){
         self.confirmButtonBottomConstraint.priority = UILayoutPriority(rawValue: 999)
         self.cancelButton.isHidden = true
+    }
+    
+    func hideConfirmButton() {
+        self.messageLabelBottomConstraint.priority = UILayoutPriority(rawValue: 1000)
+        self.confirmButton.isHidden = true
     }
     
     func hideInputArea(){

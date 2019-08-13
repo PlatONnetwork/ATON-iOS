@@ -43,7 +43,7 @@
 "createWalletVC_createBtn_title" = "创建钱包";
 "tabbar_asset_title" = "钱包";
 "tabbar_personal_title" = "我的";
-"tabbar_candidate_title" = "投票";
+"tabbar_delegate_title" = "委托";
 
 "navigationbar_wallet_title" = "普通钱包";
 
@@ -73,7 +73,7 @@
 "transferVC_confirm_Fee" = "交易手续费：";
 
 "transferVC_confirm_ATP_send" = "LAT 发送";
-"transferVC_confirm_Submit" = "确定";
+"transferVC_confirm_Submit" = "发送";
 
 "transferVC_address_Incorrect_tip" = "地址格式不正确 ";
 "transferVC_address_empty_tip" = "地址不能为空";
@@ -106,19 +106,32 @@
 //Transaction Detail
 "TransactionDetailVC_nav_title" = "交易详情";
 
-"TransactionDetailVC_type" = "类别:";
-"TransactionDetailVC_time" = "时间:";
+"TransactionDetailVC_type" = "交易类别:";
+"TransactionDetailVC_time" = "提交时间:";
 "TransactionDetailVC_value" = "数量:";
 "TransactionDetailVC_energon_price" = "手续费:";
 "TransactionDetailVC_Wallet" = "钱包:";
 "TransactionDetailVC_memo" = "备注:";
 "TransactionDetailVC_memo_none" = "无";
 "TransactionDetailVC_hash" = "交易hash:";
-"TransactionDetailVC_voteFor" = "投票给:";
+"TransactionDetailVC_voteFor" = "验证人:";
 "TransactionDetailVC_nodeId" = "节点ID:";
 "TransactionDetailVC_votes" = "投票数:";
 "TransactionDetailVC_ticketPrice" = "票价:";
 "TransactionDetailVC_voteStaked" = "投票质押:";
+"TransactionDetailVC_reported" = "被举报人:";
+"TransactionDetailVC_delegated_to" = "委托给:";
+"TransactionDetailVC_delegated_amount" = "委托数量:";
+"TransactionDetailVC_withdrawal_amount" = "赎回数量:";
+"TransactionDetailVC_version" = "版本:";
+"TransactionDetailVC_stake_amount" = "质押数量:";
+"TransactionDetailVC_return_amount" = "退回数量:";
+"TransactionDetailVC_report_type" = "举报类型:";
+"TransactionDetailVC_restricted_acount" = "锁仓地址:";
+"TransactionDetailVC_restricted_amount" = "锁仓数量:";
+"TransactionDetailVC_proposal_id" = "提案ID:";
+"TransactionDetailVC_proposal_type" = "提案类型:";
+"TransactionDetailVC_proposal_vote" = "投票:";
 
 //qr scan
 "QRScanerVC_nav_title" = "扫描";
@@ -232,7 +245,8 @@
 "PersonalVC_cell_wallet_setting" = "设置";
 "PersonalVC_cell_wallet_help" = "帮助";
 "PersonalVC_cell_wallet_About" = "关于";
-"PersonalVC_cell_wallet_community" = "社区";
+"PersonalVC_cell_wallet_community" = "官方社区";
+"PersonalVC_cell_wallet_feedback" = "帮助和反馈";
 
 //WalletManagerDetailViewController
 "WalletManagerDetailVC_title" = "钱包管理";
@@ -327,14 +341,27 @@
 "TransactionStatus_failed_desc" = "失败";
 
 "TransactionStatus_transfer_title" = "转账";
-"TransactionStatus_MPCtransaction_title" = "MPC交易";
 "TransactionStatus_contractCreate_title" = "合约创建";
-"TransactionStatus_voteTicket_title" = "投票";
-"TransactionStatus_transactionExecute_title" = "合约执行";
-"TransactionStatus_candidateDeposit_title" = "质押";
-"TransactionStatus_candidateApplyWithdraw_title" = "减持质押";
-"TransactionStatus_candidateWithdraw_title" = "提取质押";
-"TransactionStatus_unknown_title" = "其他";
+"TransactionStatus_contractExecute_title" = "合约执行";
+"TransactionStatus_otherReceive_title" = "其他收入";
+"TransactionStatus_otherSend_title" = "其他支出";
+"TransactionStatus_MPCtransaction_title" = "MPC交易";
+"TransactionStatus_stakingCreate_title" = "创建验证人";
+"TransactionStatus_stakingEdit_title" = "编辑验证人";
+"TransactionStatus_stakingAdd_title" = "增加自有质押";
+"TransactionStatus_stakingWithdraw_title" = "退出验证人(包括撤销验证人创建)";
+"TransactionStatus_delegateCreate_title" = "委托";
+"TransactionStatus_delegateWithdraw_title" = "赎回委托";
+"TransactionStatus_create_proposal" = "创建提案";
+"TransactionStatus_submitText_title" = "文本提案";
+"TransactionStatus_submitVersion_title" = "升级提案";
+"TransactionStatus_submitParam_title" = "参数提案";
+"TransactionStatus_voteForProposal_title" = "提案投票(VoteYes\VoteNo\VoteAbstain)";
+"TransactionStatus_declareVersion_title" = "版本声明";
+"TransactionStatus_reportDuplicateSign_title" = "举报验证人";
+"TransactionStatus_createRestrictingPlan_title" = "创建锁仓";
+"TransactionStatus_unknown_title" = "未知";
+
 
 
 //SettingsVC
@@ -681,7 +708,10 @@
 
 "transaction_loadmore_text" = "查看更多交易";
 
-"staking_main_delegate_text" = "我的委托";
+"wallet_balance_restricted" = "锁仓：";
+"wallet_balance_restricted_doubt" = "锁仓的LAT支持委托";
+
+"staking_main_mydelegate_text" = "我的委托";
 "staking_main_validator_text" = "验证节点";
 "staking_main_wallet_name" = "钱包名称";
 "staking_main_delegate_text" = "委托";
@@ -703,3 +733,92 @@
 
 "staking_delegate" = "委托";
 "staking_withdraw" = "赎回委托";
+
+"staking_alert_locked_delegate" = "已锁定委托";
+"staking_alert_locked_delegate_detail" = "锁定的委托才有收益，赎回锁定的委托大约在6.1小时内到账。";
+"staking_alert_unlocked_delegate" = "未锁定委托";
+"staking_alert_unlocked_delegate_detail" = "委托大约在6.1小时内完成锁定，未锁定的委托没有收益，赎回的委托立即到账";
+"staking_alert_released_delegate" = "已解除委托";
+"staking_alert_released_detail" = "验证节点退出，委托自动解除，需要主动赎回委托";
+"staking_alert_annualized_rate" = "预计年化率";
+"staking_alert_annualized_rate_detail" = "当前节点的预计年化率，具体委托收益由节点分配";
+
+"staking_validator_node_all" = "所有";
+"staking_validator_node_active" = "活跃中";
+"staking_validator_node_candidate" = "候选中";
+"staking_validator_node_rank" = "排名";
+
+"staking_validator_delegate_total" = "总质押";
+"staking_validator_delegate_rate_about" = "预计年化率";
+
+"statking_validator_total_staked" = "总质押(LAT)";
+"statking_validator_delegations" = "接受委托(LAT)";
+"statking_validator_delegators" = "委托者";
+"statking_validator_slash" = "处罚次数";
+"statking_validator_blocks" = "已出块数";
+"statking_validator_blocks_rate" = "出块率";
+
+"statking_validator_Institutional" = "简介";
+"statking_validator_Website" = "官网";
+
+"statking_validator_Withdraw" = "赎回";
+"statking_validator_Delegate" = "委托";
+
+"statking_validator_Balance" = "可用余额";
+
+"ATextFieldView_title" = "数量:";
+"ATextFieldView_withdraw_title" = "赎回数量:";
+"ATextFieldView_withdraw_placeholder" = "输入数量（不少于10LAT）";
+
+"staking_doubt_delegate" = "委托";
+"staking_doubt_delegate_detail" = "委托的Token可以随时赎回，委托后大约在6.1小时内完成锁定，锁定后可以参与节点收益分配，但是赎回锁定的委托大约等待6.1小时才能到账;";
+"staking_doubt_reward" = "收益";
+"staking_doubt_reward_detail" = "委托收益来自节点的收益分配，节点收益主要有出块奖励、质押奖励和区块手续费奖励。具体如何分配请查看各节点官网说明";
+"staking_doubt_risk" = "风险";
+"staking_doubt_risk_detail" = "委托没有任何风险。";
+
+"staking_balance_can_used" = "可用余额";
+"staking_balance_locked_position" = "可用余额";
+"staking_balance_Delegated" = "已委托";
+"staking_balance_unlocked_Delegated" = "未锁定委托";
+"staking_balance__release_Delegated" = "已解除委托";
+
+"input_amount_hundred" = "百";
+"input_amount_thousand" = "千";
+"input_amount_ten_thousand" = "万";
+"input_amount_hundred_thousand" = "十万";
+"input_amount_million" = "百万";
+"input_amount_ten_million" = "千万";
+"input_amount_hundred_million" = "亿";
+"input_amount_billion" = "十亿";
+"input_amount_ten_billion" = "百亿";
+"input_amount_hundred_billion" = "千亿";
+"input_amount_trillion" = "万亿";
+
+"node_status_active" = "活跃中";
+"node_status_candidate" = "候选中";
+"node_status_exiting" = "退出中";
+"node_status_exited" = "已退出";
+
+"community_contact_wechat" = "微信";
+"community_contact_telegram" = "Telegram";
+"community_contact_gitHub" = "GitHub";
+"community_contact_twitter" = "Twitter";
+"community_contact_facebook" = "Facebook";
+
+"community_contact_wechat_group" = "官方微信群秘：";
+"community_contact_wechat_open" = "官方微信公众号：";
+
+"transaction_list_all_wallet" = "全部钱包";
+
+"delegate_detail_title" = "委托节点详情";
+"delegate_faq_title" = "常见问题";
+"delegate_tutorial_title" = "使用教程";
+"delegate_validator_detail_title" = "节点详情";
+"delegate_delegate_title" = "委托";
+"delegate_withdraw_title" = "赎回";
+"delegate_record_title" = "委托记录";
+
+"alert_sheet_copylink_action" = "复制链接";
+"alert_sheet_browser_action" = "在浏览器中打开";
+"alert_sheet_cancel_action" = "取消";

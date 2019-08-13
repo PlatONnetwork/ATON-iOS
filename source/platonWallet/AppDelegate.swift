@@ -39,12 +39,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LicenseVCDelegate {
         let status = AppFramework.sharedInstance.initialize()
         
         let storyboard = UIStoryboard(name: "LaunchScreen", bundle: nil)
-        let controller = storyboard.instantiateViewController(withIdentifier: "LaunchViewController")
+        let controller = storyboard.instantiateViewController(withIdentifier: "LaunchViewController") as! LaunchViewController
+        controller.animationFinishedHandle = { [weak self] in
+            self?.initUI(initSuccess: status)
+        }
         self.window?.rootViewController = controller
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
-            self.initUI(initSuccess:status)
-        }
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+//            self.initUI(initSuccess:status)
+//        }
         
         return true
     }

@@ -400,11 +400,11 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
         }
         
         if let wallet = AssetVCSharedData.sharedData.selectedWallet as? Wallet{
-            confirmPopUpView!.setUpContentView(view: confirmView, size: CGSize(width: PopUpContentWidth, height: 357))
+            confirmPopUpView!.setUpConfirmView(view: confirmView, width: PopUpContentWidth)
             confirmView.hideExecutor()
             confirmView.totalLabel.text = amountView.textField.text!
-            confirmView.toAddressLabel.text = walletAddressView.textField.text!
-            confirmView.walletName.text = wallet.name
+            confirmView.toAddressLabel.text = walletAddressView.textField.text!.addressDisplayInLocal() ?? "--"
+            confirmView.walletName.text = wallet.key?.address.addressDisplayInLocal() ?? "--"
             let feeString = self.totalFee().divide(by: ETHToWeiMultiplier
                 , round: 18)
             confirmView.feeLabel.text = feeString.ATPSuffix()
