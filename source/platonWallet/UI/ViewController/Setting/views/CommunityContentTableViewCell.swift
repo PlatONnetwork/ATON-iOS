@@ -18,6 +18,7 @@ class CommunityContentTableViewCell: UITableViewCell {
     public let qrcodeIV = UIImageView()
     public var lineLeadingConstraint: Constraint?
     public var qrcodeBottomConstraint: Constraint?
+    public var qrcodeHeightConstraint: Constraint?
     
     var cellDidCopyHandle: ((_ content: String?) -> Void)?
     var cellDidRightHandle: (() -> Void)?
@@ -25,7 +26,9 @@ class CommunityContentTableViewCell: UITableViewCell {
     var contact: CommunityContactStyle? {
         didSet {
             contentLabel.text = contact?.contact
+            qrcodeIV.image = contact?.qrcodeImage
             rightButton.setImage(UIImage(named: contact?.action == .scan ? "4.icon-Qr code" : "4.icon-jump"), for: .normal)
+            qrcodeIV.isHidden = contact?.qrcodeImage == nil
         }
     }
     
@@ -66,7 +69,8 @@ class CommunityContentTableViewCell: UITableViewCell {
         qrcodeIV.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(contentLabel.snp.bottom).offset(16)
-            make.height.width.equalTo(120)
+            make.height.width.equalTo(0).priority(998)
+            qrcodeHeightConstraint = make.height.width.equalTo(120).priority(999).constraint
             qrcodeBottomConstraint = make.bottom.equalToSuperview().offset(-16).priorityHigh().constraint
         }
         
@@ -80,11 +84,9 @@ class CommunityContentTableViewCell: UITableViewCell {
             make.bottom.equalToSuperview()
         }
         
-        
+        qrcodeHeightConstraint?.deactivate()
         qrcodeBottomConstraint?.deactivate()
         lineLeadingConstraint?.deactivate()
-        
-        qrcodeIV.isHidden = !(qrcodeBottomConstraint?.isActive ?? false)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -100,8 +102,10 @@ class CommunityContentTableViewCell: UITableViewCell {
             sender.isSelected = !sender.isSelected
             if sender.isSelected {
                 qrcodeBottomConstraint?.activate()
+                qrcodeHeightConstraint?.activate()
             } else {
                 qrcodeBottomConstraint?.deactivate()
+                qrcodeHeightConstraint?.deactivate()
             }
         }
         cellDidRightHandle?()

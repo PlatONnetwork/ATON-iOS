@@ -194,6 +194,10 @@ extension String{
     }
     
     func displayForMicrometerLevel(maxRound : Int) -> String {
+        guard self.isValidInputAmoutWith8DecimalPlace() else {
+            return self
+        }
+        
         if self.count != 0 {
             var integerPart:String?
             var decimalPart = String()
@@ -211,24 +215,25 @@ extension String{
              创建临时存放余数的可变数组
              */
             let remainderMutableArray = NSMutableArray.init(capacity: 0)
-            // 创建一个临时存储商的变量
-            var discussValue:Int32 = 0
+//            // 创建一个临时存储商的变量
+//            var discussValue:Int32 = 0
 
             /**
              对传入参数的整数部分进行千分拆分
              */
-            repeat {
-                let tempValue = integerPart! as NSString
-                // 获取商
-                discussValue = tempValue.intValue / 1000
-                // 获取余数
-                let remainderValue = tempValue.intValue % 1000
-                // 将余数一字符串的形式添加到可变数组里面
-                let remainderStr = tempValue.length < 3 ? String(format: "%d", remainderValue) : String(format: "%03d", remainderValue)
+            
+            
+            var tempValue = integerPart!
+            var start = tempValue.index(tempValue.endIndex, offsetBy: -min(3, tempValue.count))
+            var end = tempValue.index(tempValue.endIndex, offsetBy: 0)
+            
+            while tempValue.count > 0 {
+                let remainderStr = String(tempValue[start..<end])
                 remainderMutableArray.insert(remainderStr, at: 0)
-                // 将商重新复制
-                integerPart = String(format: "%d", discussValue)
-            } while discussValue > 0
+                tempValue = String(tempValue[..<start])
+                end = tempValue.index(start, offsetBy: 0)
+                start = tempValue.index(start, offsetBy: -min(3, tempValue.count))
+            }
 
             // 创建一个临时存储余数数组里的对象拼接起来的对象
             var tempString = String()

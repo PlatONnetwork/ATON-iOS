@@ -25,11 +25,6 @@ final class StakingService: BaseService {
         request.httpMethod = "POST"
         request.timeoutInterval = requestTimeout
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue(SettingService.getChainID(), forHTTPHeaderField: "x-aton-cid")
-        
-        Alamofire.request(request).responseJSON { (result) in
-            print(result)
-        }
         
         Alamofire.request(request).responseData { response in
             switch response.result {
@@ -48,8 +43,21 @@ final class StakingService: BaseService {
         }
     }
     
-    func getNodeList(completion: PlatonCommonCompletion?) {
+    func getNodeList(
+        controllerType: NodeControllerType,
+        isRankingSorted: Bool,
+        completion: PlatonCommonCompletion?) {
         var completion = completion
+        
+        if controllerType == .active {
+            let data = NodePersistence.getActiveNode(isRankingSorted: isRankingSorted)
+            self.successCompletionOnMain(obj: data as AnyObject, completion: &completion)
+            return
+        } else if controllerType == .candidate {
+            let data = NodePersistence.getCandiateNode(isRankingSorted: isRankingSorted)
+            self.successCompletionOnMain(obj: data as AnyObject, completion: &completion)
+            return
+        }
         
         let url = SettingService.debugBaseURL + "node/nodelist"
         
@@ -57,7 +65,6 @@ final class StakingService: BaseService {
         request.httpMethod = "POST"
         request.timeoutInterval = requestTimeout
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue(SettingService.getChainID(), forHTTPHeaderField: "x-aton-cid")
         
         Alamofire.request(request).responseData { response in
             switch response.result {
@@ -65,7 +72,11 @@ final class StakingService: BaseService {
                 do {
                     let decoder = JSONDecoder()
                     let response = try decoder.decode(JSONResponse<[Node]>.self, from: data)
-                    self.successCompletionOnMain(obj: response.data as AnyObject, completion: &completion)
+                    
+                    NodePersistence.add(nodes: response.data, { [weak self] in
+                        let datas = NodePersistence.getAll(isRankingSorted: isRankingSorted)
+                        self?.successCompletionOnMain(obj: datas as AnyObject, completion: &completion)
+                    })
                 } catch let err {
                     self.failCompletionOnMainThread(code: -1, errorMsg: err.localizedDescription, completion: &completion)
                 }
@@ -88,11 +99,6 @@ final class StakingService: BaseService {
         request.httpMethod = "POST"
         request.timeoutInterval = requestTimeout
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue(SettingService.getChainID(), forHTTPHeaderField: "x-aton-cid")
-        
-        Alamofire.request(request).responseJSON { (result) in
-            print(result)
-        }
         
         Alamofire.request(request).responseData { response in
             switch response.result {
@@ -132,11 +138,6 @@ final class StakingService: BaseService {
         request.httpMethod = "POST"
         request.timeoutInterval = requestTimeout
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue(SettingService.getChainID(), forHTTPHeaderField: "x-aton-cid")
-        
-        Alamofire.request(request).responseJSON { (result) in
-            print(result)
-        }
         
         Alamofire.request(request).responseData { response in
             switch response.result {
@@ -144,6 +145,40 @@ final class StakingService: BaseService {
                 do {
                     let decoder = JSONDecoder()
                     let response = try decoder.decode(JSONResponse<[DelegateDetail]>.self, from: data)
+                    self.successCompletionOnMain(obj: response.data as AnyObject, completion: &completion)
+                } catch let err {
+                    self.failCompletionOnMainThread(code: -1, errorMsg: err.localizedDescription, completion: &completion)
+                }
+            case .failure(let error):
+                self.failCompletionOnMainThread(code: -1, errorMsg: error.localizedDescription, completion: &completion)
+            }
+        }
+    }
+    
+    func getDelegationValue(
+        addr: String,
+        stakingBlockNum: String,
+        completion: PlatonCommonCompletion?) {
+        var completion = completion
+        
+        var parameters: [String: Any] = [:]
+        parameters["addr"] = addr
+        parameters["stakingBlockNum"] = stakingBlockNum
+        
+        let url = SettingService.debugBaseURL + "node/getDelegationValue"
+        
+        var request = URLRequest(url: try! url.asURL())
+        request.httpBody = try! JSONSerialization.data(withJSONObject: parameters)
+        request.httpMethod = "POST"
+        request.timeoutInterval = requestTimeout
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        Alamofire.request(request).responseData { response in
+            switch response.result {
+            case .success(let data):
+                do {
+                    let decoder = JSONDecoder()
+                    let response = try decoder.decode(JSONResponse<DelegationValue>.self, from: data)
                     self.successCompletionOnMain(obj: response.data as AnyObject, completion: &completion)
                 } catch let err {
                     self.failCompletionOnMainThread(code: -1, errorMsg: err.localizedDescription, completion: &completion)

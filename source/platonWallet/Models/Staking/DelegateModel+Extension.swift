@@ -8,6 +8,8 @@
 
 import Foundation
 import UIKit
+import BigInt
+import Localize_Swift
 
 extension Delegate {
     var walletName: String {
@@ -65,11 +67,34 @@ extension DelegateDetail {
         return redeem?.vonToLAT ?? "--"
     }
     
+    func getLeftButtonIsEnable(address: String) -> Bool {
+        let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.key?.address.lowercased() == address.lowercased() }.first
+        return localWallet != nil
+    }
     
+    // 第一个值为是否显示赎回
+    var rightButtonStatus: (Bool, Bool) {
+        if locked == nil && unlocked == nil && released == nil && redeem == nil {
+            return (false, true)
+        } else {
+            if locked == nil && unlocked == nil && released == nil {
+                return (true, false)
+            } else {
+                return (true, true)
+            }
+        }
+    }
 }
 
 extension DelegateDetail {
     func delegateToNode() -> Node? {
-        return Node(nodeId: nodeId, ranking: nil, name: nodeName, deposit: nil, url: url, ratePA: nil, nodeStatus: nodeStatus, isInit: false)
+        return Node(nodeId: nodeId, ranking: nil, name: nodeName, deposit: nil, url: url, ratePA: nil, nStatus: nodeStatus, isInit: false)
+    }
+}
+
+extension DelegationValue {
+    var deposit: String {
+        let depositBigInt = BigUInt(locked ?? "0")! + BigUInt(unLocked ?? "0")!
+        return String(depositBigInt)
     }
 }

@@ -22,13 +22,22 @@ class ValidatorNodesViewController: ButtonBarPagerTabStripViewController, Indica
         button.titleLabel?.font = UIFont.systemFont(ofSize: 12)
         button.setTitleColor(common_blue_color, for: .normal)
         button.setTitle(Localized("staking_validator_node_rank"), for: .normal)
+        button.setTitle(Localized("staking_validator_node_yield"), for: .selected)
         button.setImage(UIImage(named: "3.icon_ sorting"), for: .normal)
         button.semanticContentAttribute = UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft ? .forceLeftToRight : .forceRightToLeft
         button.layer.cornerRadius = 11.0
         button.layer.borderColor = common_blue_color.cgColor
         button.layer.borderWidth = 1 / UIScreen.main.scale
+        button.addTarget(self, action: #selector(rankingTapAction), for: .touchUpInside)
         return button
     }()
+    
+    @objc func rankingTapAction() {
+        rankButton.isSelected = !rankButton.isSelected
+        
+        guard let controllers = viewControllers as? [ValidatorNodeListViewController] else { return }
+        let _ = controllers.map { $0.pullDownForRefreshData(isRankSelected: !rankButton.isSelected) }
+    }
 
     override func viewDidLoad() {
         settings.style.selectedBarVerticalAlignment = .middle
@@ -65,8 +74,11 @@ class ValidatorNodesViewController: ButtonBarPagerTabStripViewController, Indica
 
     override func viewControllers(for pagerTabStripController: PagerTabStripViewController) -> [UIViewController] {
         let child_1 = ValidatorNodeListViewController(itemInfo: Localized("staking_validator_node_all"))
+        child_1.controllerType = .all
         let child_2 = ValidatorNodeListViewController(itemInfo: Localized("staking_validator_node_active"))
+        child_2.controllerType = .active
         let child_3 = ValidatorNodeListViewController(itemInfo: Localized("staking_validator_node_candidate"))
+        child_3.controllerType = .candidate
         
         return [child_1, child_2, child_3]
     }

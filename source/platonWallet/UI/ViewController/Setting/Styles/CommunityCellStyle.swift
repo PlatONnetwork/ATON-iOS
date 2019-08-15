@@ -7,9 +7,11 @@
 //
 
 import Foundation
+import UIKit
 
 public struct CommunityContactStyle {
     var contact: String
+    var qrcodeImage: UIImage? = nil
     var action: CommunityAction
     
     public enum CommunityAction {

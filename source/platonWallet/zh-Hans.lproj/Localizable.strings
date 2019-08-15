@@ -340,6 +340,12 @@
 "TransactionStatus_succeed_desc" = "已完成";
 "TransactionStatus_failed_desc" = "失败";
 
+"TransactionStatus_failed_delegate" = "委托失败";
+"TransactionStatus_succeed_delegate" = "委托成功";
+"TransactionStatus_failed_undelegate" = "赎回失败";
+"TransactionStatus_succeed_undelegate" = "赎回成功";
+"TransactionStatus_loading_undelegate" = "赎回中";
+
 "TransactionStatus_transfer_title" = "转账";
 "TransactionStatus_contractCreate_title" = "合约创建";
 "TransactionStatus_contractExecute_title" = "合约执行";
@@ -733,6 +739,7 @@
 
 "staking_delegate" = "委托";
 "staking_withdraw" = "赎回委托";
+"staking_moveout" = "移出列表";
 
 "staking_alert_locked_delegate" = "已锁定委托";
 "staking_alert_locked_delegate_detail" = "锁定的委托才有收益，赎回锁定的委托大约在6.1小时内到账。";
@@ -747,6 +754,7 @@
 "staking_validator_node_active" = "活跃中";
 "staking_validator_node_candidate" = "候选中";
 "staking_validator_node_rank" = "排名";
+"staking_validator_node_yield" = "预计年化率";
 
 "staking_validator_delegate_total" = "总质押";
 "staking_validator_delegate_rate_about" = "预计年化率";
@@ -765,6 +773,8 @@
 "statking_validator_Delegate" = "委托";
 
 "statking_validator_Balance" = "可用余额";
+
+"staking_validator_isInit_doubt" = "PlatON初始内置验证人，不接收委托";
 
 "ATextFieldView_title" = "数量:";
 "ATextFieldView_withdraw_title" = "赎回数量:";
@@ -805,6 +815,9 @@
 "community_contact_gitHub" = "GitHub";
 "community_contact_twitter" = "Twitter";
 "community_contact_facebook" = "Facebook";
+"community_contact_LinkedIn" = "LinkedIn";
+"community_contact_bihu" = "币乎";
+"community_contact_babite" = "巴比特";
 
 "community_contact_wechat_group" = "官方微信群秘：";
 "community_contact_wechat_open" = "官方微信公众号：";

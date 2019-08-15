@@ -12,7 +12,10 @@ import Localize_Swift
 class WithDrawViewController: BaseViewController {
     
     var currentNode: Node?
+    var stakingBlockNum: String?
     var listData: [DelegateTableViewCellStyle] = []
+    var balanceStyle: BalancesCellStyle?
+    var currentAddress: String?
     
     lazy var tableView = { () -> UITableView in
         let tbView = UITableView(frame: .zero)
@@ -34,30 +37,61 @@ class WithDrawViewController: BaseViewController {
         super.viewDidLoad()
         super.leftNavigationTitle = "delegate_withdraw_title"
         // Do any additional setup after loading the view.
-        currentNode = Node(nodeId: "hellotest", ranking: 1, name: "nodename", deposit: "100000", url: "", ratePA: "", nodeStatus: .Active, isInit: true)
-        
-        initListData()
         
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+        
+        tableView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(cancelFirstResponser)))
+        
+        fetchDelegateValue()
+    }
+    
+    @objc private func cancelFirstResponser() {
+        view.endEditing(true)
+    }
+    
+    private func fetchDelegateValue() {
+        showLoadingHUD()
+        
+        guard let node = currentNode, let blockNum = stakingBlockNum, let nodeId = node.nodeId else { return }
+        StakingService.sharedInstance.getDelegationValue(addr: nodeId, stakingBlockNum: blockNum) { [weak self] (result, data) in
+            self?.hideLoadingHUD()
+            
+            switch result {
+            case .success:
+                if let newData = data as? DelegationValue {
+                    self?.initBalanceStyle(delegationValue: newData)
+                }
+            case .fail(_, _):
+                break
+            }
+            
+        }
+    }
+    
+    private func initBalanceStyle(delegationValue: DelegationValue) {
+        let bStyle = BalancesCellStyle(balances: [
+            (Localized("staking_balance_Delegated"), delegationValue.deposit),
+            (Localized("staking_balance_unlocked_Delegated"), delegationValue.unLocked ?? "0"),
+            (Localized("staking_balance__release_Delegated"), delegationValue.released ?? "0")], selectedIndex: 0, isExpand: false)
+        balanceStyle = bStyle
+        
+        initListData()
     }
     
     private func initListData() {
-        guard let node = currentNode else { return }
+        let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).first { $0.key?.address == currentAddress }
+        guard
+            let node = currentNode,
+            let bStyle = balanceStyle,
+            let wallet = localWallet else { return }
         
         let item1 = DelegateTableViewCellStyle.nodeInfo(node: node)
-        
-        let index = (AssetVCSharedData.sharedData.walletList as! [Wallet]).firstIndex(of: AssetVCSharedData.sharedData.selectedWallet as! Wallet)
-        let walletStyle = WalletsCellStyle(wallets: AssetVCSharedData.sharedData.walletList as! [Wallet], selectedIndex: index ?? 0, isExpand: false)
-        let balanceStyle = BalancesCellStyle(balances: [
-            (Localized("staking_balance_Delegated"), "100000"),
-            (Localized("staking_balance_unlocked_Delegated"), "600000"),
-            (Localized("staking_balance__release_Delegated"), "400000")], selectedIndex: 0, isExpand: false)
-        
+        let walletStyle = WalletsCellStyle(wallets: [wallet], selectedIndex: 0, isExpand: false)
         let item2 = DelegateTableViewCellStyle.wallets(walletStyle: walletStyle)
-        let item3 = DelegateTableViewCellStyle.walletBalances(balanceStyle: balanceStyle)
+        let item3 = DelegateTableViewCellStyle.walletBalances(balanceStyle: bStyle)
         let item4 = DelegateTableViewCellStyle.inputAmount
         let item5 = DelegateTableViewCellStyle.singleButton(title: Localized("statking_validator_Withdraw"))
         
@@ -68,8 +102,9 @@ class WithDrawViewController: BaseViewController {
         ]
         let item6 = DelegateTableViewCellStyle.doubt(contents: contents)
         listData.append(contentsOf: [item1, item2, item3, item4, item5, item6])
+        
+        tableView.reloadData()
     }
-
 }
 
 extension WithDrawViewController: UITableViewDelegate, UITableViewDataSource {
@@ -103,10 +138,12 @@ extension WithDrawViewController: UITableViewDelegate, UITableViewDataSource {
             cell.setupCellData(for: walletStyle.getWallet(for: indexPath.row))
             cell.walletBackgroundView.isHidden = indexPath.row != 0
             cell.bottomlineV.isHidden = (indexPath.row == 0 || indexPath.row == walletStyle.cellCount - 1)
-            cell.rightImageView.image = indexPath.row == 0 ? UIImage(named: "3.icon_ drop-down") : indexPath.row == walletStyle.selectedIndex + 1 ? UIImage(named: "iconApprove") : nil
-            
+            cell.rightImageView.image =
+                (walletStyle.wallets.count <= 1) ? nil :
+                indexPath.row == 0 ? UIImage(named: "3.icon_ drop-down") :
+                indexPath.row == walletStyle.selectedIndex + 1 ? UIImage(named: "iconApprove") : nil
             cell.cellDidHandle = { [weak self] (_ cell: WalletTableViewCell) in
-                guard let self = self else { return }
+                guard let self = self, walletStyle.wallets.count > 1 else { return }
                 self.walletCellDidHandle(cell, walletStyle: walletStyle)
             }
             return cell

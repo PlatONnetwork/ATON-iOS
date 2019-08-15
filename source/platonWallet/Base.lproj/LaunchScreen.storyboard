@@ -23,9 +23,18 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ATONLaunchLogo" translatesAutoresizingMaskIntoConstraints="NO" id="htH-Tu-xJm">
+                                <rect key="frame" x="99" y="173" width="177" height="56"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="56" id="6Y4-HP-sTO"/>
+                                    <constraint firstAttribute="width" constant="177" id="LuU-7d-m13"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="htH-Tu-xJm" firstAttribute="top" secondItem="car-Cp-Psh" secondAttribute="top" constant="153" id="4Rd-7C-ZCe"/>
+                            <constraint firstItem="htH-Tu-xJm" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="VUb-mU-NC4"/>
                             <constraint firstItem="aAb-Nd-RG5" firstAttribute="centerX" secondItem="Ze5-6b-2t3" secondAttribute="centerX" id="YYe-jx-7c7"/>
                             <constraint firstAttribute="bottom" secondItem="aAb-Nd-RG5" secondAttribute="bottom" constant="20" id="nWU-uY-fo7"/>
                         </constraints>
@@ -37,4 +46,7 @@
             <point key="canvasLocation" x="53" y="375"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="ATONLaunchLogo" width="177" height="56"/>
+    </resources>
 </document>

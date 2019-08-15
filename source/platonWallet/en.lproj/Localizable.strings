@@ -352,6 +352,12 @@
 "TransactionStatus_succeed_desc" = "Success";
 "TransactionStatus_failed_desc" = "Failed";
 
+"TransactionStatus_failed_delegate" = "Failed";
+"TransactionStatus_succeed_delegate" = "Success";
+"TransactionStatus_failed_undelegate" = "Failed";
+"TransactionStatus_succeed_undelegate" = "Success";
+"TransactionStatus_loading_undelegate" = "Undelegating";
+
 "TransactionStatus_transfer_title" = "transfer";
 "TransactionStatus_contractCreate_title" = "ContractCreation";
 "TransactionStatus_contractExecute_title" = "ContractExecution";
@@ -731,6 +737,7 @@
 
 "staking_delegate" = "Delegate";
 "staking_withdraw" = "Withdraw";
+"staking_moveout" = "Move out";
 
 "staking_alert_locked_delegate" = "Locked delegate";
 "staking_alert_locked_delegate_detail" = "Only locked delegates are rewarded. Un-delegation (i.e. withdrawal) takes immediate effect.but,the delegated LAT takes 6.1 hours to unlock and return to the account.";
@@ -744,7 +751,8 @@
 "staking_validator_node_all" = "All";
 "staking_validator_node_active" = "Active";
 "staking_validator_node_candidate" = "Candidate";
-"staking_validator_node_rank" = "RANK";
+"staking_validator_node_rank" = "Rank";
+"staking_validator_node_yield" = "Yield";
 
 "staking_validator_delegate_total" = "Staked";
 "staking_validator_delegate_rate_about" = "Yield";
@@ -763,6 +771,8 @@
 "statking_validator_Delegate" = "Delegate";
 
 "statking_validator_Balance" = "Balance";
+
+"staking_validator_isInit_doubt" = "PlatON blockchain initial built-in validator, does not accept Delegation";
 
 "ATextFieldView_title" = "Amount:";
 "ATextFieldView_withdraw_title" = "Amount:";
@@ -803,6 +813,9 @@
 "community_contact_gitHub" = "GitHub";
 "community_contact_twitter" = "Twitter";
 "community_contact_facebook" = "Facebook";
+"community_contact_LinkedIn" = "LinkedIn";
+"community_contact_bihu" = "币乎";
+"community_contact_babite" = "巴比特";
 
 "community_contact_wechat_group" = "Group Secretary：";
 "community_contact_wechat_open" = "Official Account：";

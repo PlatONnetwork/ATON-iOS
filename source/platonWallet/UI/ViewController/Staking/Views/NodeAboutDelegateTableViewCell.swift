@@ -23,10 +23,12 @@ class NodeAboutDelegateTableViewCell: UITableViewCell {
     
     public let delegateButton = UIButton()
     public let withDrawButton = UIButton()
+    public let moveOutButton = UIButton()
     
     var didLinkHanlder: ((NodeAboutDelegateTableViewCell) -> Void)?
     var didDelegateHandler: ((NodeAboutDelegateTableViewCell) -> Void)?
     var didWithdrawHandler: ((NodeAboutDelegateTableViewCell) -> Void)?
+    var didMoveOutHandler: ((NodeAboutDelegateTableViewCell) -> Void)?
     
     var delegateDetail: DelegateDetail? {
         didSet {
@@ -216,7 +218,7 @@ class NodeAboutDelegateTableViewCell: UITableViewCell {
         }
         
         delegateButton.addTarget(self, action: #selector(delegateTapAction), for: .touchUpInside)
-        delegateButton.setCellBottomStyle(UIImage(named: "3.icon_Delegate3"), Localized("staking_delegate"))
+        delegateButton.setCellBottomStyle(UIImage(named: "3.icon_Delegate3"), UIImage(named: "3.icon_Delegate4"), Localized("staking_delegate"))
         delegateBackgroundView.addSubview(delegateButton)
         delegateButton.snp.makeConstraints { make in
             make.bottom.equalToSuperview()
@@ -226,9 +228,19 @@ class NodeAboutDelegateTableViewCell: UITableViewCell {
         }
         
         withDrawButton.addTarget(self, action: #selector(withdrawTapAction), for: .touchUpInside)
-        withDrawButton.setCellBottomStyle(UIImage(named: "3.icon_Undelegate 3"), Localized("staking_withdraw"))
+        withDrawButton.setCellBottomStyle(UIImage(named: "3.icon_Undelegate 3"), UIImage(named: "3.icon_Undelegate4"), Localized("staking_withdraw"))
         delegateBackgroundView.addSubview(withDrawButton)
         withDrawButton.snp.makeConstraints { make in
+            make.bottom.equalToSuperview()
+            make.width.equalToSuperview().dividedBy(2)
+            make.trailing.equalToSuperview()
+            make.height.equalTo(40)
+        }
+        
+        moveOutButton.addTarget(self, action: #selector(moveoutTapAction), for: .touchUpInside)
+        moveOutButton.setCellBottomStyle(UIImage(named: "3.icon_More out"), UIImage(named: "3.icon_More out"), Localized("staking_moveout"))
+        delegateBackgroundView.addSubview(moveOutButton)
+        moveOutButton.snp.makeConstraints { make in
             make.bottom.equalToSuperview()
             make.width.equalToSuperview().dividedBy(2)
             make.trailing.equalToSuperview()
@@ -254,9 +266,6 @@ class NodeAboutDelegateTableViewCell: UITableViewCell {
             make.height.equalTo(12)
             make.bottom.equalToSuperview().offset(-14)
         }
-        
-        
-        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -273,6 +282,10 @@ class NodeAboutDelegateTableViewCell: UITableViewCell {
     
     @objc private func withdrawTapAction() {
         didWithdrawHandler?(self)
+    }
+    
+    @objc private func moveoutTapAction() {
+        didMoveOutHandler?(self)
     }
 
 }

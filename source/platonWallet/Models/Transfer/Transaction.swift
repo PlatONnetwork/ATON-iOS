@@ -166,7 +166,6 @@ enum TransactionStatus {
             return (failedDesc, failedColor)
         }
     }
-    
 }
 
 class Transaction : Object, Decodable {
@@ -229,6 +228,8 @@ class Transaction : Object, Decodable {
     var githubId: String?
     var proposalType: String?
     var vote: String?
+    var unDelegation: String?
+    var redeemStatus: Int?
     
     override public static func ignoredProperties() ->[String] {
         return ["sharedWalletOwners",
@@ -245,7 +246,9 @@ class Transaction : Object, Decodable {
                 "version",
                 "githubId",
                 "proposalType",
-                "vote"
+                "vote",
+                "unDelegation",
+                "redeemStatus"
         ]
     }
     
@@ -269,6 +272,10 @@ class Transaction : Object, Decodable {
         case transactionIndex
         case txReceiptStatus
         case extra = "txInfo"
+        case unDelegation
+        case redeemStatus
+        case nodeName
+        case nodeId
     }
     
     required convenience init(from decoder: Decoder) throws {
@@ -300,6 +307,10 @@ class Transaction : Object, Decodable {
         }
         
         extra = try? container.decode(String.self, forKey: .extra)
+        unDelegation = try? container.decode(String.self, forKey: .unDelegation)
+        redeemStatus = try? container.decode(Int.self, forKey: .redeemStatus)
+        nodeName = try? container.decode(String.self, forKey: .nodeName)
+        nodeId = try? container.decode(String.self, forKey: .nodeId)
     }
     
 }
@@ -491,114 +502,6 @@ enum TransactionDirection: String, Decodable {
             return Localized("walletDetailVC_tx_type_receive")
         case .unknown:
             return Localized("TransactionStatus_unknown_title")
-        }
-    }
-}
-
-extension Transaction {
-    var toAvatarImage: UIImage? {
-        switch txType! {
-        case .transfer,
-             .unknown:
-             let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.key?.address == to }.first
-             guard let wallet = localWallet else {
-                return UIImage(named: "walletAvatar_1")
-             }
-             return wallet.image()
-        default:
-            if toType == .contract {
-                return UIImage(named: "2.icon_Shared")
-            } else {
-                return UIImage(named: "2.icon_node")
-            }
-        }
-    }
-    
-    var fromAvatarImage: UIImage? {
-        let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.key?.address == from }.first
-        guard let wallet = localWallet else {
-            return UIImage(named: "walletAvatar_1")
-        }
-        return wallet.image()
-    }
-    
-    var toNameString: String? {
-        switch txType! {
-        case .transfer,
-             .unknown:
-            let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.key?.address.lowercased() == to?.lowercased() }.first
-            guard let wallet = localWallet else {
-                return to?.addressForDisplayShort()
-            }
-            return wallet.name
-        default:
-            return nodeName ?? to?.addressForDisplayShort()
-        }
-    }
-    
-    var fromNameString: String? {
-        let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.key?.address.lowercased() == from?.lowercased() }.first
-        guard let wallet = localWallet else {
-            return from?.addressForDisplayShort()
-        }
-        return wallet.name
-    }
-    
-    var valueString: (String?, UIColor?) {
-        if txReceiptStatus == -1 {
-            return (nil, nil)
-        }
-        
-        switch direction {
-        case .Sent:
-            guard let string = valueDescription else {
-                return (nil, nil)
-            }
-            return ("-" + string, UIColor(rgb: 0xff3b3b))
-        case .Receive:
-            guard let string = valueDescription else {
-                return (nil, nil)
-            }
-            return ("+" + string, UIColor(rgb: 0x19a20e))
-        default:
-            return (nil, nil)
-        }
-    }
-    
-    var toIconImage: UIImage? {
-        switch toType {
-        case .contract:
-            return UIImage(named: "2.icon_Shared2")
-        default:
-            return nil
-        }
-    }
-    
-    var amountTextColor: UIColor {
-        switch direction {
-        case .Receive:
-            return UIColor(rgb: 0x19a20e)
-        case .Sent:
-            return UIColor(rgb: 0xff3b3b)
-        default:
-            return UIColor(rgb: 0xb6bbd0)
-        }
-    }
-    
-    var txTypeIcon: UIImage? {
-        switch direction {
-        case .Receive:
-            if txType! == .transfer {
-                return UIImage(named: "txRecvSign")
-            }
-            return UIImage(named: "1.icon_Undelegate")
-        case .Sent:
-            if txType! == .transfer {
-                return UIImage(named: "txSendSign")
-            }
-            return UIImage(named: "1.icon_Delegate")
-        default:
-            return nil
         }
     }
 }

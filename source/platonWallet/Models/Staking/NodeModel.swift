@@ -8,8 +8,10 @@
 
 import Foundation
 import Localize_Swift
+import RealmSwift
+import Realm
 
-public enum NodeStatus: String, Decodable {
+enum NodeStatus: String, Decodable {
     case Active
     case Candidate
     case Exiting
@@ -29,18 +31,57 @@ public enum NodeStatus: String, Decodable {
     }
 }
 
-public struct Node: Decodable {
-    var nodeId: String
-    var ranking: Int?
-    var name: String
-    var deposit: String?
-    var url: String?
-    var ratePA: String?
-    var nodeStatus: NodeStatus
-    var isInit: Bool
+class Node: Object, Decodable {
+    @objc dynamic var nodeId: String? = ""
+    @objc dynamic var ranking: Int = 0
+    @objc dynamic var name: String? = ""
+    @objc dynamic var deposit: String? = ""
+    @objc dynamic var url: String? = ""
+    @objc dynamic var ratePA: String? = ""
+    @objc dynamic var nodeStatus: String = NodeStatus.Active.rawValue
+    @objc dynamic var isInit: Bool = false
+    // 不同的链
+    @objc dynamic var chainUrl: String? = SettingService.getCurrentNodeURLString()
+    
+    required init() {
+        super.init()
+    }
+    
+    required init(value: Any, schema: RLMSchema) {
+        super.init(value: value, schema: schema)
+    }
+    
+    required init(realm: RLMRealm, schema: RLMObjectSchema) {
+        super.init(realm: realm, schema: schema)
+    }
+    
+    override static func primaryKey() -> String? {
+        return "nodeId"
+    }
+    
+    convenience init(
+        nodeId: String?,
+        ranking: Int?,
+        name: String?,
+        deposit: String?,
+        url: String?,
+        ratePA: String?,
+        nStatus: NodeStatus,
+        isInit: Bool
+        ) {
+        self.init()
+        self.nodeId = nodeId
+        self.ranking = ranking ?? 0
+        self.name = name
+        self.deposit = deposit
+        self.url = url
+        self.ratePA = ratePA
+        self.nodeStatus = nStatus.rawValue
+        self.isInit = isInit
+    }
 }
 
-public struct NodeDetail: Decodable {
+struct NodeDetail: Decodable {
     var node: Node
     var website: String?
     var intro: String?
@@ -91,6 +132,7 @@ public struct NodeDetail: Decodable {
         delegate = try container.decodeIfPresent(String.self, forKey: .delegate)
         blockOutNumber = try container.decodeIfPresent(Int.self, forKey: .blockOutNumber)
         blockRate = try container.decodeIfPresent(String.self, forKey: .blockRate)
-        node = Node(nodeId: nodeId, ranking: ranking, name: name, deposit: deposit, url: url, ratePA: ratePA, nodeStatus: nodeStatus, isInit: isInit)
+        
+        node = Node(nodeId: nodeId, ranking: ranking, name: name, deposit: deposit, url: url, ratePA: ratePA, nStatus: nodeStatus, isInit: isInit)
     }
 }

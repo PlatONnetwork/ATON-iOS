@@ -30,23 +30,8 @@ class WalletTableViewCell: UITableViewCell {
         
         walletNameLabel.text = wal.name
         walletAvatarIV.image = UIImage(named: wal.avatar)
-        walletAddressLabel.text = wal.key!.address
+        walletAddressLabel.text = wal.key!.address.addressForDisplay()
     }
-    
-//    func setWalletData(walletStyle: WalletsCellStyle, indexPath: IndexPath) {
-//        let wallet = walletStyle.wallet(for: indexPath)
-//        walletNameLabel.text = wallet.name
-//        walletAvatarIV.image = UIImage(named: wallet.avatar)
-//        walletAddressLabel.text = wallet.key!.address
-//
-//        walletBackgroundView.isHidden = indexPath.row != 0
-//        bottomlineV.isHidden = (indexPath.row == 0 || indexPath.row == walletStyle.cellCount() - 1)
-//        if indexPath.row == 0 {
-//            rightImageView.image = UIImage(named: "3.icon_ drop-down")
-//        } else {
-//            rightImageView.image = (indexPath.row - 1 == walletStyle.selectedIndex) ? UIImage(named: "iconApprove") : nil
-//        }
-//    }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)

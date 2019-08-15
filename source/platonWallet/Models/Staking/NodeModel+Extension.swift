@@ -10,25 +10,40 @@ import Foundation
 import UIKit
 
 extension Node {
+    var nStatus: NodeStatus {
+        switch nodeStatus {
+        case "Active":
+            return .Active
+        case "Candidate":
+            return .Candidate
+        case "Exiting":
+            return .Exiting
+        case "Exited":
+            return .Exited
+        default:
+            return .Active
+        }
+    }
+    
     var delegateAmount: String {
         return (deposit ?? "0").vonToLAT.ATPSuffix()
     }
     
     var status: (String, UIColor) {
-        switch nodeStatus {
+        switch nStatus {
         case .Active:
-            return (nodeStatus.description, status_blue_color)
+            return (nStatus.description, status_blue_color)
         case .Candidate:
-            return (nodeStatus.description, status_green_color)
+            return (nStatus.description, status_green_color)
         case .Exiting:
-            return (nodeStatus.description, status_darkgray_color)
+            return (nStatus.description, status_darkgray_color)
         case .Exited:
-            return (nodeStatus.description, status_lightgray_color)
+            return (nStatus.description, status_lightgray_color)
         }
     }
     
     var rate: String {
-        return String(format: "%02f", (Int(ratePA ?? "0") ?? 0) / 10000) + "%"
+        return String(format: "%.2f", ((Float(ratePA ?? "0") ?? 0) / 100.0)) + "%"
     }
     
     var rank: (String, UIImage?) {
@@ -40,7 +55,7 @@ extension Node {
         case 3:
             return ("3", UIImage(named: "3.img_mark3"))
         default:
-            return (String(format: "%d", ranking ?? 0), UIImage(named: "3.img_mark4"))
+            return (String(format: "%d", ranking), UIImage(named: "3.img_mark4"))
         }
     }
 }

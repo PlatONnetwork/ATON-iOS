@@ -7,8 +7,24 @@
 //
 
 import UIKit
+import MJRefresh
 
 class DelegateRecordViewController: BaseViewController, IndicatorInfoProvider {
+    
+    public enum RecordType: String {
+        case all
+        case redeem
+        case delegate
+    }
+    
+    var recordType: RecordType = .all
+    var listData: [Transaction] = [] {
+        didSet {
+            tableView.mj_footer.isHidden = listData.count == 0
+        }
+    }
+    
+    let listSize: Int = 20
     
     func indicatorInfo(for pagerTabStripController: PagerTabStripViewController) -> IndicatorInfo {
         return itemInfo
@@ -25,6 +41,16 @@ class DelegateRecordViewController: BaseViewController, IndicatorInfoProvider {
         tbView.backgroundColor = normal_background_color
         tbView.tableFooterView = UIView()
         return tbView
+    }()
+    
+    lazy var refreshHeader: MJRefreshHeader = {
+        let header = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(fetchDataLastest))!
+        return header
+    }()
+    
+    lazy var refreshFooter: MJRefreshFooter = {
+        let footer = MJRefreshAutoNormalFooter(refreshingTarget: self, refreshingAction: #selector(fetchDataMore))!
+        return footer
     }()
     
     init(itemInfo: String) {
@@ -47,7 +73,9 @@ class DelegateRecordViewController: BaseViewController, IndicatorInfoProvider {
             make.edges.equalToSuperview()
         }
         
-        
+        tableView.mj_header = refreshHeader
+        tableView.mj_footer = refreshFooter
+        tableView.mj_header.beginRefreshing()
     }
     
 
@@ -63,19 +91,71 @@ class DelegateRecordViewController: BaseViewController, IndicatorInfoProvider {
 
 }
 
+extension DelegateRecordViewController {
+    private func fetchData(sequence: String, direction: RefreshDirection) {
+        
+        let addresses = (AssetVCSharedData.sharedData.walletList as! [Wallet]).map { return $0.key!.address }
+        guard addresses.count > 0 else { return }
+        
+        TransactionService.service.getDelegateRecord(
+            addresses: addresses,
+            beginSequence: sequence,
+            listSize: listSize,
+            direction: direction.rawValue,
+            type: recordType.rawValue) { [weak self] (result, data) in
+                self?.tableView.mj_header.endRefreshing()
+                self?.tableView.mj_footer.endRefreshing()
+                
+                switch result {
+                case .success:
+                    if direction == .new {
+                        self?.listData.removeAll()
+                    }
+                    
+                    if let newData = data as? [Transaction], newData.count > 0 {
+                        self?.listData.append(contentsOf: newData)
+                        self?.tableView.mj_footer.resetNoMoreData()
+                    } else {
+                        self?.tableView.mj_footer.endRefreshingWithNoMoreData()
+                    }
+                    
+                    self?.tableView.reloadData()
+                    
+                case .fail(_, _):
+                    break
+                }
+                
+        }
+    }
+    
+    
+    @objc func fetchDataLastest() {
+        fetchData(sequence: "0", direction: .new)
+    }
+    
+    @objc func fetchDataMore() {
+        guard let sequence = listData.last?.sequence else {
+            tableView.mj_footer.endRefreshingWithNoMoreData()
+            return
+        }
+        fetchData(sequence: sequence, direction: .old)
+    }
+}
+
 extension DelegateRecordViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return listData.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "DelegateRecordTableViewCell") as! DelegateRecordTableViewCell
+        let transaction = listData[indexPath.row]
+        cell.transaction = transaction
+        cell.cellDidHandler = { [weak self] _ in
+            let controller = TransactionDetailViewController()
+            controller.transaction = transaction
+            self?.navigationController?.pushViewController(controller, animated: true)
+        }
         return cell
     }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-    }
-    
-    
 }

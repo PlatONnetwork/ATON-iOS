@@ -13,6 +13,7 @@ class DelegateViewController: BaseViewController {
     
     var currentNode: Node?
     var listData: [DelegateTableViewCellStyle] = []
+    var currentAddress: String?
     
     lazy var tableView = { () -> UITableView in
         let tbView = UITableView(frame: .zero)
@@ -55,7 +56,16 @@ class DelegateViewController: BaseViewController {
         
         let item1 = DelegateTableViewCellStyle.nodeInfo(node: node)
         
-        let index = (AssetVCSharedData.sharedData.walletList as! [Wallet]).firstIndex(of: AssetVCSharedData.sharedData.selectedWallet as! Wallet)
+        // 有已选中的钱包则默认选中
+        var index: Int? = 0
+        if
+            let address = currentAddress,
+            let wallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).first(where: { $0.key?.address == address }) {
+            index = (AssetVCSharedData.sharedData.walletList as! [Wallet]).firstIndex(of: wallet)
+        } else {
+            index = (AssetVCSharedData.sharedData.walletList as! [Wallet]).firstIndex(of: AssetVCSharedData.sharedData.selectedWallet as! Wallet)
+        }
+        
         let walletStyle = WalletsCellStyle(wallets: AssetVCSharedData.sharedData.walletList as! [Wallet], selectedIndex: index ?? 0, isExpand: false)
         let balanceStyle = BalancesCellStyle(balances: [
             (Localized("staking_balance_can_used"), "100000"),
@@ -108,10 +118,13 @@ extension DelegateViewController: UITableViewDelegate, UITableViewDataSource {
             cell.setupCellData(for: walletStyle.getWallet(for: indexPath.row))
             cell.walletBackgroundView.isHidden = indexPath.row != 0
             cell.bottomlineV.isHidden = (indexPath.row == 0 || indexPath.row == walletStyle.cellCount - 1)
-            cell.rightImageView.image = indexPath.row == 0 ? UIImage(named: "3.icon_ drop-down") : indexPath.row == walletStyle.selectedIndex + 1 ? UIImage(named: "iconApprove") : nil
+            cell.rightImageView.image =
+                (walletStyle.wallets.count <= 1) ? nil :
+                indexPath.row == 0 ? UIImage(named: "3.icon_ drop-down") :
+                indexPath.row == walletStyle.selectedIndex + 1 ? UIImage(named: "iconApprove") : nil
             
             cell.cellDidHandle = { [weak self] (_ cell: WalletTableViewCell) in
-                guard let self = self else { return }
+                guard let self = self, walletStyle.wallets.count > 1 else { return }
                 self.walletCellDidHandle(cell, walletStyle: walletStyle)
             }
             return cell

@@ -67,10 +67,7 @@
 		812002CD21A3F6430050E1B0 /* AddSharedWalletVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 812002CB21A3F6430050E1B0 /* AddSharedWalletVC.xib */; };
 		812002D021A417120050E1B0 /* ByteHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812002CF21A417120050E1B0 /* ByteHelper.swift */; };
 		812002D321A551160050E1B0 /* MockData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812002D221A551160050E1B0 /* MockData.swift */; };
-		81200D4822FBED28002E2944 /* ShadowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81200D4722FBED28002E2944 /* ShadowView.swift */; };
 		81200D4B22FBF29D002E2944 /* StakingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81200D4A22FBF29D002E2944 /* StakingService.swift */; };
-		81200D4F22FBF874002E2944 /* aton-launch-logo.svga in Resources */ = {isa = PBXBuildFile; fileRef = 81200D4E22FBF874002E2944 /* aton-launch-logo.svga */; };
-		81200D5222FC1D8C002E2944 /* ATONNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81200D5122FC1D8C002E2944 /* ATONNetworking.swift */; };
 		812489E321BF4D2A000C2F03 /* Array+sort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812489E221BF4D2A000C2F03 /* Array+sort.swift */; };
 		812A7ED8219EA6A900BE9C1C /* WalletManagerDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 812A7ED0219EA6A800BE9C1C /* WalletManagerDetailViewController.xib */; };
 		812A7ED9219EA6A900BE9C1C /* WalletManagerDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812A7ED1219EA6A800BE9C1C /* WalletManagerDetailViewController.swift */; };
@@ -169,6 +166,7 @@
 		819A52322190661D00E4C500 /* UIDevice+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819A52312190661D00E4C500 /* UIDevice+Extensions.swift */; };
 		81ACB9CA2301371900BB460B /* NodeModel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81ACB9C92301371900BB460B /* NodeModel+Extension.swift */; };
 		81ACB9CC2301936D00BB460B /* WalletBaseInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81ACB9CB2301936D00BB460B /* WalletBaseInfoView.swift */; };
+		81ACB9CE2302A59300BB460B /* Transaction+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81ACB9CD2302A59300BB460B /* Transaction+Extension.swift */; };
 		81B5CE71224332C500ACFE96 /* UITextFieldWithSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B5CE70224332C500ACFE96 /* UITextFieldWithSearch.swift */; };
 		81C1120E21AFBFDE00003E59 /* Router.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C1120D21AFBFDE00003E59 /* Router.swift */; };
 		81C88E0521746B39005F17F7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C88E0421746B39005F17F7 /* AppDelegate.swift */; };
@@ -222,6 +220,10 @@
 		81E2E85A2186BAA0008B7504 /* AddAddressInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 81E2E8592186BAA0008B7504 /* AddAddressInfoView.xib */; };
 		81E2E85E2186E2C5008B7504 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E2E85D2186E2C5008B7504 /* String+Extensions.swift */; };
 		81E2E86421870956008B7504 /* BigUInt+Extenstions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E2E86321870956008B7504 /* BigUInt+Extenstions.swift */; };
+		81E64A59230400F3000F2E7C /* NodePersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E64A58230400F3000F2E7C /* NodePersistence.swift */; };
+		81E64A5B2304FA7A000F2E7C /* DelegatePersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E64A5A2304FA7A000F2E7C /* DelegatePersistence.swift */; };
+		81E64A5F230528F3000F2E7C /* PlatON_network.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 81E64A5D230528F3000F2E7C /* PlatON_network.jpg */; };
+		81E64A60230528F3000F2E7C /* PlatON-Alita.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 81E64A5E230528F3000F2E7C /* PlatON-Alita.jpg */; };
 		81EE99BE21757E40008DF8CB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 81EE99C021757E40008DF8CB /* Localizable.strings */; };
 		81EE99C62175E563008DF8CB /* UIStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EE99C52175E563008DF8CB /* UIStyle.swift */; };
 		81EE99C92175E665008DF8CB /* CommonUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EE99C82175E665008DF8CB /* CommonUtilities.swift */; };
@@ -460,10 +462,7 @@
 		812002CB21A3F6430050E1B0 /* AddSharedWalletVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddSharedWalletVC.xib; sourceTree = "<group>"; };
 		812002CF21A417120050E1B0 /* ByteHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ByteHelper.swift; sourceTree = "<group>"; };
 		812002D221A551160050E1B0 /* MockData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockData.swift; sourceTree = "<group>"; };
-		81200D4722FBED28002E2944 /* ShadowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShadowView.swift; sourceTree = "<group>"; };
 		81200D4A22FBF29D002E2944 /* StakingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StakingService.swift; sourceTree = "<group>"; };
-		81200D4E22FBF874002E2944 /* aton-launch-logo.svga */ = {isa = PBXFileReference; lastKnownFileType = file; path = "aton-launch-logo.svga"; sourceTree = "<group>"; };
-		81200D5122FC1D8C002E2944 /* ATONNetworking.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATONNetworking.swift; sourceTree = "<group>"; };
 		812489E221BF4D2A000C2F03 /* Array+sort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+sort.swift"; sourceTree = "<group>"; };
 		812A7ED0219EA6A800BE9C1C /* WalletManagerDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WalletManagerDetailViewController.xib; sourceTree = "<group>"; };
 		812A7ED1219EA6A800BE9C1C /* WalletManagerDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletManagerDetailViewController.swift; sourceTree = "<group>"; };
@@ -567,6 +566,7 @@
 		819A52312190661D00E4C500 /* UIDevice+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+Extensions.swift"; sourceTree = "<group>"; };
 		81ACB9C92301371900BB460B /* NodeModel+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NodeModel+Extension.swift"; sourceTree = "<group>"; };
 		81ACB9CB2301936D00BB460B /* WalletBaseInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletBaseInfoView.swift; sourceTree = "<group>"; };
+		81ACB9CD2302A59300BB460B /* Transaction+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Transaction+Extension.swift"; sourceTree = "<group>"; };
 		81B5CE70224332C500ACFE96 /* UITextFieldWithSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldWithSearch.swift; sourceTree = "<group>"; };
 		81C1120D21AFBFDE00003E59 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		81C88E0121746B39005F17F7 /* platonWallet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = platonWallet.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -627,6 +627,10 @@
 		81E2E8592186BAA0008B7504 /* AddAddressInfoView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AddAddressInfoView.xib; sourceTree = "<group>"; };
 		81E2E85D2186E2C5008B7504 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		81E2E86321870956008B7504 /* BigUInt+Extenstions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BigUInt+Extenstions.swift"; sourceTree = "<group>"; };
+		81E64A58230400F3000F2E7C /* NodePersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodePersistence.swift; sourceTree = "<group>"; };
+		81E64A5A2304FA7A000F2E7C /* DelegatePersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelegatePersistence.swift; sourceTree = "<group>"; };
+		81E64A5D230528F3000F2E7C /* PlatON_network.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = PlatON_network.jpg; sourceTree = "<group>"; };
+		81E64A5E230528F3000F2E7C /* PlatON-Alita.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "PlatON-Alita.jpg"; sourceTree = "<group>"; };
 		81EE99BF21757E40008DF8CB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		81EE99C121757E6F008DF8CB /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		81EE99C52175E563008DF8CB /* UIStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStyle.swift; sourceTree = "<group>"; };
@@ -972,14 +976,6 @@
 			path = Staking;
 			sourceTree = "<group>";
 		};
-		81200D5022FC1D79002E2944 /* NetWorking */ = {
-			isa = PBXGroup;
-			children = (
-				81200D5122FC1D8C002E2944 /* ATONNetworking.swift */,
-			);
-			path = NetWorking;
-			sourceTree = "<group>";
-		};
 		812A7ECE219EA6A800BE9C1C /* WalletManagement */ = {
 			isa = PBXGroup;
 			children = (
@@ -1199,13 +1195,13 @@
 		81C88E0321746B39005F17F7 /* platonWallet */ = {
 			isa = PBXGroup;
 			children = (
+				81E64A5C230528DD000F2E7C /* Resouces */,
 				81C88E0421746B39005F17F7 /* AppDelegate.swift */,
 				81C88E0B21746B3B005F17F7 /* Assets.xcassets */,
 				9AD11DDC21806C2D002CD905 /* CommonService.swift */,
 				812D94A8218BEE1A002A48B0 /* Config */,
 				81C88E1021746B3B005F17F7 /* Info.plist */,
 				81C88E0D21746B3B005F17F7 /* LaunchScreen.storyboard */,
-				81200D4E22FBF874002E2944 /* aton-launch-logo.svga */,
 				81EE99C021757E40008DF8CB /* Localizable.strings */,
 				81C88E0821746B39005F17F7 /* Main.storyboard */,
 				81EE99D921770977008DF8CB /* Models */,
@@ -1312,6 +1308,15 @@
 			path = AddressBook;
 			sourceTree = "<group>";
 		};
+		81E64A5C230528DD000F2E7C /* Resouces */ = {
+			isa = PBXGroup;
+			children = (
+				81E64A5D230528F3000F2E7C /* PlatON_network.jpg */,
+				81E64A5E230528F3000F2E7C /* PlatON-Alita.jpg */,
+			);
+			path = Resouces;
+			sourceTree = "<group>";
+		};
 		81EE99C22175B79C008DF8CB /* UI */ = {
 			isa = PBXGroup;
 			children = (
@@ -1394,7 +1399,6 @@
 				81C98FC622A5279E004B1668 /* NSBundle+Hook_MJ.h */,
 				81C98FC722A5279E004B1668 /* NSBundle+Hook_MJ.m */,
 				8162F7AD22670F4B001726C1 /* platonWallet-Bridging-Header.h */,
-				81200D4722FBED28002E2944 /* ShadowView.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -1418,7 +1422,6 @@
 		81EE99DC21770977008DF8CB /* Modules */ = {
 			isa = PBXGroup;
 			children = (
-				81200D5022FC1D79002E2944 /* NetWorking */,
 				81200D4922FBF273002E2944 /* Staking */,
 				819A433921D085E700E276C7 /* Vote */,
 				8115BC4C21886148009FFE3B /* Common */,
@@ -1446,6 +1449,7 @@
 			isa = PBXGroup;
 			children = (
 				81FCCCFD2179C5FB0052FC29 /* Transaction.swift */,
+				81ACB9CD2302A59300BB460B /* Transaction+Extension.swift */,
 				81CB8ADC228EA99B009E8AA0 /* TransactionResponse.swift */,
 			);
 			path = Transfer;
@@ -1599,6 +1603,8 @@
 				9AEF470F21F9C9A9008A3640 /* IPGeoPersistence.swift */,
 				9A9E1FEC2261D38F006749CF /* RealmResults+extensions.swift */,
 				9AA49EED22706572001ABB44 /* RealmWriteThread.swift */,
+				81E64A58230400F3000F2E7C /* NodePersistence.swift */,
+				81E64A5A2304FA7A000F2E7C /* DelegatePersistence.swift */,
 			);
 			path = Persistence;
 			sourceTree = "<group>";
@@ -2042,10 +2048,12 @@
 				812002AD21A3EB390050E1B0 /* TransferDetailView.xib in Resources */,
 				9AE3142C21912BD300B5433F /* BiometricsAuthViewController.xib in Resources */,
 				9AD2863521D37487009AB958 /* CandidateDetailViewController.xib in Resources */,
+				81E64A5F230528F3000F2E7C /* PlatON_network.jpg in Resources */,
 				9A79A092219BF382000EB4C5 /* CreateSharedWalletStep2ViewController.xib in Resources */,
 				9ADB60AC222E63940044918D /* AssetHeaderViewV060.xib in Resources */,
 				81E2E84D2186A811008B7504 /* AddressBookTableViewCell.xib in Resources */,
 				9A79A096219BFFDD000EB4C5 /* CreateSharedWalletMemberTableViewCell.xib in Resources */,
+				81E64A60230528F3000F2E7C /* PlatON-Alita.jpg in Resources */,
 				812002B121A3EB390050E1B0 /* TransferSwitchWallet.xib in Resources */,
 				81C88E0F21746B3B005F17F7 /* LaunchScreen.storyboard in Resources */,
 				812002B421A3EB390050E1B0 /* TransferConfirmView.xib in Resources */,
@@ -2103,7 +2111,6 @@
 				9ADB60BC222E809F0044918D /* AssetReceiveViewControllerV060.xib in Resources */,
 				9A79A089219ADD1F000EB4C5 /* CreateSharedWalletStep1ViewController.xib in Resources */,
 				813E288821D5BF2300C36A0F /* VoteDetailCell.xib in Resources */,
-				81200D4F22FBF874002E2944 /* aton-launch-logo.svga in Resources */,
 				9ADB60C6223103B20044918D /* AssetFeeViewV060.xib in Resources */,
 				9ADB60D1223262A70044918D /* JointWalletCollectionViewCell.xib in Resources */,
 				8115BEB0218B2025009FFE3B /* TransactionCell.xib in Resources */,
@@ -2150,12 +2157,9 @@
 				"${BUILT_PRODUCTS_DIR}/Localize-Swift/Localize_Swift.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/MJRefresh/MJRefresh.framework",
-				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
 				"${BUILT_PRODUCTS_DIR}/RTRootNavigationController/RTRootNavigationController.framework",
 				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
 				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/SSZipArchive/SSZipArchive.framework",
-				"${BUILT_PRODUCTS_DIR}/SVGAPlayer/SVGAPlayer.framework",
 				"${BUILT_PRODUCTS_DIR}/ScryptSwift/ScryptSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 				"${BUILT_PRODUCTS_DIR}/Spring/Spring.framework",
@@ -2177,12 +2181,9 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Localize_Swift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MJRefresh.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RTRootNavigationController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SSZipArchive.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVGAPlayer.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ScryptSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Spring.framework",
@@ -2271,7 +2272,6 @@
 				81F5123D22FEE812005F3BDF /* DelegateModel+Extension.swift in Sources */,
 				9A56557D2176CB05002A1F6C /* HDPath.swift in Sources */,
 				81D7E26322E836E80069CDED /* MyDelegateHeaderView.swift in Sources */,
-				81200D5222FC1D8C002E2944 /* ATONNetworking.swift in Sources */,
 				812002B521A3EB390050E1B0 /* SharedWalletTransactionDetailVC.swift in Sources */,
 				819333FF223FD08600DCFD93 /* AssetPageViewController.swift in Sources */,
 				8106350F219C074800F0A06D /* STransaction.swift in Sources */,
@@ -2332,6 +2332,7 @@
 				819A435121D235E800E276C7 /* VotePersistence.swift in Sources */,
 				9AF9AC1D2182E04000E97F07 /* PopupDialog+Keyboard.swift in Sources */,
 				9ADE4505217EC8AC006F1C81 /* UIViewController+Extenstions.swift in Sources */,
+				81E64A59230400F3000F2E7C /* NodePersistence.swift in Sources */,
 				81D7E24922E7F6270069CDED /* PTSButtonBarView.swift in Sources */,
 				819A434B21D1FEA700E276C7 /* NodeVoteSummary.swift in Sources */,
 				819A434721D1FE2300E276C7 /* VoteManager.swift in Sources */,
@@ -2342,6 +2343,7 @@
 				81F1AFC622FADA2F00A74C00 /* WebCommonViewController.swift in Sources */,
 				818CFA5C22F984DA00565F2D /* TransactionDetailHeaderView.swift in Sources */,
 				812002B721A3EB390050E1B0 /* STransferDetailView.swift in Sources */,
+				81E64A5B2304FA7A000F2E7C /* DelegatePersistence.swift in Sources */,
 				81806F5C2269BB410072026A /* UITextView+AspectsScaling.m in Sources */,
 				81D7E27122E8690A0069CDED /* DelegateDetailViewController.swift in Sources */,
 				811AB2C122EEE1D200284F1A /* SingleButtonTableViewCell.swift in Sources */,
@@ -2517,8 +2519,8 @@
 				818CFA5A22F954B400565F2D /* TransactionDetailTableViewCell.swift in Sources */,
 				811AB2B122EE9FAA00284F1A /* NodeBaseInfoView.swift in Sources */,
 				81C98FC822A5279E004B1668 /* NSBundle+Hook_MJ.m in Sources */,
-				81200D4822FBED28002E2944 /* ShadowView.swift in Sources */,
 				811AB2B322EECBEC00284F1A /* WithDrawViewController.swift in Sources */,
+				81ACB9CE2302A59300BB460B /* Transaction+Extension.swift in Sources */,
 				9ADE450C217ED3DC006F1C81 /* UIButton+Extensions.swift in Sources */,
 				9AF9AC1F2182E04000E97F07 /* TransitionAnimations.swift in Sources */,
 				9AF9AC202182E04000E97F07 /* PopupDialogDefaultButtons.swift in Sources */,

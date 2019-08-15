@@ -14,7 +14,6 @@ PODS:
     - CryptoSwift
     - Localize-Swift
     - secp256k1.swift
-  - Protobuf (3.8.0)
   - Realm (3.13.1):
     - Realm/Headers (= 3.13.1)
   - Realm/Headers (3.13.1)
@@ -28,15 +27,6 @@ PODS:
   - secp256k1.swift (0.1.4)
   - SnapKit (4.0.1)
   - Spring (1.0.6)
-  - SSZipArchive (2.2.2)
-  - SVGAPlayer (2.3.3):
-    - SVGAPlayer/Core (= 2.3.3)
-    - SVGAPlayer/ProtoFiles (= 2.3.3)
-  - SVGAPlayer/Core (2.3.3):
-    - SSZipArchive (>= 1.8.1)
-    - SVGAPlayer/ProtoFiles
-  - SVGAPlayer/ProtoFiles (2.3.3):
-    - Protobuf (~> 3.4)
   - SwiftLint (0.30.1)
   - SwiftReorder (6.0.2)
   - SwipeCellKit (2.5.4)
@@ -61,7 +51,6 @@ DEPENDENCIES:
   - secp256k1.swift (~> 0.1)
   - SnapKit (~> 4.0.0)
   - Spring (from `https://github.com/MengTo/Spring.git`)
-  - SVGAPlayer
   - SwiftLint (= 0.30.1)
   - SwiftReorder (~> 6.0)
   - SwipeCellKit (= 2.5.4)
@@ -81,15 +70,12 @@ SPEC REPOS:
     - MBProgressHUD
     - MJRefresh
     - platonWeb3
-    - Protobuf
     - Realm
     - RealmSwift
     - RTRootNavigationController
     - ScryptSwift
     - secp256k1.swift
     - SnapKit
-    - SSZipArchive
-    - SVGAPlayer
     - SwiftLint
     - SwiftReorder
     - SwipeCellKit
@@ -117,7 +103,6 @@ SPEC CHECKSUMS:
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
   MJRefresh: 7798e16e53a5ef7f332dd05b27664db4e29530fd
   platonWeb3: d84dd8430b71525d242a7e4b1cfc4561a92e81bc
-  Protobuf: 3f617b9a6e73605565086864c9bc26b2bf2dd5a3
   Realm: 50071da38fe079e0735e47c9f2eae738c68c5996
   RealmSwift: 8a1e6a02b7a08cd17a31e3115143fb69fe5f3fb9
   RTRootNavigationController: afa6913402be26f8326f7f37fc1550aa67baddcc
@@ -125,14 +110,12 @@ SPEC CHECKSUMS:
   secp256k1.swift: a7e7a214f6db6ce5db32cc6b2b45e5c4dd633634
   SnapKit: 0de968a9fec17499afa29683b05d0c775b6d1c29
   Spring: 3d113f14575ef79aec9c5f906dfa4f5001c03254
-  SSZipArchive: fa16b8cc4cdeceb698e5e5d9f67e9558532fbf23
-  SVGAPlayer: cf93c1761209c478003951fa23376e7ed7dedc96
   SwiftLint: a54bf1fe12b55c68560eb2a7689dfc81458508f7
   SwiftReorder: 60ef1faf6446cf68f9a647cb975530db8efd6620
   SwipeCellKit: 4eada3884ab1bbae5e8d2fb9030c242aa23d7f42
   TrezorCrypto: bfeea47a052dca2c77d4a39e1e183865e52de14d
   "UITextView+Placeholder": 0c3efd97f37ea64bde7f34cc6e90fe02e87b3909
 
-PODFILE CHECKSUM: 2350e86ca240e3878fd74c41e8b63946e5bb85e9
+PODFILE CHECKSUM: ee18793e1dc5d727480bb1dacb8f1e948c280771
 
 COCOAPODS: 1.5.3

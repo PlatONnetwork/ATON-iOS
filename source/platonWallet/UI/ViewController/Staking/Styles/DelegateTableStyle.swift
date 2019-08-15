@@ -63,20 +63,4 @@ struct WalletsCellStyle {
             return wallets[selectedIndex]
         }
     }
-    
-    
-//    func wallet() -> Wallet {
-//        let indexPath = IndexPath(row: selectedIndex, section: 0)
-//        return wallet(for: indexPath)
-//    }
-//    
-//    func wallet(for indexPath: IndexPath) -> Wallet {
-//        if isExpand {
-//            let wallet = indexPath.row == 0 ? wallets[selectedIndex] : wallets[indexPath.row - 1]
-//            return wallet
-//        } else {
-//            let wallet = wallets[selectedIndex]
-//            return wallet
-//        }
-//    }
 }

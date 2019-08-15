@@ -58,5 +58,6 @@ let text_blue_color = UIColor(rgb: 0x2A5FFE)
 
 let status_blue_color = UIColor(rgb: 0x4A90E2)
 let status_green_color = UIColor(rgb: 0x19A20E)
+let status_red_color = UIColor(rgb: 0xF5302C)
 let status_darkgray_color = UIColor(rgb: 0x525768)
 let status_lightgray_color = UIColor(rgb: 0x9EABBE)

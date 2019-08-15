@@ -155,8 +155,10 @@ extension UIButton {
         self.imageEdgeInsets = UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 0)
     }
     
-    func setCellBottomStyle(_ image: UIImage?, _ title: String) {
+    func setCellBottomStyle(_ image: UIImage?, _ disableImage: UIImage?, _ title: String) {
         self.setTitleColor(.black, for: .normal)
+        self.setTitleColor(common_lightLightGray_color, for: .disabled)
+        self.setImage(disableImage, for: .disabled)
         self.setImage(image, for: .normal)
         self.setTitle(title, for: .normal)
         self.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium)

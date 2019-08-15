@@ -14,8 +14,14 @@ class NodeDetailViewController: BaseViewController {
     public let nodeInfoView = NodeBaseInfoView()
     public let institutionalLabel = UILabel()
     public let websiteLabel = UILabel()
+    public let doubtLabel = UILabel()
     
-    public let delegateButton = UIButton()
+    lazy var delegateButton = { () -> PButton in
+        let button = PButton()
+        button.setTitle(Localized("statking_validator_Delegate"), for: .normal)
+        button.addTarget(self, action: #selector(delegateTapAction), for: .touchUpInside)
+        return button
+    }()
     
     var nodeId: String?
     
@@ -77,17 +83,30 @@ class NodeDetailViewController: BaseViewController {
             make.top.equalTo(websiteTipLabel.snp.bottom).offset(10)
         }
         
-        
-        delegateButton.setCornerFullBackgroundColorStyle(UIImage(named: "3.icon_Delegate3-w"), Localized("statking_validator_Delegate"))
-        delegateButton.addTarget(self, action: #selector(delegateTapAction), for: .touchUpInside)
-        
         view.addSubview(delegateButton)
-        delegateButton.snp.makeConstraints { make in
-            make.height.equalTo(40)
-            make.leading.equalToSuperview().offset(16)
-            make.trailing.equalToSuperview().offset(-16)
+        
+        let attachment = NSTextAttachment()
+        attachment.bounds = CGRect(x: 0, y: -2, width: 10, height: 10)
+        attachment.image = UIImage(named: "3.icon_warning")
+        
+        let attr = NSMutableAttributedString()
+        attr.append(NSAttributedString(attachment: attachment))
+        attr.append(NSAttributedString(string: " "))
+        attr.append(NSAttributedString(string: Localized("staking_validator_isInit_doubt")))
+
+        doubtLabel.attributedText = attr
+        doubtLabel.textColor = common_darkGray_color
+        doubtLabel.textAlignment = .center
+        doubtLabel.font = .systemFont(ofSize: 12)
+        doubtLabel.numberOfLines = 0
+        view.addSubview(doubtLabel)
+        doubtLabel.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(delegateButton)
             make.bottom.equalTo(bottomLayoutGuide.snp.top).offset(-30)
+            make.top.equalTo(delegateButton.snp.bottom).offset(15)
         }
+        
+        
         
         let doubtButtonItem = UIBarButtonItem(image: UIImage(named: "3.icon_doubt"), style: .done, target: self, action: #selector(doubtTapAction))
         doubtButtonItem.tintColor = .black
@@ -117,6 +136,25 @@ class NodeDetailViewController: BaseViewController {
         
         nodeInfoView.isHidden = (nodeDetail?.website == nil)
         
+        if nodeDetail?.node.isInit == false {
+            delegateButton.snp.makeConstraints { make in
+                make.height.equalTo(40)
+                make.leading.equalToSuperview().offset(16)
+                make.trailing.equalToSuperview().offset(-16)
+            }
+            delegateButton.layoutIfNeeded()
+            delegateButton.style = .disable
+        } else {
+            delegateButton.snp.makeConstraints { make in
+                make.height.equalTo(40)
+                make.leading.equalToSuperview().offset(16)
+                make.trailing.equalToSuperview().offset(-16)
+                make.bottom.equalTo(bottomLayoutGuide.snp.top).offset(-30)
+            }
+            delegateButton.layoutIfNeeded()
+            delegateButton.style = .blue
+        }
+        doubtLabel.isHidden = (nodeDetail?.node.isInit == false)
     }
     
     private func fetchData() {
@@ -143,6 +181,7 @@ class NodeDetailViewController: BaseViewController {
     }
     
     @objc private func delegateTapAction() {
+        guard delegateButton.style != .disable else { return }
         guard let node = nodeDetail?.node else { return }
         let controller = DelegateViewController()
         controller.currentNode = node

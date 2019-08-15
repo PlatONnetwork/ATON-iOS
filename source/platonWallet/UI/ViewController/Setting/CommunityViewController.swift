@@ -33,29 +33,43 @@ class CommunityViewController: BaseViewController {
         
         let item1 = CommunityCellStyle(avatar: "4.icon-WeChat", name: Localized("community_contact_wechat"), contacts:
             [
-            CommunityContactStyle(contact: Localized("community_contact_wechat_group") + "CatherinePlatON", action: .scan),
-            CommunityContactStyle(contact: Localized("community_contact_wechat_open") + "CatherinePlatON", action: .scan)]
+            CommunityContactStyle(contact: Localized("community_contact_wechat_group") + "PlatON-Alita", qrcodeImage: UIImage(named: "PlatON-Alita.jpg"), action: .scan),
+            CommunityContactStyle(contact: Localized("community_contact_wechat_open") + "PlatON_network", qrcodeImage: UIImage(named: "PlatON_network.jpg"), action: .scan)]
         )
         let item2 = CommunityCellStyle(avatar: "4.icon-Telegram", name: Localized("community_contact_telegram"), contacts: [
-            CommunityContactStyle(contact: "https://t.me/PlatONHK", action: .link)]
+            CommunityContactStyle(contact: "https://t.me/PlatONHK", qrcodeImage: nil, action: .link)]
         )
         let item3 = CommunityCellStyle(avatar: "4.icon-GitHub", name: Localized("community_contact_gitHub"), contacts: [
-            CommunityContactStyle(contact: "https://github.com/PlatONnetwork", action: .link)]
+            CommunityContactStyle(contact: "https://github.com/PlatONnetwork", qrcodeImage: nil, action: .link)]
         )
         let item4 = CommunityCellStyle(avatar: "4.icon-Twitter", name: Localized("community_contact_twitter"), contacts: [
-            CommunityContactStyle(contact: "https://twitter.com/PlatON_Network", action: .link)]
+            CommunityContactStyle(contact: "https://twitter.com/PlatON_Network", qrcodeImage: nil, action: .link)]
         )
         let item5 = CommunityCellStyle(avatar: "4.icon-Facebook", name: Localized("community_contact_facebook"), contacts: [
-            CommunityContactStyle(contact: "https://facebook.com/PlatONNet work/", action: .link)]
+            CommunityContactStyle(contact: "https://www.facebook.com/PlatONNetwork/", qrcodeImage: nil, action: .link)]
+        )
+        let item6 = CommunityCellStyle(avatar: "4.icon-icon-Rabbit", name: "Reddit", contacts: [
+            CommunityContactStyle(contact: "https://www.reddit.com/user/PlatON_Network", qrcodeImage: nil, action: .link)]
+        )
+        let item7 = CommunityCellStyle(avatar: "4.icon-Medium", name: "Medium", contacts: [
+            CommunityContactStyle(contact: "https://medium.com/@PlatON_Network", qrcodeImage: nil, action: .link)]
+        )
+        let item8 = CommunityCellStyle(avatar: "4.icon-in", name: Localized("community_contact_LinkedIn"), contacts: [
+            CommunityContactStyle(contact: "https://www.linkedin.com/company/platonnetwork/", qrcodeImage: nil, action: .link)]
+        )
+        let item9 = CommunityCellStyle(avatar: "4.icon-bihu", name: Localized("community_contact_bihu"), contacts: [
+            CommunityContactStyle(contact: "https://bihu.com/people/1215832888", qrcodeImage: nil, action: .link)]
+        )
+        let item10 = CommunityCellStyle(avatar: "4.icon-babbitt", name: Localized("community_contact_babite"), contacts: [
+            CommunityContactStyle(contact: "https://www.chainnode.com/forum/267", qrcodeImage: nil, action: .link)]
         )
         
-        listData.append(contentsOf: [item1, item2, item3, item4, item5])
+        listData.append(contentsOf: [item1, item2, item3, item4, item5, item6, item7, item8, item9, item10])
         
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        
         
     }
     

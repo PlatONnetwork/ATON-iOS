@@ -45,7 +45,11 @@ class DelegateDetailViewController: BaseViewController {
     
     var delegate: Delegate?
     var delegateDetail: DelegateDetail?
-    var listData: [DelegateDetail] = []
+    var listData: [DelegateDetail] = [] {
+        didSet {
+            tableView.mj_footer.isHidden = listData.count == 0
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -90,8 +94,10 @@ extension DelegateDetailViewController {
     private func gotoWithdrawController(_ dDetail: DelegateDetail) {
         let controller = WithDrawViewController()
         controller.currentNode = dDetail.delegateToNode()
+        controller.stakingBlockNum = dDetail.stakingBlockNum
+        controller.currentAddress = (AssetVCSharedData.sharedData.selectedWallet as! Wallet).key?.address
         navigationController?.pushViewController(controller, animated: true)
-    }
+    };
     
     @objc private func openWebSiteController(_ linkUrl: String?) {
         guard let url = linkUrl else { return }
@@ -122,8 +128,13 @@ extension DelegateDetailViewController {
                     self?.listData.removeAll()
                 }
                 
-                if let newData = data as? [DelegateDetail] {
-                    self?.listData.append(contentsOf: newData)
+                if let newData = data as? [DelegateDetail], newData.count > 0 {
+                    let filterData = newData.filter { return !DelegatePersistence.isDeleted(self?.delegate?.walletAddress ?? "", $0) }
+                    
+                    self?.listData.append(contentsOf: filterData)
+                    self?.tableView.mj_footer.resetNoMoreData()
+                } else {
+                    self?.tableView.mj_footer.endRefreshingWithNoMoreData()
                 }
                 
                 self?.tableView.reloadData()
@@ -139,8 +150,9 @@ extension DelegateDetailViewController {
     }
     
     @objc func fetchDataMore() {
-        guard let sequence = listData.last?.sequence else { return }
-        fetchData(sequence: sequence, direction: .old)
+        tableView.mj_footer.endRefreshing()
+//        guard let sequence = listData.last?.sequence else { return }
+//        fetchData(sequence: sequence, direction: .old)
     }
 }
 
@@ -153,6 +165,15 @@ extension DelegateDetailViewController: UITableViewDelegate, UITableViewDataSour
         let cell = tableView.dequeueReusableCell(withIdentifier: "NodeAboutDelegateTableViewCell") as! NodeAboutDelegateTableViewCell
         let delegateDetail = self.listData[indexPath.row]
         cell.delegateDetail = delegateDetail
+        cell.delegateButton.isEnabled = delegateDetail.getLeftButtonIsEnable(address: delegate!.walletAddress)
+        cell.delegateButton.backgroundColor = delegateDetail.getLeftButtonIsEnable(address: delegate!.walletAddress) ? UIColor.white : UIColor(rgb: 0xDCDFE8, alpha: 0.4)
+        cell.withDrawButton.isHidden = !delegateDetail.rightButtonStatus.0
+        cell.moveOutButton.isHidden = delegateDetail.rightButtonStatus.0
+        cell.withDrawButton.isEnabled = delegateDetail.rightButtonStatus.1
+        cell.moveOutButton.isEnabled = delegateDetail.rightButtonStatus.1
+        cell.withDrawButton.backgroundColor = delegateDetail.rightButtonStatus.1 ? UIColor.white : UIColor(rgb: 0xDCDFE8, alpha: 0.4)
+        cell.moveOutButton.backgroundColor = delegateDetail.rightButtonStatus.1 ? UIColor.white : UIColor(rgb: 0xDCDFE8, alpha: 0.4)
+        
         cell.didLinkHanlder = { [weak self] _ in
             self?.openWebSiteController(delegateDetail.url)
         }
@@ -162,7 +183,19 @@ extension DelegateDetailViewController: UITableViewDelegate, UITableViewDataSour
         cell.didWithdrawHandler = { [weak self] _ in
             self?.gotoWithdrawController(delegateDetail)
         }
+        cell.didMoveOutHandler = { [weak self] _ in
+            self?.removeDelegateDetailCell(indexPath)
+            
+        }
         return cell
+    }
+    
+    func removeDelegateDetailCell(_ indexPath: IndexPath) {
+        let delegateDetail = listData[indexPath.row]
+        let detailDel = DelegateDetailDel(walletAddress: delegate?.walletAddress ?? "", nodeId: delegateDetail.nodeId, stakingBlockNum: delegateDetail.stakingBlockNum)
+        DelegatePersistence.add(delegates: [detailDel])
+        listData.remove(at: indexPath.row)
+        tableView.deleteRows(at: [indexPath], with: .fade)
     }
 }
 
