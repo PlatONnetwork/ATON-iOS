@@ -19,8 +19,6 @@ class AssetService : BaseService{
     
     let queue = DispatchQueue(label: "platon.asset.queue")
     
-    var timer : Timer?
-    
     var querying : Bool = false
     
     func getBalances(addresses : [WalletBalance],completion : @escaping AssetQueryCompletion) {
@@ -67,10 +65,8 @@ class AssetService : BaseService{
     
     public override init(){
         super.init()
-        if assetQueryTimerEnable {
-            timer = Timer.scheduledTimer(timeInterval: TimeInterval(assetQueryTimerInterval), target: self, selector: #selector(timerFirer), userInfo: nil, repeats: true)
-            timer?.fire()
-        }
+        fetchWalletBanlance()
+        
         NotificationCenter.default.addObserver(self, selector: #selector(OnDidSwitchNode), name: NSNotification.Name(NodeStoreService.didSwitchNodeNotification), object: nil)
     }
     
@@ -96,9 +92,7 @@ class AssetService : BaseService{
                         return
                         
                     }
-                    
                 }
-                
             }
         }
     }
@@ -106,14 +100,12 @@ class AssetService : BaseService{
     
     // MARK: - Timer
     
-    @objc func timerFirer(){
+    @objc func fetchWalletBanlance(){
         if querying {
             return
         }
         querying = true
         let wallets = WalletService.sharedInstance.wallets
-        let swallets = SWalletService.sharedInstance.wallets
-        
         var addresses : [WalletBalance] = []
         
         for wallet in wallets{
@@ -123,16 +115,8 @@ class AssetService : BaseService{
             addresses.append(balance)
         }
         
-        for swallet in swallets{
-            let balance = WalletBalance()
-            balance.address = swallet.contractAddress
-            balance.walletType = WalletType.JointWallet
-            addresses.append(balance)
-        }
-        
         getBalances(addresses: addresses) { (result, banlance) in
             switch result{
-                
             case .success?:
                 do {
                     NotificationCenter.default.post(name: Notification.Name(DidUpdateAllAssetNotification), object: nil)

@@ -85,26 +85,26 @@ class CandidateDetailViewController: BaseViewController {
     }
     
     private func setup() {
-        candidateNameLabel.text = candidate.extra?.nodeName
+        candidateNameLabel.text = candidate.name
         locationLabel.text = "(\(candidate.countryName))"
-        statusLabel.text = candidate.rankStatus.desc()
+        statusLabel.text = candidate.nodeType?.desc()
         
-        joinTimeLabel.text = Localized("CandidateDetailVC_joinTime", arguments: Date(milliseconds: candidate.extra?.time ?? 0).toFormatter("yyyy-MM-dd HH:mm:ss"))
+        joinTimeLabel.text = Localized("CandidateDetailVC_joinTime", arguments: Date(milliseconds: UInt64(candidate.joinTime)).toFormatter("yyyy-MM-dd HH:mm:ss"))
         
         
         rankLabel.text = "\(candidate.rankByDeposit!)"
         stakedLabel.text = (candidate.deposit?.convertToEnergon(round: 4) ?? "-").ATPSuffix()
-        ticketsLabel.text = "\(candidate.tickets ?? 0)"
+        ticketsLabel.text = "\(candidate.ticketCount ?? 0)"
         
-        if let host = candidate.host, host.length > 0, let port = candidate.port, port.length > 0 {
-            nodeUrlLabel.text = "\(host):\(port)"
+        if let url = candidate.nodeUrl {
+            nodeUrlLabel.text = url
         }
 
         nodeIdLabel.text = candidate.candidateId!.hasPrefix("0x") ? candidate.candidateId!:"0x\(candidate.candidateId!)"
         rewardRatioLabel.text = candidate.rewardRate
-        institutionalNameLabel.text = candidate.extra?.nodeDepartment
-        institutionalWebsiteLabel.text = candidate.extra?.officialWebsite
-        nodeInfoLabel.text = candidate.extra?.nodeDiscription
+        institutionalNameLabel.text = candidate.orgName
+        institutionalWebsiteLabel.text = candidate.orgWebsite
+        nodeInfoLabel.text = candidate.intro
          
         VoteManager.sharedInstance.GetCandidateEpoch(candidateId: candidate.candidateId!) { (res, data) in
             self.ticketAgeLabel.text = "\(data as? String ?? "-")Bs"

@@ -8,6 +8,9 @@
 
 import Foundation
 import BigInt
+import Localize_Swift
+
+
 
 class MyVoteStatic {
     
@@ -17,40 +20,103 @@ class MyVoteStatic {
     var validNum = 0
     var inValidNum = 0
     
+}
+
+class NodeVote: Decodable {
+    var nodeId: String?
+    var name: String?
+    var countryCode: String?
+    var validNum: String?
+    var totalTicketNum: String?
+    var locked: String?
+    var earnings: String?
+    var transactionTime: String?
+    var isValid: String?
     
-    static func parserAllNodeSummary(mapArray: [Dictionary<String,Any>]) -> MyVoteStatic{
-        
-        //let jsond = try? JSONSerialization.data(withJSONObject: mapArray, options: [])
-        //let s = String(data: jsond!, encoding: .utf8)
-        
-        let node = MyVoteStatic()
-        var total_locked = BigUInt("0")!
-        var total_earnings = BigUInt("0")!
-        var total_TicketNum = 0
-        var total_validNum = 0
-        
-        for item in mapArray{
-            
-            let locked = BigUInt.safeInit(str: item["locked"] as? String)
-            let earnings = BigUInt.safeInit(str: item["earnings"] as? String)
-            let totalTicketNum = Int(item["totalTicketNum"] as? String ?? "0")!
-            let validNum = Int(item["validNum"] as? String ?? "0")!
-            
-            total_locked.multiplyAndAdd(locked, 1)
-            total_earnings.multiplyAndAdd(earnings, 1)
-            total_TicketNum += totalTicketNum
-            total_validNum += validNum
+    var invalidTicketNum: Int {
+        get {
+            guard let totalNum = Int(totalTicketNum ?? "0") else { return 0 }
+            guard let validNum = Int(validNum ?? "0") else { return totalNum }
+            return totalNum - validNum
         }
-        
-        node.locktotal = total_locked
-        node.earnings = total_earnings
-        node.validNum = total_validNum
-        node.inValidNum = total_TicketNum - total_validNum
-         
-        return node
+    }
+    
+    enum CodingKeys: String, CodingKey {
+        case nodeId
+        case name
+        case countryCode
+        case validNum
+        case totalTicketNum
+        case locked
+        case earnings
+        case transactionTime
+        case isValid
+    }
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        nodeId = try? container.decode(String.self, forKey: .nodeId)
+        name = try? container.decode(String.self, forKey: .name)
+        countryCode = try? container.decode(String.self, forKey: .countryCode)
+        validNum = try? container.decode(String.self, forKey: .validNum)
+        totalTicketNum = try? container.decode(String.self, forKey: .totalTicketNum)
+        locked = try? container.decode(String.self, forKey: .locked)
+        earnings = try? container.decode(String.self, forKey: .earnings)
+        transactionTime = try? container.decode(String.self, forKey: .transactionTime)
+        isValid = try? container.decode(String.self, forKey: .isValid)
         
     }
     
+}
+
+class NoteVoteResponse: Decodable {
+    var errMsg: String = ""
+    var code: Int = 0
+    var data: [NodeVote] = []
+    
+    var voteStatic: MyVoteStatic {
+        get {
+            let totalLocked = data.reduce(BigUIntZero, { (result, next) -> BigUInt in
+                return result + BigUInt.safeInit(str: next.locked)
+            })
+            
+            let totalEarnings = data.reduce(BigUIntZero) { (result, next) -> BigUInt in
+                return result + BigUInt.safeInit(str: next.earnings)
+            }
+            
+            let totalValidNum = data.reduce(0) { (result, next) -> Int in
+                return result + Int(next.validNum ?? "0")!
+            }
+            
+            let totalTicketNum = data.reduce(0) { (result, next) -> Int in
+                return result + Int(next.totalTicketNum ?? "0")!
+            }
+            
+            let voteStatic = MyVoteStatic()
+            voteStatic.locktotal = totalLocked
+            voteStatic.earnings = totalEarnings
+            voteStatic.validNum = totalValidNum
+            voteStatic.inValidNum = totalTicketNum - totalValidNum
+            
+            return voteStatic
+        }
+    }
+}
+
+extension NodeVote {
+    func getNodeCountryName() -> String? {
+        guard let code = countryCode else { return nil }
+        let path = Bundle.main.path(forResource: "PlatonAssets/country", ofType: "json")
+        guard let data = try? Data(contentsOf: URL(fileURLWithPath: path!)), let json = try? JSONSerialization.jsonObject(with: data, options: []) as? Dictionary<String, Any> else { return nil }
+        guard let array = json?["countrys"] as? [Dictionary<String, Any>] else { return nil }
+        
+        let results = array.filter { ($0["_id"] as? String)! == code }
+        if Localize.currentLanguage() == "en" {
+            return results.first?["Name_en"] as? String
+        } else {
+            return results.first?["Name_zh"] as? String
+        }
+    }
 }
 
 class NodeVoteSummary {
@@ -96,7 +162,6 @@ class NodeVoteSummary {
         }
         
         return summaries
-
     }
     
 

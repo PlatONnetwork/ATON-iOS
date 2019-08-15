@@ -18,10 +18,6 @@ class TransactionService : BaseService{
     
     var timer : Timer? = nil
     
-    private var jointWalletCreationTimer : Timer? = nil
-    
-    private var allJointWalletPollingTimer : Timer? = nil
-    
     private var pendingTransactionPollingTimer : Timer? = nil
 
     public var ethGasPrice : BigUInt?
@@ -34,16 +30,6 @@ class TransactionService : BaseService{
         if blockNumberQueryTimerEnable {
             timer = Timer.scheduledTimer(timeInterval: TimeInterval(blockNumberQueryTimerInterval), target: self, selector: #selector(OnTimerFirer), userInfo: nil, repeats: true)
             timer?.fire()
-        }
-        
-        if jointWalletCreationTimerEnable{
-            jointWalletCreationTimer = Timer.scheduledTimer(timeInterval: TimeInterval(JointWalletCreationTimerInterval), target: self, selector: #selector( OnJointWalletCreationTimer), userInfo: nil, repeats: true)
-            jointWalletCreationTimer?.fire()
-        }
-        
-        if allJointWalletPollingTxsTimerEnable{
-            allJointWalletPollingTimer = Timer.scheduledTimer(timeInterval: TimeInterval(allJointWalletPollingTxsTimerInterval), target: self, selector: #selector( OnAllJointWalletPollingTxs), userInfo: nil, repeats: true)
-            allJointWalletPollingTimer?.fire()
         }
         
         if pendingTransactionPollingTimerEnable{
@@ -70,21 +56,10 @@ class TransactionService : BaseService{
         self.getEthGasPrice(completion: nil)
     }
     
-    @objc func OnJointWalletCreationTimer(){
-        self.JointWalletCreationPolling()
-    }
-    
-    @objc func OnAllJointWalletPollingTxs(){
-        SWalletService.sharedInstance.getAllSharedWalletTransactionList()
-    }
-    
     @objc func OnPendingTxPolling(){
         self.EnergonTransferPooling()
-        self.JointWalletTransferPolling()
         self.VotePolling()
     }
-    
-    //MARK: - Polling method
     
     func getEthGasPrice(completion: PlatonCommonCompletion?){
         web3.eth.gasPrice { (res) in
@@ -124,11 +99,11 @@ class TransactionService : BaseService{
                             newItem.gasUsed = String(txResp.result??.gasUsed.quantity ?? BigUInt(0))
                             realm.add(newItem, update: true)
                             let hash = newItem.txhash
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: { 
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
                                 NotificationCenter.default.post(name: NSNotification.Name(DidUpdateTransactionByHashNotification), object: hash)
                             })
                         }
-                        
+
                     case .failure(_):
                         do{}
                     }
@@ -217,37 +192,6 @@ class TransactionService : BaseService{
 
     }
     
-    
-    func JointWalletTransferPolling(){
-        let txs = STransferPersistence.getUnConfirmedTransactions()
-        for item in txs{
-            guard (item.txhash != nil) else{
-                continue
-            }
-            let byteCode = try! EthereumData(ethereumValue: item.txhash!)
-            let data = try! EthereumData(ethereumValue: byteCode)
-  
-            web3.eth.getTransactionReceipt(transactionHash: data) { (txResp) in
-                switch txResp.status{
-                case .success(_):
-                    DispatchQueue.main.async {
-                        RealmInstance?.beginWrite()
-                        item.blockNumber = String(txResp.result??.blockNumber.quantity ?? BigUInt(0))
-                        item.confirmTimes = 0
-                        item.gasUsed = String(txResp.result??.gasUsed.quantity ?? BigUInt(0))
-                        try? RealmInstance?.commitWrite()
-                        NotificationCenter.default.post(name: NSNotification.Name(DidUpdateTransactionByHashNotification), object: item.txhash)
-                    }
-                case .failure(_):
-                    do{}
-                }
-            }
-            
-        }
-    }
-    
-
-    
     func sendAPTTransfer(from : String,to : String, amount : String, InputGasPrice : BigUInt, estimatedGas : String, memo : String, pri : String,completion : PlatonCommonCompletion?) -> Transaction {
         
         var completion = completion
@@ -330,6 +274,7 @@ class TransactionService : BaseService{
                         ptx.gasPrice = String(gasPrice.quantity)
                         ptx.gas = String(txgas.quantity)
                         ptx.memo = memo
+                        ptx.transactionType = 0
                         TransferPersistence.add(tx: ptx)
                     }
                     self.successCompletionOnMain(obj: nil, completion: &completion)
@@ -363,20 +308,6 @@ class TransactionService : BaseService{
         }
     }
     
-    func JointWalletCreationPolling(){
-        
-        for jointWallet in SWalletService.sharedInstance.creatingWallets{
-            
-            if jointWallet.creationStatus == ECreationStatus.deploy_HashGenerated.rawValue{
-                self.DeployJointWalletReceiptPolling(wallet: jointWallet)
-            }else if jointWallet.creationStatus == ECreationStatus.deploy_ReceiptGenerated.rawValue{
-                SWalletService.sharedInstance.initSharedWallet(wallet: jointWallet, completion: nil)
-            }else if jointWallet.creationStatus == ECreationStatus.initWallet_HashGenerated.rawValue{
-                self.InitJointWalletReceiptPolling(wallet: jointWallet)
-            }
-        }
-    }
-    
     func DeployJointWalletReceiptPolling(wallet: SWallet?){
     
         let hash = try? EthereumData(bytes: EthereumData(bytes: Data(hex: (wallet?.deployHash)!).bytes))
@@ -404,38 +335,5 @@ class TransactionService : BaseService{
         
 
     }
- 
-     
-    func InitJointWalletReceiptPolling(wallet: SWallet?){
-         
-        let hash = try? EthereumData(bytes: EthereumData(bytes: Data(hex: (wallet?.initWalletHash)!).bytes))
-        web3.eth.getTransactionReceipt(transactionHash: hash!) { (receptionResp) in
-            DispatchQueue.main.async {
-                wallet?.initWalletReceptionLooptime = (wallet?.initWalletReceptionLooptime)! + 1
-                NotificationCenter.default.post(name: NSNotification.Name(DidJointWalletUpdateProgress_Notification), object: wallet?.deployHash)
-                switch receptionResp.status{
-                case .success(_):
-                    if receptionResp.result != nil{
-                        wallet?.creationStatus = ECreationStatus.initWallet_ReceiptGenerated.rawValue
-                        NotificationCenter.default.post(name: NSNotification.Name(DidJointWalletUpdateProgress_Notification), object: wallet?.deployHash)
-                        SWalletPersistence.add(swallet: wallet!)
-                        SWalletService.sharedInstance.refreshDB()
-                        SWalletService.sharedInstance.removeFromCreatingWallets(swallet: wallet!)
-                        //after update memory and db joint-wallets ,need to update asset list
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
-                            NotificationCenter.default.post(name: NSNotification.Name(updateWalletList_Notification), object: wallet?.deployHash)
-                        })
-                        
-                    }
-                    
-                case .failure(_):
-                    do{}
-                }
-                
-            }
-        }
-        
-    }
-    
 }
 

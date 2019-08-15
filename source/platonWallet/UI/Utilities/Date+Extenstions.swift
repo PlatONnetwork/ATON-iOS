@@ -23,9 +23,7 @@ extension Date {
     }
     
     public static func toStanderTimeDescrition(millionSecondsTimeStamp : Int) -> String?{
-        let date = Date(timeIntervalSince1970: (Double(millionSecondsTimeStamp) * 0.001))
-        
-        
+        let date = Date(timeIntervalSince1970: TimeInterval(millionSecondsTimeStamp/1000))
         let localZone = NSTimeZone.local
         /*
         let systemZone = NSTimeZone.system

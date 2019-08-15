@@ -82,13 +82,10 @@ class PersonalViewController: BaseViewController,UITableViewDelegate,UITableView
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 6
+        return 7
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.row == 5 {
-            return 60 + 50
-        }
         return 68
     }
     
@@ -114,6 +111,16 @@ class PersonalViewController: BaseViewController,UITableViewDelegate,UITableView
                 targetVC = SettingTableViewController()
             }
         case 4:
+            do {
+                targetVC = WebCommonViewController()
+                (targetVC as? WebCommonViewController)?.navigationTitle = Localized("PersonalVC_cell_wallet_feedback")
+                (targetVC as? WebCommonViewController)?.requestUrl = "https://juzix.zendesk.com/hc/zh-cn"
+            }
+        case 5:
+            do {
+                targetVC = CommunityViewController()
+            }
+        case 6:
             do{
                 targetVC = AboutViewController()
             }

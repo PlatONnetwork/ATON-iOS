@@ -16,10 +16,12 @@ class NodeVoteHeader: UIView {
     
     @IBOutlet weak var reward: UILabel!
     
-    func updateView(_ summary: MyVoteStatic){
-        validandinvalidTicketNum.text = String(format: "%d/%d", summary.validNum,summary.inValidNum)
-        lockedAsset.text = summary.locktotal.divide(by: oneMultiplier, round: 4)
-        reward.text = summary.earnings.divide(by: ETHToWeiMultiplier, round: 4)
+    var voteStatic: MyVoteStatic? {
+        didSet {
+            validandinvalidTicketNum.text = String(format: "%d/%d", voteStatic!.validNum,voteStatic!.inValidNum)
+            lockedAsset.text = voteStatic!.locktotal.divide(by: ETHToWeiMultiplier, round: 4)
+            reward.text = voteStatic!.earnings.divide(by: ETHToWeiMultiplier, round: 4)
+        }
     }
 
 }

@@ -57,20 +57,6 @@ class AddressBookViewController: BaseViewController {
         tableView.emptyDataSetView { [weak self] view in
             view.customView(self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, Localized("AddresssBookVC_empty_tip"), "empty_no_data_img"))
         }
-//        if #available(iOS 11, *) {
-//            let guide = view.safeAreaLayoutGuide
-//            NSLayoutConstraint.activate([
-//                tableView.topAnchor.constraint(equalToSystemSpacingBelow: guide.topAnchor, multiplier: 1.0),
-//                guide.bottomAnchor.constraint(equalToSystemSpacingBelow: tableView.bottomAnchor, multiplier: 1.0)
-//                ])
-//            
-//        } else {
-//            let standardSpacing: CGFloat = 8.0
-//            NSLayoutConstraint.activate([
-//                tableView.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor, constant: standardSpacing),
-//                bottomLayoutGuide.topAnchor.constraint(equalTo: tableView.bottomAnchor, constant: standardSpacing)
-//                ])
-//        }
     }
     
     
@@ -101,8 +87,8 @@ extension AddressBookViewController:UITableViewDataSource,UITableViewDelegate,Sw
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: AddressBookTableViewCell.self)) as! AddressBookTableViewCell
-        cell.delegate = self 
-        cell.setUpdCell(addressInfo: dataSource![indexPath.row])
+        cell.delegate = self
+        cell.setUpdCell(addressInfo: dataSource![indexPath.row], isForSelectMode: selectionCompletion != nil)
         return cell
     }
     
@@ -116,6 +102,10 @@ extension AddressBookViewController:UITableViewDataSource,UITableViewDelegate,Sw
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if (selectionCompletion != nil) {
+            if (AssetVCSharedData.sharedData.selectedWallet as! Wallet).key?.address.lowercased() == dataSource![indexPath.row].walletAddress?.lowercased() {
+                return
+            }
+            
             let info = dataSource![indexPath.row]
             selectionCompletion!(info)
             navigationController?.popViewController(animated: true)
@@ -126,6 +116,10 @@ extension AddressBookViewController:UITableViewDataSource,UITableViewDelegate,Sw
     }
 
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> [SwipeAction]? {
+        if selectionCompletion != nil {
+            return nil
+        }
+        
         guard orientation == .right else { return nil }
 
         let deleteAction = SwipeAction(style: .default, title: Localized("AddressBookVC_cell_delete_title")) { action, indexPath in

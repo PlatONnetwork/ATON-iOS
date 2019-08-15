@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import RealmSwift
 
 class TransferPersistence {
     
@@ -64,6 +65,12 @@ class TransferPersistence {
             return array.first!
         }
         return nil
+    }
+    
+    public class func delete(_ transaction: Transaction) {
+        try? RealmInstance?.write {
+            RealmInstance?.delete(transaction)
+        }
     }
 }
 

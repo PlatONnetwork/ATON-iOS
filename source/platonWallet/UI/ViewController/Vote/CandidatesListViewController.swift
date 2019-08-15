@@ -10,12 +10,12 @@ import Foundation
 import UIKit
 import Localize_Swift
 import platonWeb3
+import MJRefresh
 
 enum CandidatesListSortType: Int {
     case `default` = 0,reward,location
 }
 
-let headerViewHeight: CGFloat = 149.0 + UIDevice.notchHeight
 let filterBarShrinkHeight : CGFloat = 42.0
 let filterBarExpandHeight : CGFloat = 108
 let kAnimateScrollHeight: CGFloat = 63.0
@@ -23,11 +23,11 @@ let kAnimateScrollHeight: CGFloat = 63.0
 
 class CandidatesListViewController: BaseViewController {
     
+    var headerViewHeight: CGFloat = 149.0 + kStatusBarHeight
+    
     var headerView: CandidatesListHeaderView!
     var filterBarView: CandidatesListFilterBarView!
-    var tableView: MultiGestureTableView!
     var sortType: CandidatesListSortType = .default
-    var timer: Timer?
     
     //
     var nominateNodeList: [Candidate] = []
@@ -49,77 +49,90 @@ class CandidatesListViewController: BaseViewController {
             isFirstQuery = false
         }
     }
-    
-    var isQuerying = false
    
     var searchText = "" {
         didSet {
             guard sortedCandidatesList.count > 0 else {
                 return
             }
-            print("sortedCandidatesList: ----")
-            print(sortedCandidatesList)
             refreshTableView()
         }
     }
+    
+    lazy var refreshHeader: MJRefreshNormalHeader = {
+        let header = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(fetchData))!
+        header.frame = CGRect(x: 0, y: -54, width: view.frame.width, height: 54)
+        var frame = header.stateLabel.frame
+        frame.origin.y = kStatusBarHeight
+        header.stateLabel.frame = frame
+        return header
+    }()
+    
+    lazy var tableHeaderView: UIView = {
+        let view = UIView()
+        return view
+    }()
+    
+    lazy var tableView = { () -> MultiGestureTableView in
+        let tbView = MultiGestureTableView(frame: .zero)
+        tbView.showsVerticalScrollIndicator = false
+        tbView.delegate = self
+        tbView.dataSource = self
+        tbView.register(UINib(nibName: "CandidatesTableViewCell", bundle: nil), forCellReuseIdentifier: "CandidatesTableViewCell")
+        tbView.separatorStyle = .none
+        tbView.backgroundColor = UIViewController_backround
+        tbView.tableFooterView = UIView()
+        return tbView
+    }()
      
     override func viewDidLoad() {
         super.viewDidLoad()
         self.statusBarNeedTruncate = true
+        
+        if #available(iOS 11.0, *) {
+        } else {
+            headerViewHeight = headerViewHeight - kStatusBarHeight
+        }
+        
         initSubView()
+        
+        if #available(iOS 11.0, *) {
+            tableView.contentInsetAdjustmentBehavior = .never
+        } else {
+            automaticallyAdjustsScrollViewInsets = true
+        }
+        
         self.navigationController?.setNavigationBarHidden(true, animated: false)
         NotificationCenter.default.addObserver(self, selector: #selector(onNodeSwitched), name: NSNotification.Name(NodeStoreService.didSwitchNodeNotification), object: nil)
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        startPolling()
+        
+        tableView.mj_header.beginRefreshing()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        stopPolling()
+        refreshHeader.removeObserver(self, forKeyPath: "state")
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        
-        /*
-        let header = headerView
-        var height = header!.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
-        var newFrame = header!.frame
-        if height == 0.0{
-            height = 129
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        refreshHeader.addObserver(self, forKeyPath: "state", options: [.new, .old], context: nil)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        guard !tableView.mj_header.isRefreshing else {
+            return
         }
-        newFrame.size.height = height;
-        header!.frame = newFrame
-        tableView.tableHeaderView = header
-        */
         
-//        if #available(iOS 11.0, *) {
-//            print("adjustedContentInset:\(scrollContainer.adjustedContentInset)")
-//        } else {
-//            // Fallback on earlier versions
-//        }
+        tableView.mj_header.beginRefreshing()
     }
     
     
     func initSubView() {
-        
-        
         let tmpView = UIView(frame: CGRect(x: 0, y: 0, width: 1, height: 1))
         view.addSubview(tmpView)
         
-        tableView = MultiGestureTableView(frame: .zero)
-        tableView.showsVerticalScrollIndicator = false
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.register(UINib(nibName: "CandidatesTableViewCell", bundle: nil), forCellReuseIdentifier: "CandidatesTableViewCell")
-        tableView.separatorStyle = .none
-        tableView.backgroundColor = UIViewController_backround
-        tableView.tableFooterView = UIView()
         view.addSubview(tableView)
-        
         tableView.emptyDataSetView { [weak self] view in
             let holder = self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, nil,"empty_no_data_img") as? TableViewNoDataPlaceHolder
             view.customView(holder)
@@ -129,18 +142,29 @@ class CandidatesListViewController: BaseViewController {
             }
         }
         
-        tableView.contentInset = UIEdgeInsets(top: headerViewHeight + filterBarShrinkHeight - kStatusBarHeight, left: 0, bottom: 0, right: 0)
         tableView.snp.makeConstraints { (make) in
-            make.top.equalToSuperview()
+            if #available(iOS 11.0, *) {
+                make.top.equalToSuperview().offset(-kStatusBarHeight)
+            } else {
+                make.top.equalToSuperview().offset(0)
+            }
+            
             make.leading.bottom.trailing.equalToSuperview()
         }
         
+        tableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: headerViewHeight+filterBarShrinkHeight))
+        tableView.tableHeaderView?.addSubview(tableHeaderView)
+        tableHeaderView.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.height.equalTo(headerViewHeight+filterBarShrinkHeight)
+            make.leading.trailing.equalToSuperview()
+        }
         
         headerView = CandidatesListHeaderView(frame: .zero)
         headerView.myVoteButton.addTarget(self, action: #selector(onMyVote), for: .touchUpInside)
         view.addSubview(headerView)
         headerView.snp.makeConstraints({ (maker) in
-            maker.top.equalToSuperview().offset(-kStatusBarHeight)
+            maker.top.equalTo(tableHeaderView.snp.top)
             maker.leading.equalToSuperview().offset(0)
             maker.trailing.equalToSuperview().offset(0)
             maker.height.equalTo(headerViewHeight)
@@ -155,7 +179,6 @@ class CandidatesListViewController: BaseViewController {
         filterBarView.searchTF.delegate = self
         filterBarView.searchTF.returnKeyType = .search
         filterBarView.updateSelectedBtn(filterBarView.filterButtons[0])
-        
         view.addSubview(filterBarView)
         filterBarView.snp.makeConstraints { (make) in
             make.leading.trailing.equalToSuperview()
@@ -163,9 +186,44 @@ class CandidatesListViewController: BaseViewController {
             make.height.equalTo(filterBarShrinkHeight)
         }
         
+        tableView.mj_header = refreshHeader
+    }
+    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if keyPath == "state" {
+            let newValue = change?[NSKeyValueChangeKey.newKey] as? Int
+            let oldValue = change?[NSKeyValueChangeKey.oldKey] as? Int
+
+            if newValue == 1 && oldValue == 3 {
+                headerView.snp.updateConstraints { make in
+                    make.top.equalTo(tableHeaderView.snp.top)
+                }
+
+                UIView.animate(withDuration: TimeInterval(MJRefreshSlowAnimationDuration), animations: { [weak self] in
+                    if let strongeSelf = self {
+                        strongeSelf.view.layoutIfNeeded()
+                    }
+                }) { (_) in
+
+                }
+            }
+
+            if newValue == 3 && oldValue == 2 {
+                UIView.animate(withDuration: TimeInterval(MJRefreshFastAnimationDuration), animations: { [weak self] in
+                    if let strongeSelf = self {
+                        strongeSelf.view.layoutIfNeeded()
+                    }
+                }) { (_) in
+
+                }
+            }
+        }
         
-        
-        
+    }
+    
+    @objc func fetchData() {
+        updateTicketPriceAndPoolNum()
+        queryCandidatesList()
     }
     
     @objc func onMyVote(){
@@ -180,26 +238,6 @@ class CandidatesListViewController: BaseViewController {
         navigationController?.pushViewController(myvote, animated: true)
     }
     
-    func startPolling() {
-        timer = Timer.scheduledTimer(timeInterval: 5.0, target: self, selector: #selector(queryDataAndUpdate), userInfo: nil, repeats: true)
-        timer?.fire()
-    }
-    
-    func stopPolling() {
-        timer?.invalidate()
-        timer = nil
-    }
-    
-    
-    @objc func queryDataAndUpdate() {
-        
-        updateTicketPriceAndPoolNum()
-        
-        if !isQuerying {
-            queryCandidatesList()
-        }
-
-    }
     
     private func updateTicketPriceAndPoolNum() {
         headerView.updateTicketPrice(VoteManager.sharedInstance.ticketPrice?.convertToEnergon(round: 4), isUpward: true)
@@ -208,96 +246,51 @@ class CandidatesListViewController: BaseViewController {
     }
     
     private func queryCandidatesList() {
-        
-        isQuerying = true 
-        
-        if isFirstQuery {
-            showLoadingHUD()
-        }
-        
-        VoteManager.sharedInstance.GetVotePageCandidateList { [weak self] (res, tumpleDdata) in
-             
+        VoteManager.sharedInstance.GetBatchNodeList { [weak self] (result, data) in
             guard let self = self else { return }
-             
-            switch res {
+            self.tableView.mj_header.endRefreshing()
+            switch result {
             case .success:
-                guard let data = tumpleDdata as? ([Candidate],[String]) else{
-                    return
+                guard var list = (data as? CandidateResponse)?.list else { return }
+                for i in 0..<list.count {
+                    list[i].rankByDeposit = UInt16(i + 1)
                 }
-                guard var list = data.0 as? [Candidate] else {
-                    return
-                }
-                
-                list.candidateSort()
-                
                 self.setCandidateAreaInfo(list: list)
                 self.queryCandidateTicketCount(list: list, completion: { (newList) in
-                
-                    if (self.isFirstQuery) {
-                        self.hideLoadingHUD()
-                    }
-                    
-                    dividenominatedandwaitingCandidateslistPool(validatorIds: data.1)
-                    
-                    self.isQuerying = false 
-                    
+
+                    dividenominatedandwaitingCandidateslistPool(validatorIds: [])
+
                     self.startSort()
                 })
-                
+                self.updateTicketPriceAndPoolNum()
                 func dividenominatedandwaitingCandidateslistPool(validatorIds: [String]) {
                     let first100 = list.count > 100 ? Array(list[0..<100]) : list
                     self.nominateNodeList = first100.filter { (item) -> Bool in
-                        item.tickets ?? 0 >= kCandidateMinNumOfTickets
-                    } 
-                    for item in self.nominateNodeList {
-                        item.rankStatus = .candidateFirst100
+                        item.ticketCount ?? 0 >= kCandidateMinNumOfTickets
                     }
                     self.waitingCandidateslist = list.filter { (item) -> Bool in
-                        item.tickets ?? 0 < kCandidateMinNumOfTickets
+                        item.ticketCount ?? 0 < kCandidateMinNumOfTickets
                     }
                     self.waitingCandidateslist = self.waitingCandidateslist.count > 100 ? Array(self.waitingCandidateslist[0..<100]) : self.waitingCandidateslist
-                    for item in self.waitingCandidateslist {
-                        item.rankStatus = .alternativeFirst100
-                    }
-                    
-                    for item in self.nominateNodeList{
-                        if validatorIds.contains(item.candidateId ?? ""){
-                            item.rankStatus = .validator
-                        }
-                    }
-                    for item in self.waitingCandidateslist{
-                        if validatorIds.contains(item.candidateId ?? ""){
-                            item.rankStatus = .validator
-                        }
-                    }
-                    
-                    self.nominateNodeList.candidateSort()
-                    self.waitingCandidateslist.candidateSort()
-                    let sortedRankList = self.nominateNodeList + self.waitingCandidateslist
-                    for i in 0..<sortedRankList.count {
-                        sortedRankList[i].rankByDeposit = UInt16(i + 1)
-                    }
-                    
+
                 }
             case .fail(_, _):
-                self.isQuerying = false
-                if (self.isFirstQuery) {
-                    self.hideLoadingHUD()
-                }
-            
+                break
             }
+
         }
     }
     
+    // yuham qa
     func setCandidateAreaInfo(list: [Candidate]) {
         
         let ips = list.map { (e) -> String in
-            return e.host ?? ""
+            return e.nodeUrl ?? ""
         }
         
         let ipGeoInfoDic = IPQuery.sharedInstance.getIPGeoInfoFromDB(ipList: ips)
         for candidate in list {
-            candidate.area = ipGeoInfoDic[candidate.host ?? ""]
+            candidate.area = ipGeoInfoDic[candidate.nodeUrl ?? ""]
         }
         
     }
@@ -314,7 +307,7 @@ class CandidatesListViewController: BaseViewController {
                 if let ticketNums = data as? [String:Int] {
                     for i in 0..<list.count {
                         if let candidateId = list[i].candidateId, let num = ticketNums[candidateId] {
-                            list[i].tickets = UInt16(num)
+                            list[i].ticketCount = UInt16(num)
                         }
                     }
                 }
@@ -364,6 +357,7 @@ class CandidatesListViewController: BaseViewController {
         
         switch type {
         case .default:
+
             let dataSource = nominateNodeList + waitingCandidateslist
             return dataSource
             
@@ -372,14 +366,12 @@ class CandidatesListViewController: BaseViewController {
             var list = nominateNodeList + waitingCandidateslist
             list.sort { (e1, e2) -> Bool in
                 
-                if e1.fee ?? 0 != e2.fee ?? 0 {
-                    return e1.fee ?? 0 < e2.fee ?? 0 
+                if e1.reward ?? 0 != e2.reward ?? 0 {
+                    return e1.reward ?? 0 > e2.reward ?? 0
                 }else if e1.deposit! != e2.deposit! {
                     return e1.deposit! > e2.deposit!
-                }else if e1.tickets ?? 0 != e2.tickets ?? 0 {
-                    return e1.tickets ?? 0 > e2.tickets ?? 0
                 }else {
-                    return e1.blockNumber! < e2.blockNumber!
+                    return e1.ticketCount ?? 0 > e2.ticketCount ?? 0
                 }
             }
             return list
@@ -411,7 +403,7 @@ class CandidatesListViewController: BaseViewController {
     
     private func filterBySearchText() {
         filteredCandidateList = sortedCandidatesList.filter { (candidate) -> Bool in
-            if (candidate.extra?.nodeName!.uppercased() ?? "").range(of: self.searchText.uppercased()) != nil {
+            if (candidate.name!.uppercased() ?? "").range(of: self.searchText.uppercased()) != nil {
                 return true
             }
             return false
@@ -485,26 +477,6 @@ extension CandidatesListViewController: UIScrollViewDelegate {
         if filterBarView.searchTF.isEditing {
             filterBarView.searchTF.resignFirstResponder()
         }
-//        let actualPosition = scrollView.panGestureRecognizer.translation(in: scrollView.superview)
-//        if scrollView == scrollContainer{
-//            if (actualPosition.y > 0){
-//                if self.headerStyle == HeaderStyle.VoteSummaryHide{
-//                    self.scrollContainer.isScrollEnabled = true
-//                }
-//                self.scrollContainer.isScrollEnabled = true
-//            }else{}
-//        }else if scrollView == self.tableView{
-//            if (actualPosition.y >= 0.0){
-//
-//                if self.headerStyle == HeaderStyle.VoteSummaryHide{
-//                    DispatchQueue.main.async {
-//                        self.scrollContainer.isScrollEnabled = true
-//                    }
-//                }
-//            }else{
-//
-//            }
-//        }
         
     }
     
@@ -528,27 +500,29 @@ extension CandidatesListViewController: UIScrollViewDelegate {
 //        }
     }
     
-
-    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if refreshHeader.isRefreshing {
+            return
+        }
         
         let yOffset = scrollView.contentOffset.y
+        print("xOffset: ", yOffset)
         if scrollView == tableView{
-            let xOffset = scrollView.contentInset.top + yOffset
-            if xOffset < kAnimateScrollHeight {
-                
+            if yOffset >= 0 {
+                let offset = min(yOffset, kAnimateScrollHeight)
                 headerView.snp.updateConstraints { make in
-                    make.height.equalTo(headerViewHeight - xOffset)
+                    make.top.equalTo(tableHeaderView.snp.top).offset(yOffset)
+                    make.height.equalTo(headerViewHeight - offset)
                 }
                 
-                var alpha = (kAnimateScrollHeight - xOffset)/kAnimateScrollHeight*1.0
-                print("scroll alpha value: \(alpha)")
+                
+                var alpha = 1.0 - offset/kAnimateScrollHeight*1.0
                 if alpha < 0.0 {
                     alpha = 0.0
                 } else if alpha > 1.0 {
                     alpha = 1.0
                 }
-
+                
                 if !filterBarView.searchTF.isEditing {
                     headerView.updateHeaderViewStyle(alpha)
                     filterBarView.updateLayoutstyle(alpha)
@@ -563,15 +537,7 @@ extension CandidatesListViewController: UIScrollViewDelegate {
                     NotificationCenter.default.post(name: NSNotification.Name(ChangeCandidatesTableViewCellbackground), object: UIColor.white)
                 }
             } else {
-                headerView.snp.updateConstraints { make in
-                    make.height.equalTo(headerViewHeight - kAnimateScrollHeight)
-                }
                 
-                headerView.updateHeaderViewStyle(0.0)
-                filterBarView.updateLayoutstyle(0.0)
-                
-                self.setplaceHolderBG(hide:false ,tableView: self.tableView)
-                NotificationCenter.default.post(name: NSNotification.Name(ChangeCandidatesTableViewCellbackground), object: #colorLiteral(red: 0.9751496911, green: 0.984305203, blue: 1, alpha: 1))
             }
             
             if scrollView.isDragging{
@@ -579,10 +545,6 @@ extension CandidatesListViewController: UIScrollViewDelegate {
             }
         }
     }
-    
-    
-
-    
 }
 extension CandidatesListViewController: UITextFieldDelegate, HeaderViewProtocol {
     

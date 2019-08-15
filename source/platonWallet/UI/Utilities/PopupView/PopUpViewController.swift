@@ -38,6 +38,25 @@ class PopUpViewController: UIViewController {
         
     }
     
+    // 0.7版本新增适配发送交易确认页面自动布局
+    func setUpConfirmView(view: UIView, width: CGFloat) {
+        contentView = view
+        bgView.addSubview(contentView!)
+        contentView?.snp.makeConstraints({ (make) in
+            make.centerX.equalTo(bgView)
+            make.bottom.equalTo(bgView.snp.bottom)
+            make.width.equalTo(width)
+        })
+        
+        bgView.addSubview(dismissView)
+        dismissView.snp.makeConstraints { (make) in
+            make.top.leading.trailing.equalTo(bgView)
+            make.bottom.equalTo((contentView?.snp_topMargin)!)
+        }
+        contentView?.layer.cornerRadius = 8
+        contentView?.layer.masksToBounds = true
+    }
+    
     
     func setUpContentView(view : UIView, size : CGSize) {
 

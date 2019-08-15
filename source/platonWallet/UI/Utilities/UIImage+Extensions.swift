@@ -22,14 +22,14 @@ public extension UIImage {
         self.init(cgImage: thecgImage)
     }
     
-    public class func gradientImage(colors:[UIColor], size: CGSize) -> UIImage? {
+    public class func gradientImage(colors:[UIColor], size: CGSize, startPoint: CGPoint? = CGPoint(x: 0, y: 0), endPoint: CGPoint? = CGPoint(x: 1, y: 1)) -> UIImage? {
         if colors.count == 0 || size == .zero {
             return nil
         }
         let gradientLayer = CAGradientLayer()
         gradientLayer.frame = CGRect(x: 0, y: 0, width: size.width, height: size.height)
-        gradientLayer.startPoint = CGPoint(x: 0, y: 0)
-        gradientLayer.endPoint = CGPoint(x: 1, y: 1)
+        gradientLayer.startPoint = startPoint!
+        gradientLayer.endPoint = endPoint!
         let cgColors = colors.map { (color) -> CGColor in
             return color.cgColor
         }
@@ -90,5 +90,34 @@ public extension UIImage {
         return newImg!
 
 
+    }
+    
+    func generatePendingImage(_ size: CGSize) -> UIImage? {
+        UIGraphicsBeginImageContextWithOptions(size, false, 0)
+        let context = UIGraphicsGetCurrentContext()!
+        
+        let replicatorLayer = CAReplicatorLayer()
+        replicatorLayer.frame = CGRect(x: 0, y: 0, width: 24, height: 24)
+        replicatorLayer.instanceCount = 3
+        replicatorLayer.instanceTransform = CATransform3DMakeTranslation((replicatorLayer.frame.size.width-4)/2, 0, 0);
+        replicatorLayer.instanceDelay = 1/3.0
+        
+        let dotLayer = CAShapeLayer()
+        dotLayer.path = UIBezierPath(ovalIn: CGRect(x: 0, y: 10, width: 4, height: 4)).cgPath
+        dotLayer.fillColor = UIColor(rgb: 0x2a5ffe).cgColor
+        replicatorLayer.addSublayer(dotLayer)
+        
+        let keyAnimation = CAKeyframeAnimation(keyPath: "opacity")
+        keyAnimation.duration = 1.0
+        keyAnimation.keyTimes = [NSNumber(value: 0.0), NSNumber(0.5), NSNumber(1.0)]
+        keyAnimation.values = [1.0, 0.5, 0.2]
+        keyAnimation.repeatCount = Float.infinity
+        dotLayer.add(keyAnimation, forKey: nil)
+        
+        replicatorLayer.render(in: context)
+        
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return newImage
     }
 }

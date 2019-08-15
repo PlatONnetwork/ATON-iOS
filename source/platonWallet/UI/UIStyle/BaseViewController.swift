@@ -156,30 +156,6 @@ class BaseViewController: UIViewController {
         setDefaultUIStyle()
     }
     
-    
-    override func viewWillAppear(_ animated: Bool) {
-//        return
-//        if type(of: self) == AssetSendViewControllerV060.self ||
-//            type(of: self) == AssetTransactionViewControllerV060.self ||
-//            type(of: self) == AssetReceiveViewControllerV060.self ||
-//            type(of: self) == AssetSendViewControllerV060.self ||
-//            type(of: self) == AssetPageViewController.self{
-//            return
-//        }
-//
-//        (UIApplication.shared.value(forKey: "statusBar") as? UIView)?.backgroundColor = .clear
-        /*
-        if self.statusBarNeedTruncate{
-            (UIApplication.shared.value(forKey: "statusBar") as? UIView)?.backgroundColor = .clear
-        }else{
-            (UIApplication.shared.value(forKey: "statusBar") as? UIView)?.backgroundColor = .white
-        }
-         */
-        
-    }
-    
-    
-    
     func autoAdjustInset(){
          if #available(iOS 11.0, *) {
             if let scrollView =  self.view.subviews.first as? UIScrollView{
@@ -206,9 +182,8 @@ class BaseViewController: UIViewController {
         view.backgroundColor = UIViewController_backround
         
          navigationController?.navigationBar.shadowImage = UIImage()
-//        let backgrouImage = UIImage(color: .clear)
-//        navigationController?.navigationBar.setBackgroundImage(backgrouImage, for: .default)
-//        return
+        
+        let backgroundImage = UIImage.gradientImage(colors: [UIColor(rgb: 0xdfeafc), UIColor(rgb: 0xf0f4fb)], size: CGSize(width: 1, height: 1), startPoint: CGPoint(x: 0.5, y: 0), endPoint: CGPoint(x: 0.5, y: 1))
         
         if type(of: self) == AssetSendViewControllerV060.self ||
             type(of: self) == ImportMnemonicOrPrivateKeyViewController.self ||
@@ -224,24 +199,9 @@ class BaseViewController: UIViewController {
             
         }else{
             //设置导航栏背景图片为白色，会导致状态栏透明？？？，出现左滑返回时，状态栏出现阴影
-            let backgrouImage = UIImage(color: .white)
-            navigationController?.navigationBar.setBackgroundImage(backgrouImage, for: .default)
-//            navigationController?.navigationBar.isTranslucent = true
-//            navigationController?.navigationBar.clipsToBounds = true
+            navigationController?.navigationBar.setBackgroundImage(backgroundImage, for: .default)
             navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 16.0),NSAttributedString.Key.foregroundColor:UIColor.white]
         }
-        
-        
-        
-        /*
-       
-        navigationController?.navigationBar.clipsToBounds = true
-        navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 16.0),NSAttributedString.Key.foregroundColor:UIColor.white]
-            
-        //status bar text color
-        navigationController?.navigationBar.tintColor = UIColor.white
-        navigationController?.navigationBar.barTintColor = UIColor.white
-        */
     }
     
     func setLeftBarButtonItemWithTitle(backTitle: String?) {

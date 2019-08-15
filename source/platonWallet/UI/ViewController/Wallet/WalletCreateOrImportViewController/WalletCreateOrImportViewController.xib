@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -29,17 +29,17 @@
                         <constraint firstAttribute="height" constant="106" id="ZZ5-FU-1MP"/>
                     </constraints>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vuq-KA-XtX">
-                    <rect key="frame" x="172" y="629.5" width="31" height="14.5"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vuq-KA-XtX">
+                    <rect key="frame" x="58" y="624.5" width="259" height="14.5"/>
                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="textColor" red="0.38039215686274508" green="0.39215686274509803" blue="0.43137254901960786" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                     <nil key="highlightedColor"/>
                     <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="platon_slogan"/>
+                        <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="createOrImport_guide_text"/>
                     </userDefinedRuntimeAttributes>
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YsB-Fa-JWs">
-                    <rect key="frame" x="58" y="491" width="259" height="44"/>
+                    <rect key="frame" x="58" y="497.5" width="259" height="44"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qfK-wL-sz0" customClass="PButton" customModule="platonWallet" customModuleProvider="target">
                             <rect key="frame" x="0.0" y="0.0" width="259" height="44"/>
@@ -62,7 +62,7 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="spn-UD-SMw">
-                    <rect key="frame" x="58" y="559" width="259" height="44"/>
+                    <rect key="frame" x="58" y="565.5" width="259" height="44"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ffh-dM-RYK" customClass="PButton" customModule="platonWallet" customModuleProvider="target">
                             <rect key="frame" x="0.0" y="0.0" width="259" height="44"/>
@@ -86,16 +86,18 @@
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="spn-UD-SMw" secondAttribute="bottom" constant="64" id="0L6-2s-fMQ"/>
                 <constraint firstItem="Vuq-KA-XtX" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="LRB-sv-IZg"/>
                 <constraint firstItem="gcc-qf-dzr" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="Lfr-ka-Chs"/>
+                <constraint firstItem="Vuq-KA-XtX" firstAttribute="leading" secondItem="spn-UD-SMw" secondAttribute="leading" id="M2K-RH-0vb"/>
+                <constraint firstItem="Vuq-KA-XtX" firstAttribute="trailing" secondItem="spn-UD-SMw" secondAttribute="trailing" id="WOn-rR-UwQ"/>
                 <constraint firstItem="gcc-qf-dzr" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="146" id="WiO-u2-8Vb"/>
                 <constraint firstItem="YsB-Fa-JWs" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="58" id="dC1-sd-Pml"/>
                 <constraint firstItem="spn-UD-SMw" firstAttribute="top" secondItem="YsB-Fa-JWs" secondAttribute="bottom" constant="24" id="l5n-7v-n6m"/>
                 <constraint firstItem="spn-UD-SMw" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="58" id="nG9-Y9-kmV"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="spn-UD-SMw" secondAttribute="trailing" constant="58" id="pa3-tl-XWM"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="YsB-Fa-JWs" secondAttribute="trailing" constant="58" id="sDA-6U-c3p"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="Vuq-KA-XtX" secondAttribute="bottom" constant="23" id="wog-Hc-EWF"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="Vuq-KA-XtX" secondAttribute="bottom" constant="28" id="wog-Hc-EWF"/>
+                <constraint firstItem="Vuq-KA-XtX" firstAttribute="top" secondItem="spn-UD-SMw" secondAttribute="bottom" constant="15" id="yX1-s2-gwr"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <point key="canvasLocation" x="132" y="154.27286356821591"/>

@@ -69,7 +69,7 @@ class CandidatesListFilterBarView: UIView {
     
     private func factorySpringButton(title titleString: String) -> SpringButton {
         let springButton = SpringButton(type: UIButton.ButtonType.custom)
-        springButton.setTitle(titleString, for: .normal)
+        springButton.localizedNormalTitle = titleString
         springButton.setTitleColor(.black, for: .normal)
         springButton.setTitleColor(UIColor(hex: "105cfe"), for: .selected)
         springButton.titleLabel?.font = UIFont.systemFont(ofSize: 13)
@@ -78,9 +78,9 @@ class CandidatesListFilterBarView: UIView {
     }
     
     private func initFilterContainerSubViews() {
-        let defaultButton = factorySpringButton(title: Localized("CandidateListVC_defaultBtn_title"))
-        let rewardButton = factorySpringButton(title: Localized("CandidateListVC_bonusBtn_title"))
-        let locationButton = factorySpringButton(title: Localized("CandidateListVC_areaBtn_title"))
+        let defaultButton = factorySpringButton(title: "CandidateListVC_defaultBtn_title")
+        let rewardButton = factorySpringButton(title: "CandidateListVC_bonusBtn_title")
+        let locationButton = factorySpringButton(title: "CandidateListVC_areaBtn_title")
         let spaceOneView = UIView()
         let spaceTwoView = UIView()
         
@@ -308,21 +308,10 @@ class CandidatesListFilterBarView: UIView {
         self.barHeaderExpand = expand
         if expand{
             self.bottomSelectIndicator.isHidden = false
-//            self.snp.updateConstraints { (make) in
-//                make.height.equalTo(filterBarExpandHeight)
-//            }
             self.searchStyle = SearchStyle.searchTextFieldHide
-//            self.myvoteBtn.isHidden = false
-//            self.leftTitle.isHidden = false
         }else{
-            
             self.bottomSelectIndicator.isHidden = true
-//            self.snp.updateConstraints { (make) in
-//                make.height.equalTo(filterBarShrinkHeight)
-//            }
             self.searchStyle = SearchStyle.normal
-//            self.myvoteBtn.isHidden = true
-//            self.leftTitle.isHidden = true
         }
         self.updateFilterButtonStyle()
     }

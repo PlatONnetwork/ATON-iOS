@@ -36,14 +36,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LicenseVCDelegate {
     var verifyWindow: UIWindow?
  
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        
         let status = AppFramework.sharedInstance.initialize()
         
         let storyboard = UIStoryboard(name: "LaunchScreen", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "LaunchViewController")
         self.window?.rootViewController = controller
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             self.initUI(initSuccess:status)
         }
         

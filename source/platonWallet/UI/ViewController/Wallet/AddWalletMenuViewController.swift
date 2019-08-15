@@ -42,9 +42,7 @@ class AddWalletMenuViewController: UIViewController {
 
         return [
             (title: Localized("AddWalletMenuVC_createIndividualWallet_title"), imageName: "icon_createIndividualWallet", handler: #selector(createIndividualWallet)),
-            (title: Localized("AddWalletMenuVC_createSharedWallet_title"), imageName: "icon_createShareWallet", handler: #selector(createSharedWallet)),
-            (title: Localized("AddWalletMenuVC_importIndividualWallet_title"), imageName: "icon_importIndividualWallet", handler: #selector(importIndividualWallet)),
-            (title: Localized("AddWalletMenuVC_addSharedWallet_title"), imageName: "icon_addShareWallet", handler: #selector(addSharedWallet))
+            (title: Localized("AddWalletMenuVC_importIndividualWallet_title"), imageName: "icon_importIndividualWallet", handler: #selector(importIndividualWallet))
         ]
     }()
     

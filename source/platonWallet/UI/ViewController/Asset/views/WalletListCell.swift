@@ -49,14 +49,14 @@ class WalletListCell: UITableViewCell {
         self.wallet = wallet
         if let aptWallet = wallet as? Wallet{
             walletName.text = aptWallet.name
-            coinName.text = "Energon";
+            coinName.text = "LAT";
             address = aptWallet.key?.address
             coinIcon.image = UIImage(named: (aptWallet.key?.address.walletAddressLastCharacterAvatar())!)
             unreadDot.isHidden = true
             
         }else if let swallet = wallet as? SWallet{
             walletName.text = swallet.name
-            coinName.text = "Energon"; 
+            coinName.text = "LAT";
             coinIcon.image = UIImage(named: swallet.contractAddress.walletAddressLastCharacterAvatar())
             address = swallet.contractAddress
             unreadDot.isHidden = !STransferPersistence.unreadMessageExistedWithContractAddress((swallet.contractAddress))
@@ -84,7 +84,7 @@ class WalletListCell: UITableViewCell {
         if let balance = AssetService.sharedInstace.assets[address!]{
             count.text = balance!.descriptionString!.balanceFixToDisplay(maxRound: 8).ATPSuffix()
         }else{
-            count.text = "-- Energon"
+            count.text = "-- LAT"
         }
     }
     

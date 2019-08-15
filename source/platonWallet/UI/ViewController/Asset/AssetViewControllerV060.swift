@@ -9,6 +9,7 @@
 import UIKit
 import Localize_Swift
 import RTRootNavigationController
+import MJRefresh
 
 let AssetHeaderViewH = 168 - 44 + 20
 let AssetSectionViewH : CGFloat = 124 
@@ -24,7 +25,6 @@ class AssetViewControllerV060: BaseViewController ,PopupMenuTableDelegate{
         view.delegate = self
         view.backgroundColor = .white
         view.showsVerticalScrollIndicator = false
-        view.bounces = false
         return view
     }() 
     
@@ -41,19 +41,20 @@ class AssetViewControllerV060: BaseViewController ,PopupMenuTableDelegate{
         return view
     }()
     
-    lazy var pageVC: AssetPageViewController = {
-        
+    lazy var pageVC = { () -> AssetPageViewController in
         let vc = AssetPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
         vc.delegate = self
         vc.dataSource = self
         return vc
-        
     }()
     
     lazy var viewControllers: [BaseViewController] = {
-        
         return [transactionVC,sendVC,recvVC]
-        
+    }()
+    
+    lazy var refreshHeader = { () -> MJRefreshNormalHeader in
+        let header = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(fetchData))!
+        return header
     }()
     
     var tmpChildVCIndex: Int = 0
@@ -71,18 +72,22 @@ class AssetViewControllerV060: BaseViewController ,PopupMenuTableDelegate{
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        transactionVC.parentController = self
+        
         initData()
         initUI()
+        
+        scrollView.mj_header = refreshHeader
+        refreshHeader.beginRefreshing()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: false)
-        super.viewWillAppear(animated)
         headerView.shouldUpdateWalletList()
         sendVC.refreshData()
         transactionVC.refreshData()
-        
     }
     
     func initUI() {
@@ -93,7 +98,6 @@ class AssetViewControllerV060: BaseViewController ,PopupMenuTableDelegate{
         view.addSubview(scrollView)
         scrollView.canCancelContentTouches = true
         scrollView.delaysContentTouches = true
-
         
         if #available(iOS 11.0, *) {
             scrollView.contentInsetAdjustmentBehavior = .always
@@ -102,7 +106,6 @@ class AssetViewControllerV060: BaseViewController ,PopupMenuTableDelegate{
         }
         
         let usingsafeAutoLaoutGuide = true
-        
         scrollView.snp.makeConstraints { (make) in
             make.leading.trailing.equalToSuperview()
             if usingsafeAutoLaoutGuide{
@@ -110,17 +113,17 @@ class AssetViewControllerV060: BaseViewController ,PopupMenuTableDelegate{
                     make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
                     make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
                 } else {
-                    make.bottom.top.equalToSuperview()
+                    make.bottom.equalToSuperview()
+                    make.top.equalTo(topLayoutGuide.snp.bottom)
                 }
             }else{
                 make.edges.equalToSuperview()
             }
-            
         }
         
         scrollView.addSubview(headerView)
         headerView.snp.makeConstraints { (make) in
-            make.top.leading.trailing.equalToSuperview()
+            make.leading.trailing.top.equalToSuperview()
             make.height.equalTo(AssetHeaderViewH)
             make.width.equalTo(view)
         }
@@ -136,7 +139,14 @@ class AssetViewControllerV060: BaseViewController ,PopupMenuTableDelegate{
         pageVC.setViewControllers([viewControllers[tmpChildVCIndex]], direction: .forward, animated: false, completion: nil)
         addChild(pageVC)
         scrollView.addSubview(pageVC.view)
-        self.updatePageViewConstraint(headerHide: false)
+        let tabbarHeight = (navigationController?.tabBarController?.tabBar.frame.size.height ?? 0)
+        pageVC.view.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalToSuperview()
+            make.width.equalTo(view)
+            make.top.equalTo(sectionView.snp.bottom).offset(0)
+            make.height.equalTo(kUIScreenHeight - 70 - tabbarHeight - CGFloat(AssetSectionViewH))
+        }
+//        self.updatePageViewConstraint(headerHide: false)
         
         pageVC.didScrolling = {[weak self] offset in
             //self?.sectionView.changingOffset(offset: offset, currentIndex: (self?.pageViewCurrentIndex)!,draging: (self?.pageVC.pagesScrollview?.isDragging)!)
@@ -156,22 +166,26 @@ class AssetViewControllerV060: BaseViewController ,PopupMenuTableDelegate{
             }
             self?.pageViewCurrentIndex = index
         }
+        sectionView.onWalletAvatarTapAction = { [weak self] in
+            guard let self = self, let wallet = AssetVCSharedData.sharedData.selectedWallet as? Wallet else { return }
+            let detailVC = WalletManagerDetailViewController()
+            detailVC.wallet = wallet
+            detailVC.hidesBottomBarWhenPushed = true
+            self.navigationController?.pushViewController(detailVC, animated: true)
+        }
+        sectionView.onLockedBalanceTapAction = { [weak self] in
+            self?.showMessage(text: Localized("wallet_balance_restricted_doubt"), delay: 2.0)
+        }
         
         assetHeaderStyle = (false,false)
         
         NotificationCenter.default.addObserver(self, selector: #selector(OnBeginEditing(_:)), name: UITextField.textDidBeginEditingNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(updateWalletList), name: Notification.Name(updateWalletList_Notification), object: nil)
-       
     }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-    } 
     
     //MARK: - Constraint
     
     func updatePageViewConstraint(headerHide: Bool){
-        
         let tabbarHeight = (navigationController?.tabBarController?.tabBar.frame.size.height ?? 0)
         if headerHide{
             pageVC.view.snp.remakeConstraints { (make) in
@@ -188,6 +202,15 @@ class AssetViewControllerV060: BaseViewController ,PopupMenuTableDelegate{
                 make.height.equalTo(kUIScreenHeight - 0 - tabbarHeight - CGFloat(AssetSectionViewH))
             }
         }
+    }
+    
+    @objc func fetchData() {
+        updateWalletList()
+//        transactionVC.fetchTransactionLastest()
+    }
+    
+    func endFetchData() {
+        refreshHeader.endRefreshing()
     }
     
     func checkAndSetNoWalletViewStyle(){
@@ -212,7 +235,6 @@ class AssetViewControllerV060: BaseViewController ,PopupMenuTableDelegate{
             pageVC.pagesScrollview?.isScrollEnabled = true
             self.transactionVC.tableNodataHolderView.imageView.image = UIImage(named: "empty_no_data_img")
         }
-        
     }
      
     func initData(){
@@ -226,11 +248,8 @@ class AssetViewControllerV060: BaseViewController ,PopupMenuTableDelegate{
             print("headerStyle:\(String(describing: assetHeaderStyle))")
             let hide = assetHeaderStyle?.0 ?? false
             let animated = assetHeaderStyle?.1 ?? false
-            
-            
-            
+
             if hide{
-                
                 scrollView.setContentOffset(CGPoint(x: 0, y: AssetHeaderViewH), animated: animated)
                 sectionView.backgroundColor = .white
                 DispatchQueue.main.async {
@@ -241,11 +260,9 @@ class AssetViewControllerV060: BaseViewController ,PopupMenuTableDelegate{
                 sectionView.backgroundColor = .white
                 sectionView.grayoutBackground.backgroundColor = .white
                 sectionView.bottomSepline.backgroundColor = #colorLiteral(red: 0.9751496911, green: 0.984305203, blue: 1, alpha: 1)
-
             }else{
-                
                 sectionView.backgroundColor = UIColor(red: 247, green: 250, blue: 255, alpha: 1)
-                
+
                 scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: animated)
                 DispatchQueue.main.async {
                     self.scrollView.isScrollEnabled = true
@@ -255,10 +272,10 @@ class AssetViewControllerV060: BaseViewController ,PopupMenuTableDelegate{
                 sectionView.grayoutBackground.backgroundColor = #colorLiteral(red: 0.9751496911, green: 0.984305203, blue: 1, alpha: 1)
                 sectionView.bottomSepline.backgroundColor = #colorLiteral(red: 0.9215686275, green: 0.9333333333, blue: 0.9568627451, alpha: 1)
             }
-            
+
             transactionVC.setHeaderStyle(hide: hide)
-            self.updatePageViewConstraint(headerHide: hide)
-            
+//            self.updatePageViewConstraint(headerHide: hide)
+
         }
     }
 
@@ -315,59 +332,55 @@ extension AssetViewControllerV060: UIPageViewControllerDelegate, UIPageViewContr
 
 extension AssetViewControllerV060 : UIScrollViewDelegate,ChildScrollViewDidScrollDelegate {
     
-
-    
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        let actualPosition = scrollView.panGestureRecognizer.translation(in: scrollView.superview)
-        if scrollView == self.scrollView{
-            
-            if (actualPosition.y >= 0.0){
-                print("self.scrollView Dragging down")
-                
-            }else{
-                print("self.scrollView Dragging up")
-                //scrollView.isScrollEnabled = true
-                if (self.assetHeaderStyle?.0)!{
-                    //self.scrollView.isScrollEnabled = false
-                    //self.transactionVC.tableView.isScrollEnabled = true
-                }
-                
-            }
-        }
-    }
-    
-    func scrollViewWillBeginDecelerating(_ scrollView: UIScrollView) {
-        print("scrollViewWillBeginDecelerating")
-        if scrollView.isDragging && scrollView.isDecelerating{
-            if scrollView.contentOffset.y > CGFloat(AssetHeaderViewH) * 0.5{
-                self.assetHeaderStyle = (true,true)
-            }else{
-                self.assetHeaderStyle = (false,true)
-            }
-        }
-    }
-    
-    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-        
-        if scrollView.panGestureRecognizer.translation(in: scrollView.superview).y > 0{
-            if (self.assetHeaderStyle?.hide)!{
-                self.assetHeaderStyle = (false,true)
-            }
-            
-        }else{
-            if !(self.assetHeaderStyle?.hide)!{
-                self.assetHeaderStyle = (true,true)
-            }
-        }
-        return
-    }
+//    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+//        let actualPosition = scrollView.panGestureRecognizer.translation(in: scrollView.superview)
+//        if scrollView == self.scrollView{
+//
+//            if (actualPosition.y >= 0.0){
+//                print("self.scrollView Dragging down")
+//
+//            }else{
+//                print("self.scrollView Dragging up")
+////                scrollView.isScrollEnabled = true
+////                if (self.assetHeaderStyle?.0)!{
+////                    self.scrollView.isScrollEnabled = false
+////                    self.transactionVC.tableView.isScrollEnabled = true
+////                }
+//
+//            }
+//        }
+//    }
+//
+//    func scrollViewWillBeginDecelerating(_ scrollView: UIScrollView) {
+//        if scrollView.isDragging && scrollView.isDecelerating{
+//            if scrollView.contentOffset.y > CGFloat(AssetHeaderViewH) * 0.5{
+//                self.assetHeaderStyle = (true,true)
+//            }else{
+//                self.assetHeaderStyle = (false,true)
+//            }
+//        }
+//    }
+//
+//    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+//
+//        if scrollView.panGestureRecognizer.translation(in: scrollView.superview).y > 0{
+//            if (self.assetHeaderStyle?.hide)!{
+//                self.assetHeaderStyle = (false,true)
+//            }
+//
+//        }else{
+//            if !(self.assetHeaderStyle?.hide)!{
+//                self.assetHeaderStyle = (true,true)
+//            }
+//        }
+//        return
+//    }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         //print("scrollview Didcroll:\(scrollView.contentOffset.y)")
         
         //let rec = sectionView.convert(sectionView.bounds, to: view)
         //print("sectionView y:\(rec.origin.y)")
-        
         if (!scrollEnable || scrollView.contentOffset.y >= CGFloat(AssetHeaderViewH)) {
             //scrollView.setContentOffset(CGPoint(x: 0, y: AssetHeaderViewH - 20), animated: false)
             DispatchQueue.main.async {
@@ -377,11 +390,10 @@ extension AssetViewControllerV060 : UIScrollViewDelegate,ChildScrollViewDidScrol
                 self.assetHeaderStyle = (true,false)
             }
         }
-    } 
+    }
     
     func childScrollViewDidScroll(childScrollView: UIScrollView) {
         let yoffset = childScrollView.contentOffset.y
-        //print("childScrollViewDidScroll:\(yoffset)")
         if yoffset <= 0 {
             scrollEnable = true
             childScrollView.setContentOffset(.zero, animated: false)
@@ -393,7 +405,7 @@ extension AssetViewControllerV060 : UIScrollViewDelegate,ChildScrollViewDidScrol
                 scrollEnable = false
             }
         }
-
+        scrollView.contentSize = CGSize(width: scrollView.contentSize.width, height: childScrollView.contentSize.height + CGFloat(AssetHeaderViewH) + CGFloat(AssetSectionViewH))
     }
     
     // MARK: - User Interaction
@@ -401,10 +413,8 @@ extension AssetViewControllerV060 : UIScrollViewDelegate,ChildScrollViewDidScrol
     @objc func onMenu(){
         var menuArray: [MenuItem] = []
         let menu1 = MenuItem(icon: UIImage(named: "img-more-classic-create"), title: Localized("AddWalletMenuVC_createIndividualWallet_title"))
-        let menu2 = MenuItem(icon: UIImage(named: "img-more-Joint-create"), title: Localized("AddWalletMenuVC_createSharedWallet_title"))
         let menu3 = MenuItem(icon: UIImage(named: "img-more-classic-import"), title: Localized("AddWalletMenuVC_importIndividualWallet_title"))
-        let menu4 = MenuItem(icon: UIImage(named: "img-more-Joint-add"), title: Localized("AddWalletMenuVC_addSharedWallet_title"))
-        menuArray = [menu1, menu2, menu3, menu4]
+        menuArray = [menu1, menu3]
         let menu = PopupMenuTable(menuArray: menuArray, arrowPoint: CGPoint(x: UIScreen.main.bounds.width - 30, y: 64 + UIDevice.notchHeight))
         menu.popUp()
         menu.delegate = self
@@ -453,11 +463,7 @@ extension AssetViewControllerV060 : UIScrollViewDelegate,ChildScrollViewDidScrol
         case 0:
             createIndividualWallet()
         case 1:
-            createSharedWallet()
-        case 2:
             importIndividualWallet()
-        case 3:
-            addSharedWallet()
         default:
             do{}
         }
@@ -469,22 +475,10 @@ extension AssetViewControllerV060 : UIScrollViewDelegate,ChildScrollViewDidScrol
         navigationController?.pushViewController(createWalletVC, animated: true)
     }
     
-    func createSharedWallet() {
-        let vc = CreateSharedWalletStep1ViewController()
-        vc.hidesBottomBarWhenPushed = true
-        navigationController?.pushViewController(vc, animated: true)
-    }
-    
     func importIndividualWallet() {
         let importWallet = MainImportWalletViewController()
         importWallet.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(importWallet, animated: true)
-    }
-    
-    func addSharedWallet() {
-        let addSharedWallet = AddSharedWalletVC()
-        addSharedWallet.hidesBottomBarWhenPushed = true
-        navigationController?.pushViewController(addSharedWallet, animated: true)
     }
 }
 
@@ -597,6 +591,8 @@ extension AssetViewControllerV060{
     
     @objc func updateWalletList(){
         headerView.shouldUpdateWalletList()
+        
+        AssetService.sharedInstace.fetchWalletBanlance()
         sendVC.refreshData()
         transactionVC.refreshData()
         self.checkAndSetNoWalletViewStyle()

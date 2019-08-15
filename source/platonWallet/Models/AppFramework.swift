@@ -17,7 +17,7 @@ class AppFramework {
     
     static let sharedInstance = AppFramework()
     
-    func initialize() -> Bool{
+    func initialize() -> Bool {
         languageSetting()
         initBugly()
         doSwizzle()
@@ -43,7 +43,6 @@ class AppFramework {
     }
      
     func languageSetting() {
-        
         let defaullt = UserDefaults.standard.object(forKey: "LCLCurrentLanguageKey")
         if  defaullt == nil {
             let curlan = GetCurrentSystemSettingLanguage()
@@ -53,9 +52,7 @@ class AppFramework {
                 Localize.setCurrentLanguage("en")
             }
         }
-        
     }
-    
 
     func RealmConfiguration() -> Bool {
         
@@ -79,7 +76,7 @@ class AppFramework {
         //set node storage first
         let nodeStorge = NodeInfoPersistence(realm: RealmInstance!)
         SettingService.shareInstance.nodeStorge = nodeStorge
-        
+
         let walletStorge = WallletPersistence(realm: RealmInstance!)
         WalletService.sharedInstance.walletStorge = walletStorge
         

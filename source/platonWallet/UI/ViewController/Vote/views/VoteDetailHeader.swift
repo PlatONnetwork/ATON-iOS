@@ -14,9 +14,9 @@ class VoteDetailHeader: UIView {
     
     @IBOutlet weak var id: UILabel!
 
-    func updateView(_ detail: CandidateBasicInfo){
+    func updateView(_ detail: NodeVote){
         name.text = detail.name
-        id.text = detail.id.add0x()
+        id.text = detail.nodeId?.add0x()
     }
 
 }

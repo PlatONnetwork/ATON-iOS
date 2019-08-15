@@ -35,8 +35,6 @@ extension UIViewController {
         self.proj_viewWillAppear(animated: animated)
         
         let viewControllerName = NSStringFromClass(type(of: self))
-        print("viewWillAppear: \(viewControllerName)")
-        
         CustomLoading.viewWillAppear()
         
         guard isInCustomLoading != nil else{
@@ -226,3 +224,45 @@ extension UIViewController {
         }
     }
 }
+
+extension UIViewController {
+    func showPasswordInputPswAlert(for wallet: Wallet, completion: ((_ privateKey: String?) -> Void)?) {
+        
+        let alertVC = AlertStylePopViewController.initFromNib()
+        let style = PAlertStyle.passwordInput(walletName: wallet.name)
+        alertVC.onAction(confirm: { [weak self] (text, _) -> (Bool)  in
+            let valid = CommonService.isValidWalletPassword(text ?? "")
+            if !valid.0{
+                alertVC.showInputErrorTip(string: valid.1)
+                return false
+            }
+            
+            alertVC.showLoadingHUD()
+            
+            WalletService.sharedInstance.exportPrivateKey(
+                wallet: wallet,
+                password: (alertVC.textFieldInput?.text)!, completion: { (pri, err) in
+                if (err == nil && (pri?.length)! > 0) {
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+                        AssetViewControllerV060.getInstance()?.showLoadingHUD()
+                    })
+                    
+                    completion?(pri)
+                    alertVC.dismissWithCompletion()
+                }else{
+                    alertVC.showInputErrorTip(string: (err?.errorDescription)!)
+                    alertVC.hideLoadingHUD()
+                }
+            })
+            return false
+            
+        }) { (_, _) -> (Bool) in
+            return true
+        }
+        alertVC.style = style
+        alertVC.showInViewController(viewController: self)
+        
+        return
+    }
+}
+

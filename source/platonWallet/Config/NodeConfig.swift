@@ -20,9 +20,6 @@ let DefaultNodeURL_Alpha = "https://test-amigo.platon.network/test"
 let DefaultNodeURL_Beta = "https://test-beta.platon.network/test"
 
 
-//balance query timer
-let assetQueryTimerEnable = true
-
 let assetQueryTimerInterval = 8
 
 //tiemr query block number
@@ -38,7 +35,7 @@ let allJointWalletPollingTxsTimerInterval = 8
 //polling single joint wallet's transactions in ViewController
 let jointWalletUpdateTxListTimerEnable = true
 
-let jointWalletUpdateTxListTimerInterval = 8
+let jointWalletUpdateTxListTimerInterval = 10
 
 //monitor the status of the joint wallet’s creation
 let jointWalletCreationTimerEnable = true

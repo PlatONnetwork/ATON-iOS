@@ -18,7 +18,7 @@ class AssetSectionViewV060: UIView {
     
     var walelt: AnyObject?
 
-    @IBOutlet weak var walletAvatar: UIImageView!
+    @IBOutlet weak var walletAvatar: UIButton!
     
     @IBOutlet weak var walletName: UILabel!
     
@@ -45,12 +45,6 @@ class AssetSectionViewV060: UIView {
     
     
     
-    
-    
-    
-    
-    
-    
     @IBOutlet weak var backupContainer: UIView!
     
     
@@ -66,6 +60,10 @@ class AssetSectionViewV060: UIView {
     
     var onSelectItem : ((_ index: Int) -> Void)?
     
+    var onWalletAvatarTapAction: (() -> Void)?
+    
+    var onLockedBalanceTapAction: (() -> Void)?
+    
     @IBOutlet weak var grayoutBackground: UIView!
     
     var maskLayer : CALayer{
@@ -77,6 +75,19 @@ class AssetSectionViewV060: UIView {
         maskLayer.cornerRadius = maskHeight * 0.5
         return maskLayer
     }
+    
+    lazy var iconAttributed: NSAttributedString = {
+        let attachment = NSTextAttachment()
+        attachment.bounds = CGRect(x: 0, y: -2, width: 10, height: 10)
+        attachment.image = UIImage(named: "1.icon_An error")
+        
+        let iconAttr = NSMutableAttributedString(string: " ")
+        iconAttr.append(NSAttributedString(attachment: attachment))
+        iconAttr.append(NSAttributedString(string: " "))
+        iconAttr.addAttributes([NSAttributedString.Key.link: "aton://lockedBalance_doubt"], range: NSRange(location: 0, length: iconAttr.length))
+        
+        return iconAttr
+    }()
     
     override func awakeFromNib() {
         //self.forgroundOffset.constant = -sectionHeight
@@ -91,27 +102,20 @@ class AssetSectionViewV060: UIView {
         bottomSelectIndicator.backgroundColor = UIColor(rgb: 0x105CFE)
         self.updateBottonIndicator(index: 0)
         
+        walletAvatar.addTarget(self, action: #selector(walletAvatarTapAction), for: .touchUpInside)
+        
         NotificationCenter.default.addObserver(self, selector: #selector(didUpdateAllAsset), name: NSNotification.Name(DidUpdateAllAssetNotification), object: nil)
+        
+        balanceLabel.adjustsFontSizeToFitWidth = true
+        balanceLabel.textColor = .black
+        balanceLabel.isUserInteractionEnabled = true
+        balanceLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapGesture(_:))))
     }
     
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        /*
-        if let futureMask = self.forgroundView.layer.mask {
-            CATransaction.setDisableActions(true)
-            if self.isDraging{
-                futureMask.frame = self.maskPositionWithIndex(index: self.selectedIndex)
-            }else{
-                CATransaction.setAnimationDuration(0.15)
-                CATransaction.setCompletionBlock {
-                    CATransaction.setAnimationDuration(0.15)
-                    futureMask.frame = self.maskPositionWithIndex(index: self.selectedIndex)
-                }
-            }
-            CATransaction.commit()
-        }
-         */
-        print("walletnamefont: \(walletName.font)")
+    @objc func tapGesture(_ gesture: UITapGestureRecognizer) {
+//        var range: NSRange = NSRange(location: 0, length: 0)
+//        var dict = balanceLabel.attributedText?.attributes(at: 0, effectiveRange: &range)
+//        print(dict)
     }
     
     
@@ -123,6 +127,10 @@ class AssetSectionViewV060: UIView {
         maskLayer.backgroundColor = UIColor.red.cgColor
         maskLayer.cornerRadius = 52.0 * 0.5
         return maskLayer
+    }
+    
+    @objc private func walletAvatarTapAction() {
+        onWalletAvatarTapAction?()
     }
     
     private func updateBottonIndicator(index: Int){
@@ -239,7 +247,7 @@ class AssetSectionViewV060: UIView {
         guard AssetVCSharedData.sharedData.selectedWallet != nil else {
             self.walletName.text = "--"
             self.balanceLabel.text = "--"
-            self.walletAvatar.image = UIImage()
+            self.walletAvatar.setImage(UIImage(), for: .normal)
             self.backupContainer.isHidden = true
             return
         }
@@ -247,12 +255,25 @@ class AssetSectionViewV060: UIView {
         if let jwallet  = self.walelt as? SWallet{
             self.walletName.text = jwallet.name
             self.balanceLabel.text = jwallet.balanceDescription()
-            self.walletAvatar.image = jwallet.image()
+            self.walletAvatar.setImage(jwallet.image(), for: .normal)
             self.backupContainer.isHidden = true
         }else if let cwallet = self.walelt as? Wallet{
             self.walletName.text = cwallet.name
-            self.balanceLabel.text = cwallet.balanceDescription()
-            self.walletAvatar.image = cwallet.image()
+            
+            let balanceAttr = NSMutableAttributedString(string: cwallet.balanceDescription())
+            if cwallet.lockedBalance.count > 0, let lockedBalanceString = cwallet.lockedBalanceDescription() {
+                let lockedBalanceAttr = NSMutableAttributedString(string: "(")
+                lockedBalanceAttr.append(iconAttributed)
+                
+                lockedBalanceAttr.append(NSAttributedString(string: Localized("wallet_balance_restricted") + lockedBalanceString))
+                lockedBalanceAttr.append(NSAttributedString(string: ")"))
+                lockedBalanceAttr.addAttributes([NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12), NSAttributedString.Key.foregroundColor: common_lightLightGray_color], range: NSRange(location: 0, length: lockedBalanceAttr.length))
+                balanceAttr.append(lockedBalanceAttr)
+            }
+        
+            
+            self.balanceLabel.attributedText = balanceAttr
+            self.walletAvatar.setImage(cwallet.image(), for: .normal)
             self.backupContainer.isHidden = !cwallet.canBackupMnemonic
         }
     }
@@ -281,7 +302,6 @@ class AssetSectionViewV060: UIView {
     }
     
     func didFinishAnimating(index: Int){
-        print("pagedidFinishAnimating")
         maskOffset = 0
         selectedIndex = index
         tmpBlock = true
@@ -297,6 +317,37 @@ class AssetSectionViewV060: UIView {
     
     @objc func didUpdateAllAsset(){
         self.updateWaleltInfo()
+    }
+    
+}
+
+extension UITapGestureRecognizer {
+    
+    func didTapAttributedTextInLabel(label: UILabel, inRange targetRange: NSRange) -> Bool {
+        // Create instances of NSLayoutManager, NSTextContainer and NSTextStorage
+        let layoutManager = NSLayoutManager()
+        let textContainer = NSTextContainer(size: CGSize.zero)
+        let textStorage = NSTextStorage(attributedString: label.attributedText!)
+        
+        // Configure layoutManager and textStorage
+        layoutManager.addTextContainer(textContainer)
+        textStorage.addLayoutManager(layoutManager)
+        
+        // Configure textContainer
+        textContainer.lineFragmentPadding = 0.0
+        textContainer.lineBreakMode = label.lineBreakMode
+        textContainer.maximumNumberOfLines = label.numberOfLines
+        let labelSize = label.bounds.size
+        textContainer.size = labelSize
+        
+        // Find the tapped character location and compare it to the specified range
+        let locationOfTouchInLabel = self.location(in: label)
+        let textBoundingBox = layoutManager.usedRect(for: textContainer)
+        let textContainerOffset = CGPoint(x: (labelSize.width - textBoundingBox.size.width) * 0.5 - textBoundingBox.origin.x, y: (labelSize.height - textBoundingBox.size.height) * 0.5 - textBoundingBox.origin.y)
+        let locationOfTouchInTextContainer = CGPoint(x: locationOfTouchInLabel.x - textContainerOffset.x, y: locationOfTouchInLabel.y - textContainerOffset.y)
+        let indexOfCharacter = layoutManager.characterIndex(for: locationOfTouchInTextContainer, in: textContainer, fractionOfDistanceBetweenInsertionPoints: nil)
+        
+        return NSLocationInRange(indexOfCharacter, targetRange)
     }
     
 }

@@ -8,6 +8,7 @@
 
 import UIKit
 import EmptyDataSet_Swift
+import MJRefresh
 
 protocol ChildScrollViewDidScrollDelegate: AnyObject {
     func childScrollViewDidScroll(childScrollView: UIScrollView)
@@ -15,7 +16,6 @@ protocol ChildScrollViewDidScrollDelegate: AnyObject {
 
 class MultiGestureTableView: UITableView {
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-        //return true
         return true
     } 
 }
@@ -26,13 +26,24 @@ class AssetTransactionViewControllerV060: BaseViewController, EmptyDataSetDelega
     
     weak var delegate: ChildScrollViewDidScrollDelegate?
     
-    var dataSource : [AnyObject]? = [] 
+    var dataSource = [String: [Transaction]]()
+    
+    var localDataSource = [String: [Transaction]]()
     
     var walletAddress : String?
     
-    var timer : Timer? = nil
+    var transactionsTimer: Timer? = nil
     
     var assetHeaderHide = false
+    
+    weak var parentController: AssetViewControllerV060?
+    
+    lazy var refreshFooterView: MJExtensionLoadMoreFooterView = {
+        let view = MJExtensionLoadMoreFooterView(refreshingTarget: self, refreshingAction: nil)!
+        return view
+    }()
+    
+    let listSize = 20
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,6 +51,7 @@ class AssetTransactionViewControllerV060: BaseViewController, EmptyDataSetDelega
         tableView.dataSource = self
         tableView.separatorStyle = .none
         tableView.showsVerticalScrollIndicator = false
+//        tableView.alwaysBounceVertical = false
         tableView.emptyDataSetView { [weak self] view in
             let holder = self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, nil,"empty_no_data_img") as? TableViewNoDataPlaceHolder
             view.customView(holder)
@@ -64,18 +76,12 @@ class AssetTransactionViewControllerV060: BaseViewController, EmptyDataSetDelega
         NotificationCenter.default.addObserver(self, selector: #selector(willDeleteWallet(_:)), name: NSNotification.Name(WillDeleateWallet_Notification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(updateWalletList), name: NSNotification.Name(updateWalletList_Notification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(nodeDidSwitch), name: NSNotification.Name(NodeStoreService.didSwitchNodeNotification), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(didUpdateSharedWalletTransaction), name: NSNotification.Name(DidUpdateSharedWalletTransactionList_Notification), object: nil)
-
-    }
-    
-   
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
+        NotificationCenter.default.addObserver(self, selector: #selector(initClassicData), name: NSNotification.Name(DidAddVoteTransactionNotification), object: nil)
+        
+        refreshFooterView.loadMoreTapHandle = { [weak self] in
+            self?.goTransactionList()
+        }
+        tableView.mj_footer = refreshFooterView
     }
     
     func setHeaderStyle(hide: Bool){
@@ -93,9 +99,12 @@ class AssetTransactionViewControllerV060: BaseViewController, EmptyDataSetDelega
 extension AssetTransactionViewControllerV060{
     
     func refreshData(){
+        guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return }
+        dataSource[selectedAddress] = dataSource[selectedAddress]?.filter { !$0.isInvalidated }
         commonInit()
         initClassicData()
-        initJointData()
+        fetchDataByWalletChanged()
+        
         if AssetVCSharedData.sharedData.walletList.count == 0{
             self.tableNodataHolderView.descriptionLabel.localizedText = "IndividualWallet_EmptyView_tips"
         }else{
@@ -104,90 +113,28 @@ extension AssetTransactionViewControllerV060{
     }
     
     func commonInit(){
-        if jointWalletUpdateTxListTimerEnable{
-            if timer == nil{
-                timer = Timer.scheduledTimer(timeInterval:TimeInterval(jointWalletUpdateTxListTimerInterval), target: self, selector: #selector(pollingJointWalletTransaction), userInfo: nil, repeats: true)
-            }
+        
+        if transactionsTimer == nil {
+            transactionsTimer = Timer.scheduledTimer(timeInterval:TimeInterval(jointWalletUpdateTxListTimerInterval), target: self, selector: #selector(pollingWalletTransactions), userInfo: nil, repeats: true)
         }
     }
     
-    func initClassicData() {
-        if let _ = AssetVCSharedData.sharedData.selectedWallet as? Wallet{
-            let wallet = AssetVCSharedData.sharedData.cWallet
-            dataSource?.removeAll()
-            let data = TransferPersistence.getAllByAddress(from: (wallet?.key?.address)!)
-            
-            dataSource?.append(contentsOf: data)
-            var jointTxs : [STransaction] = []
-            jointTxs.append(contentsOf:STransferPersistence.getAllByWalletOwner(address: (wallet?.key?.address)!))
-            jointTxs.append(contentsOf:STransferPersistence.getAllATPTransferByReceiveAddress((wallet?.key?.address)!))
-            jointTxs = jointTxs.removeDuplicate { $0.uuid }
-            
-            dataSource?.append(contentsOf: jointTxs)
-            dataSource?.txSort()
-            tableView.reloadData()
+    @objc func initClassicData() {
+        guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return }
+        var transactions = TransferPersistence.getAllByAddress(from: selectedAddress)
+        transactions.txSort()
+        print("localtxs: ", transactions.map {$0.txhash!})
+        guard let existTxs = dataSource[selectedAddress], existTxs.count > 0 else {
+            dataSource[selectedAddress] = transactions
+            return
         }
-    }
-    
-    func initJointData() {
-        self.didUpdateSharedWalletTransaction()
-    }
-    
-    @objc func pollingJointWalletTransaction(){
-        
-        initJointData()
-        initClassicData()
-        
-        if let swallet = AssetVCSharedData.sharedData.selectedWallet as? SWallet{
-            SWalletService.sharedInstance.getTransactionList(contractAddress: (swallet.contractAddress), sender: (swallet.walletAddress), from: 0, to: UInt64.max) { (ret, data) in
-                switch ret{
-                case .success:   
-                    do{}
-                case .fail(_, _):
-                    do{}
-                }
-            }
-        }else if let wallet = AssetVCSharedData.sharedData.selectedWallet as? Wallet{
-            for swallet in wallet.getAssociatedJointWallets(){
-                SWalletService.sharedInstance.getTransactionList(contractAddress: (swallet.contractAddress), sender: (swallet.walletAddress), from: 0, to: UInt64.max) { (ret, data) in
-                    switch ret{
-                    case .success:
-                        do{}
-                    case .fail(_, _):
-                        do{}
-                    }
-                }
-            }
-        }
-        
-        
+        let txHashes = existTxs.map { $0.txhash! }
+        let newTxs = transactions.filter { !txHashes.contains($0.txhash!) }
+        dataSource[selectedAddress]?.insert(contentsOf: newTxs, at: 0)
+        tableView.reloadData()
     }
     
     //MARK: - Notification
-    
-    @objc func didUpdateSharedWalletTransaction(){
-        
-        if let swallet = AssetVCSharedData.sharedData.selectedWallet as? SWallet{
-            dataSource?.removeAll()
-            let txs = STransferPersistence.getAllATPTransferByContractAddress((swallet.contractAddress))
-            if txs.count > 0{
-                dataSource?.append(contentsOf: txs)
-            }
-            
-            let recvJointWalletTxs = STransferPersistence.getAllATPTransferByReceiveAddress((swallet.contractAddress))
-            if recvJointWalletTxs.count > 0{
-                dataSource?.append(contentsOf: recvJointWalletTxs)
-            }
-            
-            let recvClassicTxs = TransferPersistence.getAllByAddress(from: (swallet.contractAddress))
-            if recvClassicTxs.count > 0{
-                dataSource?.append(contentsOf: recvClassicTxs)
-            }
-            
-            dataSource?.txSort()
-            self.tableView.reloadData()
-        }
-    }
     
     @objc func willDeleteWallet(_ notification: Notification){
         guard self.walletAddress != nil else {
@@ -195,15 +142,10 @@ extension AssetTransactionViewControllerV060{
         }
         if let cwallet = notification.object as? Wallet{
             if (self.walletAddress?.ishexStringEqual(other: cwallet.key?.address))!{
-                self.dataSource?.removeAll()
+                self.dataSource[self.walletAddress!]?.removeAll()
                 self.tableView.reloadData()
             }
-        }else if let jwallet = notification.object as? SWallet{
-            if (self.walletAddress?.ishexStringEqual(other: jwallet.contractAddress))!{
-                self.dataSource?.removeAll()
-                self.tableView.reloadData()
-            }
-        } 
+        }
     }
     
     @objc func updateWalletList(){
@@ -211,25 +153,118 @@ extension AssetTransactionViewControllerV060{
     }
     
     @objc func nodeDidSwitch(){
-        self.dataSource?.removeAll()
+        dataSource = [String: [Transaction]]()
         self.tableView.reloadData()
     }
-
     
+    func fetchTransaction(beginSequence: Int, direction: String) {
+        guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return }
+        TransactionService.service.getBatchTransaction(addresses: [selectedAddress], beginSequence: beginSequence, listSize: listSize, direction: direction) { [weak self] (result, response) in
+            
+            guard let self = self else {
+                return
+            }
+            
+            // 结束顶层下拉刷新的状态
+            if let parentCon = self.parentController {
+                parentCon.endFetchData()
+            }
+            
+            switch result {
+            case .success:
+                // 返回的交易数据条数为0，则显示无加载更多
+                guard let transactions = response as? [Transaction], transactions.count > 0 else {
+                    self.tableView.mj_footer.isHidden = (self.dataSource[selectedAddress]?.count ?? 0 < self.listSize)
+                    return
+                }
+                
+                // 下拉刷新时，先请除非本地缓存的数据
+                if beginSequence == -1 {
+                    self.dataSource[selectedAddress] = self.dataSource[selectedAddress]?.filter { $0.sequence == nil }
+                }
+                
+                if beginSequence != -1 && direction == "new" {
+                    AssetService.sharedInstace.fetchWalletBanlance()
+                }
+
+                guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return }
+                if let existTxs = self.dataSource[selectedAddress], existTxs.count > 0 {
+                    let txHashes = transactions.map { $0.txhash! }
+                    
+                    let deleteTransactions = self.dataSource[selectedAddress]?.filter { txHashes.contains($0.txhash!) && $0.sequence == nil }
+                    self.dataSource[selectedAddress] = self.dataSource[selectedAddress]?.filter { !txHashes.contains($0.txhash!) }
+                    
+                    for delTransaction in deleteTransactions ?? [] {
+                        TransferPersistence.delete(delTransaction)
+                    }
+ 
+                    if direction == "new" && beginSequence > -1 {
+                        self.dataSource[selectedAddress]?.insert(contentsOf: transactions, at: 0)
+                    } else {
+                        self.dataSource[selectedAddress]?.append(contentsOf: transactions)
+                    }
+                } else {
+                    self.dataSource[selectedAddress] = transactions
+                }
+                self.tableView.mj_footer.isHidden = (self.dataSource[selectedAddress]?.count ?? 0 < self.listSize)
+                self.tableView.reloadData()
+            case .fail(_, let error):
+                break
+            }
+        }
+    }
+    
+    private func goTransactionList() {
+        let controller = TransactionListViewController()
+        controller.selectedWallet = AssetVCSharedData.sharedData.selectedWallet as? Wallet
+        controller.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(controller, animated: true)
+    }
+}
+
+// 下拉刷新及加载更多
+extension AssetTransactionViewControllerV060 {
+    func fetchDataByWalletChanged() {
+        guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return }
+        guard let count = self.dataSource[selectedAddress]?.count, count <= 0 else {
+            pollingWalletTransactions()
+            return
+        }
+        fetchTransactionLastest()
+    }
+    
+    func fetchTransactionLastest() {
+        fetchTransaction(beginSequence: -1, direction: "new")
+    }
+    
+    @objc func pollingWalletTransactions() {
+        guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return }
+        let transaction = dataSource[selectedAddress]?.filter { $0.sequence != nil }.first
+        guard let lastestTransaction = transaction else {
+            fetchTransactionLastest()
+            return
+        }
+        
+        guard let sequence = Int(lastestTransaction.sequence ?? "0") else { return }
+        fetchTransaction(beginSequence: sequence, direction: "new")
+    }
 }
  
 extension AssetTransactionViewControllerV060: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return dataSource?.count ?? 0
+        guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return 0 }
+        return dataSource[selectedAddress]?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let wallet = AssetVCSharedData.sharedData.selectedWallet 
+        let wallet = AssetVCSharedData.sharedData.selectedWallet
         let cell : WalletDetailCell = tableView.dequeueReusableCell(withIdentifier: String(describing: WalletDetailCell.self)) as! WalletDetailCell
-        let tx = dataSource?[indexPath.row]
-        cell.updateTransferCell(txAny: tx , walletAny: wallet)
-
-        cell.updateCellStyle(count: dataSource?.count ?? 0, index: indexPath.row)
+        if let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress, let count = dataSource[selectedAddress]?.count, count > indexPath.row {
+            let tx = dataSource[selectedAddress]?[indexPath.row]
+            cell.updateTransferCell(transaction: tx, wallet: wallet as? Wallet)
+            cell.updateCellStyle(count: dataSource[selectedAddress]?.count ?? 0, index: indexPath.row)
+        }
+        
         return cell
     }
 
@@ -242,20 +277,11 @@ extension AssetTransactionViewControllerV060: UITableViewDelegate, UITableViewDa
     }
      
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let tx = dataSource?[indexPath.row]
-        if let tx = tx as? STransaction{
-            let vc = self.router(stransaction: tx)
-            AssetViewControllerV060.pushViewController(viewController: vc)
-            //update unread red dot
-            STransferPersistence.updateAsRead(tx: tx)
-            self.tableView.reloadData()
-            NotificationCenter.default.post(name: NSNotification.Name(WillUpdateUnreadDot_Notification), object: nil)
-        }else if let tx = tx as? Transaction{
-            let transferVC = TransactionDetailViewController()
-            transferVC.transaction = tx
-            transferVC.wallet = AssetVCSharedData.sharedData.cWallet
-            AssetViewControllerV060.pushViewController(viewController: transferVC)
-        }
+        guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return }
+        let tx = dataSource[selectedAddress]?[indexPath.row]
+        let transferVC = TransactionDetailViewController()
+        transferVC.transaction = tx
+        AssetViewControllerV060.pushViewController(viewController: transferVC)
     }
     
 }

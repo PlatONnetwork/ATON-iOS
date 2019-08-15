@@ -58,19 +58,18 @@ class SettingTableViewCell: UITableViewCell {
              */
         case 4:
             do {
-                iconImage.image = UIImage(named: "iconAbout")
-                desLabel.localizedText = "PersonalVC_cell_wallet_About"
+                iconImage.image = UIImage(named: "4.icon-Support and feedback")
+                desLabel.localizedText = "PersonalVC_cell_wallet_feedback"
             }
         case 5:
             do {
                 iconImage.image = UIImage(named: "iconCom")
                 desLabel.localizedText = "PersonalVC_cell_wallet_community"
-                sepline.alpha = 0
-                detailIcon.alpha = 0
-                
-                let footer = UIView.viewFromXib(theClass: SettingFooter.self)
-                footer?.frame = CGRect(x: 0, y: 45, width: kUIScreenWidth, height: 50)
-                self.addSubview(footer!)
+            }
+        case 6:
+            do {
+                iconImage.image = UIImage(named: "iconAbout")
+                desLabel.localizedText = "PersonalVC_cell_wallet_About"
             }
         default: break
             

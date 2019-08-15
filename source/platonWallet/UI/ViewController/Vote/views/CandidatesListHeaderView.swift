@@ -11,10 +11,7 @@ import UIKit
 import Localize_Swift
 
 fileprivate extension UIImage {
-    static func gradientImage(with bounds: CGRect,
-                              colors: [CGColor],
-                              locations: [NSNumber]?) -> UIImage? {
-        
+    convenience init?(with bounds: CGRect, colors: [CGColor], locations: [NSNumber]?) {
         let gradientLayer = CAGradientLayer()
         gradientLayer.frame = bounds
         gradientLayer.colors = colors
@@ -25,7 +22,27 @@ fileprivate extension UIImage {
                                          y: 0.5)
         
         UIGraphicsBeginImageContext(gradientLayer.bounds.size)
-        gradientLayer.render(in: UIGraphicsGetCurrentContext()!)
+        guard let context = UIGraphicsGetCurrentContext() else { return nil }
+        gradientLayer.render(in: context)
+        guard let image = UIGraphicsGetImageFromCurrentImageContext() else { return nil }
+        UIGraphicsEndImageContext()
+        self.init(cgImage: image.cgImage!)
+    }
+    static func gradientImage(with bounds: CGRect,
+                              colors: [CGColor],
+                              locations: [NSNumber]?) -> UIImage? {
+        guard let context = UIGraphicsGetCurrentContext() else { return nil }
+        let gradientLayer = CAGradientLayer()
+        gradientLayer.frame = bounds
+        gradientLayer.colors = colors
+        // This makes it horizontal
+        gradientLayer.startPoint = CGPoint(x: 0.0,
+                                           y: 0.5)
+        gradientLayer.endPoint = CGPoint(x: 1.0,
+                                         y: 0.5)
+        
+        UIGraphicsBeginImageContext(gradientLayer.bounds.size)
+        gradientLayer.render(in: context)
         guard let image = UIGraphicsGetImageFromCurrentImageContext() else { return nil }
         UIGraphicsEndImageContext()
         return image
@@ -43,17 +60,17 @@ class CandidatesListHeaderView: UIView {
     @IBOutlet weak var progressView: UIProgressView!
     @IBOutlet weak var myVoteLabel: UILabel!
     
-    @IBOutlet weak var bgImageView: UIImageView!
+    lazy var bgImageView = { () -> UIImageView in
+        let imageView = UIImageView(image: UIImage(named: "voteHeaderBG"))
+        return imageView
+    }()
+
     private var curTicketPrice: String?
     private var curTicketPriceUpward: Bool = false
     private var curPoll: Int?
     private var curVoteRate: Float?
     
     private var isHideUI: Bool = false
-    
-    @IBOutlet weak var contentHeightConstant: NSLayoutConstraint!
-    
-    
     var gradientImage : UIImage = UIImage()
     
     override init(frame: CGRect) {
@@ -69,14 +86,20 @@ class CandidatesListHeaderView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
         if progressView.frame.width != 0{
-            gradientImage = UIImage.gradientImage(with: progressView.frame,
-                                                  colors: [UIColor(rgb: 0x28ADFF).cgColor, UIColor(rgb: 0x105CFE).cgColor],
-                                                  locations: nil)!
+            gradientImage = UIImage(with: progressView.frame, colors: [UIColor(rgb: 0x28ADFF).cgColor, UIColor(rgb: 0x105CFE).cgColor], locations: nil) ?? UIImage()
+//            gradientImage = UIImage.gradientImage(with: progressView.frame,
+//                                                  colors: [UIColor(rgb: 0x28ADFF).cgColor, UIColor(rgb: 0x105CFE).cgColor],
+//                                                  locations: nil)!
             self.progressView.progressImage = gradientImage
         }
     }
     
     private func initView() {
+        backgroundColor = .white
+        addSubview(bgImageView)
+        bgImageView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
         
         let view = Bundle.main.loadNibNamed("CandidatesListHeaderView", owner: self, options: nil)?.first as! UIView
         view.layer.cornerRadius = 4
@@ -84,10 +107,6 @@ class CandidatesListHeaderView: UIView {
         view.snp.makeConstraints { (maker) in
             maker.edges.equalToSuperview()
         }
-//        voteRateLabel.snp.updateConstraints { make in
-//            make.top.equalToSuperview().offset(44 + kStatusBarHeight)
-//        }
-        self.bgImageView.isUserInteractionEnabled = true
         
         update()
     }
@@ -108,8 +127,7 @@ class CandidatesListHeaderView: UIView {
     }
     
     private func update() {
-        
-        let voteRate = curVoteRate == nil ? "-%":String(format: "%.2f%%", curVoteRate! * 100)
+        let voteRate = curVoteRate == nil ? "-%":String(format: "%.2f%%", Float(curVoteRate! * 100000)/1000)
         let poll = curPoll == nil ? "-":"\(curPoll!)"
         let ticketPrice = "\(curTicketPrice ?? "-")".ATPSuffix()
         
@@ -120,10 +138,6 @@ class CandidatesListHeaderView: UIView {
         
         voteNumberLabel.text = Localized("CandidateListVC_VoteNumber_desc", arguments: poll)
         self.ticketPrice.text = Localized("CandidateListVC_TicketPrice_desc", arguments: ticketPrice)
-        
-
-        
-//        iconImg.image = curTicketPriceUpward ? UIImage(named: "vote_triangle_up") : UIImage(named: "vote_triangle_down")
         progressView.progress = curVoteRate ?? 0
         
     }
@@ -135,36 +149,23 @@ class CandidatesListHeaderView: UIView {
         self.bgImageView.alpha = alpha
         self.progressView.alpha = alpha
         if alpha >= 0.9 {
-            let voteRate = self.curVoteRate == nil ? "-%":String(format: "%.2f%%", self.curVoteRate! * 100)
-            self.voteRateLabel.text = Localized("CandidateListVC_voteRate_desc", arguments: voteRate)
+//            let voteRate = self.curVoteRate == nil ? "-%":String(format: "%.2f%%", self.curVoteRate! * 100)
+//            self.voteRateLabel.text = Localized("CandidateListVC_voteRate_desc", arguments: voteRate)
             self.myVoteButton.setImage(UIImage(named: "myvoteBtn"), for: .normal)
             self.myVoteLabel.transform = CGAffineTransform.identity
             isHideUI = false
         } else if alpha <= 1.5 {
-            self.voteRateLabel.text = Localized("CandidateListVC_title")
+//            self.voteRateLabel.text = Localized("CandidateListVC_title")
             self.myVoteButton.setImage(nil, for: .normal)
             self.myVoteLabel.transform = CGAffineTransform(scaleX: 1.4, y: 1.4)
             isHideUI = true
         }
         
-//        UIView.animate(withDuration: 0.3, animations: {
-//            
-//
-////            self.contentHeightConstant.constant = headerViewHeight - yOffset
-//            self.layoutIfNeeded()
-//
-//        }) { _ in
-//            if alpha > 0.0 {
-//                let voteRate = self.curVoteRate == nil ? "-%":String(format: "%.2f%%", self.curVoteRate! * 100)
-//                self.voteRateLabel.text = Localized("CandidateListVC_voteRate_desc", arguments: voteRate)
-//                self.myVoteButton.setImage(UIImage(named: "myvoteBtn"), for: .normal)
-//                self.myVoteLabel.transform = CGAffineTransform.identity
-//
-//            } else {
-//                self.voteRateLabel.text = Localized("CandidateListVC_title")
-//                self.myVoteButton.setImage(nil, for: .normal)
-//                self.myVoteLabel.transform = CGAffineTransform(scaleX: 1.4, y: 1.4)
-//            }
-//        }
+        if alpha == 1.0 {
+            let voteRate = self.curVoteRate == nil ? "-%":String(format: "%.2f%%", self.curVoteRate! * 100)
+            self.voteRateLabel.text = Localized("CandidateListVC_voteRate_desc", arguments: voteRate)
+        } else if alpha == 0.0 {
+            self.voteRateLabel.text = Localized("CandidateListVC_title")
+        }
     }
 }

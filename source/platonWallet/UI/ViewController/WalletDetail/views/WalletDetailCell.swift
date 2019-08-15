@@ -18,15 +18,35 @@ class WalletDetailCell: UITableViewCell {
     
     @IBOutlet weak var timeLabel: UILabel!
     
-    @IBOutlet weak var statusLabel: UILabel!
-    
     @IBOutlet weak var txIcon: UIImageView!
-    
     
     @IBOutlet weak var unreadTag: UILabel!
     
     
     @IBOutlet weak var sepline: UIView!
+    
+    lazy var pendingLayer: CALayer = { () -> CALayer in
+        let replicatorLayer = CAReplicatorLayer()
+        replicatorLayer.frame = CGRect(x: 0, y: 0, width: 24, height: 24)
+        replicatorLayer.instanceCount = 3
+        replicatorLayer.instanceTransform = CATransform3DMakeTranslation((replicatorLayer.frame.size.width-4)/2, 0, 0);
+        replicatorLayer.instanceDelay = 1/3.0
+        
+        let dotLayer = CAShapeLayer()
+        dotLayer.path = UIBezierPath(ovalIn: CGRect(x: 0, y: 10, width: 4, height: 4)).cgPath
+        dotLayer.fillColor = UIColor(rgb: 0x2a5ffe).cgColor
+        replicatorLayer.addSublayer(dotLayer)
+        
+        let keyAnimation = CAKeyframeAnimation(keyPath: "opacity")
+        keyAnimation.isRemovedOnCompletion = false
+        keyAnimation.duration = 1.0
+        keyAnimation.keyTimes = [NSNumber(value: 0.0), NSNumber(0.5), NSNumber(1.0)]
+        keyAnimation.values = [1.0, 0.7, 0.5]
+        keyAnimation.repeatCount = Float.infinity
+        dotLayer.add(keyAnimation, forKey: nil)
+        
+        return replicatorLayer
+    }()
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -34,35 +54,23 @@ class WalletDetailCell: UITableViewCell {
         unreadTag.layer.masksToBounds = true
         unreadTag.layer.cornerRadius = 3
         unreadTag.isHidden = true
+        
+        txIcon.layer.addSublayer(pendingLayer)
     }
     
-
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-    
-    func updateTransferCell(txAny : AnyObject?, walletAny : AnyObject?) {
-        if let tx = txAny as? Transaction{
-            updateCellWithAPTTransfer(tx: tx, anyWallet: walletAny)
-        }else if let stx = txAny as? STransaction{
-            updateCellWithSharedWalletTransfer(tx: stx, walletAny: walletAny)
-        }
+    func updateTransferCell(transaction: Transaction?, wallet: Wallet?) {
+        guard let tx = transaction else { return }
+        updateCellWithAPTTransfer(tx: tx, wallet: wallet)
     }
     
     func updateCellStyle(count: Int, index: Int){
 
     }
 
-    func updateCellWithAPTTransfer(tx : Transaction, anyWallet : AnyObject?) {
+    func updateCellWithAPTTransfer(tx: Transaction, wallet: Wallet?) {
+        guard let w = wallet else { return }
         self.unreadTag.isHidden = true
-        if let w = anyWallet as? Wallet {
-            tx.senderAddress = w.key?.address
-        }else if let ws = anyWallet as? SWallet {
-            //joint wallet' transaction
-            tx.senderAddress = ws.contractAddress
-        }
+        tx.senderAddress = w.key?.address
         
         switch tx.transactionStauts {
         case .sending,.sendSucceed,.sendFailed:
@@ -74,114 +82,29 @@ class WalletDetailCell: UITableViewCell {
         case .voting,.voteSucceed,.voteFailed:
             transferAmoutLabel.text = "-" + (tx.valueDescription)!.ATPSuffix()
             txIcon.image = UIImage(named: "walletVote")
- 
+        }
+        
+        if tx.txType == .unknown || tx.txType == .transfer {
+            txTypeLabel.text = tx.transactionStauts.localizeTitle
+        } else {
+            txTypeLabel.text = tx.txType?.localizeTitle
         }
 
-        txTypeLabel.text = tx.transactionStauts.localizeTitle
-        let (des,color) = tx.transactionStauts.localizeDescAndColor
-        statusLabel.text = des
-        statusLabel.textColor = color
+        transferAmoutLabel.textColor = tx.amountTextColor
+        txIcon.image = tx.txTypeIcon
+        pendingLayer.isHidden = tx.txTypeIcon != nil
         
-        guard (tx.createTime != 0) else{
-            timeLabel.text = "--:--:-- --:--"
-            return
-        }
-        timeLabel.text = Date.toStanderTimeDescrition(millionSecondsTimeStamp: tx.createTime)
-    }
-    
-    func updateCellWithSharedWalletTransfer(tx : STransaction,walletAny : AnyObject?) {
-        
-        if tx.readTag == 1{
-            unreadTag.isHidden = false
-        }else{
-            unreadTag.isHidden = true
-        }
-        
-        var fixedFrom = tx.to
-        if !(fixedFrom?.hasPrefix("0x"))!{
-            fixedFrom = "0x" + fixedFrom!
-        }
-        
-        if tx.transanctionCategoryLazy == .ATPTransfer{
-            if let sw = walletAny as? SWallet{
-                //joint wallet detail‘s transactions
-                if (tx.from?.ishexStringEqual(other: sw.contractAddress))!{
-                    transferAmoutLabel.text = "-" + (tx.valueDescription)!.ATPSuffix()
-                    txTypeLabel.text = tx.typeLocalization
-                    txIcon.image = UIImage(named: "txSendSign")
-                }else{
-                    transferAmoutLabel.text = "+" + (tx.valueDescription)!.ATPSuffix()
-                    if tx.executed{
-                        txTypeLabel.text = Localized("TransactionListVC_Received")
-                    }else{
-                        txTypeLabel.text = Localized("TransactionListVC_Receiving")
-                    }
-                    txIcon.image = UIImage(named: "txRecvSign")
-                }
-                
-            }else if let w = walletAny as? Wallet{
-                //classic wallet detail's transactions
-                
-                var owerSendout = false
-                for item in tx.determinedResult{
-                    if (item.walletAddress?.ishexStringEqual(other: w.key?.address))!{
-                        owerSendout = true
-                    }
-                }
-               
-                var isRecv = false
-                if (tx.to?.ishexStringEqual(other: w.key?.address))!{
-                    isRecv = true
-                }
-                if ((tx.ownerWalletAddress.ishexStringEqual(other: w.key?.address)) || owerSendout) && !isRecv{
-                    transferAmoutLabel.text = "-" + (tx.valueDescription)!.ATPSuffix()
-                    txTypeLabel.text = Localized("walletDetailVC_tx_type_send")
-                    txIcon.image = UIImage(named: "txSendSign")
-                }else{
-                    transferAmoutLabel.text = "+" + (tx.valueDescription)!.ATPSuffix()
-                    if tx.executed{
-                        txTypeLabel.text = Localized("TransactionListVC_Received")
-                    }else{
-                        txTypeLabel.text = Localized("TransactionListVC_Receiving")
-                    }
-                    txIcon.image = UIImage(named: "txRecvSign")
-                }
+        guard (tx.confirmTimes != 0) else{
+            guard tx.createTime != 0 else {
+                timeLabel.text = "--:--:-- --:--"
+                return
             }
-
-        }else{
-            txTypeLabel.text = tx.typeLocalization
-            transferAmoutLabel.text = (tx.valueDescription)!.ATPSuffix()
-        }
-        
-        
-        switch tx.transanctionCategoryLazy {
-        case .ATPTransfer?:
-            do{}
-        case .some(.JointWalletCreation):
-            txIcon.image = UIImage(named: "JointWalletCreateIcon")
-        case .some(.JointWalletExecution):
-            txIcon.image = UIImage(named: "JointWalletExe")
-        case .some(.JointWalletSubmit):
-            txIcon.image = UIImage(named: "JointWalletExe")
-        case .some(.JointWalletApprove):
-            txIcon.image = UIImage(named: "JointWalletExe")
-        case .some(.JointWalletRevoke):
-            txIcon.image = UIImage(named: "JointWalletExe")
-        case .none:
-            txIcon.image = UIImage(named: "")
-        }
-        let detachTx = tx.detached()
-        detachTx.labelDesciptionAndColor {[weak self] (des,color) in
-            self?.statusLabel.text = des
-            self?.statusLabel.textColor = color
-        }
-
-        
-        guard (tx.createTime > 0) else{
-            timeLabel.text = "--:--:-- --:--"
+            timeLabel.text = Date.toStanderTimeDescrition(millionSecondsTimeStamp: tx.createTime)
             return
         }
-        timeLabel.text = Date.toStanderTimeDescrition(millionSecondsTimeStamp: Int(tx.createTime))
+        
+        timeLabel.text = Date.toStanderTimeDescrition(millionSecondsTimeStamp: tx.confirmTimes)
+        
     }
     
 }

@@ -72,7 +72,7 @@ class AssetVCSharedData{
                 
                 return
             }
-            for (k,v) in walletChangeHandlers.enumerated(){
+            for (_,v) in walletChangeHandlers.enumerated(){
                 v.value()
             }
         }
@@ -143,6 +143,14 @@ class AssetVCSharedData{
         }else{
             self.selectedWallet = nil
         }
+    }
+}
+
+extension AssetVCSharedData {
+    // 通过地址查询本地的账号名称
+    func getWalletName(for address: String) -> String? {
+        let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.key?.address == address }.first
+        return localWallet?.name
     }
 }
 

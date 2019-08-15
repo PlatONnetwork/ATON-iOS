@@ -16,7 +16,7 @@ class TransferDetailView: UIView {
     
     @IBOutlet weak var pendingLoadingImage: UIImageView!
     
-    @IBOutlet weak var scrollView: UIScrollView!
+//    @IBOutlet weak var scrollView: UIScrollView!
     
     @IBOutlet weak var statusLabel: UILabel!
     
@@ -24,17 +24,17 @@ class TransferDetailView: UIView {
     
     @IBOutlet weak var toLabel: UILabel!
     
-    @IBOutlet weak var transactionTypeLabel: UILabel!
+//    @IBOutlet weak var transactionTypeLabel: UILabel!
+//
+//    @IBOutlet weak var timeLabel: UILabel!
     
-    @IBOutlet weak var timeLabel: UILabel!
+//    @IBOutlet weak var valueLabel: UILabel!
     
-    @IBOutlet weak var valueLabel: UILabel!
+//    @IBOutlet weak var feeLabel: UILabel!
     
-    @IBOutlet weak var feeLabel: UILabel!
-    
-    @IBOutlet weak var memoContent: UILabel!
-    
-    @IBOutlet weak var hashContent: UILabel!
+//    @IBOutlet weak var memoContent: UILabel!
+//
+//    @IBOutlet weak var hashContent: UILabel!
     
     @IBOutlet weak var copyFromAddrBtn: CopyButton!
     
@@ -42,118 +42,145 @@ class TransferDetailView: UIView {
     
     @IBOutlet weak var copyToAddrBtn: CopyButton!
     
-    @IBOutlet weak var copyTxBtn: CopyButton!
+//    @IBOutlet weak var copyTxBtn: CopyButton!
     
-    @IBOutlet weak var voteExtraView: UIView!
-    
-    @IBOutlet weak var nodeNameLabel: UILabel!
-    
-    @IBOutlet weak var nodeIdLabel: UILabel!
-    
-    @IBOutlet weak var numOfTicketsLabel: UILabel!
-    
-    @IBOutlet weak var ticketPriceLabel: UILabel!
-    
-    @IBOutlet weak var valueTitle: UILabel!
+//    @IBOutlet weak var voteExtraView: UIView!
+//
+//    @IBOutlet weak var nodeNameLabel: UILabel!
+//
+//    @IBOutlet weak var nodeIdLabel: UILabel!
+//
+//    @IBOutlet weak var numOfTicketsLabel: UILabel!
+//
+//    @IBOutlet weak var ticketPriceLabel: UILabel!
+//
+//    @IBOutlet weak var valueTitle: UILabel!
     
     @IBOutlet weak var walletNameLabel: UILabel!
     
+    @IBOutlet weak var fromAvatarIV: UIImageView!
     
-    @IBOutlet weak var showVoteExtraViewConstraint: NSLayoutConstraint!
+    @IBOutlet weak var fromNameLabel: UILabel!
+    
+    @IBOutlet weak var toAvatarIV: UIImageView!
+    
+    @IBOutlet weak var toNameLabel: UILabel!
+    
+    @IBOutlet weak var topValueLabel: UILabel!
+    
+    @IBOutlet weak var toIconIV: UIImageView!
+    
+//    @IBOutlet weak var showVoteExtraViewConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var baseInfoHeightConstraint: NSLayoutConstraint!
+    
+    @IBOutlet weak var toLabelLeadingConstraint: NSLayoutConstraint!
     
     override func awakeFromNib() {
+        super.awakeFromNib()
         
-        copyFromAddrBtn.attachTextView = fromLabel
-        copyToAddrBtn.attachTextView = toLabel
-        copyTxBtn.attachTextView = hashContent
-        self.memoContent.isHidden = true
-        self.pendingLoadingImage.isHidden = true
+//        copyFromAddrBtn.attachTextView = fromLabel
+//        copyToAddrBtn.attachTextView = toLabel
+////        copyTxBtn.attachTextView = hashContent
+//        self.memoContent.isHidden = true
+//        self.pendingLoadingImage.isHidden = true
     }
     
-//    override func layoutSubviews() {
-//        super.layoutSubviews()
-//        let extraPedding =  CGFloat(88.0 + 50.0 + 20.0 + 15.0)
-//        let h = self.detailContainer.frame.size.height + extraPedding
-//        if h  < self.frame.size.height{
-//            self.detailContainer.frame = CGRect(x: self.detailContainer.frame.origin.x,
-//                                                y: self.detailContainer.frame.origin.y,
-//                                                width: self.detailContainer.frame.size.width,
-//                                                height: self.frame.size.height - extraPedding)
-//        }
-//    }
-    
-    func updateContent(tx : AnyObject,wallet : Wallet?){
+    func updateContent(tx : Transaction){
+//        if tx.txType == TxType.voteForProposal {
+//            voteExtraView.isHidden = false
+//            showVoteExtraViewConstraint.priority = .defaultHigh
+//            valueTitle.text = Localized("TransactionDetailVC_voteStaked")
         
-        if let tx = tx as? Transaction{
-            tx.senderAddress = wallet?.key?.address
-            if TransanctionType(rawValue: tx.transactionType) == .Vote {
-                voteExtraView.isHidden = false
-                showVoteExtraViewConstraint.priority = .defaultHigh
-                valueTitle.text = Localized("TransactionDetailVC_voteStaked")
-                guard let singleVote = VotePersistence.getSingleVotesByTxHash(tx.txhash!) else {
-                    nodeNameLabel.text = "-"
-                    nodeIdLabel.text = "-"
-                    numOfTicketsLabel.text = "-"
-                    ticketPriceLabel.text = "-"
-                    return
-                } 
-                let candidateInfo = VotePersistence.getCandidateInfoWithId(singleVote.candidateId ?? "")
-                nodeNameLabel.text = candidateInfo.name
-                nodeIdLabel.text = singleVote.candidateId?.add0x()
-                if singleVote.validNum.count > 0{
-                    numOfTicketsLabel.text = "\(singleVote.validNum)"
-                }else{
-                    numOfTicketsLabel.text = "-"
-                }
-                if (singleVote.deposit?.count)! > 0{
-                    ticketPriceLabel.text = BigUInt.safeInit(str: singleVote.deposit ?? "").divide(by: ETHToWeiMultiplier, round: 4).EnergonSuffix()
-                }else{
-                    ticketPriceLabel.text = "-".EnergonSuffix()
-                }
-            }else {
-                voteExtraView.isHidden = true
-                showVoteExtraViewConstraint.priority = .defaultLow
-                valueTitle.text = Localized("TransactionDetailVC_value")
+            if let txInfo = tx.extra, let data = txInfo.data(using: .utf8) {
+                let decoder = JSONDecoder()
+                let voteTicketInfo = try? decoder.decode(VoteTicketInfo.self, from: data)
+//                nodeNameLabel.text = voteTicketInfo?.parameters?.nodeName
+//                nodeIdLabel.text = voteTicketInfo?.parameters?.nodeId
+//                numOfTicketsLabel.text = String(describing: voteTicketInfo?.parameters?.count ?? 0)
+
+//                if voteTicketInfo?.parameters?.price?.description.count ?? 0 > 0 {
+//                    ticketPriceLabel.text = BigUInt.safeInit(str: voteTicketInfo?.parameters?.price?.description ?? "").divide(by: ETHToWeiMultiplier, round: 4).EnergonSuffix()
+//                } else {
+//                    ticketPriceLabel.text = "-".EnergonSuffix()
+//                }
+            } else {
+//                guard let singleVote = VotePersistence.getSingleVotesByTxHash(tx.txhash!) else {
+//                    nodeNameLabel.text = "-"
+//                    nodeIdLabel.text = "-"
+//                    numOfTicketsLabel.text = "-"
+//                    ticketPriceLabel.text = "-"
+//                    return
+//                }
+//
+//                let candidateInfo = VotePersistence.getCandidateInfoWithId(singleVote.candidateId ?? "")
+//                nodeNameLabel.text = candidateInfo.name
+//                nodeIdLabel.text = singleVote.candidateId?.add0x()
+//                if singleVote.validNum.count > 0{
+//                    numOfTicketsLabel.text = "\(singleVote.validNum)"
+//                }else{
+//                    numOfTicketsLabel.text = "-"
+//                }
+//                if (singleVote.deposit?.count)! > 0{
+//                    ticketPriceLabel.text = BigUInt.safeInit(str: singleVote.deposit ?? "").divide(by: ETHToWeiMultiplier, round: 4).EnergonSuffix()
+//                }else{
+//                    ticketPriceLabel.text = "-".EnergonSuffix()
+//                }
             }
-            
-            hashContent.text = tx.txhash?.add0x()
-            timeLabel.text = Date.toStanderTimeDescrition(millionSecondsTimeStamp: tx.createTime)
-            fromLabel.text = tx.from
-            toLabel.text = tx.to
-            valueLabel.text = tx.valueDescription!.ATPSuffix()
-            feeLabel.text = tx.feeDescription?.ATPSuffix()
-            
-            
-            if let w = WalletService.sharedInstance.getWalletByAddress(address: tx.from ?? ""){
-                self.walletNameLabel.text = w.name
-            }
-            updateStatus(tx: tx)
-        }else if let tx = tx as? STransaction{
-            
-            hashContent.text = tx.txhash
-            timeLabel.text = Date.toStanderTimeDescrition(millionSecondsTimeStamp: tx.createTime)
-            fromLabel.text = tx.from
-            
-            if (tx.to?.is40ByteAddress())!{
-                toLabel.text = tx.to
-            }else{
-                toLabel.text = DefaultAddress
-            }
-            
-            valueLabel.text = "-"
-            feeLabel.text = tx.feeDescription!.ATPSuffix()
-            transactionTypeLabel.text = tx.typeLocalization
-            updateStatus(tx: tx)
-            if let w = WalletService.sharedInstance.getWalletByAddress(address: tx.ownerWalletAddress){
-                self.walletNameLabel.text = w.name
-            }
+//        } else {
+//            voteExtraView.isHidden = true
+//            showVoteExtraViewConstraint.priority = .defaultLow
+//            valueTitle.text = Localized("TransactionDetailVC_value")
+//        }
+        
+//        hashContent.text = tx.txhash?.add0x()
+//        if tx.confirmTimes != 0 {
+//            timeLabel.text = Date.toStanderTimeDescrition(millionSecondsTimeStamp: tx.confirmTimes)
+//        } else {
+//            timeLabel.text = Date.toStanderTimeDescrition(millionSecondsTimeStamp: tx.createTime)
+//        }
+        fromLabel.text = tx.from
+        toLabel.text = tx.to
+//        valueLabel.text = tx.valueDescription!.ATPSuffix()
+//        feeLabel.text = tx.actualTxCostDescription?.ATPSuffix()
+        
+        updateStatus(tx: tx)
+        
+        if let w = WalletService.sharedInstance.getWalletByAddress(address: tx.from ?? ""){
+            self.walletNameLabel.text = w.name
+        } else {
+            let walletNames = AddressBookService.service.getAll().filter { $0.walletAddress == tx.from }.map { $0.walletName }
+            guard walletNames.count > 0 else { return }
+            self.walletNameLabel.text = walletNames.first!
         }
         
+        toNameLabel.text = tx.toNameString
+        fromNameLabel.text = tx.fromNameString
+        toAvatarIV.image = tx.toAvatarImage
+        fromAvatarIV.image = tx.fromAvatarImage
+        
+        
+        if let valueString = tx.valueString.0, let color = tx.valueString.1 {
+            topValueLabel.text = valueString
+            topValueLabel.textColor = color
+//            baseInfoHeightConstraint.priority = UILayoutPriority(rawValue: 999)
+        } else {
+            topValueLabel.text = nil
+//            baseInfoHeightConstraint.priority = UILayoutPriority(rawValue: 997)
+        }
+        
+        toIconIV.image = tx.toIconImage
+        toLabelLeadingConstraint.priority = tx.toIconImage == nil ? UILayoutPriority(rawValue: 997) : UILayoutPriority(rawValue: 999)
     }
     
     func updateStatus(tx : Transaction){
-         
-        transactionTypeLabel.text = tx.transactionStauts.localizeTitle
+        
+//        if tx.txType == .transfer  {
+//            transactionTypeLabel.text = tx.direction.localizedDesciption
+//        } else {
+//            transactionTypeLabel.text = tx.txType?.localizeTitle
+//        }
+        
         statusLabel.text = tx.transactionStauts.localizeDescAndColor.0
         statusLabel.textColor = .black
         switch tx.transactionStauts {
@@ -169,25 +196,6 @@ class TransferDetailView: UIView {
             statusIconImageVIew.image = UIImage(named: "statusFail")
         }
 
-        
-    } 
-    
-    func updateStatus(tx : STransaction){
-        let detachTx = tx.detached()
-        detachTx.labelDesciptionAndColor {[weak self] (des,color) in
-            self?.statusLabel.localizedText = des
-            self?.statusLabel.textColor = color
-            if (tx.blockNumber?.length)! > 0{
-                //success
-                self?.statusIconImageVIew.image = UIImage(named: "statusSuccess")
-                self?.pendingLoadingImage.isHidden = true
-            }else{
-                //confirming
-                self?.statusIconImageVIew.image = UIImage(named: "statusPending")
-                self?.pendingLoadingImage.isHidden = false
-                self?.pendingLoadingImage.rotate()
-            }
-        } 
         
     }
     

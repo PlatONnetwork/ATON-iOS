@@ -22,7 +22,7 @@
 ///wallet common input placeholder
 "wallet_nameInput_placeholder" = "Name of Wallet";
 "wallet_pswInput_placeholder" = "Set password";
-"wallet_pswConfirmInput_placeholder" = "Repeat password";
+"wallet_pswConfirmInput_placeholder" = "Confirm password";
 "wallet_psw_advise" = "*At least 6 characters,recommended to mix uppercase and lowercase alphabets,numbers and symbols";
 
 ///wallet common input illegal tips
@@ -43,12 +43,11 @@
 
 "tabbar_asset_title" = "Wallet";
 "tabbar_personal_title" = "Me";
-"tabbar_candidate_title" = "Vote";
+"tabbar_delegate_title" = "Delegate";
 
 "navigationbar_wallet_title" = "Classic Wallet";
-"navigationbar_sharedwallet_title" = "Joint Wallet";
 
-"asset_header_total_asset" = "Total Energon";
+"asset_header_total_asset" = "Total LAT";
 
 //transfer viewController
 "transferVC_nav_title" = "Send";
@@ -66,14 +65,14 @@
 "transferVC_estima_des" = "Estimated transaction confirmation time:\nprobably within";
 
 "transferVC_confirm_title" = "Confirm";
-"transferVC_confirm_PayInfo" = "Payment Info:";
+"transferVC_confirm_PayInfo" = "Txn Info:";
 "transferVC_confirm_executor" = "Executor:";
-"transferVC_confirm_From" = "From:";
-"transferVC_confirm_To" = "To:";
+"transferVC_confirm_From" = "Sender:";
+"transferVC_confirm_To" = "Recipient:";
 "transferVC_confirm_Fee" = "Fee:";
 
-"transferVC_confirm_ATP_send" = "Energon Send";
-"transferVC_confirm_Submit" = "Submit";
+"transferVC_confirm_ATP_send" = "LAT Send";
+"transferVC_confirm_Submit" = "Send";
 
 "transferVC_address_Incorrect_tip" = "Address is incorrect ";
 "transferVC_address_empty_tip" = "Address is empty";
@@ -98,7 +97,7 @@
 "walletDetailVC_tx_type_vote" = "Vote";
 "walletDetailVC_tx_transaction_title" = "Transactions";
 "walletDetailVC_balance" = "Balance";
-"walletDetailVC_send_button" = "Send";
+"walletDetailVC_send_button" = "NEXT";
 "walletDetailVC_receive_button" = "Receive";
 "walletDetailVC_vote_button" = "Vote";
 "walletDetailVC_no_transactions_text" = "No transactions";
@@ -114,20 +113,31 @@
 "TransactionDetailVC_nav_title" = "Transaction Detail";
 
 "TransactionDetailVC_type" = "Type:";
-"TransactionDetailVC_time" = "Time:";
-"TransactionDetailVC_value" = "Value:";
+"TransactionDetailVC_time" = "Submission Time:";
+"TransactionDetailVC_value" = "Amount:";
 "TransactionDetailVC_energon_price" = "Fee:";
 "TransactionDetailVC_Wallet" = "Wallet:";
 "TransactionDetailVC_memo" = "Memo:";
 "TransactionDetailVC_memo_none" = "None";
 "TransactionDetailVC_hash" = "Hash:";
-"TransactionDetailVC_voteFor" = "Vote For:";
+"TransactionDetailVC_voteFor" = "Validator:";
 "TransactionDetailVC_nodeId" = "Node ID:";
 "TransactionDetailVC_votes" = "Votes:";
 "TransactionDetailVC_ticketPrice" = "Ticket Price:";
 "TransactionDetailVC_voteStaked" = "Vote Staked:";
-
-
+"TransactionDetailVC_reported" = "Reported:";
+"TransactionDetailVC_delegated_to" = "Delegated to:";
+"TransactionDetailVC_delegated_amount" = "Delegation Amount:";
+"TransactionDetailVC_withdrawal_amount" = "Withdrawal Amount:";
+"TransactionDetailVC_version" = "Version:";
+"TransactionDetailVC_stake_amount" = "Stake Amount:";
+"TransactionDetailVC_return_amount" = "Return Amount:";
+"TransactionDetailVC_report_type" = "Report Type:";
+"TransactionDetailVC_restricted_acount" = "Restricted Account:";
+"TransactionDetailVC_restricted_amount" = "Restricted Amount:";
+"TransactionDetailVC_proposal_id" = "Proposal ID:";
+"TransactionDetailVC_proposal_type" = "Proposal Type:";
+"TransactionDetailVC_proposal_vote" = "Vote:";
 
 //qr scan
 "QRScanerVC_nav_title" = "QR Scan";
@@ -144,7 +154,7 @@
 
 "QRViewSaveAndShared" = "Save image and Share";
 "QRViewSharedViewWalletName" = "Wallet name";
-"QRViewSharedViewReceive" = "Receive Energon";
+"QRViewSharedViewReceive" = "Receive LAT";
 
 "SharedWechatFriend" = "Wechat";
 "SharedWechatMoment" = "Moment";
@@ -153,7 +163,7 @@
 "SharedFacebook" = "Facebook";
 "SharedTwitter" = "Twitter";
 "SharedMore" = "More";
-"Receive_ATP" = "Receive Energon";
+"Receive_ATP" = "Receive LAT";
 "SharedQRViewSaving" = "Saving...";
 "SharedQRView_photolib_unauthorized_tips" = "Photo access was unauthorized,please check system settings and try again";
 
@@ -170,7 +180,7 @@
 
 //importWalletVC
 "importWalletVC_title" = "Import Classic Wallet";
-"importWalletVC_tab_keystore" = "钱包文件（.json）";
+"importWalletVC_tab_keystore" = "Keystore";
 "importWalletVC_tab_mnemonic" = "Mnemonic phrase";
 "importWalletVC_tab_privateKey" = "Private Key";
 "importWalletVC_mnemonic_tips" = "Input the Mnemonic phrase. Please pay attention to case sensitivity and sequence.";
@@ -238,12 +248,13 @@
 
 "PersonalVC_cell_wallet_manager" = "Wallet Manage";
 //"PersonalVC_cell_wallet_Transactions" = "Transactions";
-"PersonalVC_cell_wallet_Transactions" = "Txn";
+"PersonalVC_cell_wallet_Transactions" = "Transactions";
 "PersonalVC_cell_wallet_address_book" = "Address Book";
 "PersonalVC_cell_wallet_setting" = "Settings";
 "PersonalVC_cell_wallet_help" = "Help";
 "PersonalVC_cell_wallet_About" = "About";
-"PersonalVC_cell_wallet_community" = "Community";
+"PersonalVC_cell_wallet_community" = "Official Community";
+"PersonalVC_cell_wallet_feedback" = "Support and feedback";
 
 
 
@@ -299,9 +310,7 @@
 //AddWalletMenuVC
 
 "AddWalletMenuVC_createIndividualWallet_title" = "Create Classic Wallet";
-"AddWalletMenuVC_createSharedWallet_title" = "Create Joint Wallet";
 "AddWalletMenuVC_importIndividualWallet_title" = "Import Classic Wallet";
-"AddWalletMenuVC_addSharedWallet_title" = "Add Joint Wallet";
 
 "Invalid password" = "Password Incorrect";
 "Invalid wallet" = "Invalid wallet";
@@ -319,10 +328,6 @@
 "IndividualWallet_EmptyView_createBtn_title" = "Create Classic Wallet";
 "IndividualWallet_EmptyView_importBtn_title" = "Import Classic Wallet";
 
-"SharedWallet_EmptyView_tips" = "You don’t have any Joint Wallet";
-"SharedWallet_EmptyView_createBtn_title" = "Create";
-"SharedWallet_EmptyView_importBtn_title" = "Import";
-
 
 
 //TransactionListViewController
@@ -332,8 +337,6 @@
 "TransactionListVC_Receiving" = "Receiving";
 "TransactionListVC_Received" = "Received";
 "TransactionListVC_Vote" = "Vote";
-"TransactionListVC_JointWalletCreation" = "Joint Wallet Creation";
-"TransactionListVC_JointWalletExecution" = "Joint Wallet Execution";
 
 "TransactionStatus_sending_title" = "Sending";
 "TransactionStatus_sendSucceed_title" = "Sent";
@@ -349,7 +352,33 @@
 "TransactionStatus_succeed_desc" = "Success";
 "TransactionStatus_failed_desc" = "Failed";
 
+"TransactionStatus_failed_delegate" = "Failed";
+"TransactionStatus_succeed_delegate" = "Success";
+"TransactionStatus_failed_undelegate" = "Failed";
+"TransactionStatus_succeed_undelegate" = "Success";
+"TransactionStatus_loading_undelegate" = "Undelegating";
 
+"TransactionStatus_transfer_title" = "transfer";
+"TransactionStatus_contractCreate_title" = "ContractCreation";
+"TransactionStatus_contractExecute_title" = "ContractExecution";
+"TransactionStatus_otherReceive_title" = "OtherIncome";
+"TransactionStatus_otherSend_title" = "Otherexpenses";
+"TransactionStatus_MPCtransaction_title" = "MPCTx";
+"TransactionStatus_stakingCreate_title" = "CreateValidator";
+"TransactionStatus_stakingEdit_title" = "EditValidator";
+"TransactionStatus_stakingAdd_title" = "IncreaseStaking";
+"TransactionStatus_stakingWithdraw_title" = "ExitValidator";
+"TransactionStatus_delegateCreate_title" = "Delegate";
+"TransactionStatus_delegateWithdraw_title" = "Undelegate";
+"TransactionStatus_create_proposal" = "CreateProposal";
+"TransactionStatus_submitText_title" = "Text";
+"TransactionStatus_submitVersion_title" = "Upgrade";
+"TransactionStatus_submitParam_title" = "Parameter";
+"TransactionStatus_voteForProposal_title" = "VotingProposal(VoteYes\VoteNo\VoteAbstain)";
+"TransactionStatus_declareVersion_title" = "DeclareVersion";
+"TransactionStatus_reportDuplicateSign_title" = "ReportValidator";
+"TransactionStatus_createRestrictingPlan_title" = "CreateRestricting";
+"TransactionStatus_unknown_title" = "unknown";
 
 
 //SettingsVC
@@ -412,14 +441,11 @@
 
 //CreateSharedWalletVC
 "Wallet name" = "Wallet name";
-"CreateSharedWalletVC_Create Shared Wallet" = "Create Joint Wallet";
 
 "CreateSharedWalletVC_Select Owner" = "Select Owner";
-"CreateSharedWalletVC_Shared Owners" = "Joint Owners";
 "CreateSharedWalletVC_Required Signatures" = "Required Signatures";
 
 "CreateSharedWalletVC_Select Owner colon" = "Select Owner:";
-"CreateSharedWalletVC_Shared Owners colon" = "Joint Owners:";
 "CreateSharedWalletVC_Required Signatures colon" = "Required Signatures:";
 
 
@@ -442,13 +468,10 @@
 
 //shared Wallet detail
 "SharedWalletVC_title" = "Manage";
-"Members_Des" = "Members";
 "SharedWallet_delete" = "Delete";
 "Owner_Des" = "Owner";
-"JointWalletManagement_Joint_Owner" = "Joint Wallet";
 
 //add shared wallet
-"AddSharedWalletVC_title" = "Add Joint Wallet";
 
 "AddSharedWalletVC_wallet_Name_Des" = "Name";
 "AddSharedWalletVC_name_palceholder" = "Name of wallet";
@@ -457,21 +480,15 @@
 "AddSharedWalletVC_walletName_Des" = "Wallet name";
 "AddSharedWalletVC_Change" = "Change";
 
-"AddSharedWalletVC_addr" = "Wallet address";
-"AddSharedWalletVC_addr_placeholder" = "Set wallet address";
 "AddSharedWalletVC_add" = "Add";
 "sharedWallet_sharedWallet_no_existed" = "Add fail,Joint wallet not existed";
 
-"sharedWallet_sharedWallet_forbidden" = "Not the associated wallet, unable to add";
-
 "sharedWalletDefaltMemberName" = "user";
-"sharedWallet_sharedWallet_existed" = "Joint wallet existed";
 
 
 //Member Sign Detail VC
 "MemberSignDetailVC_nav_title" = "Transaction Detail";
 
-"MemberSignDetailVC_Confirms" = "Transaction confirmation";
 "MemberSignDetailVC_Total" = "Total";
 "MemberSignDetailVC_Agree" = "Agree";
 "MemberSignDetailVC_reject" = "Reject";
@@ -528,7 +545,6 @@
 "exceed max input" = "Exceed max input";
 
 
-"SharedWalletTransactionDetailVC_execute_contract" = "Execute Contract-Confirm";
 "SharedWalletTransactionDetailVC_execute_PayType" = "Type";
 "SharedWalletTransactionDetailVC_payment_execute_contract" = "Execute Contract fee";
 "SharedWalletTransactionDetailVC_payment_confirm" = "Submit";
@@ -560,8 +576,6 @@
 
 "SharedWallet_create_with_insufficient_balance" = "Insufficient wallet balance, can't create";
 
-"Shared wallet create success" = "Joint wallet create success";
-
 //About
 "AboutVC_nav_title" = "About";
 "AboutVC_AboutUs" = "About us";
@@ -570,9 +584,9 @@
 //Vote
 "CandidateListVC_title" = "Vote";
 "CandidateListVC_header_desc" = "Vote Rate：%@ | Votes：%@ | Ticket Price：%@";
-"CandidateListVC_voteRate_desc" = "投票率：%@ ";
-"CandidateListVC_VoteNumber_desc" = "已投票：%@";
-"CandidateListVC_TicketPrice_desc" = "票价：%@";
+"CandidateListVC_voteRate_desc" = "Vote Rate：%@ ";
+"CandidateListVC_VoteNumber_desc" = "Voted：%@";
+"CandidateListVC_TicketPrice_desc" = "Ticket Price：%@";
 "CandidateListVC_defaultBtn_title" = "Default";
 "CandidateListVC_bonusBtn_title" = "Reward";
 "CandidateListVC_areaBtn_title" = "Location";
@@ -588,7 +602,7 @@
 
 "CandidateDetailVC_title" = "Node Information";
 "CandidateDetailVC_joinTime" = "Join time:%@";
-"CandidateDetailVC_rank" = "Staked Ranking";
+"CandidateDetailVC_rank" = "Ranking";
 "CandidateDetailVC_staked" = "Staked";
 "CandidateDetailVC_tickets" = "Tickets";
 "CandidateDetailVC_ticketAge" = "Ticket Age";
@@ -606,9 +620,9 @@
 
 //MyVoteListVC
 "MyVoteListVC_nav_title" = "My vote";
-"MyVoteListVC_locked" = "locked(Energon)";
+"MyVoteListVC_locked" = "locked(LAT)";
 "MyVoteListVC_validinvalid" = "valid/invalid";
-"MyVoteListVC_reward" = "Voting Reward(Energon)";
+"MyVoteListVC_reward" = "Voting Reward(LAT)";
 "MyVoteListVC_Empty_tips" = "You haven`t voted yet";
 
 //SingleVoteDetailListVC
@@ -622,7 +636,7 @@
 "SingleVoteDetailListVC_expiredtime_2" = "expired time";
 
 //VotingViewController
-"VotingViewController_nav_title" = "Node detail";
+"VotingViewController_nav_title" = "Vote";
 "VotingViewController_vote_wallet_name" = "Vote wallet";
 "VotingViewController_vote_number" = "Ticket Number";
 "VotingViewController_vote_price" = "Ticket Price";
@@ -673,7 +687,12 @@
 "wallet_name_duplicate" = "The name already exists on this APP, and can not be repeated";
 
 
-"scanviewcontroller_scan" = "Auto-scan in the frame";
+"scanviewcontroller_scan" = "Align the QR Code within the frame to scan";
+"scanviewcontroller_torch" = "Tap to turn light on";
+"scanviewcontroller_nav_right_item" = "Album";
+"scanviewcontroller_scan_loading" = "scaning";
+"scanviewcontroller_scan_result_notfound" = "No QR code found";
+
 
 "watchJointWalletTip_Notice" = "Transaction initiation failed";
 "watchJointWalletTip_message" = "The associated Classic Wallet has been removed.";
@@ -688,4 +707,134 @@
 "send_address_placeholder" = "Input wallet address";
 "send_amount_placeholder" = "Input Amount";
 "vote_confirm_from" = "From:";
+
+
+
+"createOrImport_guide_text" = "Have a wallet? Import using keystore(json),mnemonic phrase, private key.";
+
+"transaction_loadmore_text" = "View more transactions";
+
+"wallet_balance_restricted" = "Restricted:";
+"wallet_balance_restricted_doubt" = "Non tradable LAT，but can be delegated";
+
+"staking_main_mydelegate_text" = "My Delegations";
+"staking_main_validator_text" = "Validators";
+"staking_main_wallet_name" = "Wallet Name";
+"staking_main_delegate_text" = "Delegated";
+"staking_main_undelegating_text" = "Undelegating";
+"staking_main_delegate_detail" = "Details";
+"staking_main_delegate_total" = "Total Delegated";
+"staking_main_delegate_record" = "Record";
+"staking_main_delegate_faq" = "FAQ";
+"staking_main_delegate_tutorial" = "Tutorial";
+
+"staking_delegate_record_all" = "All";
+"staking_delegate_record_delegate" = "Delegate";
+"staking_delegate_record_undelegate" = "Undelegate";
+
+"staking_delegate_locked" = "Locked delegate";
+"staking_delegate_unlocked" = "Unlocked delegate";
+"staking_delegate_release" = "Released delegate";
+"staking_delegate_undelegating" = "Undelegating";
+
+"staking_delegate" = "Delegate";
+"staking_withdraw" = "Withdraw";
+"staking_moveout" = "Move out";
+
+"staking_alert_locked_delegate" = "Locked delegate";
+"staking_alert_locked_delegate_detail" = "Only locked delegates are rewarded. Un-delegation (i.e. withdrawal) takes immediate effect.but,the delegated LAT takes 6.1 hours to unlock and return to the account.";
+"staking_alert_unlocked_delegate" = "Unlocked delegate";
+"staking_alert_unlocked_delegate_detail" = "Locked in about 6.1 hours, the unlocked delegate has no reward.Un-delegation (i.e. withdrawal) takes immediate effect.and,the delegated LAT immediately returns to the account.";
+"staking_alert_released_delegate" = "Released delegate";
+"staking_alert_released_detail" = "Validator exits, the delegations is automatically released,and need user to withdraw the delegations";
+"staking_alert_annualized_rate" = "Expected annualized rate";
+"staking_alert_annualized_rate_detail" = "The expected annualized rate of the current validator, the Delegation rewards is distributed by the validator";
+
+"staking_validator_node_all" = "All";
+"staking_validator_node_active" = "Active";
+"staking_validator_node_candidate" = "Candidate";
+"staking_validator_node_rank" = "Rank";
+"staking_validator_node_yield" = "Yield";
+
+"staking_validator_delegate_total" = "Staked";
+"staking_validator_delegate_rate_about" = "Yield";
+
+"statking_validator_total_staked" = "Total Staked(LAT)";
+"statking_validator_delegations" = "Delegations(LAT)";
+"statking_validator_delegators" = "Delegators";
+"statking_validator_slash" = "Slash";
+"statking_validator_blocks" = "Blocks";
+"statking_validator_blocks_rate" = "Block rate";
+
+"statking_validator_Institutional" = "Institutional Name";
+"statking_validator_Website" = "Website";
+
+"statking_validator_Withdraw" = "Withdraw";
+"statking_validator_Delegate" = "Delegate";
+
+"statking_validator_Balance" = "Balance";
+
+"staking_validator_isInit_doubt" = "PlatON blockchain initial built-in validator, does not accept Delegation";
+
+"ATextFieldView_title" = "Amount:";
+"ATextFieldView_withdraw_title" = "Amount:";
+"ATextFieldView_withdraw_placeholder" = "Input Amount (not less than 10 LAT)";
+
+"staking_doubt_delegate" = "Delegations";
+"staking_doubt_delegate_detail" = "Delegated LAT can be un-delegated (i.e withdrawal) at any time.Locked in about 6.1 hours.Only locked delegates are rewarded.Un-delegation takes immediate effect.but,the delegated LAT takes 6.1 hours to unlock and return to the account.";
+"staking_doubt_reward" = "Rewards";
+"staking_doubt_reward_detail" = "Delegation rewards come from validation block reward,staking reward and transaction fees.Reward assigned by validator.For details on how to assign, please see the official website description of each validator.";
+"staking_doubt_risk" = "Risk";
+"staking_doubt_risk_detail" = "No risk.";
+
+"staking_balance_can_used" = "Balance";
+"staking_balance_locked_position" = "Locked position";
+"staking_balance_Delegated" = "Delegated";
+"staking_balance_unlocked_Delegated" = "Unlocked delegate";
+"staking_balance__release_Delegated" = "Released delegate";
+
+"input_amount_hundred" = "hundred";
+"input_amount_thousand" = "thousand";
+"input_amount_ten_thousand" = "ten thousand";
+"input_amount_hundred_thousand" = "hundred thousand";
+"input_amount_million" = "million";
+"input_amount_ten_million" = "ten million";
+"input_amount_hundred_million" = "hundred million";
+"input_amount_billion" = "billion";
+"input_amount_ten_billion" = "ten billion";
+"input_amount_hundred_billion" = "hundred billion";
+"input_amount_trillion" = "trillion";
+
+"node_status_active" = "Active";
+"node_status_candidate" = "Candidate";
+"node_status_exiting" = "Exiting";
+"node_status_exited" = "Exited";
+
+"community_contact_wechat" = "WeChat";
+"community_contact_telegram" = "Telegram";
+"community_contact_gitHub" = "GitHub";
+"community_contact_twitter" = "Twitter";
+"community_contact_facebook" = "Facebook";
+"community_contact_LinkedIn" = "LinkedIn";
+"community_contact_bihu" = "币乎";
+"community_contact_babite" = "巴比特";
+
+"community_contact_wechat_group" = "Group Secretary：";
+"community_contact_wechat_open" = "Official Account：";
+
+"transaction_list_all_wallet" = "AII wallets";
+
+"delegate_detail_title" = "Delegate node details";
+"delegate_faq_title" = "FAQ";
+"delegate_tutorial_title" = "Tutorial";
+"delegate_validator_detail_title" = "Validator Details";
+"delegate_delegate_title" = "Delegate";
+"delegate_withdraw_title" = "Withdraw";
+"delegate_record_title" = "Delegation Record";
+
+"alert_sheet_copylink_action" = "Copy Link";
+"alert_sheet_browser_action" = "Open in a browser";
+"alert_sheet_cancel_action" = "Cancel";
+
 "node_quit_consensus_tip" = "Node has exited consensus,voting failed";
+

@@ -62,17 +62,22 @@ class NodeVoteTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func updateCell(nodeVote: NodeVoteSummary, candidate:CandidateBasicInfo){
-        candidateId = nodeVote.CandidateId
-        nodeName.text = candidate.name ?? ""
-        let ipInfo = IPGeoPersistence.getIpInfo(candidate.host ?? "")
-        location.text = "(\(ipInfo.localizeCountryName ?? Localized("IP_location_unknown")))"
-        validandinvalidTicketNum.text = String(format: "%d/%d", nodeVote.validCount,nodeVote.invalidCount)
+    func updateCell(nodeVote: NodeVote){
+        candidateId = nodeVote.nodeId
+        nodeName.text = nodeVote.name ?? ""
+        location.text = "(\(nodeVote.getNodeCountryName() ?? Localized("IP_location_unknown")))"
         
-        let lockedB = BigUInt.safeInit(str: nodeVote.assetOflocked ?? "0")
+        if let validNum = Int(nodeVote.validNum ?? "0") {
+            validandinvalidTicketNum.text = String(format: "%d/%d", validNum, nodeVote.invalidTicketNum)
+        } else {
+            validandinvalidTicketNum.text = String(format: "%d/%d", 0, nodeVote.invalidTicketNum)
+        }
+        
+        
+        let lockedB = BigUInt.safeInit(str: nodeVote.locked ?? "0")
         let lockedS = lockedB.divide(by: ETHToWeiMultiplier, round: 4)
         lockedAsset.text = lockedS
-        let earningsDes = BigUInt.safeInit(str: nodeVote.voteEarnings).divide(by: ETHToWeiMultiplier, round: 4)
+        let earningsDes = BigUInt.safeInit(str: nodeVote.earnings ?? "0").divide(by: ETHToWeiMultiplier, round: 4)
         reward.text = earningsDes
     }
     

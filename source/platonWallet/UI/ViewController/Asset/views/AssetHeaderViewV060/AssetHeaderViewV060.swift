@@ -163,19 +163,17 @@ extension AssetHeaderViewV060: UICollectionViewDelegate, UICollectionViewDataSou
         }
         var total = BigUInt("0")
         for item in AssetService.sharedInstace.assets{
-            total?.multiplyAndAdd(item.value!.balance ?? BigUInt(0), 1)
+            total.multiplyAndAdd(item.value!.balance ?? BigUInt(0), 1)
         }
         
-        if total == nil || String(total!) == "0"{
+        if total == nil || String(total) == "0"{
             assetLabel.text = "0.00"
             return
         }
         
-        var totalDes = total?.divide(by: ETHToWeiMultiplier, round: 8)
-        totalDes = totalDes?.balanceFixToDisplay(maxRound: 8)
-        if let totalDes = totalDes{
-            assetLabel.text = totalDes
-        }
+        var totalDes = total.divide(by: ETHToWeiMultiplier, round: 8)
+        totalDes = totalDes.balanceFixToDisplay(maxRound: 8)
+        assetLabel.text = totalDes
     }
     
     @objc func shouldUpdateWalletList(){

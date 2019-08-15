@@ -132,3 +132,36 @@ class EnlargeTouchButton: UIButton {
     }
     
 }
+
+extension UIButton {
+    func setCornerFullBackgroundColorStyle(_ image: UIImage?, _ title: String) {
+        self.layer.cornerRadius = 20.0
+        self.backgroundColor = common_blue_color
+        self.setTitleColor(.white, for: .normal)
+        self.setImage(image, for: .normal)
+        self.setTitle(title, for: .normal)
+        self.titleLabel?.font = UIFont.systemFont(ofSize: 15)
+        self.imageEdgeInsets = UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 0)
+    }
+    
+    func setCornerLineStyle(_ image: UIImage?, _ title: String) {
+        self.layer.cornerRadius = 20.0
+        self.layer.borderColor = common_blue_color.cgColor
+        self.layer.borderWidth = 1
+        self.setTitleColor(common_blue_color, for: .normal)
+        self.setImage(image, for: .normal)
+        self.setTitle(title, for: .normal)
+        self.titleLabel?.font = UIFont.systemFont(ofSize: 14)
+        self.imageEdgeInsets = UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 0)
+    }
+    
+    func setCellBottomStyle(_ image: UIImage?, _ disableImage: UIImage?, _ title: String) {
+        self.setTitleColor(.black, for: .normal)
+        self.setTitleColor(common_lightLightGray_color, for: .disabled)
+        self.setImage(disableImage, for: .disabled)
+        self.setImage(image, for: .normal)
+        self.setTitle(title, for: .normal)
+        self.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium)
+        self.imageEdgeInsets = UIEdgeInsets(top: 0, left: -4, bottom: 0, right: 0)
+    }
+}

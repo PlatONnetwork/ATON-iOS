@@ -185,18 +185,6 @@ class platonWalletTests: XCTestCase {
             let l:Int = Int(arc4random() % 250) + 1
             list.append(String(format: "%d.%d.%d.%d", n,j,k,l))
         }
-        
-        IPQuery.sharedInstance.batchQueryIPs(ipList: list) { (result, data) in
-            
-        }
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-            VoteManager.sharedInstance.CandidateList { (result, data) in
-                
-            }
-            
-//            self.window?.rootViewController = MyVoteListVC()
-        }
     }
     
     func testJsonwithbn(){
@@ -264,20 +252,6 @@ class platonWalletTests: XCTestCase {
             XCTAssert(true)
         }
 
-        waitForExpectations(timeout: 10) { (error) in
-            print(error?.localizedDescription ?? "")
-        }
-    }
-    
-    func testGetCandidateDetails() {
-        
-        let expectaion = self.expectation(description: "CandidateDetails.test")
-        
-        VoteManager.sharedInstance.CandidateDetails(candidateId: "0x1f3a8672348ff6b789e416762ad53e69063138b8eb4d8780101658f24b2369f1a8e09499226b467d8bc0c4e03e1dc903df857eeb3c67733d21b6aaee2840e429", completion: { (res, data) in
-            expectaion.fulfill()
-            print(res, data as Any)
-            XCTAssert(true)
-        })
         waitForExpectations(timeout: 10) { (error) in
             print(error?.localizedDescription ?? "")
         }

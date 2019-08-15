@@ -111,6 +111,14 @@ class QRScannerViewController: BaseViewController,AVCaptureMetadataOutputObjects
     func setupUI() {
         //super.leftNavigationTitle = "QRScanerVC_nav_title"
         addScanLayer()
+        perform(#selector(addTorchLayer), with: nil, afterDelay: 5.0)
+        addAlbumButton();
+    }
+    
+    private func addAlbumButton() {
+        let buttonItem = UIBarButtonItem(title: Localized("scanviewcontroller_nav_right_item"), style: .plain, target: self, action: #selector(openAlbum))
+        buttonItem.tintColor = .white
+        self.navigationItem.rightBarButtonItem = buttonItem
     }
     
     func addScanLayer() {
@@ -126,7 +134,6 @@ class QRScannerViewController: BaseViewController,AVCaptureMetadataOutputObjects
         
         path.append(UIBezierPath(rect: centerRect).reversing())
         let shape = CAShapeLayer()
-        
         shape.path = path.cgPath
         layer.mask = shape
         
@@ -136,18 +143,35 @@ class QRScannerViewController: BaseViewController,AVCaptureMetadataOutputObjects
         scanLine.frame = CGRect(x: 0, y: 0, width: centerLayer.frame.size.width, height: 3)
         centerLayer.addSublayer(scanLine)
         
-        let labelFrame = CGRect(x: 0, y: centerLayer.frame.origin.y - 14 - 16, width: kUIScreenWidth, height: 20)
+        let labelFrame = CGRect(x: 0, y: centerLayer.frame.maxY + 16, width: kUIScreenWidth, height: 20)
         
         let label = UILabel(frame: labelFrame)
-        label.textColor = .white
+        label.textColor = UIColor(hex: "b6bbd0")
         label.font = UIFont.systemFont(ofSize: 14)
         label.localizedText = "scanviewcontroller_scan"
         label.textAlignment = .center
         view.addSubview(label)
         //view.layer.addSublayer(label.layer)
         
+        
+        
         view.layer.addSublayer(centerLayer)
         
+    }
+    
+    @objc private func addTorchLayer() {
+        let torchButton = UIButton(frame: CGRect(x: (self.view.frame.width - 24)/2.0, y: 137 + scanFrameSize - 24 - 26, width: 24, height: 24))
+        torchButton.setImage(UIImage(named: "icon_flashlight_off"), for: .normal)
+        torchButton.setImage(UIImage(named: "icon_flashlight_on"), for: .selected)
+        torchButton.addTarget(self, action: #selector(openTorch(_:)), for: .touchUpInside)
+        view.addSubview(torchButton)
+        
+        let torchLabel = UILabel(frame: CGRect(x: (view.bounds.size.width - scanFrameSize) / 2, y: torchButton.frame.maxY + 4, width: scanFrameSize, height: 16))
+        torchLabel.textColor = UIColor(hex: "b6bbd0")
+        torchLabel.font = UIFont.systemFont(ofSize: 14)
+        torchLabel.localizedText = "scanviewcontroller_torch"
+        torchLabel.textAlignment = .center
+        view.addSubview(torchLabel)
     }
     
     
@@ -232,30 +256,6 @@ class QRScannerViewController: BaseViewController,AVCaptureMetadataOutputObjects
         navigationController?.popViewController(animated: true)
     }
     
-//    func addLayer(){
-//
-//        let scannerViewWidth = view.bounds.width - 2 * 20
-//        let topEndY = (view.bounds.height - scannerViewWidth) * 0.5 - 44
-//        //top
-//        let topLayer = addEdgeLayer(frame: CGRect(x: 0, y: 0, width: kUIScreenWidth, height: topEndY))
-//        //left
-//        let _ = addEdgeLayer(frame: CGRect(x: 0, y: topLayer.frame.maxY, width: 20, height: scannerViewWidth))
-//        //right
-//        let rightLayer = addEdgeLayer(frame: CGRect(x: 20 + scannerViewWidth, y: topLayer.frame.maxY, width: 20, height: scannerViewWidth))
-//        //bottom
-//        let _ = addEdgeLayer(frame: CGRect(x: 0, y: rightLayer.frame.maxY, width: kUIScreenWidth, height: kUIScreenHeight))
-//        
-//    }
-//    
-//    func addEdgeLayer(frame : CGRect) -> CALayer{
-//        let layer = CALayer()
-//        layer.frame = frame
-//        layer.backgroundColor = UIColor(rgb: 0x1b27aa, alpha: 0.5).cgColor
-//        view.layer.addSublayer(layer)
-//
-//        return layer
-//    }
-    
     func failed() {
         let ac = UIAlertController(title: "Scanning not supported", message: "Your device does not support scanning a code from an item. Please use a device with a camera.", preferredStyle: .alert)
         ac.addAction(UIAlertAction(title: "OK", style: .default))
@@ -285,13 +285,6 @@ class QRScannerViewController: BaseViewController,AVCaptureMetadataOutputObjects
         
     }
     
-//    func found(code: String) {
-//        
-//        DispatchQueue.main.async {
-//            self.captureSession.stopRunning()
-//        }
-//    }
-    
     override var prefersStatusBarHidden: Bool {
         return false
     }
@@ -302,4 +295,55 @@ class QRScannerViewController: BaseViewController,AVCaptureMetadataOutputObjects
     
 
 
+}
+
+extension QRScannerViewController {
+    @objc private func openTorch(_ sender: UIButton) {
+        guard let device = AVCaptureDevice.default(for: AVMediaType.video) else {
+            print("无法获取到手电筒设备")
+            return
+        }
+        if device.hasTorch && device.isTorchAvailable {
+            try? device.lockForConfiguration()
+            
+            device.torchMode = device.torchMode == .off ? .on : .off
+            sender.isSelected = (device.torchMode == .on)
+            device.unlockForConfiguration()
+        }
+    }
+    
+    @objc private func openAlbum() {
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        present(imagePicker, animated: true, completion: nil)
+    }
+}
+
+extension QRScannerViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        
+        showLoadingHUD(text: Localized("scanviewcontroller_scan_loading"), animated: true)
+        
+        let image = info[.originalImage] as! UIImage
+        
+        let detector = CIDetector(ofType: CIDetectorTypeQRCode, context: nil, options: [CIDetectorAccuracy: CIDetectorAccuracyHigh])
+        let featureArr = detector?.features(in: CIImage(cgImage: image.cgImage!))
+        guard let feature = featureArr?.first as? CIQRCodeFeature else {
+            self.hideLoadingHUD()
+            self.showMessage(text: Localized("scanviewcontroller_scan_result_notfound"), delay: 1.5)
+            self.dismiss(animated: true, completion: nil)
+            return
+        }
+        let message = feature.messageString!
+        
+        self.dismiss(animated: true) { [weak self] in
+            guard let self = self else { return }
+            self.hideLoadingHUD()
+            self.scanCompletion?(message)
+        }
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        self.dismiss(animated: true, completion: nil)
+    }
 }

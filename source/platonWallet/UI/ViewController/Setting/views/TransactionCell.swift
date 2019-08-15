@@ -21,34 +21,39 @@ class TransactionCell: UITableViewCell {
     @IBOutlet weak var statusLabel: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
+        contentView.backgroundColor = normal_background_color
+        backgroundColor = normal_background_color
         selectionStyle = .none
     }
 
-    func updateCell(tx : AnyObject?){ 
-        if let tx = tx as? Transaction{
-            
-            updateTransactionStatus(tx: tx)
+    
+    func updateCell(tx : Transaction){
+        updateTransactionStatus(tx: tx)
+        timeLabel.text = Date.toStanderTimeDescrition(millionSecondsTimeStamp: tx.confirmTimes)
+        
+        switch tx.transactionStauts {
+        case .sending,.sendSucceed,.sendFailed:
             amoutLabel.text = "-" + (tx.valueDescription)!.ATPSuffix()
-            timeLabel.text = Date.toStanderTimeDescrition(millionSecondsTimeStamp: Int((tx.createTime)))
-            
-        }else if let tx = tx as? STransaction{
-            updateSTransactionStatus(tx: tx)
-            typeLabel.text = tx.typeLocalization
-            timeLabel.text = Date.toStanderTimeDescrition(millionSecondsTimeStamp: Int((tx.createTime)))
-            if tx.transanctionCategoryLazy == .ATPTransfer{
-                amoutLabel.text = "-" + (tx.valueDescription)!.ATPSuffix()
-            }else{
-                amoutLabel.text = (tx.valueDescription)!.ATPSuffix()
-            }
-            
+        case .receiving,.receiveSucceed,.receiveFailed:
+            amoutLabel.text = "+" + (tx.valueDescription)!.ATPSuffix()
+        case .voting,.voteSucceed,.voteFailed:
+            amoutLabel.text = "-" + (tx.valueDescription)!.ATPSuffix()
         }
     }
  
     
     func updateTransactionStatus(tx : Transaction) {
-
-        tx.senderAddress = tx.from
-        typeLabel.text = tx.transactionStauts.localizeTitle
+        tx.senderAddress = AssetVCSharedData.sharedData.selectedWalletAddress
+        if tx.txType == .transfer {
+            let addressStrs = AssetVCSharedData.sharedData.walletList.filterClassicWallet.map { cwallet in
+                return cwallet.key!.address.lowercased()
+            }
+            if addressStrs.contains(tx.from!.lowercased()) {
+                tx.senderAddress = tx.from
+            }
+        }
+        
+        typeLabel.text = tx.txType == .transfer ? tx.transactionStauts.localizeTitle : tx.txType?.localizeTitle
         statusLabel.text = tx.transactionStauts.localizeDescAndColor.0
         statusLabel.textColor = tx.transactionStauts.localizeDescAndColor.1
         

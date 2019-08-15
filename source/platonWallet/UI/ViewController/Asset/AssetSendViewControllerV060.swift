@@ -108,7 +108,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
             self?.textFieldViewUpdateHeight(view: view)
         })
         
-        amountView.shouldChangeCharactersCompletion = {[weak self] (concatenated,replacement) in
+        amountView.shouldChangeCharactersCompletion = { [weak self] (concatenated,replacement) in
             if replacement == ""{
                 return true
             }
@@ -118,9 +118,9 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
             return concatenated.trimNumberLeadingZero().isValidInputAmoutWith8DecimalPlace()
         }
         
-        amountView.endEditCompletion = {[weak self] text in
+        amountView.endEditCompletion = { [weak self] text in
             let _ = self?.checkConfirmButtonAvailable()
-            let _ = self?.amountView.checkInvalidNow(showErrorMsg: false)
+            let _ = amountView.checkInvalidNow(showErrorMsg: false)
         }
         
         return amountView
@@ -132,7 +132,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
         label.font = UIFont.systemFont(ofSize: 11)
         label.textColor = common_lightGray_color
         label.textAlignment = .right
-        label.text = Localized("transferVC_transfer_balance") + "- Energon"
+        label.text = Localized("transferVC_transfer_balance") + "- LAT"
         return label
     }()
     
@@ -322,6 +322,10 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
     }
     
     //MARK: - User Interaction
+    private func saveToAddressBook(addressText: String?, name: String?) {
+        quickSaveAddrBtn.quickSave(address: addressText, name: name)
+        quickSaveAddrBtn.checkAndUpdateStatus(address: addressText,name: name)
+    }
     
     @objc func onQuickAddAddress(){
         guard let addressText = walletAddressView.textField.text,addressText.is40ByteAddress() else{
@@ -330,6 +334,15 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
         if self.quickSaveAddrBtn.status == QuickSaveStatus.QuickSaveDisable{
             return
         }
+        
+        // 改地址已存在客户端，则直接写入
+        if let wallet = AssetVCSharedData.sharedData.walletList.filter({ ($0 as! Wallet).key!.address.ishexStringEqual(other: addressText)
+        }).first {
+            saveToAddressBook(addressText: addressText, name: (wallet as! Wallet).name)
+            return
+        }
+        
+        
         let alertVC = AlertStylePopViewController.initFromNib()
         let style = PAlertStyle.commonInputWithItemDes(itemDes: Localized("addressbook_wallet_address_with_Colon"),
                                            itemContent: addressText.addressForDisplay(),
@@ -349,8 +362,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
                 alertVC.showInputErrorTip(string: ret.1)
                 return false
             }else{
-                self?.quickSaveAddrBtn.quickSave(address: addressText, name: text)
-                self?.quickSaveAddrBtn.checkAndUpdateStatus(address: addressText,name: text)
+                self?.saveToAddressBook(addressText: addressText, name: text)
                 return true
             }
         }) { (_, _) -> (Bool) in
@@ -388,11 +400,11 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
         }
         
         if let wallet = AssetVCSharedData.sharedData.selectedWallet as? Wallet{
-            confirmPopUpView!.setUpContentView(view: confirmView, size: CGSize(width: PopUpContentWidth, height: 357))
+            confirmPopUpView!.setUpConfirmView(view: confirmView, width: PopUpContentWidth)
             confirmView.hideExecutor()
             confirmView.totalLabel.text = amountView.textField.text!
-            confirmView.toAddressLabel.text = walletAddressView.textField.text!
-            confirmView.walletName.text = wallet.name
+            confirmView.toAddressLabel.text = walletAddressView.textField.text!.addressDisplayInLocal() ?? "--"
+            confirmView.walletName.text = wallet.key?.address.addressDisplayInLocal() ?? "--"
             let feeString = self.totalFee().divide(by: ETHToWeiMultiplier
                 , round: 18)
             confirmView.feeLabel.text = feeString.ATPSuffix()
@@ -593,9 +605,9 @@ extension AssetSendViewControllerV060{
     
     func totalFee() -> BigUInt{
         if let _ = AssetVCSharedData.sharedData.selectedWallet as? Wallet{
-            return (self.gasPrice?.multiplied(by: self.estimatedGas!))!
+            return (self.gasPrice?.multiplied(by: self.estimatedGas))!
         }else if let _ = AssetVCSharedData.sharedData.selectedWallet as? SWallet{
-            return (self.gasPrice?.multiplied(by: self.estimatedGas!))!
+            return (self.gasPrice?.multiplied(by: self.estimatedGas))!
         }
         return BigUInt("0")!
     }
@@ -640,7 +652,7 @@ extension AssetSendViewControllerV060{
         let amount = self.amountView.textField.text!
         let memo = ""
         
-        let _ = TransactionService.service.sendAPTTransfer(from: from!, to: to, amount: amount, InputGasPrice: self.gasPrice!, estimatedGas: String(self.estimatedGas!), memo: memo, pri: pri, completion: {[weak self] (result, txHash) in
+        let _ = TransactionService.service.sendAPTTransfer(from: from!, to: to, amount: amount, InputGasPrice: self.gasPrice!, estimatedGas: String(self.estimatedGas), memo: memo, pri: pri, completion: {[weak self] (result, txHash) in
             AssetViewControllerV060.getInstance()?.hideLoadingHUD(delay: 0.2)
             switch result{
             case .success:
