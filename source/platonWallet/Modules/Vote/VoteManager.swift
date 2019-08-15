@@ -108,13 +108,45 @@ class VoteManager: BaseService {
         }
         
     }
+    
+    func getVerifyListWithCompletion(completion: PlatonCommonCompletion?){
+        var completion = completion 
+        let verifyListData = self.build_GetVerifiersList()
+        web3.eth.platonCall(contractAddress: candidateContract, data: verifyListData, from: nil, gas: nil, gasPrice: nil, value: nil, outputs: [SolidityFunctionParameter(name: "", type: .string)]) { (VerifiersListresp, VerifiersListdata) in
+            switch VerifiersListresp{
+                
+            case .success:
+                do{
+                    var verifyList : Array<Candidate> = []
+                    guard let vresp = VerifiersListdata as? Dictionary<String, String>,let valueJSON = vresp[""] else{
+                        self.failCompletionOnMainThread(code: -2, errorMsg: Localized("data_parser_error"), completion: &completion)
+                        return
+                    }
+                    let vlist =  try JSONDecoder().decode([Candidate].self, from: valueJSON.data(using: .utf8)!)
+                    if (vlist.count) > 0{
+                        verifyList.append(contentsOf: vlist)
+                    }
+                    let vids = verifyList.map({ candidate -> String in
+                        return candidate.candidateId ?? ""
+                    })
+                    self.successCompletionOnMain(obj: vids as AnyObject, completion: &completion)
+                }catch {
+                    self.failCompletionOnMainThread(code: -2, errorMsg: Localized("data_parser_error"), completion: &completion)
+                }
+                
+            case .fail(let code, let msg):
+                self.failCompletionOnMainThread(code: code ?? -1, errorMsg: msg ?? Localized("data_parser_error"), completion: &completion)   
+            }
+        }
+    }
   
     func GetVotePageCandidateList(completion: PlatonCommonCompletion?)  {
 
         var completion = completion 
-        let data = self.build_CandidateList()
+        let candidateData = self.build_CandidateList()
+        let verifyListData = self.build_GetVerifiersList()
         
-        web3.eth.platonCall(contractAddress: candidateContract, data: self.build_GetVerifiersList(), from: nil, gas: nil, gasPrice: nil, value: nil, outputs: [SolidityFunctionParameter(name: "", type: .string)]) { (VerifiersListresp, VerifiersListdata) in
+        web3.eth.platonCall(contractAddress: candidateContract, data: verifyListData, from: nil, gas: nil, gasPrice: nil, value: nil, outputs: [SolidityFunctionParameter(name: "", type: .string)]) { (VerifiersListresp, VerifiersListdata) in
             switch VerifiersListresp{
                 
             case .success:
@@ -124,7 +156,7 @@ class VoteManager: BaseService {
                     return
                 }
                 
-                self.web3CommonCall(contractAddress: candidateContract, data: data, completion: &completion) { (resp) in
+                self.web3CommonCall(contractAddress: candidateContract, data: candidateData, completion: &completion) { (resp) in
                     serviceQueue.async {
                         do{
                             let vlist =  try JSONDecoder().decode([Candidate].self, from: valueJSON.data(using: .utf8)!)

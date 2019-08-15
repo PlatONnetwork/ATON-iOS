@@ -710,6 +710,7 @@
 "send_amount_placeholder" = "输入发送数量";
 "vote_confirm_from" = "支付钱包：";
 
+
 "createOrImport_guide_text" = "已有钱包？使用钱包文件(json)、助记词、私钥导入";
 
 "transaction_loadmore_text" = "查看更多交易";
@@ -835,3 +836,6 @@
 "alert_sheet_copylink_action" = "复制链接";
 "alert_sheet_browser_action" = "在浏览器中打开";
 "alert_sheet_cancel_action" = "取消";
+
+"node_quit_consensus_tip" = "节点已退出共识，投票失败！";
+

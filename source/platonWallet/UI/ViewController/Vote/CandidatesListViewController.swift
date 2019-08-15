@@ -251,12 +251,10 @@ class CandidatesListViewController: BaseViewController {
             self.tableView.mj_header.endRefreshing()
             switch result {
             case .success:
-
                 guard var list = (data as? CandidateResponse)?.list else { return }
                 for i in 0..<list.count {
                     list[i].rankByDeposit = UInt16(i + 1)
                 }
-
                 self.setCandidateAreaInfo(list: list)
                 self.queryCandidateTicketCount(list: list, completion: { (newList) in
 
@@ -274,6 +272,7 @@ class CandidatesListViewController: BaseViewController {
                         item.ticketCount ?? 0 < kCandidateMinNumOfTickets
                     }
                     self.waitingCandidateslist = self.waitingCandidateslist.count > 100 ? Array(self.waitingCandidateslist[0..<100]) : self.waitingCandidateslist
+
                 }
             case .fail(_, _):
                 break
@@ -358,7 +357,7 @@ class CandidatesListViewController: BaseViewController {
         
         switch type {
         case .default:
-            
+
             let dataSource = nominateNodeList + waitingCandidateslist
             return dataSource
             
@@ -448,7 +447,7 @@ extension CandidatesListViewController: UITableViewDelegate, UITableViewDataSour
             self.navigationController?.pushViewController(votingVC, animated: true)
         }
         
-        return cell
+        return cell 
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
