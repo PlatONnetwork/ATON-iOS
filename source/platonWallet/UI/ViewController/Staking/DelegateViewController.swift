@@ -35,8 +35,8 @@ class DelegateViewController: BaseViewController {
         super.viewDidLoad()
         super.leftNavigationTitle = "delegate_delegate_title"
         // Do any additional setup after loading the view.
-        // Do any additional setup after loading the view.
-        initListData()
+        
+        fetchWalletsBalance()
         
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
@@ -48,6 +48,47 @@ class DelegateViewController: BaseViewController {
     
     @objc private func cancelFirstResponser() {
         view.endEditing(true)
+    }
+    
+    private func fetchCanDelegation() {
+        guard let nodeId = currentNode?.nodeId, let walletAddr = currentAddress else { return }
+        
+        showLoadingHUD()
+        StakingService.sharedInstance.getCanDelegation(addr: walletAddr, nodeId: nodeId) { [weak self] (result, data) in
+                self?.hideLoadingHUD()
+                
+                switch result {
+                case .success:
+                    
+                    if let newData = data as? CanDelegation {
+                        
+                    }
+                case .fail(_, _):
+                    break
+                }
+        }
+    }
+    
+    private func fetchWalletsBalance() {
+        let addresses = (AssetVCSharedData.sharedData.walletList as! [Wallet]).map { return $0.key!.address }
+        guard addresses.count > 0 else { return }
+        
+        showLoadingHUD()
+        
+        StakingService.sharedInstance.getWalletsBalance(adddresses: addresses) { [weak self] (result, data) in
+            self?.hideLoadingHUD()
+            
+            switch result {
+            case .success:
+                
+                if let newData = data as? [Balance] {
+                    
+                }
+                self?.initListData()
+            case .fail(_, _):
+                break
+            }
+        }
     }
     
 

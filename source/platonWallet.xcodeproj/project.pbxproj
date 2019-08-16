@@ -224,6 +224,7 @@
 		81E64A5B2304FA7A000F2E7C /* DelegatePersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E64A5A2304FA7A000F2E7C /* DelegatePersistence.swift */; };
 		81E64A5F230528F3000F2E7C /* PlatON_network.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 81E64A5D230528F3000F2E7C /* PlatON_network.jpg */; };
 		81E64A60230528F3000F2E7C /* PlatON-Alita.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 81E64A5E230528F3000F2E7C /* PlatON-Alita.jpg */; };
+		81E64A6223055070000F2E7C /* Balance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E64A6123055070000F2E7C /* Balance.swift */; };
 		81EE99BE21757E40008DF8CB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 81EE99C021757E40008DF8CB /* Localizable.strings */; };
 		81EE99C62175E563008DF8CB /* UIStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EE99C52175E563008DF8CB /* UIStyle.swift */; };
 		81EE99C92175E665008DF8CB /* CommonUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EE99C82175E665008DF8CB /* CommonUtilities.swift */; };
@@ -631,6 +632,7 @@
 		81E64A5A2304FA7A000F2E7C /* DelegatePersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelegatePersistence.swift; sourceTree = "<group>"; };
 		81E64A5D230528F3000F2E7C /* PlatON_network.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = PlatON_network.jpg; sourceTree = "<group>"; };
 		81E64A5E230528F3000F2E7C /* PlatON-Alita.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "PlatON-Alita.jpg"; sourceTree = "<group>"; };
+		81E64A6123055070000F2E7C /* Balance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Balance.swift; sourceTree = "<group>"; };
 		81EE99BF21757E40008DF8CB /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		81EE99C121757E6F008DF8CB /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		81EE99C52175E563008DF8CB /* UIStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIStyle.swift; sourceTree = "<group>"; };
@@ -1467,6 +1469,7 @@
 				81E2E84E2186AEAF008B7504 /* AddressInfo.swift */,
 				8106350A219BFF0B00F0A06D /* SWallet.swift */,
 				8106350E219C074800F0A06D /* STransaction.swift */,
+				81E64A6123055070000F2E7C /* Balance.swift */,
 			);
 			path = Wallet;
 			sourceTree = "<group>";
@@ -2440,6 +2443,7 @@
 				9AC86EA3224B67D000315A79 /* JointWalletCreationFeeConfirmView.swift in Sources */,
 				81C1120E21AFBFDE00003E59 /* Router.swift in Sources */,
 				813E288021D4CC3500C36A0F /* SingleVoteDetailListVC.swift in Sources */,
+				81E64A6223055070000F2E7C /* Balance.swift in Sources */,
 				9A79A095219BFFDD000EB4C5 /* CreateSharedWalletMemberTableViewCell.swift in Sources */,
 				81E2E8492186A5EE008B7504 /* AddressBookViewController.swift in Sources */,
 				819A434F21D1FF3000E276C7 /* Ticket.swift in Sources */,

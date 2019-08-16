@@ -73,7 +73,6 @@ class TransactionListViewController: BaseViewController,UITableViewDelegate,UITa
         fetchTransaction(addressStrs: addressStrs, beginSequence: -1, direction: "new")
     }
     
-
     @objc func fetchTransactionMore() {
         var addressStrs: [String] = []
         
@@ -136,24 +135,6 @@ class TransactionListViewController: BaseViewController,UITableViewDelegate,UITa
                 break
             }
         }
-
-    func initData(){
-        
-        if AssetVCSharedData.sharedData.walletList.count == 0{
-            dataSource.removeAll()
-            tableView.reloadData()
-            return
-        }
-        
-        dataSource.removeAll()
-        let data = TransferPersistence.getAll()
-        dataSource.append(contentsOf: data)
-         
-        let sdata = STransferPersistence.getAllTransactionForTransactionList()
-        dataSource.append(contentsOf: sdata)
-        dataSource.txSort()
-        tableView.reloadData()
-
     }
 
     func initSubView(){

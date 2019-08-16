@@ -91,15 +91,13 @@ public struct DelegationValue: Decodable {
     var released: String?
 }
 
-// 委托交易状态
-public enum DelegateStatus: String, Decodable {
-    case confirm
-    case delegateSucc
-    case delegateFail
-    case redeem
-    case redeemSucc
-    case redeemFail
+// 是否能委托response
+public struct CanDelegation: Decodable {
+    var canDelegation: Bool? = true
+    var message: String?
 }
+
+
 
 // 委托记录
 public struct DelegateRecord: Decodable {
@@ -111,4 +109,14 @@ public struct DelegateRecord: Decodable {
     var number: Int
     var sequence: Int
     var delegateStatus: DelegateStatus
+}
+
+// 委托交易状态
+public enum DelegateStatus: String, Decodable {
+    case confirm
+    case delegateSucc
+    case delegateFail
+    case redeem
+    case redeemSucc
+    case redeemFail
 }

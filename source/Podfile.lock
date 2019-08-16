@@ -32,6 +32,9 @@ PODS:
   - SwipeCellKit (2.5.4)
   - TrezorCrypto (0.0.9)
   - "UITextView+Placeholder (1.2.1)"
+  - UMCAnalytics (6.0.3):
+    - UMCCommon
+  - UMCCommon (2.0.1)
 
 DEPENDENCIES:
   - Alamofire (= 4.8.1)
@@ -56,6 +59,8 @@ DEPENDENCIES:
   - SwipeCellKit (= 2.5.4)
   - TrezorCrypto (= 0.0.9)
   - "UITextView+Placeholder (= 1.2.1)"
+  - UMCAnalytics
+  - UMCCommon
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -81,6 +86,8 @@ SPEC REPOS:
     - SwipeCellKit
     - TrezorCrypto
     - "UITextView+Placeholder"
+    - UMCAnalytics
+    - UMCCommon
 
 EXTERNAL SOURCES:
   Spring:
@@ -115,7 +122,9 @@ SPEC CHECKSUMS:
   SwipeCellKit: 4eada3884ab1bbae5e8d2fb9030c242aa23d7f42
   TrezorCrypto: bfeea47a052dca2c77d4a39e1e183865e52de14d
   "UITextView+Placeholder": 0c3efd97f37ea64bde7f34cc6e90fe02e87b3909
+  UMCAnalytics: ff58714ada407682c4a07548156f94bcec92f055
+  UMCCommon: 0263a057a2e1ae1da4c8308541e56904a493ce13
 
-PODFILE CHECKSUM: ee18793e1dc5d727480bb1dacb8f1e948c280771
+PODFILE CHECKSUM: 476b1ea7d0d8b7d423c4fd24197767e7d1481d3c
 
 COCOAPODS: 1.5.3
