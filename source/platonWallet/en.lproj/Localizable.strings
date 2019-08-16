@@ -708,6 +708,8 @@
 "send_amount_placeholder" = "Input Amount";
 "vote_confirm_from" = "From:";
 
+
+
 "createOrImport_guide_text" = "Have a wallet? Import using keystore(json),mnemonic phrase, private key.";
 
 "transaction_loadmore_text" = "View more transactions";
@@ -833,3 +835,6 @@
 "alert_sheet_copylink_action" = "Copy Link";
 "alert_sheet_browser_action" = "Open in a browser";
 "alert_sheet_cancel_action" = "Cancel";
+
+"node_quit_consensus_tip" = "Node has exited consensus,voting failed";
+

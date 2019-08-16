@@ -110,12 +110,21 @@ class STransferPersistence {
     
     public class func getAllTransactionForTransactionList() -> [STransaction]{
        
+        let wallets = AssetVCSharedData.sharedData.walletList.filterClassicWallet
+        let addresses = wallets.map { w -> String in
+            return (w.key?.address)!.lowercased()
+        }
+        
         let predicate = NSPredicate(format: "nodeURLStr = %@", SettingService.getCurrentNodeURLString())
         let r = RealmInstance!.objects(STransaction.self).filter(predicate).sorted(byKeyPath: "createTime", ascending: false)
 
         var filterArray = Array<STransaction>()
         let all = Array(r)
         for item in all{
+            //交易对应的本地普通钱包要存在
+            if item.ownerWalletAddress.length > 0 && !addresses.contains(item.ownerWalletAddress.lowercased()){
+                continue
+            }
             if item.transanctionCategoryLazy == .ATPTransfer{
                 if (item.signStatus == .reachApproval || item.signStatus == .reachRevoke){
                     filterArray.append(item)
