@@ -27,6 +27,7 @@ class CommunityViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        super.leftNavigationTitle = "PersonalVC_cell_wallet_community"
 
         // Do any additional setup after loading the view.
         view.backgroundColor = normal_background_color

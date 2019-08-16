@@ -34,9 +34,13 @@ target 'platonWallet' do
   
   # Pods for platonWallet
   
-  pod 'platonWeb3', '~> 0.4.0'
+  pod 'platonWeb3', :path => '../../SDK/client-sdk-ios'
+#  pod 'platonWeb3', '~> 0.4.0'
   pod 'MJRefresh'
   pod 'Kingfisher'
+  
+  pod 'UMCCommon'
+  pod 'UMCAnalytics'
 
   target 'platonWalletTests' do
       inherit! :search_paths

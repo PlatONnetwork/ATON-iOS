@@ -20,6 +20,7 @@ class AppFramework {
     func initialize() -> Bool {
         languageSetting()
         initBugly()
+        initUMeng()
         doSwizzle()
         if !RealmConfiguration(){
             return false
@@ -35,7 +36,11 @@ class AppFramework {
     func initBugly(){
         Bugly.start(withAppId: "e8f57be7d2")
     }
-        
+    
+    func initUMeng() {
+        UMConfigure.initWithAppkey("5d551ffd3fc1959f6b000113", channel: "App Store")
+        MobClick.setAutoPageEnabled(true)
+    }
     
     func modulesConfigure(){
         let _ = AssetService.sharedInstace

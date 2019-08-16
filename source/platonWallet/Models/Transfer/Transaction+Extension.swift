@@ -142,6 +142,10 @@ extension Transaction {
         }
     }
     
+    var recordAmountForDisplay: String {
+        return recordAmount?.vonToLAT.balanceFixToDisplay(maxRound: 8).ATPSuffix() ?? "--"
+    }
+    
     var recordStatus: (String, UIColor) {
         switch txType! {
         case .delegateCreate:

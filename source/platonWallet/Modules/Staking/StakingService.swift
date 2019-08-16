@@ -13,6 +13,39 @@ final class StakingService: BaseService {
     
     static let sharedInstance = StakingService()
     
+    func getWalletsBalance(
+        adddresses: [String],
+        completion: PlatonCommonCompletion?) {
+        var completion = completion
+        
+        var parameters: [String: Any] = [:]
+        parameters["addrs"] = adddresses
+        
+        let url = SettingService.debugBaseURL + "account/getBalance"
+        
+        var request = URLRequest(url: try! url.asURL())
+        request.httpBody = try! JSONSerialization.data(withJSONObject: parameters)
+        request.httpMethod = "POST"
+        request.timeoutInterval = requestTimeout
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        Alamofire.request(request).responseData { response in
+            switch response.result {
+            case .success(let data):
+                do {
+                    let decoder = JSONDecoder()
+                    let response = try decoder.decode(JSONResponse<[Balance]>.self, from: data)
+                    self.successCompletionOnMain(obj: response.data as AnyObject, completion: &completion)
+                } catch let err {
+                    self.failCompletionOnMainThread(code: -1, errorMsg: err.localizedDescription, completion: &completion)
+                }
+            case .failure(let error):
+                self.failCompletionOnMainThread(code: -1, errorMsg: error.localizedDescription, completion: &completion)
+                break;
+            }
+        }
+    }
+    
     func getMyDelegate(adddresses: [String], completion: PlatonCommonCompletion?) {
         var completion = completion
         var parameters: [String: Any] = [:]
@@ -185,6 +218,40 @@ final class StakingService: BaseService {
                 }
             case .failure(let error):
                 self.failCompletionOnMainThread(code: -1, errorMsg: error.localizedDescription, completion: &completion)
+            }
+        }
+    }
+    
+    func getCanDelegation(
+        addr: String,
+        nodeId: String,
+        completion: PlatonCommonCompletion?) {
+        var completion = completion
+        var parameters: [String: Any] = [:]
+        parameters["addr"] = addr
+        parameters["nodeId"] = nodeId
+        
+        let url = SettingService.debugBaseURL + "node/canDelegation"
+        
+        var request = URLRequest(url: try! url.asURL())
+        request.httpBody = try! JSONSerialization.data(withJSONObject: parameters)
+        request.httpMethod = "POST"
+        request.timeoutInterval = requestTimeout
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        Alamofire.request(request).responseData { response in
+            switch response.result {
+            case .success(let data):
+                do {
+                    let decoder = JSONDecoder()
+                    let response = try decoder.decode(JSONResponse<CanDelegation>.self, from: data)
+                    self.successCompletionOnMain(obj: response.data as AnyObject, completion: &completion)
+                } catch let err {
+                    self.failCompletionOnMainThread(code: -1, errorMsg: err.localizedDescription, completion: &completion)
+                }
+            case .failure(let error):
+                self.failCompletionOnMainThread(code: -1, errorMsg: error.localizedDescription, completion: &completion)
+                break;
             }
         }
     }

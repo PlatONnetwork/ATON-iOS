@@ -28,7 +28,7 @@ class DelegateRecordTableViewCell: UITableViewCell {
             nodeAvatarIV.image = transaction?.recordIconIV
             nodeNameLabel.text = transaction?.nodeName ?? "--"
             nodeAddressLabel.text = transaction?.nodeId?.addressForDisplay() ?? "--"
-            nodeBalanceLabel.text = transaction?.recordAmount?.balanceFixToDisplay(maxRound: 8).ATPSuffix() ?? "--"
+            nodeBalanceLabel.text = transaction?.recordAmountForDisplay ?? "--"
             recordStatusLabel.text = transaction?.recordStatus.0
             recordStatusLabel.textColor = transaction?.recordStatus.1
             
