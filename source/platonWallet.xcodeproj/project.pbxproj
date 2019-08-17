@@ -272,6 +272,7 @@
 		9A56557B217578EA002A1F6C /* Keystore.Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A56557A217578EA002A1F6C /* Keystore.Crypto.swift */; };
 		9A56557D2176CB05002A1F6C /* HDPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A56557C2176CB05002A1F6C /* HDPath.swift */; };
 		9A56557F21772DE3002A1F6C /* WalletUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A56557E21772DE2002A1F6C /* WalletUtil.swift */; };
+		9A76E5232307F37A00E0B79A /* AnalysisHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A76E5222307F37A00E0B79A /* AnalysisHelper.swift */; };
 		9A79A07521956493000EB4C5 /* BaseImportWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A79A07421956493000EB4C5 /* BaseImportWalletViewController.swift */; };
 		9A79A088219ADD1F000EB4C5 /* CreateSharedWalletStep1ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A79A086219ADD1F000EB4C5 /* CreateSharedWalletStep1ViewController.swift */; };
 		9A79A089219ADD1F000EB4C5 /* CreateSharedWalletStep1ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A79A087219ADD1F000EB4C5 /* CreateSharedWalletStep1ViewController.xib */; };
@@ -681,6 +682,7 @@
 		9A56557A217578EA002A1F6C /* Keystore.Crypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keystore.Crypto.swift; sourceTree = "<group>"; };
 		9A56557C2176CB05002A1F6C /* HDPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HDPath.swift; sourceTree = "<group>"; };
 		9A56557E21772DE2002A1F6C /* WalletUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletUtil.swift; sourceTree = "<group>"; };
+		9A76E5222307F37A00E0B79A /* AnalysisHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisHelper.swift; sourceTree = "<group>"; };
 		9A79A07421956493000EB4C5 /* BaseImportWalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseImportWalletViewController.swift; sourceTree = "<group>"; };
 		9A79A086219ADD1F000EB4C5 /* CreateSharedWalletStep1ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateSharedWalletStep1ViewController.swift; sourceTree = "<group>"; };
 		9A79A087219ADD1F000EB4C5 /* CreateSharedWalletStep1ViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CreateSharedWalletStep1ViewController.xib; sourceTree = "<group>"; };
@@ -1424,6 +1426,7 @@
 		81EE99DC21770977008DF8CB /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				9A76E5212307F36D00E0B79A /* Analysis */,
 				81200D4922FBF273002E2944 /* Staking */,
 				819A433921D085E700E276C7 /* Vote */,
 				8115BC4C21886148009FFE3B /* Common */,
@@ -1667,6 +1670,14 @@
 				9A36AFAF22675F8000B388A9 /* MigrateBelow4.swift */,
 			);
 			path = migration;
+			sourceTree = "<group>";
+		};
+		9A76E5212307F36D00E0B79A /* Analysis */ = {
+			isa = PBXGroup;
+			children = (
+				9A76E5222307F37A00E0B79A /* AnalysisHelper.swift */,
+			);
+			path = Analysis;
 			sourceTree = "<group>";
 		};
 		9A79A08A219BC97B000EB4C5 /* views */ = {
@@ -2378,6 +2389,7 @@
 				9AF9AC1A2182E04000E97F07 /* PopupDialogButton.swift in Sources */,
 				811AB2C322EEE30600284F1A /* DoubtTableViewCell.swift in Sources */,
 				813E287621D4B82200C36A0F /* VotingViewController.swift in Sources */,
+				9A76E5232307F37A00E0B79A /* AnalysisHelper.swift in Sources */,
 				8106350D219BFFDA00F0A06D /* SWalletPersistence.swift in Sources */,
 				813F56C4219A60FA00F797E6 /* Utilities.swift in Sources */,
 				81D7E25E22E802200069CDED /* MyDelegatesViewController.swift in Sources */,
@@ -2780,7 +2792,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.platon.aton;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-        PROVISIONING_PROFILE_SPECIFIER = "com.platon.aton distribution";
+				PROVISIONING_PROFILE_SPECIFIER = "com.platon.aton distribution";
 				SWIFT_OBJC_BRIDGING_HEADER = "platonWallet/UI/Utilities/platonWallet-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 4.2;
