@@ -178,6 +178,8 @@ extension AssetTransactionViewControllerV060{
                     return
                 }
                 
+                let _ = transactions.map { $0.direction = (selectedAddress.lowercased() == $0.from?.lowercased() ? .Sent : selectedAddress.lowercased() == $0.to?.lowercased() ? .Receive : .unknown) }
+                
                 // 下拉刷新时，先请除非本地缓存的数据
                 if beginSequence == -1 {
                     self.dataSource[selectedAddress] = self.dataSource[selectedAddress]?.filter { $0.sequence == nil }
@@ -187,17 +189,18 @@ extension AssetTransactionViewControllerV060{
                     AssetService.sharedInstace.fetchWalletBanlance()
                 }
 
-                guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return }
+                guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else {
+                    return
+                }
+                
                 if let existTxs = self.dataSource[selectedAddress], existTxs.count > 0 {
                     let txHashes = transactions.map { $0.txhash! }
                     
-                    let deleteTransactions = self.dataSource[selectedAddress]?.filter { txHashes.contains($0.txhash!) && $0.sequence == nil }
-                    self.dataSource[selectedAddress] = self.dataSource[selectedAddress]?.filter { !txHashes.contains($0.txhash!) }
+                    let delTxHashes = existTxs.filter { txHashes.contains($0.txhash!) && $0.sequence == nil }.map { return $0.txhash! }
+                    TransferPersistence.deleteByTxHashs(delTxHashes)
                     
-                    for delTransaction in deleteTransactions ?? [] {
-                        TransferPersistence.delete(delTransaction)
-                    }
- 
+                    self.dataSource[selectedAddress] = existTxs.filter { !txHashes.contains($0.txhash!) }
+                    
                     if direction == "new" && beginSequence > -1 {
                         self.dataSource[selectedAddress]?.insert(contentsOf: transactions, at: 0)
                     } else {
@@ -208,7 +211,7 @@ extension AssetTransactionViewControllerV060{
                 }
                 self.tableView.mj_footer.isHidden = (self.dataSource[selectedAddress]?.count ?? 0 < self.listSize)
                 self.tableView.reloadData()
-            case .fail(_, let error):
+            case .fail(_, _):
                 break
             }
         }

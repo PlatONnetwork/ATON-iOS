@@ -9,6 +9,7 @@
 import Foundation
 import Realm
 import RealmSwift
+import Localize_Swift
 
 public struct JSONResponse<T: Decodable>: Decodable {
     var data: T
@@ -93,8 +94,23 @@ public struct DelegationValue: Decodable {
 
 // 是否能委托response
 public struct CanDelegation: Decodable {
-    var canDelegation: Bool? = true
-    var message: String?
+    var canDelegation: Bool = true
+    var message: Message?
+    
+    public enum Message: String, Decodable {
+        case amountGreaterZero = "1"
+        case nodeExitingOrExited = "2"
+        
+        
+        public var localizedDesciption: String? {
+            switch self {
+            case .amountGreaterZero:
+                return Localized("delegate_error_result_amountzero")
+            case .nodeExitingOrExited:
+                return Localized("delegate_error_result_nodeexit")
+            }
+        }
+    }
 }
 
 

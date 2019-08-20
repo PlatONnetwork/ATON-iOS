@@ -9,9 +9,8 @@
 import Foundation
 import platonWeb3
 
+
 var web3 = Web3(rpcURL: Web3Helper.getRpcURL())
-
-
 
 struct Web3Helper {
     
@@ -19,7 +18,7 @@ struct Web3Helper {
         
         let newWeb3 = Web3(rpcURL: url)
         var isCallback = false
-        newWeb3.eth.blockNumber { (resp) in
+        newWeb3.platon.blockNumber { (resp) in
             
             DispatchQueue.main.async {
                 
@@ -53,7 +52,7 @@ struct Web3Helper {
          
         var isCallback = false 
         
-        newWeb3.eth.blockNumber { (resp) in
+        newWeb3.platon.blockNumber { (resp) in
             
             DispatchQueue.main.async {
                 

@@ -159,14 +159,11 @@ class TransferDetailView: UIView {
         toAvatarIV.image = tx.toAvatarImage
         fromAvatarIV.image = tx.fromAvatarImage
         
-        
         if let valueString = tx.valueString.0, let color = tx.valueString.1 {
             topValueLabel.text = valueString
             topValueLabel.textColor = color
-//            baseInfoHeightConstraint.priority = UILayoutPriority(rawValue: 999)
         } else {
             topValueLabel.text = nil
-//            baseInfoHeightConstraint.priority = UILayoutPriority(rawValue: 997)
         }
         
         toIconIV.image = tx.toIconImage

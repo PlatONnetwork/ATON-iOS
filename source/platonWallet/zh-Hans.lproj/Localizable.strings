@@ -839,3 +839,5 @@
 
 "node_quit_consensus_tip" = "节点已退出共识，投票失败！";
 
+"delegate_error_result_amountzero" = "解除委托金额大于0";
+"delegate_error_result_nodeexit" = "节点已退出或退出中";

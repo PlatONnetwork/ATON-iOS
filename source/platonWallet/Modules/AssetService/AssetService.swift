@@ -15,6 +15,8 @@ class AssetService : BaseService{
     
     public static let sharedInstace = AssetService()
     
+    var balances: [Balance] = []
+    
     var assets = [String:WalletBalance?]()
     
     let queue = DispatchQueue(label: "platon.asset.queue")
@@ -78,7 +80,7 @@ class AssetService : BaseService{
             
         }
         DispatchQueue.main.async { 
-            web3.eth.getBalance(address: ea!, block: .latest) { resp in
+            web3.platon.getBalance(address: ea!, block: .latest) { resp in
                 DispatchQueue.main.async {
                     switch resp.status{
                     case .success(_):
@@ -93,6 +95,26 @@ class AssetService : BaseService{
                         
                     }
                 }
+            }
+        }
+    }
+    
+    func fetchWalletBalanceForV7(_ completion: PlatonCommonCompletion?) {
+        let completion = completion
+        let addresses = (AssetVCSharedData.sharedData.walletList as! [Wallet]).map { return $0.key!.address }
+        guard addresses.count > 0 else { return }
+        
+        getWalletBalances(addrs: addresses) { [weak self] (result, data) in
+            switch result {
+            case .success:
+                if let newData = data as? [Balance] {
+                    self?.balances = newData
+                    completion?(PlatonCommonResult.success, newData as AnyObject)
+                } else {
+                    completion?(PlatonCommonResult.success, nil)
+                }
+            case .fail(_, _):
+                completion?(PlatonCommonResult.fail(nil, nil), nil)
             }
         }
     }

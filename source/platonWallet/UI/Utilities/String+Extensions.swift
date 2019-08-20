@@ -15,13 +15,22 @@ let dateFormatter = DateFormatter()
 let dateFormatter_greenwich = DateFormatter()
 
 extension String {
-    var vonToLAT: String {
+    var vonToLATString: String {
         guard let von = BigUInt(self) else {
             return "0.00"
         }
         
         let valueLAT = von.divide(by: ETHToWeiMultiplier, round: 8)
         return valueLAT.displayForMicrometerLevel(maxRound: 8)
+    }
+    
+    var LATToVon: BigUInt {
+        guard let lat = BigUInt(self) else { return BigUInt.zero }
+        return lat.multiplied(by: BigUInt(ETHToWeiMultiplier)!)
+    }
+    
+    var displayFeeString: String {
+        return Localized("transferVC_confirm_Fee") + self.ATPSuffix()
     }
 }
 
@@ -413,4 +422,6 @@ extension String{
             return addressName + "(\(self.addressForDisplayShort()))"
         }
     }
+    
+    
 }
