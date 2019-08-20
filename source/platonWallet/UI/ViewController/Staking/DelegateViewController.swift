@@ -249,18 +249,18 @@ extension DelegateViewController {
                 self?.showLoadingHUD()
                 
                 let debugNodeId = "411a6c3640b6cd13799e7d4ed286c95104e3a31fbb05d7ae0004463db648f26e93f7f5848ee9795fb4bbb5f83985afd63f750dc4cf48f53b0e84d26d6834c20c"
-                StakingService.sharedInstance.createDelgate(typ: typ, nodeId: debugNodeId, amount: self?.currentAmount ?? BigUIntZero, sender: currentAddress, privateKey: pri, { [weak self] (result, data) in
-                    self?.hideLoadingHUD()
-                    switch result {
-                    case .success:
-                        if let transaction = data as? Transaction {
-                            transaction.nodeName = self?.currentNode?.name
-                            self?.doShowTransactionDetail(transaction)
-                        }
-                    case .fail(_, let errMsg):
-                        self?.showMessage(text: errMsg ?? "call web3 error", delay: 2.0)
-                    }
-                })
+//                StakingService.sharedInstance.createDelgate(typ: typ, nodeId: debugNodeId, amount: self?.currentAmount ?? BigUIntZero, sender: currentAddress, privateKey: pri, { [weak self] (result, data) in
+//                    self?.hideLoadingHUD()
+//                    switch result {
+//                    case .success:
+//                        if let transaction = data as? Transaction {
+//                            transaction.nodeName = self?.currentNode?.name
+//                            self?.doShowTransactionDetail(transaction)
+//                        }
+//                    case .fail(_, let errMsg):
+//                        self?.showMessage(text: errMsg ?? "call web3 error", delay: 2.0)
+//                    }
+//                })
             }
         }
     }
@@ -311,17 +311,17 @@ extension DelegateViewController {
         let typ = balanceObject.selectedIndex == 0 ? UInt16(0) : UInt16(1) // 0：自由金额 1：锁仓金额
         let amountVon = amount.LATToVon
         
-        web3.staking.estimateCreateDelegate(typ: typ, nodeId: nodeId, amount: amountVon) { (result, data) in
-            switch result {
-            case .success:
-                if let feeString = data?.description {
-                    print(feeString)
-                    cell.amountView.feeLabel.text = feeString.vonToLATString.displayFeeString
-                }
-            case .fail(_, _):
-                break
-            }
-        }
+//        web3.staking.estimateCreateDelegate(typ: typ, nodeId: nodeId, amount: amountVon) { (result, data) in
+//            switch result {
+//            case .success:
+//                if let feeString = data?.description {
+//                    print(feeString)
+//                    cell.amountView.feeLabel.text = feeString.vonToLATString.displayFeeString
+//                }
+//            case .fail(_, _):
+//                break
+//            }
+//        }
     }
     
     func doShowTransactionDetail(_ transaction: Transaction) {
