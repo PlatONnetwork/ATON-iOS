@@ -273,6 +273,7 @@
 		9A56557D2176CB05002A1F6C /* HDPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A56557C2176CB05002A1F6C /* HDPath.swift */; };
 		9A56557F21772DE3002A1F6C /* WalletUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A56557E21772DE2002A1F6C /* WalletUtil.swift */; };
 		9A76E5232307F37A00E0B79A /* AnalysisHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A76E5222307F37A00E0B79A /* AnalysisHelper.swift */; };
+		9A76E5252308000500E0B79A /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A76E5242308000500E0B79A /* AppConfig.swift */; };
 		9A79A07521956493000EB4C5 /* BaseImportWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A79A07421956493000EB4C5 /* BaseImportWalletViewController.swift */; };
 		9A79A088219ADD1F000EB4C5 /* CreateSharedWalletStep1ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A79A086219ADD1F000EB4C5 /* CreateSharedWalletStep1ViewController.swift */; };
 		9A79A089219ADD1F000EB4C5 /* CreateSharedWalletStep1ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A79A087219ADD1F000EB4C5 /* CreateSharedWalletStep1ViewController.xib */; };
@@ -683,6 +684,7 @@
 		9A56557C2176CB05002A1F6C /* HDPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HDPath.swift; sourceTree = "<group>"; };
 		9A56557E21772DE2002A1F6C /* WalletUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletUtil.swift; sourceTree = "<group>"; };
 		9A76E5222307F37A00E0B79A /* AnalysisHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisHelper.swift; sourceTree = "<group>"; };
+		9A76E5242308000500E0B79A /* AppConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfig.swift; sourceTree = "<group>"; };
 		9A79A07421956493000EB4C5 /* BaseImportWalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseImportWalletViewController.swift; sourceTree = "<group>"; };
 		9A79A086219ADD1F000EB4C5 /* CreateSharedWalletStep1ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateSharedWalletStep1ViewController.swift; sourceTree = "<group>"; };
 		9A79A087219ADD1F000EB4C5 /* CreateSharedWalletStep1ViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CreateSharedWalletStep1ViewController.xib; sourceTree = "<group>"; };
@@ -1030,6 +1032,7 @@
 			isa = PBXGroup;
 			children = (
 				812D94A9218BEE28002A48B0 /* NodeConfig.swift */,
+				9A76E5242308000500E0B79A /* AppConfig.swift */,
 			);
 			path = Config;
 			sourceTree = "<group>";
@@ -1956,6 +1959,7 @@
 				81C88DFE21746B39005F17F7 /* Frameworks */,
 				81C88DFF21746B39005F17F7 /* Resources */,
 				349B196BEEC64C0A8876028D /* [CP] Embed Pods Frameworks */,
+				76E5E3065DA7F32FC368B7AC /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2213,6 +2217,24 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-platonWallet/Pods-platonWallet-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		76E5E3065DA7F32FC368B7AC /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-platonWallet/Pods-platonWallet-resources.sh",
+				"${PODS_ROOT}/UMCCommonLog/UMCommonLog/UMCommonLog.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/UMCommonLog.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-platonWallet/Pods-platonWallet-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		82C3A5B2EEE9AC77B23E62E6 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2301,6 +2323,7 @@
 				81D7E24722E7F5F20069CDED /* PTSIndicatorInfo.swift in Sources */,
 				81EE99CD2175F4BC008DF8CB /* PTextFieldWithPadding.swift in Sources */,
 				812002B621A3EB390050E1B0 /* ShareWalletConfirmVC.swift in Sources */,
+				9A76E5252308000500E0B79A /* AppConfig.swift in Sources */,
 				81E2E8522186B90C008B7504 /* AddressBookService.swift in Sources */,
 				811AB2B522EECC1100284F1A /* DelegateViewController.swift in Sources */,
 				81B5CE71224332C500ACFE96 /* UITextFieldWithSearch.swift in Sources */,

@@ -8,8 +8,9 @@
 
 import Foundation
 
+let event_launch = "event_launch"
 let event_send = "event_send"
-let event_delegate = "event_delegate"
+let event_delegate = "event_entrust"
 let event_redeem = "event_redeem"
 let event_newWallet = "event_newWallet"
 
@@ -32,14 +33,22 @@ class AnalysisHelper {
             guard let beginTime = eventTime[id] else{
                 return
             }
-            let duration = Int32(Date().timeIntervalSince(beginTime) * 1000)
+            let durationSec = Date().timeIntervalSince(beginTime)
+            let durationMillion = Int32(durationSec * 1000)
+            var allAtt : [AnyHashable: Any] = [:]
             if let att = attributes{
-                MobClick.event(id, attributes: att, durations: duration)
-            }else{
-                MobClick.event(id, durations: duration)
+                for (k,v) in att.enumerated(){
+                    allAtt[k] = v
+                }
             }
+            
+            allAtt["durationTime"] = String(format: "%ds", Int(durationSec))
+            MobClick.event(id, attributes: allAtt, durations: durationMillion)
             
         }
     }
     
+    static func handleEvent(id: String){
+        MobClick.event(id)
+    }
 }
