@@ -37,6 +37,18 @@ class CreateIndividualWalletViewController: BaseViewController,StartBackupMnemon
         NotificationCenter.default.addObserver(self, selector: #selector(afterBackup), name: NSNotification.Name(BackupMnemonicFinishNotification), object: nil)
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        AnalysisHelper.handleEvent(id: event_newWallet, operation: .begin)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        AnalysisHelper.handleEvent(id: event_newWallet, operation: .cancel)
+    }
+    
     func setupUI() {
         
         endEditingWhileTapBackgroundView = true
@@ -66,7 +78,9 @@ class CreateIndividualWalletViewController: BaseViewController,StartBackupMnemon
         showLoadingHUD() 
         
         WalletService.sharedInstance.createWallet(name: nameTF.text!, password: pswTF.text!) { [weak self](wallet, error) in
-
+            
+            AnalysisHelper.handleEvent(id: event_newWallet, operation: .end)
+            
             guard error == nil && wallet != nil else {
                 self?.showMessage(text: error!.errorDescription ?? "")
                 return

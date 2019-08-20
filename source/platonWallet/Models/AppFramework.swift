@@ -34,12 +34,13 @@ class AppFramework {
     }
     
     func initBugly(){
-        Bugly.start(withAppId: "e8f57be7d2")
+        Bugly.start(withAppId: BuglyAppleID)
     }
     
     func initUMeng() {
-        UMConfigure.initWithAppkey("5d551ffd3fc1959f6b000113", channel: "App Store")
+        UMConfigure.initWithAppkey(Test_Umeng_key, channel: "App Store")
         MobClick.setAutoPageEnabled(true)
+        UMConfigure.setLogEnabled(true)
     }
     
     func modulesConfigure(){

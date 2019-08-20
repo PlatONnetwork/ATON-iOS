@@ -177,11 +177,15 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
         self.walletAddressView.backgroundColor = commonbgcolor
         self.feeView.backgroundColor = commonbgcolor
         self.feeView.levelView.backgroundColor = commonbgcolor
+        
+        AnalysisHelper.handleEvent(id: event_send, operation: .begin)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         self.cleanInputEmptyErrorState()
+        
+        AnalysisHelper.handleEvent(id: event_send, operation: .cancel)
     }
     
     func cleanInputEmptyErrorState(){
@@ -646,6 +650,8 @@ extension AssetSendViewControllerV060{
     //MARK: - Transfer
     
     func doClassicTransfer(pri: String, data: AnyObject?){
+        
+        AnalysisHelper.handleEvent(id: event_send, operation: .end)
         
         let from = AssetVCSharedData.sharedData.cWallet?.key?.address
         let to = self.walletAddressView.textField.text!
