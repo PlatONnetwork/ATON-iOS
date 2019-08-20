@@ -180,7 +180,7 @@ class SWalletService: BaseService{
         queue.async {
             let from = EthereumAddress(hexString: sender)
             let call = EthereumCall(from: from, to: nil, gas: nil, gasPrice: nil, value: nil, data: EthereumData(bytes: (self.getDeployData()?.bytes)!))
-            web3.eth.estimateGas(call: call) { (gasestResp) in
+            web3.platon.estimateGas(call: call) { (gasestResp) in
                 switch gasestResp.status{
                 case .success(_):
                     deployGas = gasestResp.result?.quantity.gasMutiply(GasMutipyTime)
@@ -231,7 +231,7 @@ class SWalletService: BaseService{
         let bytes = self.build_revokeConfirmation(transactionID: transactionId)
         let initWalletCall = EthereumCall(from: nil, to: EthereumAddress(hexString: contractAddress)!, gas: nil, gasPrice: nil, value: nil, data: EthereumData(bytes: bytes))
         
-        web3.eth.estimateGas(call: initWalletCall) { (gasestResp) in
+        web3.platon.estimateGas(call: initWalletCall) { (gasestResp) in
             switch gasestResp.status{
             case .success(_):
                 let gas = gasestResp.result?.quantity.gasMutiply(GasMutipyTime)
@@ -256,7 +256,7 @@ class SWalletService: BaseService{
         let bytes = self.build_confirmTransaction(transactionID: transactionId)
         let initWalletCall = EthereumCall(from: nil, to: EthereumAddress(hexString: contractAddress)!, gas: nil, gasPrice: nil, value: nil, data: EthereumData(bytes: bytes))
         
-        web3.eth.estimateGas(call: initWalletCall) { (gasestResp) in
+        web3.platon.estimateGas(call: initWalletCall) { (gasestResp) in
             switch gasestResp.status{
             case .success(_):
                 let gas = gasestResp.result?.quantity.gasMutiply(GasMutipyTime)
@@ -305,7 +305,7 @@ class SWalletService: BaseService{
         queue.async {
             let to = EthereumAddress(hexString: contractAddress)
             let call = EthereumCall(from: nil, to: to!, gas: nil, gasPrice: nil, value: nil, data: EthereumData(bytes: submitBytes))
-            web3.eth.estimateGas(call: call) { (gasestResp) in
+            web3.platon.estimateGas(call: call) { (gasestResp) in
                 switch gasestResp.status{
                 case .success(_):
                     submitGas = gasestResp.result?.quantity.gasMutiply(GasMutipyTime)
@@ -338,7 +338,7 @@ class SWalletService: BaseService{
 
             let initWalletCall = EthereumCall(from: nil, to: to!, gas: nil, gasPrice: nil, value: nil, data: EthereumData(bytes: confirmBytes))
             
-            web3.eth.estimateGas(call: initWalletCall) { (gasestResp) in
+            web3.platon.estimateGas(call: initWalletCall) { (gasestResp) in
                 
                 switch gasestResp.status{
                 case .success(_):
@@ -371,7 +371,7 @@ class SWalletService: BaseService{
   
         NSLog("deployGasPrice:\(String(deployGasPrice))")
         NSLog("deployGgas:\(String(deployGgas))")
-        web3.eth.platonDeployContract(abi: abiS!, bin: bin!, sender: sender, privateKey: privateKey, gasPrice: deployGasPrice, gas: deployGgas, estimateGas: false, waitForTransactionReceipt: true, timeout: 20, completion:{
+        web3.platon.platonDeployContract(abi: abiS!, bin: bin!, sender: sender, privateKey: privateKey, gasPrice: deployGasPrice, gas: deployGgas, estimateGas: false, waitForTransactionReceipt: true, timeout: 20, completion:{
             (result,transactionHash,contractAddress,receipt) in
             
             switch result{
@@ -424,7 +424,7 @@ class SWalletService: BaseService{
         let bin = self.getBIN()
         let abiS = self.getABI()
         
-        web3.eth.platonDeployContract(abi: abiS!, bin: bin!, sender: sender, privateKey: privateKey, gasPrice: deployGasPrice, gas: deployGgas, estimateGas: false, waitForTransactionReceipt: false, timeout: dispatch_time_t(DefaultRPCTimeOut), completion:{
+        web3.platon.platonDeployContract(abi: abiS!, bin: bin!, sender: sender, privateKey: privateKey, gasPrice: deployGasPrice, gas: deployGgas, estimateGas: false, waitForTransactionReceipt: false, timeout: dispatch_time_t(DefaultRPCTimeOut), completion:{
             (result,transactionHash,_,receipt) in
             
             switch result{
@@ -478,7 +478,7 @@ class SWalletService: BaseService{
         
         
         
-        web3.eth.platonSendRawTransaction(contractAddress: wallet.contractAddress, data: data!, sender: wallet.walletAddress, privateKey: wallet.privateKey!, gasPrice: gasPrice!, gas: gas!, value: EthereumQuantity(quantity: BigUInt(integerLiteral: 0)), estimated: false
+        web3.platon.platonSendRawTransaction(contractAddress: wallet.contractAddress, data: data!, sender: wallet.walletAddress, privateKey: wallet.privateKey!, gasPrice: gasPrice!, gas: gas!, value: EthereumQuantity(quantity: BigUInt(integerLiteral: 0)), estimated: false
             , completion: { (result, data) in
                 
                 switch result{
@@ -529,7 +529,7 @@ class SWalletService: BaseService{
                 
                 let initWalletCall = EthereumCall(from: nil, to: EthereumAddress(hexString: contractAddress), gas: nil, gasPrice: nil, value: nil, data: EthereumData(bytes: (initwalletdata?.bytes)!))
                 
-                web3.eth.estimateGas(call: initWalletCall) { (gasestResp) in
+                web3.platon.estimateGas(call: initWalletCall) { (gasestResp) in
                     
                     switch gasestResp.status{
                     case .success(_):
@@ -558,7 +558,7 @@ class SWalletService: BaseService{
             let callpraram = accounts.data(using: .utf8)
             let rquire = Data.newData(unsignedLong: UInt64(require), bigEndian: true)
             print("initSharedWallet: gasPrice\(String(gasPrice)), gas:\(String(initWalletGas!))")
-            web3.eth.platonSendRawTransaction(code: ExecuteCode.ContractExecute,contractAddress: contractAddress, functionName: "initWallet", params: [callpraram!,rquire], sender: sender, privateKey: privateKey, gasPrice: gasPrice, gas: initWalletGas!,value: nil, estimated: false, completion: { (result, data) in
+            web3.platon.platonSendRawTransaction(code: ExecuteCode.ContractExecute,contractAddress: contractAddress, functionName: "initWallet", params: [callpraram!,rquire], sender: sender, privateKey: privateKey, gasPrice: gasPrice, gas: initWalletGas!,value: nil, estimated: false, completion: { (result, data) in
                 switch result{
                 case .success:
                     self.successCompletionOnMain(obj: nil, completion: &completion)
@@ -580,7 +580,7 @@ class SWalletService: BaseService{
         var completion = completion
         
         let paramter = SolidityFunctionParameter(name: "", type: .string)
-        web3.eth.platonCall(code: ExecuteCode.ContractExecute,contractAddress: contractAddress, functionName: "getOwners", from: from, params: [], outputs: [paramter], completion: {(callRes,dataRet)in
+        web3.platon.platonCall(code: ExecuteCode.ContractExecute,contractAddress: contractAddress, functionName: "getOwners", from: from, params: [], outputs: [paramter], completion: {(callRes,dataRet)in
             switch callRes{
                 case .success:
                     guard let data = dataRet as? Dictionary<String, Any> ,data.values.count > 0 else {
@@ -627,7 +627,7 @@ class SWalletService: BaseService{
         var confirmTxHash : String?
         
         queue.async {
-            web3.eth.platonSendRawTransaction(contractAddress: contractAddress, data: data, sender: walltAddress, privateKey: privateKey, gasPrice: submitGasPrice, gas: submitGas,value: nil,  estimated: false,completion: { (result, data) in
+            web3.platon.platonSendRawTransaction(contractAddress: contractAddress, data: data, sender: walltAddress, privateKey: privateKey, gasPrice: submitGasPrice, gas: submitGas,value: nil,  estimated: false,completion: { (result, data) in
                 switch result{
                 case .success:
                     submitTxHash =  data?.hexString  
@@ -650,7 +650,7 @@ class SWalletService: BaseService{
                 return
             }
             
-            web3.eth.platonGetTransactionReceipt(txHash: submitTxHash!, loopTime: 30, completion: { (result, data) in
+            web3.platon.platonGetTransactionReceipt(txHash: submitTxHash!, loopTime: 30, completion: { (result, data) in
                 switch result{
                     
                 case .success:
@@ -734,7 +734,7 @@ class SWalletService: BaseService{
                 return
             }
             
-            web3.eth.platonGetTransactionReceipt(txHash: confirmTxHash!, loopTime: 15, completion: { (result, data) in
+            web3.platon.platonGetTransactionReceipt(txHash: confirmTxHash!, loopTime: 15, completion: { (result, data) in
                 switch result{
                 case .success:
                     self.getTransactionList(contractAddress: contractAddress, sender: walltAddress, from: 0, to: UInt64(UInt32.max), completion:nil)
@@ -766,7 +766,7 @@ class SWalletService: BaseService{
 
         let data = self.build_confirmTransaction(transactionID: UInt64(tx.transactionID)!)
         
-        web3.eth.platonSendRawTransaction(contractAddress: contractAddress, data: data, sender: walltAddress, privateKey: privateKey, gasPrice: gasPrice, gas: gas,value: nil,  estimated: false) { (result, data) in
+        web3.platon.platonSendRawTransaction(contractAddress: contractAddress, data: data, sender: walltAddress, privateKey: privateKey, gasPrice: gasPrice, gas: gas,value: nil,  estimated: false) { (result, data) in
             switch result{
             case .success:
                 NSLog("confirm hash:\(data?.hexString ?? "empty")")
@@ -807,7 +807,7 @@ class SWalletService: BaseService{
         var completion = completion
         let txid = Data.newData(unsignedLong: UInt64(tx.transactionID)!, bigEndian: true)
         
-        web3.eth.platonSendRawTransaction(code: ExecuteCode.ContractExecute,contractAddress: contractAddress, functionName: "revokeConfirmation", params: [txid], sender: walltAddress, privateKey: privateKey, gasPrice: gasPrice, gas: gas,value: nil,  estimated: estimated ) { (result, data) in
+        web3.platon.platonSendRawTransaction(code: ExecuteCode.ContractExecute,contractAddress: contractAddress, functionName: "revokeConfirmation", params: [txid], sender: walltAddress, privateKey: privateKey, gasPrice: gasPrice, gas: gas,value: nil,  estimated: estimated ) { (result, data) in
             switch result{
             case .success:
                 if (data?.hexString.length)! > 0{
@@ -846,7 +846,7 @@ class SWalletService: BaseService{
         var completion = completion
         let txId = Data.newData(unsignedLong: 2, bigEndian: true)
         let paramter = SolidityFunctionParameter(name: "", type: .string)
-        web3.eth.platonCall(code: ExecuteCode.ContractExecute,contractAddress: contractAddress, functionName: "getConfirmationCount", from: sender, params: [txId], outputs: [paramter]) { (result, data) in
+        web3.platon.platonCall(code: ExecuteCode.ContractExecute,contractAddress: contractAddress, functionName: "getConfirmationCount", from: sender, params: [txId], outputs: [paramter]) { (result, data) in
             switch result{
                 
             case .success:
@@ -878,7 +878,7 @@ class SWalletService: BaseService{
         queue.async {
             
             let address = EthereumAddress(hexString: contractAddress)
-            web3.eth.getCode(address: address!, block: EthereumQuantityTag.latest, response: { resp in
+            web3.platon.getCode(address: address!, block: EthereumQuantityTag.latest, response: { resp in
                 switch resp.status{
                 case .success(_):
                     if resp.result?.bytes.count == 0{
@@ -993,7 +993,7 @@ class SWalletService: BaseService{
     
     func getRequired(contractAddress: String, from: String,completion: PlatonCommonCompletion?){
         let paramter = SolidityFunctionParameter(name: "", type: .uint64)
-        web3.eth.platonCall(code: ExecuteCode.ContractExecute,contractAddress: contractAddress, functionName: "getRequired", from: from, params: [], outputs: [paramter]) { (result, data) in
+        web3.platon.platonCall(code: ExecuteCode.ContractExecute,contractAddress: contractAddress, functionName: "getRequired", from: from, params: [], outputs: [paramter]) { (result, data) in
             switch result{
                 
             case .success:
@@ -1052,7 +1052,7 @@ class SWalletService: BaseService{
 
         queue.async {
             
-            web3.eth.platonCall(code: ExecuteCode.ContractExecute,contractAddress: contractAddress, functionName: "getTransactionList", from: sender, params: [from_d,to_d], outputs: [paramter]) { (result, dataRet) in
+            web3.platon.platonCall(code: ExecuteCode.ContractExecute,contractAddress: contractAddress, functionName: "getTransactionList", from: sender, params: [from_d,to_d], outputs: [paramter]) { (result, dataRet) in
                 switch result{
                     
                 case .success:
@@ -1107,7 +1107,7 @@ class SWalletService: BaseService{
             let idsData = trasactionIds.data(using: .utf8)
             let getMultiSigListParamter = SolidityFunctionParameter(name: "", type: .string)
              
-            web3.eth.platonCall(code: ExecuteCode.ContractExecute,contractAddress: contractAddress, functionName: "getMultiSigList", from: sender, params: [idsData!], outputs: [getMultiSigListParamter]) { (result, dataRet) in
+            web3.platon.platonCall(code: ExecuteCode.ContractExecute,contractAddress: contractAddress, functionName: "getMultiSigList", from: sender, params: [idsData!], outputs: [getMultiSigListParamter]) { (result, dataRet) in
                 semaphore.signal()
                  
                 switch result{
@@ -1165,7 +1165,7 @@ class SWalletService: BaseService{
             var networkfail = false
             for item in addresses{
                 let address = EthereumAddress(hexString: item)
-                web3.eth.getCode(address: address!, block: EthereumQuantityTag.latest, response: { resp in
+                web3.platon.getCode(address: address!, block: EthereumQuantityTag.latest, response: { resp in
                     switch resp.status{
                     case .success(_):
                         if resp.result?.bytes.count == 0{

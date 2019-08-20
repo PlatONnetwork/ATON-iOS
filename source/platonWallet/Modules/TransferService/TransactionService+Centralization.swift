@@ -27,7 +27,7 @@ extension TransactionService {
         parameters["listSize"] = listSize
         parameters["direction"] = direction
         
-        let url = SettingService.getCentralizationURL() + "/transaction/list"
+        let url = SettingService.debugBaseURL + "transaction/list"
         
         var request = URLRequest(url: try! url.asURL())
         request.httpBody = try! JSONSerialization.data(withJSONObject: parameters)

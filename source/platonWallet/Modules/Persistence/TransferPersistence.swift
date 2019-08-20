@@ -67,9 +67,21 @@ class TransferPersistence {
         return nil
     }
     
+    public class func deleteByTxHashs(_ txHashs: [String]) {
+        let predicate = NSPredicate(format: "txhash IN %@ AND nodeURLStr == %@", txHashs, SettingService.getCurrentNodeURLString())
+        let r = RealmInstance!.objects(Transaction.self).filter(predicate)
+        try? RealmInstance!.write {
+            RealmInstance!.delete(r)
+        }
+    }
+    
     public class func delete(_ transaction: Transaction) {
+        deleteArr([transaction])
+    }
+    
+    public class func deleteArr(_ transactions: [Transaction]) {
         try? RealmInstance?.write {
-            RealmInstance?.delete(transaction)
+            RealmInstance!.delete(transactions)
         }
     }
 }

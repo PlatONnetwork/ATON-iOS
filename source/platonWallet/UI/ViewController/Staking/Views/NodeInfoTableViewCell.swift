@@ -52,6 +52,7 @@ class NodeInfoTableViewCell: UITableViewCell {
         nameLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(12)
             make.leading.equalTo(avatarIV.snp.trailing).offset(5)
+            make.trailing.equalToSuperview().offset(-16)
             make.height.equalTo(18)
         }
         

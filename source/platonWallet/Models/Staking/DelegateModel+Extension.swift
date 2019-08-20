@@ -28,11 +28,11 @@ extension Delegate {
     }
     
     var delegateValue: String {
-        return delegate.vonToLAT
+        return delegate.vonToLATString
     }
     
     var redeemValue: String {
-        return redeem.vonToLAT
+        return redeem.vonToLATString
     }
 }
 
@@ -52,19 +52,19 @@ extension DelegateDetail {
     }
     
     var lockedString: String {
-        return locked?.vonToLAT ?? "--"
+        return locked?.vonToLATString ?? "--"
     }
     
     var unlockedString: String {
-        return unlocked?.vonToLAT ?? "--"
+        return unlocked?.vonToLATString ?? "--"
     }
     
     var releasedString: String {
-        return released?.vonToLAT ?? "--"
+        return released?.vonToLATString ?? "--"
     }
     
     var undelegateString: String {
-        return redeem?.vonToLAT ?? "--"
+        return redeem?.vonToLATString ?? "--"
     }
     
     func getLeftButtonIsEnable(address: String) -> Bool {

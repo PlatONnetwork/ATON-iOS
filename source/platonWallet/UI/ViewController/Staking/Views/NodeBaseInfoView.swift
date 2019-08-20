@@ -50,6 +50,7 @@ class NodeBaseInfoView: UIView {
         }
         
         nodeNameLabel.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.medium)
+        nodeNameLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         nodeNameLabel.textColor = .black
         nodeNameLabel.text = Localized("staking_main_wallet_name")
         addSubview(nodeNameLabel)
@@ -89,7 +90,6 @@ class NodeBaseInfoView: UIView {
         nodeAddressLabel.snp.makeConstraints { make in
             make.top.equalTo(nodeNameLabel.snp.bottom).offset(3)
             make.leading.equalTo(nodeNameLabel.snp.leading)
-            make.trailing.equalTo(nodeNameLabel.snp.trailing)
         }
         
         rateLabel.font = UIFont.systemFont(ofSize: 17, weight: UIFont.Weight.medium)
@@ -112,6 +112,7 @@ class NodeBaseInfoView: UIView {
         rateTitleLabel.snp.makeConstraints { make in
             make.centerX.equalTo(rateLabel)
             make.top.equalTo(rateLabel.snp.bottom).offset(4)
+            make.leading.equalTo(nodeAddressLabel.snp.trailing)
         }
         
         let delegateBackgroundView = UIView()

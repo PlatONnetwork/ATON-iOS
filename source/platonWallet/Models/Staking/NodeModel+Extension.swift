@@ -26,7 +26,7 @@ extension Node {
     }
     
     var delegateAmount: String {
-        return (deposit ?? "0").vonToLAT.ATPSuffix()
+        return (deposit ?? "0").vonToLATString.ATPSuffix()
     }
     
     var status: (String, UIColor) {
@@ -63,11 +63,11 @@ extension Node {
 extension NodeDetail {
     
     var totalStaked: String {
-        return (node.deposit ?? "0").vonToLAT
+        return (node.deposit ?? "0").vonToLATString
     }
     
     var delegations: String {
-        return (delegateSum ?? "0").vonToLAT
+        return (delegateSum ?? "0").vonToLATString
     }
     
     var slash: String {

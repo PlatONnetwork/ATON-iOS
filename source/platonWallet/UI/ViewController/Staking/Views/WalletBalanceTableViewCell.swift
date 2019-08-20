@@ -20,7 +20,7 @@ class WalletBalanceTableViewCell: UITableViewCell {
     
     func setupBalanceData(_ balance: (String, String)) {
         balanceTipLabel.text = balance.0
-        balanceLabel.text = balance.1.vonToLAT.balanceFixToDisplay(maxRound: 8).ATPSuffix()
+        balanceLabel.text = balance.1.vonToLATString.balanceFixToDisplay(maxRound: 8).ATPSuffix()
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

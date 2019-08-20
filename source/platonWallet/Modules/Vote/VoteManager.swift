@@ -114,7 +114,7 @@ class VoteManager: BaseService {
         var completion = completion 
         let data = self.build_CandidateList()
         
-        web3.eth.platonCall(contractAddress: candidateContract, data: self.build_GetVerifiersList(), from: nil, gas: nil, gasPrice: nil, value: nil, outputs: [SolidityFunctionParameter(name: "", type: .string)]) { (VerifiersListresp, VerifiersListdata) in
+        web3.platon.platonCall(contractAddress: candidateContract, data: self.build_GetVerifiersList(), from: nil, gas: nil, gasPrice: nil, value: nil, outputs: [SolidityFunctionParameter(name: "", type: .string)]) { (VerifiersListresp, VerifiersListdata) in
             switch VerifiersListresp{
                 
             case .success:
@@ -287,7 +287,7 @@ class VoteManager: BaseService {
         let data = self.build_VoteTicket(count: count, price: price, nodeId: nodeId)
         
         let value = EthereumQuantity(quantity: price.multiplied(by: BigUInt(count)))
-        web3.eth.platonSendRawTransaction(contractAddress: votePoolingContract, data: data.bytes, sender: sender, privateKey: privateKey, gasPrice: gasPrice, gas: gas,value: value, estimated: false) { (result, data) in
+        web3.platon.platonSendRawTransaction(contractAddress: votePoolingContract, data: data.bytes, sender: sender, privateKey: privateKey, gasPrice: gasPrice, gas: gas,value: value, estimated: false) { (result, data) in
             switch result{
                 
             case .success:
@@ -403,7 +403,7 @@ class VoteManager: BaseService {
         
         var completion = completion
         
-        web3.eth.platonCall(contractAddress: contractAddress, data: data, from: nil, gas: nil, gasPrice: nil, value: nil, outputs: [SolidityFunctionParameter(name: "", type: .string)]) { (res, data) in
+        web3.platon.platonCall(contractAddress: contractAddress, data: data, from: nil, gas: nil, gasPrice: nil, value: nil, outputs: [SolidityFunctionParameter(name: "", type: .string)]) { (res, data) in
             
             switch res{
             case .success:

@@ -53,9 +53,9 @@ class DelegatePersistence {
         }
     }
     
-    public class func deleteAll() {
-        try? RealmInstance!.write {
-            RealmInstance!.deleteAll()
-        }
-    }
+//    public class func deleteAll() {
+//        try? RealmInstance!.write {
+//            RealmInstance!.deleteAll()
+//        }
+//    }
 }

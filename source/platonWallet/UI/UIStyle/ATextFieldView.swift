@@ -264,12 +264,9 @@ extension ATextFieldView: UITextFieldDelegate {
         
         if let text = textField.text,let textRange = Range(range, in: text) {
             let appendtext = text.replacingCharacters(in: textRange, with: string)
-            guard shouldChangeCharactersCompletion != nil else{
-                return true
-            }
+            guard shouldChangeCharactersCompletion != nil else { return true }
             return self.shouldChangeCharactersCompletion!(appendtext,string)
         }
-        
         
         return true
     }

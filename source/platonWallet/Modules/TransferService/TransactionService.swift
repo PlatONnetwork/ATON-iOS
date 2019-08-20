@@ -44,7 +44,7 @@ class TransactionService : BaseService{
     
     @objc func OnTimerFirer() {
         
-        web3.eth.getBlockByNumber(block: .latest, fullTransactionObjects: true) { resp in
+        web3.platon.getBlockByNumber(block: .latest, fullTransactionObjects: true) { resp in
             //EthereumBlockObject
             guard let blockObj = resp.result else{
                 return
@@ -62,7 +62,7 @@ class TransactionService : BaseService{
     }
     
     func getEthGasPrice(completion: PlatonCommonCompletion?){
-        web3.eth.gasPrice { (res) in
+        web3.platon.gasPrice { (res) in
             switch res.status{
             case .success(_):
                 DispatchQueue.main.async {
@@ -89,7 +89,7 @@ class TransactionService : BaseService{
                 let data = try! EthereumData(ethereumValue: byteCode)
                 let newItem = Transaction.init(value: item)
                 newItem.txhash = item.txhash
-                web3.eth.getTransactionReceipt(transactionHash: data) { (txResp) in
+                web3.platon.getTransactionReceipt(transactionHash: data) { (txResp) in
                     switch txResp.status{
                     case .success(_):
                         let realm = RealmHelper.getNewRealm()
@@ -127,7 +127,7 @@ class TransactionService : BaseService{
                 let data = try! EthereumData(ethereumValue: byteCode)
                 let newItem = Transaction.init(value: item)
                 newItem.txhash = item.txhash
-                web3.eth.getTransactionReceipt(transactionHash: data) { (txResp) in
+                web3.platon.getTransactionReceipt(transactionHash: data) { (txResp) in
                     switch txResp.status{
                     case .success(let resp): 
                         guard let receipt = resp, receipt.logs.count > 0, receipt.logs[0].data.hex().count > 0 else{
@@ -223,7 +223,7 @@ class TransactionService : BaseService{
         let queue = DispatchQueue(label: "sendAPTTransfer")
         queue.async {
             var nonce : EthereumQuantity?
-            web3.eth.getTransactionCount(address: walletAddr!, block: EthereumQuantityTag(tagType: .latest)) { resp in
+            web3.platon.getTransactionCount(address: walletAddr!, block: EthereumQuantityTag(tagType: .latest)) { resp in
                 
                 switch resp.status{
                     
@@ -259,10 +259,10 @@ class TransactionService : BaseService{
             ptx.from = walletAddr?.hex(eip55: true)
             
             
-            let chainID = EthereumQuantity(quantity: BigUInt(DefaultChainId)!)
+            let chainID = EthereumQuantity(quantity: BigUInt(PlatonConfig.PlatonChainId.defaultChainId)!)
             let signedTx = try? tx.sign(with: pk!, chainId: chainID) as EthereumSignedTransaction
             
-            web3.eth.sendRawTransaction(transaction: signedTx!, response: { (resp) in
+            web3.platon.sendRawTransaction(transaction: signedTx!, response: { (resp) in
                 
                 switch resp.status{
                     
@@ -298,7 +298,7 @@ class TransactionService : BaseService{
             data = EthereumData(bytes: array)
         }
         let call = EthereumCall(from: nil, to: toAddr!, gas: nil, gasPrice: nil, value: nil, data: data)
-        web3.eth.estimateGas(call: call) { (resp) in
+        web3.platon.estimateGas(call: call) { (resp) in
             switch resp.status{
             case .success(_):
                 self.successCompletionOnMain(obj: resp.result?.quantity.gasMutiply(4) as AnyObject, completion: &completion)
@@ -311,7 +311,7 @@ class TransactionService : BaseService{
     func DeployJointWalletReceiptPolling(wallet: SWallet?){
     
         let hash = try? EthereumData(bytes: EthereumData(bytes: Data(hex: (wallet?.deployHash)!).bytes))
-        web3.eth.getTransactionReceipt(transactionHash: hash!) { (receptionResp) in
+        web3.platon.getTransactionReceipt(transactionHash: hash!) { (receptionResp) in
             DispatchQueue.main.async {
                 wallet?.deployReceptionLooptime = (wallet?.deployReceptionLooptime)! + 1
                 NotificationCenter.default.post(name: NSNotification.Name(DidJointWalletUpdateProgress_Notification), object: wallet?.deployHash)
