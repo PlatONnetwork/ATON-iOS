@@ -838,3 +838,6 @@
 
 "node_quit_consensus_tip" = "Node has exited consensus,voting failed";
 
+"delegate_error_result_amountzero" = "amount must greater 0";
+"delegate_error_result_nodeexit" = "Please withdraw first \"Released delegate\"";
+

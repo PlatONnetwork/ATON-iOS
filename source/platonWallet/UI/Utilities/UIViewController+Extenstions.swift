@@ -250,6 +250,7 @@ extension UIViewController {
                     completion?(pri)
                     alertVC.dismissWithCompletion()
                 }else{
+                    completion?(nil)
                     alertVC.showInputErrorTip(string: (err?.errorDescription)!)
                     alertVC.hideLoadingHUD()
                 }
@@ -257,6 +258,7 @@ extension UIViewController {
             return false
             
         }) { (_, _) -> (Bool) in
+            completion?(nil)
             return true
         }
         alertVC.style = style

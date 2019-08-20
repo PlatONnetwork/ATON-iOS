@@ -160,16 +160,17 @@ extension WithDrawViewController: UITableViewDelegate, UITableViewDataSource {
             return cell
         case .inputAmount:
             let cell = tableView.dequeueReusableCell(withIdentifier: "SendInputTableViewCell") as! SendInputTableViewCell
-            cell.cellDidContentChangeHandle = { [weak self] in
+            cell.cellDidContentChangeHandler = { [weak self] in
                 self?.updateHeightOfRow(cell)
+            }
+            cell.cellDidContentEditingHandler = { [weak self] amount in
+                
             }
             return cell
         case .singleButton(let title):
             let cell = tableView.dequeueReusableCell(withIdentifier: "SingleButtonTableViewCell") as! SingleButtonTableViewCell
             cell.button.setTitle(title, for: .normal)
-            cell.cellDidTapHandle = { [weak self] in
-                self?.nextButtonCellDidHandle()
-            }
+            cell.button.addTarget(self, action: #selector(withdrawTapAction), for: .touchUpInside)
             return cell
         case .doubt(let contents):
             let content = contents[indexPath.row]
@@ -186,6 +187,10 @@ extension WithDrawViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension WithDrawViewController {
+    @objc func withdrawTapAction() {
+        
+    }
+    
     func nextButtonCellDidHandle() {
         let cellStyle = listData.filter { (style) -> Bool in
             if case .wallets = style {

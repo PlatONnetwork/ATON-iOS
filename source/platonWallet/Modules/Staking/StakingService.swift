@@ -8,43 +8,11 @@
 
 import Foundation
 import Alamofire
+import BigInt
 
 final class StakingService: BaseService {
     
     static let sharedInstance = StakingService()
-    
-    func getWalletsBalance(
-        adddresses: [String],
-        completion: PlatonCommonCompletion?) {
-        var completion = completion
-        
-        var parameters: [String: Any] = [:]
-        parameters["addrs"] = adddresses
-        
-        let url = SettingService.debugBaseURL + "account/getBalance"
-        
-        var request = URLRequest(url: try! url.asURL())
-        request.httpBody = try! JSONSerialization.data(withJSONObject: parameters)
-        request.httpMethod = "POST"
-        request.timeoutInterval = requestTimeout
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        Alamofire.request(request).responseData { response in
-            switch response.result {
-            case .success(let data):
-                do {
-                    let decoder = JSONDecoder()
-                    let response = try decoder.decode(JSONResponse<[Balance]>.self, from: data)
-                    self.successCompletionOnMain(obj: response.data as AnyObject, completion: &completion)
-                } catch let err {
-                    self.failCompletionOnMainThread(code: -1, errorMsg: err.localizedDescription, completion: &completion)
-                }
-            case .failure(let error):
-                self.failCompletionOnMainThread(code: -1, errorMsg: error.localizedDescription, completion: &completion)
-                break;
-            }
-        }
-    }
     
     func getMyDelegate(adddresses: [String], completion: PlatonCommonCompletion?) {
         var completion = completion
@@ -255,6 +223,35 @@ final class StakingService: BaseService {
             }
         }
     }
-    
-    
+}
+
+extension StakingService {
+    func createDelgate(typ: UInt16,
+                       nodeId: String,
+                       amount: BigUInt,
+                       sender: String,
+                       privateKey: String,
+                       _ completion: PlatonCommonCompletion?) {
+        
+        web3.staking.createDelegate(typ: typ, nodeId: nodeId, amount: amount, sender: sender, privateKey: privateKey) { (result, data) in
+            switch result {
+            case .success:
+                if let data = data as? Data {
+                    let transaction = Transaction()
+                    transaction.txhash = data.toHexString()
+                    transaction.from = sender
+                    transaction.txType = .delegateCreate
+                    transaction.toType = .contract
+                    transaction.txReceiptStatus = -1
+                    transaction.value = amount.description
+                    transaction.nodeId = nodeId
+                    completion?(PlatonCommonResult.success, transaction as AnyObject)
+                } else {
+                    completion?(PlatonCommonResult.success, nil)
+                }
+            case .fail(let errCode, let errMsg):
+                completion?(PlatonCommonResult.fail(errCode, errMsg), nil)
+            }
+        }
+    }
 }

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import BigInt
 
 // uitableview 不同cell获取的样式通过枚举获取
 enum DelegateTableViewCellStyle {

@@ -10,7 +10,8 @@ import UIKit
 
 class SendInputTableViewCell: UITableViewCell {
     
-    var cellDidContentChangeHandle: (() -> Void)?
+    var cellDidContentChangeHandler: (() -> Void)?
+    var cellDidContentEditingHandler: ((String) -> Void)?
     
     lazy var amountView = { () -> ATextFieldView in
         let amountView = ATextFieldView.create(title: "ATextFieldView_withdraw_title")
@@ -29,19 +30,28 @@ class SendInputTableViewCell: UITableViewCell {
             return inputformat
             }, heightChange: { [weak self] view in
                 if amountView.textField.isFirstResponder {
-                    self?.cellDidContentChangeHandle?()
+                    self?.cellDidContentChangeHandler?()
                 }
                 
         })
         
         amountView.shouldChangeCharactersCompletion = { [weak self] (concatenated,replacement) in
+            print("concatenated: \(concatenated), replacement: \(replacement)")
             if replacement == ""{
                 return true
             }
+            
             if !replacement.validFloatNumber(){
                 return false
             }
-            return concatenated.trimNumberLeadingZero().isValidInputAmoutWith8DecimalPlace()
+            
+            if !concatenated.trimNumberLeadingZero().isValidInputAmoutWith8DecimalPlace() {
+                return false
+            }
+            
+            self?.cellDidContentEditingHandler?(concatenated)
+            
+            return true
         }
         
         amountView.endEditCompletion = { [weak self] text in

@@ -11,6 +11,15 @@ import UIKit
 class SingleButtonTableViewCell: UITableViewCell {
     
     public let button = PButton()
+    public var canDelegation: CanDelegation? {
+        didSet {
+            if canDelegation == nil {
+                button.style = .blue
+            } else {
+                button.style = canDelegation!.canDelegation ? .blue : .gray
+            }
+        }
+    }
     
     var cellDidTapHandle: (() -> Void)?
 
@@ -27,11 +36,10 @@ class SingleButtonTableViewCell: UITableViewCell {
             make.top.equalToSuperview().offset(16)
             make.bottom.equalToSuperview().offset(-16)
             make.centerX.equalToSuperview()
+            make.height.equalTo(44)
         }
         
         button.style = .blue
-        
-        layoutIfNeeded()
     }
     
     required init?(coder aDecoder: NSCoder) {

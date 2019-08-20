@@ -89,6 +89,7 @@
 		813534C821AD4876000574A9 /* STransferPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813534C721AD4875000574A9 /* STransferPersistence.swift */; };
 		813C3410223A03A800DE92F1 /* Wallet+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813C340F223A03A800DE92F1 /* Wallet+extension.swift */; };
 		813C3412223A327300DE92F1 /* DropDownVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813C3411223A327300DE92F1 /* DropDownVIew.swift */; };
+		813D1FF82306A7AF00EFA397 /* AssetService+Centralization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813D1FF72306A7AF00EFA397 /* AssetService+Centralization.swift */; };
 		813E286721D3ADCB00C36A0F /* MyVoteListVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813E286521D3ADCB00C36A0F /* MyVoteListVC.swift */; };
 		813E286F21D3ADE100C36A0F /* NodeVoteHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 813E286921D3ADE000C36A0F /* NodeVoteHeader.xib */; };
 		813E287021D3ADE100C36A0F /* NodeVoteTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813E286A21D3ADE000C36A0F /* NodeVoteTableViewCell.swift */; };
@@ -485,6 +486,7 @@
 		813534C721AD4875000574A9 /* STransferPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STransferPersistence.swift; sourceTree = "<group>"; };
 		813C340F223A03A800DE92F1 /* Wallet+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Wallet+extension.swift"; sourceTree = "<group>"; };
 		813C3411223A327300DE92F1 /* DropDownVIew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownVIew.swift; sourceTree = "<group>"; };
+		813D1FF72306A7AF00EFA397 /* AssetService+Centralization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AssetService+Centralization.swift"; sourceTree = "<group>"; };
 		813E286521D3ADCB00C36A0F /* MyVoteListVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyVoteListVC.swift; sourceTree = "<group>"; };
 		813E286921D3ADE000C36A0F /* NodeVoteHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NodeVoteHeader.xib; sourceTree = "<group>"; };
 		813E286A21D3ADE000C36A0F /* NodeVoteTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeVoteTableViewCell.swift; sourceTree = "<group>"; };
@@ -1635,6 +1637,7 @@
 			isa = PBXGroup;
 			children = (
 				81FCCD0E2179E9F20052FC29 /* AssetService.swift */,
+				813D1FF72306A7AF00EFA397 /* AssetService+Centralization.swift */,
 			);
 			path = AssetService;
 			sourceTree = "<group>";
@@ -2452,6 +2455,7 @@
 				9AE31422218C218100B5433F /* NodeInfo.swift in Sources */,
 				9AD67AAA2174811300A8432F /* WalletService.swift in Sources */,
 				9A9E1FED2261D38F006749CF /* RealmResults+extensions.swift in Sources */,
+				813D1FF82306A7AF00EFA397 /* AssetService+Centralization.swift in Sources */,
 				9A25B9A72187090F00B9433A /* ExportPrivateKeyOrKeystoreViewController.swift in Sources */,
 				819A52322190661D00E4C500 /* UIDevice+Extensions.swift in Sources */,
 				9AE3141E218BFAC600B5433F /* NodeSettingTableViewCell.swift in Sources */,
@@ -2780,7 +2784,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.platon.aton;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-        PROVISIONING_PROFILE_SPECIFIER = "com.platon.aton distribution";
+				PROVISIONING_PROFILE_SPECIFIER = "com.platon.aton distribution";
 				SWIFT_OBJC_BRIDGING_HEADER = "platonWallet/UI/Utilities/platonWallet-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 4.2;

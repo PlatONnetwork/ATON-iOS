@@ -312,10 +312,11 @@ class Transaction : Object, Decodable {
         nodeName = try? container.decode(String.self, forKey: .nodeName)
         nodeId = try? container.decode(String.self, forKey: .nodeId)
     }
-    
 }
 
 extension Transaction {
+    
+    
     var actualTxCostDescription: String? {
         get {
             let cost = BigUInt.safeInit(str: actualTxCost).divide(by: ETHToWeiMultiplier, round: 8)
