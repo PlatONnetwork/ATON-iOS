@@ -11,6 +11,7 @@ import BigInt
 import platonWeb3
 
 
+public let DefaultAddress = "0x0000000000000000000000000000000000000000"
 
 class TransactionService : BaseService{
 
@@ -201,18 +202,19 @@ class TransactionService : BaseService{
         var toAddr : EthereumAddress?
         var fromAddr : EthereumAddress?
         var pk : EthereumPrivateKey?
-         
-        let gasPrice = EthereumQuantity(quantity: InputGasPrice)
+        
+        let gasPrice = EthereumQuantity(quantity: PlatonConfig.FuncGasPrice.defaultGasPrice)
         
         let txgas = EthereumQuantity(quantity: BigUInt(estimatedGas)!)
         
         let amountOfwei = BigUInt.mutiply(a: amount, by: ETHToWeiMultiplier)
         let value = EthereumQuantity(quantity: amountOfwei!)
         
-        let txTypePart = RLPItem(bytes: ExecuteCode.Transfer.DataValue.bytes)
+        let txTypePart = RLPItem(bytes: [])
         let rlp = RLPItem.array([txTypePart])
         let rawRlp = try? RLPEncoder().encode(rlp)
         let data = EthereumData(bytes: rawRlp!)
+//        let data = EthereumData(bytes: Bytes())
         
         try? walletAddr = EthereumAddress(hex: from, eip55: false)
         try? toAddr = EthereumAddress(hex: to, eip55: false)

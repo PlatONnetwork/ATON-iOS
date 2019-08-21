@@ -17,12 +17,8 @@ class DelegateViewController: BaseViewController {
     var currentAddress: String?
     var walletStyle: WalletsCellStyle?
     var balanceStyle: BalancesCellStyle?
-    var currentAmount: BigUInt = BigUIntZero
-    var canDelegation: CanDelegation? {
-        didSet {
-            
-        }
-    }
+    var currentAmount: BigUInt = BigUInt.zero
+    var canDelegation: CanDelegation?
     
     lazy var tableView = { () -> UITableView in
         let tbView = UITableView(frame: .zero)
@@ -113,7 +109,7 @@ class DelegateViewController: BaseViewController {
         walletStyle = WalletsCellStyle(wallets: AssetVCSharedData.sharedData.walletList as! [Wallet], selectedIndex: index ?? 0, isExpand: false)
         
         let balance = AssetService.sharedInstace.balances.first { (item) -> Bool in
-            return item.account.lowercased() == walletStyle!.currentWallet.key?.address.lowercased()
+            return item.addr.lowercased() == walletStyle!.currentWallet.key?.address.lowercased()
         }
         
         balanceStyle = BalancesCellStyle(balances: [
@@ -222,14 +218,23 @@ extension DelegateViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension DelegateViewController {
     func nextButtonCellDidHandle() {
-        view.endEditing(true)
+        let transaction = Transaction()
+        transaction.txhash = "0xa742482734873487289378392798"
+        transaction.nodeId = "adjfkajkdflajdf"
+        transaction.nodeName =  "adfjakdfjklajfkajkdf"
+        transaction.from = currentAddress
+        transaction.value = currentAmount.description
+        doShowTransactionDetail(transaction)
+        return
+        
+//        view.endEditing(true)
         
         if let canDet = canDelegation, canDet.canDelegation == false {
             showMessage(text: canDet.message?.localizedDesciption ?? "can't delegate", delay: 2.0)
             return
         }
         
-        guard currentAmount > BigUIntZero else {
+        guard currentAmount > BigUInt.zero else {
             showMessage(text: "提交的数量应大于0")
             return
         }
@@ -249,18 +254,18 @@ extension DelegateViewController {
                 self?.showLoadingHUD()
                 
                 let debugNodeId = "411a6c3640b6cd13799e7d4ed286c95104e3a31fbb05d7ae0004463db648f26e93f7f5848ee9795fb4bbb5f83985afd63f750dc4cf48f53b0e84d26d6834c20c"
-//                StakingService.sharedInstance.createDelgate(typ: typ, nodeId: debugNodeId, amount: self?.currentAmount ?? BigUIntZero, sender: currentAddress, privateKey: pri, { [weak self] (result, data) in
-//                    self?.hideLoadingHUD()
-//                    switch result {
-//                    case .success:
-//                        if let transaction = data as? Transaction {
-//                            transaction.nodeName = self?.currentNode?.name
-//                            self?.doShowTransactionDetail(transaction)
-//                        }
-//                    case .fail(_, let errMsg):
-//                        self?.showMessage(text: errMsg ?? "call web3 error", delay: 2.0)
-//                    }
-//                })
+                StakingService.sharedInstance.createDelgate(typ: typ, nodeId: debugNodeId, amount: self?.currentAmount ?? BigUInt.zero, sender: currentAddress, privateKey: pri, { [weak self] (result, data) in
+                    self?.hideLoadingHUD()
+                    switch result {
+                    case .success:
+                        if let transaction = data as? Transaction {
+                            transaction.nodeName = self?.currentNode?.name
+                            self?.doShowTransactionDetail(transaction)
+                        }
+                    case .fail(_, let errMsg):
+                        self?.showMessage(text: errMsg ?? "call web3 error", delay: 2.0)
+                    }
+                })
             }
         }
     }
@@ -311,21 +316,22 @@ extension DelegateViewController {
         let typ = balanceObject.selectedIndex == 0 ? UInt16(0) : UInt16(1) // 0：自由金额 1：锁仓金额
         let amountVon = amount.LATToVon
         
-//        web3.staking.estimateCreateDelegate(typ: typ, nodeId: nodeId, amount: amountVon) { (result, data) in
-//            switch result {
-//            case .success:
-//                if let feeString = data?.description {
-//                    print(feeString)
-//                    cell.amountView.feeLabel.text = feeString.vonToLATString.displayFeeString
-//                }
-//            case .fail(_, _):
-//                break
-//            }
-//        }
+        web3.staking.estimateCreateDelegate(typ: typ, nodeId: nodeId, amount: amountVon) { (result, data) in
+            switch result {
+            case .success:
+                if let feeString = data?.description {
+                    print(feeString)
+                    cell.amountView.feeLabel.text = feeString.vonToLATString.displayFeeString
+                }
+            case .fail(_, _):
+                break
+            }
+        }
     }
     
     func doShowTransactionDetail(_ transaction: Transaction) {
         let controller = TransactionDetailViewController()
+        controller.transaction = transaction
         navigationController?.pushViewController(controller, animated: true)
     }
 }

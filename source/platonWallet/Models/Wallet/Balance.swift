@@ -9,7 +9,7 @@
 import Foundation
 
 struct Balance: Decodable {
-    var account: String
+    var addr: String
     var free: String? //自由账户余额
     var lock: String? //锁仓账户余额
 }

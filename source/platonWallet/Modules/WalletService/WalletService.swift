@@ -372,9 +372,6 @@ public final class WalletService {
         walletStorge?.delete(wallet: wallet)        
         AssetVCSharedData.sharedData.willDeleteWallet(object: wallet as AnyObject)
         
-        //delete associated shared wallets
-        SWalletService.sharedInstance.willOwnerWalletBeingDelete(ownerWallet: wallet)
-        
     }
     
     public func updateWalletName(_ wallet: Wallet, name: String) {

@@ -207,7 +207,6 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
             return
         }
         self.estimateMemoGas()
-        self.estimateSubmitAndConfirm()
         if let obj = AssetVCSharedData.sharedData.selectedWallet as? Wallet{
             self.balanceLabel.text = Localized("transferVC_transfer_balance") + obj.balanceDescription()
         }else if let obj = AssetVCSharedData.sharedData.selectedWallet as? SWallet{
@@ -480,8 +479,6 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
         var executorWallet : Wallet? 
         if let w = AssetVCSharedData.sharedData.selectedWallet as? Wallet{
             executorWallet = w
-        }else{
-            executorWallet = AssetVCSharedData.sharedData.jWallet!.ownerWallet()
         }
             
         let alertVC = AlertStylePopViewController.initFromNib()
@@ -502,8 +499,6 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
                     })
                     if self?.walletType == WalletType.ClassicWallet{
                         self?.doClassicTransfer(pri: pri!, data: nil)
-                    }else{
-                        self?.doJointWalletSubmitAndConfirm(pri!)
                     }
                     alertVC.dismissWithCompletion()
                 }else{
@@ -664,85 +659,6 @@ extension AssetSendViewControllerV060{
             }
             
         }) 
-    }
-    
-    
-
-
-
-}
-
-//MARK: - Joint wallet logic
-
-extension AssetSendViewControllerV060{
-    
-    func estimateSubmitAndConfirm(){
-        
-        guard self.walletType == WalletType.JointWallet else {
-            return
-        }
-        
-        let from = AssetVCSharedData.sharedData.jWallet?.walletAddress
-        /*
-        let to = self.walletAddressView.textField.text!
-        let amount = self.amountView.textField.text!
-        let time = Date().millisecondsSince1970
-        let value = BigUInt("0")
-        let memo = ""
-        */
-        let contractAddress = AssetVCSharedData.sharedData.jWallet?.contractAddress
-        guard contractAddress != nil else {
-            return
-        }
-        SWalletService.sharedInstance.estimateSubmitAndConfirm(walltAddress: from!, privateKey: "", contractAddress: contractAddress!, gasPrice: BigUIntZero, gas: BigUIntZero, memo: "", destination: DefaultAddress, value: BigUIntZero, len: BigUIntZero, time: 0, fee: BigUIntZero) { (result, data) in
-            switch result{
-            case .success:
-                if let data = data as? (BigUInt, BigUInt){
-                    self.submitGas = data.0
-                    self.confirmGas = data.1
-                    //let _ = self.refreshLabel(refreshFee)
-                }
-            case .fail(_, _):
-                do{}
-            }
-        }
-    }
-    
-    func doJointWalletSubmitAndConfirm(_ pri: String){
-        
-        let from = AssetVCSharedData.sharedData.jWallet?.walletAddress
-        let to = self.walletAddressView.textField.text!
-        let amount = self.amountView.textField.text!
-        let time = Date().millisecondsSince1970
-        let value = BigUInt.mutiply(a: amount, by: ETHToWeiMultiplier)!
-        let memo = ""
-        let contractAddress = AssetVCSharedData.sharedData.jWallet?.contractAddress
-        
-        let fee = self.totalFee()
-        
-        SWalletService.sharedInstance.submitTransaction(walltAddress: from!, 
-                                                        privateKey: pri, 
-                                                        contractAddress: contractAddress!,
-                                                        submitGasPrice: self.gasPrice!,
-                                                        submitGas: self.submitGas!,
-                                                        confirmGasPrice: self.gasPrice!,
-                                                        confirmGas: self.confirmGas!,
-                                                        memo: memo,
-                                                        destination: to,
-                                                        value: value,
-                                                        time: UInt64(time),
-                                                        fee: fee,
-                                                        completion: {[weak self] (result, data) in
-                                                        AssetViewControllerV060.getInstance()?.hideLoadingHUD(delay: 0.2)
-                                                            switch result{
-                                                            case .success:
-                                                                UIApplication.rootViewController().showMessage(text: Localized("transferVC_transfer_success_tip")); self?.navigationController?.popViewController(animated: true)
-                                                                self?.didTransferSuccess()
-                                                            case .fail(let code, let errMsg):
-                                                                self?.showMessageWithCodeAndMsg(code: code!, text: errMsg!, delay: 1.5)
-                                                            }
-        })
-        
     }
 }
 

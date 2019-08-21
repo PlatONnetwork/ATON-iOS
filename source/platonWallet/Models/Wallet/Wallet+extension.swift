@@ -61,11 +61,11 @@ extension Wallet{
     func getAssociatedJointWallets() -> [SWallet]{
         var jointWallet : [SWallet] = []
         
-        for item in SWalletService.sharedInstance.wallets {
-            if item.walletAddress.ishexStringEqual(other: self.key?.address){
-                jointWallet.append(item)
-            }
-        }
+//        for item in SWalletService.sharedInstance.wallets {
+//            if item.walletAddress.ishexStringEqual(other: self.key?.address){
+//                jointWallet.append(item)
+//            }
+//        }
         return jointWallet
     }
 }
@@ -82,11 +82,6 @@ extension SWallet{
     
     func image() -> UIImage{
         return UIImage(named: (self.contractAddress.walletAddressLastCharacterAvatar()))!
-    }
-    
-    func ownerWallet() -> Wallet?{
-        let wallet = SWalletService.sharedInstance.getATPWalletByAddress(address: self.walletAddress)
-        return wallet
     }
     
     func WalletBalanceStatus() -> BalanceStatus{

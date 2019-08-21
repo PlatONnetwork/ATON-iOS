@@ -41,8 +41,7 @@ struct CommonService {
         }
         if checkDuplicate{
             let wallets = WalletService.sharedInstance.wallets.filter{$0.name == name}
-            let swallets = SWalletService.sharedInstance.wallets.filter{$0.name == name}
-            if wallets.count > 0 || swallets.count > 0{
+            if wallets.count > 0 {
                 return (false, Localized("wallet_name_duplicate")) 
             }
         }

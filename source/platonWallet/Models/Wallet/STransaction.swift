@@ -177,14 +177,14 @@ class STransaction: Object {
                     revokeNum = revokeNum + 1
                 }
             }
-            let swallet = SWalletService.sharedInstance.getSWalletByContractAddress(contractAddress: self.contractAddress)
-            if swallet != nil && approveNum >= (swallet?.required)!{
-                return SignStatus.reachApproval
-            }
-            
-            if swallet != nil && ((swallet?.owners.count)! - revokeNum) < (swallet?.required)!{
-                return SignStatus.reachRevoke
-            }
+//            let swallet = SWalletService.sharedInstance.getSWalletByContractAddress(contractAddress: self.contractAddress)
+//            if swallet != nil && approveNum >= (swallet?.required)!{
+//                return SignStatus.reachApproval
+//            }
+//
+//            if swallet != nil && ((swallet?.owners.count)! - revokeNum) < (swallet?.required)!{
+//                return SignStatus.reachRevoke
+//            }
             
             return SignStatus.voting
         }
@@ -217,15 +217,15 @@ class STransaction: Object {
     
     var isInOwnerList : Bool{
 
-        let swallet = SWalletService.sharedInstance.getSWalletByContractAddress(contractAddress: contractAddress)
-        if swallet == nil{
-            return false
-        }
-        for item in (swallet?.owners)!{
-            if ((item.walletAddress?.ishexStringEqual(other: swallet?.walletAddress)))!{
-                return true
-            }
-        }
+//        let swallet = SWalletService.sharedInstance.getSWalletByContractAddress(contractAddress: contractAddress)
+//        if swallet == nil{
+//            return false
+//        }
+//        for item in (swallet?.owners)!{
+//            if ((item.walletAddress?.ishexStringEqual(other: swallet?.walletAddress)))!{
+//                return true
+//            }
+//        }
         return false
     }
     

@@ -187,7 +187,6 @@ class BaseViewController: UIViewController {
         
         if type(of: self) == AssetSendViewControllerV060.self ||
             type(of: self) == ImportMnemonicOrPrivateKeyViewController.self ||
-            type(of: self) == CandidatesListViewController.self ||
             type(of: self) == PersonalViewController.self ||
             type(of: self) == QRScannerViewController.self ||
             type(of: self) == MainImportWalletViewController.self {

@@ -28,11 +28,11 @@ extension Delegate {
     }
     
     var delegateValue: String {
-        return delegate.vonToLATString
+        return (delegate ?? "0").vonToLATString
     }
     
     var redeemValue: String {
-        return redeem.vonToLATString
+        return (redeem ?? "0").vonToLATString
     }
 }
 

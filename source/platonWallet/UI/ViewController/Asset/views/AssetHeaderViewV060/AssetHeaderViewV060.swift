@@ -68,7 +68,7 @@ class AssetHeaderViewV060: UIView {
     var dataSource : [AnyObject]{
         var allWallets : [AnyObject] = []
         allWallets.append(contentsOf: AssetVCSharedData.sharedData.walletList as [AnyObject])
-        allWallets.append(contentsOf: SWalletService.sharedInstance.creatingWallets)
+//        allWallets.append(contentsOf: SWalletService.sharedInstance.creatingWallets)
         allWallets.append(Int(0) as AnyObject)
         allWallets.append(Int(1) as AnyObject)
         return allWallets

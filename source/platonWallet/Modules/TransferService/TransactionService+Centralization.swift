@@ -10,6 +10,7 @@ import Foundation
 import Alamofire
 import Localize_Swift
 
+public let requestTimeout = TimeInterval(30.0)
 
 extension TransactionService {
     

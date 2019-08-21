@@ -25,7 +25,7 @@ class MyDelegateViewCell: UITableViewCell {
         didSet {
             walletAvatarIV.image = delegate?.walletAvatar ?? UIImage(named: "walletAvatar_1")
             walletNameLabel.text = delegate?.walletName
-            walletAddressLabel.text = delegate?.walletAddress
+            walletAddressLabel.text = delegate?.walletAddress.addressForDisplay()
             walletBalanceLabel.text = delegate?.balance
             delegateLabel.text = delegate?.delegateValue
             unDelegatingLabel.text = delegate?.redeemValue
@@ -91,6 +91,7 @@ class MyDelegateViewCell: UITableViewCell {
         walletBalanceLabel.textColor = .black
         walletBalanceLabel.text = "0.00"
         walletBalanceLabel.textAlignment = .right
+        walletBalanceLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         walletBackgroundView.addSubview(walletBalanceLabel)
         walletBalanceLabel.snp.makeConstraints { make in
             make.centerY.equalToSuperview()

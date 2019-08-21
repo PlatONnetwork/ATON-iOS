@@ -120,7 +120,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LicenseVCDelegate {
             return
         }
         
-        if WalletService.sharedInstance.wallets.count > 0 || SWalletService.sharedInstance.wallets.count > 0  {
+        if WalletService.sharedInstance.wallets.count > 0 {
             gotoMainTab()
         }else {
             gotoWalletCreateVC()

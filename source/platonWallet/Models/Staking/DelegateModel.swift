@@ -17,8 +17,9 @@ public struct JSONResponse<T: Decodable>: Decodable {
 
 public struct Delegate: Decodable {
     var walletAddress: String
-    var delegate: String
-    var redeem: String
+    var delegate: String?
+    var redeem: String?
+    var availableDelegationBalance: String?
 }
 
 public struct DelegateDetail: Decodable {

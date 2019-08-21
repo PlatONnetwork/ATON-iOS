@@ -13,6 +13,8 @@ class TransactionDetailViewController: BaseViewController {
     
     public var transaction : Transaction?
     
+    var backToViewController: UIViewController?
+    
     var listData: [(title: String, value: String)] = []
     
     lazy var tableView = { () -> UITableView in
@@ -53,6 +55,15 @@ class TransactionDetailViewController: BaseViewController {
 //                transferDetailView.updateContent(tx: tx! as AnyObject,wallet : wallet ?? nil)
 //            }
 //        }
+        
+    }
+    
+    
+//    override func rt_customBackItem(withTarget target: Any!, action: Selector!) -> UIBarButtonItem! {
+//        super.rt_customBackItem!(withTarget: target, action: #selector(backToController))
+//    }
+    
+    @objc func backToController() {
         
     }
     
@@ -132,7 +143,6 @@ class TransactionDetailViewController: BaseViewController {
     }
     
     func initSubViews() {
-        
         
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in

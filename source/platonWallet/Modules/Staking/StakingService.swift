@@ -27,6 +27,10 @@ final class StakingService: BaseService {
         request.timeoutInterval = requestTimeout
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
+        
+        Alamofire.request(request).responseJSON { (response) in
+            print(response)
+        }
         Alamofire.request(request).responseData { response in
             switch response.result {
             case .success(let data):
@@ -120,17 +124,11 @@ final class StakingService: BaseService {
     
     func getDelegateDetail(
         address: String,
-        beginSequence: String,
-        direction: String,
-        listSize: Int,
         completion: PlatonCommonCompletion?) {
         var completion = completion
         
         var parameters: [String: Any] = [:]
         parameters["addr"] = address
-        parameters["beginSequence"] = beginSequence
-        parameters["listSize"] = listSize
-        parameters["direction"] = direction
         
         let url = SettingService.debugBaseURL + "node/delegateDetails"
         
@@ -139,6 +137,10 @@ final class StakingService: BaseService {
         request.httpMethod = "POST"
         request.timeoutInterval = requestTimeout
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        Alamofire.request(request).responseJSON { (response) in
+            print(response)
+        }
         
         Alamofire.request(request).responseData { response in
             switch response.result {
@@ -234,6 +236,34 @@ extension StakingService {
                        _ completion: PlatonCommonCompletion?) {
         
         web3.staking.createDelegate(typ: typ, nodeId: nodeId, amount: amount, sender: sender, privateKey: privateKey) { (result, data) in
+            switch result {
+            case .success:
+                if let data = data as? Data {
+                    let transaction = Transaction()
+                    transaction.txhash = data.toHexString()
+                    transaction.from = sender
+                    transaction.txType = .delegateCreate
+                    transaction.toType = .contract
+                    transaction.txReceiptStatus = -1
+                    transaction.value = amount.description
+                    transaction.nodeId = nodeId
+                    completion?(PlatonCommonResult.success, transaction as AnyObject)
+                } else {
+                    completion?(PlatonCommonResult.success, nil)
+                }
+            case .fail(let errCode, let errMsg):
+                completion?(PlatonCommonResult.fail(errCode, errMsg), nil)
+            }
+        }
+    }
+    
+    func withdrawDelegate(stakingBlockNum: UInt64,
+                          nodeId: String,
+                          amount: BigUInt,
+                          sender: String,
+                          privateKey: String,
+                          _ completion: PlatonCommonCompletion?) {
+        web3.staking.withdrewDelegate(stakingBlockNum: stakingBlockNum, nodeId: nodeId, amount: amount, sender: sender, privateKey: privateKey) { (result, data) in
             switch result {
             case .success:
                 if let data = data as? Data {

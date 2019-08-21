@@ -171,11 +171,11 @@ class STransferPersistence {
         let r = RealmInstance!.objects(STransaction.self).filter(predicate).sorted(byKeyPath: "createTime", ascending: false)
         var array : [STransaction] = []
         for item in r{
-            let cw = SWalletService.sharedInstance.getATPWalletByAddress(address: item.ownerWalletAddress)
-            let jw = SWalletService.sharedInstance.getSWalletByContractAddress(contractAddress: item.contractAddress)
-            if cw != nil && jw != nil{
-                array.append(item)
-            }
+//            let cw = SWalletService.sharedInstance.getATPWalletByAddress(address: item.ownerWalletAddress)
+//            let jw = SWalletService.sharedInstance.getSWalletByContractAddress(contractAddress: item.contractAddress)
+//            if cw != nil && jw != nil{
+//                array.append(item)
+//            }
         }
         return array
     }
@@ -276,12 +276,12 @@ class STransferPersistence {
                     tx.readTag = detachdexisted.readTag
                     self.updateWithExist(detachdexisted: detachdexisted, tx: tx, forCheckOutward: forCheckOutward)
                 }else{
-                    if SWalletService.sharedInstance.outwardHash.contains(forCheckOutward){
-                        //update outward mutisign transaction as readed
-                        tx.readTag = ReadTag.Readed.rawValue
-                    }else{
-                        tx.readTag = ReadTag.UnRead.rawValue
-                    }
+//                    if SWalletService.sharedInstance.outwardHash.contains(forCheckOutward){
+//                        //update outward mutisign transaction as readed
+//                        tx.readTag = ReadTag.Readed.rawValue
+//                    }else{
+//                        tx.readTag = ReadTag.UnRead.rawValue
+//                    }
                     addWithoutDeduplication(tx: tx)
                 }
             })
@@ -304,10 +304,10 @@ class STransferPersistence {
                 }
                 
                 writeRealm.beginWrite()
-                if SWalletService.sharedInstance.outwardHash.contains(forCheckOutward) && detachdexisted.readTag == ReadTag.UnRead.rawValue{
-                    //update outward mutisign transaction as readed
-                    detachdexisted.readTag = ReadTag.Readed.rawValue
-                }
+//                if SWalletService.sharedInstance.outwardHash.contains(forCheckOutward) && detachdexisted.readTag == ReadTag.UnRead.rawValue{
+//                    //update outward mutisign transaction as readed
+//                    detachdexisted.readTag = ReadTag.Readed.rawValue
+//                }
                 
                 if (tx.blockNumber?.length)! > 0{
                     detachdexisted.blockNumber = tx.blockNumber
