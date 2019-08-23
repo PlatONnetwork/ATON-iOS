@@ -11,7 +11,6 @@ import UIKit
 
 public extension UIView {
     func addMaskView(corners: UIRectCorner,cornerRadiiV : CGFloat){
-
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             let maskPath = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: cornerRadiiV, height: cornerRadiiV))
@@ -36,8 +35,6 @@ public extension UIView {
     func stopRotate() {
         self.layer.removeAllAnimations()
     }
-    
-    
 }
 
 extension UIView {

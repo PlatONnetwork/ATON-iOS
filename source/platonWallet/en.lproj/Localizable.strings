@@ -831,3 +831,5 @@
 "delegate_error_result_amountzero" = "amount must greater 0";
 "delegate_error_result_nodeexit" = "Please withdraw first \"Released delegate\"";
 
+"empty_string_my_delegates_left" = "View all validators, ";
+"empty_string_my_delegates_right" = "Delegate";

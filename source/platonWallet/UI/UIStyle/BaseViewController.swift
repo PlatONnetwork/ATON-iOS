@@ -279,6 +279,13 @@ class BaseViewController: UIViewController {
         return holder
     }
     
+    func emptyViewForTableview(forEmptyDataSet scrollView: UIScrollView, _ attributedText: NSAttributedString, _ imageName: String) -> UIView? {
+        let holderView = self.tableNodataHolderView
+        holderView.descriptionLabel.attributedText = attributedText
+        holderView.imageView.image = UIImage(named: imageName)
+        return holderView
+    }
+    
     deinit {
         print(String(describing: self) + "no circular refrence ")
     }

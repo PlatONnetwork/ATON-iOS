@@ -51,6 +51,11 @@ class StakingMainViewController: StakingPageTabStripViewController {
         }
     }
     
+    func moveToValidatorListController() {
+        guard let viewController = viewControllers.last else { return }
+        moveTo(viewController: viewController)
+    }
+    
 //    override func viewControllers(for pagerTabStripController: PagerTabStripViewController) -> [UIViewController] {
 //        let controller1 = ValidatorNodesViewController()
 //        let controller2 = ValidatorNodesViewController()

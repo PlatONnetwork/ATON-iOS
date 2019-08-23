@@ -66,6 +66,17 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
             make.bottom.leading.trailing.equalToSuperview()
         }
         
+        let attributed = NSMutableAttributedString(string: Localized("empty_string_my_delegates_left"))
+        let actionAttributed = NSAttributedString(string: Localized("empty_string_my_delegates_right"), attributes: [NSAttributedString.Key.foregroundColor: common_blue_color])
+        attributed.append(actionAttributed)
+        tableView.emptyDataSetView { [weak self] view in
+            let holder = self?.emptyViewForTableview(forEmptyDataSet: (self?.tableView)!, attributed, "3.img-No trust") as? TableViewNoDataPlaceHolder
+            holder?.textTapHandler = { [weak self] in
+                self?.doShowValidatorListController()
+            }
+            view.customView(holder)
+        }
+        
         tableView.tableFooterView = footerView
 
         
@@ -107,7 +118,10 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
         navigationController?.pushViewController(controller, animated: true)
     }
     
-
+    private func doShowValidatorListController() {
+        guard let tabController = self.parent as? StakingMainViewController else { return }
+        tabController.moveToValidatorListController()
+    }
 }
 
 extension MyDelegatesViewController: UITableViewDelegate, UITableViewDataSource {
@@ -138,9 +152,9 @@ extension MyDelegatesViewController {
             case .success:
                 self?.listData.removeAll()
                 if let newData = data as? [Delegate] {
-                    self?.listData.append(contentsOf: newData)
-                    self?.tableView.reloadData()
-                    self?.updateDelagateHeader()
+//                    self?.listData.append(contentsOf: newData)
+//                    self?.tableView.reloadData()
+//                    self?.updateDelagateHeader()
                 }
                 self?.tableView.reloadData()
             case .fail(_, _):

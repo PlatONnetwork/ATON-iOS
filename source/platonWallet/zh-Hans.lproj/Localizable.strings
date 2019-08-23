@@ -832,3 +832,6 @@
 
 "delegate_error_result_amountzero" = "解除委托金额大于0";
 "delegate_error_result_nodeexit" = "节点已退出或退出中";
+
+"empty_string_my_delegates_left" = "查看验证节点, ";
+"empty_string_my_delegates_right" = "参与委托";
