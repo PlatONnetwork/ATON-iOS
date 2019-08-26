@@ -55,7 +55,9 @@ class DelegateViewController: BaseViewController {
     }
     
     private func fetchCanDelegation() {
-        guard let nodeId = currentNode?.nodeId, let walletAddr = currentAddress else { return }
+        guard
+            let nodeId = currentNode?.nodeId,
+            let walletAddr = walletStyle?.currentWallet.key?.address else { return }
         
         showLoadingHUD()
         StakingService.sharedInstance.getCanDelegation(addr: walletAddr, nodeId: nodeId) { [weak self] (result, data) in
@@ -82,7 +84,6 @@ class DelegateViewController: BaseViewController {
             switch result {
             case .success:
                 self?.initListData()
-                self?.fetchCanDelegation()
             case .fail(_, _):
                 break
             }
@@ -129,6 +130,8 @@ class DelegateViewController: BaseViewController {
         let item6 = DelegateTableViewCellStyle.doubt(contents: contents)
         listData.append(contentsOf: [item1, item2, item3, item4, item5, item6])
         tableView.reloadData()
+        
+        fetchCanDelegation()
     }
 
 }
@@ -171,7 +174,7 @@ extension DelegateViewController: UITableViewDelegate, UITableViewDataSource {
             
             cell.cellDidHandle = { [weak self] (_ cell: WalletTableViewCell) in
                 guard let self = self, walletStyle.wallets.count > 1 else { return }
-                self.walletCellDidHandle(cell, walletStyle: walletStyle)
+                self.walletCellDidHandle(cell)
             }
             return cell
         case .walletBalances(let balanceStyle):
@@ -182,23 +185,26 @@ extension DelegateViewController: UITableViewDelegate, UITableViewDataSource {
             
             cell.cellDidHandle = { [weak self] (_ cell: WalletBalanceTableViewCell) in
                 guard let self = self else { return }
-                self.balanceCellDidHandle(cell, balanceStyle: balanceStyle)
+                self.balanceCellDidHandle(cell)
             }
             return cell
         case .inputAmount:
             let cell = tableView.dequeueReusableCell(withIdentifier: "SendInputTableViewCell") as! SendInputTableViewCell
+            cell.minAmountLimit = "10".LATToVon
+            cell.maxAmountLimit = BigUInt(balanceStyle?.currentBalance.1 ?? "0")
             cell.cellDidContentChangeHandler = { [weak self] in
                 self?.updateHeightOfRow(cell)
             }
-            cell.cellDidContentEditingHandler = { [weak self] amountLAT in
-                self?.estimateGas(amountLAT, cell)
-                self?.currentAmount = amountLAT.LATToVon
+            cell.cellDidContentEditingHandler = { [weak self] amountVON in
+                self?.estimateGas(amountVON, cell)
+                self?.currentAmount = amountVON
+                self?.tableView.reloadSections(IndexSet([indexPath.section + 1]), with: .none)
             }
             return cell
         case .singleButton(let title):
             let cell = tableView.dequeueReusableCell(withIdentifier: "SingleButtonTableViewCell") as! SingleButtonTableViewCell
             cell.button.setTitle(title, for: .normal)
-            cell.canDelegation = canDelegation
+            cell.unavaliableTapAction = (currentAmount <= BigUInt.zero || canDelegation == nil || canDelegation?.canDelegation == false)
             cell.cellDidTapHandle = { [weak self] in
                 guard let self = self else { return }
                 self.nextButtonCellDidHandle()
@@ -218,16 +224,17 @@ extension DelegateViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension DelegateViewController {
     func nextButtonCellDidHandle() {
-        let transaction = Transaction()
-        transaction.txhash = "0xa742482734873487289378392798"
-        transaction.nodeId = "adjfkajkdflajdf"
-        transaction.nodeName =  "adfjakdfjklajfkajkdf"
-        transaction.from = currentAddress
-        transaction.value = currentAmount.description
-        doShowTransactionDetail(transaction)
-        return
+//        let transaction = Transaction()
+//        transaction.txhash = "0xa742482734873487289378392798"
+//        transaction.nodeId = "adjfkajkdflajdf"
+//        transaction.nodeName =  "adfjakdfjklajfkajkdf"
+//        transaction.from = currentAddress
+//        transaction.value = currentAmount.description
+//        transaction.txType = TxType.stakingAdd
+//        doShowTransactionDetail(transaction)
+//        return
         
-//        view.endEditing(true)
+        view.endEditing(true)
         
         if let canDet = canDelegation, canDet.canDelegation == false {
             showMessage(text: canDet.message?.localizedDesciption ?? "can't delegate", delay: 2.0)
@@ -236,6 +243,16 @@ extension DelegateViewController {
         
         guard currentAmount > BigUInt.zero else {
             showMessage(text: "提交的数量应大于0")
+            return
+        }
+        
+        guard currentAmount >= BigUInt("10") else {
+            showMessage(text: Localized("staking_input_amount_minlimit_error"))
+            return
+        }
+        
+        guard currentAmount < (BigUInt(balanceStyle?.currentBalance.1 ?? "0") ?? BigUInt.zero) else {
+            showMessage(text: Localized("staking_input_amount_maxlimit_error"))
             return
         }
         
@@ -253,14 +270,16 @@ extension DelegateViewController {
             if let pri = privateKey {
                 self?.showLoadingHUD()
                 
-                let debugNodeId = "411a6c3640b6cd13799e7d4ed286c95104e3a31fbb05d7ae0004463db648f26e93f7f5848ee9795fb4bbb5f83985afd63f750dc4cf48f53b0e84d26d6834c20c"
-                StakingService.sharedInstance.createDelgate(typ: typ, nodeId: debugNodeId, amount: self?.currentAmount ?? BigUInt.zero, sender: currentAddress, privateKey: pri, { [weak self] (result, data) in
+                StakingService.sharedInstance.createDelgate(typ: typ, nodeId: nodeId, amount: self?.currentAmount ?? BigUInt.zero, sender: currentAddress, privateKey: pri, { [weak self] (result, data) in
                     self?.hideLoadingHUD()
                     switch result {
                     case .success:
                         if let transaction = data as? Transaction {
                             transaction.nodeName = self?.currentNode?.name
-                            self?.doShowTransactionDetail(transaction)
+//                            TransferPersistence.add(tx: transaction)
+                            DispatchQueue.main.async {
+                                self?.doShowTransactionDetail(transaction)
+                            }
                         }
                     case .fail(_, let errMsg):
                         self?.showMessage(text: errMsg ?? "call web3 error", delay: 2.0)
@@ -270,29 +289,47 @@ extension DelegateViewController {
         }
     }
     
-    func walletCellDidHandle(_ cell: WalletTableViewCell, walletStyle: WalletsCellStyle) {
+    func walletCellDidHandle(_ cell: WalletTableViewCell) {
+        guard let wStyle = walletStyle else { return }
+        
         let indexPath = tableView.indexPath(for: cell)
-        var newWalletStyle = walletStyle
+        var newWalletStyle = wStyle
         newWalletStyle.isExpand = !newWalletStyle.isExpand
         guard let indexRow = indexPath?.row, let indexSection = indexPath?.section else { return }
         if indexRow != 0 {
             newWalletStyle.selectedIndex = indexRow - 1
         }
-        listData[indexSection] = DelegateTableViewCellStyle.wallets(walletStyle: newWalletStyle)
-        tableView.reloadSections(IndexSet([indexSection]), with: .fade)
+        walletStyle = newWalletStyle
+        listData[indexSection] = DelegateTableViewCellStyle.wallets(walletStyle: walletStyle!)
+        
+        let balance = AssetService.sharedInstace.balances.first { (item) -> Bool in
+            return item.addr.lowercased() == walletStyle?.currentWallet.key?.address.lowercased()
+        }
+        balanceStyle = BalancesCellStyle(balances: [
+            (Localized("staking_balance_can_used"), balance?.free ?? "0"),
+            (Localized("staking_balance_locked_position"), balance?.lock ?? "0")], selectedIndex: 0, isExpand: false)
+        listData[indexSection + 1] = DelegateTableViewCellStyle.walletBalances(balanceStyle: balanceStyle!)
+        
+        tableView.reloadSections(IndexSet([indexSection, indexSection+1, indexSection+2]), with: .fade)
+        
+        guard indexRow != 0 else { return }
+        fetchCanDelegation()
     }
     
-    func balanceCellDidHandle(_ cell: WalletBalanceTableViewCell, balanceStyle: BalancesCellStyle) {
+    func balanceCellDidHandle(_ cell: WalletBalanceTableViewCell) {
+        guard let bStyle = balanceStyle else { return }
+        
         let indexPath = tableView.indexPath(for: cell)
-        var newBalanceStyle = balanceStyle
+        var newBalanceStyle = bStyle
         newBalanceStyle.isExpand = !newBalanceStyle.isExpand
         guard let indexRow = indexPath?.row, let indexSection = indexPath?.section else { return }
         if indexRow != 0 {
             newBalanceStyle.selectedIndex = indexRow - 1
         }
+        balanceStyle = newBalanceStyle
         
-        listData[indexSection] = DelegateTableViewCellStyle.walletBalances(balanceStyle: newBalanceStyle)
-        tableView.reloadSections(IndexSet([indexSection]), with: .fade)
+        listData[indexSection] = DelegateTableViewCellStyle.walletBalances(balanceStyle: balanceStyle!)
+        tableView.reloadSections(IndexSet([indexSection, indexSection+1]), with: .fade)
     }
     
     func updateHeightOfRow(_ cell: SendInputTableViewCell) {
@@ -308,13 +345,12 @@ extension DelegateViewController {
     }
     
     
-    func estimateGas(_ amount: String, _ cell: SendInputTableViewCell) {
+    func estimateGas(_ amountVon: BigUInt, _ cell: SendInputTableViewCell) {
         guard
             let balanceObject = balanceStyle,
             let nodeId = currentNode?.nodeId else { return }
         
         let typ = balanceObject.selectedIndex == 0 ? UInt16(0) : UInt16(1) // 0：自由金额 1：锁仓金额
-        let amountVon = amount.LATToVon
         
         web3.staking.estimateCreateDelegate(typ: typ, nodeId: nodeId, amount: amountVon) { (result, data) in
             switch result {
@@ -332,6 +368,7 @@ extension DelegateViewController {
     func doShowTransactionDetail(_ transaction: Transaction) {
         let controller = TransactionDetailViewController()
         controller.transaction = transaction
+        controller.backToViewController = navigationController?.viewController(self.indexOfViewControllers - 1)
         navigationController?.pushViewController(controller, animated: true)
     }
 }

@@ -45,6 +45,7 @@ class TransactionDetailHeaderView: UIView {
             make.top.equalToSuperview().offset(45)
         }
         
+        pendingLoadingImage.image = UIImage(named: "transactionDetailloading")
         addSubview(pendingLoadingImage)
         pendingLoadingImage.snp.makeConstraints { make in
             make.width.height.equalTo(48)
@@ -185,7 +186,6 @@ class TransactionDetailHeaderView: UIView {
             make.leading.equalToSuperview().offset(16)
             make.trailing.equalToSuperview().offset(-16)
             make.top.equalTo(toTipLabel.snp.bottom).offset(8)
-//            make.bottom.equalToSuperview().offset(-16)
         }
 
         toIconIV.image = UIImage(named: "2.icon_Shared2")
@@ -202,10 +202,10 @@ class TransactionDetailHeaderView: UIView {
         toContainerView.addSubview(toLabel)
         toLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(8)
-//            toLabelLeadingConstraint = make.leading.equalTo(toIconIV.snp.trailing).offset(3).constraint
             make.top.equalToSuperview().offset(3)
             make.bottom.equalToSuperview().offset(-3)
             make.trailing.equalToSuperview().offset(-31)
+            make.height.greaterThanOrEqualTo(12)
         }
 
         copyToAddrBtn.setImage(UIImage(named: "copyIcon"), for: .normal)
@@ -238,11 +238,19 @@ class TransactionDetailHeaderView: UIView {
     }
     
     func updateContent(tx: Transaction) {
-        
         updateStatus(tx: tx)
         
-        fromLabel.text = tx.from
-        toLabel.text = tx.to
+        if let fromString = tx.from, fromString.count > 0 {
+            fromLabel.text = tx.from
+        } else {
+            fromLabel.text = "--"
+        }
+        
+        if let toString = tx.to, toString.count > 0 {
+            toLabel.text = tx.to
+        } else {
+            toLabel.text = "--"
+        }
         
         if let w = WalletService.sharedInstance.getWalletByAddress(address: tx.from ?? ""){
             self.walletNameLabel.text = w.name
@@ -273,12 +281,6 @@ class TransactionDetailHeaderView: UIView {
     
     func updateStatus(tx : Transaction){
         
-        //        if tx.txType == .transfer  {
-        //            transactionTypeLabel.text = tx.direction.localizedDesciption
-        //        } else {
-        //            transactionTypeLabel.text = tx.txType?.localizeTitle
-        //        }
-        
         statusLabel.text = tx.transactionStauts.localizeDescAndColor.0
         statusLabel.textColor = .black
         switch tx.transactionStauts {
@@ -293,7 +295,5 @@ class TransactionDetailHeaderView: UIView {
             self.pendingLoadingImage.isHidden = true
             statusIconImageVIew.image = UIImage(named: "statusFail")
         }
-        
-        
     }
 }

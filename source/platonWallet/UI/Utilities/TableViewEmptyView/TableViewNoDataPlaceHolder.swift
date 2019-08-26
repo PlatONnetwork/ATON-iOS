@@ -16,6 +16,8 @@ class TableViewNoDataPlaceHolder: UIView {
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var ImageTopToSuper: NSLayoutConstraint!
     override func awakeFromNib() {
+        imageView.isUserInteractionEnabled = true
+        
         descriptionLabel.isUserInteractionEnabled = true
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handlerTap(_:)))
         tapGesture.numberOfTapsRequired = 1

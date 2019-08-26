@@ -133,7 +133,6 @@ class PersonalViewController: BaseViewController,UITableViewDelegate,UITableView
         }
         targetVC!.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(targetVC!, animated: true)
-        
     }
     
 

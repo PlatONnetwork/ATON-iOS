@@ -13,8 +13,6 @@ class TransactionDetailViewController: BaseViewController {
     
     public var transaction : Transaction?
     
-    var backToViewController: UIViewController?
-    
     var listData: [(title: String, value: String)] = []
     
     lazy var tableView = { () -> UITableView in
@@ -49,21 +47,11 @@ class TransactionDetailViewController: BaseViewController {
         
         //yujinghan waiting fix
         
-//        if hash.ishexStringEqual(other: transaction?.txhash){
-//            let tx = TransferPersistence.getByTxhash(transaction?.txhash)
-//            if tx != nil{
-//                transferDetailView.updateContent(tx: tx! as AnyObject,wallet : wallet ?? nil)
-//            }
-//        }
-        
-    }
-    
-    
-//    override func rt_customBackItem(withTarget target: Any!, action: Selector!) -> UIBarButtonItem! {
-//        super.rt_customBackItem!(withTarget: target, action: #selector(backToController))
-//    }
-    
-    @objc func backToController() {
+        if hash.ishexStringEqual(other: transaction?.txhash){
+            let tx = TransferPersistence.getByTxhash(transaction?.txhash)
+            guard let transaction = tx else { return }
+            transferDetailView.updateContent(tx: transaction)
+        }
         
     }
     

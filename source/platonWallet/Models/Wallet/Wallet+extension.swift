@@ -8,38 +8,50 @@
 
 import Foundation
 import UIKit
+import BigInt
+
+import Localize_Swift
 
 enum BalanceStatus {
     case NotSufficient,Sufficient,unknowStatus
 }
 
 extension Wallet{
-    func lockedBalanceDescription() -> String? {
-        guard let lockedBlc = AssetService.sharedInstace.assets[(self.key?.address)!],
-              let lockedBalanceStr = lockedBlc?.displayLockedValueWithRound(round: 8)?.balanceFixToDisplay(maxRound: 8) else {
-                if self.lockedBalance.count > 0 {
-                    return self.lockedBalance.ATPSuffix()
-                }
-                
-                return nil
-        }
+    
+    func lockedBalanceAttrForDisplayAsset() -> NSAttributedString? {
+        guard let lockedBalanceString = lockedBalanceDescription() else { return nil }
         
-        WalletService.sharedInstance.updateWalletLockedBalance(self, value: lockedBalanceStr)
-        return lockedBalanceStr.ATPSuffix()
+        let attachment = NSTextAttachment()
+        attachment.bounds = CGRect(x: 0, y: 0, width: 10, height: 10)
+        attachment.image = UIImage(named: "1.icon_An error")
+        
+        let iconAttr = NSMutableAttributedString()
+        iconAttr.append(NSAttributedString(attachment: attachment))
+        
+        let lockedBalanceAttr = NSMutableAttributedString(string: "(")
+        lockedBalanceAttr.append(iconAttr)
+        
+        lockedBalanceAttr.append(NSAttributedString(string: " " + Localized("wallet_balance_restricted") + lockedBalanceString))
+        lockedBalanceAttr.append(NSAttributedString(string: ")"))
+        return lockedBalanceAttr
+    }
+    
+    func lockedBalanceDescription() -> String? {
+        guard
+            let balance = AssetService.sharedInstace.balances.first(where: { $0.addr.lowercased() == self.key?.address.lowercased() }),
+            let lockValue = BigUInt(balance.lock ?? "0"), lockValue > BigUInt.zero,
+            let balanceStr = balance.lock?.vonToLATString else { return nil }
+        
+        WalletService.sharedInstance.updateWalletLockedBalance(self, value: balance.lock ?? "0")
+        return balanceStr.ATPSuffix()
     }
     
     func balanceDescription() -> String{
         guard
-            let balance = AssetService.sharedInstace.assets[(self.key?.address)!],
-            let balanceStr = balance?.displayValueWithRound(round: 8)?.balanceFixToDisplay(maxRound: 8) else {
-                if self.balance.count > 0 {
-                    return self.balance.ATPSuffix()
-                }
-                
-                return "-".ATPSuffix()
-        }
+            let balance = AssetService.sharedInstace.balances.first(where: { $0.addr.lowercased() == self.key?.address.lowercased() }),
+            let balanceStr = balance.free?.vonToLATString else { return "0.00".ATPSuffix() }
         
-        WalletService.sharedInstance.updateWalletBalance(self, balance: balanceStr)
+        WalletService.sharedInstance.updateWalletBalance(self, balance: balance.free ?? "0")
         return balanceStr.ATPSuffix()
     }
     
@@ -49,43 +61,6 @@ extension Wallet{
     
     func WalletBalanceStatus() -> BalanceStatus{
         let balance = AssetService.sharedInstace.assets[(self.key?.address)!]
-        if let b = balance{
-            if String((b!.balance)!) == "0"{
-                return .NotSufficient
-            }
-            return .Sufficient
-        }
-        return BalanceStatus.unknowStatus
-    }
-    
-    func getAssociatedJointWallets() -> [SWallet]{
-        var jointWallet : [SWallet] = []
-        
-//        for item in SWalletService.sharedInstance.wallets {
-//            if item.walletAddress.ishexStringEqual(other: self.key?.address){
-//                jointWallet.append(item)
-//            }
-//        }
-        return jointWallet
-    }
-}
-
-extension SWallet{
-    func balanceDescription() -> String{
-        
-        let balance = AssetService.sharedInstace.assets[self.contractAddress]
-        if let balance = balance{
-            return (balance!.displayValueWithRound(round: 8)?.balanceFixToDisplay(maxRound: 8))!.ATPSuffix()
-        }
-        return "-".ATPSuffix()
-    }
-    
-    func image() -> UIImage{
-        return UIImage(named: (self.contractAddress.walletAddressLastCharacterAvatar()))!
-    }
-    
-    func WalletBalanceStatus() -> BalanceStatus{
-        let balance = AssetService.sharedInstace.assets[self.contractAddress]
         if let b = balance{
             if String((b!.balance)!) == "0"{
                 return .NotSufficient

@@ -68,7 +68,6 @@ class AssetHeaderViewV060: UIView {
     var dataSource : [AnyObject]{
         var allWallets : [AnyObject] = []
         allWallets.append(contentsOf: AssetVCSharedData.sharedData.walletList as [AnyObject])
-//        allWallets.append(contentsOf: SWalletService.sharedInstance.creatingWallets)
         allWallets.append(Int(0) as AnyObject)
         allWallets.append(Int(1) as AnyObject)
         return allWallets
@@ -161,14 +160,10 @@ extension AssetHeaderViewV060: UICollectionViewDelegate, UICollectionViewDataSou
                 return
             }
         }
-        var total = BigUInt("0")
-        for item in AssetService.sharedInstace.assets{
-            total.multiplyAndAdd(item.value!.balance ?? BigUInt(0), 1)
-        }
         
-        if total == nil || String(total) == "0"{
-            assetLabel.text = "0.00"
-            return
+        let total = AssetService.sharedInstace.balances.reduce(BigUInt(0)) { (result, balance) -> BigUInt in
+            let freeString = balance.free ?? "0"
+            return result + (BigUInt(freeString) ?? BigUInt.zero)
         }
         
         var totalDes = total.divide(by: ETHToWeiMultiplier, round: 8)

@@ -122,7 +122,7 @@ struct CommonService {
         return (valid,msg)
     }
     
-    static func checkTransferAmoutInput(text: String,checkBalance: Bool = false, fee: BigUInt? = BigUInt("0")!) -> (Bool,String) {
+    static func checkTransferAmoutInput(text: String, checkBalance: Bool = false, minLimit: BigUInt? = nil, maxLimit: BigUInt? = nil, fee: BigUInt? = BigUInt("0")!) -> (Bool, String) {
         
         var valid = true
         var msg = ""
@@ -133,6 +133,16 @@ struct CommonService {
         
         if (!(text.isValidInputAmoutWith8DecimalPlaceAndNonZero())){
             msg = Localized("transferVC_amout_amout_input_error")
+            valid = false
+        }
+        
+        if let minLimitAmount = minLimit, text.LATToVon < minLimitAmount {
+            msg = Localized("staking_input_amount_minlimit_error")
+            valid = false
+        }
+        
+        if let maxLimitAmount = maxLimit, text.LATToVon > maxLimitAmount {
+            msg = Localized("staking_input_amount_maxlimit_error")
             valid = false
         }
         
@@ -147,7 +157,4 @@ struct CommonService {
         return (valid, msg)
         
     }
-    
-    
-    
 }

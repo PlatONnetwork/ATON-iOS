@@ -92,6 +92,7 @@ class MyDelegateViewCell: UITableViewCell {
         walletBalanceLabel.text = "0.00"
         walletBalanceLabel.textAlignment = .right
         walletBalanceLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        walletBalanceLabel.adjustsFontSizeToFitWidth = true
         walletBackgroundView.addSubview(walletBalanceLabel)
         walletBalanceLabel.snp.makeConstraints { make in
             make.centerY.equalToSuperview()

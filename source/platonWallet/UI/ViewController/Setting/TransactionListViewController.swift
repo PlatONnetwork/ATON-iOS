@@ -125,7 +125,8 @@ class TransactionListViewController: BaseViewController,UITableViewDelegate,UITa
                 
                 if beginSequence != -1 && direction == "new" {
                     
-                    AssetService.sharedInstace.fetchWalletBanlance()
+                    AssetService.sharedInstace.fetchWalletBalanceForV7(nil)
+//                    AssetService.sharedInstace.fetchWalletBanlance()
                 }
                 
                 self.dataSource.append(contentsOf: transactions)

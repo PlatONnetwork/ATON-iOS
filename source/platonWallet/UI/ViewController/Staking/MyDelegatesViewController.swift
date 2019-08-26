@@ -100,7 +100,8 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
     
     func updateDelagateHeader() {
         let total = listData.reduce(BigUInt(0)) { (result, delegate) -> BigUInt in
-            return result + BigUInt(delegate.availableDelegationBalance ?? "0")!
+            return result + BigUInt.zero
+//            return result + BigUInt(delegate.availableDelegationBalance ?? "0")!
         }
         headerView.totalBalanceLabel.text = total.description.vonToLATString.ATPSuffix()
     }
@@ -152,9 +153,9 @@ extension MyDelegatesViewController {
             case .success:
                 self?.listData.removeAll()
                 if let newData = data as? [Delegate] {
-//                    self?.listData.append(contentsOf: newData)
-//                    self?.tableView.reloadData()
-//                    self?.updateDelagateHeader()
+                    self?.listData.append(contentsOf: newData)
+                    self?.tableView.reloadData()
+                    self?.updateDelagateHeader()
                 }
                 self?.tableView.reloadData()
             case .fail(_, _):

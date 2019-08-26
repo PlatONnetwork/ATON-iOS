@@ -20,27 +20,27 @@ let THE8powerof10 = "100000000"
 let THE9powerof10 = "1000000000"
 let THE18powerof10 = "1000000000000000000"
 
-enum TxType: Int, Decodable {
-    case transfer = 0
-    case contractCreate
-    case contractExecute
-    case otherReceive
-    case otherSend
-    case MPCtransaction
-    case stakingCreate = 1000
-    case stakingEdit
-    case stakingAdd
-    case stakingWithdraw
-    case delegateCreate
-    case delegateWithdraw
-    case submitText = 2000
-    case submitVersion
-    case submitParam
-    case voteForProposal
-    case declareVersion
-    case reportDuplicateSign = 3000
-    case createRestrictingPlan = 4000
-    case unknown = -1
+enum TxType: String, Decodable {
+    case transfer = "0"
+    case contractCreate = "1"
+    case contractExecute = "2"
+    case otherReceive = "3"
+    case otherSend = "4"
+    case MPCtransaction = "5"
+    case stakingCreate = "1000"
+    case stakingEdit = "1001"
+    case stakingAdd = "1002"
+    case stakingWithdraw = "1003"
+    case delegateCreate = "1004"
+    case delegateWithdraw = "1005"
+    case submitText = "2000"
+    case submitVersion = "2001"
+    case submitParam = "2002"
+    case voteForProposal = "2003"
+    case declareVersion = "2004"
+    case reportDuplicateSign = "3000"
+    case createRestrictingPlan = "4000"
+    case unknown = "-1"
     
     var localizeTitle: String {
         switch self {
@@ -229,7 +229,7 @@ class Transaction : Object, Decodable {
     var proposalType: String?
     var vote: String?
     var unDelegation: String?
-    var redeemStatus: Int?
+    var redeemStatus: RedeemStatus?
     
     override public static func ignoredProperties() ->[String] {
         return ["sharedWalletOwners",
@@ -301,14 +301,11 @@ class Transaction : Object, Decodable {
         if let index = Int(indexString ?? "0") {
             transactionIndex = index
         }
-        let txReceiptStatusString = try? container.decode(String.self, forKey: .txReceiptStatus)
-        if let status = Int(txReceiptStatusString ?? "0") {
-            txReceiptStatus = status
-        }
         
+        txReceiptStatus = (try? container.decode(Int.self, forKey: .txReceiptStatus)) ?? 0
         extra = try? container.decode(String.self, forKey: .extra)
         unDelegation = try? container.decode(String.self, forKey: .unDelegation)
-        redeemStatus = try? container.decode(Int.self, forKey: .redeemStatus)
+        redeemStatus = try? container.decode(RedeemStatus.self, forKey: .redeemStatus)
         nodeName = try? container.decode(String.self, forKey: .nodeName)
         nodeId = try? container.decode(String.self, forKey: .nodeId)
     }
@@ -453,6 +450,11 @@ extension Transaction {
         }
         return (des,color)
     }
+}
+
+enum RedeemStatus: String, Decodable {
+    case redeeming = "1"
+    case redeemSuccess = "2"
 }
 
 class VoteTicket: Decodable {

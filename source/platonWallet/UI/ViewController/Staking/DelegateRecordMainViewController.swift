@@ -37,8 +37,11 @@ class DelegateRecordMainViewController: ButtonBarPagerTabStripViewController {
     
     override func viewControllers(for pagerTabStripController: PagerTabStripViewController) -> [UIViewController] {
         let child_1 = DelegateRecordViewController(itemInfo: Localized("staking_delegate_record_all"))
+        child_1.recordType = .all
         let child_2 = DelegateRecordViewController(itemInfo: Localized("staking_delegate_record_delegate"))
+        child_2.recordType = .delegate
         let child_3 = DelegateRecordViewController(itemInfo: Localized("staking_delegate_record_undelegate"))
+        child_3.recordType = .redeem
         
         return [child_1, child_2, child_3]
     }

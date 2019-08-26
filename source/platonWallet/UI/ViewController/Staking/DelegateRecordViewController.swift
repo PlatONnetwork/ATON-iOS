@@ -8,6 +8,7 @@
 
 import UIKit
 import MJRefresh
+import Localize_Swift
 
 class DelegateRecordViewController: BaseViewController, IndicatorInfoProvider {
     
@@ -72,7 +73,11 @@ class DelegateRecordViewController: BaseViewController, IndicatorInfoProvider {
         tableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        
+        tableView.emptyDataSetView { [weak self] view in
+            let holder = self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, nil,"empty_no_data_img") as? TableViewNoDataPlaceHolder
+            holder?.descriptionLabel.text = Localized("empty_string_delegation_record")
+            view.customView(holder)
+        }
         tableView.mj_header = refreshHeader
         tableView.mj_footer = refreshFooter
         tableView.mj_header.beginRefreshing()
@@ -122,6 +127,7 @@ extension DelegateRecordViewController {
                     self?.tableView.reloadData()
                     
                 case .fail(_, _):
+                    self?.tableView.mj_footer.isHidden = true
                     break
                 }
                 

@@ -81,4 +81,18 @@ extension NodeDetail {
     var bRate: String {
         return String(format: "%02f", (Int(blockRate ?? "0") ?? 0) / 10000) + "%"
     }
+    
+    var websiteForDisplay: String {
+        if (website ?? "").count > 0 {
+            return website!
+        }
+        return "--"
+    }
+    
+    var institutionalForDisplay: String {
+        if (intro ?? "").count > 0 {
+            return intro!
+        }
+        return "--"
+    }
 }

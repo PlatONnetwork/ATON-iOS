@@ -186,7 +186,7 @@ extension AssetTransactionViewControllerV060{
                 }
                 
                 if beginSequence != -1 && direction == "new" {
-                    AssetService.sharedInstace.fetchWalletBanlance()
+                    AssetService.sharedInstace.fetchWalletBalanceForV7(nil)
                 }
 
                 guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else {

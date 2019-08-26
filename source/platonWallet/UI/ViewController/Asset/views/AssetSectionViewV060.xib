@@ -32,9 +32,15 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JaI-Nk-WUW">
-                            <rect key="frame" x="76" y="43" width="283" height="16"/>
+                            <rect key="frame" x="76" y="43" width="12.5" height="16"/>
                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                             <color key="textColor" red="0.53725490200000003" green="0.54901960780000003" blue="0.61960784310000006" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7ME-5K-PvQ">
+                            <rect key="frame" x="93.5" y="44" width="265.5" height="14.5"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <nil key="textColor"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YtF-bK-ccn" userLabel="backupContainer">
@@ -86,7 +92,7 @@
                     </subviews>
                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstAttribute="trailing" secondItem="JaI-Nk-WUW" secondAttribute="trailing" constant="16" id="6fF-5n-mU5"/>
+                        <constraint firstItem="7ME-5K-PvQ" firstAttribute="leading" secondItem="JaI-Nk-WUW" secondAttribute="trailing" constant="5" id="8ef-5w-c18"/>
                         <constraint firstAttribute="trailing" secondItem="YtF-bK-ccn" secondAttribute="trailing" constant="16" id="ADQ-fN-Mwg"/>
                         <constraint firstItem="dUe-qb-Kw8" firstAttribute="leading" secondItem="RBA-1D-dQA" secondAttribute="trailing" constant="9" id="C8S-PX-xDa"/>
                         <constraint firstItem="dUe-qb-Kw8" firstAttribute="top" secondItem="iyZ-zG-P41" secondAttribute="top" constant="16" id="IbL-mP-1wq"/>
@@ -97,8 +103,10 @@
                         <constraint firstItem="YtF-bK-ccn" firstAttribute="leading" secondItem="dUe-qb-Kw8" secondAttribute="trailing" constant="16" id="guC-ea-d4t"/>
                         <constraint firstItem="JaI-Nk-WUW" firstAttribute="leading" secondItem="RBA-1D-dQA" secondAttribute="trailing" constant="9" id="l2S-DZ-iJF"/>
                         <constraint firstAttribute="trailing" secondItem="5u6-NX-WT2" secondAttribute="trailing" id="rSG-jJ-FEb"/>
+                        <constraint firstItem="7ME-5K-PvQ" firstAttribute="centerY" secondItem="JaI-Nk-WUW" secondAttribute="centerY" id="tt0-Jc-cIH"/>
                         <constraint firstItem="YtF-bK-ccn" firstAttribute="centerY" secondItem="dUe-qb-Kw8" secondAttribute="centerY" id="unB-AL-Fsu"/>
                         <constraint firstItem="5u6-NX-WT2" firstAttribute="leading" secondItem="iyZ-zG-P41" secondAttribute="leading" constant="76" id="vNb-B6-LJ0"/>
+                        <constraint firstAttribute="trailing" secondItem="7ME-5K-PvQ" secondAttribute="trailing" constant="16" id="x4q-UG-GKy"/>
                         <constraint firstAttribute="height" constant="79" id="yTH-c7-OwQ"/>
                     </constraints>
                 </view>
@@ -286,6 +294,7 @@
                 <outlet property="bottomSepline" destination="ULC-LE-m7o" id="QeB-I2-o0x"/>
                 <outlet property="forgroundView" destination="X6A-zj-QKK" id="vYL-vP-3pw"/>
                 <outlet property="grayoutBackground" destination="X6A-zj-QKK" id="y3E-Dz-RHh"/>
+                <outlet property="lockedBalanceLabel" destination="7ME-5K-PvQ" id="MT2-03-9LP"/>
                 <outlet property="receiveIcon" destination="OhS-bL-cIE" id="vOo-UM-4RS"/>
                 <outlet property="recvLabel" destination="9bw-ND-ur4" id="aSU-bz-YKu"/>
                 <outlet property="sendIcon" destination="ZUm-vB-LQb" id="Lce-Xe-24I"/>

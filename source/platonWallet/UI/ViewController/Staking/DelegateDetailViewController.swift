@@ -83,26 +83,18 @@ class DelegateDetailViewController: BaseViewController {
 }
 
 extension DelegateDetailViewController {
-    private func testWithdrawDelegate() {
-        let node = Node(nodeId: "411a6c3640b6cd13799e7d4ed286c95104e3a31fbb05d7ae0004463db648f26e93f7f5848ee9795fb4bbb5f83985afd63f750dc4cf48f53b0e84d26d6834c20c", ranking: 0, name: "ataadd", deposit: "", url: "", ratePA: "", nStatus: NodeStatus.Active, isInit: false)
-        let controller = WithDrawViewController()
-        controller.currentNode = node
-        controller.stakingBlockNum = "4684"
-        controller.currentAddress = (AssetVCSharedData.sharedData.selectedWallet as! Wallet).key?.address
-        navigationController?.pushViewController(controller, animated: true)
-    }
     
     private func gotoDelgateController(_ dDetail: DelegateDetail) {
         let controller = DelegateViewController()
         controller.currentNode = dDetail.delegateToNode()
+        controller.currentAddress = delegate?.walletAddress
         navigationController?.pushViewController(controller, animated: true)
     }
     
     private func gotoWithdrawController(_ dDetail: DelegateDetail) {
         let controller = WithDrawViewController()
         controller.currentNode = dDetail.delegateToNode()
-        controller.stakingBlockNum = dDetail.stakingBlockNum
-        controller.currentAddress = (AssetVCSharedData.sharedData.selectedWallet as! Wallet).key?.address
+        controller.currentAddress = delegate?.walletAddress
         navigationController?.pushViewController(controller, animated: true)
     };
     
@@ -190,8 +182,6 @@ extension DelegateDetailViewController: UITableViewDelegate, UITableViewDataSour
 
 extension DelegateDetailViewController {
     @objc private func doubtTapAction() {
-        testWithdrawDelegate()
-        return
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.paragraphSpacing = 10
         

@@ -160,13 +160,13 @@ final class StakingService: BaseService {
     
     func getDelegationValue(
         addr: String,
-        stakingBlockNum: String,
+        nodeId: String,
         completion: PlatonCommonCompletion?) {
         var completion = completion
         
         var parameters: [String: Any] = [:]
         parameters["addr"] = addr
-        parameters["stakingBlockNum"] = stakingBlockNum
+        parameters["nodeId"] = nodeId
         
         let url = SettingService.debugBaseURL + "node/getDelegationValue"
         
@@ -181,7 +181,7 @@ final class StakingService: BaseService {
             case .success(let data):
                 do {
                     let decoder = JSONDecoder()
-                    let response = try decoder.decode(JSONResponse<DelegationValue>.self, from: data)
+                    let response = try decoder.decode(JSONResponse<[DelegationValue]>.self, from: data)
                     self.successCompletionOnMain(obj: response.data as AnyObject, completion: &completion)
                 } catch let err {
                     self.failCompletionOnMainThread(code: -1, errorMsg: err.localizedDescription, completion: &completion)
@@ -238,9 +238,9 @@ extension StakingService {
         web3.staking.createDelegate(typ: typ, nodeId: nodeId, amount: amount, sender: sender, privateKey: privateKey) { (result, data) in
             switch result {
             case .success:
-                if let data = data as? Data {
+                if let hashData = data {
                     let transaction = Transaction()
-                    transaction.txhash = data.toHexString()
+                    transaction.txhash = hashData.toHexString()
                     transaction.from = sender
                     transaction.txType = .delegateCreate
                     transaction.toType = .contract

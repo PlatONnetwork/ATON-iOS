@@ -14,14 +14,16 @@ class NodePersistence {
     public class func add(nodes: [Node], _ completion: (() -> Void)?) {
         let _ = nodes.map { $0.chainUrl = SettingService.getCurrentNodeURLString() }
         
-        RealmWriteQueue.sync {
+        RealmWriteQueue.async {
             autoreleasepool(invoking: {
                 let realm = RealmHelper.getNewRealm()
                 realm.beginWrite()
                 realm.delete(realm.objects(Node.self))
                 realm.add(nodes, update: true)
                 try? realm.commitWrite()
-                completion?()
+                DispatchQueue.main.async {
+                    completion?()
+                }
             })
         }
     }
@@ -32,7 +34,7 @@ class NodePersistence {
             SortDescriptor(keyPath: isRankingSorted ? "ranking" : "ratePA", ascending: true),
             SortDescriptor(keyPath: isRankingSorted ? "ratePA" : "ranking", ascending: true)
         ]
-        
+        RealmInstance!.refresh()
         let r = RealmInstance!.objects(Node.self).filter(predicate).sorted(by: sortPropertis)
         return Array(r)
     }

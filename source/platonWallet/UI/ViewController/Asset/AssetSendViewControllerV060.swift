@@ -177,11 +177,15 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
         self.walletAddressView.backgroundColor = commonbgcolor
         self.feeView.backgroundColor = commonbgcolor
         self.feeView.levelView.backgroundColor = commonbgcolor
+        
+        AnalysisHelper.handleEvent(id: event_send, operation: .begin)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         self.cleanInputEmptyErrorState()
+        
+        AnalysisHelper.handleEvent(id: event_send, operation: .cancel)
     }
     
     func cleanInputEmptyErrorState(){
@@ -209,10 +213,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
         self.estimateMemoGas()
         if let obj = AssetVCSharedData.sharedData.selectedWallet as? Wallet{
             self.balanceLabel.text = Localized("transferVC_transfer_balance") + obj.balanceDescription()
-        }else if let obj = AssetVCSharedData.sharedData.selectedWallet as? SWallet{
-            self.balanceLabel.text = Localized("transferVC_transfer_balance") + obj.balanceDescription()
         }
-        
     }
     
     //MARK: - Notification
@@ -628,19 +629,20 @@ extension AssetSendViewControllerV060{
         let _ = self.checkConfirmButtonAvailable()
     }
     
-    func getAvailbleBalance() -> BigUInt{
-        let balanceObj = AssetService.sharedInstace.assets[AssetVCSharedData.sharedData.selectedWalletAddress!]
-        if balanceObj == nil {
-            return BigUInt("0")!
-        }
-        //8 digits after the decimal point
-        let floorBalance = balanceObj??.balance?.floorToDecimal(round: (18 - 8))
-        return floorBalance!
+    func getAvailbleBalance() -> BigUInt {
+        guard
+            let balance = AssetService.sharedInstace.balances.first(where: { $0.addr.lowercased() == AssetVCSharedData.sharedData.selectedWalletAddress?.lowercased() }),
+            let freeString = balance.free,
+            let freeBalanceValue = BigUInt(freeString) else { return BigUInt.zero }
+        
+        return freeBalanceValue.floorToDecimal(round: (18 - 8))
     }
     
     //MARK: - Transfer
     
     func doClassicTransfer(pri: String, data: AnyObject?){
+        
+        AnalysisHelper.handleEvent(id: event_send, operation: .end)
         
         let from = AssetVCSharedData.sharedData.cWallet?.key?.address
         let to = self.walletAddressView.textField.text!

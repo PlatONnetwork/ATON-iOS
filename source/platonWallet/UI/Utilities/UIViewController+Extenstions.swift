@@ -247,10 +247,15 @@ extension UIViewController {
                         AssetViewControllerV060.getInstance()?.showLoadingHUD()
                     })
                     
-                    completion?(pri)
+                    DispatchQueue.main.async {
+                        completion?(pri)
+                    }
+                    
                     alertVC.dismissWithCompletion()
                 }else{
-                    completion?(nil)
+                    DispatchQueue.main.async {
+                        completion?(nil)
+                    }
                     alertVC.showInputErrorTip(string: (err?.errorDescription)!)
                     alertVC.hideLoadingHUD()
                 }
@@ -258,13 +263,23 @@ extension UIViewController {
             return false
             
         }) { (_, _) -> (Bool) in
-            completion?(nil)
+            DispatchQueue.main.async {
+                completion?(nil)
+            }
             return true
         }
         alertVC.style = style
         alertVC.showInViewController(viewController: self)
         
         return
+    }
+}
+
+extension UIViewController {
+    var indexOfViewControllers: Int {
+        guard let navigationController = self.parent as? UINavigationController else { return 0 }
+        guard let index = navigationController.viewControllers.index(of: self) else { return 0 }
+        return index
     }
 }
 

@@ -34,7 +34,7 @@
 "wallet_pswConfirmInput_mismatch_tips" = "Password don't match !";
 
 //createWalletVC
-"createWalletVC_title" = "Create Classic Wallet";
+"createWalletVC_title" = "Create Wallet";
 "createWalletVC_walletName" = "Name:";
 "createWalletVC_password" = "Password:";
 "createWalletVC_pswStrength" = "Strength";
@@ -179,7 +179,7 @@
 "importKeystoreVC_keystore_empty_tips" = "Keystore can't be empty !";
 
 //importWalletVC
-"importWalletVC_title" = "Import Classic Wallet";
+"importWalletVC_title" = "Import Wallet";
 "importWalletVC_tab_keystore" = "Keystore";
 "importWalletVC_tab_mnemonic" = "Mnemonic phrase";
 "importWalletVC_tab_privateKey" = "Private Key";
@@ -309,8 +309,8 @@
 
 //AddWalletMenuVC
 
-"AddWalletMenuVC_createIndividualWallet_title" = "Create Classic Wallet";
-"AddWalletMenuVC_importIndividualWallet_title" = "Import Classic Wallet";
+"AddWalletMenuVC_createIndividualWallet_title" = "Create Wallet";
+"AddWalletMenuVC_importIndividualWallet_title" = "Import Wallet";
 
 "Invalid password" = "Password Incorrect";
 "Invalid wallet" = "Invalid wallet";
@@ -325,8 +325,8 @@
 
 //WalletEmptyView
 "IndividualWallet_EmptyView_tips" = "No Classic Wallet yet.";
-"IndividualWallet_EmptyView_createBtn_title" = "Create Classic Wallet";
-"IndividualWallet_EmptyView_importBtn_title" = "Import Classic Wallet";
+"IndividualWallet_EmptyView_createBtn_title" = "Create Wallet";
+"IndividualWallet_EmptyView_importBtn_title" = "Import Wallet";
 
 
 
@@ -833,3 +833,15 @@
 
 "empty_string_my_delegates_left" = "View all validators, ";
 "empty_string_my_delegates_right" = "Delegate";
+
+"empty_string_validator" = "No Validators";
+"empty_string_delegation_record" = "No Delegations";
+
+"service_agreement_title" = "Service agreement";
+"service_agreement_selected_text" = "I have read and agree to the above agreement";
+"service_agreement_button_next" = "Next";
+
+"asset_alert_restricted_info" = "Non tradable LAT，but can be delegated";
+
+"staking_input_amount_minlimit_error" = "The Amount cannot be less than 10 LAT";
+"staking_input_amount_maxlimit_error" = "Insufficient balance, unable to delegate";

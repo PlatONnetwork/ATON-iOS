@@ -41,6 +41,7 @@ target 'platonWallet' do
   
   pod 'UMCCommon'
   pod 'UMCAnalytics'
+  pod 'UMCCommonLog'
 
   target 'platonWalletTests' do
       inherit! :search_paths

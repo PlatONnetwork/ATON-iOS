@@ -36,9 +36,6 @@ extension TransactionService {
         request.timeoutInterval = requestTimeout
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue(SettingService.getChainID(), forHTTPHeaderField: "x-aton-cid")
-        Alamofire.request(request).responseString { str in
-            print("getBatchVoteTransaction response:\(str)")
-        }
         
         Alamofire.request(request).responseData { response in
             switch response.result {
@@ -82,10 +79,6 @@ extension TransactionService {
         request.timeoutInterval = requestTimeout
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue(SettingService.getChainID(), forHTTPHeaderField: "x-aton-cid")
-        
-        Alamofire.request(request).responseString { str in
-            print("getDelegateRecord response:\(str)")
-        }
         
         Alamofire.request(request).responseData { response in
             switch response.result {

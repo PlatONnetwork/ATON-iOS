@@ -17,8 +17,9 @@ extension Delegate {
     }
     
     var balance: String {
-        let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.key?.address == walletAddress }.first
-        return localWallet?.balance ?? "0.00"
+//        let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.key?.address == walletAddress }.first
+//        return localWallet?.balance ?? "0.00"
+        return (availableDelegationBalance ?? "0.00").vonToLATString
     }
     
     var walletAvatar: UIImage? {

@@ -23,81 +23,82 @@ class AssetService : BaseService{
     
     var querying : Bool = false
     
-    func getBalances(addresses : [WalletBalance],completion : @escaping AssetQueryCompletion) {
-        let queue = DispatchQueue(label: "getBalances")
-        let semaphore = DispatchSemaphore(value: 0)
-        var balances : [WalletBalance] = []
-        
-        queue.async {
-            for balanceObj in addresses {
-                guard balanceObj != nil, balanceObj.address != nil else{
-                    continue
-                }
-                self.getBalance(address: balanceObj.address!) { result,balance in
-                    
-                    switch result{
-                        
-                    case .success:
-                        balance?.walletType = balanceObj.walletType
-                        balances.append(balance!)
-                        semaphore.signal()
-                    case .fail(_, _):
-                        DispatchQueue.main.async {
-                            completion(PlatonCommonResult.fail(-3200,""),balances)
-                        }
-                        semaphore.signal()
-                    }
-                }
-                
-                if  semaphore.wait(timeout: .now() + 10) == .success{
-                    continue
-                }else{
-                    break
-                }
-            }
-            
-            DispatchQueue.main.async {
-                completion(.success,balances)
-            }
-        }
-
-    }
+//    func getBalances(addresses : [WalletBalance],completion : @escaping AssetQueryCompletion) {
+//        let queue = DispatchQueue(label: "getBalances")
+//        let semaphore = DispatchSemaphore(value: 0)
+//        var balances : [WalletBalance] = []
+//
+//        queue.async {
+//            for balanceObj in addresses {
+//                guard balanceObj != nil, balanceObj.address != nil else{
+//                    continue
+//                }
+//                self.getBalance(address: balanceObj.address!) { result,balance in
+//
+//                    switch result{
+//
+//                    case .success:
+//                        balance?.walletType = balanceObj.walletType
+//                        balances.append(balance!)
+//                        semaphore.signal()
+//                    case .fail(_, _):
+//                        DispatchQueue.main.async {
+//                            completion(PlatonCommonResult.fail(-3200,""),balances)
+//                        }
+//                        semaphore.signal()
+//                    }
+//                }
+//
+//                if  semaphore.wait(timeout: .now() + 10) == .success{
+//                    continue
+//                }else{
+//                    break
+//                }
+//            }
+//
+//            DispatchQueue.main.async {
+//                completion(.success,balances)
+//            }
+//        }
+//
+//    }
     
     // MARK: - Initialization
     
     public override init(){
         super.init()
-        fetchWalletBanlance()
+//        fetchWalletBanlance()
+        fetchWalletBalanceForV7(nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(OnDidSwitchNode), name: NSNotification.Name(NodeStoreService.didSwitchNodeNotification), object: nil)
     }
     
-    func getBalance(address : String,completion : @escaping (_ result : PlatonCommonResult, _ balance : WalletBalance?) -> ()) {
-        var ea : EthereumAddress?
-        do {
-            ea = try EthereumAddress(hex: address, eip55: false)
-        } catch {
-            
-        }
-        DispatchQueue.main.async { 
-            web3.platon.getBalance(address: ea!, block: .latest) { resp in
-                DispatchQueue.main.async {
-                    switch resp.status{
-                    case .success(_):
-                        let wbalance = WalletBalance()
-                        wbalance.address = address
-                        wbalance.balance = resp.result!.quantity
-                        self.assets[address] = wbalance
-                        completion(PlatonCommonResult.success,wbalance)
-                    case .failure(_):
-                        completion(PlatonCommonResult.fail(-1, resp.getErrorLocalizedDescription()),nil)
-                        return
-                        
-                    }
-                }
-            }
-        }
-    }
+//    func getBalance(address : String,completion : @escaping (_ result : PlatonCommonResult, _ balance : WalletBalance?) -> ()) {
+//        var ea : EthereumAddress?
+//        do {
+//            ea = try EthereumAddress(hex: address, eip55: false)
+//        } catch {
+//
+//        }
+//        DispatchQueue.main.async {
+//            web3.platon.getBalance(address: ea!, block: .latest) { resp in
+//                DispatchQueue.main.async {
+//                    switch resp.status{
+//                    case .success(_):
+//                        let wbalance = WalletBalance()
+//                        wbalance.address = address
+//                        wbalance.balance = resp.result!.quantity
+//                        self.assets[address] = wbalance
+//                        completion(PlatonCommonResult.success,wbalance)
+//                    case .failure(_):
+//                        completion(PlatonCommonResult.fail(-1, resp.getErrorLocalizedDescription()),nil)
+//                        return
+//
+//                    }
+//                }
+//            }
+//        }
+//    }
     
     func fetchWalletBalanceForV7(_ completion: PlatonCommonCompletion?) {
         let completion = completion
@@ -109,6 +110,7 @@ class AssetService : BaseService{
             case .success:
                 if let newData = data as? [Balance] {
                     self?.balances = newData
+                    NotificationCenter.default.post(name: Notification.Name(DidUpdateAllAssetNotification), object: nil)
                     completion?(PlatonCommonResult.success, newData as AnyObject)
                 } else {
                     completion?(PlatonCommonResult.success, nil)
@@ -120,49 +122,49 @@ class AssetService : BaseService{
     }
     
     
-    // MARK: - Timer
-    
-    @objc func fetchWalletBanlance(){
-        if querying {
-            return
-        }
-        querying = true
-        let wallets = WalletService.sharedInstance.wallets
-        var addresses : [WalletBalance] = []
-        
-        for wallet in wallets{
-            let balance = WalletBalance()
-            balance.address = wallet.key?.address
-            balance.walletType = WalletType.ClassicWallet
-            addresses.append(balance)
-        }
-        
-        getBalances(addresses: addresses) { (result, banlance) in
-            switch result{
-            case .success?:
-                do {
-                    NotificationCenter.default.post(name: Notification.Name(DidUpdateAllAssetNotification), object: nil)
-                    self.querying = false
-                }
-                
-            case .fail( _, _)?:
-                do{
-                    self.querying = false
-                }
-                
-            case .none:
-                do{
-                    self.querying = false
-                }
-                
-            }
-        }
-    }
+//    // MARK: - Timer
+//
+//    @objc func fetchWalletBanlance(){
+//        if querying {
+//            return
+//        }
+//        querying = true
+//        let wallets = WalletService.sharedInstance.wallets
+//        var addresses : [WalletBalance] = []
+//
+//        for wallet in wallets{
+//            let balance = WalletBalance()
+//            balance.address = wallet.key?.address
+//            balance.walletType = WalletType.ClassicWallet
+//            addresses.append(balance)
+//        }
+//
+//        getBalances(addresses: addresses) { (result, banlance) in
+//            switch result{
+//            case .success?:
+//                do {
+//                    NotificationCenter.default.post(name: Notification.Name(DidUpdateAllAssetNotification), object: nil)
+//                    self.querying = false
+//                }
+//
+//            case .fail( _, _)?:
+//                do{
+//                    self.querying = false
+//                }
+//
+//            case .none:
+//                do{
+//                    self.querying = false
+//                }
+//
+//            }
+//        }
+//    }
     
     //MARK: - Notification
     @objc func OnDidSwitchNode(){
-        assets.removeAll()
+//        assets.removeAll()
     }
-    
-    
 }
+
+
