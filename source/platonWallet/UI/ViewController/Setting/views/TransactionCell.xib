@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -31,16 +31,10 @@
                         <color key="textColor" red="0.38039215686274508" green="0.39215686274509803" blue="0.43137254901960786" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xxp-4V-yR3">
-                        <rect key="frame" x="291" y="16" width="13" height="17"/>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="--" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xxp-4V-yR3">
+                        <rect key="frame" x="57" y="16" width="247" height="17"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HoS-aE-kS0">
-                        <rect key="frame" x="293" y="41" width="11" height="13.5"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                        <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RLN-6b-c57" userLabel="sepline">
@@ -57,7 +51,7 @@
                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 <constraints>
                     <constraint firstItem="Ka6-yJ-EqX" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="0l6-or-kTu"/>
-                    <constraint firstItem="HoS-aE-kS0" firstAttribute="top" secondItem="xxp-4V-yR3" secondAttribute="bottom" constant="8" id="HaA-gL-3Bn"/>
+                    <constraint firstItem="xxp-4V-yR3" firstAttribute="leading" secondItem="9yu-sZ-6QS" secondAttribute="trailing" constant="30" id="Hyr-pZ-fj4"/>
                     <constraint firstItem="9yu-sZ-6QS" firstAttribute="top" secondItem="Ka6-yJ-EqX" secondAttribute="bottom" constant="8" id="UFg-qq-k01"/>
                     <constraint firstItem="Ka6-yJ-EqX" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="16" id="fG3-22-qZL"/>
                 </constraints>
@@ -67,18 +61,16 @@
                 <constraint firstItem="9yu-sZ-6QS" firstAttribute="leading" secondItem="njF-e1-oar" secondAttribute="leading" constant="16" id="9KL-mN-qpT"/>
                 <constraint firstItem="RLN-6b-c57" firstAttribute="leading" secondItem="njF-e1-oar" secondAttribute="leading" constant="16" id="C1r-3N-imJ"/>
                 <constraint firstItem="njF-e1-oar" firstAttribute="trailing" secondItem="RLN-6b-c57" secondAttribute="trailing" constant="16" id="ipF-Yj-i9i"/>
-                <constraint firstItem="njF-e1-oar" firstAttribute="trailing" secondItem="HoS-aE-kS0" secondAttribute="trailing" constant="16" id="nk0-uo-cCd"/>
                 <constraint firstItem="xxp-4V-yR3" firstAttribute="top" secondItem="njF-e1-oar" secondAttribute="top" constant="16" id="ufF-Vj-waO"/>
                 <constraint firstItem="njF-e1-oar" firstAttribute="trailing" secondItem="xxp-4V-yR3" secondAttribute="trailing" constant="16" id="yfm-Di-uzm"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="amoutLabel" destination="xxp-4V-yR3" id="q5F-g3-GxO"/>
-                <outlet property="statusLabel" destination="HoS-aE-kS0" id="OdY-HF-mRA"/>
                 <outlet property="timeLabel" destination="9yu-sZ-6QS" id="EWF-Om-lzt"/>
                 <outlet property="typeLabel" destination="Ka6-yJ-EqX" id="83Z-bK-27a"/>
             </connections>
-            <point key="canvasLocation" x="40" y="58.020989505247378"/>
+            <point key="canvasLocation" x="-77" y="67"/>
         </tableViewCell>
     </objects>
 </document>

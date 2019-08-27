@@ -130,6 +130,7 @@
 		819A522D2190367400E4C500 /* UINavigationItem+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819A522C2190367300E4C500 /* UINavigationItem+Extensions.swift */; };
 		819A52302190623400E4C500 /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819A522F2190623400E4C500 /* LaunchViewController.swift */; };
 		819A52322190661D00E4C500 /* UIDevice+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819A52312190661D00E4C500 /* UIDevice+Extensions.swift */; };
+		81A8BF78231509FD00B3F521 /* ATONConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81A8BF77231509FD00B3F521 /* ATONConfig.swift */; };
 		81ACB9CA2301371900BB460B /* NodeModel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81ACB9C92301371900BB460B /* NodeModel+Extension.swift */; };
 		81ACB9CC2301936D00BB460B /* WalletBaseInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81ACB9CB2301936D00BB460B /* WalletBaseInfoView.swift */; };
 		81ACB9CE2302A59300BB460B /* Transaction+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81ACB9CD2302A59300BB460B /* Transaction+Extension.swift */; };
@@ -500,12 +501,10 @@
 		819333FE223FD08600DCFD93 /* AssetPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPageViewController.swift; sourceTree = "<group>"; };
 		8193340022408DDC00DCFD93 /* AssetVCSharedData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetVCSharedData.swift; sourceTree = "<group>"; };
 		819334022241EC3E00DCFD93 /* CandidateScrollContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandidateScrollContainer.swift; sourceTree = "<group>"; };
-		819A433A21D089A500E276C7 /* Candidate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Candidate.swift; sourceTree = "<group>"; };
 		819A434221D1FE2300E276C7 /* VoteManager+builder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VoteManager+builder.swift"; sourceTree = "<group>"; };
 		819A434321D1FE2300E276C7 /* IPQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IPQuery.swift; sourceTree = "<group>"; };
 		819A434421D1FE2300E276C7 /* VoteManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VoteManager.swift; sourceTree = "<group>"; };
 		819A434821D1FE3500E276C7 /* IPGeoInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IPGeoInfo.swift; sourceTree = "<group>"; };
-		819A434A21D1FEA700E276C7 /* NodeVoteSummary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeVoteSummary.swift; sourceTree = "<group>"; };
 		819A434E21D1FF3000E276C7 /* Ticket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ticket.swift; sourceTree = "<group>"; };
 		819A435021D235E800E276C7 /* VotePersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VotePersistence.swift; sourceTree = "<group>"; };
 		819A5220218FF45400E4C500 /* LocalizationProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalizationProtocol.swift; sourceTree = "<group>"; };
@@ -515,6 +514,7 @@
 		819A522C2190367300E4C500 /* UINavigationItem+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UINavigationItem+Extensions.swift"; sourceTree = "<group>"; };
 		819A522F2190623400E4C500 /* LaunchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchViewController.swift; sourceTree = "<group>"; };
 		819A52312190661D00E4C500 /* UIDevice+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIDevice+Extensions.swift"; sourceTree = "<group>"; };
+		81A8BF77231509FD00B3F521 /* ATONConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ATONConfig.swift; sourceTree = "<group>"; };
 		81ACB9C92301371900BB460B /* NodeModel+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NodeModel+Extension.swift"; sourceTree = "<group>"; };
 		81ACB9CB2301936D00BB460B /* WalletBaseInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletBaseInfoView.swift; sourceTree = "<group>"; };
 		81ACB9CD2302A59300BB460B /* Transaction+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Transaction+Extension.swift"; sourceTree = "<group>"; };
@@ -538,7 +538,6 @@
 		81C98FCA22A529E7004B1668 /* MJRefreshAutoStateFooter+Localize.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "MJRefreshAutoStateFooter+Localize.m"; sourceTree = "<group>"; };
 		81CB8ADA228A9564009E8AA0 /* TransactionService+Centralization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TransactionService+Centralization.swift"; sourceTree = "<group>"; };
 		81CB8ADC228EA99B009E8AA0 /* TransactionResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionResponse.swift; sourceTree = "<group>"; };
-		81CD5519229278A800A961B7 /* CandidateResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandidateResponse.swift; sourceTree = "<group>"; };
 		81D16B5921832AE200A283AF /* QRScannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRScannerViewController.swift; sourceTree = "<group>"; };
 		81D7E24022E7F5610069CDED /* PTSButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PTSButtonCell.swift; sourceTree = "<group>"; };
 		81D7E24122E7F5610069CDED /* PTSButtonCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PTSButtonCell.xib; sourceTree = "<group>"; };
@@ -648,10 +647,7 @@
 		9AA49EED22706572001ABB44 /* RealmWriteThread.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmWriteThread.swift; sourceTree = "<group>"; };
 		9AC60C11224E37FB00A5ED6A /* CreateAndInputWalletCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAndInputWalletCollectionViewCell.swift; sourceTree = "<group>"; };
 		9AC60C12224E37FB00A5ED6A /* CreateAndInputWalletCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CreateAndInputWalletCollectionViewCell.xib; sourceTree = "<group>"; };
-		9AC86E98224A1E6000315A79 /* VoteOverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoteOverView.swift; sourceTree = "<group>"; };
 		9AC86E9A224A1EE000315A79 /* VoteManager+Centralization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VoteManager+Centralization.swift"; sourceTree = "<group>"; };
-		9AC86E9E224A28D200315A79 /* CandidateParserContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandidateParserContainer.swift; sourceTree = "<group>"; };
-		9AC86EA0224A28F800315A79 /* NodeVoteSummaryParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeVoteSummaryParser.swift; sourceTree = "<group>"; };
 		9AC86EA2224B67D000315A79 /* JointWalletCreationFeeConfirmView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JointWalletCreationFeeConfirmView.swift; sourceTree = "<group>"; };
 		9AD11DDC21806C2D002CD905 /* CommonService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonService.swift; sourceTree = "<group>"; };
 		9AD11DDF218171CA002CD905 /* BackupMnemonicViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupMnemonicViewController.swift; sourceTree = "<group>"; };
@@ -1087,13 +1083,9 @@
 		819A433821D085E000E276C7 /* Vote */ = {
 			isa = PBXGroup;
 			children = (
-				819A433A21D089A500E276C7 /* Candidate.swift */,
 				819A434821D1FE3500E276C7 /* IPGeoInfo.swift */,
-				819A434A21D1FEA700E276C7 /* NodeVoteSummary.swift */,
 				819A434E21D1FF3000E276C7 /* Ticket.swift */,
 				81412EB321DC678F008B909C /* SingleVote.swift */,
-				9AC86E98224A1E6000315A79 /* VoteOverView.swift */,
-				81CD5519229278A800A961B7 /* CandidateResponse.swift */,
 			);
 			path = Vote;
 			sourceTree = "<group>";
@@ -1355,7 +1347,6 @@
 			isa = PBXGroup;
 			children = (
 				811AB2D122F16B6900284F1A /* Staking */,
-				9AC86E9C224A28BE00315A79 /* ModelParser */,
 				819A433821D085E000E276C7 /* Vote */,
 				81EE99F121770A58008DF8CB /* Asset */,
 				9AE31427218D981D00B5433F /* Setting */,
@@ -1363,6 +1354,7 @@
 				81EE99F321770A58008DF8CB /* Wallet */,
 				81FCCCDA2179B3F10052FC29 /* AppFramework.swift */,
 				8148F01421BA0E1600045546 /* BaseService.swift */,
+				81A8BF77231509FD00B3F521 /* ATONConfig.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1642,23 +1634,6 @@
 			children = (
 			);
 			path = views;
-			sourceTree = "<group>";
-		};
-		9AC86E9C224A28BE00315A79 /* ModelParser */ = {
-			isa = PBXGroup;
-			children = (
-				9AC86E9D224A28BE00315A79 /* JSON */,
-			);
-			path = ModelParser;
-			sourceTree = "<group>";
-		};
-		9AC86E9D224A28BE00315A79 /* JSON */ = {
-			isa = PBXGroup;
-			children = (
-				9AC86E9E224A28D200315A79 /* CandidateParserContainer.swift */,
-				9AC86EA0224A28F800315A79 /* NodeVoteSummaryParser.swift */,
-			);
-			path = JSON;
 			sourceTree = "<group>";
 		};
 		9AD11DDE21817193002CD905 /* BackupWallet */ = {
@@ -2235,6 +2210,7 @@
 				9AD67AAC2174865300A8432F /* Wallet.swift in Sources */,
 				819A522B2190319A00E4C500 /* UITextView+Extensions.swift in Sources */,
 				81C98FCB22A529E7004B1668 /* MJRefreshAutoStateFooter+Localize.m in Sources */,
+				81A8BF78231509FD00B3F521 /* ATONConfig.swift in Sources */,
 				81FCCD122179E9F20052FC29 /* TransactionService.swift in Sources */,
 				81E2E8582186BA96008B7504 /* AddAddressInfoView.swift in Sources */,
 				9AA49EEE22706572001ABB44 /* RealmWriteThread.swift in Sources */,

@@ -89,7 +89,7 @@ class ServiceAgreementViewController: BaseViewController {
     
     private func loadRequest() {
         showLoadingHUD()
-        let request = URLRequest(url: URL(string: "https://www.baidu.com")!)
+        let request = URLRequest(url: URL(string: ATONConfig.H5URL.lisenceURL.serviceurl)!)
         webView.load(request)
     }
     

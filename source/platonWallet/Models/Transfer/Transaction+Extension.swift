@@ -47,7 +47,10 @@ extension Transaction {
             }
             return wallet.name
         default:
-            return nodeName ?? to?.addressForDisplayShort()
+            if let nName = nodeName, nName.count > 0 {
+                return nName
+            }
+            return to?.addressForDisplayShort()
         }
     }
     

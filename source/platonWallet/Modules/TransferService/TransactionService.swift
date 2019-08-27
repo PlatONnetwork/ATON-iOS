@@ -59,7 +59,7 @@ class TransactionService : BaseService{
     
     @objc func OnPendingTxPolling(){
         self.EnergonTransferPooling()
-        self.VotePolling()
+        self.ContractTransactionsPolling()
     }
     
     func getEthGasPrice(completion: PlatonCommonCompletion?){
@@ -115,19 +115,21 @@ class TransactionService : BaseService{
 
     }
      
-    func VotePolling(){
+    func ContractTransactionsPolling(){
         TransferPersistence.getUnConfirmedTransactions { (txs) in
             for item in txs{
                 guard (item.txhash != nil) else{
                     continue
                 }
-                guard TransanctionType(rawValue: item.transactionType) == .Vote else { 
+                guard item.txType! != .transfer else {
                     continue
                 }
+                
                 let byteCode = try! EthereumData(ethereumValue: item.txhash!)
                 let data = try! EthereumData(ethereumValue: byteCode)
                 let newItem = Transaction.init(value: item)
                 newItem.txhash = item.txhash
+                
                 web3.platon.getTransactionReceipt(transactionHash: data) { (txResp) in
                     switch txResp.status{
                     case .success(let resp): 
@@ -144,41 +146,52 @@ class TransactionService : BaseService{
                             return
                         }  
                         DispatchQueue.main.async {
-                            
-                            guard let dataString = dic?["Data"] as? String,
-                                dataString.split(separator: ":").count == 2,
-                                let validCountStr = String(dataString.split(separator: ":")[0]) as? String,
-                                let priceStr = String(dataString.split(separator: ":")[1]) as? String else{
-                                    return
-                            }
-                            
-                            RealmWriteQueue.async {
-                                autoreleasepool(invoking: {
-                                    let realm = RealmHelper.getNewRealm()
-                                    let hash = newItem.txhash
-                                    
-                                    let singleVote = realm.object(ofType: SingleVote.self, forPrimaryKey: newItem.txhash)
-                                    
-                                    try? realm.write {
-                                        newItem.blockNumber = String(receipt.blockNumber.quantity)
-                                        newItem.gasUsed = String(receipt.gasUsed.quantity)
-                                        newItem.extra = responseJson
-                                        realm.add(newItem, update: true)
-                                        if singleVote != nil{
-                                            singleVote?.deposit = priceStr
-                                            singleVote?.validNum = validCountStr
-                                            realm.add(singleVote!, update: true)
-                                            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: { 
-                                                NotificationCenter.default.post(name: NSNotification.Name(DidUpdateVoteTransactionByHashNotification), object: hash)
-                                                NotificationCenter.default.post(name: NSNotification.Name(DidUpdateTransactionByHashNotification), object: hash)
-                                                
-                                            })
-                                        }
-                                    }
-                                    
+                            guard let status = dic?["Status"] as? Int else { return }
+                            guard let txhash = newItem.txhash else { return }
+                            let blockNumber = String(receipt.blockNumber.quantity)
+                            let gasUsed = String(receipt.gasUsed.quantity)
+                            TransferPersistence.update(txhash: txhash, status: status, blockNumber: blockNumber, gasUsed: gasUsed, {
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+                                    NotificationCenter.default.post(name: NSNotification.Name(DidUpdateVoteTransactionByHashNotification), object: txhash)
+                                    NotificationCenter.default.post(name: NSNotification.Name(DidUpdateTransactionByHashNotification), object: txhash)
                                     
                                 })
-                            }
+                            })
+                            
+//                            guard let dataString = dic?["Data"] as? String,
+//                                dataString.split(separator: ":").count == 2,
+//                                let validCountStr = String(dataString.split(separator: ":")[0]) as? String,
+//                                let priceStr = String(dataString.split(separator: ":")[1]) as? String else{
+//                                    return
+//                            }
+//
+//                            RealmWriteQueue.async {
+//                                autoreleasepool(invoking: {
+//                                    let realm = RealmHelper.getNewRealm()
+//                                    let hash = newItem.txhash
+//
+//                                    let singleVote = realm.object(ofType: SingleVote.self, forPrimaryKey: newItem.txhash)
+//
+//                                    try? realm.write {
+//                                        newItem.blockNumber = String(receipt.blockNumber.quantity)
+//                                        newItem.gasUsed = String(receipt.gasUsed.quantity)
+//                                        newItem.extra = responseJson
+//                                        realm.add(newItem, update: true)
+//                                        if singleVote != nil{
+//                                            singleVote?.deposit = priceStr
+//                                            singleVote?.validNum = validCountStr
+//                                            realm.add(singleVote!, update: true)
+//                                            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+//                                                NotificationCenter.default.post(name: NSNotification.Name(DidUpdateVoteTransactionByHashNotification), object: hash)
+//                                                NotificationCenter.default.post(name: NSNotification.Name(DidUpdateTransactionByHashNotification), object: hash)
+//
+//                                            })
+//                                        }
+//                                    }
+//
+//
+//                                })
+//                            }
                             
                             
                         }

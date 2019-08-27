@@ -212,7 +212,7 @@ class Transaction : Object, Decodable {
     
     var transactionIndex: Int = 0
     
-    var txReceiptStatus: Int = -1 //-1为处理中，兼容本地缓存的数据，后台只返回1：成功 0：失败
+    @objc dynamic var txReceiptStatus: Int = -1 //-1为处理中，兼容本地缓存的数据，后台只返回1：成功 0：失败
     
     //to confirm send or receive
     var senderAddress: String?
@@ -220,12 +220,12 @@ class Transaction : Object, Decodable {
     var toType: TransactionToType = .address
     var direction: TransactionDirection = .unknown
     
-    var nodeName: String?
-    var nodeId: String?
+    @objc dynamic var nodeName: String? = ""
+    @objc dynamic var nodeId: String? = ""
     var lockAddress: String?
     var reportType: String?
     var version: String?
-    var githubId: String?
+    var piDID: String?
     var proposalType: String?
     var vote: String?
     var unDelegation: String?
@@ -244,7 +244,7 @@ class Transaction : Object, Decodable {
                 "lockAddress",
                 "reportType",
                 "version",
-                "githubId",
+                "piDID",
                 "proposalType",
                 "vote",
                 "unDelegation",
@@ -302,7 +302,7 @@ class Transaction : Object, Decodable {
             transactionIndex = index
         }
         
-        txReceiptStatus = (try? container.decode(Int.self, forKey: .txReceiptStatus)) ?? 0
+        txReceiptStatus = (try? container.decode(Int.self, forKey: .txReceiptStatus)) ?? -1
         extra = try? container.decode(String.self, forKey: .extra)
         unDelegation = try? container.decode(String.self, forKey: .unDelegation)
         redeemStatus = try? container.decode(RedeemStatus.self, forKey: .redeemStatus)
@@ -449,6 +449,44 @@ extension Transaction {
             des = "--"
         }
         return (des,color)
+    }
+    
+    func copyTransaction() -> Transaction {
+        let ts = Transaction()
+        ts.txhash = self.txhash
+        ts.nonce = self.nonce
+        ts.blockHash = self.blockHash
+        ts.blockNumber = self.blockNumber
+        ts.from = self.from
+        ts.to = self.to
+        ts.value = self.value
+        ts.gasPrice = self.gasPrice
+        ts.memo = self.memo
+        ts.input = self.input
+        ts.confirmTimes = self.confirmTimes
+        ts.createTime = self.createTime
+        ts.transactionType = self.transactionType
+        ts.extra = self.extra
+        ts.nodeURLStr = self.nodeURLStr
+        ts.sequence = self.sequence
+        ts.txType = self.txType
+        ts.actualTxCost = self.actualTxCost
+        ts.transactionIndex = self.transactionIndex
+        ts.txReceiptStatus = self.txReceiptStatus
+        ts.senderAddress = self.senderAddress
+        ts.toType = self.toType
+        ts.direction = self.direction
+        ts.nodeName = self.nodeName
+        ts.nodeId = self.nodeId
+        ts.lockAddress = self.lockAddress
+        ts.reportType = self.reportType
+        ts.version = self.version
+        ts.piDID = self.piDID
+        ts.proposalType = self.proposalType
+        ts.vote = self.vote
+        ts.unDelegation = self.unDelegation
+        ts.redeemStatus = self.redeemStatus
+        return ts
     }
 }
 

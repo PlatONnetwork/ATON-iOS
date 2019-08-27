@@ -87,6 +87,7 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
     @objc func faqTapAction() {
         let controller = WebCommonViewController()
         controller.navigationTitle = Localized("delegate_faq_title")
+        controller.requestUrl = ATONConfig.H5URL.FAQURL.faqurl
         controller.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(controller, animated: true)
     }
@@ -94,6 +95,7 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
     @objc func tutorialTapAction() {
         let controller = WebCommonViewController()
         controller.navigationTitle = Localized("delegate_tutorial_title")
+        controller.requestUrl = ATONConfig.H5URL.TutorialURL.tutorialurl
         controller.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(controller, animated: true)
     }

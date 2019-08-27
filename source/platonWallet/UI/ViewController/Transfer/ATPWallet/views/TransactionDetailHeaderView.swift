@@ -75,9 +75,9 @@ class TransactionDetailHeaderView: UIView {
         topValueLabel.font = .systemFont(ofSize: 24, weight: .medium)
         baseInfoView.addSubview(topValueLabel)
         topValueLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(16)
-            make.trailing.equalToSuperview().offset(-16)
+            make.centerX.equalToSuperview()
             make.top.equalToSuperview().offset(15)
+            make.height.greaterThanOrEqualTo(24)
         }
 
         let arrowIV = UIImageView()
@@ -268,6 +268,7 @@ class TransactionDetailHeaderView: UIView {
         if let valueString = tx.valueString.0, let color = tx.valueString.1 {
             topValueLabel.text = valueString
             topValueLabel.textColor = color
+            baseInfoTopConstraint?.activate()
         } else {
             topValueLabel.text = nil
             baseInfoTopConstraint?.deactivate()

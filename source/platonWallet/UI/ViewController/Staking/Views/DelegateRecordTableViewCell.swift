@@ -26,7 +26,11 @@ class DelegateRecordTableViewCell: UITableViewCell {
     var transaction: Transaction? {
         didSet {
             nodeAvatarIV.image = transaction?.recordIconIV
-            nodeNameLabel.text = transaction?.nodeName ?? "--"
+            if let nodeName = transaction?.nodeName, nodeName.count > 0 {
+                nodeNameLabel.text = nodeName
+            } else {
+                nodeNameLabel.text = "--"
+            }
             nodeAddressLabel.text = transaction?.nodeId?.addressForDisplay() ?? "--"
             nodeBalanceLabel.text = transaction?.recordAmountForDisplay ?? "--"
             recordStatusLabel.text = transaction?.recordStatus.0

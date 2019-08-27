@@ -230,7 +230,7 @@ extension UIViewController {
         
         let alertVC = AlertStylePopViewController.initFromNib()
         let style = PAlertStyle.passwordInput(walletName: wallet.name)
-        alertVC.onAction(confirm: { [weak self] (text, _) -> (Bool)  in
+        alertVC.onAction(confirm: { (text, _) -> (Bool)  in
             let valid = CommonService.isValidWalletPassword(text ?? "")
             if !valid.0{
                 alertVC.showInputErrorTip(string: valid.1)
@@ -241,24 +241,18 @@ extension UIViewController {
             
             WalletService.sharedInstance.exportPrivateKey(
                 wallet: wallet,
-                password: (alertVC.textFieldInput?.text)!, completion: { (pri, err) in
-                if (err == nil && (pri?.length)! > 0) {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
-                        AssetViewControllerV060.getInstance()?.showLoadingHUD()
-                    })
-                    
+                password: (alertVC.textFieldInput?.text)!,
+                completion: { (pri, err) in
                     DispatchQueue.main.async {
-                        completion?(pri)
+                        alertVC.hideLoadingHUD()
+                        if (err == nil && (pri?.length)! > 0) {
+                            alertVC.dismissWithCompletion()
+                            completion?(pri)
+                        }else{
+                            alertVC.showInputErrorTip(string: (err?.errorDescription)!)
+                            completion?(nil)
+                        }
                     }
-                    
-                    alertVC.dismissWithCompletion()
-                }else{
-                    DispatchQueue.main.async {
-                        completion?(nil)
-                    }
-                    alertVC.showInputErrorTip(string: (err?.errorDescription)!)
-                    alertVC.hideLoadingHUD()
-                }
             })
             return false
             

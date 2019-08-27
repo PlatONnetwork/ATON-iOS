@@ -240,19 +240,27 @@ extension StakingService {
             case .success:
                 if let hashData = data {
                     let transaction = Transaction()
-                    transaction.txhash = hashData.toHexString()
+                    transaction.txhash = hashData.toHexString().add0x()
                     transaction.from = sender
                     transaction.txType = .delegateCreate
                     transaction.toType = .contract
                     transaction.txReceiptStatus = -1
                     transaction.value = amount.description
                     transaction.nodeId = nodeId
-                    completion?(PlatonCommonResult.success, transaction as AnyObject)
+                    DispatchQueue.main.async {
+                        completion?(PlatonCommonResult.success, transaction as AnyObject)
+                    }
+                    
                 } else {
-                    completion?(PlatonCommonResult.success, nil)
+                    DispatchQueue.main.async {
+                        completion?(PlatonCommonResult.success, nil)
+                    }
+                    
                 }
             case .fail(let errCode, let errMsg):
-                completion?(PlatonCommonResult.fail(errCode, errMsg), nil)
+                DispatchQueue.main.async {
+                    completion?(PlatonCommonResult.fail(errCode, errMsg), nil)
+                }
             }
         }
     }
@@ -266,21 +274,27 @@ extension StakingService {
         web3.staking.withdrewDelegate(stakingBlockNum: stakingBlockNum, nodeId: nodeId, amount: amount, sender: sender, privateKey: privateKey) { (result, data) in
             switch result {
             case .success:
-                if let data = data as? Data {
+                if let hashData = data {
                     let transaction = Transaction()
-                    transaction.txhash = data.toHexString()
+                    transaction.txhash = hashData.toHexString().add0x()
                     transaction.from = sender
-                    transaction.txType = .delegateCreate
+                    transaction.txType = .delegateWithdraw
                     transaction.toType = .contract
                     transaction.txReceiptStatus = -1
                     transaction.value = amount.description
                     transaction.nodeId = nodeId
-                    completion?(PlatonCommonResult.success, transaction as AnyObject)
+                    DispatchQueue.main.async {
+                        completion?(PlatonCommonResult.success, transaction as AnyObject)
+                    }
                 } else {
-                    completion?(PlatonCommonResult.success, nil)
+                    DispatchQueue.main.async {
+                        completion?(PlatonCommonResult.success, nil)
+                    }
                 }
             case .fail(let errCode, let errMsg):
-                completion?(PlatonCommonResult.fail(errCode, errMsg), nil)
+                DispatchQueue.main.async {
+                    completion?(PlatonCommonResult.fail(errCode, errMsg), nil)
+                }
             }
         }
     }

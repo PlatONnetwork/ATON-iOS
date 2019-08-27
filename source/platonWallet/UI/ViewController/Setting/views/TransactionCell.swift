@@ -13,12 +13,10 @@ class TransactionCell: UITableViewCell {
     
     @IBOutlet weak var typeLabel: UILabel!
     
-    
     @IBOutlet weak var timeLabel: UILabel!
     
     @IBOutlet weak var amoutLabel: UILabel!
     
-    @IBOutlet weak var statusLabel: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
         contentView.backgroundColor = normal_background_color
@@ -28,7 +26,11 @@ class TransactionCell: UITableViewCell {
 
     
     func updateCell(tx : Transaction){
-        updateTransactionStatus(tx: tx)
+        if tx.txType == .unknown || tx.txType == .transfer {
+            typeLabel.text = tx.transactionStauts.localizeTitle
+        } else {
+            typeLabel.text = tx.txType?.localizeTitle
+        }
         timeLabel.text = Date.toStanderTimeDescrition(millionSecondsTimeStamp: tx.confirmTimes)
         
         switch tx.transactionStauts {
@@ -39,34 +41,7 @@ class TransactionCell: UITableViewCell {
         case .voting,.voteSucceed,.voteFailed:
             amoutLabel.text = "-" + (tx.valueDescription)!.ATPSuffix()
         }
-    }
- 
-    
-    func updateTransactionStatus(tx : Transaction) {
-        tx.senderAddress = AssetVCSharedData.sharedData.selectedWalletAddress
-        if tx.txType == .transfer {
-            let addressStrs = AssetVCSharedData.sharedData.walletList.filterClassicWallet.map { cwallet in
-                return cwallet.key!.address.lowercased()
-            }
-            if addressStrs.contains(tx.from!.lowercased()) {
-                tx.senderAddress = tx.from
-            }
-        }
-        
-        typeLabel.text = tx.txType == .transfer ? tx.transactionStauts.localizeTitle : tx.txType?.localizeTitle
-        statusLabel.text = tx.transactionStauts.localizeDescAndColor.0
-        statusLabel.textColor = tx.transactionStauts.localizeDescAndColor.1
-        
-    }
-    
-    func updateSTransactionStatus(tx : STransaction) {
-        let detachTx = tx.detached()
-        detachTx.labelDesciptionAndColor { (des, color) in
-            self.statusLabel.text = des
-            self.statusLabel.textColor = color
-        }
-        
-        
+        amoutLabel.textColor = tx.amountTextColor
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {

@@ -294,10 +294,13 @@ extension WithDrawViewController {
                             return
                         }
                         
-                        self.withdrawDelegateAction(stakingBlockNum: sBlockNum, nodeId: nodeId, amount: amount, sender: currentAddress, privateKey: tempPri, { [weak self] (data) in
+                        self.withdrawDelegateAction(stakingBlockNum: sBlockNum, nodeId: nodeId, amount: amount, sender: currentAddress, privateKey: tempPri, { [weak self] (transaction) in
                             guard let self = self else { return }
+                            transaction.nodeName = self.currentNode?.name
+                            let newTransaction = transaction.copyTransaction()
+                            TransferPersistence.add(tx: newTransaction)
                             if index == self.delegateValue.count - 1 {
-                                self.doShowTransactionDetail(data)
+                                self.doShowTransactionDetail(transaction)
                             }
                         })
                     }
@@ -350,26 +353,56 @@ extension WithDrawViewController {
     }
     
     func estimateGas(_ amountVon: BigUInt, _ cell: SendInputTableViewCell) {
-//        guard
-//            let nodeId = currentNode?.nodeId,
-//            let sBlockNum = UInt64(stakingBlockNum ?? "0") else { return }
-//
-//        web3.staking.estimateWithdrawDelegate(stakingBlockNum: sBlockNum, nodeId: nodeId, amount: amountVon) { (result, data) in
-//            switch result {
-//            case .success:
-//                if let feeString = data?.description {
-//                    print(feeString)
-//                    cell.amountView.feeLabel.text = feeString.vonToLATString.displayFeeString
-//                }
-//            case .fail(_, _):
-//                break
-//            }
-//        }
+        
+        guard
+            let balanceSelectedIndex = balanceStyle?.selectedIndex,
+            let nodeId = currentNode?.nodeId else { return }
+        
+        var estimateTotalGas: BigUInt = BigUInt.zero
+        
+        var usedAmount = BigUInt.zero
+        for (index, dValue) in self.delegateValue.enumerated() {
+            if
+                let stakingBlockNum = dValue.stakingBlockNum,
+                let sBlockNum = UInt64(stakingBlockNum),
+                let canUsedAmount = dValue.getDelegationValueAmount(index: balanceSelectedIndex) {
+                var amount = BigUInt.zero
+                
+                if canUsedAmount > amountVon - usedAmount {
+                    amount = amountVon - usedAmount
+                    usedAmount += amount
+                } else {
+                    amount = canUsedAmount
+                    usedAmount += amount
+                }
+                
+                if amount <= BigUInt.zero {
+                    return
+                }
+                
+                web3.staking.estimateWithdrawDelegate(stakingBlockNum: sBlockNum, nodeId: nodeId, amount: amount) { [weak self] (result, data) in
+                    guard let self = self else { return }
+                    switch result {
+                    case .success:
+                        if let estimateGas = data {
+                            estimateTotalGas += estimateGas
+                        }
+                        
+                        if index == self.delegateValue.count - 1 {
+                            cell.amountView.feeLabel.text = estimateTotalGas.description.vonToLATString.displayFeeString
+                        }
+                    case .fail(_, _):
+                        break
+                    }
+                }
+            }
+        }
     }
     
     func doShowTransactionDetail(_ transaction: Transaction) {
         let controller = TransactionDetailViewController()
         controller.transaction = transaction
+        controller.backToViewController = navigationController?.viewController(self.indexOfViewControllers - 1)
         navigationController?.pushViewController(controller, animated: true)
     }
 }

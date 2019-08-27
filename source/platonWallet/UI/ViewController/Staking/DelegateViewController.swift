@@ -264,28 +264,31 @@ extension DelegateViewController {
 
         let typ = balanceObject.selectedIndex == 0 ? UInt16(0) : UInt16(1) // 0：自由金额 1：锁仓金额
 
-        showLoadingHUD()
         showPasswordInputPswAlert(for: walletObject.currentWallet) { [weak self] privateKey in
-            self?.hideLoadingHUD()
+            guard let self = self else { return }
             if let pri = privateKey {
-                self?.showLoadingHUD()
+                self.showLoadingHUD()
                 
-                StakingService.sharedInstance.createDelgate(typ: typ, nodeId: nodeId, amount: self?.currentAmount ?? BigUInt.zero, sender: currentAddress, privateKey: pri, { [weak self] (result, data) in
-                    self?.hideLoadingHUD()
+                StakingService.sharedInstance.createDelgate(typ: typ, nodeId: nodeId, amount: self.currentAmount, sender: currentAddress, privateKey: pri, { [weak self] (result, data) in
+                    guard let self = self else { return }
+                    self.hideLoadingHUD()
+
                     switch result {
                     case .success:
+                        // realm 不能跨线程访问同个实例
                         if let transaction = data as? Transaction {
-                            transaction.nodeName = self?.currentNode?.name
-//                            TransferPersistence.add(tx: transaction)
-                            DispatchQueue.main.async {
-                                self?.doShowTransactionDetail(transaction)
-                            }
+                            transaction.nodeName = self.currentNode?.name
+                            let newTransaction = transaction.copyTransaction()
+                            
+                            TransferPersistence.add(tx: newTransaction)
+                            self.doShowTransactionDetail(transaction)
                         }
                     case .fail(_, let errMsg):
-                        self?.showMessage(text: errMsg ?? "call web3 error", delay: 2.0)
+                        self.showMessage(text: errMsg ?? "call web3 error", delay: 2.0)
                     }
                 })
             }
+            
         }
     }
     
