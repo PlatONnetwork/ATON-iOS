@@ -12,8 +12,8 @@ import Foundation
 struct ATONConfig {
     struct H5URL {
         struct lisenceURL {
-            static let serviceurl_en = "http://192.168.9.190:443/aton-agreement/en-us/agreement.html"
-            static let serviceurl_cn = "http://192.168.9.190:443/aton-agreement/zh-cn/agreement.html"
+            static let serviceurl_en = "http://192.168.9.190:1000/aton-agreement/en-us/agreement.html"
+            static let serviceurl_cn = "http://192.168.9.190:1000/aton-agreement/zh-cn/agreement.html"
             
             static var serviceurl: String {
                 return GetCurrentSystemSettingLanguage() == "cn" ? serviceurl_cn : serviceurl_en

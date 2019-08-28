@@ -25,6 +25,11 @@ class DelegateDetailViewController: BaseViewController {
         tbView.separatorStyle = .none
         tbView.backgroundColor = normal_background_color
         tbView.tableFooterView = UIView()
+        if #available(iOS 11, *) {
+            tbView.estimatedRowHeight = UITableView.automaticDimension
+        } else {
+            tbView.estimatedRowHeight = 100
+        }
         return tbView
     }()
     

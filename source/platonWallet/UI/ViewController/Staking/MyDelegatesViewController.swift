@@ -23,6 +23,11 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
         tbView.register(MyDelegateViewCell.self, forCellReuseIdentifier: "MyDelegateViewCell")
         tbView.separatorStyle = .none
         tbView.backgroundColor = normal_background_color
+        if #available(iOS 11, *) {
+            tbView.estimatedRowHeight = UITableView.automaticDimension
+        } else {
+            tbView.estimatedRowHeight = 100
+        }
         return tbView
     }()
     

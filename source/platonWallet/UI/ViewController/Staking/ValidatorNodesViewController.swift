@@ -25,6 +25,8 @@ class ValidatorNodesViewController: ButtonBarPagerTabStripViewController, Indica
         button.setTitle(Localized("staking_validator_node_yield"), for: .selected)
         button.setImage(UIImage(named: "3.icon_ sorting"), for: .normal)
         button.semanticContentAttribute = UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft ? .forceLeftToRight : .forceRightToLeft
+        button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
+        button.titleLabel?.adjustsFontSizeToFitWidth = true
         button.layer.cornerRadius = 11.0
         button.layer.borderColor = common_blue_color.cgColor
         button.layer.borderWidth = 1 / UIScreen.main.scale

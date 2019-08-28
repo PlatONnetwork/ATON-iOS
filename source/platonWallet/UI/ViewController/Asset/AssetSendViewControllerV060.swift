@@ -56,6 +56,45 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
             return WalletType.JointWallet
         }
     }
+    
+    lazy var amountView = { () -> ATextFieldView in
+        let amountView = ATextFieldView.create(title: "send_amout_colon")
+        amountView.textField.LocalizePlaceholder = "send_amount_placeholder"
+        amountView.textField.keyboardType = .decimalPad
+        amountView.addAction(title: "send_sendAll", action: {[weak self] in
+            self?.onSendAll()
+        })
+        amountView.checkInput(mode: .all, check: {[weak self] text -> (Bool, String) in
+            
+            let inputformat = CommonService.checkTransferAmoutInput(text: text, checkBalance: false, fee: nil)
+            if !inputformat.0{
+                return inputformat
+            }
+            return (self?.checkSufficient(text: text))!
+            
+            }, heightChange: { [weak self](view) in
+                self?.textFieldViewUpdateHeight(atextFieldView: view)
+        })
+        
+        amountView.shouldChangeCharactersCompletion = { [weak self] (concatenated,replacement) in
+            if replacement == ""{
+                return true
+            }
+            if !replacement.validFloatNumber(){
+                return false
+            }
+            return concatenated.trimNumberLeadingZero().isValidInputAmoutWith8DecimalPlace()
+        }
+        
+        amountView.endEditCompletion = { [weak self] text in
+            let _ = self?.checkConfirmButtonAvailable()
+            let _ = amountView.checkInvalidNow(showErrorMsg: false)
+        }
+        
+        return amountView
+    }()
+    
+    
         
     lazy var walletAddressView = { () -> PTextFieldView in 
         let walletView = PTextFieldView.create(title: "send_wallet_colon")
@@ -87,45 +126,45 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
         return button
     }()
     
-    lazy var amountView = { () -> PTextFieldView in 
-        
-        let amountView = PTextFieldView.create(title: "send_amout_colon")
-        amountView.textField.LocalizePlaceholder = "send_amount_placeholder"
-        
-        amountView.addAction(title: "send_sendAll", action: {[weak self] in
-            self?.onSendAll()
-        }) 
-        
-        amountView.checkInput(mode: .all, check: {[weak self] text -> (Bool, String) in
-             
-            let inputformat = CommonService.checkTransferAmoutInput(text: text, checkBalance: false, fee: nil)
-            if !inputformat.0{
-                return inputformat
-            }
-            return (self?.checkSufficient(text: text))!
-                
-        }, heightChange: { [weak self](view) in
-            self?.textFieldViewUpdateHeight(view: view)
-        })
-        
-        amountView.shouldChangeCharactersCompletion = { [weak self] (concatenated,replacement) in
-            if replacement == ""{
-                return true
-            }
-            if !replacement.validFloatNumber(){
-                return false
-            }
-            return concatenated.trimNumberLeadingZero().isValidInputAmoutWith8DecimalPlace()
-        }
-        
-        amountView.endEditCompletion = { [weak self] text in
-            let _ = self?.checkConfirmButtonAvailable()
-            let _ = amountView.checkInvalidNow(showErrorMsg: false)
-        }
-        
-        return amountView
-        
-    }()
+//    lazy var amountView = { () -> PTextFieldView in
+//
+//        let amountView = PTextFieldView.create(title: "send_amout_colon")
+//        amountView.textField.LocalizePlaceholder = "send_amount_placeholder"
+//
+//        amountView.addAction(title: "send_sendAll", action: {[weak self] in
+//            self?.onSendAll()
+//        })
+//
+//        amountView.checkInput(mode: .all, check: {[weak self] text -> (Bool, String) in
+//
+//            let inputformat = CommonService.checkTransferAmoutInput(text: text, checkBalance: false, fee: nil)
+//            if !inputformat.0{
+//                return inputformat
+//            }
+//            return (self?.checkSufficient(text: text))!
+//
+//        }, heightChange: { [weak self](view) in
+//            self?.textFieldViewUpdateHeight(view: view)
+//        })
+//
+//        amountView.shouldChangeCharactersCompletion = { [weak self] (concatenated,replacement) in
+//            if replacement == ""{
+//                return true
+//            }
+//            if !replacement.validFloatNumber(){
+//                return false
+//            }
+//            return concatenated.trimNumberLeadingZero().isValidInputAmoutWith8DecimalPlace()
+//        }
+//
+//        amountView.endEditCompletion = { [weak self] text in
+//            let _ = self?.checkConfirmButtonAvailable()
+//            let _ = amountView.checkInvalidNow(showErrorMsg: false)
+//        }
+//
+//        return amountView
+//
+//    }()
     
     lazy var balanceLabel = { () -> UILabel in 
         let label = UILabel(frame: .zero)
@@ -137,7 +176,6 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
     }()
     
     lazy var feeView = { () -> AssetFeeViewV060 in 
-
         let view = AssetFeeViewV060(frame:.zero)
         return view
     }()
@@ -156,8 +194,6 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
         NotificationCenter.default.addObserver(self, selector: #selector(DidUpdateAllAsset), name: NSNotification.Name(DidUpdateAllAssetNotification), object: nil)
         initSubViews()
         initdata()
-        
-        print("walletAddressView: \(walletAddressView.title.font)")
     }
 
     override func viewDidLayoutSubviews() {
@@ -239,9 +275,10 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
         
         view.addSubview(amountView)
         amountView.snp.makeConstraints { (make) in
-            make.left.right.equalToSuperview()
+            make.leading.equalToSuperview().offset(16)
+            make.trailing.equalToSuperview().offset(-16)
             make.top.equalTo(walletAddressView.snp.bottom).offset(20)
-            make.height.equalTo(amountView.internalHeight)
+//            make.height.equalTo(amountView.internalHeight)
         }
         
         view.addSubview(balanceLabel)
@@ -317,7 +354,6 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
             self?.amountView.textField.resignFirstResponder()
             return true
         }
-        amountView.textField.keyboardType = UIKeyboardType.decimalPad
         
     }
     
@@ -409,21 +445,6 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
                 , round: 18)
             confirmView.feeLabel.text = feeString.ATPSuffix()
 
-        }else if let swallet = AssetVCSharedData.sharedData.selectedWallet as? SWallet{
-            
-            guard let owner = WalletService.sharedInstance.getWalletByAddress(address: swallet.walletAddress) else{
-                AssetViewControllerV060.getInstance()?.showAlertWithRedTitle(localizedTitle: "watchJointWalletTip_Notice", localizedMessage: "watchJointWalletTip_message")
-                return
-            }
-            
-            confirmPopUpView!.setUpContentView(view: confirmView, size: CGSize(width: PopUpContentWidth, height: 391))
-            confirmView.totalLabel.text = amountView.textField.text!
-            confirmView.toAddressLabel.text = walletAddressView.textField.text!
-            confirmView.executorLabel.text = owner.name
-            confirmView.walletName.text = AssetVCSharedData.sharedData.selectedWalletName
-            let feeString = self.totalFee().divide(by: ETHToWeiMultiplier
-                , round: 18)
-            confirmView.feeLabel.text = feeString.ATPSuffix()
         }
             
         confirmPopUpView!.show(inViewController: self)
@@ -470,6 +491,13 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
         view.snp.updateConstraints { (make) in
             make.height.equalTo(view.internalHeight)
         }
+    }
+    
+    func textFieldViewUpdateHeight(atextFieldView: ATextFieldView) {
+//        view.snp.updateConstraints { (make) in
+//            make.height.equalTo(atextFieldView.internalHeight)
+//        }
+//        view.layoutIfNeeded()
     }
     
     

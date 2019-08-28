@@ -142,7 +142,7 @@ class NodeDetailViewController: BaseViewController {
                 make.leading.equalToSuperview().offset(16)
                 make.trailing.equalToSuperview().offset(-16)
             }
-            delegateButton.layoutIfNeeded()
+            view.layoutIfNeeded()
             delegateButton.style = .disable
         } else {
             delegateButton.snp.makeConstraints { make in
@@ -151,7 +151,7 @@ class NodeDetailViewController: BaseViewController {
                 make.trailing.equalToSuperview().offset(-16)
                 make.bottom.equalTo(bottomLayoutGuide.snp.top).offset(-30)
             }
-            delegateButton.layoutIfNeeded()
+            view.layoutIfNeeded()
             delegateButton.style = .blue
         }
         doubtLabel.isHidden = (nodeDetail?.node.isInit == false)
