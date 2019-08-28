@@ -63,17 +63,6 @@ class TransferSwitchWallet: UIView,UITableViewDataSource,UITableViewDelegate {
                 dataSourse.append(contentsOf: wallets)
             }
             
-        }else{
-            let swallets = SWalletService.sharedInstance.wallets
-            if self.checkSufficient{
-                for item in swallets{
-                    if item.WalletBalanceStatus() == .Sufficient{
-                        dataSourse.append(item)
-                    }
-                }
-            }else{
-                dataSourse.append(contentsOf: swallets)
-            }
         }
         self.tableView.reloadData()
     }

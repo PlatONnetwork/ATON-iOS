@@ -81,10 +81,10 @@ class SWallet: Object {
     //if owner Wallet been delete,return false
     var isWatchAccount : Bool{
         get{
-            let wallet = SWalletService.sharedInstance.getATPWalletByAddress(address: self.walletAddress)
-            if wallet != nil{
-                return false
-            }
+//            let wallet = SWalletService.sharedInstance.getATPWalletByAddress(address: self.walletAddress)
+//            if wallet != nil{
+//                return false
+//            }
             return true
         }
     }

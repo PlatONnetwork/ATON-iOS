@@ -11,12 +11,22 @@ import UIKit
 class SingleButtonTableViewCell: UITableViewCell {
     
     public let button = PButton()
-    public var canDelegation: CanDelegation? {
+//    public var canDelegation: CanDelegation? {
+//        didSet {
+//            if canDelegation == nil {
+//                button.style = .disable
+//            } else {
+//                button.style = canDelegation!.canDelegation ? .blue : .disable
+//            }
+//        }
+//    }
+    
+    public var unavaliableTapAction: Bool = false {
         didSet {
-            if canDelegation == nil {
-                button.style = .blue
+            if unavaliableTapAction {
+                button.style = .disable
             } else {
-                button.style = canDelegation!.canDelegation ? .blue : .gray
+                button.style = .blue
             }
         }
     }

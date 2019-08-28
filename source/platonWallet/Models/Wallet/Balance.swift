@@ -7,9 +7,20 @@
 //
 
 import Foundation
+import BigInt
 
 struct Balance: Decodable {
-    var account: String
+    var addr: String
     var free: String? //自由账户余额
     var lock: String? //锁仓账户余额
+}
+
+extension Balance {
+    var lockedBalanceValue: String {
+        guard
+            let lockedString = lock,
+            let lockedValue = BigUInt(lockedString) else { return "0" }
+        let ret = lockedValue.divide(by: ETHToWeiMultiplier, round: 8)
+        return ret
+    }
 }

@@ -117,15 +117,12 @@ class TransactionListViewController: BaseViewController,UITableViewDelegate,UITa
                     return
                 }
                 
+                let _ = transactions.map { $0.direction = (self.selectedWallet?.key?.address.lowercased() == $0.from?.lowercased() ? .Sent : self.selectedWallet?.key?.address.lowercased() == $0.to?.lowercased() ? .Receive : .unknown) }
+                
                 if transactions.count >= self.listSize {
                     self.txnTableView.mj_footer.resetNoMoreData()
                 } else {
                     self.txnTableView.mj_footer.endRefreshingWithNoMoreData()
-                }
-                
-                if beginSequence != -1 && direction == "new" {
-                    
-                    AssetService.sharedInstace.fetchWalletBanlance()
                 }
                 
                 self.dataSource.append(contentsOf: transactions)

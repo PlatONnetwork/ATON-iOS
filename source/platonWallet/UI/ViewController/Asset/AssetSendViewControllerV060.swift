@@ -56,6 +56,45 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
             return WalletType.JointWallet
         }
     }
+    
+    lazy var amountView = { () -> ATextFieldView in
+        let amountView = ATextFieldView.create(title: "send_amout_colon")
+        amountView.textField.LocalizePlaceholder = "send_amount_placeholder"
+        amountView.textField.keyboardType = .decimalPad
+        amountView.addAction(title: "send_sendAll", action: {[weak self] in
+            self?.onSendAll()
+        })
+        amountView.checkInput(mode: .all, check: {[weak self] text -> (Bool, String) in
+            
+            let inputformat = CommonService.checkTransferAmoutInput(text: text, checkBalance: false, fee: nil)
+            if !inputformat.0{
+                return inputformat
+            }
+            return (self?.checkSufficient(text: text))!
+            
+            }, heightChange: { [weak self](view) in
+                self?.textFieldViewUpdateHeight(atextFieldView: view)
+        })
+        
+        amountView.shouldChangeCharactersCompletion = { [weak self] (concatenated,replacement) in
+            if replacement == ""{
+                return true
+            }
+            if !replacement.validFloatNumber(){
+                return false
+            }
+            return concatenated.trimNumberLeadingZero().isValidInputAmoutWith8DecimalPlace()
+        }
+        
+        amountView.endEditCompletion = { [weak self] text in
+            let _ = self?.checkConfirmButtonAvailable()
+            let _ = amountView.checkInvalidNow(showErrorMsg: false)
+        }
+        
+        return amountView
+    }()
+    
+    
         
     lazy var walletAddressView = { () -> PTextFieldView in 
         let walletView = PTextFieldView.create(title: "send_wallet_colon")
@@ -87,45 +126,45 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
         return button
     }()
     
-    lazy var amountView = { () -> PTextFieldView in 
-        
-        let amountView = PTextFieldView.create(title: "send_amout_colon")
-        amountView.textField.LocalizePlaceholder = "send_amount_placeholder"
-        
-        amountView.addAction(title: "send_sendAll", action: {[weak self] in
-            self?.onSendAll()
-        }) 
-        
-        amountView.checkInput(mode: .all, check: {[weak self] text -> (Bool, String) in
-             
-            let inputformat = CommonService.checkTransferAmoutInput(text: text, checkBalance: false, fee: nil)
-            if !inputformat.0{
-                return inputformat
-            }
-            return (self?.checkSufficient(text: text))!
-                
-        }, heightChange: { [weak self](view) in
-            self?.textFieldViewUpdateHeight(view: view)
-        })
-        
-        amountView.shouldChangeCharactersCompletion = { [weak self] (concatenated,replacement) in
-            if replacement == ""{
-                return true
-            }
-            if !replacement.validFloatNumber(){
-                return false
-            }
-            return concatenated.trimNumberLeadingZero().isValidInputAmoutWith8DecimalPlace()
-        }
-        
-        amountView.endEditCompletion = { [weak self] text in
-            let _ = self?.checkConfirmButtonAvailable()
-            let _ = amountView.checkInvalidNow(showErrorMsg: false)
-        }
-        
-        return amountView
-        
-    }()
+//    lazy var amountView = { () -> PTextFieldView in
+//
+//        let amountView = PTextFieldView.create(title: "send_amout_colon")
+//        amountView.textField.LocalizePlaceholder = "send_amount_placeholder"
+//
+//        amountView.addAction(title: "send_sendAll", action: {[weak self] in
+//            self?.onSendAll()
+//        })
+//
+//        amountView.checkInput(mode: .all, check: {[weak self] text -> (Bool, String) in
+//
+//            let inputformat = CommonService.checkTransferAmoutInput(text: text, checkBalance: false, fee: nil)
+//            if !inputformat.0{
+//                return inputformat
+//            }
+//            return (self?.checkSufficient(text: text))!
+//
+//        }, heightChange: { [weak self](view) in
+//            self?.textFieldViewUpdateHeight(view: view)
+//        })
+//
+//        amountView.shouldChangeCharactersCompletion = { [weak self] (concatenated,replacement) in
+//            if replacement == ""{
+//                return true
+//            }
+//            if !replacement.validFloatNumber(){
+//                return false
+//            }
+//            return concatenated.trimNumberLeadingZero().isValidInputAmoutWith8DecimalPlace()
+//        }
+//
+//        amountView.endEditCompletion = { [weak self] text in
+//            let _ = self?.checkConfirmButtonAvailable()
+//            let _ = amountView.checkInvalidNow(showErrorMsg: false)
+//        }
+//
+//        return amountView
+//
+//    }()
     
     lazy var balanceLabel = { () -> UILabel in 
         let label = UILabel(frame: .zero)
@@ -137,7 +176,6 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
     }()
     
     lazy var feeView = { () -> AssetFeeViewV060 in 
-
         let view = AssetFeeViewV060(frame:.zero)
         return view
     }()
@@ -156,8 +194,6 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
         NotificationCenter.default.addObserver(self, selector: #selector(DidUpdateAllAsset), name: NSNotification.Name(DidUpdateAllAssetNotification), object: nil)
         initSubViews()
         initdata()
-        
-        print("walletAddressView: \(walletAddressView.title.font)")
     }
 
     override func viewDidLayoutSubviews() {
@@ -211,13 +247,9 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
             return
         }
         self.estimateMemoGas()
-        self.estimateSubmitAndConfirm()
         if let obj = AssetVCSharedData.sharedData.selectedWallet as? Wallet{
             self.balanceLabel.text = Localized("transferVC_transfer_balance") + obj.balanceDescription()
-        }else if let obj = AssetVCSharedData.sharedData.selectedWallet as? SWallet{
-            self.balanceLabel.text = Localized("transferVC_transfer_balance") + obj.balanceDescription()
         }
-        
     }
     
     //MARK: - Notification
@@ -243,9 +275,10 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
         
         view.addSubview(amountView)
         amountView.snp.makeConstraints { (make) in
-            make.left.right.equalToSuperview()
+            make.leading.equalToSuperview().offset(16)
+            make.trailing.equalToSuperview().offset(-16)
             make.top.equalTo(walletAddressView.snp.bottom).offset(20)
-            make.height.equalTo(amountView.internalHeight)
+//            make.height.equalTo(amountView.internalHeight)
         }
         
         view.addSubview(balanceLabel)
@@ -321,7 +354,6 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
             self?.amountView.textField.resignFirstResponder()
             return true
         }
-        amountView.textField.keyboardType = UIKeyboardType.decimalPad
         
     }
     
@@ -413,21 +445,6 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
                 , round: 18)
             confirmView.feeLabel.text = feeString.ATPSuffix()
 
-        }else if let swallet = AssetVCSharedData.sharedData.selectedWallet as? SWallet{
-            
-            guard let owner = WalletService.sharedInstance.getWalletByAddress(address: swallet.walletAddress) else{
-                AssetViewControllerV060.getInstance()?.showAlertWithRedTitle(localizedTitle: "watchJointWalletTip_Notice", localizedMessage: "watchJointWalletTip_message")
-                return
-            }
-            
-            confirmPopUpView!.setUpContentView(view: confirmView, size: CGSize(width: PopUpContentWidth, height: 391))
-            confirmView.totalLabel.text = amountView.textField.text!
-            confirmView.toAddressLabel.text = walletAddressView.textField.text!
-            confirmView.executorLabel.text = owner.name
-            confirmView.walletName.text = AssetVCSharedData.sharedData.selectedWalletName
-            let feeString = self.totalFee().divide(by: ETHToWeiMultiplier
-                , round: 18)
-            confirmView.feeLabel.text = feeString.ATPSuffix()
         }
             
         confirmPopUpView!.show(inViewController: self)
@@ -476,6 +493,13 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
         }
     }
     
+    func textFieldViewUpdateHeight(atextFieldView: ATextFieldView) {
+//        view.snp.updateConstraints { (make) in
+//            make.height.equalTo(atextFieldView.internalHeight)
+//        }
+//        view.layoutIfNeeded()
+    }
+    
     
     // MARK: - PopUp
     
@@ -484,8 +508,6 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
         var executorWallet : Wallet? 
         if let w = AssetVCSharedData.sharedData.selectedWallet as? Wallet{
             executorWallet = w
-        }else{
-            executorWallet = AssetVCSharedData.sharedData.jWallet!.ownerWallet()
         }
             
         let alertVC = AlertStylePopViewController.initFromNib()
@@ -506,8 +528,6 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
                     })
                     if self?.walletType == WalletType.ClassicWallet{
                         self?.doClassicTransfer(pri: pri!, data: nil)
-                    }else{
-                        self?.doJointWalletSubmitAndConfirm(pri!)
                     }
                     alertVC.dismissWithCompletion()
                 }else{
@@ -637,14 +657,13 @@ extension AssetSendViewControllerV060{
         let _ = self.checkConfirmButtonAvailable()
     }
     
-    func getAvailbleBalance() -> BigUInt{
-        let balanceObj = AssetService.sharedInstace.assets[AssetVCSharedData.sharedData.selectedWalletAddress!]
-        if balanceObj == nil {
-            return BigUInt("0")!
-        }
-        //8 digits after the decimal point
-        let floorBalance = balanceObj??.balance?.floorToDecimal(round: (18 - 8))
-        return floorBalance!
+    func getAvailbleBalance() -> BigUInt {
+        guard
+            let balance = AssetService.sharedInstace.balances.first(where: { $0.addr.lowercased() == AssetVCSharedData.sharedData.selectedWalletAddress?.lowercased() }),
+            let freeString = balance.free,
+            let freeBalanceValue = BigUInt(freeString) else { return BigUInt.zero }
+        
+        return freeBalanceValue.floorToDecimal(round: (18 - 8))
     }
     
     //MARK: - Transfer
@@ -670,85 +689,6 @@ extension AssetSendViewControllerV060{
             }
             
         }) 
-    }
-    
-    
-
-
-
-}
-
-//MARK: - Joint wallet logic
-
-extension AssetSendViewControllerV060{
-    
-    func estimateSubmitAndConfirm(){
-        
-        guard self.walletType == WalletType.JointWallet else {
-            return
-        }
-        
-        let from = AssetVCSharedData.sharedData.jWallet?.walletAddress
-        /*
-        let to = self.walletAddressView.textField.text!
-        let amount = self.amountView.textField.text!
-        let time = Date().millisecondsSince1970
-        let value = BigUInt("0")
-        let memo = ""
-        */
-        let contractAddress = AssetVCSharedData.sharedData.jWallet?.contractAddress
-        guard contractAddress != nil else {
-            return
-        }
-        SWalletService.sharedInstance.estimateSubmitAndConfirm(walltAddress: from!, privateKey: "", contractAddress: contractAddress!, gasPrice: BigUIntZero, gas: BigUIntZero, memo: "", destination: DefaultAddress, value: BigUIntZero, len: BigUIntZero, time: 0, fee: BigUIntZero) { (result, data) in
-            switch result{
-            case .success:
-                if let data = data as? (BigUInt, BigUInt){
-                    self.submitGas = data.0
-                    self.confirmGas = data.1
-                    //let _ = self.refreshLabel(refreshFee)
-                }
-            case .fail(_, _):
-                do{}
-            }
-        }
-    }
-    
-    func doJointWalletSubmitAndConfirm(_ pri: String){
-        
-        let from = AssetVCSharedData.sharedData.jWallet?.walletAddress
-        let to = self.walletAddressView.textField.text!
-        let amount = self.amountView.textField.text!
-        let time = Date().millisecondsSince1970
-        let value = BigUInt.mutiply(a: amount, by: ETHToWeiMultiplier)!
-        let memo = ""
-        let contractAddress = AssetVCSharedData.sharedData.jWallet?.contractAddress
-        
-        let fee = self.totalFee()
-        
-        SWalletService.sharedInstance.submitTransaction(walltAddress: from!, 
-                                                        privateKey: pri, 
-                                                        contractAddress: contractAddress!,
-                                                        submitGasPrice: self.gasPrice!,
-                                                        submitGas: self.submitGas!,
-                                                        confirmGasPrice: self.gasPrice!,
-                                                        confirmGas: self.confirmGas!,
-                                                        memo: memo,
-                                                        destination: to,
-                                                        value: value,
-                                                        time: UInt64(time),
-                                                        fee: fee,
-                                                        completion: {[weak self] (result, data) in
-                                                        AssetViewControllerV060.getInstance()?.hideLoadingHUD(delay: 0.2)
-                                                            switch result{
-                                                            case .success:
-                                                                UIApplication.rootViewController().showMessage(text: Localized("transferVC_transfer_success_tip")); self?.navigationController?.popViewController(animated: true)
-                                                                self?.didTransferSuccess()
-                                                            case .fail(let code, let errMsg):
-                                                                self?.showMessageWithCodeAndMsg(code: code!, text: errMsg!, delay: 1.5)
-                                                            }
-        })
-        
     }
 }
 

@@ -41,8 +41,7 @@ struct CommonService {
         }
         if checkDuplicate{
             let wallets = WalletService.sharedInstance.wallets.filter{$0.name == name}
-            let swallets = SWalletService.sharedInstance.wallets.filter{$0.name == name}
-            if wallets.count > 0 || swallets.count > 0{
+            if wallets.count > 0 {
                 return (false, Localized("wallet_name_duplicate")) 
             }
         }
@@ -123,17 +122,31 @@ struct CommonService {
         return (valid,msg)
     }
     
-    static func checkTransferAmoutInput(text: String,checkBalance: Bool = false, fee: BigUInt? = BigUInt("0")!) -> (Bool,String) {
+    static func checkTransferAmoutInput(text: String, checkBalance: Bool = false, minLimit: BigUInt? = nil, maxLimit: BigUInt? = nil, fee: BigUInt? = BigUInt("0")!) -> (Bool, String) {
+        
+        if text.count == 0 {
+            return (true, "")
+        }
         
         var valid = true
         var msg = ""
-        if text.length == 0 {
-            msg = Localized("transferVC_amout_empty_tip")
-            valid = false
-        }
+//        if text.length == 0 {
+//            msg = Localized("transferVC_amout_empty_tip")
+//            valid = false
+//        }
         
         if (!(text.isValidInputAmoutWith8DecimalPlaceAndNonZero())){
             msg = Localized("transferVC_amout_amout_input_error")
+            valid = false
+        }
+        
+        if let minLimitAmount = minLimit, text.LATToVon < minLimitAmount {
+            msg = Localized("staking_input_amount_minlimit_error")
+            valid = false
+        }
+        
+        if let maxLimitAmount = maxLimit, text.LATToVon > maxLimitAmount {
+            msg = Localized("staking_input_amount_maxlimit_error")
             valid = false
         }
         
@@ -148,7 +161,4 @@ struct CommonService {
         return (valid, msg)
         
     }
-    
-    
-    
 }

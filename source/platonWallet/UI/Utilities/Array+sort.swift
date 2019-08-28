@@ -82,29 +82,6 @@ extension Array where Element == Any {
     }
 }
 
-extension Array where Element == Candidate{
-    mutating func candidateSort(){
-        let ticketPrice = BigUInt(VoteManager.sharedInstance.ticketPrice ?? BigUInt("0")!)
-        self.sort { (c1, c2) -> Bool in
-            
-            var bigLeft = BigUInt(c1.deposit ?? BigUInt("0")!)
-            bigLeft.multiplyAndAdd(ticketPrice.multiplied(by: BigUInt(c1.ticketCount ?? 0)), 1)
-            var bigRight = BigUInt(c2.deposit ?? BigUInt("0")!)
-            bigRight.multiplyAndAdd(ticketPrice.multiplied(by: BigUInt(c2.ticketCount ?? 0)), 1)
-            if String(bigLeft) != String(bigRight){
-                return !bigLeft.subtractReportingOverflow(bigRight)
-            }
-            return c1.joinTime ?? 0 < c2.joinTime ?? 0
-        }
-        /*
-        self.map({ item in
-            var bigRight = BigUInt(item.deposit ?? BigUInt("0")!)
-            bigRight.multiplyAndAdd(ticketPrice.multiplied(by: BigUInt(item.tickets ?? 0)), 1)
-            print("AfterSort:" + String(bigRight))
-        })
-         */
-    }
-}
 
 extension Array where Element == Ticket {
     
@@ -128,7 +105,7 @@ extension Array where Element == Ticket {
         get{
             return reduce(BigUInt(0)) { (acc, ticket) -> BigUInt in
                 
-                ticket.ticketStatus == .normal ? acc + (BigUInt(ticket.deposit ?? "") ?? BigUIntZero) : acc
+                ticket.ticketStatus == .normal ? acc + (BigUInt(ticket.deposit ?? "") ?? BigUInt.zero) : acc
                 
             }
         }
@@ -138,7 +115,7 @@ extension Array where Element == Ticket {
         get{
             return reduce(BigUInt(0)) { (acc, ticket) -> BigUInt in
                 
-                ticket.ticketStatus != .normal ? acc + (BigUInt(ticket.deposit ?? "") ?? BigUIntZero) : acc
+                ticket.ticketStatus != .normal ? acc + (BigUInt(ticket.deposit ?? "") ?? BigUInt.zero) : acc
                 
             }
         }

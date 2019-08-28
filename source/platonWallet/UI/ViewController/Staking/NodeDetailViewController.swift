@@ -131,18 +131,18 @@ class NodeDetailViewController: BaseViewController {
         nodeInfoView.statusButton.setTitleColor(nodeDetail?.node.status.1 ?? status_blue_color, for: .normal)
         nodeInfoView.statusButton.layer.borderColor = (nodeDetail?.node.status.1 ?? status_blue_color).cgColor
         
-        institutionalLabel.text = nodeDetail?.intro ?? "--"
-        websiteLabel.text = nodeDetail?.website ?? "--"
+        institutionalLabel.text = nodeDetail?.institutionalForDisplay ?? "--"
+        websiteLabel.text = nodeDetail?.websiteForDisplay ?? "--"
         
         nodeInfoView.isHidden = (nodeDetail?.website == nil)
         
-        if nodeDetail?.node.isInit == false {
+        if nodeDetail?.node.isInit == true {
             delegateButton.snp.makeConstraints { make in
                 make.height.equalTo(40)
                 make.leading.equalToSuperview().offset(16)
                 make.trailing.equalToSuperview().offset(-16)
             }
-            delegateButton.layoutIfNeeded()
+            view.layoutIfNeeded()
             delegateButton.style = .disable
         } else {
             delegateButton.snp.makeConstraints { make in
@@ -151,7 +151,7 @@ class NodeDetailViewController: BaseViewController {
                 make.trailing.equalToSuperview().offset(-16)
                 make.bottom.equalTo(bottomLayoutGuide.snp.top).offset(-30)
             }
-            delegateButton.layoutIfNeeded()
+            view.layoutIfNeeded()
             delegateButton.style = .blue
         }
         doubtLabel.isHidden = (nodeDetail?.node.isInit == false)

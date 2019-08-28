@@ -59,16 +59,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LicenseVCDelegate {
         
         UserDefaults.standard.register(defaults: [userDefault_key_isFirst:true, userDefault_key_isLocalAuthenticationOpen:false])
         
-        /*
-        if UserDefaults.standard.bool(forKey: userDefault_key_isFirst) {
-            let licenseVC = LicenseViewController()
-            licenseVC.delegate = self
-            self.window?.rootViewController = licenseVC
-        }else {
-            gotoNextVC()
-        }
-         */
-        
         gotoNextVC(initSuccess:initSuccess)
         
         checkIsOpenLocalAuth()
@@ -115,16 +105,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LicenseVCDelegate {
     }
     
     private func gotoNextVC(initSuccess: Bool = true) {
-        
         if !initSuccess{
             return
         }
         
-        if WalletService.sharedInstance.wallets.count > 0 || SWalletService.sharedInstance.wallets.count > 0  {
+        if UserDefaults.standard.bool(forKey: userDefault_key_isFirst) {
+            gotoAgreementController()
+        }else {
+            gotoAtonController()
+        }
+    }
+    
+    func gotoAtonController() {
+        if WalletService.sharedInstance.wallets.count > 0 {
             gotoMainTab()
         }else {
             gotoWalletCreateVC()
         }
+    }
+    
+    func gotoAgreementController() {
+        let controller = ServiceAgreementViewController()
+        controller.nextActionHandler = { [weak self] in
+            UserDefaults.standard.set(false, forKey: userDefault_key_isFirst)
+            UserDefaults.standard.synchronize()
+            self?.gotoAtonController()
+        }
+        let navController = BaseNavigationController(rootViewController: controller)
+        self.window?.rootViewController = navController
     }
     
     func gotoMainTab() {

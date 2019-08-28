@@ -10,6 +10,7 @@ import Foundation
 import Realm
 import RealmSwift
 import Localize_Swift
+import BigInt
 
 public struct JSONResponse<T: Decodable>: Decodable {
     var data: T
@@ -17,8 +18,9 @@ public struct JSONResponse<T: Decodable>: Decodable {
 
 public struct Delegate: Decodable {
     var walletAddress: String
-    var delegate: String
-    var redeem: String
+    var delegate: String?
+    var redeem: String?
+    var availableDelegationBalance: String?
 }
 
 public struct DelegateDetail: Decodable {
@@ -86,10 +88,26 @@ class DelegateDetailDel: Object {
 }
 
 public struct DelegationValue: Decodable {
+    var stakingBlockNum: String?
     var redeem: String?
     var locked: String?
     var unLocked: String?
     var released: String?
+}
+
+extension DelegationValue {
+    func getDelegationValueAmount(index: Int) -> BigUInt? {
+        switch index {
+        case 0:
+            return (BigUInt(locked ?? "0") ?? BigUInt.zero) + (BigUInt(unLocked ?? "0") ?? BigUInt.zero)
+        case 1:
+            return BigUInt(unLocked ?? "0")
+        case 2:
+            return BigUInt(released ?? "0")
+        default:
+            return nil
+        }
+    }
 }
 
 // 是否能委托response

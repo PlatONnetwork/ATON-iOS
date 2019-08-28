@@ -230,7 +230,7 @@ extension UIViewController {
         
         let alertVC = AlertStylePopViewController.initFromNib()
         let style = PAlertStyle.passwordInput(walletName: wallet.name)
-        alertVC.onAction(confirm: { [weak self] (text, _) -> (Bool)  in
+        alertVC.onAction(confirm: { (text, _) -> (Bool)  in
             let valid = CommonService.isValidWalletPassword(text ?? "")
             if !valid.0{
                 alertVC.showInputErrorTip(string: valid.1)
@@ -241,30 +241,39 @@ extension UIViewController {
             
             WalletService.sharedInstance.exportPrivateKey(
                 wallet: wallet,
-                password: (alertVC.textFieldInput?.text)!, completion: { (pri, err) in
-                if (err == nil && (pri?.length)! > 0) {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
-                        AssetViewControllerV060.getInstance()?.showLoadingHUD()
-                    })
-                    
-                    completion?(pri)
-                    alertVC.dismissWithCompletion()
-                }else{
-                    completion?(nil)
-                    alertVC.showInputErrorTip(string: (err?.errorDescription)!)
-                    alertVC.hideLoadingHUD()
-                }
+                password: (alertVC.textFieldInput?.text)!,
+                completion: { (pri, err) in
+                    DispatchQueue.main.async {
+                        alertVC.hideLoadingHUD()
+                        if (err == nil && (pri?.length)! > 0) {
+                            alertVC.dismissWithCompletion()
+                            completion?(pri)
+                        }else{
+                            alertVC.showInputErrorTip(string: (err?.errorDescription)!)
+                            completion?(nil)
+                        }
+                    }
             })
             return false
             
         }) { (_, _) -> (Bool) in
-            completion?(nil)
+            DispatchQueue.main.async {
+                completion?(nil)
+            }
             return true
         }
         alertVC.style = style
         alertVC.showInViewController(viewController: self)
         
         return
+    }
+}
+
+extension UIViewController {
+    var indexOfViewControllers: Int {
+        guard let navigationController = self.parent as? UINavigationController else { return 0 }
+        guard let index = navigationController.viewControllers.index(of: self) else { return 0 }
+        return index
     }
 }
 

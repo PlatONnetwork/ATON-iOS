@@ -32,7 +32,9 @@ class CustomLoading: NSObject {
     }
     
     static func startLoading(viewController: UIViewController)  {
-        CustomLoading.shardInstance.startLoading(viewController: viewController)
+        DispatchQueue.main.async {
+            CustomLoading.shardInstance.startLoading(viewController: viewController)
+        }
     }
     
     static func viewWillAppear(){
@@ -40,7 +42,9 @@ class CustomLoading: NSObject {
     }
     
     static func hideLoading(viewController: UIViewController){
-        CustomLoading.shardInstance.hdie(viewController: viewController)
+        DispatchQueue.main.async {
+            CustomLoading.shardInstance.hdie(viewController: viewController)
+        }
     }
     
     func hdie(viewController: UIViewController){

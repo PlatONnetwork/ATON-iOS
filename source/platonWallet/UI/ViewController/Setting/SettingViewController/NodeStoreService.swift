@@ -157,7 +157,6 @@ class NodeStoreService {
     
     func nodeWillSuccessSwitch(){
         WalletService.sharedInstance.refreshDB()
-        SWalletService.sharedInstance.refreshDB()
         
         if AssetVCSharedData.sharedData.walletList.count == 0{
             (UIApplication.shared.delegate as? AppDelegate)?.gotoWalletCreateVC()

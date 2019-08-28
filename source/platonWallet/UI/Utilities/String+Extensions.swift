@@ -16,10 +16,7 @@ let dateFormatter_greenwich = DateFormatter()
 
 extension String {
     var vonToLATString: String {
-        guard let von = BigUInt(self) else {
-            return "0.00"
-        }
-        
+        guard let von = BigUInt(self) else { return "0.00" }
         let valueLAT = von.divide(by: ETHToWeiMultiplier, round: 8)
         return valueLAT.displayForMicrometerLevel(maxRound: 8)
     }
@@ -27,6 +24,11 @@ extension String {
     var LATToVon: BigUInt {
         guard let lat = BigUInt(self) else { return BigUInt.zero }
         return lat.multiplied(by: BigUInt(ETHToWeiMultiplier)!)
+    }
+    
+    var vonToLAT: BigUInt {
+        guard let von = BigUInt(self) else { return BigUInt.zero }
+        return BigUInt.safeInit(str: von.divide(by: ETHToWeiMultiplier, round: 8))
     }
     
     var displayFeeString: String {

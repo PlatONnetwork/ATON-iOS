@@ -16,6 +16,8 @@ let maskHeight : CGFloat = 36.0
 
 class AssetSectionViewV060: UIView {
     
+    var restrictedIconTapHandler: (() -> Void)?
+    
     var walelt: AnyObject?
 
     @IBOutlet weak var walletAvatar: UIButton!
@@ -23,6 +25,8 @@ class AssetSectionViewV060: UIView {
     @IBOutlet weak var walletName: UILabel!
     
     @IBOutlet weak var balanceLabel: UILabel!
+    
+    @IBOutlet weak var lockedBalanceLabel: UILabel!
     
     @IBOutlet weak var forgroundView: UIView!
     
@@ -42,8 +46,6 @@ class AssetSectionViewV060: UIView {
     @IBOutlet weak var backUpbtn: UIButton!
     
     @IBOutlet weak var bottomSepline: UIView!
-    
-    
     
     @IBOutlet weak var backupContainer: UIView!
     
@@ -76,19 +78,6 @@ class AssetSectionViewV060: UIView {
         return maskLayer
     }
     
-    lazy var iconAttributed: NSAttributedString = {
-        let attachment = NSTextAttachment()
-        attachment.bounds = CGRect(x: 0, y: -2, width: 10, height: 10)
-        attachment.image = UIImage(named: "1.icon_An error")
-        
-        let iconAttr = NSMutableAttributedString(string: " ")
-        iconAttr.append(NSAttributedString(attachment: attachment))
-        iconAttr.append(NSAttributedString(string: " "))
-        iconAttr.addAttributes([NSAttributedString.Key.link: "aton://lockedBalance_doubt"], range: NSRange(location: 0, length: iconAttr.length))
-        
-        return iconAttr
-    }()
-    
     override func awakeFromNib() {
         //self.forgroundOffset.constant = -sectionHeight
         //self.forgroundView.layer.mask = maskLayer
@@ -106,16 +95,17 @@ class AssetSectionViewV060: UIView {
         
         NotificationCenter.default.addObserver(self, selector: #selector(didUpdateAllAsset), name: NSNotification.Name(DidUpdateAllAssetNotification), object: nil)
         
+        lockedBalanceLabel.adjustsFontSizeToFitWidth = true
+        lockedBalanceLabel.isUserInteractionEnabled = true
+        lockedBalanceLabel.textColor = common_lightLightGray_color
+        lockedBalanceLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapGesture(_:))))
+        
         balanceLabel.adjustsFontSizeToFitWidth = true
         balanceLabel.textColor = .black
-        balanceLabel.isUserInteractionEnabled = true
-        balanceLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapGesture(_:))))
     }
     
     @objc func tapGesture(_ gesture: UITapGestureRecognizer) {
-//        var range: NSRange = NSRange(location: 0, length: 0)
-//        var dict = balanceLabel.attributedText?.attributes(at: 0, effectiveRange: &range)
-//        print(dict)
+        restrictedIconTapHandler?()
     }
     
     
@@ -252,27 +242,11 @@ class AssetSectionViewV060: UIView {
             return
         }
         self.walelt = AssetVCSharedData.sharedData.selectedWallet
-        if let jwallet  = self.walelt as? SWallet{
-            self.walletName.text = jwallet.name
-            self.balanceLabel.text = jwallet.balanceDescription()
-            self.walletAvatar.setImage(jwallet.image(), for: .normal)
-            self.backupContainer.isHidden = true
-        }else if let cwallet = self.walelt as? Wallet{
+        if let cwallet = self.walelt as? Wallet{
             self.walletName.text = cwallet.name
+            self.lockedBalanceLabel.attributedText = cwallet.lockedBalanceAttrForDisplayAsset()
             
-            let balanceAttr = NSMutableAttributedString(string: cwallet.balanceDescription())
-            if cwallet.lockedBalance.count > 0, let lockedBalanceString = cwallet.lockedBalanceDescription() {
-                let lockedBalanceAttr = NSMutableAttributedString(string: "(")
-                lockedBalanceAttr.append(iconAttributed)
-                
-                lockedBalanceAttr.append(NSAttributedString(string: Localized("wallet_balance_restricted") + lockedBalanceString))
-                lockedBalanceAttr.append(NSAttributedString(string: ")"))
-                lockedBalanceAttr.addAttributes([NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12), NSAttributedString.Key.foregroundColor: common_lightLightGray_color], range: NSRange(location: 0, length: lockedBalanceAttr.length))
-                balanceAttr.append(lockedBalanceAttr)
-            }
-        
-            
-            self.balanceLabel.attributedText = balanceAttr
+            self.balanceLabel.text = cwallet.balanceDescription()
             self.walletAvatar.setImage(cwallet.image(), for: .normal)
             self.backupContainer.isHidden = !cwallet.canBackupMnemonic
         }

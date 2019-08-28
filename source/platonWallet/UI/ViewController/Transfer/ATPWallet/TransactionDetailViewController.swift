@@ -46,14 +46,12 @@ class TransactionDetailViewController: BaseViewController {
         }
         
         //yujinghan waiting fix
-        
-//        if hash.ishexStringEqual(other: transaction?.txhash){
-//            let tx = TransferPersistence.getByTxhash(transaction?.txhash)
-//            if tx != nil{
-//                transferDetailView.updateContent(tx: tx! as AnyObject,wallet : wallet ?? nil)
-//            }
-//        }
-        
+        print("i get it!!!!!!!")
+        if hash.ishexStringEqual(other: transaction?.txhash){
+            let tx = TransferPersistence.getByTxhash(transaction?.txhash)
+            guard let transaction = tx else { return }
+            transferDetailView.updateContent(tx: transaction)
+        }
     }
     
     func initData() {
@@ -78,7 +76,7 @@ class TransactionDetailViewController: BaseViewController {
             }
         } else if txType == .delegateCreate ||
                   txType == .delegateWithdraw {
-            listData.append((title: Localized("TransactionDetailVC_delegated_to"), value: tx.nodeName ?? "--"))
+            listData.append((title: Localized("TransactionDetailVC_delegated_to"), value: tx.toNameString ?? "--"))
             listData.append((title: Localized("TransactionDetailVC_nodeId"), value: tx.nodeId ?? "--"))
             if txType == .delegateCreate {
                 listData.append((title: Localized("TransactionDetailVC_delegated_amount"), value: tx.valueDescription?.ATPSuffix() ?? "--"))
@@ -122,7 +120,7 @@ class TransactionDetailViewController: BaseViewController {
                   txType == .voteForProposal {
             listData.append((title: Localized("TransactionDetailVC_voteFor"), value: tx.nodeName ?? "--"))
             listData.append((title: Localized("TransactionDetailVC_nodeId"), value: tx.nodeId ?? "--"))
-            listData.append((title: Localized("TransactionDetailVC_proposal_id"), value: tx.githubId ?? "--"))
+            listData.append((title: Localized("TransactionDetailVC_proposal_id"), value: tx.piDID ?? "--"))
             listData.append((title: Localized("TransactionDetailVC_proposal_type"), value: tx.proposalType ?? "--"))
             if txType == .voteForProposal {
                 listData.append((title: Localized("TransactionDetailVC_proposal_vote"), value: tx.vote ?? "--"))
@@ -133,18 +131,17 @@ class TransactionDetailViewController: BaseViewController {
     
     func initSubViews() {
         
-        
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
         
+        transferDetailView.updateContent(tx: transaction!)
         tableView.tableHeaderView = transferDetailView
         transferDetailView.setNeedsLayout()
         transferDetailView.layoutIfNeeded()
         transferDetailView.frame.size = transferDetailView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
         tableView.tableHeaderView = transferDetailView
-        transferDetailView.updateContent(tx: transaction!)
     }
 }
 

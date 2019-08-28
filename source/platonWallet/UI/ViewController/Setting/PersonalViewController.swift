@@ -114,7 +114,7 @@ class PersonalViewController: BaseViewController,UITableViewDelegate,UITableView
             do {
                 targetVC = WebCommonViewController()
                 (targetVC as? WebCommonViewController)?.navigationTitle = Localized("PersonalVC_cell_wallet_feedback")
-                (targetVC as? WebCommonViewController)?.requestUrl = "https://juzix.zendesk.com/hc/zh-cn"
+                (targetVC as? WebCommonViewController)?.requestUrl = ATONConfig.H5URL.FeedbackURL.feedbackurl
             }
         case 5:
             do {
@@ -133,7 +133,6 @@ class PersonalViewController: BaseViewController,UITableViewDelegate,UITableView
         }
         targetVC!.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(targetVC!, animated: true)
-        
     }
     
 

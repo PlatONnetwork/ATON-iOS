@@ -10,8 +10,7 @@ import Foundation
 import UIKit
 
 public extension UIView {
-    public func addMaskView(corners: UIRectCorner,cornerRadiiV : CGFloat){
-
+    func addMaskView(corners: UIRectCorner,cornerRadiiV : CGFloat){
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             let maskPath = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: cornerRadiiV, height: cornerRadiiV))
@@ -22,7 +21,20 @@ public extension UIView {
         }
     }
     
+    func rotate() {
+        if self.layer.animation(forKey: "rotationAnimation") == nil {
+            let rotation: CABasicAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
+            rotation.toValue = NSNumber(value: Double.pi * 2)
+            rotation.duration = 1
+            rotation.isCumulative = true
+            rotation.repeatCount = Float.greatestFiniteMagnitude
+            self.layer.add(rotation, forKey: "rotationAnimation")
+        }
+    }
     
+    func stopRotate() {
+        self.layer.removeAllAnimations()
+    }
 }
 
 extension UIView {

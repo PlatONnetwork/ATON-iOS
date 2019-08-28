@@ -46,22 +46,22 @@ class VotePersistence {
         return RealmInstance?.object(ofType: SingleVote.self, forPrimaryKey: txHash.add0x())
     }
     
-    public class func addCandidateInfo(_ candidate: CandidateBasicInfo) {
-        RealmWriteQueue.async {
-            autoreleasepool(invoking: {
-                let realm = RealmHelper.getNewRealm()
-                candidate.nodeURLStr = SettingService.getCurrentNodeURLString()
-                try? realm.write {
-                    realm.add(candidate, update: true)
-                }
-            })
-        }
-        
-    }
+//    public class func addCandidateInfo(_ candidate: CandidateBasicInfo) {
+//        RealmWriteQueue.async {
+//            autoreleasepool(invoking: {
+//                let realm = RealmHelper.getNewRealm()
+//                candidate.nodeURLStr = SettingService.getCurrentNodeURLString()
+//                try? realm.write {
+//                    realm.add(candidate, update: true)
+//                }
+//            })
+//        }
+//        
+//    }
     
     
-    public class func getCandidateInfoWithId(_ id: String) -> CandidateBasicInfo {
-        return RealmInstance!.object(ofType: CandidateBasicInfo.self, forPrimaryKey: id) ?? CandidateBasicInfo()
-    }
+//    public class func getCandidateInfoWithId(_ id: String) -> CandidateBasicInfo {
+//        return RealmInstance!.object(ofType: CandidateBasicInfo.self, forPrimaryKey: id) ?? CandidateBasicInfo()
+//    }
     
 }

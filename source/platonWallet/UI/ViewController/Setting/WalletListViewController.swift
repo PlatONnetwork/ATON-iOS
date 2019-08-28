@@ -111,24 +111,12 @@ class WalletListViewController: BaseViewController,TableViewReorderDelegate {
         navigationController?.pushViewController(createWalletVC, animated: true)
     }
     
-    func createSharedWallet() {
-        let vc = CreateSharedWalletStep1ViewController()
-        navigationController?.pushViewController(vc, animated: true)
-    }
-    
     func importIndividualWallet() {
         dismiss(animated: false, completion: nil)
         let importWallet = MainImportWalletViewController()
         
         navigationController?.pushViewController(importWallet, animated: true)
     }
-    
-    func addSharedWallet() {
-        let addSharedWallet = AddSharedWalletVC()
-        navigationController?.pushViewController(addSharedWallet, animated: true)
-    }
-    
-    
 }
 
 extension WalletListViewController: UITableViewDelegate, UITableViewDataSource {
@@ -161,10 +149,6 @@ extension WalletListViewController: UITableViewDelegate, UITableViewDataSource {
         if let wallet = wallet as? Wallet{
             let detailVC = WalletManagerDetailViewController()
             detailVC.wallet = wallet
-            navigationController?.pushViewController(detailVC, animated: true)
-        }else if let wallet = wallet as? SWallet{
-            let detailVC = SWalletManagerViewController()
-            detailVC.swallet = wallet
             navigationController?.pushViewController(detailVC, animated: true)
         }
     } 

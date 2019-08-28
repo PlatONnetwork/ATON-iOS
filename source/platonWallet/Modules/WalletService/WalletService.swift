@@ -364,16 +364,14 @@ public final class WalletService {
         
         NotificationCenter.default.post(name: NSNotification.Name(WillDeleateWallet_Notification), object: wallet)
         
-        AssetService.sharedInstace.assets.removeValue(forKey: (wallet.key?.address)!)
+        AssetService.sharedInstace.balances = AssetService.sharedInstace.balances.filter { $0.addr.lowercased() != wallet.key?.address }
+//        AssetService.sharedInstace.assets.removeValue(forKey: (wallet.key?.address)!)
         
         wallets.removeAll { (item) -> Bool in
             return item == wallet
         }
         walletStorge?.delete(wallet: wallet)        
         AssetVCSharedData.sharedData.willDeleteWallet(object: wallet as AnyObject)
-        
-        //delete associated shared wallets
-        SWalletService.sharedInstance.willOwnerWalletBeingDelete(ownerWallet: wallet)
         
     }
     

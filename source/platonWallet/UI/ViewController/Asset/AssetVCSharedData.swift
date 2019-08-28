@@ -28,7 +28,6 @@ class AssetVCSharedData{
     var walletList: [Any]{
         get{
             var tmp : [Any] = []
-            tmp.append(contentsOf: SWalletService.sharedInstance.wallets)
             tmp.append(contentsOf: WalletService.sharedInstance.wallets)
             
             var rangeWallets = tmp.filter { obj -> Bool in
@@ -149,7 +148,7 @@ class AssetVCSharedData{
 extension AssetVCSharedData {
     // 通过地址查询本地的账号名称
     func getWalletName(for address: String) -> String? {
-        let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.key?.address == address }.first
+        let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.key?.address.lowercased() == address.lowercased() }.first
         return localWallet?.name
     }
 }

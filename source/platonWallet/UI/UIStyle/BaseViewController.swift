@@ -150,7 +150,9 @@ class BaseViewController: UIViewController {
             }
         }
     }
- 
+    
+    var backToViewController: UIViewController?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setDefaultUIStyle()
@@ -187,7 +189,6 @@ class BaseViewController: UIViewController {
         
         if type(of: self) == AssetSendViewControllerV060.self ||
             type(of: self) == ImportMnemonicOrPrivateKeyViewController.self ||
-            type(of: self) == CandidatesListViewController.self ||
             type(of: self) == PersonalViewController.self ||
             type(of: self) == QRScannerViewController.self ||
             type(of: self) == MainImportWalletViewController.self {
@@ -248,7 +249,11 @@ class BaseViewController: UIViewController {
     
     
     @objc func onCustomBack() {
-        self.navigationController?.popViewController(animated: true)
+        guard let controller = backToViewController else {
+            navigationController?.popViewController(animated: true)
+            return
+        }
+        navigationController?.popToViewController(controller, animated: true)
     }
     
     func showNavigationBarShadowImage(image:UIImage = UIImage(color: UIColor(rgb: 0x32394E)) ?? UIImage()) {
@@ -265,7 +270,11 @@ class BaseViewController: UIViewController {
     
     
     @objc func back() {
-        navigationController?.popViewController(animated: true)
+        guard let controller = backToViewController else {
+            navigationController?.popViewController(animated: true)
+            return
+        }
+        navigationController?.popToViewController(controller, animated: true)
     }
      
     func emptyViewForTableView(forEmptyDataSet scrollView: UIScrollView, _ description: String?, _ imageName: String?) -> UIView? {
@@ -278,6 +287,13 @@ class BaseViewController: UIViewController {
         }
         
         return holder
+    }
+    
+    func emptyViewForTableview(forEmptyDataSet scrollView: UIScrollView, _ attributedText: NSAttributedString, _ imageName: String) -> UIView? {
+        let holderView = self.tableNodataHolderView
+        holderView.descriptionLabel.attributedText = attributedText
+        holderView.imageView.image = UIImage(named: imageName)
+        return holderView
     }
     
     deinit {

@@ -135,6 +135,9 @@ class AssetViewControllerV060: BaseViewController ,PopupMenuTableDelegate{
             make.height.equalTo(AssetSectionViewH)
             make.width.equalTo(view)
         }
+        sectionView.restrictedIconTapHandler = { [weak self] in
+            self?.showRestrctedInfoDoubt()
+        }
         
         pageVC.setViewControllers([viewControllers[tmpChildVCIndex]], direction: .forward, animated: false, completion: nil)
         addChild(pageVC)
@@ -275,6 +278,24 @@ class AssetViewControllerV060: BaseViewController ,PopupMenuTableDelegate{
 //            self.updatePageViewConstraint(headerHide: hide)
 
         }
+    }
+    
+    func showRestrctedInfoDoubt() {
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.paragraphSpacing = 10
+        
+        let titleAttr = NSAttributedString(string: Localized("wallet_balance_restricted") + "\n", attributes: [NSAttributedString.Key.foregroundColor: text_blue_color, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16, weight: .medium), NSAttributedString.Key.paragraphStyle: paragraphStyle])
+        let detailAttr = NSAttributedString(string: Localized("asset_alert_restricted_info") + "\n", attributes: [NSAttributedString.Key.foregroundColor: common_darkGray_color, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13), NSAttributedString.Key.paragraphStyle: paragraphStyle])
+        
+        let alertVC = AlertStylePopViewController.initFromNib()
+        let style = PAlertStyle.AlertWithText(attributedStrings: [titleAttr, detailAttr])
+        alertVC.onAction(confirm: { (text, _) -> (Bool) in
+            return true
+        }) { (_, _) -> (Bool) in
+            return true
+        }
+        alertVC.style = style
+        alertVC.showInViewController(viewController: self)
     }
 
 }
@@ -590,7 +611,8 @@ extension AssetViewControllerV060{
     @objc func updateWalletList(){
         headerView.shouldUpdateWalletList()
         
-        AssetService.sharedInstace.fetchWalletBanlance()
+//        AssetService.sharedInstace.fetchWalletBanlance()
+        AssetService.sharedInstace.fetchWalletBalanceForV7(nil)
         sendVC.refreshData()
         transactionVC.refreshData()
         self.checkAndSetNoWalletViewStyle()

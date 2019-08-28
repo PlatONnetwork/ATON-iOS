@@ -7,11 +7,17 @@
 //
 
 import UIKit
+import Localize_Swift
+import BigInt
 
 class SendInputTableViewCell: UITableViewCell {
     
     var cellDidContentChangeHandler: (() -> Void)?
-    var cellDidContentEditingHandler: ((String) -> Void)?
+    var cellDidContentEditingHandler: ((BigUInt) -> Void)?
+    
+    // 最少输入的数量
+    var minAmountLimit: BigUInt?
+    var maxAmountLimit: BigUInt?
     
     lazy var amountView = { () -> ATextFieldView in
         let amountView = ATextFieldView.create(title: "ATextFieldView_withdraw_title")
@@ -19,15 +25,18 @@ class SendInputTableViewCell: UITableViewCell {
         amountView.feeLabel.text = "0.0000"
         amountView.textField.keyboardType = .decimalPad
         amountView.addAction(title: "send_sendAll", action: { [weak self] in
-            
+            if let maxAmount = self?.maxAmountLimit {
+                amountView.textField.text = maxAmount.divide(by: ETHToWeiMultiplier, round: 8)
+                self?.cellDidContentEditingHandler?(maxAmount)
+            }
         })
         amountView.checkInput(mode: .all, check: { [weak self] text -> (Bool, String) in
-            let inputformat = CommonService.checkTransferAmoutInput(text: text, checkBalance: false, fee: nil)
+            let inputformat = CommonService.checkTransferAmoutInput(text: text, checkBalance: false, minLimit: self?.minAmountLimit, maxLimit: self?.maxAmountLimit, fee: nil)
             if !inputformat.0{
                 return inputformat
             }
-            
             return inputformat
+            
             }, heightChange: { [weak self] view in
                 if amountView.textField.isFirstResponder {
                     self?.cellDidContentChangeHandler?()
@@ -37,7 +46,8 @@ class SendInputTableViewCell: UITableViewCell {
         
         amountView.shouldChangeCharactersCompletion = { [weak self] (concatenated,replacement) in
             print("concatenated: \(concatenated), replacement: \(replacement)")
-            if replacement == ""{
+            if replacement == "" {
+                self?.cellDidContentEditingHandler?((BigUInt(concatenated) ?? BigUInt.zero).multiplied(by: BigUInt(ETHToWeiMultiplier)!))
                 return true
             }
             
@@ -49,8 +59,7 @@ class SendInputTableViewCell: UITableViewCell {
                 return false
             }
             
-            self?.cellDidContentEditingHandler?(concatenated)
-            
+            self?.cellDidContentEditingHandler?((BigUInt(concatenated) ?? BigUInt.zero).multiplied(by: BigUInt(ETHToWeiMultiplier)!))
             return true
         }
         

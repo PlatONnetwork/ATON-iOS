@@ -514,7 +514,6 @@
 "ConfrimVC_Revoke_success" = " 拒绝成功";
 
 "SharedWalletDetailVC_Confirmations" = "交易确认";
-"SharedWalletDetailVC_nav_title" = "交易详情";
 
 
 "STranctionType_create" = "创建合约";
@@ -538,14 +537,6 @@
 
 
 //shard wallet transfer
-"SharedWalletTransactionDetailVC_create_contract" = "创建合约";
-"SharedWalletTransactionDetailVC_payment_des" = "支付信息";
-"SharedWalletTransactionDetailVC_payment_content" = "创建合约手续费";
-"SharedWalletTransactionDetailVC_payment_submit" = "创建";
-
-"SharedWalletTransactionDetailVC_payment_execute_contract" = "执行合约手续费";
-"SharedWalletTransactionDetailVC_execute_PayType" = "类型";
-"SharedWalletTransactionDetailVC_payment_confirm" = "确定";
 "exceed max input" = "超过最大输入";
 
 
@@ -841,3 +832,18 @@
 
 "delegate_error_result_amountzero" = "解除委托金额大于0";
 "delegate_error_result_nodeexit" = "节点已退出或退出中";
+
+"empty_string_my_delegates_left" = "查看验证节点, ";
+"empty_string_my_delegates_right" = "参与委托";
+
+"empty_string_validator" = "没有验证节点";
+"empty_string_delegation_record" = "没有委托记录";
+
+"service_agreement_title" = "服务协议";
+"service_agreement_selected_text" = "我已阅读并同意上述条款";
+"service_agreement_button_next" = "继续";
+
+"asset_alert_restricted_info" = "锁仓的LAT支持委托";
+
+"staking_input_amount_minlimit_error" = "委托数量不能少于10LAT";
+"staking_input_amount_maxlimit_error" = "余额不足，无法委托";

@@ -47,7 +47,10 @@ extension Transaction {
             }
             return wallet.name
         default:
-            return nodeName ?? to?.addressForDisplayShort()
+            if let nName = nodeName, nName.count > 0 {
+                return nName
+            }
+            return to?.addressForDisplayShort()
         }
     }
     
@@ -147,31 +150,12 @@ extension Transaction {
     }
     
     var recordStatus: (String, UIColor) {
-        switch txType! {
-        case .delegateCreate:
-            if txReceiptStatus == 1 {
-                return (Localized("TransactionStatus_succeed_delegate"), status_green_color)
-            } else if txReceiptStatus == 0 {
-                return (Localized("TransactionStatus_failed_delegate"), status_red_color)
-            } else {
-                return (Localized("TransactionStatus_pending_desc"), status_blue_color)
-            }
-        case .delegateWithdraw:
-            if redeemStatus == 1 {
-                return (Localized("TransactionStatus_loading_undelegate"), status_blue_color)
-            } else if redeemStatus == 2 {
-                return (Localized("TransactionStatus_succeed_undelegate"), status_green_color)
-            } else {
-                if txReceiptStatus == 1 {
-                    return (Localized("TransactionStatus_succeed_desc"), status_green_color)
-                } else if txReceiptStatus == 0 {
-                    return (Localized("TransactionStatus_failed_desc"), status_red_color)
-                } else {
-                    return (Localized("TransactionStatus_pending_desc"), status_blue_color)
-                }
-            }
-            
-        default:
+        
+        if let redeemSt = redeemStatus, redeemSt == .redeeming, txType! == .delegateWithdraw {
+            return (Localized("TransactionStatus_loading_undelegate"), status_blue_color)
+        } else if let redeemSt = redeemStatus, redeemSt == .redeemSuccess, txType! == .delegateWithdraw {
+            return (Localized("TransactionStatus_succeed_undelegate"), status_green_color)
+        } else {
             if txReceiptStatus == 1 {
                 return (Localized("TransactionStatus_succeed_desc"), status_green_color)
             } else if txReceiptStatus == 0 {

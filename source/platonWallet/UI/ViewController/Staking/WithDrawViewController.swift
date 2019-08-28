@@ -8,14 +8,18 @@
 
 import UIKit
 import Localize_Swift
+import BigInt
 
 class WithDrawViewController: BaseViewController {
     
     var currentNode: Node?
-    var stakingBlockNum: String?
-    var listData: [DelegateTableViewCellStyle] = []
+    var walletStyle: WalletsCellStyle?
     var balanceStyle: BalancesCellStyle?
     var currentAddress: String?
+    var currentAmount: BigUInt = BigUInt.zero
+    var delegateValue: [DelegationValue] = []
+    
+    var listData: [DelegateTableViewCellStyle] = []
     
     lazy var tableView = { () -> UITableView in
         let tbView = UITableView(frame: .zero)
@@ -30,6 +34,11 @@ class WithDrawViewController: BaseViewController {
         tbView.separatorStyle = .none
         tbView.backgroundColor = normal_background_color
         tbView.tableFooterView = UIView()
+        if #available(iOS 11, *) {
+            tbView.estimatedRowHeight = UITableView.automaticDimension
+        } else {
+            tbView.estimatedRowHeight = 50
+        }
         return tbView
     }()
 
@@ -55,42 +64,61 @@ class WithDrawViewController: BaseViewController {
     private func fetchDelegateValue() {
         showLoadingHUD()
         
-        guard let node = currentNode, let blockNum = stakingBlockNum, let nodeId = node.nodeId else { return }
-        StakingService.sharedInstance.getDelegationValue(addr: nodeId, stakingBlockNum: blockNum) { [weak self] (result, data) in
+        guard
+            let node = currentNode,
+            let nodeId = node.nodeId,
+            let addr = currentAddress else { return }
+        StakingService.sharedInstance.getDelegationValue(addr: addr, nodeId: nodeId) { [weak self] (result, data) in
             self?.hideLoadingHUD()
             
             switch result {
             case .success:
-                if let newData = data as? DelegationValue {
-                    self?.initBalanceStyle(delegationValue: newData)
+                if let newData = data as? [DelegationValue] {
+                    self?.delegateValue = newData
+                    self?.initBalanceStyle()
                 }
-            case .fail(_, _):
-                break
+            case .fail(_, let errMsg):
+                self?.showMessage(text: errMsg ?? "error")
             }
-            
         }
     }
     
-    private func initBalanceStyle(delegationValue: DelegationValue) {
+    private func initBalanceStyle() {
+        guard delegateValue.count > 0 else { return }
+        
+        let totalLocked = delegateValue.reduce(BigUInt.zero) { (result, dValue) -> BigUInt in
+            return result + BigUInt(dValue.locked ?? "0")!
+        }
+        
+        let totalUnLocked = delegateValue.reduce(BigUInt.zero) { (result, dValue) -> BigUInt in
+            return result + BigUInt(dValue.unLocked ?? "0")!
+        }
+        
+        let totalDelegate = totalLocked + totalUnLocked
+        
+        let totalReleased = delegateValue.reduce(BigUInt.zero) { (result, dValue) -> BigUInt in
+            return result + BigUInt(dValue.released ?? "0")!
+        }
+        
         let bStyle = BalancesCellStyle(balances: [
-            (Localized("staking_balance_Delegated"), delegationValue.deposit),
-            (Localized("staking_balance_unlocked_Delegated"), delegationValue.unLocked ?? "0"),
-            (Localized("staking_balance__release_Delegated"), delegationValue.released ?? "0")], selectedIndex: 0, isExpand: false)
+            (Localized("staking_balance_Delegated"), totalDelegate.description),
+            (Localized("staking_balance_unlocked_Delegated"), totalUnLocked.description),
+            (Localized("staking_balance__release_Delegated"), totalReleased.description)], selectedIndex: 0, isExpand: false)
         balanceStyle = bStyle
         
         initListData()
     }
     
     private func initListData() {
-        let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).first { $0.key?.address == currentAddress }
+        let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).first { $0.key?.address.lowercased() == currentAddress?.lowercased() }
         guard
             let node = currentNode,
             let bStyle = balanceStyle,
             let wallet = localWallet else { return }
         
         let item1 = DelegateTableViewCellStyle.nodeInfo(node: node)
-        let walletStyle = WalletsCellStyle(wallets: [wallet], selectedIndex: 0, isExpand: false)
-        let item2 = DelegateTableViewCellStyle.wallets(walletStyle: walletStyle)
+        walletStyle = WalletsCellStyle(wallets: [wallet], selectedIndex: 0, isExpand: false)
+        let item2 = DelegateTableViewCellStyle.wallets(walletStyle: walletStyle!)
         let item3 = DelegateTableViewCellStyle.walletBalances(balanceStyle: bStyle)
         let item4 = DelegateTableViewCellStyle.inputAmount
         let item5 = DelegateTableViewCellStyle.singleButton(title: Localized("statking_validator_Withdraw"))
@@ -144,7 +172,7 @@ extension WithDrawViewController: UITableViewDelegate, UITableViewDataSource {
                 indexPath.row == walletStyle.selectedIndex + 1 ? UIImage(named: "iconApprove") : nil
             cell.cellDidHandle = { [weak self] (_ cell: WalletTableViewCell) in
                 guard let self = self, walletStyle.wallets.count > 1 else { return }
-                self.walletCellDidHandle(cell, walletStyle: walletStyle)
+                self.walletCellDidHandle(cell)
             }
             return cell
         case .walletBalances(let balanceStyle):
@@ -155,22 +183,30 @@ extension WithDrawViewController: UITableViewDelegate, UITableViewDataSource {
             
             cell.cellDidHandle = { [weak self] (_ cell: WalletBalanceTableViewCell) in
                 guard let self = self else { return }
-                self.balanceCellDidHandle(cell, balanceStyle: balanceStyle)
+                self.balanceCellDidHandle(cell)
             }
             return cell
         case .inputAmount:
             let cell = tableView.dequeueReusableCell(withIdentifier: "SendInputTableViewCell") as! SendInputTableViewCell
+            cell.minAmountLimit = "10".LATToVon
+            cell.maxAmountLimit = BigUInt(balanceStyle?.currentBalance.1 ?? "0")
             cell.cellDidContentChangeHandler = { [weak self] in
                 self?.updateHeightOfRow(cell)
             }
-            cell.cellDidContentEditingHandler = { [weak self] amount in
-                
+            cell.cellDidContentEditingHandler = { [weak self] amountVON in
+                self?.estimateGas(amountVON, cell)
+                self?.currentAmount = amountVON
+                self?.tableView.reloadSections(IndexSet([indexPath.section + 1]), with: .none)
             }
             return cell
         case .singleButton(let title):
             let cell = tableView.dequeueReusableCell(withIdentifier: "SingleButtonTableViewCell") as! SingleButtonTableViewCell
+            cell.unavaliableTapAction = (currentAmount <= BigUInt.zero)
             cell.button.setTitle(title, for: .normal)
-            cell.button.addTarget(self, action: #selector(withdrawTapAction), for: .touchUpInside)
+            cell.cellDidTapHandle = { [weak self] in
+                guard let self = self else { return }
+                self.nextButtonCellDidHandle()
+            }
             return cell
         case .doubt(let contents):
             let content = contents[indexPath.row]
@@ -187,49 +223,126 @@ extension WithDrawViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension WithDrawViewController {
-    @objc func withdrawTapAction() {
-        
-    }
-    
-    func nextButtonCellDidHandle() {
-        let cellStyle = listData.filter { (style) -> Bool in
-            if case .wallets = style {
-                return true
-            } else {
-                return false
+    func withdrawDelegateAction(
+        stakingBlockNum: UInt64,
+        nodeId: String,
+        amount: BigUInt,
+        sender: String,
+        privateKey: String,
+        _ completion: ((Transaction) -> Void)?) {
+        showLoadingHUD()
+        StakingService.sharedInstance.withdrawDelegate(stakingBlockNum: stakingBlockNum, nodeId: nodeId, amount: amount, sender: sender, privateKey: privateKey) { [weak self] (result, data) in
+            self?.hideLoadingHUD()
+            switch result {
+            case .success:
+                if let transaction = data as? Transaction {
+                    completion?(transaction)
+                }
+            case .fail(_, let errMsg):
+                self?.showMessage(text: errMsg ?? "call web3 error", delay: 2.0)
             }
-        }.first!
-        
-        guard case let .wallets(walletStyle) = cellStyle else { return }
-        
-        showPasswordInputPswAlert(for: walletStyle.currentWallet) { [weak self] privateKey in
-            
         }
     }
     
-    func walletCellDidHandle(_ cell: WalletTableViewCell, walletStyle: WalletsCellStyle) {
+    func nextButtonCellDidHandle() {
+        view.endEditing(true)
+        
+        guard currentAmount > BigUInt.zero else {
+            showMessage(text: "提交的数量应大于0")
+            return
+        }
+        
+        guard currentAmount >= BigUInt("10") else {
+            showMessage(text: Localized("staking_input_amount_minlimit_error"))
+            return
+        }
+        
+        guard currentAmount < (BigUInt(balanceStyle?.currentBalance.1 ?? "0") ?? BigUInt.zero) else {
+            showMessage(text: Localized("staking_input_amount_maxlimit_error"))
+            return
+        }
+        
+        guard
+            let walletObject = walletStyle,
+            let balanceSelectedIndex = balanceStyle?.selectedIndex,
+            let nodeId = currentNode?.nodeId,
+            let currentAddress = walletObject.currentWallet.key?.address else { return }
+        
+        var tempPrivateKey: String?
+        
+        showLoadingHUD()
+        showPasswordInputPswAlert(for: walletObject.currentWallet) { [weak self] privateKey in
+            guard let self = self else { return }
+            self.hideLoadingHUD()
+            if let pri = privateKey {
+                tempPrivateKey = pri
+                
+                var usedAmount = BigUInt.zero
+                
+                for (index, dValue) in self.delegateValue.enumerated() {
+                    if
+                        let stakingBlockNum = dValue.stakingBlockNum,
+                        let sBlockNum = UInt64(stakingBlockNum),
+                        let canUsedAmount = dValue.getDelegationValueAmount(index: balanceSelectedIndex),
+                        let tempPri = tempPrivateKey {
+                        var amount = BigUInt.zero
+                        
+                        if canUsedAmount > self.currentAmount - usedAmount {
+                            amount = self.currentAmount - usedAmount
+                            usedAmount += amount
+                        } else {
+                            amount = canUsedAmount
+                            usedAmount += amount
+                        }
+                        
+                        if amount <= BigUInt.zero {
+                            return
+                        }
+                        
+                        self.withdrawDelegateAction(stakingBlockNum: sBlockNum, nodeId: nodeId, amount: amount, sender: currentAddress, privateKey: tempPri, { [weak self] (transaction) in
+                            guard let self = self else { return }
+                            transaction.nodeName = self.currentNode?.name
+                            let newTransaction = transaction.copyTransaction()
+                            TransferPersistence.add(tx: newTransaction)
+                            if index == self.delegateValue.count - 1 {
+                                self.doShowTransactionDetail(transaction)
+                            }
+                        })
+                    }
+                }
+            }
+        }
+    }
+    
+    func walletCellDidHandle(_ cell: WalletTableViewCell) {
+        guard let wStyle = walletStyle else { return }
+        
         let indexPath = tableView.indexPath(for: cell)
-        var newWalletStyle = walletStyle
+        var newWalletStyle = wStyle
         newWalletStyle.isExpand = !newWalletStyle.isExpand
         guard let indexRow = indexPath?.row, let indexSection = indexPath?.section else { return }
         if indexRow != 0 {
             newWalletStyle.selectedIndex = indexRow - 1
         }
+        walletStyle = newWalletStyle
         listData[indexSection] = DelegateTableViewCellStyle.wallets(walletStyle: newWalletStyle)
         tableView.reloadSections(IndexSet([indexSection]), with: .fade)
     }
     
-    func balanceCellDidHandle(_ cell: WalletBalanceTableViewCell, balanceStyle: BalancesCellStyle) {
+    func balanceCellDidHandle(_ cell: WalletBalanceTableViewCell) {
+        guard let bStyle = balanceStyle else { return }
+        
         let indexPath = tableView.indexPath(for: cell)
-        var newBalanceStyle = balanceStyle
+        var newBalanceStyle = bStyle
         newBalanceStyle.isExpand = !newBalanceStyle.isExpand
         guard let indexRow = indexPath?.row, let indexSection = indexPath?.section else { return }
         if indexRow != 0 {
             newBalanceStyle.selectedIndex = indexRow - 1
         }
+        balanceStyle = newBalanceStyle
         
         listData[indexSection] = DelegateTableViewCellStyle.walletBalances(balanceStyle: newBalanceStyle)
-        tableView.reloadSections(IndexSet([indexSection]), with: .fade)
+        tableView.reloadSections(IndexSet([indexSection, indexSection+1]), with: .fade)
     }
     
     func updateHeightOfRow(_ cell: SendInputTableViewCell) {
@@ -242,5 +355,59 @@ extension WithDrawViewController {
             tableView.endUpdates()
             UIView.setAnimationsEnabled(true)
         }
+    }
+    
+    func estimateGas(_ amountVon: BigUInt, _ cell: SendInputTableViewCell) {
+        
+        guard
+            let balanceSelectedIndex = balanceStyle?.selectedIndex,
+            let nodeId = currentNode?.nodeId else { return }
+        
+        var estimateTotalGas: BigUInt = BigUInt.zero
+        
+        var usedAmount = BigUInt.zero
+        for (index, dValue) in self.delegateValue.enumerated() {
+            if
+                let stakingBlockNum = dValue.stakingBlockNum,
+                let sBlockNum = UInt64(stakingBlockNum),
+                let canUsedAmount = dValue.getDelegationValueAmount(index: balanceSelectedIndex) {
+                var amount = BigUInt.zero
+                
+                if canUsedAmount > amountVon - usedAmount {
+                    amount = amountVon - usedAmount
+                    usedAmount += amount
+                } else {
+                    amount = canUsedAmount
+                    usedAmount += amount
+                }
+                
+                if amount <= BigUInt.zero {
+                    return
+                }
+                
+                web3.staking.estimateWithdrawDelegate(stakingBlockNum: sBlockNum, nodeId: nodeId, amount: amount) { [weak self] (result, data) in
+                    guard let self = self else { return }
+                    switch result {
+                    case .success:
+                        if let estimateGas = data {
+                            estimateTotalGas += estimateGas
+                        }
+                        
+                        if index == self.delegateValue.count - 1 {
+                            cell.amountView.feeLabel.text = estimateTotalGas.description.vonToLATString.displayFeeString
+                        }
+                    case .fail(_, _):
+                        break
+                    }
+                }
+            }
+        }
+    }
+    
+    func doShowTransactionDetail(_ transaction: Transaction) {
+        let controller = TransactionDetailViewController()
+        controller.transaction = transaction
+        controller.backToViewController = navigationController?.viewController(self.indexOfViewControllers - 1)
+        navigationController?.pushViewController(controller, animated: true)
     }
 }

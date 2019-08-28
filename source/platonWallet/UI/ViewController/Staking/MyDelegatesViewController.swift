@@ -10,7 +10,7 @@ import UIKit
 import Localize_Swift
 import EmptyDataSet_Swift
 import MJRefresh
-
+import BigInt
 
 class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
     
@@ -23,6 +23,11 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
         tbView.register(MyDelegateViewCell.self, forCellReuseIdentifier: "MyDelegateViewCell")
         tbView.separatorStyle = .none
         tbView.backgroundColor = normal_background_color
+        if #available(iOS 11, *) {
+            tbView.estimatedRowHeight = UITableView.automaticDimension
+        } else {
+            tbView.estimatedRowHeight = 100
+        }
         return tbView
     }()
     
@@ -66,6 +71,17 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
             make.bottom.leading.trailing.equalToSuperview()
         }
         
+        let attributed = NSMutableAttributedString(string: Localized("empty_string_my_delegates_left"))
+        let actionAttributed = NSAttributedString(string: Localized("empty_string_my_delegates_right"), attributes: [NSAttributedString.Key.foregroundColor: common_blue_color])
+        attributed.append(actionAttributed)
+        tableView.emptyDataSetView { [weak self] view in
+            let holder = self?.emptyViewForTableview(forEmptyDataSet: (self?.tableView)!, attributed, "3.img-No trust") as? TableViewNoDataPlaceHolder
+            holder?.textTapHandler = { [weak self] in
+                self?.doShowValidatorListController()
+            }
+            view.customView(holder)
+        }
+        
         tableView.tableFooterView = footerView
 
         
@@ -76,6 +92,7 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
     @objc func faqTapAction() {
         let controller = WebCommonViewController()
         controller.navigationTitle = Localized("delegate_faq_title")
+        controller.requestUrl = ATONConfig.H5URL.FAQURL.faqurl
         controller.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(controller, animated: true)
     }
@@ -83,21 +100,19 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
     @objc func tutorialTapAction() {
         let controller = WebCommonViewController()
         controller.navigationTitle = Localized("delegate_tutorial_title")
+        controller.requestUrl = ATONConfig.H5URL.TutorialURL.tutorialurl
         controller.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(controller, animated: true)
     }
-
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    func updateDelagateHeader() {
+        let total = listData.reduce(BigUInt(0)) { (result, delegate) -> BigUInt in
+            return result + BigUInt.zero
+//            return result + BigUInt(delegate.availableDelegationBalance ?? "0")!
+        }
+        headerView.totalBalanceLabel.text = total.description.vonToLATString.ATPSuffix()
     }
-    */
+    
     private func gotoDelegateRecordVC() {
         let viewController = DelegateRecordMainViewController()
         viewController.hidesBottomBarWhenPushed = true
@@ -111,7 +126,10 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
         navigationController?.pushViewController(controller, animated: true)
     }
     
-
+    private func doShowValidatorListController() {
+        guard let tabController = self.parent as? StakingMainViewController else { return }
+        tabController.moveToValidatorListController()
+    }
 }
 
 extension MyDelegatesViewController: UITableViewDelegate, UITableViewDataSource {
@@ -143,6 +161,8 @@ extension MyDelegatesViewController {
                 self?.listData.removeAll()
                 if let newData = data as? [Delegate] {
                     self?.listData.append(contentsOf: newData)
+                    self?.tableView.reloadData()
+                    self?.updateDelagateHeader()
                 }
                 self?.tableView.reloadData()
             case .fail(_, _):

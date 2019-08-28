@@ -8,6 +8,7 @@
 
 import UIKit
 import MJRefresh
+import Localize_Swift
 
 public enum NodeControllerType {
     case all
@@ -33,6 +34,11 @@ class ValidatorNodeListViewController: BaseViewController, IndicatorInfoProvider
         tbView.separatorStyle = .none
         tbView.backgroundColor = normal_background_color
         tbView.tableFooterView = UIView()
+        if #available(iOS 11, *) {
+            tbView.estimatedRowHeight = UITableView.automaticDimension
+        } else {
+            tbView.estimatedRowHeight = 100
+        }
         return tbView
     }()
     
@@ -69,6 +75,11 @@ class ValidatorNodeListViewController: BaseViewController, IndicatorInfoProvider
             make.edges.equalToSuperview()
         }
         
+        tableView.emptyDataSetView { [weak self] view in
+            let holder = self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, nil,"empty_no_data_img") as? TableViewNoDataPlaceHolder
+            holder?.descriptionLabel.text = Localized("empty_string_validator")
+            view.customView(holder)
+        }
         tableView.mj_header = refreshHeader
         tableView.mj_footer = refreshFooter
         tableView.mj_header.beginRefreshing()
@@ -92,25 +103,27 @@ extension ValidatorNodeListViewController {
         let addresses = (AssetVCSharedData.sharedData.walletList as! [Wallet]).map { return $0.key!.address }
         guard addresses.count > 0 else { return }
         
+        if nodeId == nil {
+            listData.removeAll()
+        }
+        
         StakingService.sharedInstance.getNodeList(controllerType: controllerType, isRankingSorted: isRankingSorted) { [weak self] (result, data) in
             self?.tableView.mj_header.endRefreshing()
             self?.tableView.mj_footer.endRefreshing()
             
             switch result {
             case .success:
-                if nodeId == nil {
-                    self?.listData.removeAll()
-                }
                 
                 if let newData = data as? [Node], newData.count > 0 {
-                    self?.listData.append(contentsOf: newData)
                     self?.tableView.mj_footer.resetNoMoreData()
+                    self?.listData.append(contentsOf: newData)
                 } else {
                     self?.tableView.mj_footer.endRefreshingWithNoMoreData()
                 }
                 
                 self?.tableView.reloadData()
             case .fail(_, _):
+                self?.tableView.mj_footer.isHidden = true
                 break
             }
         }

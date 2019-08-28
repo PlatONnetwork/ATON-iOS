@@ -25,6 +25,11 @@ class DelegateDetailViewController: BaseViewController {
         tbView.separatorStyle = .none
         tbView.backgroundColor = normal_background_color
         tbView.tableFooterView = UIView()
+        if #available(iOS 11, *) {
+            tbView.estimatedRowHeight = UITableView.automaticDimension
+        } else {
+            tbView.estimatedRowHeight = 100
+        }
         return tbView
     }()
     
@@ -34,22 +39,13 @@ class DelegateDetailViewController: BaseViewController {
     }()
     
     lazy var refreshHeader: MJRefreshHeader = {
-        let header = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(fetchDataLastest))!
+        let header = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(fetchData))!
         return header
-    }()
-    
-    lazy var refreshFooter: MJRefreshFooter = {
-        let footer = MJRefreshAutoNormalFooter(refreshingTarget: self, refreshingAction: #selector(fetchDataMore))!
-        return footer
     }()
     
     var delegate: Delegate?
     var delegateDetail: DelegateDetail?
-    var listData: [DelegateDetail] = [] {
-        didSet {
-            tableView.mj_footer.isHidden = listData.count == 0
-        }
-    }
+    var listData: [DelegateDetail] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,13 +66,20 @@ class DelegateDetailViewController: BaseViewController {
             make.top.equalTo(walletHeaderView.snp.bottom)
             make.leading.trailing.bottom.equalToSuperview()
         }
+        tableView.emptyDataSetView { [weak self] view in
+            let holder = self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, nil,"empty_no_data_img") as? TableViewNoDataPlaceHolder
+            view.customView(holder)
+            view.isScrollAllowed(true)
+            if let contentInset = self?.tableView.contentInset {
+                view.verticalOffset(-contentInset.top/2.0)
+            }
+        }
         
         let doubtButtonItem = UIBarButtonItem(image: UIImage(named: "3.icon_doubt"), style: .done, target: self, action: #selector(doubtTapAction))
         doubtButtonItem.tintColor = .black
         navigationItem.rightBarButtonItem = doubtButtonItem
         
         tableView.mj_header = refreshHeader
-        tableView.mj_footer = refreshFooter
         
         setupWalletData()
         tableView.mj_header.beginRefreshing()
@@ -85,17 +88,18 @@ class DelegateDetailViewController: BaseViewController {
 }
 
 extension DelegateDetailViewController {
+    
     private func gotoDelgateController(_ dDetail: DelegateDetail) {
         let controller = DelegateViewController()
         controller.currentNode = dDetail.delegateToNode()
+        controller.currentAddress = delegate?.walletAddress
         navigationController?.pushViewController(controller, animated: true)
     }
     
     private func gotoWithdrawController(_ dDetail: DelegateDetail) {
         let controller = WithDrawViewController()
         controller.currentNode = dDetail.delegateToNode()
-        controller.stakingBlockNum = dDetail.stakingBlockNum
-        controller.currentAddress = (AssetVCSharedData.sharedData.selectedWallet as! Wallet).key?.address
+        controller.currentAddress = delegate?.walletAddress
         navigationController?.pushViewController(controller, animated: true)
     };
     
@@ -109,50 +113,32 @@ extension DelegateDetailViewController {
     private func setupWalletData() {
         walletHeaderView.avatarIV.image = delegate?.walletAvatar ?? UIImage(named: "walletAvatar_1")
         walletHeaderView.nameLabel.text = delegate?.walletName ?? "--"
-        walletHeaderView.addressLabel.text = delegate?.walletAddress ?? "--"
+        walletHeaderView.addressLabel.text = delegate?.walletAddress.addressForDisplay() ?? "--"
     }
     
-    private func fetchData(sequence: String, direction: RefreshDirection) {
+    @objc private func fetchData() {
         guard let del = delegate else {
             tableView.mj_header.endRefreshing()
-            tableView.mj_footer.endRefreshing()
             return
         }
         
-        StakingService.sharedInstance.getDelegateDetail(address: del.walletAddress, beginSequence: sequence, direction: direction.rawValue, listSize: 20) { [weak self] (result, data) in
+        StakingService.sharedInstance.getDelegateDetail(address: del.walletAddress) { [weak self] (result, data) in
             self?.tableView.mj_header.endRefreshing()
             
             switch result {
             case .success:
-                if direction == .new {
-                    self?.listData.removeAll()
-                }
+                self?.listData.removeAll()
                 
                 if let newData = data as? [DelegateDetail], newData.count > 0 {
                     let filterData = newData.filter { return !DelegatePersistence.isDeleted(self?.delegate?.walletAddress ?? "", $0) }
                     
                     self?.listData.append(contentsOf: filterData)
-                    self?.tableView.mj_footer.resetNoMoreData()
-                } else {
-                    self?.tableView.mj_footer.endRefreshingWithNoMoreData()
                 }
-                
                 self?.tableView.reloadData()
             case .fail(_, _):
                 break
             }
         }
-    }
-    
-    
-    @objc func fetchDataLastest() {
-        fetchData(sequence: "0", direction: .new)
-    }
-    
-    @objc func fetchDataMore() {
-        tableView.mj_footer.endRefreshing()
-//        guard let sequence = listData.last?.sequence else { return }
-//        fetchData(sequence: sequence, direction: .old)
     }
 }
 

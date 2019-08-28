@@ -204,7 +204,6 @@ class ATextFieldView: UIView {
         }
         tipLabelLeadingV.isHidden = magnitude == nil
         
-        
         //let curState = internalHeight == 65.0 ? true:false
         let res = check!(text)
         if res.correct {
@@ -212,6 +211,7 @@ class ATextFieldView: UIView {
         } else {
             feeLabelToTextFieldConstaint?.uninstall()
         }
+        
         
         if !showErrorMsg{
             return res
