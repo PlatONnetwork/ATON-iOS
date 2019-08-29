@@ -43,4 +43,12 @@ class MyDelegateFooterView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        let hitView = super.hitTest(point, with: event)
+        if hitView == turButton || hitView == faqButton {
+            return hitView
+        }
+        return nil
+    }
+    
 }

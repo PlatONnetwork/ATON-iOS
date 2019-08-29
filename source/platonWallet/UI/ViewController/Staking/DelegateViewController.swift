@@ -19,6 +19,7 @@ class DelegateViewController: BaseViewController {
     var balanceStyle: BalancesCellStyle?
     var currentAmount: BigUInt = BigUInt.zero
     var canDelegation: CanDelegation?
+    var gasPrice: BigUInt?
     
     lazy var tableView = { () -> UITableView in
         let tbView = UITableView(frame: .zero)
@@ -46,6 +47,7 @@ class DelegateViewController: BaseViewController {
         super.leftNavigationTitle = "delegate_delegate_title"
         // Do any additional setup after loading the view.
         fetchWalletsBalance()
+        getGasPrice()
 
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
@@ -360,7 +362,7 @@ extension DelegateViewController {
         
         let typ = balanceObject.selectedIndex == 0 ? UInt16(0) : UInt16(1) // 0：自由金额 1：锁仓金额
         
-        web3.staking.estimateCreateDelegate(typ: typ, nodeId: nodeId, amount: amountVon) { (result, data) in
+        web3.staking.estimateCreateDelegate(typ: typ, nodeId: nodeId, amount: amountVon, gasPrice: gasPrice) { (result, data) in
             switch result {
             case .success:
                 if let feeString = data?.description {
@@ -378,5 +380,18 @@ extension DelegateViewController {
         controller.transaction = transaction
         controller.backToViewController = navigationController?.viewController(self.indexOfViewControllers - 1)
         navigationController?.pushViewController(controller, animated: true)
+    }
+}
+
+extension DelegateViewController {
+    private func getGasPrice() {
+        web3.platon.gasPrice { [weak self] (response) in
+            switch response.status {
+            case .success(let result):
+                self?.gasPrice = result.quantity
+            case .failure(_):
+                break
+            }
+        }
     }
 }

@@ -117,7 +117,26 @@ class TransactionListViewController: BaseViewController,UITableViewDelegate,UITa
                     return
                 }
                 
-                let _ = transactions.map { $0.direction = (self.selectedWallet?.key?.address.lowercased() == $0.from?.lowercased() ? .Sent : self.selectedWallet?.key?.address.lowercased() == $0.to?.lowercased() ? .Receive : .unknown) }
+                if let currentAddress = self.selectedWallet?.key?.address {
+                    let _ = transactions.map { $0.direction = (currentAddress.lowercased() == $0.from?.lowercased() ? .Sent : currentAddress.lowercased() == $0.to?.lowercased() ? .Receive : .unknown) }
+                } else {
+                    let addresses = (AssetVCSharedData.sharedData.walletList as! [Wallet]).map { return $0.key!.address.lowercased() }
+                    let _ = transactions.map({ (tx) -> Transaction in
+                        if
+                            let from = tx.from?.lowercased(),
+                            let to = tx.to?.lowercased(),
+                            (addresses.contains(from) && addresses.contains(to)) {
+                            tx.direction = .Sent
+                        } else {
+                            if let from = tx.from?.lowercased(), addresses.contains(from) {
+                                tx.direction = .Sent
+                            } else if let to = tx.to?.lowercased(), addresses.contains(to) {
+                                tx.direction = .Receive
+                            }
+                        }
+                        return tx
+                    })
+                }
                 
                 if transactions.count >= self.listSize {
                     self.txnTableView.mj_footer.resetNoMoreData()
@@ -128,7 +147,7 @@ class TransactionListViewController: BaseViewController,UITableViewDelegate,UITa
                 self.dataSource.append(contentsOf: transactions)
                 self.txnTableView.reloadData()
                 self.txnTableView.mj_footer.isHidden = self.dataSource.count == 0
-            case .fail(_, let error):
+            case .fail(_, _):
                 break
             }
         }

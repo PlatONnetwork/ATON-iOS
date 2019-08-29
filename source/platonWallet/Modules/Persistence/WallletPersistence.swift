@@ -18,7 +18,7 @@ class WallletPersistence {
     }
     
     func save(wallet: Wallet) {
-        wallet.nodeURLStr = SettingService.getCurrentNodeURLString()
+//        wallet.nodeURLStr = SettingService.getCurrentNodeURLString()
         try? realm.write {
             realm.add(wallet, update: true) 
         }
@@ -52,10 +52,13 @@ class WallletPersistence {
     }
         
     func getAll() -> [Wallet] {
-
         let res = realm.objects(Wallet.self).sorted(byKeyPath: "createTime")
         var wallets = Array(res)
-        wallets = wallets.filterArrayByCurrentNodeUrlString()
+        
+
+        // 过滤掉如果有nodeURLStr，且非a网的钱包
+        wallets = wallets.filter { $0.nodeURLStr.count == 0 || $0.nodeURLStr == DefaultNodeURL_Alpha }
+        
         for item in wallets {
             item.key = try? Keystore(contentsOf: URL(fileURLWithPath: keystoreFolderPath + "/\(item.keystorePath)"))
         }

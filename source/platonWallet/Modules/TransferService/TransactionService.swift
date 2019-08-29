@@ -112,7 +112,6 @@ class TransactionService : BaseService{
                 
             }
         }
-
     }
      
     func ContractTransactionsPolling(){
@@ -300,27 +299,6 @@ class TransactionService : BaseService{
         }
         
         return ptx;
-    }
-    
-    func getEstimateGas(memo : String?, completion : PlatonCommonCompletion?){
-        var completion = completion
-        var toAddr : EthereumAddress?
-        try? toAddr = EthereumAddress(hex: DefaultAddress, eip55: false)
-        var data = EthereumData(bytes: [])
-        if memo!.length > 0{
-            let dataContent = Data((memo)!.utf8)
-            let array = [UInt8](dataContent)
-            data = EthereumData(bytes: array)
-        }
-        let call = EthereumCall(from: nil, to: toAddr!, gas: nil, gasPrice: nil, value: nil, data: data)
-        web3.platon.estimateGas(call: call) { (resp) in
-            switch resp.status{
-            case .success(_):
-                self.successCompletionOnMain(obj: resp.result?.quantity.gasMutiply(4) as AnyObject, completion: &completion)
-            case .failure(_):
-                self.failCompletionOnMainThread(code: -1, errorMsg: resp.getErrorLocalizedDescription(), completion: &completion)
-            }
-        }
     }
     
     func DeployJointWalletReceiptPolling(wallet: SWallet?){

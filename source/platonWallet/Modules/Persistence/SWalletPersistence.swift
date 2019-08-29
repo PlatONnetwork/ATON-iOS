@@ -25,8 +25,7 @@ class SWalletPersistence {
     }
     
     public class func getAll() -> [SWallet]{
-        let predicate = NSPredicate(format: "nodeURLStr == %@", SettingService.getCurrentNodeURLString())
-        let r = RealmInstance!.objects(SWallet.self).filter(predicate).sorted(byKeyPath: "createTime", ascending: true)
+        let r = RealmInstance!.objects(SWallet.self).sorted(byKeyPath: "createTime", ascending: true)
         let array = Array(r)
         return array
     }

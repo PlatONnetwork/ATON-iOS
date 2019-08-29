@@ -26,16 +26,14 @@ class VotePersistence {
     }
     
     public class func getAllSingleVotes() -> [SingleVote]{
-        var predicate : NSPredicate?
-        predicate = NSPredicate(format: "nodeURLStr = %@", SettingService.getCurrentNodeURLString())
-        let r = RealmInstance!.objects(SingleVote.self).filter(predicate!).sorted(byKeyPath: "createTime", ascending: false)
+        let r = RealmInstance!.objects(SingleVote.self).sorted(byKeyPath: "createTime", ascending: false)
         let array = Array(r)
         return array
     }
     
     public class func getSingleVotesByCandidate(candidateId: String) -> [SingleVote]{
         var predicate : NSPredicate?
-        predicate = NSPredicate(format: "candidateId = %@ AND nodeURLStr = %@", candidateId,SettingService.getCurrentNodeURLString())
+        predicate = NSPredicate(format: "candidateId = %@", candidateId)
         let r = RealmInstance!.objects(SingleVote.self).filter(predicate!).sorted(byKeyPath: "createTime", ascending: false)
         let array = Array(r)
         return array

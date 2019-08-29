@@ -85,6 +85,12 @@ class ValidatorNodeListViewController: BaseViewController, IndicatorInfoProvider
         tableView.mj_header.beginRefreshing()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if isViewLoaded {
+            updateData()
+        }
+    }
 
     /*
     // MARK: - Navigation
@@ -99,10 +105,18 @@ class ValidatorNodeListViewController: BaseViewController, IndicatorInfoProvider
 }
 
 extension ValidatorNodeListViewController {
+    private func updateData() {
+        StakingService.sharedInstance.updateNodeListData { [weak self] (result, data) in
+            switch result {
+            case .success:
+                self?.fetchData(nil)
+            case .fail(_, _):
+                self?.fetchData(nil)
+            }
+        }
+    }
+    
     private func fetchData(_ nodeId: String?) {
-        let addresses = (AssetVCSharedData.sharedData.walletList as! [Wallet]).map { return $0.key!.address }
-        guard addresses.count > 0 else { return }
-        
         if nodeId == nil {
             listData.removeAll()
         }
@@ -124,7 +138,6 @@ extension ValidatorNodeListViewController {
                 self?.tableView.reloadData()
             case .fail(_, _):
                 self?.tableView.mj_footer.isHidden = true
-                break
             }
         }
     }
@@ -137,7 +150,11 @@ extension ValidatorNodeListViewController {
     }
     
     @objc func fetchDataLastest() {
-        fetchData(nil)
+        if controllerType == .all {
+            updateData()
+        } else {
+            fetchData(nil)
+        }
     }
     
     @objc func fetchDataMore() {

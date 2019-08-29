@@ -26,7 +26,17 @@ class AssetTransactionViewControllerV060: BaseViewController, EmptyDataSetDelega
     
     weak var delegate: ChildScrollViewDidScrollDelegate?
     
-    var dataSource = [String: [Transaction]]()
+    var dataSource = [String: [Transaction]]() {
+        didSet {
+            if
+                let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress,
+                let dataCount = dataSource[selectedAddress]?.count, dataCount >= listSize {
+                tableView.mj_footer.isHidden = false
+            } else {
+                tableView.mj_footer.isHidden = true
+            }
+        }
+    }
     
     var localDataSource = [String: [Transaction]]()
     
@@ -51,7 +61,6 @@ class AssetTransactionViewControllerV060: BaseViewController, EmptyDataSetDelega
         tableView.dataSource = self
         tableView.separatorStyle = .none
         tableView.showsVerticalScrollIndicator = false
-//        tableView.alwaysBounceVertical = false
         tableView.emptyDataSetView { [weak self] view in
             let holder = self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, nil,"empty_no_data_img") as? TableViewNoDataPlaceHolder
             view.customView(holder)

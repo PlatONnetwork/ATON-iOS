@@ -11,8 +11,6 @@ import RealmSwift
 
 class DelegatePersistence {
     public class func add(delegates: [DelegateDetailDel]) {
-        let _ = delegates.map { $0.chainUrl = SettingService.getCurrentNodeURLString() }
-        
         RealmWriteQueue.async {
             autoreleasepool(invoking: {
                 let realm = RealmHelper.getNewRealm()
@@ -25,7 +23,7 @@ class DelegatePersistence {
     
     // 只返回blocknum，不要在这里进行blocknum判断
     public class func isDeleted(_ walletAddress: String, _ delegateDetail: DelegateDetail) -> Bool {
-        let predicate = NSPredicate(format: "compoundKey == %@ AND chainUrl == %@", "\(walletAddress)\(delegateDetail.nodeId)", SettingService.getCurrentNodeURLString())
+        let predicate = NSPredicate(format: "compoundKey == %@", "\(walletAddress)\(delegateDetail.nodeId)")
         let r = RealmInstance!.objects(DelegateDetailDel.self).filter(predicate)
         let result = Array(r)
         guard result.count > 0 else {
@@ -45,17 +43,11 @@ class DelegatePersistence {
             autoreleasepool(invoking: {
                 let realm = RealmHelper.getNewRealm()
                 
-                let predicate = NSPredicate(format: "compoundKey == %@ AND chainUrl == %@", "\(walletAddress)\(nodeId)", SettingService.getCurrentNodeURLString())
+                let predicate = NSPredicate(format: "compoundKey == %@", "\(walletAddress)\(nodeId)")
                 try? realm.write {
                     realm.delete(realm.objects(DelegateDetailDel.self).filter(predicate))
                 }
             })
         }
     }
-    
-//    public class func deleteAll() {
-//        try? RealmInstance!.write {
-//            RealmInstance!.deleteAll()
-//        }
-//    }
 }

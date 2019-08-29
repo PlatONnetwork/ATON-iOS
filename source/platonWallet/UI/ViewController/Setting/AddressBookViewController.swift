@@ -41,9 +41,9 @@ class AddressBookViewController: BaseViewController {
         // tableview滚动会显示导行栏透明的情况，可修改基类处理，暂定在该页面处理
         navigationController?.navigationBar.isTranslucent = false
         
-        view.backgroundColor = UIViewController_backround
+        view.backgroundColor = normal_background_color
         tableView = UITableView()
-        tableView.backgroundColor = UIViewController_backround
+        tableView.backgroundColor = normal_background_color
         tableView.delegate = self
         tableView.dataSource = self
         tableView.separatorStyle = .none

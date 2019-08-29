@@ -109,11 +109,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LicenseVCDelegate {
             return
         }
         
-        if UserDefaults.standard.bool(forKey: userDefault_key_isFirst) {
-            gotoAgreementController()
-        }else {
+//        if UserDefaults.standard.bool(forKey: userDefault_key_isFirst) {
+//            gotoAgreementController()
+//        }else {
             gotoAtonController()
-        }
+//        }
     }
     
     func gotoAtonController() {

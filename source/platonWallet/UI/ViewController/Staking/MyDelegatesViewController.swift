@@ -84,7 +84,6 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
         
         tableView.tableFooterView = footerView
 
-        
         tableView.mj_header = refreshHeader
         tableView.mj_header.beginRefreshing()
     }

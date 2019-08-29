@@ -24,7 +24,7 @@ class AssetFeeViewV060: UIView {
     
     lazy var levelView = { () -> PLevelSlider in 
         let levelView = PLevelSlider.create(levelChanged: { (level) in
-            print("level:\(level)")
+            
         })
         return levelView
     }()
@@ -54,5 +54,4 @@ class AssetFeeViewV060: UIView {
             make.edges.equalToSuperview()
         }
     }
-    
 }
