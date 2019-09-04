@@ -12,7 +12,7 @@ import RealmSwift
 class TransferPersistence {
     
     public class func add(tx : Transaction){
-        tx.nodeURLStr = SettingService.getCurrentNodeURLString()        
+        tx.nodeURLStr = SettingService.getCurrentNodeURLString()
         RealmWriteQueue.async {
             autoreleasepool(invoking: {
                 let realm = RealmHelper.getNewRealm()
@@ -43,31 +43,16 @@ class TransferPersistence {
                 }
                 
                 try? realm.write {
-                    transaction.txReceiptStatus = (status == 1) ? 0 : 1
+                    transaction.txReceiptStatus = (status == 1) ? 1 : 0
                     transaction.blockNumber = blockNumber
                     transaction.gasUsed = gasUsed
                     completion?()
                 }
-                
-//                let array = Array(r)
-//                let _ = array.map({ (ts) -> Transaction in
-//                    ts.txReceiptStatus = (status == 1) ? 0 : 1
-//                    ts.blockNumber = blockNumber
-//                    ts.gasUsed = gasUsed
-//                    return ts
-//                })
-//
-//                realm.beginWrite()
-//                realm.add(transaction, update: true)
-//                try? realm.commitWrite()
-                
             })
         }
     }
     
     public class func add(tx: Transaction, _ completion: (() -> Void)?) {
-        
-        
         RealmWriteQueue.async {
             autoreleasepool(invoking: {
                 let realm = RealmHelper.getNewRealm()
@@ -83,6 +68,7 @@ class TransferPersistence {
     }
     
     public class func getAll() -> [Transaction]{
+        RealmInstance!.refresh()
         let wallets = AssetVCSharedData.sharedData.walletList.filterClassicWallet
         let addresses = wallets.map { w -> String in
             return (w.key?.address)!.lowercased()
@@ -96,7 +82,7 @@ class TransferPersistence {
     }
     
     public class func getAllByAddress(from : String) -> [Transaction]{
-        
+        RealmInstance!.refresh()
         let predicate = NSPredicate(format: "(from contains[cd] %@ OR to contains[cd] %@) AND nodeURLStr == %@", from,from,SettingService.getCurrentNodeURLString())
         let r = RealmInstance!.objects(Transaction.self).filter(predicate).sorted(byKeyPath: "createTime", ascending: false)
         let array = Array(r)
@@ -114,6 +100,7 @@ class TransferPersistence {
     }
     
     public class func getByTxhash(_ hash : String?) -> Transaction?{
+        RealmInstance!.refresh()
         let predicate = NSPredicate(format: "txhash == %@ AND nodeURLStr == %@", hash!,SettingService.getCurrentNodeURLString())
         let r = RealmInstance!.objects(Transaction.self).filter(predicate).sorted(byKeyPath: "createTime")
         let array = Array(r)

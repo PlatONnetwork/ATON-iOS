@@ -18,35 +18,24 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
     var confirmPopUpView : PopUpViewController?
     
     var estimatedGas = BigUInt("210000")
+    var gasPriceLevel: Float = 1/6.5
     
     var gasPrice : BigUInt?{
         get{  
             //gas prise: 1gwei ~ 10gwei
+            let platonGasPrice = TransactionService.service.ethGasPrice ?? BigUInt.zero
+            let minGasPrice = platonGasPrice.multiplied(by: BigUInt(Int(0.5 * 10))) / BigUInt(10)
+            let maxGasPrice = platonGasPrice.multiplied(by: BigUInt(6))
             
-            let mul = String(1 + 3 * (self.gasPriceLevel - 1))
-            return BigUInt.mutiply(a: mul, by: THE9powerof10)
+            let price = minGasPrice + (((maxGasPrice - minGasPrice) * BigUInt(Int(self.gasPriceLevel * 10000000)) / BigUInt(10000000)))
+            return price
         }
     }
-    
-    //level int 1~4
-    var gasPriceLevel = 1
     
     //Joint wallet property
     var submitGas : BigUInt?
     
     var confirmGas : BigUInt?
-    
-    //Joint wallet property - end
-    
-    
-    func gasPricegweiValueMutiply10() -> Int{
-        self.feeView.levelView.levelChanged = {[weak self] level in 
-            //print("level: \(level)")
-        }
-        //let gweiValueMutiply10 = Int(transferView.feeSlider.value/18.0) * 18 + 10
-        let gweiValueMutiply10 = 100
-        return gweiValueMutiply10 
-    }
 
     var walletType : WalletType{
         get{
@@ -125,46 +114,6 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
         button.setTitleColor(UIColor(rgb: 0x105CFE ), for: .normal)
         return button
     }()
-    
-//    lazy var amountView = { () -> PTextFieldView in
-//
-//        let amountView = PTextFieldView.create(title: "send_amout_colon")
-//        amountView.textField.LocalizePlaceholder = "send_amount_placeholder"
-//
-//        amountView.addAction(title: "send_sendAll", action: {[weak self] in
-//            self?.onSendAll()
-//        })
-//
-//        amountView.checkInput(mode: .all, check: {[weak self] text -> (Bool, String) in
-//
-//            let inputformat = CommonService.checkTransferAmoutInput(text: text, checkBalance: false, fee: nil)
-//            if !inputformat.0{
-//                return inputformat
-//            }
-//            return (self?.checkSufficient(text: text))!
-//
-//        }, heightChange: { [weak self](view) in
-//            self?.textFieldViewUpdateHeight(view: view)
-//        })
-//
-//        amountView.shouldChangeCharactersCompletion = { [weak self] (concatenated,replacement) in
-//            if replacement == ""{
-//                return true
-//            }
-//            if !replacement.validFloatNumber(){
-//                return false
-//            }
-//            return concatenated.trimNumberLeadingZero().isValidInputAmoutWith8DecimalPlace()
-//        }
-//
-//        amountView.endEditCompletion = { [weak self] text in
-//            let _ = self?.checkConfirmButtonAvailable()
-//            let _ = amountView.checkInvalidNow(showErrorMsg: false)
-//        }
-//
-//        return amountView
-//
-//    }()
     
     lazy var balanceLabel = { () -> UILabel in 
         let label = UILabel(frame: .zero)
@@ -246,7 +195,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
         guard AssetVCSharedData.sharedData.selectedWallet != nil else {
             return
         }
-        self.estimateMemoGas()
+        
         if let obj = AssetVCSharedData.sharedData.selectedWallet as? Wallet{
             self.balanceLabel.text = Localized("transferVC_transfer_balance") + obj.balanceDescription()
         }
@@ -337,7 +286,8 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(onTap(gesture:)))
         self.view.addGestureRecognizer(tapGesture)
         
-        self.feeView.levelView.levelChanged = {[weak self] level in 
+        self.feeView.levelView.curLevel = gasPriceLevel
+        self.feeView.levelView.levelChanged = { [weak self] level in
             self?.gasPriceLevel = level
             self?.DidNodeGasPriceUpdate()
             let _ = self?.amountView.checkInvalidNow(showErrorMsg: true)
@@ -442,7 +392,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
             confirmView.toAddressLabel.text = walletAddressView.textField.text!.addressDisplayInLocal() ?? "--"
             confirmView.walletName.text = wallet.key?.address.addressDisplayInLocal() ?? "--"
             let feeString = self.totalFee().divide(by: ETHToWeiMultiplier
-                , round: 18)
+                , round: 8)
             confirmView.feeLabel.text = feeString.ATPSuffix()
 
         }
@@ -572,29 +522,13 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
 //MARK: - Classic transfer Logic
 
 extension AssetSendViewControllerV060{
-
-    
-    func estimateMemoGas(){
-        TransactionService.service.getEstimateGas(memo: "") { (result, data) in
-            switch result{
-            case .success:
-                if let gas = data as? BigUInt{
-                    //use fixed value 21000
-                    //self.estimatedGas = gas
-                    //print("estimatedGas:\(String(self.estimatedGas!))")
-                }
-            case .fail(_, _):
-                do {}
-            }
-        }
-    }
     
     //MARK : - Notification
     
     @objc func DidNodeGasPriceUpdate(){
         DispatchQueue.global().async {
             let feeString = self.totalFee().divide(by: ETHToWeiMultiplier
-                , round: 18)
+                , round: 8)
             DispatchQueue.main.async {
                 self.feeView.fee.text = feeString.ATPSuffix()
             }
@@ -630,8 +564,6 @@ extension AssetSendViewControllerV060{
     func totalFee() -> BigUInt{
         if let _ = AssetVCSharedData.sharedData.selectedWallet as? Wallet{
             return (self.gasPrice?.multiplied(by: self.estimatedGas))!
-        }else if let _ = AssetVCSharedData.sharedData.selectedWallet as? SWallet{
-            return (self.gasPrice?.multiplied(by: self.estimatedGas))!
         }
         return BigUInt("0")!
     }
@@ -652,7 +584,7 @@ extension AssetSendViewControllerV060{
         }
         
         self.resportSufficiency(isSufficient: true)
-        amountView.textField.text = maxSendAmout?.divide(by: ETHToWeiMultiplier, round: 8).balanceFixToDisplay(maxRound: 8)
+        amountView.textField.text = maxSendAmout?.divide(by: ETHToWeiMultiplier, round: 8)
         let _ = amountView.checkInvalidNow(showErrorMsg: true)
         let _ = self.checkConfirmButtonAvailable()
     }

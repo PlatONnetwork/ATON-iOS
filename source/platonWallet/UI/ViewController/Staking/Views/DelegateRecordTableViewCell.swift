@@ -31,7 +31,7 @@ class DelegateRecordTableViewCell: UITableViewCell {
             } else {
                 nodeNameLabel.text = "--"
             }
-            nodeAddressLabel.text = transaction?.nodeId?.addressForDisplay() ?? "--"
+            nodeAddressLabel.text = transaction?.nodeId?.nodeIdForDisplayShort() ?? "--"
             nodeBalanceLabel.text = transaction?.recordAmountForDisplay ?? "--"
             recordStatusLabel.text = transaction?.recordStatus.0
             recordStatusLabel.textColor = transaction?.recordStatus.1
@@ -146,7 +146,7 @@ class DelegateRecordTableViewCell: UITableViewCell {
         delegateBackgroundView.addSubview(walletAvatarIV)
         walletAvatarIV.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
-            make.leading.equalTo(timeLabel.snp.trailing).offset(10)
+//            make.leading.equalTo(timeLabel.snp.trailing).offset(10)
             make.height.width.equalTo(20)
         }
         

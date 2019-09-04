@@ -103,7 +103,11 @@ class AssetService : BaseService{
     func fetchWalletBalanceForV7(_ completion: PlatonCommonCompletion?) {
         let completion = completion
         let addresses = (AssetVCSharedData.sharedData.walletList as! [Wallet]).map { return $0.key!.address }
-        guard addresses.count > 0 else { return }
+        guard addresses.count > 0 else {
+//            AssetService.sharedInstace.balances = []
+            NotificationCenter.default.post(name: Notification.Name(DidUpdateAllAssetNotification), object: nil)
+            return
+        }
         
         getWalletBalances(addrs: addresses) { [weak self] (result, data) in
             switch result {

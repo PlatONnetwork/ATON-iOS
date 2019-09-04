@@ -11,7 +11,7 @@ import Localize_Swift
 
 class ValidatorNodesViewController: ButtonBarPagerTabStripViewController, IndicatorInfoProvider {
     
-    var itemInfo: IndicatorInfo = IndicatorInfo(title: Localized("staking_main_validator_text"))
+    var itemInfo: IndicatorInfo = IndicatorInfo(title: "staking_main_validator_text")
     
     func indicatorInfo(for pagerTabStripController: PagerTabStripViewController) -> IndicatorInfo {
         return itemInfo
@@ -21,8 +21,8 @@ class ValidatorNodesViewController: ButtonBarPagerTabStripViewController, Indica
         let button = UIButton()
         button.titleLabel?.font = UIFont.systemFont(ofSize: 12)
         button.setTitleColor(common_blue_color, for: .normal)
-        button.setTitle(Localized("staking_validator_node_rank"), for: .normal)
-        button.setTitle(Localized("staking_validator_node_yield"), for: .selected)
+        button.localizedNormalTitle = "staking_validator_node_rank"
+        button.localizedSelectedTitle = "staking_validator_node_yield"
         button.setImage(UIImage(named: "3.icon_ sorting"), for: .normal)
         button.semanticContentAttribute = UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft ? .forceLeftToRight : .forceRightToLeft
         button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
@@ -75,11 +75,11 @@ class ValidatorNodesViewController: ButtonBarPagerTabStripViewController, Indica
     
 
     override func viewControllers(for pagerTabStripController: PagerTabStripViewController) -> [UIViewController] {
-        let child_1 = ValidatorNodeListViewController(itemInfo: Localized("staking_validator_node_all"))
+        let child_1 = ValidatorNodeListViewController(itemInfo: "staking_validator_node_all")
         child_1.controllerType = .all
-        let child_2 = ValidatorNodeListViewController(itemInfo: Localized("staking_validator_node_active"))
+        let child_2 = ValidatorNodeListViewController(itemInfo: "staking_validator_node_active")
         child_2.controllerType = .active
-        let child_3 = ValidatorNodeListViewController(itemInfo: Localized("staking_validator_node_candidate"))
+        let child_3 = ValidatorNodeListViewController(itemInfo: "staking_validator_node_candidate")
         child_3.controllerType = .candidate
         
         return [child_1, child_2, child_3]

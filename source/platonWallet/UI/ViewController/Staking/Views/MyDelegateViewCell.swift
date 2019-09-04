@@ -68,12 +68,11 @@ class MyDelegateViewCell: UITableViewCell {
 
         walletNameLabel.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.medium)
         walletNameLabel.textColor = .black
-        walletNameLabel.text = Localized("staking_main_wallet_name")
+        walletNameLabel.localizedText = "staking_main_wallet_name"
         walletBackgroundView.addSubview(walletNameLabel)
         walletNameLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(12)
             make.leading.equalTo(walletAvatarIV.snp.trailing).offset(5)
-            make.trailing.equalToSuperview().offset(-110)
             make.height.equalTo(18)
         }
 
@@ -84,19 +83,18 @@ class MyDelegateViewCell: UITableViewCell {
         walletAddressLabel.snp.makeConstraints { make in
             make.top.equalTo(walletNameLabel.snp.bottom).offset(3)
             make.leading.equalTo(walletNameLabel.snp.leading)
-            make.trailing.equalTo(walletNameLabel.snp.trailing)
         }
 
         walletBalanceLabel.font = UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.medium)
         walletBalanceLabel.textColor = .black
         walletBalanceLabel.text = "0.00"
         walletBalanceLabel.textAlignment = .right
-        walletBalanceLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        walletBalanceLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         walletBalanceLabel.adjustsFontSizeToFitWidth = true
         walletBackgroundView.addSubview(walletBalanceLabel)
         walletBalanceLabel.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
-            make.leading.equalTo(walletNameLabel.snp.trailing).offset(5)
+            make.leading.equalTo(walletAddressLabel.snp.trailing).offset(5)
             make.trailing.equalToSuperview().offset(-10)
         }
         
@@ -111,7 +109,7 @@ class MyDelegateViewCell: UITableViewCell {
         }
 
         let delegateTipLabel = UILabel()
-        delegateTipLabel.text = Localized("staking_main_delegate_text")
+        delegateTipLabel.localizedText = "staking_main_delegate_text"
         delegateTipLabel.textColor = common_lightLightGray_color
         delegateTipLabel.font = UIFont.systemFont(ofSize: 12)
         delegateBackgroundView.addSubview(delegateTipLabel)
@@ -134,7 +132,7 @@ class MyDelegateViewCell: UITableViewCell {
         }
         
         let unDelegatingTipLabel = UILabel()
-        unDelegatingTipLabel.text = Localized("staking_main_undelegating_text")
+        unDelegatingTipLabel.localizedText = "staking_main_undelegating_text"
 //        unDelegatingTipLabel.backgroundColor = .blue
         unDelegatingTipLabel.textColor = common_lightLightGray_color
         unDelegatingTipLabel.font = UIFont.systemFont(ofSize: 12)
@@ -156,7 +154,7 @@ class MyDelegateViewCell: UITableViewCell {
         }
         
         let detailButton = UIButton()
-        detailButton.setTitle(Localized("staking_main_delegate_detail"), for: .normal)
+        detailButton.localizedNormalTitle = "staking_main_delegate_detail"
         detailButton.setTitleColor(common_blue_color, for: .normal)
         detailButton.setImage(UIImage(named: "3.icon_right"), for: .normal)
         detailButton.titleLabel?.font = UIFont.systemFont(ofSize: 13)

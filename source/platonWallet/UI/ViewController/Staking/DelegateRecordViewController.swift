@@ -82,6 +82,7 @@ class DelegateRecordViewController: BaseViewController, IndicatorInfoProvider {
             let holder = self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, nil,"empty_no_data_img") as? TableViewNoDataPlaceHolder
             holder?.descriptionLabel.text = Localized("empty_string_delegation_record")
             view.customView(holder)
+            view.isScrollAllowed(true)
         }
         tableView.mj_header = refreshHeader
         tableView.mj_footer = refreshFooter

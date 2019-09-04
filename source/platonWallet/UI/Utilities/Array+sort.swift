@@ -146,10 +146,10 @@ extension Array {
     func filterArrayByCurrentNodeUrlString() -> [Element]{
         
         return self.filter { item -> Bool in
-            if let castItem = item as? Wallet{
+            if let castItem = item as? Wallet {
                 return castItem.nodeURLStr == SettingService.getCurrentNodeURLString()
             }
-            if let castItem = item as? SWallet{
+            if let castItem = item as? SWallet {
                 return castItem.nodeURLStr == SettingService.getCurrentNodeURLString()
             }
             if let castItem = item as? Transaction{

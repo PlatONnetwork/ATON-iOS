@@ -12,8 +12,7 @@ import RealmSwift
 import BigInt
 import LocalAuthentication
 import platonWeb3
-
-
+import Localize_Swift
 
 
 private let userDefault_key_isLocalAuthenticationOpen = "isLocalAuthenticationOpen"
@@ -109,16 +108,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LicenseVCDelegate {
             return
         }
         
-        if UserDefaults.standard.bool(forKey: userDefault_key_isFirst) {
-            gotoAgreementController()
-        }else {
+//        if UserDefaults.standard.bool(forKey: userDefault_key_isFirst) {
+//            gotoAgreementController()
+//        }else {
             gotoAtonController()
-        }
+//        }
     }
     
     func gotoAtonController() {
         if WalletService.sharedInstance.wallets.count > 0 {
             gotoMainTab()
+            getRemoteVersion()
         }else {
             gotoWalletCreateVC()
         }
@@ -183,8 +183,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LicenseVCDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        
-         
+        getRemoteVersion()
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
@@ -194,3 +193,45 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LicenseVCDelegate {
 
 }
 
+
+extension AppDelegate {
+    func getRemoteVersion() {
+        guard let _ = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarViewController else { return }
+        SettingService.shareInstance.getRemoteVersion { [weak self] (result, data) in
+            switch result {
+            case .success:
+                let appBuild = Bundle.main.infoDictionary!["CFBundleVersion"] as? String ?? ""
+                let remoteBuild = SettingService.shareInstance.currentVersion?.build ?? ""
+                if appBuild.compare(remoteBuild) == ComparisonResult.orderedAscending {
+                    guard
+                        let localDate = UserDefaults.standard.object(forKey: "UpdateVersionAlertDate") as? Date,
+                        Calendar.current.isDate(localDate, inSameDayAs: Date()) else {
+                            UserDefaults.standard.set(Date(), forKey: "UpdateVersionAlertDate")
+                            self?.showShouldUpdateVersionAlert()
+                            return
+                    }
+                    
+                    if SettingService.shareInstance.currentVersion?.isForce == true {
+                        self?.showShouldUpdateVersionAlert()
+                    }
+                    UserDefaults.standard.set(Date(), forKey: "UpdateVersionAlertDate")
+                }
+            case .fail(_, _):
+                break
+            }
+        }
+    }
+    
+    func showShouldUpdateVersionAlert() {
+        let controller = UIAlertController(title: Localized("about_version_update_alert_title"), message: Localized("about_version_update_alert_message_1") + (SettingService.shareInstance.currentVersion?.version ?? "") + Localized("about_version_update_alert_message_2"), preferredStyle: .alert)
+        let cancelAction = UIAlertAction(title: Localized("about_version_update_alert_cancel"), style: .cancel, handler: nil)
+        let okAction = UIAlertAction(title: Localized("about_version_update_alert_ok"), style: .default) { (_) in
+            UIApplication.shared.openURL(URL(string: SettingService.shareInstance.currentVersion?.appStoreId ?? "https://developer.platon.network/mobile/index.html")!)
+        }
+        if SettingService.shareInstance.currentVersion?.isForce == false {
+            controller.addAction(cancelAction)
+        }
+        controller.addAction(okAction)
+        UIApplication.shared.keyWindow?.rootViewController?.present(controller, animated: true, completion: nil)
+    }
+}

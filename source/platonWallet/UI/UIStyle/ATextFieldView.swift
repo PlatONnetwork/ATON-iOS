@@ -150,7 +150,7 @@ class ATextFieldView: UIView {
         addSubview(btn)
         btn.snp.makeConstraints { make in
             make.height.equalTo(40)
-            make.trailing.equalToSuperview().offset(-12 - (actions.count * 32))
+            make.trailing.equalToSuperview().offset(-(actions.count * 32))
             make.centerY.equalTo(textField)
             make.width.equalTo(itemWidth)
         }
@@ -159,7 +159,7 @@ class ATextFieldView: UIView {
         
         
         textField.snp.updateConstraints { make in
-            make.trailing.equalToSuperview().offset(-(actions.count * 32))
+            make.trailing.equalToSuperview().offset(-(actions.count * 32)-12)
         }
         
         layoutIfNeeded()

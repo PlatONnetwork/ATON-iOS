@@ -32,7 +32,7 @@ class MyDelegateHeaderView: UIView {
         let delegateNameTipLabel = UILabel()
         delegateNameTipLabel.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.medium)
         delegateNameTipLabel.textColor = .black
-        delegateNameTipLabel.text = Localized("staking_main_delegate_total")
+        delegateNameTipLabel.localizedText = "staking_main_delegate_total"
         addSubview(delegateNameTipLabel)
         delegateNameTipLabel.snp.makeConstraints { make in
             make.top.equalTo(delegateAvatarIV)
@@ -52,7 +52,7 @@ class MyDelegateHeaderView: UIView {
         
         let recordButton = UIButton()
         recordButton.addTarget(self, action: #selector(recordTapAction), for: .touchUpInside)
-        recordButton.setTitle(Localized("staking_main_delegate_record"), for: .normal)
+        recordButton.localizedNormalTitle = "staking_main_delegate_record"
         recordButton.setTitleColor(common_blue_color, for: .normal)
         recordButton.setImage(UIImage(named: "3.icon_Record"), for: .normal)
         recordButton.titleLabel?.font = UIFont.systemFont(ofSize: 13)

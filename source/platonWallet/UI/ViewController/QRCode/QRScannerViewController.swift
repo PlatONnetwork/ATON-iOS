@@ -326,20 +326,37 @@ extension QRScannerViewController: UIImagePickerControllerDelegate, UINavigation
         
         let image = info[.originalImage] as! UIImage
         
-        let detector = CIDetector(ofType: CIDetectorTypeQRCode, context: nil, options: [CIDetectorAccuracy: CIDetectorAccuracyHigh])
-        let featureArr = detector?.features(in: CIImage(cgImage: image.cgImage!))
-        guard let feature = featureArr?.first as? CIQRCodeFeature else {
+        //对于截图，尝试各种尺寸的拉伸，否则识别不出来
+        let sizeArray = [CGSize(width: 1242, height: 2688),
+                         CGSize(width: 828, height: 1792),
+                         CGSize(width: 1125, height: 2436),
+                         CGSize(width: 1242, height: 2208),
+                         CGSize(width: 750, height: 1334),
+                         CGSize(width: 640, height: 1136)]
+        var featureQR: CIQRCodeFeature?
+        for item in sizeArray{
+            let newImage = image.resizeImage(image: image, newSize: CGSize(width: item.width, height: item.height))
+            let detector = CIDetector(ofType: CIDetectorTypeQRCode, context: nil, options: [CIDetectorAccuracy: CIDetectorAccuracyHigh])
+            let featureArr = detector?.features(in: CIImage(cgImage: newImage.cgImage!))
+            
+            if let feature = featureArr?.first as? CIQRCodeFeature {
+                featureQR = feature
+                break
+            }
+        }
+        
+        if let feature = featureQR {
+            let message = feature.messageString!
+            
+            self.dismiss(animated: true) { [weak self] in
+                guard let self = self else { return }
+                self.hideLoadingHUD()
+                self.scanCompletion?(message)
+            }
+        } else {
             self.hideLoadingHUD()
             self.showMessage(text: Localized("scanviewcontroller_scan_result_notfound"), delay: 1.5)
             self.dismiss(animated: true, completion: nil)
-            return
-        }
-        let message = feature.messageString!
-        
-        self.dismiss(animated: true) { [weak self] in
-            guard let self = self else { return }
-            self.hideLoadingHUD()
-            self.scanCompletion?(message)
         }
     }
     

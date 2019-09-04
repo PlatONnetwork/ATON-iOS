@@ -7,14 +7,16 @@
 //
 
 import Foundation
+import Alamofire
+import Localize_Swift
 
 class SettingService {
-    
-    static let debugBaseURL = "http://192.168.9.190:1000/app-203/v0700/"
     
     var nodeStorge: NodeInfoPersistence?
     
     var currentNodeURL : String?
+    
+    var currentVersion: RemoteVersion?
     
     static let shareInstance = SettingService()
     private init() {
@@ -60,27 +62,23 @@ class SettingService {
             SettingService.shareInstance.currentNodeURL = SettingService.shareInstance.getSelectedNodes()?.nodeURLStr
         }
         
-        guard SettingService.shareInstance.currentNodeURL != nil else{
-            return DefaultNodeURL_Alpha_deprecated
+        guard let nodeURL = SettingService.shareInstance.currentNodeURL else{
+            return DefaultNodeURL_Alpha_V071
         }
-        
-        return SettingService.shareInstance.currentNodeURL!
+        return nodeURL
     }
     
     
     static func getCentralizationURL() -> String {
-        let DEBUG_CentralizationURL = "http://192.168.9.190:10061/app-203/v060"
-        let DefaultCentralizationURL = "https://aton.platon.network/"
+        let CentralizationURL = "http://192.168.9.190:1000/app-203/v0700/"
+        let DebugCentralizationURL = "http://192.168.9.190:443/app-203/v0700/"
         
         let url = self.getCurrentNodeURLString()
-        if url == DefaultNodeURL_Alpha{
-            return DefaultCentralizationURL + "app-" + self.getChainID() + "/v060"
-        }else if url == DefaultNodeURL_Beta{
-            return DefaultCentralizationURL + "app-" + self.getChainID() + "/v060"
-        }else if url == "http://192.168.120.81:6789"{
-            return DEBUG_CentralizationURL
+        if url == "http://192.168.9.190:1000/rpc" {
+            return CentralizationURL
+        } else {
+            return DebugCentralizationURL
         }
-        return DefaultCentralizationURL + "app-" + self.getChainID() + "/v060"
     }
     
     // v0.6.2 新增获取链ID
@@ -124,5 +122,32 @@ class SettingService {
         nodeStorge?.delete(node: node)
     }
     
+    
+    public func getRemoteVersion(completion: PlatonCommonCompletion?) {
+        let url = "http://192.168.9.190:443/config/aton-update.json"
+        
+        var request = URLRequest(url: try! url.asURL())
+        request.httpMethod = "GET"
+        request.timeoutInterval = requestTimeout
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        Alamofire.request(request).responseJSON { (response) in
+            print(response)
+        }
+        Alamofire.request(request).responseData { [weak self] response in
+            switch response.result {
+            case .success(let data):
+                let decoder = JSONDecoder()
+                let response = try? decoder.decode(RemoteVersionResponse.self, from: data)
+                self?.currentVersion = response?.ios
+                DispatchQueue.main.async {
+                    completion?(.success, nil)
+                }
+            case .failure(_):
+                DispatchQueue.main.async {
+                    completion?(.fail(-1, nil), nil)
+                }
+            }
+        }
+    }
     
 }

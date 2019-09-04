@@ -9,6 +9,7 @@
 import UIKit
 import Localize_Swift
 import BigInt
+import platonWeb3
 
 class WithDrawViewController: BaseViewController {
     
@@ -20,6 +21,8 @@ class WithDrawViewController: BaseViewController {
     var delegateValue: [DelegationValue] = []
     
     var listData: [DelegateTableViewCellStyle] = []
+    var gasPrice: BigUInt?
+    var estimateUseGas: BigUInt?
     
     lazy var tableView = { () -> UITableView in
         let tbView = UITableView(frame: .zero)
@@ -55,6 +58,7 @@ class WithDrawViewController: BaseViewController {
         tableView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(cancelFirstResponser)))
         
         fetchDelegateValue()
+        getGasPrice()
     }
     
     @objc private func cancelFirstResponser() {
@@ -185,9 +189,11 @@ extension WithDrawViewController: UITableViewDelegate, UITableViewDataSource {
                 guard let self = self else { return }
                 self.balanceCellDidHandle(cell)
             }
+            cell.isUserInteractionEnabled = indexPath.row == 0 ? true : (BigUInt(balanceStyle.balance(for: indexPath.row).1) ?? BigUInt.zero > BigUInt.zero)
             return cell
         case .inputAmount:
             let cell = tableView.dequeueReusableCell(withIdentifier: "SendInputTableViewCell") as! SendInputTableViewCell
+            cell.amountView.titleLabel.text = Localized("ATextFieldView_withdraw_title")
             cell.minAmountLimit = "10".LATToVon
             cell.maxAmountLimit = BigUInt(balanceStyle?.currentBalance.1 ?? "0")
             cell.cellDidContentChangeHandler = { [weak self] in
@@ -252,12 +258,12 @@ extension WithDrawViewController {
             return
         }
         
-        guard currentAmount >= BigUInt("10") else {
+        guard currentAmount >= BigUInt("10").multiplied(by: PlatonConfig.VON.LAT) else {
             showMessage(text: Localized("staking_input_amount_minlimit_error"))
             return
         }
         
-        guard currentAmount < (BigUInt(balanceStyle?.currentBalance.1 ?? "0") ?? BigUInt.zero) else {
+        guard currentAmount <= (BigUInt(balanceStyle?.currentBalance.1 ?? "0") ?? BigUInt.zero) else {
             showMessage(text: Localized("staking_input_amount_maxlimit_error"))
             return
         }
@@ -270,45 +276,48 @@ extension WithDrawViewController {
         
         var tempPrivateKey: String?
         
-        showLoadingHUD()
-        showPasswordInputPswAlert(for: walletObject.currentWallet) { [weak self] privateKey in
+        showPasswordInputPswAlert(for: walletObject.currentWallet) { [weak self] (privateKey, error) in
             guard let self = self else { return }
-            self.hideLoadingHUD()
-            if let pri = privateKey {
-                tempPrivateKey = pri
-                
-                var usedAmount = BigUInt.zero
-                
-                for (index, dValue) in self.delegateValue.enumerated() {
-                    if
-                        let stakingBlockNum = dValue.stakingBlockNum,
-                        let sBlockNum = UInt64(stakingBlockNum),
-                        let canUsedAmount = dValue.getDelegationValueAmount(index: balanceSelectedIndex),
-                        let tempPri = tempPrivateKey {
-                        var amount = BigUInt.zero
-                        
-                        if canUsedAmount > self.currentAmount - usedAmount {
-                            amount = self.currentAmount - usedAmount
-                            usedAmount += amount
-                        } else {
-                            amount = canUsedAmount
-                            usedAmount += amount
-                        }
-                        
-                        if amount <= BigUInt.zero {
-                            return
-                        }
-                        
-                        self.withdrawDelegateAction(stakingBlockNum: sBlockNum, nodeId: nodeId, amount: amount, sender: currentAddress, privateKey: tempPri, { [weak self] (transaction) in
-                            guard let self = self else { return }
-                            transaction.nodeName = self.currentNode?.name
-                            let newTransaction = transaction.copyTransaction()
-                            TransferPersistence.add(tx: newTransaction)
-                            if index == self.delegateValue.count - 1 {
-                                self.doShowTransactionDetail(transaction)
-                            }
-                        })
+            guard let pri = privateKey else {
+                if let errorMsg = error?.localizedDescription {
+                    self.showErrorMessage(text: errorMsg, delay: 2.0)
+                }
+                return
+            }
+
+            tempPrivateKey = pri
+            var usedAmount = BigUInt.zero
+            
+            for (index, dValue) in self.delegateValue.enumerated() {
+                if
+                    let stakingBlockNum = dValue.stakingBlockNum,
+                    let sBlockNum = UInt64(stakingBlockNum),
+                    let canUsedAmount = dValue.getDelegationValueAmount(index: balanceSelectedIndex),
+                    let tempPri = tempPrivateKey {
+                    var amount = BigUInt.zero
+                    
+                    if canUsedAmount > self.currentAmount - usedAmount {
+                        amount = self.currentAmount - usedAmount
+                        usedAmount += amount
+                    } else {
+                        amount = canUsedAmount
+                        usedAmount += amount
                     }
+                    
+                    if amount <= BigUInt.zero {
+                        return
+                    }
+                    
+                    self.withdrawDelegateAction(stakingBlockNum: sBlockNum, nodeId: nodeId, amount: amount, sender: currentAddress, privateKey: tempPri, { [weak self] (transaction) in
+                        guard let self = self else { return }
+                        transaction.gasUsed = self.estimateUseGas?.description
+                        transaction.nodeName = self.currentNode?.name
+                        let newTransaction = transaction.copyTransaction()
+                        TransferPersistence.add(tx: newTransaction)
+                        if index == self.delegateValue.count - 1 {
+                            self.doShowTransactionDetail(transaction)
+                        }
+                    })
                 }
             }
         }
@@ -385,14 +394,14 @@ extension WithDrawViewController {
                     return
                 }
                 
-                web3.staking.estimateWithdrawDelegate(stakingBlockNum: sBlockNum, nodeId: nodeId, amount: amount) { [weak self] (result, data) in
+                web3.staking.estimateWithdrawDelegate(stakingBlockNum: sBlockNum, nodeId: nodeId, amount: amount, gasPrice: gasPrice) { [weak self] (result, data) in
                     guard let self = self else { return }
                     switch result {
                     case .success:
                         if let estimateGas = data {
                             estimateTotalGas += estimateGas
                         }
-                        
+                        self.estimateUseGas = estimateTotalGas
                         if index == self.delegateValue.count - 1 {
                             cell.amountView.feeLabel.text = estimateTotalGas.description.vonToLATString.displayFeeString
                         }
@@ -409,5 +418,18 @@ extension WithDrawViewController {
         controller.transaction = transaction
         controller.backToViewController = navigationController?.viewController(self.indexOfViewControllers - 1)
         navigationController?.pushViewController(controller, animated: true)
+    }
+}
+
+extension WithDrawViewController {
+    private func getGasPrice() {
+        web3.platon.gasPrice { [weak self] (response) in
+            switch response.status {
+            case .success(let result):
+                self?.gasPrice = result.quantity
+            case .failure(_):
+                break
+            }
+        }
     }
 }

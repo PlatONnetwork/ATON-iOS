@@ -79,12 +79,32 @@ class ValidatorNodeListViewController: BaseViewController, IndicatorInfoProvider
             let holder = self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, nil,"empty_no_data_img") as? TableViewNoDataPlaceHolder
             holder?.descriptionLabel.text = Localized("empty_string_validator")
             view.customView(holder)
+            view.isScrollAllowed(true)
         }
         tableView.mj_header = refreshHeader
         tableView.mj_footer = refreshFooter
         tableView.mj_header.beginRefreshing()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(scrollToTop), name: Notification.Name.ATON.DidTabBarDoubleClick, object: nil)
     }
     
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if isViewLoaded {
+            updateData()
+        }
+    }
+    
+    @objc func scrollToTop() {
+        print("------------------")
+        if isViewLoaded {
+            tableView.setContentOffset(CGPoint.zero, animated: true)
+        }
+    }
 
     /*
     // MARK: - Navigation
@@ -99,10 +119,18 @@ class ValidatorNodeListViewController: BaseViewController, IndicatorInfoProvider
 }
 
 extension ValidatorNodeListViewController {
+    private func updateData() {
+        StakingService.sharedInstance.updateNodeListData { [weak self] (result, data) in
+            switch result {
+            case .success:
+                self?.fetchData(nil)
+            case .fail(_, _):
+                self?.fetchData(nil)
+            }
+        }
+    }
+    
     private func fetchData(_ nodeId: String?) {
-        let addresses = (AssetVCSharedData.sharedData.walletList as! [Wallet]).map { return $0.key!.address }
-        guard addresses.count > 0 else { return }
-        
         if nodeId == nil {
             listData.removeAll()
         }
@@ -124,7 +152,6 @@ extension ValidatorNodeListViewController {
                 self?.tableView.reloadData()
             case .fail(_, _):
                 self?.tableView.mj_footer.isHidden = true
-                break
             }
         }
     }
@@ -137,7 +164,11 @@ extension ValidatorNodeListViewController {
     }
     
     @objc func fetchDataLastest() {
-        fetchData(nil)
+        if controllerType == .all {
+            updateData()
+        } else {
+            fetchData(nil)
+        }
     }
     
     @objc func fetchDataMore() {
@@ -159,12 +190,15 @@ extension ValidatorNodeListViewController: UITableViewDelegate, UITableViewDataS
         cell.node = listData[indexPath.row]
         cell.cellDidSelectedHandle = { [weak self] in
             guard let self = self else { return }
-            let controller = NodeDetailViewController()
-            controller.nodeId = self.listData[indexPath.row].nodeId
-            controller.hidesBottomBarWhenPushed = true
-            self.navigationController?.pushViewController(controller, animated: true)
-            
+            self.doShowNodeDetailController(indexPath: indexPath)
         }
         return cell
+    }
+    
+    func doShowNodeDetailController(indexPath: IndexPath) {
+        let controller = NodeDetailViewController()
+        controller.nodeId = listData[indexPath.row].nodeId
+        controller.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(controller, animated: true)
     }
 }

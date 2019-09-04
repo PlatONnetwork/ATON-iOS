@@ -46,7 +46,6 @@ class TransactionDetailViewController: BaseViewController {
         }
         
         //yujinghan waiting fix
-        print("i get it!!!!!!!")
         if hash.ishexStringEqual(other: transaction?.txhash){
             let tx = TransferPersistence.getByTxhash(transaction?.txhash)
             guard let transaction = tx else { return }
@@ -57,7 +56,12 @@ class TransactionDetailViewController: BaseViewController {
     func initData() {
         guard let tx = transaction, let txType = tx.txType else { return }
         
-        listData.append((title: Localized("TransactionDetailVC_type"), value: txType.localizeTitle))
+        if tx.txType == .unknown || tx.txType == .transfer {
+            listData.append((title: Localized("TransactionDetailVC_type"), value: tx.transactionStauts.localizeTitle))
+        } else {
+            listData.append((title: Localized("TransactionDetailVC_type"), value: txType.localizeTitle))
+        }
+        
         listData.append((title: Localized("TransactionDetailVC_time"), value: tx.timeString))
         
         if txType == .transfer ||
@@ -70,18 +74,18 @@ class TransactionDetailViewController: BaseViewController {
             
             if txType == .createRestrictingPlan {
                 listData.append((title: Localized("TransactionDetailVC_restricted_acount"), value: tx.lockAddress ?? "--"))
-                listData.append((title: Localized("TransactionDetailVC_restricted_amount"), value: tx.actualTxCostDescription?.ATPSuffix() ?? "0"))
+                listData.append((title: Localized("TransactionDetailVC_restricted_amount"), value: tx.actualTxCostDescription?.displayForMicrometerLevel(maxRound: 8).ATPSuffix() ?? "0"))
             } else {
-                listData.append((title: Localized("TransactionDetailVC_value"), value: tx.valueDescription?.ATPSuffix() ?? "0"))
+                listData.append((title: Localized("TransactionDetailVC_value"), value: tx.valueDescription?.displayForMicrometerLevel(maxRound: 8).ATPSuffix() ?? "0"))
             }
         } else if txType == .delegateCreate ||
                   txType == .delegateWithdraw {
             listData.append((title: Localized("TransactionDetailVC_delegated_to"), value: tx.toNameString ?? "--"))
             listData.append((title: Localized("TransactionDetailVC_nodeId"), value: tx.nodeId ?? "--"))
             if txType == .delegateCreate {
-                listData.append((title: Localized("TransactionDetailVC_delegated_amount"), value: tx.valueDescription?.ATPSuffix() ?? "--"))
+                listData.append((title: Localized("TransactionDetailVC_delegated_amount"), value: tx.valueDescription?.displayForMicrometerLevel(maxRound: 8).ATPSuffix() ?? "--"))
             } else {
-                listData.append((title: Localized("TransactionDetailVC_withdrawal_amount"), value: tx.valueDescription?.ATPSuffix() ?? "--"))
+                listData.append((title: Localized("TransactionDetailVC_withdrawal_amount"), value: tx.valueDescription?.displayForMicrometerLevel(maxRound: 8).ATPSuffix() ?? "--"))
             }
         } else if txType == .stakingCreate ||
                   txType == .stakingAdd ||
@@ -108,9 +112,9 @@ class TransactionDetailViewController: BaseViewController {
                     listData.append((title: Localized("TransactionDetailVC_report_type"), value: tx.reportType ?? "--"))
                 } else {
                     if txType == .stakingWithdraw {
-                        listData.append((title: Localized("TransactionDetailVC_return_amount"), value: tx.valueDescription?.ATPSuffix() ?? "--"))
+                        listData.append((title: Localized("TransactionDetailVC_return_amount"), value: tx.valueDescription?.displayForMicrometerLevel(maxRound: 8).ATPSuffix() ?? "--"))
                     } else {
-                        listData.append((title: Localized("TransactionDetailVC_stake_amount"), value: tx.valueDescription?.ATPSuffix() ?? "--"))
+                        listData.append((title: Localized("TransactionDetailVC_stake_amount"), value: tx.valueDescription?.displayForMicrometerLevel(maxRound: 8).ATPSuffix() ?? "--"))
                     }
                 }
             }
@@ -126,7 +130,7 @@ class TransactionDetailViewController: BaseViewController {
                 listData.append((title: Localized("TransactionDetailVC_proposal_vote"), value: tx.vote ?? "--"))
             }
         }
-        listData.append((title: Localized("TransactionDetailVC_energon_price"), value: tx.actualTxCostDescription?.ATPSuffix() ?? "0"))
+        listData.append((title: Localized("TransactionDetailVC_energon_price"), value: tx.actualTxCostDescription?.displayForMicrometerLevel(maxRound: 8).ATPSuffix() ?? "0"))
     }
     
     func initSubViews() {

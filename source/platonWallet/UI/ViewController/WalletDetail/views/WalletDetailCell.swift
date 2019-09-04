@@ -72,16 +72,13 @@ class WalletDetailCell: UITableViewCell {
         self.unreadTag.isHidden = true
         tx.senderAddress = w.key?.address
         
-        switch tx.transactionStauts {
-        case .sending,.sendSucceed,.sendFailed:
+        switch tx.direction {
+        case .Sent:
             transferAmoutLabel.text = "-" + (tx.valueDescription)!.ATPSuffix()
-            txIcon.image = UIImage(named: "txSendSign")
-        case .receiving,.receiveSucceed,.receiveFailed:
+        case .Receive:
             transferAmoutLabel.text = "+" + (tx.valueDescription)!.ATPSuffix()
-            txIcon.image = UIImage(named: "txRecvSign")
-        case .voting,.voteSucceed,.voteFailed:
+        default:
             transferAmoutLabel.text = "-" + (tx.valueDescription)!.ATPSuffix()
-            txIcon.image = UIImage(named: "walletVote")
         }
         
         if tx.txType == .unknown || tx.txType == .transfer {

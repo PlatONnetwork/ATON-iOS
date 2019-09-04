@@ -52,10 +52,10 @@ class WallletPersistence {
     }
         
     func getAll() -> [Wallet] {
-
         let res = realm.objects(Wallet.self).sorted(byKeyPath: "createTime")
         var wallets = Array(res)
         wallets = wallets.filterArrayByCurrentNodeUrlString()
+        
         for item in wallets {
             item.key = try? Keystore(contentsOf: URL(fileURLWithPath: keystoreFolderPath + "/\(item.keystorePath)"))
         }

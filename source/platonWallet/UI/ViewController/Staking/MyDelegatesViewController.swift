@@ -14,7 +14,7 @@ import BigInt
 
 class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
     
-    var itemInfo: IndicatorInfo = IndicatorInfo(title: Localized("staking_main_mydelegate_text"))
+    var itemInfo: IndicatorInfo = IndicatorInfo(title: "staking_main_mydelegate_text")
     
     lazy var tableView = { () -> ATableView in
         let tbView = ATableView(frame: .zero)
@@ -80,13 +80,28 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
                 self?.doShowValidatorListController()
             }
             view.customView(holder)
+            view.isScrollAllowed(true)
         }
         
         tableView.tableFooterView = footerView
 
-        
         tableView.mj_header = refreshHeader
         tableView.mj_header.beginRefreshing()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(shouldUpdateDelegateData), name: Notification.Name(updateWalletList_Notification), object: nil)
+    }
+    
+    @objc func shouldUpdateDelegateData() {
+        if AssetVCSharedData.sharedData.walletList.count == 0 {
+            listData.removeAll()
+            tableView.reloadData()
+            return
+        }
+        tableView.mj_header.beginRefreshing()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     @objc func faqTapAction() {
@@ -107,8 +122,7 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
     
     func updateDelagateHeader() {
         let total = listData.reduce(BigUInt(0)) { (result, delegate) -> BigUInt in
-            return result + BigUInt.zero
-//            return result + BigUInt(delegate.availableDelegationBalance ?? "0")!
+            return result + BigUInt(delegate.delegate ?? "0")!
         }
         headerView.totalBalanceLabel.text = total.description.vonToLATString.ATPSuffix()
     }

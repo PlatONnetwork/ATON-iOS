@@ -34,7 +34,7 @@ class NodeAboutDelegateTableViewCell: UITableViewCell {
         didSet {
             nodeAvatarIV.kf.setImage(with: URL(string: delegateDetail?.url ?? ""), placeholder: UIImage(named: "3.icon_default"))
             nodeNameLabel.text = delegateDetail?.nodeName ?? "--"
-            nodeAddressLabel.text = delegateDetail?.nodeId ?? "--"
+            nodeAddressLabel.text = delegateDetail?.nodeId.nodeIdForDisplay() ?? "--"
             nodeStatusLabel.text = delegateDetail?.status.0
             nodeStatusLabel.textColor = delegateDetail?.status.1
             lockedDelegateLabel.text = delegateDetail?.lockedString ?? "--"
@@ -218,7 +218,7 @@ class NodeAboutDelegateTableViewCell: UITableViewCell {
         }
         
         delegateButton.addTarget(self, action: #selector(delegateTapAction), for: .touchUpInside)
-        delegateButton.setCellBottomStyle(UIImage(named: "3.icon_Delegate3"), UIImage(named: "3.icon_Delegate4"), Localized("staking_delegate"))
+        delegateButton.setCellBottomStyle(UIImage(named: "3.icon_Delegate3"), UIImage(named: "3.icon_Delegate4"), "staking_delegate")
         delegateBackgroundView.addSubview(delegateButton)
         delegateButton.snp.makeConstraints { make in
             make.bottom.equalToSuperview()
@@ -228,7 +228,7 @@ class NodeAboutDelegateTableViewCell: UITableViewCell {
         }
         
         withDrawButton.addTarget(self, action: #selector(withdrawTapAction), for: .touchUpInside)
-        withDrawButton.setCellBottomStyle(UIImage(named: "3.icon_Undelegate 3"), UIImage(named: "3.icon_Undelegate4"), Localized("staking_withdraw"))
+        withDrawButton.setCellBottomStyle(UIImage(named: "3.icon_Undelegate 3"), UIImage(named: "3.icon_Undelegate4"), "staking_withdraw")
         delegateBackgroundView.addSubview(withDrawButton)
         withDrawButton.snp.makeConstraints { make in
             make.bottom.equalToSuperview()

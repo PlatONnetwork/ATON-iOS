@@ -9,6 +9,7 @@
 import Foundation
 import Alamofire
 import BigInt
+import platonWeb3
 
 final class StakingService: BaseService {
     
@@ -19,7 +20,7 @@ final class StakingService: BaseService {
         var parameters: [String: Any] = [:]
         parameters["walletAddrs"] = adddresses
         
-        let url = SettingService.debugBaseURL + "node/listDelegateGroupByAddr"
+        let url = SettingService.getCentralizationURL() + "node/listDelegateGroupByAddr"
         
         var request = URLRequest(url: try! url.asURL())
         request.httpBody = try! JSONSerialization.data(withJSONObject: parameters)
@@ -48,23 +49,8 @@ final class StakingService: BaseService {
         }
     }
     
-    func getNodeList(
-        controllerType: NodeControllerType,
-        isRankingSorted: Bool,
-        completion: PlatonCommonCompletion?) {
-        var completion = completion
-        
-        if controllerType == .active {
-            let data = NodePersistence.getActiveNode(isRankingSorted: isRankingSorted)
-            self.successCompletionOnMain(obj: data as AnyObject, completion: &completion)
-            return
-        } else if controllerType == .candidate {
-            let data = NodePersistence.getCandiateNode(isRankingSorted: isRankingSorted)
-            self.successCompletionOnMain(obj: data as AnyObject, completion: &completion)
-            return
-        }
-        
-        let url = SettingService.debugBaseURL + "node/nodelist"
+    func updateNodeListData(completion: PlatonCommonCompletion?) {
+        let url = SettingService.getCentralizationURL() + "node/nodelist"
         
         var request = URLRequest(url: try! url.asURL())
         request.httpMethod = "POST"
@@ -78,17 +64,33 @@ final class StakingService: BaseService {
                     let decoder = JSONDecoder()
                     let response = try decoder.decode(JSONResponse<[Node]>.self, from: data)
                     
-                    NodePersistence.add(nodes: response.data, { [weak self] in
-                        let datas = NodePersistence.getAll(isRankingSorted: isRankingSorted)
-                        self?.successCompletionOnMain(obj: datas as AnyObject, completion: &completion)
+                    NodePersistence.add(nodes: response.data, {
+                        completion?(.success, nil)
                     })
-                } catch let err {
-                    self.failCompletionOnMainThread(code: -1, errorMsg: err.localizedDescription, completion: &completion)
+                } catch let error {
+                    completion?(.fail(-1, error.localizedDescription), nil)
                 }
             case .failure(let error):
-                self.failCompletionOnMainThread(code: -1, errorMsg: error.localizedDescription, completion: &completion)
-                break;
+                completion?(.fail(-1, error.localizedDescription), nil)
             }
+        }
+    }
+    
+    func getNodeList(
+        controllerType: NodeControllerType,
+        isRankingSorted: Bool,
+        completion: PlatonCommonCompletion?) {
+        var completion = completion
+        
+        if controllerType == .active {
+            let data = NodePersistence.getActiveNode(isRankingSorted: isRankingSorted)
+            self.successCompletionOnMain(obj: data as AnyObject, completion: &completion)
+        } else if controllerType == .candidate {
+            let data = NodePersistence.getCandiateNode(isRankingSorted: isRankingSorted)
+            self.successCompletionOnMain(obj: data as AnyObject, completion: &completion)
+        } else {
+            let datas = NodePersistence.getAll(isRankingSorted: isRankingSorted)
+            self.successCompletionOnMain(obj: datas as AnyObject, completion: &completion)
         }
     }
     
@@ -97,7 +99,7 @@ final class StakingService: BaseService {
         var parameters: [String: Any] = [:]
         parameters["nodeId"] = nodeId
         
-        let url = SettingService.debugBaseURL + "node/nodeDetails"
+        let url = SettingService.getCentralizationURL() + "node/nodeDetails"
         
         var request = URLRequest(url: try! url.asURL())
         request.httpBody = try! JSONSerialization.data(withJSONObject: parameters)
@@ -130,7 +132,7 @@ final class StakingService: BaseService {
         var parameters: [String: Any] = [:]
         parameters["addr"] = address
         
-        let url = SettingService.debugBaseURL + "node/delegateDetails"
+        let url = SettingService.getCentralizationURL() + "node/delegateDetails"
         
         var request = URLRequest(url: try! url.asURL())
         request.httpBody = try! JSONSerialization.data(withJSONObject: parameters)
@@ -168,7 +170,7 @@ final class StakingService: BaseService {
         parameters["addr"] = addr
         parameters["nodeId"] = nodeId
         
-        let url = SettingService.debugBaseURL + "node/getDelegationValue"
+        let url = SettingService.getCentralizationURL() + "node/getDelegationValue"
         
         var request = URLRequest(url: try! url.asURL())
         request.httpBody = try! JSONSerialization.data(withJSONObject: parameters)
@@ -201,7 +203,7 @@ final class StakingService: BaseService {
         parameters["addr"] = addr
         parameters["nodeId"] = nodeId
         
-        let url = SettingService.debugBaseURL + "node/canDelegation"
+        let url = SettingService.getCentralizationURL() + "node/canDelegation"
         
         var request = URLRequest(url: try! url.asURL())
         request.httpBody = try! JSONSerialization.data(withJSONObject: parameters)
@@ -247,6 +249,8 @@ extension StakingService {
                     transaction.txReceiptStatus = -1
                     transaction.value = amount.description
                     transaction.nodeId = nodeId
+                    transaction.confirmTimes = Int(Date().timeIntervalSince1970 * 1000)
+                    transaction.to = PlatonConfig.ContractAddress.stakingContractAddress
                     DispatchQueue.main.async {
                         completion?(PlatonCommonResult.success, transaction as AnyObject)
                     }
@@ -283,6 +287,8 @@ extension StakingService {
                     transaction.txReceiptStatus = -1
                     transaction.value = amount.description
                     transaction.nodeId = nodeId
+                    transaction.confirmTimes = Int(Date().timeIntervalSince1970 * 1000)
+                    transaction.to = PlatonConfig.ContractAddress.stakingContractAddress
                     DispatchQueue.main.async {
                         completion?(PlatonCommonResult.success, transaction as AnyObject)
                     }

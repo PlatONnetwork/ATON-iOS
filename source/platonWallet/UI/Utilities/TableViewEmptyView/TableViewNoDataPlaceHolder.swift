@@ -19,10 +19,7 @@ class TableViewNoDataPlaceHolder: UIView {
         imageView.isUserInteractionEnabled = true
         
         descriptionLabel.isUserInteractionEnabled = true
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handlerTap(_:)))
-        tapGesture.numberOfTapsRequired = 1
-        tapGesture.numberOfTouchesRequired = 1
-        descriptionLabel.addGestureRecognizer(tapGesture)
+        descriptionLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handlerTap(_:))))
     }
     
     @objc func handlerTap(_ recognizer: UITapGestureRecognizer) {

@@ -81,10 +81,8 @@ struct Web3Helper {
     }
     
     static func getRpcURL() -> String {
-
         guard let node = SettingService.shareInstance.getSelectedNodes() else { return "" }
         return node.nodeURLStr
-        
     }
     
 }

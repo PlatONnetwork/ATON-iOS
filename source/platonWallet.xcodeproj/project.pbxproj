@@ -117,9 +117,9 @@
 		818D74EC2184349000EB1402 /* QRCodeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 818D74EB2184349000EB1402 /* QRCodeView.xib */; };
 		818D74EE21843A8900EB1402 /* QRDisplayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818D74ED21843A8900EB1402 /* QRDisplayViewController.swift */; };
 		818D74F521845D2500EB1402 /* PopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818D74F421845D2500EB1402 /* PopUpViewController.swift */; };
+		81926A07231DFEC500CAF498 /* RemoteVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81926A06231DFEC500CAF498 /* RemoteVersion.swift */; };
 		819333FF223FD08600DCFD93 /* AssetPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819333FE223FD08600DCFD93 /* AssetPageViewController.swift */; };
 		8193340122408DDC00DCFD93 /* AssetVCSharedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8193340022408DDC00DCFD93 /* AssetVCSharedData.swift */; };
-		819A434621D1FE2300E276C7 /* IPQuery.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819A434321D1FE2300E276C7 /* IPQuery.swift */; };
 		819A434921D1FE3500E276C7 /* IPGeoInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819A434821D1FE3500E276C7 /* IPGeoInfo.swift */; };
 		819A434F21D1FF3000E276C7 /* Ticket.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819A434E21D1FF3000E276C7 /* Ticket.swift */; };
 		819A435121D235E800E276C7 /* VotePersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819A435021D235E800E276C7 /* VotePersistence.swift */; };
@@ -357,7 +357,6 @@
 		8106350A219BFF0B00F0A06D /* SWallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SWallet.swift; sourceTree = "<group>"; };
 		8106350C219BFFDA00F0A06D /* SWalletPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SWalletPersistence.swift; sourceTree = "<group>"; };
 		8106350E219C074800F0A06D /* STransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STransaction.swift; sourceTree = "<group>"; };
-		81063526219D4B9100F0A06D /* SWalletService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SWalletService.swift; sourceTree = "<group>"; };
 		8115BC4A2188444E009FFE3B /* CopyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyButton.swift; sourceTree = "<group>"; };
 		8115BC4D2188615D009FFE3B /* PropertyReflectable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyReflectable.swift; sourceTree = "<group>"; };
 		8115BEA4218AC9A5009FFE3B /* Notifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
@@ -450,7 +449,6 @@
 		813F56C3219A60FA00F797E6 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		81412EB321DC678F008B909C /* SingleVote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleVote.swift; sourceTree = "<group>"; };
 		8148F01421BA0E1600045546 /* BaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseService.swift; sourceTree = "<group>"; };
-		8148F01621BA487800045546 /* SWalletService+builder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SWalletService+builder.swift"; sourceTree = "<group>"; };
 		814980F32191393C009F99EE /* SharedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedView.swift; sourceTree = "<group>"; };
 		814980F721913AA7009F99EE /* SharedCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedCollectionViewCell.swift; sourceTree = "<group>"; };
 		814980F821913AA7009F99EE /* SharedCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SharedCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -498,12 +496,10 @@
 		818D74EB2184349000EB1402 /* QRCodeView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = QRCodeView.xib; sourceTree = "<group>"; };
 		818D74ED21843A8900EB1402 /* QRDisplayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRDisplayViewController.swift; sourceTree = "<group>"; };
 		818D74F421845D2500EB1402 /* PopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpViewController.swift; sourceTree = "<group>"; };
+		81926A06231DFEC500CAF498 /* RemoteVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteVersion.swift; sourceTree = "<group>"; };
 		819333FE223FD08600DCFD93 /* AssetPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPageViewController.swift; sourceTree = "<group>"; };
 		8193340022408DDC00DCFD93 /* AssetVCSharedData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetVCSharedData.swift; sourceTree = "<group>"; };
 		819334022241EC3E00DCFD93 /* CandidateScrollContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandidateScrollContainer.swift; sourceTree = "<group>"; };
-		819A434221D1FE2300E276C7 /* VoteManager+builder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "VoteManager+builder.swift"; sourceTree = "<group>"; };
-		819A434321D1FE2300E276C7 /* IPQuery.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IPQuery.swift; sourceTree = "<group>"; };
-		819A434421D1FE2300E276C7 /* VoteManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VoteManager.swift; sourceTree = "<group>"; };
 		819A434821D1FE3500E276C7 /* IPGeoInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IPGeoInfo.swift; sourceTree = "<group>"; };
 		819A434E21D1FF3000E276C7 /* Ticket.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Ticket.swift; sourceTree = "<group>"; };
 		819A435021D235E800E276C7 /* VotePersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VotePersistence.swift; sourceTree = "<group>"; };
@@ -647,7 +643,6 @@
 		9AA49EED22706572001ABB44 /* RealmWriteThread.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmWriteThread.swift; sourceTree = "<group>"; };
 		9AC60C11224E37FB00A5ED6A /* CreateAndInputWalletCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAndInputWalletCollectionViewCell.swift; sourceTree = "<group>"; };
 		9AC60C12224E37FB00A5ED6A /* CreateAndInputWalletCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CreateAndInputWalletCollectionViewCell.xib; sourceTree = "<group>"; };
-		9AC86E9A224A1EE000315A79 /* VoteManager+Centralization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "VoteManager+Centralization.swift"; sourceTree = "<group>"; };
 		9AC86EA2224B67D000315A79 /* JointWalletCreationFeeConfirmView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JointWalletCreationFeeConfirmView.swift; sourceTree = "<group>"; };
 		9AD11DDC21806C2D002CD905 /* CommonService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonService.swift; sourceTree = "<group>"; };
 		9AD11DDF218171CA002CD905 /* BackupMnemonicViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupMnemonicViewController.swift; sourceTree = "<group>"; };
@@ -782,6 +777,7 @@
 				8115BEA4218AC9A5009FFE3B /* Notifications.swift */,
 				8115BC4D2188615D009FFE3B /* PropertyReflectable.swift */,
 				813F56C3219A60FA00F797E6 /* Utilities.swift */,
+				81926A06231DFEC500CAF498 /* RemoteVersion.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1090,17 +1086,6 @@
 			path = Vote;
 			sourceTree = "<group>";
 		};
-		819A433921D085E700E276C7 /* Vote */ = {
-			isa = PBXGroup;
-			children = (
-				819A434321D1FE2300E276C7 /* IPQuery.swift */,
-				819A434421D1FE2300E276C7 /* VoteManager.swift */,
-				819A434221D1FE2300E276C7 /* VoteManager+builder.swift */,
-				9AC86E9A224A1EE000315A79 /* VoteManager+Centralization.swift */,
-			);
-			path = Vote;
-			sourceTree = "<group>";
-		};
 		819A522E2190620A00E4C500 /* Launch */ = {
 			isa = PBXGroup;
 			children = (
@@ -1364,7 +1349,6 @@
 			children = (
 				9A76E5212307F36D00E0B79A /* Analysis */,
 				81200D4922FBF273002E2944 /* Staking */,
-				819A433921D085E700E276C7 /* Vote */,
 				8115BC4C21886148009FFE3B /* Common */,
 				81E2E8502186B900008B7504 /* AddressBook */,
 				818A91392181B7D600D03D57 /* Web3 */,
@@ -1565,8 +1549,6 @@
 			isa = PBXGroup;
 			children = (
 				9AD67AA92174811300A8432F /* WalletService.swift */,
-				81063526219D4B9100F0A06D /* SWalletService.swift */,
-				8148F01621BA487800045546 /* SWalletService+builder.swift */,
 			);
 			path = WalletService;
 			sourceTree = "<group>";
@@ -2199,7 +2181,6 @@
 				81718D8B222F6F6500DB04F6 /* MnemonicTextField.swift in Sources */,
 				9AF9AC242182E19600E97F07 /* PAlertController.swift in Sources */,
 				812002C221A3EB390050E1B0 /* layout.swift in Sources */,
-				819A434621D1FE2300E276C7 /* IPQuery.swift in Sources */,
 				815968FF22E6F6F50085195C /* ValidatorNodesViewController.swift in Sources */,
 				814980F42191393C009F99EE /* SharedView.swift in Sources */,
 				81F5123D22FEE812005F3BDF /* DelegateModel+Extension.swift in Sources */,
@@ -2244,6 +2225,7 @@
 				9ADB60B3222E801C0044918D /* AssetTransactionViewControllerV060.swift in Sources */,
 				81FCCCDB2179B3F10052FC29 /* AppFramework.swift in Sources */,
 				9A11FC482181E90C002D9A96 /* LeftAlignLayout.swift in Sources */,
+				81926A07231DFEC500CAF498 /* RemoteVersion.swift in Sources */,
 				812A7ED9219EA6A900BE9C1C /* WalletManagerDetailViewController.swift in Sources */,
 				8159690322E6FF910085195C /* StakingPageTabStripViewController.swift in Sources */,
 				9ADE4519217F0ADB006F1C81 /* ImportWalletHeaderView.swift in Sources */,

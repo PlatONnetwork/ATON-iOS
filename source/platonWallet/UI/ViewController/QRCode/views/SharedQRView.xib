@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -26,13 +26,19 @@
                         <constraint firstAttribute="height" constant="108" id="vHI-Qp-RSe"/>
                     </constraints>
                 </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kfn-L8-6bq">
+                    <rect key="frame" x="25" y="140" width="325" height="19.5"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0x--" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K16-oX-koP">
-                    <rect key="frame" x="25" y="140" width="325" height="15"/>
+                    <rect key="frame" x="25" y="169.5" width="325" height="15"/>
                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Receive ATP" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Dg-Ri-mAE">
-                    <rect key="frame" x="10" y="477" width="355" height="17"/>
+                    <rect key="frame" x="10" y="506.5" width="355" height="17"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <color key="textColor" red="0.38039215686274508" green="0.39215686274509803" blue="0.43137254901960786" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
@@ -41,7 +47,7 @@
                     </userDefinedRuntimeAttributes>
                 </label>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="uX9-gB-ZFf">
-                    <rect key="frame" x="77.5" y="243" width="220" height="220"/>
+                    <rect key="frame" x="77.5" y="272.5" width="220" height="220"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="220" id="MH5-VJ-thd"/>
                         <constraint firstAttribute="width" constant="220" id="pCL-rE-wZb"/>
@@ -61,9 +67,11 @@
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="DCc-Ef-4Hw" secondAttribute="bottom" constant="21" id="6mt-cZ-Dm4"/>
                 <constraint firstItem="uX9-gB-ZFf" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="ELe-tx-YYC"/>
                 <constraint firstItem="uX9-gB-ZFf" firstAttribute="top" secondItem="K16-oX-koP" secondAttribute="bottom" constant="88" id="FYY-Pg-vhs"/>
-                <constraint firstItem="K16-oX-koP" firstAttribute="top" secondItem="89g-G0-ZBK" secondAttribute="bottom" id="IV2-wa-JDE"/>
+                <constraint firstItem="K16-oX-koP" firstAttribute="top" secondItem="Kfn-L8-6bq" secondAttribute="bottom" constant="10" id="IV2-wa-JDE"/>
                 <constraint firstItem="89g-G0-ZBK" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="12" id="KvA-x9-rOa"/>
+                <constraint firstItem="Kfn-L8-6bq" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="OoU-mo-Jpf"/>
                 <constraint firstItem="89g-G0-ZBK" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="S3W-gN-LvU"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="Kfn-L8-6bq" secondAttribute="trailing" constant="25" id="SMq-6b-iuJ"/>
                 <constraint firstItem="aFO-gb-fy9" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="14" id="UCW-m6-hhB"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="6Dg-Ri-mAE" secondAttribute="trailing" constant="10" id="bIx-st-wZS"/>
                 <constraint firstItem="aFO-gb-fy9" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" constant="56" id="c01-bP-L07"/>
@@ -72,7 +80,9 @@
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="aFO-gb-fy9" secondAttribute="trailing" constant="14" id="hfV-eA-Qug"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="aFO-gb-fy9" secondAttribute="bottom" constant="56" id="kpz-BG-PwW"/>
                 <constraint firstItem="K16-oX-koP" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="lVO-so-OBr"/>
+                <constraint firstItem="Kfn-L8-6bq" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="25" id="mm2-rk-ncf"/>
                 <constraint firstItem="6Dg-Ri-mAE" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="mns-He-RHe"/>
+                <constraint firstItem="Kfn-L8-6bq" firstAttribute="top" secondItem="89g-G0-ZBK" secondAttribute="bottom" id="xOk-Qe-f1Z"/>
                 <constraint firstItem="6Dg-Ri-mAE" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="10" id="xvF-Xb-2dG"/>
                 <constraint firstItem="K16-oX-koP" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="25" id="zWl-87-v22"/>
             </constraints>
@@ -82,6 +92,7 @@
                 <outlet property="logoImage" destination="89g-G0-ZBK" id="QPf-Bv-PDF"/>
                 <outlet property="qrImageView" destination="uX9-gB-ZFf" id="hTo-p9-b5u"/>
                 <outlet property="walletAddress" destination="K16-oX-koP" id="igb-br-88O"/>
+                <outlet property="walletName" destination="Kfn-L8-6bq" id="dMO-J7-reM"/>
             </connections>
             <point key="canvasLocation" x="55.200000000000003" y="44.527736131934034"/>
         </view>

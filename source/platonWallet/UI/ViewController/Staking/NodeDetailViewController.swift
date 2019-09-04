@@ -8,6 +8,7 @@
 
 import UIKit
 import Localize_Swift
+import BigInt
 
 class NodeDetailViewController: BaseViewController {
     
@@ -111,14 +112,19 @@ class NodeDetailViewController: BaseViewController {
         let doubtButtonItem = UIBarButtonItem(image: UIImage(named: "3.icon_doubt"), style: .done, target: self, action: #selector(doubtTapAction))
         doubtButtonItem.tintColor = .black
         navigationItem.rightBarButtonItem = doubtButtonItem
-        
-        fetchData()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if isViewLoaded {
+            fetchData()
+        }
     }
     
     private func setupData() {
         nodeInfoView.nodeAvatarIV.kf.setImage(with: URL(string: nodeDetail?.node.url ?? ""), placeholder: UIImage(named: "3.icon_default"))
         nodeInfoView.nodeNameLabel.text = nodeDetail?.node.name ?? "--"
-        nodeInfoView.nodeAddressLabel.text = nodeDetail?.node.nodeId ?? "--"
+        nodeInfoView.nodeAddressLabel.text = nodeDetail?.node.nodeId?.nodeIdForDisplay() ?? "--"
         nodeInfoView.rateLabel.text = nodeDetail?.node.rate ?? "--"
         nodeInfoView.totalStakedLabel.text = nodeDetail?.totalStaked ?? "--"
         nodeInfoView.delegationsLabel.text = nodeDetail?.delegations ?? "--"
@@ -181,6 +187,22 @@ class NodeDetailViewController: BaseViewController {
     }
     
     @objc private func delegateTapAction() {
+        guard (AssetVCSharedData.sharedData.walletList as! [Wallet]).count > 0 else {
+            showMessage(text: Localized("error_no_wallet"))
+            return
+        }
+        
+        let hasBalance = AssetService.sharedInstace.balances.filter { (balance) -> Bool in
+            let free = BigUInt(balance.free ?? "0")
+            let lock = BigUInt(balance.lock ?? "0")
+            return free! + lock! > BigUInt.zero
+        }
+        
+        if hasBalance.count == 0 {
+            showMessage(text: Localized("error_wallet_no_balance"))
+            return
+        }
+        
         guard delegateButton.style != .disable else { return }
         guard let node = nodeDetail?.node else { return }
         let controller = DelegateViewController()

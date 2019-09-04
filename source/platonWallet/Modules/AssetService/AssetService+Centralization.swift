@@ -17,7 +17,7 @@ extension AssetService {
         
         parameters["addrs"] = addrs
         
-        let url = SettingService.debugBaseURL + "account/getBalance"
+        let url = SettingService.getCentralizationURL() + "account/getBalance"
         
         var request = URLRequest(url: try! url.asURL())
         request.httpBody = try! JSONSerialization.data(withJSONObject: parameters)

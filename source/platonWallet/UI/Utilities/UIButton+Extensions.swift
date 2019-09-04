@@ -11,10 +11,22 @@ import UIKit
 import Localize_Swift
 
 private var AssociatedKey: UInt8 = 1
-
+private var AssociatedKey2: UInt8 = 2
 
 
 extension UIButton {
+    
+    @IBInspectable
+    public var localizedSelectedTitle: String? {
+        get {
+            return objc_getAssociatedObject(self, &AssociatedKey2) as? String
+        }
+        set(newValue) {
+            objc_setAssociatedObject(self, &AssociatedKey2, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN)
+            localizationSetup();
+            updateLocalization()
+        }
+    }
     
     @IBInspectable
     public var localizedNormalTitle: String? {
@@ -36,6 +48,9 @@ extension UIButton {
         if let localizedNormalTitle = localizedNormalTitle, !localizedNormalTitle.isEmpty {
             titleLabel?.text = Localized(localizedNormalTitle)
             setTitle(Localized(localizedNormalTitle), for: .normal)
+        }
+        if let localizedSelectedTitle = localizedSelectedTitle, !localizedSelectedTitle.isEmpty {
+            setTitle(Localized(localizedSelectedTitle), for: .selected)
         }
     }
     
@@ -150,7 +165,7 @@ extension UIButton {
         self.layer.borderWidth = 1
         self.setTitleColor(common_blue_color, for: .normal)
         self.setImage(image, for: .normal)
-        self.setTitle(title, for: .normal)
+        self.localizedNormalTitle = title
         self.titleLabel?.font = UIFont.systemFont(ofSize: 14)
         self.imageEdgeInsets = UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 0)
     }
@@ -160,7 +175,7 @@ extension UIButton {
         self.setTitleColor(common_lightLightGray_color, for: .disabled)
         self.setImage(disableImage, for: .disabled)
         self.setImage(image, for: .normal)
-        self.setTitle(title, for: .normal)
+        self.localizedNormalTitle = title
         self.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium)
         self.imageEdgeInsets = UIEdgeInsets(top: 0, left: -4, bottom: 0, right: 0)
     }

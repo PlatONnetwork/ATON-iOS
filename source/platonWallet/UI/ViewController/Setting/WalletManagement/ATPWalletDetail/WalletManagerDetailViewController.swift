@@ -215,13 +215,12 @@ class WalletManagerDetailViewController: BaseViewController {
         
         verifyPassword(psw, type: .deleteWallet) { [weak self](_) in
             
-            AssetService.sharedInstace.balances = AssetService.sharedInstace.balances.filter { $0.addr.lowercased() != self?.wallet.key?.address }
+            // fix waiting
+            AssetService.sharedInstace.balances = AssetService.sharedInstace.balances.filter { $0.addr.lowercased() != self?.wallet.key?.address.lowercased() }
             WalletService.sharedInstance.deleteWallet(self!.wallet)
             self?.navigationController?.popViewController(animated: true)
             NotificationCenter.default.post(name: NSNotification.Name(updateWalletList_Notification), object: nil)
-             
         }
-        
     }
     
     func verifyPassword(_ psw: String, type: AlertActionType, completionCallback:@escaping (_ privateKey: String?) -> Void) {

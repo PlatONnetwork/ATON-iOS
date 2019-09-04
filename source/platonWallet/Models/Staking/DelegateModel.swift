@@ -32,7 +32,7 @@ public struct DelegateDetail: Decodable {
     var nodeStatus: NodeStatus
     var redeem: String?
     var locked: String?
-    var unlocked: String?
+    var unLocked: String?
     var released: String?
     var sequence: String?
 }

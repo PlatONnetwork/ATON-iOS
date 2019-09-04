@@ -80,6 +80,9 @@ class AssetViewControllerV060: BaseViewController ,PopupMenuTableDelegate{
         
         scrollView.mj_header = refreshHeader
         refreshHeader.beginRefreshing()
+        
+        let uuids = (AssetVCSharedData.sharedData.walletList as! [Wallet]).map { return $0.uuid }
+        print(uuids)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -144,14 +147,14 @@ class AssetViewControllerV060: BaseViewController ,PopupMenuTableDelegate{
         scrollView.addSubview(pageVC.view)
         let tabbarHeight = (navigationController?.tabBarController?.tabBar.frame.size.height ?? 0)
         pageVC.view.snp.makeConstraints { make in
+            make.top.equalTo(sectionView.snp.bottom).offset(0)
             make.leading.trailing.bottom.equalToSuperview()
             make.width.equalTo(view)
-            make.top.equalTo(sectionView.snp.bottom).offset(0)
             make.height.equalTo(kUIScreenHeight - 70 - tabbarHeight - CGFloat(AssetSectionViewH))
         }
 //        self.updatePageViewConstraint(headerHide: false)
         
-        pageVC.didScrolling = {[weak self] offset in
+        pageVC.didScrolling = { [weak self] offset in
             //self?.sectionView.changingOffset(offset: offset, currentIndex: (self?.pageViewCurrentIndex)!,draging: (self?.pageVC.pagesScrollview?.isDragging)!)
             
         }
@@ -188,24 +191,24 @@ class AssetViewControllerV060: BaseViewController ,PopupMenuTableDelegate{
     
     //MARK: - Constraint
     
-    func updatePageViewConstraint(headerHide: Bool){
-        let tabbarHeight = (navigationController?.tabBarController?.tabBar.frame.size.height ?? 0)
-        if headerHide{
-            pageVC.view.snp.remakeConstraints { (make) in
-                make.leading.trailing.bottom.equalToSuperview()
-                make.width.equalTo(view)
-                make.top.equalTo(sectionView.snp.bottom).offset(0)
-                make.height.equalTo(kUIScreenHeight - 70 - tabbarHeight - CGFloat(AssetSectionViewH))
-            }
-        }else{
-            pageVC.view.snp.remakeConstraints { (make) in
-                make.leading.trailing.bottom.equalToSuperview()
-                make.width.equalTo(view)
-                make.top.equalTo(sectionView.snp.bottom).offset(0)
-                make.height.equalTo(kUIScreenHeight - 0 - tabbarHeight - CGFloat(AssetSectionViewH))
-            }
-        }
-    }
+//    func updatePageViewConstraint(headerHide: Bool){
+//        let tabbarHeight = (navigationController?.tabBarController?.tabBar.frame.size.height ?? 0)
+//        if headerHide{
+//            pageVC.view.snp.remakeConstraints { (make) in
+//                make.leading.trailing.bottom.equalToSuperview()
+//                make.width.equalTo(view)
+//                make.top.equalTo(sectionView.snp.bottom).offset(0)
+//                make.height.equalTo(kUIScreenHeight - 70 - tabbarHeight - CGFloat(AssetSectionViewH))
+//            }
+//        }else{
+//            pageVC.view.snp.remakeConstraints { (make) in
+//                make.leading.trailing.bottom.equalToSuperview()
+//                make.width.equalTo(view)
+//                make.top.equalTo(sectionView.snp.bottom).offset(0)
+//                make.height.equalTo(kUIScreenHeight - 0 - tabbarHeight - CGFloat(AssetSectionViewH))
+//            }
+//        }
+//    }
     
     @objc func fetchData() {
         updateWalletList()
@@ -239,19 +242,17 @@ class AssetViewControllerV060: BaseViewController ,PopupMenuTableDelegate{
     }
      
     func initData(){
-        transactionVC.delegate = self
         AssetVCSharedData.sharedData.reloadWallets()
     }
     
     //hide animate
     var assetHeaderStyle: (hide: Bool,animated: Bool)?{
         didSet{
-            print("headerStyle:\(String(describing: assetHeaderStyle))")
             let hide = assetHeaderStyle?.0 ?? false
             let animated = assetHeaderStyle?.1 ?? false
 
             if hide{
-                scrollView.setContentOffset(CGPoint(x: 0, y: AssetHeaderViewH), animated: animated)
+//                scrollView.setContentOffset(CGPoint(x: 0, y: AssetHeaderViewH), animated: animated)
                 sectionView.backgroundColor = .white
                 DispatchQueue.main.async {
                     self.scrollView.isScrollEnabled = true
@@ -264,7 +265,7 @@ class AssetViewControllerV060: BaseViewController ,PopupMenuTableDelegate{
             }else{
                 sectionView.backgroundColor = UIColor(red: 247, green: 250, blue: 255, alpha: 1)
 
-                scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: animated)
+//                scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: animated)
                 DispatchQueue.main.async {
                     self.scrollView.isScrollEnabled = true
                 }
@@ -421,10 +422,10 @@ extension AssetViewControllerV060 : UIScrollViewDelegate,ChildScrollViewDidScrol
             if scrollEnable && rec.origin.y > 0 && !(self.assetHeaderStyle?.hide)!{
                 childScrollView.setContentOffset(.zero, animated: false)
             }else {
-                scrollEnable = false
+//                scrollEnable = false
             }
         }
-        scrollView.contentSize = CGSize(width: scrollView.contentSize.width, height: childScrollView.contentSize.height + CGFloat(AssetHeaderViewH) + CGFloat(AssetSectionViewH))
+//        scrollView.contentSize = CGSize(width: scrollView.contentSize.width, height: childScrollView.contentSize.height + CGFloat(AssetHeaderViewH) + CGFloat(AssetSectionViewH))
     }
     
     // MARK: - User Interaction

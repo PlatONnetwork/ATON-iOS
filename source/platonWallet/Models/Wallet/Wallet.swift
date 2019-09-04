@@ -75,10 +75,8 @@ public final class Wallet: Object {
     convenience public init(name: String, keystoreObject:Keystore) {
         
         self.init()
-        let nodeurl = SettingService.threadSafeGetCurrentNodeURLString()
         uuid = keystoreObject.address
-        nodeURLStr = nodeurl
-        primaryKeyIdentifier = keystoreObject.address + nodeurl
+        primaryKeyIdentifier = keystoreObject.address + SettingService.threadSafeGetCurrentNodeURLString()
         key = keystoreObject
         keystorePath = ""
         self.name = name
