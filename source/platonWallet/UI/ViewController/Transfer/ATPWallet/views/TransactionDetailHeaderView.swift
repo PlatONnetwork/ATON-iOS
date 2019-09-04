@@ -196,12 +196,12 @@ class TransactionDetailHeaderView: UIView {
             make.centerY.equalToSuperview()
         }
 
-
         toLabel.textColor = common_lightLightGray_color
         toLabel.font = .systemFont(ofSize: 12)
+        toLabel.adjustsFontSizeToFitWidth = true
         toContainerView.addSubview(toLabel)
         toLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(8)
+            toLabelLeadingConstraint = make.leading.equalToSuperview().offset(16).constraint
             make.top.equalToSuperview().offset(3)
             make.bottom.equalToSuperview().offset(-3)
             make.trailing.equalToSuperview().offset(-31)
@@ -255,7 +255,7 @@ class TransactionDetailHeaderView: UIView {
         if let w = WalletService.sharedInstance.getWalletByAddress(address: tx.from ?? ""){
             self.walletNameLabel.text = w.name
         } else {
-            let walletNames = AddressBookService.service.getAll().filter { $0.walletAddress == tx.from }.map { $0.walletName }
+            let walletNames = AddressBookService.service.getAll().filter { $0.walletAddress?.lowercased() == tx.from?.lowercased() }.map { $0.walletName }
             guard walletNames.count > 0 else { return }
             self.walletNameLabel.text = walletNames.first!
         }
@@ -275,8 +275,10 @@ class TransactionDetailHeaderView: UIView {
         }
         
         toIconIV.image = tx.toIconImage
-        if tx.toIconImage == nil {
-            toLabelLeadingConstraint?.deactivate()
+        if tx.toType == .contract {
+            toLabelLeadingConstraint?.update(offset: 16)
+        } else {
+            toLabelLeadingConstraint?.update(offset: 8)
         }
     }
     

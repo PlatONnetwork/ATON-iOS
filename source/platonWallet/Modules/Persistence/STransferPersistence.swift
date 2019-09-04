@@ -15,6 +15,7 @@ class STransferPersistence {
         
         tx.from = tx.from?.lowercased()
         tx.to = tx.to?.lowercased()
+        tx.nodeURLStr = SettingService.getCurrentNodeURLString()
 
         if tx.transactionCategory == TransanctionCategory.ATPTransfer.rawValue{    
             self.updateEnergoTransfer(tx: tx)
@@ -114,7 +115,8 @@ class STransferPersistence {
             return (w.key?.address)!.lowercased()
         }
         
-        let r = RealmInstance!.objects(STransaction.self).sorted(byKeyPath: "createTime", ascending: false)
+        let predicate = NSPredicate(format: "nodeURLStr = %@", SettingService.getCurrentNodeURLString())
+        let r = RealmInstance!.objects(STransaction.self).filter(predicate).sorted(byKeyPath: "createTime", ascending: false)
 
         var filterArray = Array<STransaction>()
         let all = Array(r)
@@ -138,9 +140,9 @@ class STransferPersistence {
         var predicate : NSPredicate?
         if contractAddress == nil{
             //predicate = NSPredicate(format: "transactionCategory = %d", TransanctionCategory.ATPTransfer.rawValue)
-            predicate = NSPredicate(format: "transactionCategory >= 0")
+            predicate = NSPredicate(format: "transactionCategory >= 0 AND nodeURLStr == %@",SettingService.getCurrentNodeURLString())
         }else{
-            predicate = NSPredicate(format: "transactionCategory = %d AND contractAddress contains[c] %@", TransanctionCategory.ATPTransfer.rawValue, (contractAddress)!)
+            predicate = NSPredicate(format: "transactionCategory = %d AND contractAddress contains[c] %@ AND nodeURLStr == %@", TransanctionCategory.ATPTransfer.rawValue, (contractAddress)!,SettingService.getCurrentNodeURLString())
         }
         let r = RealmInstance!.objects(STransaction.self).filter(predicate!).sorted(byKeyPath: "createTime", ascending: false)
         let array = Array(r)
@@ -148,7 +150,7 @@ class STransferPersistence {
     }
     
     public class func getAllATPTransferByReceiveAddress(_ receiveAddress : String) -> [STransaction]{
-        let predicate = NSPredicate(format: "transactionCategory = %d AND to contains[c] %@", TransanctionCategory.ATPTransfer.rawValue, receiveAddress)
+        let predicate = NSPredicate(format: "transactionCategory = %d AND to contains[c] %@ AND nodeURLStr == %@", TransanctionCategory.ATPTransfer.rawValue, receiveAddress,SettingService.getCurrentNodeURLString())
         let r = RealmInstance!.objects(STransaction.self).filter(predicate).sorted(byKeyPath: "createTime", ascending: false)
         let array = Array(r)
         return array
@@ -160,10 +162,11 @@ class STransferPersistence {
         let predicate = NSPredicate(format: "(ownerWalletAddress contains[c] %@ OR to contains[c] %@)",
                                     address,address)
         */
-        let predicate = NSPredicate(format: "(ownerWalletAddress contains[c] %@ OR (ANY determinedResult.walletAddress contains[c] %@ AND transactionCategory = %d))",
+        let predicate = NSPredicate(format: "(ownerWalletAddress contains[c] %@ OR (ANY determinedResult.walletAddress contains[c] %@ AND transactionCategory = %d)) AND nodeURLStr == %@",
                                     address,
                                     address,
-                                    TransanctionCategory.ATPTransfer.rawValue)
+                                    TransanctionCategory.ATPTransfer.rawValue,
+                                    SettingService.getCurrentNodeURLString())
         
         let r = RealmInstance!.objects(STransaction.self).filter(predicate).sorted(byKeyPath: "createTime", ascending: false)
         var array : [STransaction] = []
@@ -179,9 +182,10 @@ class STransferPersistence {
     
     public class func getUnConfirmedTransactions() -> [STransaction]{
         //ignore delpoy contract transaction
-        let predicate = NSPredicate(format: "txhash != %@ AND blockNumber == %@",
+        let predicate = NSPredicate(format: "txhash != %@ AND blockNumber == %@ AND nodeURLStr == %@",
                                     "",
-                                    "")
+                                    "",
+                                    SettingService.getCurrentNodeURLString())
         let r = RealmInstance!.objects(STransaction.self).filter(predicate).sorted(byKeyPath: "createTime")
         let array = Array(r)
         return array

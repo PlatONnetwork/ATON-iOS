@@ -11,6 +11,22 @@ import RealmSwift
 
 extension RealmHelper{
     
+    public static func migrationBelow7(migration: Migration,schemaVersion: UInt64, oldSchemaVersion: UInt64){
+        migration.enumerateObjects(ofType: Wallet.className(), { (old, new) in
+            RealmHelper.doNodeULRStringMigration_below_7(old, new)
+            RealmHelper.classicwalletdoPrimaryKeyMigration_below_7(old, new)
+        })
+        migration.deleteData(forType: NodeInfo.className())
+        
+        migration.enumerateObjects(ofType: Transaction.className()) { (old, new) in
+            if old != nil && new != nil{
+                if let nodeURL = old!["nodeURLStr"] as? String, nodeURL == DefaultNodeURL_Alpha {
+                    new!["nodeURLStr"] = DefaultNodeURL_Alpha_V071
+                }
+            }
+        }
+    }
+    
     public static func migrationBelow6(migration: Migration,schemaVersion: UInt64, oldSchemaVersion: UInt64){
         
         migration.enumerateObjects(ofType: Wallet.className(), { (old, new) in
@@ -52,6 +68,22 @@ extension RealmHelper{
             }
             
         } 
+    }
+    
+    public static func doNodeULRStringMigration_below_7(_ old: MigrationObject?, _ new: MigrationObject?){
+        if old != nil && new != nil{
+            new!["nodeURLStr"] = DefaultNodeURL_Alpha_V071
+        }
+    }
+    
+    public static func classicwalletdoPrimaryKeyMigration_below_7(_ old: MigrationObject?, _ new: MigrationObject?){
+        if old != nil && new != nil{
+            let path = old!["keystorePath"] as? String
+            let keystore = try? Keystore(contentsOf: URL(fileURLWithPath: keystoreFolderPath + "/" + path!))
+            if (path != nil && keystore != nil){
+                new!["primaryKeyIdentifier"] = keystore!.address + DefaultNodeURL_Alpha_V071
+            }
+        }
     }
     
     

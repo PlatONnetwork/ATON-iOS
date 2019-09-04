@@ -17,8 +17,7 @@ private let defalutNodes = [
 */
 
 private let defalutNodes = [
-    (nodeURL: DefaultNodeURL_Alpha, desc: "SettingsVC_nodeSet_defaultTestNetwork_Amigo_des", isSelected: true),
-    (nodeURL: DefaultNodeURL_Beta, desc: "SettingsVC_nodeSet_defaultTestNetwork_Batalla_des", isSelected: false)
+    (nodeURL: DefaultNodeURL_Alpha_V071, desc: "SettingsVC_nodeSet_defaultTestNetwork_Amigo_des", isSelected: true),
 ]
 
 class NodeInfoPersistence {
@@ -31,7 +30,7 @@ class NodeInfoPersistence {
         let nodes = getAll()
         let nodeIdentifiers = nodes.map({$0.nodeURLStr})
         
-        if nodes.count < 2 {
+        if nodes.count < 1 {
             for node in defalutNodes {
                 guard !nodeIdentifiers.contains(node.nodeURL) else{
                     continue
@@ -50,7 +49,7 @@ class NodeInfoPersistence {
         
         if !existSelected {
             for item in nodes {
-                if item.nodeURLStr == DefaultNodeURL_Alpha{
+                if item.nodeURLStr == DefaultNodeURL_Alpha_V071 {
                     try? realm.write {
                         item.isSelected = true
                     }

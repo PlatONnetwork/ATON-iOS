@@ -22,7 +22,7 @@ enum DelegateTableViewCellStyle {
 
 // 可展开绑定的样式数据
 struct BalancesCellStyle {
-    var balances: [(String, String)]
+    var balances: [(String, String)] = []
     var selectedIndex: Int = 0
     var isExpand: Bool = false
     

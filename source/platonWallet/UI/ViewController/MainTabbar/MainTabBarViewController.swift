@@ -8,6 +8,7 @@
 
 import UIKit
 import Localize_Swift
+import RTRootNavigationController
 
 
 extension UITabBarController {
@@ -106,6 +107,8 @@ extension UITabBarController {
 
 class MainTabBarViewController: UITabBarController {
     
+    var lastDate: Date = Date(timeIntervalSince1970: 0)
+    
     public static func newTabBar() -> UIViewController{
         
         let tabBarViewController = MainTabBarViewController()
@@ -176,6 +179,7 @@ class MainTabBarViewController: UITabBarController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        delegate = self
         self.tabBar.isTranslucent = false
         self.navigationController?.setNavigationBarHidden(true, animated: false)
     }
@@ -198,4 +202,29 @@ class MainTabBarViewController: UITabBarController {
     }
     */
 
+}
+
+extension MainTabBarViewController: UITabBarControllerDelegate {
+    
+    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+        print(viewController)
+        guard
+            let navigationController = viewController as? BaseNavigationController,
+            let controller = navigationController.visibleViewController as? RTContainerController,
+            controller.contentViewController.isKind(of: StakingMainViewController.self) && doubleClick()
+        else { return true }
+        NotificationCenter.default.post(name: Notification.Name.ATON.DidTabBarDoubleClick, object: nil)
+        return true
+    }
+    
+    func doubleClick() -> Bool {
+        let date = Date()
+        if date.timeIntervalSince1970 - self.lastDate.timeIntervalSince1970 < 0.3 {
+            self.lastDate = Date(timeIntervalSince1970: 0)
+            return true
+        }
+        
+        self.lastDate = date
+        return false
+    }
 }

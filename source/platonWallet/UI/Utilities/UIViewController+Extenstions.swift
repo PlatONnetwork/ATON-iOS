@@ -91,6 +91,16 @@ extension UIViewController {
         }
     }
     
+    func showErrorMessage(text: String, delay: TimeInterval = 0.8) {
+        DispatchQueue.main.async {
+            let hud = MBProgressHUD.showAdded(to: UIApplication.shared.keyWindow!, animated: true)
+            hud.mode = .text
+            //hud.label.text = text
+            hud.detailsLabel.text = text
+            hud.hide(animated: true, afterDelay: delay)
+        }
+    }
+    
     
     
     func showMessageWithCodeAndMsg(code: Int, text: String, delay:TimeInterval = 1.2) {
@@ -226,7 +236,7 @@ extension UIViewController {
 }
 
 extension UIViewController {
-    func showPasswordInputPswAlert(for wallet: Wallet, completion: ((_ privateKey: String?) -> Void)?) {
+    func showPasswordInputPswAlert(for wallet: Wallet, completion: ((String?, Error?) -> Void)?) {
         
         let alertVC = AlertStylePopViewController.initFromNib()
         let style = PAlertStyle.passwordInput(walletName: wallet.name)
@@ -247,10 +257,10 @@ extension UIViewController {
                         alertVC.hideLoadingHUD()
                         if (err == nil && (pri?.length)! > 0) {
                             alertVC.dismissWithCompletion()
-                            completion?(pri)
+                            completion?(pri, nil)
                         }else{
                             alertVC.showInputErrorTip(string: (err?.errorDescription)!)
-                            completion?(nil)
+                            completion?(nil, err)
                         }
                     }
             })
@@ -258,7 +268,7 @@ extension UIViewController {
             
         }) { (_, _) -> (Bool) in
             DispatchQueue.main.async {
-                completion?(nil)
+                completion?(nil, nil)
             }
             return true
         }

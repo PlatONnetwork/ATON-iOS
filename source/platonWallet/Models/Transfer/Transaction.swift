@@ -276,6 +276,7 @@ class Transaction : Object, Decodable {
         case redeemStatus
         case nodeName
         case nodeId
+        case toType
     }
     
     required convenience init(from decoder: Decoder) throws {
@@ -308,6 +309,7 @@ class Transaction : Object, Decodable {
         redeemStatus = try? container.decode(RedeemStatus.self, forKey: .redeemStatus)
         nodeName = try? container.decode(String.self, forKey: .nodeName)
         nodeId = try? container.decode(String.self, forKey: .nodeId)
+        toType = (try? container.decode(TransactionToType.self, forKey: .toType)) ?? .address
     }
 }
 
@@ -316,7 +318,11 @@ extension Transaction {
     
     var actualTxCostDescription: String? {
         get {
-            let cost = BigUInt.safeInit(str: actualTxCost).divide(by: ETHToWeiMultiplier, round: 8)
+            guard let atcost = actualTxCost, atcost.count > 0 else {
+                return BigUInt.safeInit(str: gasUsed).divide(by: ETHToWeiMultiplier, round: 8)
+            }
+            
+            let cost = BigUInt.safeInit(str: atcost).divide(by: ETHToWeiMultiplier, round: 8)
             return cost
         }
     }

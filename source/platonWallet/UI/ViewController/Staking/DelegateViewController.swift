@@ -9,6 +9,7 @@
 import UIKit
 import Localize_Swift
 import BigInt
+import platonWeb3
 
 class DelegateViewController: BaseViewController {
     
@@ -20,6 +21,23 @@ class DelegateViewController: BaseViewController {
     var currentAmount: BigUInt = BigUInt.zero
     var canDelegation: CanDelegation?
     var gasPrice: BigUInt?
+    var estimateUseGas: BigUInt?
+    var isDelegateAll: Bool = false
+    
+    var canUseWallets: [Wallet] {
+        get {
+            let canUseWallets = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { (wallet) -> Bool in
+                let walletBalance = AssetService.sharedInstace.balances.first(where: { $0.addr.lowercased() == wallet.key?.address.lowercased() })
+                if let balance = walletBalance {
+                    let free = BigUInt(balance.free ?? "0")
+                    let lock = BigUInt(balance.lock ?? "0")
+                    return free! + lock! > BigUInt.zero
+                }
+                return false
+            }
+            return canUseWallets
+        }
+    }
     
     lazy var tableView = { () -> UITableView in
         let tbView = UITableView(frame: .zero)
@@ -107,22 +125,25 @@ class DelegateViewController: BaseViewController {
         var index: Int? = 0
         if
             let address = currentAddress,
-            let wallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).first(where: { $0.key?.address == address }) {
-            index = (AssetVCSharedData.sharedData.walletList as! [Wallet]).firstIndex(of: wallet)
+            let wallet = canUseWallets.first(where: { $0.key?.address.lowercased() == address.lowercased() }) {
+            index = canUseWallets.firstIndex(of: wallet)
         } else {
-            index = (AssetVCSharedData.sharedData.walletList as! [Wallet]).firstIndex(of: AssetVCSharedData.sharedData.selectedWallet as! Wallet)
-            currentAddress = (AssetVCSharedData.sharedData.selectedWallet as! Wallet).key?.address
+            index = canUseWallets.firstIndex(where: { $0.key?.address.lowercased() == (AssetVCSharedData.sharedData.selectedWallet as! Wallet).key?.address.lowercased() }) ?? 0
+            currentAddress = canUseWallets[index ?? 0].key?.address
         }
-        
-        walletStyle = WalletsCellStyle(wallets: AssetVCSharedData.sharedData.walletList as! [Wallet], selectedIndex: index ?? 0, isExpand: false)
+        walletStyle = WalletsCellStyle(wallets: canUseWallets, selectedIndex: index ?? 0, isExpand: false)
         
         let balance = AssetService.sharedInstace.balances.first { (item) -> Bool in
             return item.addr.lowercased() == walletStyle!.currentWallet.key?.address.lowercased()
         }
         
-        balanceStyle = BalancesCellStyle(balances: [
-            (Localized("staking_balance_can_used"), balance?.free ?? "0"),
-            (Localized("staking_balance_locked_position"), balance?.lock ?? "0")], selectedIndex: 0, isExpand: false)
+        var balances: [(String, String)] = []
+        balances.append((Localized("staking_balance_can_used"), balance?.free ?? "0"))
+        if let lock = balance?.lock, (BigUInt(lock) ?? BigUInt.zero) > BigUInt.zero {
+            balances.append((Localized("staking_balance_locked_position"), lock))
+        }
+        
+        balanceStyle = BalancesCellStyle(balances: balances, selectedIndex: 0, isExpand: false)
         
         let item2 = DelegateTableViewCellStyle.wallets(walletStyle: walletStyle!)
         let item3 = DelegateTableViewCellStyle.walletBalances(balanceStyle: balanceStyle!)
@@ -188,21 +209,24 @@ extension DelegateViewController: UITableViewDelegate, UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: "WalletBalanceTableViewCell") as! WalletBalanceTableViewCell
             cell.setupBalanceData(balanceStyle.balance(for: indexPath.row))
             cell.bottomlineV.isHidden = (indexPath.row == 0 || indexPath.row == balanceStyle.cellCount - 1)
-            cell.rightImageView.image = indexPath.row == 0 ? UIImage(named: "3.icon_ drop-down") : indexPath.row == balanceStyle.selectedIndex + 1 ? UIImage(named: "iconApprove") : nil
+            cell.rightImageView.image = (balanceStyle.balances.count <= 1) ? nil :
+                indexPath.row == 0 ? UIImage(named: "3.icon_ drop-down") : indexPath.row == balanceStyle.selectedIndex + 1 ? UIImage(named: "iconApprove") : nil
             
             cell.cellDidHandle = { [weak self] (_ cell: WalletBalanceTableViewCell) in
-                guard let self = self else { return }
+                guard let self = self, balanceStyle.balances.count > 1 else { return }
                 self.balanceCellDidHandle(cell)
             }
             return cell
         case .inputAmount:
             let cell = tableView.dequeueReusableCell(withIdentifier: "SendInputTableViewCell") as! SendInputTableViewCell
+            cell.amountView.titleLabel.text = Localized("ATextFieldView_delegate_title")
             cell.minAmountLimit = "10".LATToVon
             cell.maxAmountLimit = BigUInt(balanceStyle?.currentBalance.1 ?? "0")
             cell.cellDidContentChangeHandler = { [weak self] in
                 self?.updateHeightOfRow(cell)
             }
             cell.cellDidContentEditingHandler = { [weak self] amountVON in
+                self?.isDelegateAll = (amountVON == cell.maxAmountLimit)
                 self?.estimateGas(amountVON, cell)
                 self?.currentAmount = amountVON
                 self?.tableView.reloadSections(IndexSet([indexPath.section + 1]), with: .none)
@@ -231,15 +255,6 @@ extension DelegateViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension DelegateViewController {
     func nextButtonCellDidHandle() {
-//        let transaction = Transaction()
-//        transaction.txhash = "0xa742482734873487289378392798"
-//        transaction.nodeId = "adjfkajkdflajdf"
-//        transaction.nodeName =  "adfjakdfjklajfkajkdf"
-//        transaction.from = currentAddress
-//        transaction.value = currentAmount.description
-//        transaction.txType = TxType.stakingAdd
-//        doShowTransactionDetail(transaction)
-//        return
         
         view.endEditing(true)
         
@@ -253,14 +268,18 @@ extension DelegateViewController {
             return
         }
         
-        guard currentAmount >= BigUInt("10") else {
+        guard currentAmount >= BigUInt("10").multiplied(by: PlatonConfig.VON.LAT) else {
             showMessage(text: Localized("staking_input_amount_minlimit_error"))
             return
         }
         
-        guard currentAmount < (BigUInt(balanceStyle?.currentBalance.1 ?? "0") ?? BigUInt.zero) else {
+        guard currentAmount <= (BigUInt(balanceStyle?.currentBalance.1 ?? "0") ?? BigUInt.zero) else {
             showMessage(text: Localized("staking_input_amount_maxlimit_error"))
             return
+        }
+        
+        if currentAmount == (BigUInt(balanceStyle?.currentBalance.1 ?? "0") ?? BigUInt.zero) {
+            currentAmount = currentAmount - (estimateUseGas ?? BigUInt.zero)
         }
         
         guard
@@ -271,31 +290,35 @@ extension DelegateViewController {
 
         let typ = balanceObject.selectedIndex == 0 ? UInt16(0) : UInt16(1) // 0：自由金额 1：锁仓金额
 
-        showPasswordInputPswAlert(for: walletObject.currentWallet) { [weak self] privateKey in
+        showPasswordInputPswAlert(for: walletObject.currentWallet) { [weak self] (privateKey, error) in
             guard let self = self else { return }
-            if let pri = privateKey {
-                self.showLoadingHUD()
-                
-                StakingService.sharedInstance.createDelgate(typ: typ, nodeId: nodeId, amount: self.currentAmount, sender: currentAddress, privateKey: pri, { [weak self] (result, data) in
-                    guard let self = self else { return }
-                    self.hideLoadingHUD()
-
-                    switch result {
-                    case .success:
-                        // realm 不能跨线程访问同个实例
-                        if let transaction = data as? Transaction {
-                            transaction.nodeName = self.currentNode?.name
-                            let newTransaction = transaction.copyTransaction()
-                            
-                            TransferPersistence.add(tx: newTransaction)
-                            self.doShowTransactionDetail(transaction)
-                        }
-                    case .fail(_, let errMsg):
-                        self.showMessage(text: errMsg ?? "call web3 error", delay: 2.0)
-                    }
-                })
+            guard let pri = privateKey else {
+                if let errorMsg = error?.localizedDescription {
+                    self.showErrorMessage(text: errorMsg, delay: 2.0)
+                }
+                return
             }
+            self.showLoadingHUD()
             
+            StakingService.sharedInstance.createDelgate(typ: typ, nodeId: nodeId, amount: self.currentAmount, sender: currentAddress, privateKey: pri, { [weak self] (result, data) in
+                guard let self = self else { return }
+                self.hideLoadingHUD()
+                
+                switch result {
+                case .success:
+                    // realm 不能跨线程访问同个实例
+                    if let transaction = data as? Transaction {
+                        transaction.gasUsed = self.estimateUseGas?.description
+                        transaction.nodeName = self.currentNode?.name
+                        let newTransaction = transaction.copyTransaction()
+                        
+                        TransferPersistence.add(tx: newTransaction)
+                        self.doShowTransactionDetail(transaction)
+                    }
+                case .fail(_, let errMsg):
+                    self.showMessage(text: errMsg ?? "call web3 error", delay: 2.0)
+                }
+            })
         }
     }
     
@@ -315,9 +338,14 @@ extension DelegateViewController {
         let balance = AssetService.sharedInstace.balances.first { (item) -> Bool in
             return item.addr.lowercased() == walletStyle?.currentWallet.key?.address.lowercased()
         }
-        balanceStyle = BalancesCellStyle(balances: [
-            (Localized("staking_balance_can_used"), balance?.free ?? "0"),
-            (Localized("staking_balance_locked_position"), balance?.lock ?? "0")], selectedIndex: 0, isExpand: false)
+        
+        var balances: [(String, String)] = []
+        balances.append((Localized("staking_balance_can_used"), balance?.free ?? "0"))
+        if let lock = balance?.lock, (BigUInt(lock) ?? BigUInt.zero) > BigUInt.zero {
+            balances.append((Localized("staking_balance_locked_position"), lock))
+        }
+        balanceStyle = BalancesCellStyle(balances: balances, selectedIndex: 0, isExpand: false)
+        
         listData[indexSection + 1] = DelegateTableViewCellStyle.walletBalances(balanceStyle: balanceStyle!)
         
         tableView.reloadSections(IndexSet([indexSection, indexSection+1, indexSection+2]), with: .fade)
@@ -362,11 +390,22 @@ extension DelegateViewController {
         
         let typ = balanceObject.selectedIndex == 0 ? UInt16(0) : UInt16(1) // 0：自由金额 1：锁仓金额
         
-        web3.staking.estimateCreateDelegate(typ: typ, nodeId: nodeId, amount: amountVon, gasPrice: gasPrice) { (result, data) in
+        web3.staking.estimateCreateDelegate(typ: typ, nodeId: nodeId, amount: amountVon, gasPrice: gasPrice) { [weak self] (result, data) in
             switch result {
             case .success:
+                self?.estimateUseGas = data
+                if let delegateAll = self?.isDelegateAll, delegateAll == true {
+                    if
+                        let amount = self?.currentAmount,
+                        let useGas = data,
+                        amount > useGas {
+                        cell.amountView.textField.text = (amount - useGas).divide(by: ETHToWeiMultiplier, round: 8)
+                    }
+                    
+                    self?.isDelegateAll = false
+                }
+                
                 if let feeString = data?.description {
-                    print(feeString)
                     cell.amountView.feeLabel.text = feeString.vonToLATString.displayFeeString
                 }
             case .fail(_, _):

@@ -39,6 +39,7 @@ class NodePersistence {
     }
     
     public class func getActiveNode(isRankingSorted: Bool = true) -> [Node] {
+        RealmInstance!.refresh()
         let predicate = NSPredicate(format: "nodeStatus == 'Active'")
         let sortPropertis = [
             SortDescriptor(keyPath: isRankingSorted ? "ranking" : "ratePA", ascending: true),
@@ -49,6 +50,7 @@ class NodePersistence {
     }
     
     public class func getCandiateNode(isRankingSorted: Bool = true) -> [Node] {
+        RealmInstance!.refresh()
         let predicate = NSPredicate(format: "nodeStatus == 'Candidate'")
         let sortPropertis = [
             SortDescriptor(keyPath: isRankingSorted ? "ranking" : "ratePA", ascending: true),

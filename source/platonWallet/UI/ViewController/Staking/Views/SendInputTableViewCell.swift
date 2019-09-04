@@ -22,7 +22,7 @@ class SendInputTableViewCell: UITableViewCell {
     lazy var amountView = { () -> ATextFieldView in
         let amountView = ATextFieldView.create(title: "ATextFieldView_withdraw_title")
         amountView.textField.LocalizePlaceholder = "send_amount_placeholder"
-        amountView.feeLabel.text = "0.0000"
+        amountView.feeLabel.text = "0.00".vonToLATString.displayFeeString
         amountView.textField.keyboardType = .decimalPad
         amountView.addAction(title: "send_sendAll", action: { [weak self] in
             if let maxAmount = self?.maxAmountLimit {

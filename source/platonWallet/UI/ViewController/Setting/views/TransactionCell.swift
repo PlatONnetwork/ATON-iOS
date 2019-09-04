@@ -27,20 +27,32 @@ class TransactionCell: UITableViewCell {
     
     func updateCell(tx : Transaction){
         if tx.txType == .unknown || tx.txType == .transfer {
-            typeLabel.text = tx.transactionStauts.localizeTitle
+            if tx.direction == .unknown {
+                typeLabel.text = tx.txType?.localizeTitle
+            } else {
+                typeLabel.text = tx.direction.localizedDesciption
+            }
         } else {
             typeLabel.text = tx.txType?.localizeTitle
         }
         timeLabel.text = Date.toStanderTimeDescrition(millionSecondsTimeStamp: tx.confirmTimes)
         
-        switch tx.transactionStauts {
-        case .sending,.sendSucceed,.sendFailed:
+        switch tx.direction {
+        case .Sent:
             amoutLabel.text = "-" + (tx.valueDescription)!.ATPSuffix()
-        case .receiving,.receiveSucceed,.receiveFailed:
+        case .Receive:
             amoutLabel.text = "+" + (tx.valueDescription)!.ATPSuffix()
-        case .voting,.voteSucceed,.voteFailed:
+        default:
             amoutLabel.text = "-" + (tx.valueDescription)!.ATPSuffix()
         }
+//        switch tx.transactionStauts {
+//        case .sending,.sendSucceed,.sendFailed:
+//            amoutLabel.text = "-" + (tx.valueDescription)!.ATPSuffix()
+//        case .receiving,.receiveSucceed,.receiveFailed:
+//            amoutLabel.text = "+" + (tx.valueDescription)!.ATPSuffix()
+//        case .voting,.voteSucceed,.voteFailed:
+//            amoutLabel.text = "-" + (tx.valueDescription)!.ATPSuffix()
+//        }
         amoutLabel.textColor = tx.amountTextColor
     }
     

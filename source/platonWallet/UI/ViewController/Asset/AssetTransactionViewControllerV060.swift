@@ -64,6 +64,7 @@ class AssetTransactionViewControllerV060: BaseViewController, EmptyDataSetDelega
         tableView.emptyDataSetView { [weak self] view in
             let holder = self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, nil,"empty_no_data_img") as? TableViewNoDataPlaceHolder
             view.customView(holder)
+            view.isScrollAllowed(true)
         }
         tableView.emptyDataSetDelegate = self
         tableView.emptyDataSetSource = self
@@ -187,7 +188,20 @@ extension AssetTransactionViewControllerV060{
                     return
                 }
                 
-                let _ = transactions.map { $0.direction = (selectedAddress.lowercased() == $0.from?.lowercased() ? .Sent : selectedAddress.lowercased() == $0.to?.lowercased() ? .Receive : .unknown) }
+                let _ = transactions.map({ (tx) -> Transaction in
+                    switch tx.txType! {
+                    case .transfer:
+                        tx.direction = (selectedAddress.lowercased() == tx.from?.lowercased() ? .Sent : selectedAddress.lowercased() == tx.to?.lowercased() ? .Receive : .unknown)
+                        return tx
+                    case .delegateWithdraw,
+                         .stakingWithdraw:
+                        tx.direction = .Receive
+                        return tx
+                    default:
+                        tx.direction = .Sent
+                        return tx
+                    }
+                })
                 
                 // 下拉刷新时，先请除非本地缓存的数据
                 if beginSequence == -1 {
@@ -203,12 +217,12 @@ extension AssetTransactionViewControllerV060{
                 }
                 
                 if let existTxs = self.dataSource[selectedAddress], existTxs.count > 0 {
-                    let txHashes = transactions.map { $0.txhash! }
+                    let txHashes = transactions.map { $0.txhash!.add0x() }
                     
-                    let delTxHashes = existTxs.filter { txHashes.contains($0.txhash!) && $0.sequence == nil }.map { return $0.txhash! }
+                    let delTxHashes = existTxs.filter { txHashes.contains($0.txhash!.add0x()) && $0.sequence == nil }.map { return $0.txhash! }
                     TransferPersistence.deleteByTxHashs(delTxHashes)
                     
-                    self.dataSource[selectedAddress] = existTxs.filter { !txHashes.contains($0.txhash!) }
+                    self.dataSource[selectedAddress] = existTxs.filter { !txHashes.contains($0.txhash!.add0x()) }
                     
                     if direction == "new" && beginSequence > -1 {
                         self.dataSource[selectedAddress]?.insert(contentsOf: transactions, at: 0)

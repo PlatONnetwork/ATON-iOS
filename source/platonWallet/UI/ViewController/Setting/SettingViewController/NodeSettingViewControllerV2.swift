@@ -191,9 +191,9 @@ class NodeSettingViewControllerV2: BaseViewController {
             maker.edges.equalToSuperview()
         }
         
-#if DEBUG
+//#if DEBUG
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightBarButton)
-#endif
+//#endif
     }
     
     @objc func onRigthItemClick(_ sender: UIBarButtonItem) {

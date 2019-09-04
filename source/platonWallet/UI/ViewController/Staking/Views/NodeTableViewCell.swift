@@ -90,8 +90,9 @@ class NodeTableViewCell: UITableViewCell {
         
         delegateTitleLabel.font = UIFont.systemFont(ofSize: 13)
         delegateTitleLabel.textColor = common_darkGray_color
-        delegateTitleLabel.text = Localized("staking_validator_delegate_total")
-        delegateTitleLabel.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .horizontal)
+        delegateTitleLabel.localizedText = "staking_validator_delegate_total"
+        delegateTitleLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+//        delegateTitleLabel.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .horizontal)
         containerView.addSubview(delegateTitleLabel)
         delegateTitleLabel.snp.makeConstraints { make in
             make.top.equalTo(nameLabel.snp.bottom).offset(9)
@@ -101,6 +102,8 @@ class NodeTableViewCell: UITableViewCell {
         delegateAmountLabel.font = UIFont.systemFont(ofSize: 13)
         delegateAmountLabel.textColor = .black
         delegateAmountLabel.text = "--"
+        delegateAmountLabel.adjustsFontSizeToFitWidth = true
+        delegateAmountLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         containerView.addSubview(delegateAmountLabel)
         delegateAmountLabel.snp.makeConstraints { make in
             make.leading.equalTo(delegateTitleLabel.snp.trailing).offset(6)
@@ -123,7 +126,7 @@ class NodeTableViewCell: UITableViewCell {
         let rateTitleLabel = UILabel()
         rateTitleLabel.font = .systemFont(ofSize: 11)
         rateTitleLabel.textColor = common_lightLightGray_color
-        rateTitleLabel.text = Localized("staking_validator_delegate_rate_about")
+        rateTitleLabel.localizedText = "staking_validator_delegate_rate_about"
         containerView.addSubview(rateTitleLabel)
         rateTitleLabel.snp.makeConstraints { make in
             make.centerX.equalTo(rateLabel)

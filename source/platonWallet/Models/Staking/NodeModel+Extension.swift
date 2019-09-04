@@ -43,7 +43,8 @@ extension Node {
     }
     
     var rate: String {
-        return String(format: "%.2f", ((Float(ratePA ?? "0") ?? 0) / 100.0)) + "%"
+        guard let ratePAf = Float(ratePA ?? "0"), ratePAf > 0.0 else { return "--" }
+        return String(format: "%.2f", (ratePAf / 100.0)) + "%"
     }
     
     var rank: (String, UIImage?) {
@@ -79,7 +80,7 @@ extension NodeDetail {
     }
     
     var bRate: String {
-        return String(format: "%02f", (Int(blockRate ?? "0") ?? 0) / 10000) + "%"
+        return String(format: "%.2f", ((Float(blockRate ?? "0") ?? 0) / 100.0)) + "%"
     }
     
     var websiteForDisplay: String {

@@ -172,6 +172,7 @@ extension AssetHeaderViewV060: UICollectionViewDelegate, UICollectionViewDataSou
     }
     
     @objc func shouldUpdateWalletList(){
+        didUpdateAllAsset()
         DispatchQueue.main.async {
             self.collectionView.reloadData()
         }

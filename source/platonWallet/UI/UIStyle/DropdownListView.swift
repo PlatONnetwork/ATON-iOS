@@ -180,7 +180,7 @@ class DropdownListView: UIView {
     private func show() {
         walletsObject.isExpand = true
         UIView.animate(withDuration: 0.3, animations: {
-            self.tableViewHeightConstaint?.update(offset: 230)
+            self.tableViewHeightConstaint?.update(offset: min((AssetVCSharedData.sharedData.walletList.count + 2) * 50, 250))
             self.layoutIfNeeded()
         }) { (_) in
             self.showDimView()
@@ -255,20 +255,6 @@ final class DropdownTableViewCell: UITableViewCell {
         walletNameLabel.text = wal.name
         walletAvatarIV.image = UIImage(named: wal.avatar)
     }
-    
-//    func setDropdownListData(walletStyle: WalletsCellStyle, indexPath: IndexPath) {
-//        if indexPath.row == 0 {
-//            walletNameLabel.text = Localized("transaction_list_all_wallet")
-//            walletAvatarIV.image = UIImage(named: "4.icon_AII wallets")
-//        } else {
-//            let wallet = walletStyle.wallets[indexPath.row - 1]
-//            walletNameLabel.text = wallet.name
-//            walletAvatarIV.image = UIImage(named: wallet.avatar)
-//        }
-//        toplineV.isHidden = (indexPath.row != 0)
-//        bottomlineV.isHidden = (indexPath.row == walletStyle.wallets.count)
-//        rightImageView.image = (indexPath.row == walletStyle.selectedIndex) ? UIImage(named: "iconApprove") : nil
-//    }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)

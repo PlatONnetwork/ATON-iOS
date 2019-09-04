@@ -767,6 +767,7 @@
 "staking_validator_isInit_doubt" = "PlatON blockchain initial built-in validator, does not accept Delegation";
 
 "ATextFieldView_title" = "Amount:";
+"ATextFieldView_delegate_title" = "Amount:";
 "ATextFieldView_withdraw_title" = "Amount:";
 "ATextFieldView_withdraw_placeholder" = "Input Amount (not less than 10 LAT)";
 
@@ -778,7 +779,7 @@
 "staking_doubt_risk_detail" = "No risk.";
 
 "staking_balance_can_used" = "Balance";
-"staking_balance_locked_position" = "Locked position";
+"staking_balance_locked_position" = "Restricted balance";
 "staking_balance_Delegated" = "Delegated";
 "staking_balance_unlocked_Delegated" = "Unlocked delegate";
 "staking_balance__release_Delegated" = "Released delegate";
@@ -845,3 +846,13 @@
 
 "staking_input_amount_minlimit_error" = "The Amount cannot be less than 10 LAT";
 "staking_input_amount_maxlimit_error" = "Insufficient balance, unable to delegate";
+
+"error_no_wallet" = "No wallet available";
+"error_wallet_no_balance" = "insufficient wallet balance";
+
+"about_current_version" = "Current Version";
+"about_version_update_alert_title" = "Update Available";
+"about_version_update_alert_message_1" = "New version is available. Version ";
+"about_version_update_alert_message_2" = ", Update now?";
+"about_version_update_alert_cancel" = "Not Now?";
+"about_version_update_alert_ok" = "Update";

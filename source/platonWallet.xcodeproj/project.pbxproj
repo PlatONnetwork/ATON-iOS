@@ -117,6 +117,7 @@
 		818D74EC2184349000EB1402 /* QRCodeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 818D74EB2184349000EB1402 /* QRCodeView.xib */; };
 		818D74EE21843A8900EB1402 /* QRDisplayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818D74ED21843A8900EB1402 /* QRDisplayViewController.swift */; };
 		818D74F521845D2500EB1402 /* PopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818D74F421845D2500EB1402 /* PopUpViewController.swift */; };
+		81926A07231DFEC500CAF498 /* RemoteVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81926A06231DFEC500CAF498 /* RemoteVersion.swift */; };
 		819333FF223FD08600DCFD93 /* AssetPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819333FE223FD08600DCFD93 /* AssetPageViewController.swift */; };
 		8193340122408DDC00DCFD93 /* AssetVCSharedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8193340022408DDC00DCFD93 /* AssetVCSharedData.swift */; };
 		819A434921D1FE3500E276C7 /* IPGeoInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819A434821D1FE3500E276C7 /* IPGeoInfo.swift */; };
@@ -356,7 +357,6 @@
 		8106350A219BFF0B00F0A06D /* SWallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SWallet.swift; sourceTree = "<group>"; };
 		8106350C219BFFDA00F0A06D /* SWalletPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SWalletPersistence.swift; sourceTree = "<group>"; };
 		8106350E219C074800F0A06D /* STransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = STransaction.swift; sourceTree = "<group>"; };
-		81063526219D4B9100F0A06D /* SWalletService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SWalletService.swift; sourceTree = "<group>"; };
 		8115BC4A2188444E009FFE3B /* CopyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyButton.swift; sourceTree = "<group>"; };
 		8115BC4D2188615D009FFE3B /* PropertyReflectable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyReflectable.swift; sourceTree = "<group>"; };
 		8115BEA4218AC9A5009FFE3B /* Notifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
@@ -449,7 +449,6 @@
 		813F56C3219A60FA00F797E6 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		81412EB321DC678F008B909C /* SingleVote.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleVote.swift; sourceTree = "<group>"; };
 		8148F01421BA0E1600045546 /* BaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseService.swift; sourceTree = "<group>"; };
-		8148F01621BA487800045546 /* SWalletService+builder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SWalletService+builder.swift"; sourceTree = "<group>"; };
 		814980F32191393C009F99EE /* SharedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedView.swift; sourceTree = "<group>"; };
 		814980F721913AA7009F99EE /* SharedCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedCollectionViewCell.swift; sourceTree = "<group>"; };
 		814980F821913AA7009F99EE /* SharedCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SharedCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -497,6 +496,7 @@
 		818D74EB2184349000EB1402 /* QRCodeView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = QRCodeView.xib; sourceTree = "<group>"; };
 		818D74ED21843A8900EB1402 /* QRDisplayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRDisplayViewController.swift; sourceTree = "<group>"; };
 		818D74F421845D2500EB1402 /* PopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpViewController.swift; sourceTree = "<group>"; };
+		81926A06231DFEC500CAF498 /* RemoteVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteVersion.swift; sourceTree = "<group>"; };
 		819333FE223FD08600DCFD93 /* AssetPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPageViewController.swift; sourceTree = "<group>"; };
 		8193340022408DDC00DCFD93 /* AssetVCSharedData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetVCSharedData.swift; sourceTree = "<group>"; };
 		819334022241EC3E00DCFD93 /* CandidateScrollContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CandidateScrollContainer.swift; sourceTree = "<group>"; };
@@ -777,6 +777,7 @@
 				8115BEA4218AC9A5009FFE3B /* Notifications.swift */,
 				8115BC4D2188615D009FFE3B /* PropertyReflectable.swift */,
 				813F56C3219A60FA00F797E6 /* Utilities.swift */,
+				81926A06231DFEC500CAF498 /* RemoteVersion.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -1548,8 +1549,6 @@
 			isa = PBXGroup;
 			children = (
 				9AD67AA92174811300A8432F /* WalletService.swift */,
-				81063526219D4B9100F0A06D /* SWalletService.swift */,
-				8148F01621BA487800045546 /* SWalletService+builder.swift */,
 			);
 			path = WalletService;
 			sourceTree = "<group>";
@@ -2226,6 +2225,7 @@
 				9ADB60B3222E801C0044918D /* AssetTransactionViewControllerV060.swift in Sources */,
 				81FCCCDB2179B3F10052FC29 /* AppFramework.swift in Sources */,
 				9A11FC482181E90C002D9A96 /* LeftAlignLayout.swift in Sources */,
+				81926A07231DFEC500CAF498 /* RemoteVersion.swift in Sources */,
 				812A7ED9219EA6A900BE9C1C /* WalletManagerDetailViewController.swift in Sources */,
 				8159690322E6FF910085195C /* StakingPageTabStripViewController.swift in Sources */,
 				9ADE4519217F0ADB006F1C81 /* ImportWalletHeaderView.swift in Sources */,

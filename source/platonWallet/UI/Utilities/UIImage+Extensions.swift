@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 public extension UIImage {
-    public convenience init?(color: UIColor, size: CGSize = CGSize(width: 1, height: 1)) {
+    convenience init?(color: UIColor, size: CGSize = CGSize(width: 1, height: 1)) {
         let rect = CGRect(origin: .zero, size: size)
         UIGraphicsBeginImageContextWithOptions(rect.size, false, 1.0)
         color.setFill()
@@ -22,7 +22,7 @@ public extension UIImage {
         self.init(cgImage: thecgImage)
     }
     
-    public class func gradientImage(colors:[UIColor], size: CGSize, startPoint: CGPoint? = CGPoint(x: 0, y: 0), endPoint: CGPoint? = CGPoint(x: 1, y: 1)) -> UIImage? {
+    class func gradientImage(colors:[UIColor], size: CGSize, startPoint: CGPoint? = CGPoint(x: 0, y: 0), endPoint: CGPoint? = CGPoint(x: 1, y: 1)) -> UIImage? {
         if colors.count == 0 || size == .zero {
             return nil
         }
@@ -42,7 +42,7 @@ public extension UIImage {
     }
 
     
-    public class func geneQRCodeImageFor(_ content: String, size: CGFloat) -> UIImage? {
+    class func geneQRCodeImageFor(_ content: String, size: CGFloat) -> UIImage? {
         
         let filter = CIFilter(name: "CIQRCodeGenerator")
         filter?.setDefaults()
@@ -78,7 +78,7 @@ public extension UIImage {
         
     }
     
-    public func circleImage() -> UIImage {
+    func circleImage() -> UIImage {
         
         UIGraphicsBeginImageContextWithOptions(size, false, 0)
         let path = UIBezierPath(arcCenter: CGPoint(x: size.width/2, y: size.height/2), radius: size.width/2, startAngle: 0, endAngle: CGFloat(Double.pi * 2), clockwise: true)
@@ -119,5 +119,15 @@ public extension UIImage {
         let newImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         return newImage
+    }
+    
+    func resizeImage(image: UIImage, newSize: CGSize) -> UIImage {
+        UIGraphicsBeginImageContext(newSize)
+        image.draw(in: CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height))
+        
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        
+        return newImage!
     }
 }

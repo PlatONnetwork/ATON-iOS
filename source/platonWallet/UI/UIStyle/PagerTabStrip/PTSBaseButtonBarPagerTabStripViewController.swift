@@ -319,7 +319,8 @@ class ExampleBaseButtonBarPagerTabStripViewController: BaseButtonBarPagerTabStri
             let label = UILabel()
             label.translatesAutoresizingMaskIntoConstraints = false
             label.font = self?.settings.style.buttonBarItemFont ?? label.font
-            label.text = childItemInfo.title
+//            label.text = childItemInfo.title
+            label.localizedText = childItemInfo.title
             let labelSize = label.intrinsicContentSize
             return labelSize.width + CGFloat(self?.settings.style.buttonBarItemLeftRightMargin ?? 8 * 2)
         })

@@ -38,7 +38,7 @@ class AppFramework {
     }
     
     func initUMeng() {
-        UMConfigure.initWithAppkey(Test_Umeng_key, channel: "App Store")
+        UMConfigure.initWithAppkey(Production_Umeng_key, channel: "App Store")
         MobClick.setAutoPageEnabled(true)
         UMConfigure.setLogEnabled(true)
     }

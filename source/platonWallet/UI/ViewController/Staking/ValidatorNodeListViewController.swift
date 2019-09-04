@@ -79,16 +79,30 @@ class ValidatorNodeListViewController: BaseViewController, IndicatorInfoProvider
             let holder = self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, nil,"empty_no_data_img") as? TableViewNoDataPlaceHolder
             holder?.descriptionLabel.text = Localized("empty_string_validator")
             view.customView(holder)
+            view.isScrollAllowed(true)
         }
         tableView.mj_header = refreshHeader
         tableView.mj_footer = refreshFooter
         tableView.mj_header.beginRefreshing()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(scrollToTop), name: Notification.Name.ATON.DidTabBarDoubleClick, object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if isViewLoaded {
             updateData()
+        }
+    }
+    
+    @objc func scrollToTop() {
+        print("------------------")
+        if isViewLoaded {
+            tableView.setContentOffset(CGPoint.zero, animated: true)
         }
     }
 
@@ -176,12 +190,15 @@ extension ValidatorNodeListViewController: UITableViewDelegate, UITableViewDataS
         cell.node = listData[indexPath.row]
         cell.cellDidSelectedHandle = { [weak self] in
             guard let self = self else { return }
-            let controller = NodeDetailViewController()
-            controller.nodeId = self.listData[indexPath.row].nodeId
-            controller.hidesBottomBarWhenPushed = true
-            self.navigationController?.pushViewController(controller, animated: true)
-            
+            self.doShowNodeDetailController(indexPath: indexPath)
         }
         return cell
+    }
+    
+    func doShowNodeDetailController(indexPath: IndexPath) {
+        let controller = NodeDetailViewController()
+        controller.nodeId = listData[indexPath.row].nodeId
+        controller.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(controller, animated: true)
     }
 }

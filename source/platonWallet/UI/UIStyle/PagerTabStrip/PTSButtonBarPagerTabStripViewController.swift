@@ -101,7 +101,8 @@ class ButtonBarPagerTabStripViewController: PagerTabStripViewController, PagerTa
             let label = UILabel()
             label.translatesAutoresizingMaskIntoConstraints = false
             label.font = self?.settings.style.buttonBarItemFont
-            label.text = childItemInfo.title
+//            label.text = childItemInfo.title
+            label.localizedText = childItemInfo.title
             let labelSize = label.intrinsicContentSize
             return labelSize.width + (self?.settings.style.buttonBarItemLeftRightMargin ?? 8) * 2
         })
@@ -314,8 +315,8 @@ class ButtonBarPagerTabStripViewController: PagerTabStripViewController, PagerTa
         
         let childController = viewControllers[indexPath.item] as! IndicatorInfoProvider // swiftlint:disable:this force_cast
         let indicatorInfo = childController.indicatorInfo(for: self)
-        
-        cell.label.text = indicatorInfo.title
+        cell.label.localizedText = indicatorInfo.title
+//        cell.label.text = indicatorInfo.title
         cell.accessibilityLabel = indicatorInfo.accessibilityLabel
         cell.label.font = settings.style.buttonBarItemFont
         cell.label.textColor = settings.style.buttonBarItemTitleColor ?? cell.label.textColor

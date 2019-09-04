@@ -19,6 +19,7 @@ let DefaultNodeURL_Alpha = "https://test-amigo.platon.network/test"
 
 let DefaultNodeURL_Beta = "https://test-beta.platon.network/test"
 
+let DefaultNodeURL_Alpha_V071 = "http://192.168.9.190:1000/rpc"
 
 let assetQueryTimerInterval = 8
 

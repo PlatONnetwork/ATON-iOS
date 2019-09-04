@@ -27,7 +27,7 @@ class CommunityContentTableViewCell: UITableViewCell {
         didSet {
             contentLabel.text = contact?.contact
             qrcodeIV.image = contact?.qrcodeImage
-            rightButton.setImage(UIImage(named: contact?.action == .scan ? "4.icon-Qr code" : "4.icon-jump"), for: .normal)
+            rightButton.setImage(UIImage(named: contact?.action == .scan ? "img_qrcode_icon" : "4.icon-jump"), for: .normal)
             qrcodeIV.isHidden = contact?.qrcodeImage == nil
         }
     }

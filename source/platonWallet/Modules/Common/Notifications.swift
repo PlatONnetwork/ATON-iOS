@@ -33,3 +33,9 @@ let ChangeCandidatesTableViewCellbackground = "ChangeCandidatesTableViewCellback
 // 当投票被添加进s本地数据库，通知首页交易记录列表更新本地数据
 let DidAddVoteTransactionNotification = "DidAddVoteTransactionNotification"
 
+extension Notification.Name {
+    public struct ATON {
+        public static let DidTabBarDoubleClick = Notification.Name("ATONDidTabBarDoubleClickNotification")
+    }
+}
+

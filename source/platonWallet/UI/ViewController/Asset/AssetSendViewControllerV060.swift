@@ -27,7 +27,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
             let minGasPrice = platonGasPrice.multiplied(by: BigUInt(Int(0.5 * 10))) / BigUInt(10)
             let maxGasPrice = platonGasPrice.multiplied(by: BigUInt(6))
             
-            let price = minGasPrice + (((maxGasPrice - minGasPrice) * BigUInt(Int(self.gasPriceLevel * 10000000))) / BigUInt(10000000))
+            let price = minGasPrice + (((maxGasPrice - minGasPrice) * BigUInt(Int(self.gasPriceLevel * 10000000)) / BigUInt(10000000)))
             return price
         }
     }
@@ -392,7 +392,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
             confirmView.toAddressLabel.text = walletAddressView.textField.text!.addressDisplayInLocal() ?? "--"
             confirmView.walletName.text = wallet.key?.address.addressDisplayInLocal() ?? "--"
             let feeString = self.totalFee().divide(by: ETHToWeiMultiplier
-                , round: 18)
+                , round: 8)
             confirmView.feeLabel.text = feeString.ATPSuffix()
 
         }
@@ -528,7 +528,7 @@ extension AssetSendViewControllerV060{
     @objc func DidNodeGasPriceUpdate(){
         DispatchQueue.global().async {
             let feeString = self.totalFee().divide(by: ETHToWeiMultiplier
-                , round: 18)
+                , round: 8)
             DispatchQueue.main.async {
                 self.feeView.fee.text = feeString.ATPSuffix()
             }
@@ -584,7 +584,7 @@ extension AssetSendViewControllerV060{
         }
         
         self.resportSufficiency(isSufficient: true)
-        amountView.textField.text = maxSendAmout?.divide(by: ETHToWeiMultiplier, round: 8).balanceFixToDisplay(maxRound: 8)
+        amountView.textField.text = maxSendAmout?.divide(by: ETHToWeiMultiplier, round: 8)
         let _ = amountView.checkInvalidNow(showErrorMsg: true)
         let _ = self.checkConfirmButtonAvailable()
     }

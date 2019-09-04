@@ -66,7 +66,7 @@ class RealmHelper {
     
     public class func getConfig() -> Realm.Configuration{
         //v0.7.0 update scheme version to 8
-        let schemaVersion: UInt64 = 11
+        let schemaVersion: UInt64 = 12
         
         let config = Realm.Configuration(schemaVersion: schemaVersion, migrationBlock: { migration, oldSchemaVersion in
             
@@ -86,8 +86,9 @@ class RealmHelper {
                 // 增加锁仓余额 lockedBalance
             }
             
-            if oldSchemaVersion < 11 {
+            if oldSchemaVersion < 12 {
                 // 增加Node table
+                RealmHelper.migrationBelow7(migration: migration, schemaVersion: schemaVersion, oldSchemaVersion: oldSchemaVersion)
             }
             
         },shouldCompactOnLaunch: {(totalBytes, usedBytes) in

@@ -30,7 +30,7 @@ class StakingPageTabStripViewController: BaseButtonBarPagerTabStripViewControlle
             let label = UILabel()
             label.translatesAutoresizingMaskIntoConstraints = false
             label.font = self?.settings.style.buttonBarItemFont ?? label.font
-            label.text = childItemInfo.title
+            label.localizedText = childItemInfo.title
             let labelSize = label.intrinsicContentSize
             return labelSize.width + CGFloat(self?.settings.style.buttonBarItemLeftRightMargin ?? 8 * 2)
         })
@@ -75,7 +75,8 @@ class StakingPageTabStripViewController: BaseButtonBarPagerTabStripViewControlle
     }
     
     override func configure(cell: StakingLabelViewCell, for indicatorInfo: IndicatorInfo) {
-        cell.label.text = indicatorInfo.title
+//        cell.label.text = indicatorInfo.title
+        cell.label.localizedText = indicatorInfo.title
     }
     
     override func updateIndicator(for viewController: PagerTabStripViewController, fromIndex: Int, toIndex: Int, withProgressPercentage progressPercentage: CGFloat, indexWasChanged: Bool) {

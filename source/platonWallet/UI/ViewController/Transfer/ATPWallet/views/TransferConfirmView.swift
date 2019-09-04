@@ -35,6 +35,7 @@ class TransferConfirmView: UIView {
     
     override func awakeFromNib() {
         submitBtn.style = .blue
+        totalLabel.adjustsFontSizeToFitWidth = true
     }
     
     func hideExecutor(){

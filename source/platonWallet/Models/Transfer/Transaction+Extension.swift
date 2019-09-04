@@ -15,11 +15,11 @@ extension Transaction {
         switch txType! {
         case .transfer,
              .unknown:
-            let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.key?.address == to }.first
+            let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.key?.address.lowercased() == to?.lowercased() }.first
             guard let wallet = localWallet else {
                 return UIImage(named: "walletAvatar_1")
             }
-            return wallet.image()
+            return UIImage(named: wallet.avatar)
         default:
             if toType == .contract {
                 return UIImage(named: "2.icon_Shared")

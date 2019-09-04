@@ -57,7 +57,7 @@ extension DelegateDetail {
     }
     
     var unlockedString: String {
-        return unlocked?.vonToLATString ?? "--"
+        return unLocked?.vonToLATString ?? "--"
     }
     
     var releasedString: String {
@@ -75,10 +75,10 @@ extension DelegateDetail {
     
     // 第一个值为是否显示赎回
     var rightButtonStatus: (Bool, Bool) {
-        if locked == nil && unlocked == nil && released == nil && redeem == nil {
+        if (locked == nil || locked == "0") && (unLocked == nil || unLocked == "0") && (released == nil || released == "0") && (redeem == nil || redeem == "0") {
             return (false, true)
         } else {
-            if locked == nil && unlocked == nil && released == nil {
+            if (locked == nil || locked == "0") && (unLocked == nil || unLocked == "0") && (released == nil || released == "0") {
                 return (true, false)
             } else {
                 return (true, true)

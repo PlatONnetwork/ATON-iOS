@@ -118,23 +118,46 @@ class TransactionListViewController: BaseViewController,UITableViewDelegate,UITa
                 }
                 
                 if let currentAddress = self.selectedWallet?.key?.address {
-                    let _ = transactions.map { $0.direction = (currentAddress.lowercased() == $0.from?.lowercased() ? .Sent : currentAddress.lowercased() == $0.to?.lowercased() ? .Receive : .unknown) }
+                    let _ = transactions.map({ (tx) -> Transaction in
+                        switch tx.txType! {
+                        case .transfer:
+                            tx.direction = (currentAddress.lowercased() == tx.from?.lowercased() ? .Sent : currentAddress.lowercased() == tx.to?.lowercased() ? .Receive : .unknown)
+                            return tx
+                        case .delegateWithdraw,
+                             .stakingWithdraw:
+                            tx.direction = .Receive
+                            return tx
+                        default:
+                            tx.direction = .Sent
+                            return tx
+                        }
+                    })
                 } else {
                     let addresses = (AssetVCSharedData.sharedData.walletList as! [Wallet]).map { return $0.key!.address.lowercased() }
                     let _ = transactions.map({ (tx) -> Transaction in
-                        if
-                            let from = tx.from?.lowercased(),
-                            let to = tx.to?.lowercased(),
-                            (addresses.contains(from) && addresses.contains(to)) {
-                            tx.direction = .Sent
-                        } else {
-                            if let from = tx.from?.lowercased(), addresses.contains(from) {
+                        switch tx.txType! {
+                        case .transfer:
+                            if
+                                let from = tx.from?.lowercased(),
+                                let to = tx.to?.lowercased(),
+                                (addresses.contains(from) && addresses.contains(to)) {
                                 tx.direction = .Sent
-                            } else if let to = tx.to?.lowercased(), addresses.contains(to) {
-                                tx.direction = .Receive
+                            } else {
+                                if let from = tx.from?.lowercased(), addresses.contains(from) {
+                                    tx.direction = .Sent
+                                } else if let to = tx.to?.lowercased(), addresses.contains(to) {
+                                    tx.direction = .Receive
+                                }
                             }
+                            return tx
+                        case .delegateWithdraw,
+                             .stakingWithdraw:
+                            tx.direction = .Receive
+                            return tx
+                        default:
+                            tx.direction = .Sent
+                            return tx
                         }
-                        return tx
                     })
                 }
                 
@@ -183,6 +206,7 @@ class TransactionListViewController: BaseViewController,UITableViewDelegate,UITa
             emptyView?.backgroundColor = normal_background_color
             view.customView(emptyView)
             view.backgroundColor = normal_background_color
+            view.isScrollAllowed(true)
         }
         
         txnTableView.mj_header = refreshHeader
