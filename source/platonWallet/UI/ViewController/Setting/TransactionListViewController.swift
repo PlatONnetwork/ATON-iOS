@@ -95,11 +95,11 @@ class TransactionListViewController: BaseViewController,UITableViewDelegate,UITa
             return
         }
         
-        guard let sequence = Int(lastTransaction.sequence ?? "0") else { return }
+        guard let sequence = lastTransaction.sequence else { return }
         fetchTransaction(addressStrs: addressStrs, beginSequence: sequence, direction: "old")
     }
     
-    func fetchTransaction(addressStrs: [String], beginSequence: Int, direction: String) {
+    func fetchTransaction(addressStrs: [String], beginSequence: Int64, direction: String) {
         TransactionService.service.getBatchTransaction(addresses: addressStrs, beginSequence: beginSequence, listSize: listSize, direction: direction) { (result, response) in
             
             self.txnTableView.mj_header.endRefreshing()
@@ -141,7 +141,7 @@ class TransactionListViewController: BaseViewController,UITableViewDelegate,UITa
                                 let from = tx.from?.lowercased(),
                                 let to = tx.to?.lowercased(),
                                 (addresses.contains(from) && addresses.contains(to)) {
-                                tx.direction = .Sent
+                                tx.direction = .unknown
                             } else {
                                 if let from = tx.from?.lowercased(), addresses.contains(from) {
                                     tx.direction = .Sent

@@ -778,6 +778,9 @@
 "staking_doubt_risk" = "Risk";
 "staking_doubt_risk_detail" = "No risk.";
 
+"staking_doubt_undelegate" = "Note";
+"staking_doubt_undelegate_detail" = "Un-delegation (i.e. withdrawal) LAT, the unlocked delegate LAT and released delegate LAT can immediately returns to the account. However,the locked delegate LAT takes 6.1 hours to unlock and return to the account.\nThe released delegate has to be withdrawal all at once;\nIf the remaining delegations has been less than 10LAT, it will be automatically returned all.";
+
 "staking_balance_can_used" = "Balance";
 "staking_balance_locked_position" = "Restricted balance";
 "staking_balance_Delegated" = "Delegated";
@@ -856,3 +859,6 @@
 "about_version_update_alert_message_2" = ", Update now?";
 "about_version_update_alert_cancel" = "Not Now?";
 "about_version_update_alert_ok" = "Update";
+
+"delegate_detail_unable_alert" = "Please withdraw first \"Released delegate\"";
+

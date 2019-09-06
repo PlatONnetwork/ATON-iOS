@@ -30,8 +30,8 @@ class NodePersistence {
     
     public class func getAll(isRankingSorted: Bool = true) -> [Node] {
         let sortPropertis = [
-            SortDescriptor(keyPath: isRankingSorted ? "ranking" : "ratePA", ascending: true),
-            SortDescriptor(keyPath: isRankingSorted ? "ratePA" : "ranking", ascending: true)
+            SortDescriptor(keyPath: isRankingSorted ? "ranking" : "ratePA", ascending: isRankingSorted ? true : false),
+            SortDescriptor(keyPath: isRankingSorted ? "ratePA" : "ranking", ascending: isRankingSorted ? true : false)
         ]
         RealmInstance!.refresh()
         let r = RealmInstance!.objects(Node.self).sorted(by: sortPropertis)
@@ -42,8 +42,8 @@ class NodePersistence {
         RealmInstance!.refresh()
         let predicate = NSPredicate(format: "nodeStatus == 'Active'")
         let sortPropertis = [
-            SortDescriptor(keyPath: isRankingSorted ? "ranking" : "ratePA", ascending: true),
-            SortDescriptor(keyPath: isRankingSorted ? "ratePA" : "ranking", ascending: true)
+            SortDescriptor(keyPath: isRankingSorted ? "ranking" : "ratePA", ascending: isRankingSorted ? true : false),
+            SortDescriptor(keyPath: isRankingSorted ? "ratePA" : "ranking", ascending: isRankingSorted ? true : false)
         ]
         let r = RealmInstance!.objects(Node.self).filter(predicate).sorted(by: sortPropertis)
         return Array(r)
@@ -53,8 +53,8 @@ class NodePersistence {
         RealmInstance!.refresh()
         let predicate = NSPredicate(format: "nodeStatus == 'Candidate'")
         let sortPropertis = [
-            SortDescriptor(keyPath: isRankingSorted ? "ranking" : "ratePA", ascending: true),
-            SortDescriptor(keyPath: isRankingSorted ? "ratePA" : "ranking", ascending: true)
+            SortDescriptor(keyPath: isRankingSorted ? "ranking" : "ratePA", ascending: isRankingSorted ? true : false),
+            SortDescriptor(keyPath: isRankingSorted ? "ratePA" : "ranking", ascending: isRankingSorted ? true : false)
         ]
         let r = RealmInstance!.objects(Node.self).filter(predicate).sorted(by: sortPropertis)
         return Array(r)

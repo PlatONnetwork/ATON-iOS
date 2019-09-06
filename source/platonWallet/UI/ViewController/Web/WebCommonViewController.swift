@@ -64,7 +64,16 @@ class WebCommonViewController: BaseViewController {
 
     private func loadRequest() {
         showLoadingHUD()
-        guard let urlString = requestUrl, let url = URL(string: urlString) else { return }
+        guard let urlString = requestUrl else {
+            hideLoadingHUD()
+            return
+        }
+        let httpsUrl = (urlString.hasPrefix("https://") || urlString.hasPrefix("http://")) ? urlString : "https://" + urlString
+        
+        guard let url = URL(string: httpsUrl) else {
+            hideLoadingHUD()
+            return
+        }
         let request = URLRequest(url: url)
         webView.load(request)
     }

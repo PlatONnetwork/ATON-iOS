@@ -106,7 +106,7 @@ class RealmHelper {
 
 public extension Object {
     
-    public func detached() -> Self {
+    func detached() -> Self {
         
         let detached = type(of: self).init()
         for property in objectSchema.properties {
@@ -124,7 +124,7 @@ public extension Object {
 
 public extension Sequence where Iterator.Element:Object  {
     
-    public var detached:[Element] {
+    var detached:[Element] {
         return self.map({ $0.detached() })
     }
     

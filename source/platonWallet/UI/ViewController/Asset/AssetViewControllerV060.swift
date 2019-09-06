@@ -612,7 +612,6 @@ extension AssetViewControllerV060{
     @objc func updateWalletList(){
         headerView.shouldUpdateWalletList()
         
-//        AssetService.sharedInstace.fetchWalletBanlance()
         AssetService.sharedInstace.fetchWalletBalanceForV7(nil)
         sendVC.refreshData()
         transactionVC.refreshData()

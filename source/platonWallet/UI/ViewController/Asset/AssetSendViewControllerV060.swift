@@ -369,11 +369,6 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
                 AssetViewControllerV060.getInstance()?.showMessage(text: Localized("cannot_send_itself"))
                 return
             }
-        }else if let swallet = AssetVCSharedData.sharedData.selectedWallet as? SWallet{
-            if (toAddress.ishexStringEqual(other: swallet.contractAddress)){
-                AssetViewControllerV060.getInstance()?.showMessage(text: Localized("cannot_send_itself"))
-                return
-            }
         }
         
         confirmPopUpView = PopUpViewController()
@@ -388,7 +383,11 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
         if let wallet = AssetVCSharedData.sharedData.selectedWallet as? Wallet{
             confirmPopUpView!.setUpConfirmView(view: confirmView, width: PopUpContentWidth)
             confirmView.hideExecutor()
-            confirmView.totalLabel.text = amountView.textField.text!
+            
+            let unionAttr = NSAttributedString(string: " LAT", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16)])
+            let amountAttr = NSMutableAttributedString(string: amountView.textField.text!.displayForMicrometerLevel(maxRound: 8))
+            amountAttr.append(unionAttr)
+            confirmView.totalLabel.attributedText = amountAttr
             confirmView.toAddressLabel.text = walletAddressView.textField.text!.addressDisplayInLocal() ?? "--"
             confirmView.walletName.text = wallet.key?.address.addressDisplayInLocal() ?? "--"
             let feeString = self.totalFee().divide(by: ETHToWeiMultiplier

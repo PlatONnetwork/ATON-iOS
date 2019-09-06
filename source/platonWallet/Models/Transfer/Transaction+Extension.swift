@@ -63,7 +63,7 @@ extension Transaction {
     }
     
     var valueString: (String?, UIColor?) {
-        if txReceiptStatus == -1 {
+        if txReceiptStatus == -1 || txReceiptStatus == 0 {
             return (nil, nil)
         }
         
@@ -146,7 +146,7 @@ extension Transaction {
     }
     
     var recordAmountForDisplay: String {
-        return recordAmount?.vonToLATString.balanceFixToDisplay(maxRound: 8).ATPSuffix() ?? "--"
+        return (recordAmount?.vonToLATString ?? "0").balanceFixToDisplay(maxRound: 8).ATPSuffix()
     }
     
     var recordStatus: (String, UIColor) {

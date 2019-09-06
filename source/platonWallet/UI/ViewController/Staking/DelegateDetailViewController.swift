@@ -167,8 +167,9 @@ extension DelegateDetailViewController: UITableViewDelegate, UITableViewDataSour
         let cell = tableView.dequeueReusableCell(withIdentifier: "NodeAboutDelegateTableViewCell") as! NodeAboutDelegateTableViewCell
         let delegateDetail = self.listData[indexPath.row]
         cell.delegateDetail = delegateDetail
-        cell.delegateButton.isEnabled = delegateDetail.getLeftButtonIsEnable(address: delegate!.walletAddress)
-        cell.delegateButton.backgroundColor = delegateDetail.getLeftButtonIsEnable(address: delegate!.walletAddress) ? UIColor.white : UIColor(rgb: 0xDCDFE8, alpha: 0.4)
+        cell.delegateButton.isEnabled = delegateDetail.getDelegateButtonIsEnable(address: delegate!.walletAddress)
+        cell.delegateButton.isSelected = delegateDetail.delgateButtonIsSelected
+        cell.delegateButton.backgroundColor = delegateDetail.getDelegateButtonIsEnable(address: delegate!.walletAddress) && !delegateDetail.delgateButtonIsSelected ? UIColor.white : UIColor(rgb: 0xDCDFE8, alpha: 0.4)
         cell.withDrawButton.isHidden = !delegateDetail.rightButtonStatus.0
         cell.moveOutButton.isHidden = delegateDetail.rightButtonStatus.0
         cell.withDrawButton.isEnabled = delegateDetail.rightButtonStatus.1
@@ -180,6 +181,10 @@ extension DelegateDetailViewController: UITableViewDelegate, UITableViewDataSour
             self?.openWebSiteController(delegateDetail.url)
         }
         cell.didDelegateHandler = { [weak self] _ in
+            if cell.delegateButton.isSelected && (delegateDetail.nodeStatus == .Active || delegateDetail.nodeStatus == .Candidate) {
+                self?.showMessage(text: Localized("delegate_detail_unable_alert"))
+                return
+            }
             self?.gotoDelgateController(delegateDetail)
         }
         cell.didWithdrawHandler = { [weak self] _ in

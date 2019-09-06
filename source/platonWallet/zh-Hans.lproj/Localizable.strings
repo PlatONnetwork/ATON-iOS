@@ -780,6 +780,9 @@
 "staking_doubt_risk" = "风险";
 "staking_doubt_risk_detail" = "委托没有任何风险。";
 
+"staking_doubt_undelegate" = "说明";
+"staking_doubt_undelegate_detail" = "赎回委托的Token，未锁定的委托和已解除委托可立即到账，已锁定的委托大约等待6.1小时才能到账;\n已解除委托必须一次性全部赎回；\n赎回数量扣除后，已委托剩余数量少于10LAT时，自动赎回全部。";
+
 "staking_balance_can_used" = "可用余额";
 "staking_balance_locked_position" = "锁仓余额";
 "staking_balance_Delegated" = "已委托";
@@ -858,3 +861,5 @@
 "about_version_update_alert_message_2" = "，是否立即更新？";
 "about_version_update_alert_cancel" = "暂不更新";
 "about_version_update_alert_ok" = "立即更新";
+
+"delegate_detail_unable_alert" = "请先赎回 “已解除委托”";

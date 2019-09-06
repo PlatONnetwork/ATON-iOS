@@ -21,7 +21,6 @@ class TransferPersistence {
                     NSLog("TransferPersistence add")
                 }
             })
-            
         }
     }
     
@@ -43,7 +42,7 @@ class TransferPersistence {
                 }
                 
                 try? realm.write {
-                    transaction.txReceiptStatus = (status == 1) ? 1 : 0
+                    transaction.txReceiptStatus = status
                     transaction.blockNumber = blockNumber
                     transaction.gasUsed = gasUsed
                     completion?()
@@ -81,13 +80,21 @@ class TransferPersistence {
         }
     }
     
-    public class func getAllByAddress(from : String) -> [Transaction]{
+    public class func getAllPendingTransactionsByAddress(from: String) -> [Transaction] {
         RealmInstance!.refresh()
-        let predicate = NSPredicate(format: "(from contains[cd] %@ OR to contains[cd] %@) AND nodeURLStr == %@", from,from,SettingService.getCurrentNodeURLString())
+        let predicate = NSPredicate(format: "(from contains[cd] %@ OR to contains[cd] %@) AND nodeURLStr == %@ AND blockNumber == %@ AND txhash != %@", from, from, SettingService.getCurrentNodeURLString(), "", "")
         let r = RealmInstance!.objects(Transaction.self).filter(predicate).sorted(byKeyPath: "createTime", ascending: false)
         let array = Array(r)
         return array
     }
+    
+//    public class func getAllByAddress(from : String) -> [Transaction]{
+//        RealmInstance!.refresh()
+//        let predicate = NSPredicate(format: "(from contains[cd] %@ OR to contains[cd] %@) AND nodeURLStr == %@", from,from,SettingService.getCurrentNodeURLString())
+//        let r = RealmInstance!.objects(Transaction.self).filter(predicate).sorted(byKeyPath: "createTime", ascending: false)
+//        let array = Array(r)
+//        return array
+//    }
     
     public class func getUnConfirmedTransactions(_ completion: @escaping ([Transaction]) -> () ){
         RealmReadeQueue.async {
@@ -110,16 +117,30 @@ class TransferPersistence {
         return nil
     }
     
-    public class func deleteByTxHashs(_ txHashs: [String]) {
+    public class func deleteByTxHashs(_ txHashs: [String], _ completion: (() -> Void)?) {
         
         RealmWriteQueue.async {
             autoreleasepool(invoking: {
-                let realm = RealmHelper.getNewRealm()
-                
                 let predicate = NSPredicate(format: "txhash IN %@ AND nodeURLStr == %@", txHashs, SettingService.getCurrentNodeURLString())
-                try? realm.write {
-                    realm.delete(realm.objects(Transaction.self).filter(predicate))
+                let realm = RealmHelper.getNewRealm()
+                realm.beginWrite()
+                realm.delete(realm.objects(Transaction.self).filter(predicate))
+                try? realm.commitWrite()
+                DispatchQueue.main.async {
+                    completion?()
                 }
+            })
+        }
+    }
+    
+    public class func deleteConfirmedTransaction() {
+        RealmWriteQueue.async {
+            autoreleasepool(invoking: {
+                let predicate = NSPredicate(format: "txhash != %@ AND blockNumber != %@", "","")
+                let realm = RealmHelper.getNewRealm()
+                realm.beginWrite()
+                realm.delete(realm.objects(Transaction.self).filter(predicate))
+                try? realm.commitWrite()
             })
         }
     }

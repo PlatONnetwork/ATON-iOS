@@ -174,6 +174,8 @@ extension UIButton {
         self.setTitleColor(.black, for: .normal)
         self.setTitleColor(common_lightLightGray_color, for: .disabled)
         self.setImage(disableImage, for: .disabled)
+        self.setTitleColor(common_lightLightGray_color, for: .selected)
+        self.setImage(disableImage, for: .selected)
         self.setImage(image, for: .normal)
         self.localizedNormalTitle = title
         self.titleLabel?.font = .systemFont(ofSize: 14, weight: .medium)

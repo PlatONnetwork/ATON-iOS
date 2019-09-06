@@ -41,15 +41,22 @@ class TransactionDetailViewController: BaseViewController {
     }
     
     @objc func didReceiveTransactionUpdate(_ notification: Notification){
+        print("============didReceiveTransactionUpdate============")
+        print(notification.object)
         guard let hash = notification.object as? String  else {
             return
         }
-        
+        print("original txhash>>>>")
+        print(transaction?.txhash)
         //yujinghan waiting fix
         if hash.ishexStringEqual(other: transaction?.txhash){
+            print("ishexStringEqual")
             let tx = TransferPersistence.getByTxhash(transaction?.txhash)
             guard let transaction = tx else { return }
-            transferDetailView.updateContent(tx: transaction)
+            print("updateContent")
+            DispatchQueue.main.async { [weak self] in
+                self?.transferDetailView.updateContent(tx: transaction)
+            }
         }
     }
     

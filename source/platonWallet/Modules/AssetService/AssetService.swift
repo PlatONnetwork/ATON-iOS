@@ -104,7 +104,6 @@ class AssetService : BaseService{
         let completion = completion
         let addresses = (AssetVCSharedData.sharedData.walletList as! [Wallet]).map { return $0.key!.address }
         guard addresses.count > 0 else {
-//            AssetService.sharedInstace.balances = []
             NotificationCenter.default.post(name: Notification.Name(DidUpdateAllAssetNotification), object: nil)
             return
         }

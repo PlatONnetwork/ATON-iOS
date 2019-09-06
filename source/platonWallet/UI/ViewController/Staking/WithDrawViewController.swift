@@ -128,9 +128,7 @@ class WithDrawViewController: BaseViewController {
         let item5 = DelegateTableViewCellStyle.singleButton(title: Localized("statking_validator_Withdraw"))
         
         let contents = [
-            (Localized("staking_doubt_delegate"), Localized("staking_doubt_delegate_detail")),
-            (Localized("staking_doubt_reward"), Localized("staking_doubt_reward_detail")),
-            (Localized("staking_doubt_risk"), Localized("staking_doubt_risk_detail"))
+            (Localized("staking_doubt_undelegate"), Localized("staking_doubt_undelegate_detail"))
         ]
         let item6 = DelegateTableViewCellStyle.doubt(contents: contents)
         listData.append(contentsOf: [item1, item2, item3, item4, item5, item6])
@@ -200,9 +198,29 @@ extension WithDrawViewController: UITableViewDelegate, UITableViewDataSource {
                 self?.updateHeightOfRow(cell)
             }
             cell.cellDidContentEditingHandler = { [weak self] amountVON in
-                self?.estimateGas(amountVON, cell)
-                self?.currentAmount = amountVON
+                var inputAmountVON = amountVON
+                
+                let amount10 = BigUInt("10").multiplied(by: BigUInt(ETHToWeiMultiplier)!)
+                if let cAmount = BigUInt(self?.balanceStyle?.currentBalance.1 ?? "0"), cAmount >= amount10, inputAmountVON >= amount10, cAmount > inputAmountVON {
+                    if cAmount - inputAmountVON < amount10 {
+                        inputAmountVON = cAmount
+                        DispatchQueue.main.async {
+                            cell.amountView.textField.text = inputAmountVON.divide(by: ETHToWeiMultiplier, round: 8)
+                        }
+                    }
+                }
+                self?.estimateGas(inputAmountVON, cell)
+                self?.currentAmount = inputAmountVON
                 self?.tableView.reloadSections(IndexSet([indexPath.section + 1]), with: .none)
+            }
+            if let bStyle = balanceStyle, bStyle.selectedIndex == 2 {
+                cell.amountView.textField.isUserInteractionEnabled = false
+                self.currentAmount = BigUInt(bStyle.currentBalance.1) ?? BigUInt.zero
+                cell.amountView.textField.text = BigUInt(bStyle.currentBalance.1)?.divide(by: ETHToWeiMultiplier, round: 8)
+                self.estimateGas(self.currentAmount, cell)
+            } else {
+                cell.amountView.textField.isUserInteractionEnabled = true
+                cell.amountView.textField.text = self.currentAmount > BigUInt.zero ?  self.currentAmount.divide(by: ETHToWeiMultiplier, round: 8) : ""
             }
             return cell
         case .singleButton(let title):
@@ -351,7 +369,7 @@ extension WithDrawViewController {
         balanceStyle = newBalanceStyle
         
         listData[indexSection] = DelegateTableViewCellStyle.walletBalances(balanceStyle: newBalanceStyle)
-        tableView.reloadSections(IndexSet([indexSection, indexSection+1]), with: .fade)
+        tableView.reloadSections(IndexSet([indexSection, indexSection+1, indexSection+2]), with: .fade)
     }
     
     func updateHeightOfRow(_ cell: SendInputTableViewCell) {
@@ -403,7 +421,7 @@ extension WithDrawViewController {
                         }
                         self.estimateUseGas = estimateTotalGas
                         if index == self.delegateValue.count - 1 {
-                            cell.amountView.feeLabel.text = estimateTotalGas.description.vonToLATString.displayFeeString
+                            cell.amountView.feeLabel.text = (estimateTotalGas.description.vonToLATString ?? "0.00").displayFeeString
                         }
                     case .fail(_, _):
                         break
@@ -414,10 +432,13 @@ extension WithDrawViewController {
     }
     
     func doShowTransactionDetail(_ transaction: Transaction) {
-        let controller = TransactionDetailViewController()
-        controller.transaction = transaction
-        controller.backToViewController = navigationController?.viewController(self.indexOfViewControllers - 1)
-        navigationController?.pushViewController(controller, animated: true)
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            let controller = TransactionDetailViewController()
+            controller.transaction = transaction
+            controller.backToViewController = self.navigationController?.viewController(self.indexOfViewControllers - 1)
+            self.navigationController?.pushViewController(controller, animated: true)
+        }
     }
 }
 
