@@ -32,7 +32,7 @@ class DelegatePersistence {
             return false
         }
         
-        if result.first?.stakingBlockNum != delegateDetail.stakingBlockNum {
+        if result.first?.delegationBlockNum != delegateDetail.delegationBlockNum {
             DelegatePersistence.delete(walletAddress, delegateDetail.nodeId)
             return false
         } else {

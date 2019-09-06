@@ -206,7 +206,14 @@ class Transaction : Object, Decodable {
     
     var sequence: Int64?
     
-    var txType: TxType? = .unknown
+    var txType: TxType? {
+        get {
+            return TxType(rawValue: String(transactionType))
+        }
+        set {
+            transactionType = Int(newValue?.rawValue ?? "0") ?? 0
+        }
+    }
     
     var actualTxCost: String? = ""
     

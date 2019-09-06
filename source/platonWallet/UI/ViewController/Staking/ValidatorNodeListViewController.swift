@@ -100,7 +100,6 @@ class ValidatorNodeListViewController: BaseViewController, IndicatorInfoProvider
     }
     
     @objc func scrollToTop() {
-        print("------------------")
         if isViewLoaded {
             tableView.setContentOffset(CGPoint.zero, animated: true)
         }
@@ -120,6 +119,7 @@ class ValidatorNodeListViewController: BaseViewController, IndicatorInfoProvider
 
 extension ValidatorNodeListViewController {
     private func updateData() {
+        print("=====updateData ======")
         StakingService.sharedInstance.updateNodeListData { [weak self] (result, data) in
             switch result {
             case .success:
@@ -138,17 +138,14 @@ extension ValidatorNodeListViewController {
         StakingService.sharedInstance.getNodeList(controllerType: controllerType, isRankingSorted: isRankingSorted) { [weak self] (result, data) in
             self?.tableView.mj_header.endRefreshing()
             self?.tableView.mj_footer.endRefreshing()
-            
             switch result {
             case .success:
-                
                 if let newData = data as? [Node], newData.count > 0 {
                     self?.tableView.mj_footer.resetNoMoreData()
                     self?.listData.append(contentsOf: newData)
                 } else {
                     self?.tableView.mj_footer.endRefreshingWithNoMoreData()
                 }
-                
                 self?.tableView.reloadData()
             case .fail(_, _):
                 self?.tableView.mj_footer.isHidden = true

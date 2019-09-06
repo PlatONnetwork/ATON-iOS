@@ -17,7 +17,7 @@ class TransferPersistence {
             autoreleasepool(invoking: {
                 let realm = RealmHelper.getNewRealm()
                 try? realm.write {
-                    realm.add(tx)
+                    realm.add(tx, update: true)
                     NSLog("TransferPersistence add")
                 }
             })

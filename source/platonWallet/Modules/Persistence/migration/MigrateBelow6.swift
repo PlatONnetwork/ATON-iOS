@@ -11,6 +11,10 @@ import RealmSwift
 
 extension RealmHelper{
     
+    public static func migrationBelow71(migration: Migration,schemaVersion: UInt64, oldSchemaVersion: UInt64){
+        migration.renameProperty(onType: DelegateDetailDel.className(), from: "stakingBlockNum", to: "delegationBlockNum")
+    }
+    
     public static func migrationBelow7(migration: Migration,schemaVersion: UInt64, oldSchemaVersion: UInt64){
         migration.enumerateObjects(ofType: Wallet.className(), { (old, new) in
             RealmHelper.doNodeULRStringMigration_below_7(old, new)

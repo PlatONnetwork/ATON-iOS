@@ -199,7 +199,7 @@ extension DelegateDetailViewController: UITableViewDelegate, UITableViewDataSour
     
     func removeDelegateDetailCell(_ indexPath: IndexPath) {
         let delegateDetail = listData[indexPath.row]
-        let detailDel = DelegateDetailDel(walletAddress: delegate?.walletAddress ?? "", nodeId: delegateDetail.nodeId, stakingBlockNum: delegateDetail.stakingBlockNum)
+        let detailDel = DelegateDetailDel(walletAddress: delegate?.walletAddress ?? "", nodeId: delegateDetail.nodeId, delegationBlockNum: delegateDetail.delegationBlockNum)
         DelegatePersistence.add(delegates: [detailDel])
         listData.remove(at: indexPath.row)
         tableView.deleteRows(at: [indexPath], with: .fade)

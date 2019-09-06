@@ -136,7 +136,6 @@ extension DelegateRecordViewController {
                     self?.tableView.mj_footer.isHidden = true
                     break
                 }
-                
         }
     }
     
