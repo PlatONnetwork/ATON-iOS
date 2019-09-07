@@ -119,7 +119,6 @@ class ValidatorNodeListViewController: BaseViewController, IndicatorInfoProvider
 
 extension ValidatorNodeListViewController {
     private func updateData() {
-        print("=====updateData ======")
         StakingService.sharedInstance.updateNodeListData { [weak self] (result, data) in
             switch result {
             case .success:

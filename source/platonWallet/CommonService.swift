@@ -140,12 +140,12 @@ struct CommonService {
             valid = false
         }
         
-        if let minLimitAmount = minLimit, text.LATToVon < minLimitAmount {
+        if let minLimitAmount = minLimit, let inputVON = BigUInt.mutiply(a: text, by: ETHToWeiMultiplier), inputVON < minLimitAmount {
             msg = Localized("staking_input_amount_minlimit_error")
             valid = false
         }
         
-        if let maxLimitAmount = maxLimit, text.LATToVon > maxLimitAmount {
+        if let maxLimitAmount = maxLimit, let inputVON = BigUInt.mutiply(a: text, by: ETHToWeiMultiplier), inputVON > maxLimitAmount {
             msg = Localized("staking_input_amount_maxlimit_error")
             valid = false
         }

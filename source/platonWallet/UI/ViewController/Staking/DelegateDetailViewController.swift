@@ -181,8 +181,11 @@ extension DelegateDetailViewController: UITableViewDelegate, UITableViewDataSour
             self?.openWebSiteController(delegateDetail.url)
         }
         cell.didDelegateHandler = { [weak self] _ in
-            if cell.delegateButton.isSelected && (delegateDetail.nodeStatus == .Active || delegateDetail.nodeStatus == .Candidate) {
-                self?.showMessage(text: Localized("delegate_detail_unable_alert"))
+            if delegateDetail.nodeStatus == .Exited || delegateDetail.nodeStatus == .Exiting {
+                if cell.delegateButton.isSelected {
+                    self?.showMessage(text: Localized("delegate_detail_unable_alert"))
+                    return
+                }
                 return
             }
             self?.gotoDelgateController(delegateDetail)

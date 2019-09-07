@@ -197,11 +197,11 @@ extension WithDrawViewController: UITableViewDelegate, UITableViewDataSource {
             cell.cellDidContentChangeHandler = { [weak self] in
                 self?.updateHeightOfRow(cell)
             }
-            cell.cellDidContentEditingHandler = { [weak self] amountVON in
+            cell.cellDidContentEditingHandler = { [weak self] (amountVON, isRegular) in
                 var inputAmountVON = amountVON
                 
                 let amount10 = BigUInt("10").multiplied(by: BigUInt(ETHToWeiMultiplier)!)
-                if let cAmount = BigUInt(self?.balanceStyle?.currentBalance.1 ?? "0"), cAmount >= amount10, inputAmountVON >= amount10, cAmount > inputAmountVON {
+                if let cAmount = BigUInt(self?.balanceStyle?.currentBalance.1 ?? "0"), cAmount >= amount10, inputAmountVON >= amount10, cAmount > inputAmountVON, isRegular == true {
                     if cAmount - inputAmountVON < amount10 {
                         inputAmountVON = cAmount
                         DispatchQueue.main.async {
