@@ -26,7 +26,7 @@ extension Node {
     }
     
     var delegateAmount: String {
-        return (deposit ?? "0").vonToLATString.ATPSuffix()
+        return (deposit?.vonToLATString ?? "0.00").ATPSuffix()
     }
     
     var status: (String, UIColor) {
@@ -43,7 +43,10 @@ extension Node {
     }
     
     var rate: String {
-        guard let ratePAf = Float(ratePA ?? "0"), ratePAf > 0.0 else { return "--" }
+        if isInit {
+            return "--"
+        }
+        guard let ratePAf = Float(ratePA ?? "0"), ratePAf > 0.0 else { return "0.00%" }
         return String(format: "%.2f", (ratePAf / 100.0)) + "%"
     }
     
@@ -64,11 +67,11 @@ extension Node {
 extension NodeDetail {
     
     var totalStaked: String {
-        return (node.deposit ?? "0").vonToLATString
+        return node.deposit?.vonToLATString ?? "0"
     }
     
     var delegations: String {
-        return (delegateSum ?? "0").vonToLATString
+        return delegateSum?.vonToLATString ?? "0"
     }
     
     var slash: String {

@@ -56,14 +56,13 @@ final class StakingService: BaseService {
         request.httpMethod = "POST"
         request.timeoutInterval = requestTimeout
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
+
         Alamofire.request(request).responseData { response in
             switch response.result {
             case .success(let data):
                 do {
                     let decoder = JSONDecoder()
                     let response = try decoder.decode(JSONResponse<[Node]>.self, from: data)
-                    
                     NodePersistence.add(nodes: response.data, {
                         completion?(.success, nil)
                     })
@@ -84,13 +83,13 @@ final class StakingService: BaseService {
         
         if controllerType == .active {
             let data = NodePersistence.getActiveNode(isRankingSorted: isRankingSorted)
-            self.successCompletionOnMain(obj: data as AnyObject, completion: &completion)
+            self.successCompletionOnMain(obj: data.detached as AnyObject, completion: &completion)
         } else if controllerType == .candidate {
             let data = NodePersistence.getCandiateNode(isRankingSorted: isRankingSorted)
-            self.successCompletionOnMain(obj: data as AnyObject, completion: &completion)
+            self.successCompletionOnMain(obj: data.detached as AnyObject, completion: &completion)
         } else {
             let datas = NodePersistence.getAll(isRankingSorted: isRankingSorted)
-            self.successCompletionOnMain(obj: datas as AnyObject, completion: &completion)
+            self.successCompletionOnMain(obj: datas.detached as AnyObject, completion: &completion)
         }
     }
     

@@ -92,7 +92,7 @@ class NodeTableViewCell: UITableViewCell {
         delegateTitleLabel.textColor = common_darkGray_color
         delegateTitleLabel.localizedText = "staking_validator_delegate_total"
         delegateTitleLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
-//        delegateTitleLabel.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .horizontal)
+        delegateTitleLabel.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .horizontal)
         containerView.addSubview(delegateTitleLabel)
         delegateTitleLabel.snp.makeConstraints { make in
             make.top.equalTo(nameLabel.snp.bottom).offset(9)

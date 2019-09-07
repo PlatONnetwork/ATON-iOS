@@ -40,20 +40,14 @@ class TransactionCell: UITableViewCell {
         switch tx.direction {
         case .Sent:
             amoutLabel.text = "-" + (tx.valueDescription)!.ATPSuffix()
+            amoutLabel.textColor = UIColor(rgb: 0xff3b3b)
         case .Receive:
             amoutLabel.text = "+" + (tx.valueDescription)!.ATPSuffix()
+            amoutLabel.textColor = UIColor(rgb: 0x19a20e)
         default:
             amoutLabel.text = "-" + (tx.valueDescription)!.ATPSuffix()
+            amoutLabel.textColor = UIColor(rgb: 0xff3b3b)
         }
-//        switch tx.transactionStauts {
-//        case .sending,.sendSucceed,.sendFailed:
-//            amoutLabel.text = "-" + (tx.valueDescription)!.ATPSuffix()
-//        case .receiving,.receiveSucceed,.receiveFailed:
-//            amoutLabel.text = "+" + (tx.valueDescription)!.ATPSuffix()
-//        case .voting,.voteSucceed,.voteFailed:
-//            amoutLabel.text = "-" + (tx.valueDescription)!.ATPSuffix()
-//        }
-        amoutLabel.textColor = tx.amountTextColor
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {

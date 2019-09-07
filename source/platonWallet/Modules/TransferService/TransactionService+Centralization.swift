@@ -16,7 +16,7 @@ extension TransactionService {
     
     public func getBatchTransaction(
         addresses: [String],
-        beginSequence: Int,
+        beginSequence: Int64,
         listSize: Int,
         direction: String,
         completion: PlatonCommonCompletion?) {

@@ -202,7 +202,7 @@ extension AppDelegate {
             case .success:
                 let appBuild = Bundle.main.infoDictionary!["CFBundleVersion"] as? String ?? ""
                 let remoteBuild = SettingService.shareInstance.currentVersion?.build ?? ""
-                if appBuild.compare(remoteBuild) == ComparisonResult.orderedAscending {
+                if Int(appBuild) ?? 0 < Int(remoteBuild) ?? 0 {
                     guard
                         let localDate = UserDefaults.standard.object(forKey: "UpdateVersionAlertDate") as? Date,
                         Calendar.current.isDate(localDate, inSameDayAs: Date()) else {

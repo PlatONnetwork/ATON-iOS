@@ -341,6 +341,7 @@ class AlertStylePopViewController: UIViewController,UITextFieldDelegate {
     // MARK: - ButtonAction
     
     @IBAction func onCancel(_ sender: Any) {
+        self.textFieldInput.resignFirstResponder()
         guard self.cancelBlock != nil else{
             return
         }
@@ -497,7 +498,7 @@ internal extension AlertStylePopViewController {
     @objc fileprivate func keyboardWillHide(_ notification: Notification) {
         guard isTopAndVisible else { return }
         keyboardShown = false
-        centerPopup()
+//        centerPopup()
     }
     
     /*!

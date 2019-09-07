@@ -26,6 +26,7 @@ public struct Delegate: Decodable {
 public struct DelegateDetail: Decodable {
     var nodeId: String
     var stakingBlockNum: String
+    var delegationBlockNum: String
     var nodeName: String
     var website: String?
     var url: String?
@@ -48,7 +49,7 @@ class DelegateDetailDel: Object {
             compoundKey = compoundKeyValue()
         }
     }
-    @objc dynamic var stakingBlockNum: String = ""
+    @objc dynamic var delegationBlockNum: String = ""
     @objc dynamic var compoundKey: String = ""
     // 不同的链
     @objc dynamic var chainUrl: String? = SettingService.getCurrentNodeURLString()
@@ -76,12 +77,12 @@ class DelegateDetailDel: Object {
     convenience init(
         walletAddress: String,
         nodeId: String,
-        stakingBlockNum: String
+        delegationBlockNum: String
         ) {
         self.init()
         self.walletAddress = walletAddress
         self.nodeId = nodeId
-        self.stakingBlockNum = stakingBlockNum
+        self.delegationBlockNum = delegationBlockNum
         self.compoundKey = self.compoundKeyValue()
     }
     

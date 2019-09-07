@@ -15,8 +15,8 @@ let dateFormatter = DateFormatter()
 let dateFormatter_greenwich = DateFormatter()
 
 extension String {
-    var vonToLATString: String {
-        guard let von = BigUInt(self) else { return "0.00" }
+    var vonToLATString: String? {
+        guard let von = BigUInt(self) else { return nil }
         let valueLAT = von.divide(by: ETHToWeiMultiplier, round: 8)
         return valueLAT.displayForMicrometerLevel(maxRound: 8)
     }
@@ -226,8 +226,6 @@ extension String{
              创建临时存放余数的可变数组
              */
             let remainderMutableArray = NSMutableArray.init(capacity: 0)
-//            // 创建一个临时存储商的变量
-//            var discussValue:Int32 = 0
 
             /**
              对传入参数的整数部分进行千分拆分
@@ -249,8 +247,21 @@ extension String{
             // 创建一个临时存储余数数组里的对象拼接起来的对象
             var tempString = String()
 
+            if decimalPart.count > 0 {
+                var nonZeroIndex = -1
+                for i in (0...decimalPart.length - 1).reversed() {
+                    if decimalPart.substr(i, 1) != "0"{
+                        nonZeroIndex = i
+                        break
+                    }
+                }
+                
+                decimalPart = decimalPart.substr(0, nonZeroIndex + 1)!
+            }
+           
+            
             if decimalPart.count > maxRound {
-                decimalPart = String(String(format: "%.\(maxRound)d", Int(decimalPart)!).prefix(maxRound))
+                decimalPart = String(decimalPart.prefix(maxRound))
             } else if decimalPart.count < 2 {
                 decimalPart = String(format: "%d", Int(decimalPart) ?? 0)
                 if decimalPart.count < 2 {

@@ -136,7 +136,6 @@ extension DelegateRecordViewController {
                     self?.tableView.mj_footer.isHidden = true
                     break
                 }
-                
         }
     }
     
@@ -150,7 +149,7 @@ extension DelegateRecordViewController {
             tableView.mj_footer.endRefreshingWithNoMoreData()
             return
         }
-        fetchData(sequence: sequence, direction: .old)
+        fetchData(sequence: String(sequence), direction: .old)
     }
 }
 

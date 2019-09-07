@@ -86,6 +86,9 @@ class AppFramework {
         let walletStorge = WallletPersistence(realm: RealmInstance!)
         WalletService.sharedInstance.walletStorge = walletStorge
         
+        // 删除缓存在本地且已经被链上确认删除的交易
+        TransferPersistence.deleteConfirmedTransaction()
+        
         return true
         
     }

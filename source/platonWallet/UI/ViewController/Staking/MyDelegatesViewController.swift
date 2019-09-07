@@ -86,9 +86,13 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
         tableView.tableFooterView = footerView
 
         tableView.mj_header = refreshHeader
-        tableView.mj_header.beginRefreshing()
         
         NotificationCenter.default.addObserver(self, selector: #selector(shouldUpdateDelegateData), name: Notification.Name(updateWalletList_Notification), object: nil)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        shouldUpdateDelegateData()
     }
     
     @objc func shouldUpdateDelegateData() {
@@ -124,7 +128,7 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
         let total = listData.reduce(BigUInt(0)) { (result, delegate) -> BigUInt in
             return result + BigUInt(delegate.delegate ?? "0")!
         }
-        headerView.totalBalanceLabel.text = total.description.vonToLATString.ATPSuffix()
+        headerView.totalBalanceLabel.text = (total.description.vonToLATString ?? "0").ATPSuffix()
     }
     
     private func gotoDelegateRecordVC() {

@@ -86,7 +86,6 @@ class AssetTransactionViewControllerV060: BaseViewController, EmptyDataSetDelega
         NotificationCenter.default.addObserver(self, selector: #selector(willDeleteWallet(_:)), name: NSNotification.Name(WillDeleateWallet_Notification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(updateWalletList), name: NSNotification.Name(updateWalletList_Notification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(nodeDidSwitch), name: NSNotification.Name(NodeStoreService.didSwitchNodeNotification), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(initClassicData), name: NSNotification.Name(DidAddVoteTransactionNotification), object: nil)
         
         refreshFooterView.loadMoreTapHandle = { [weak self] in
             self?.goTransactionList()
@@ -112,8 +111,8 @@ extension AssetTransactionViewControllerV060{
         guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return }
         dataSource[selectedAddress] = dataSource[selectedAddress]?.filter { !$0.isInvalidated }
         commonInit()
-        initClassicData()
-        fetchDataByWalletChanged()
+        refreshPendingData()
+        fetchTransactionLastest()
         
         if AssetVCSharedData.sharedData.walletList.count == 0{
             self.tableNodataHolderView.descriptionLabel.localizedText = "IndividualWallet_EmptyView_tips"
@@ -123,25 +122,28 @@ extension AssetTransactionViewControllerV060{
     }
     
     func commonInit(){
-        
         if transactionsTimer == nil {
             transactionsTimer = Timer.scheduledTimer(timeInterval:TimeInterval(jointWalletUpdateTxListTimerInterval), target: self, selector: #selector(pollingWalletTransactions), userInfo: nil, repeats: true)
         }
     }
     
-    @objc func initClassicData() {
+    func refreshPendingData() {
         guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return }
-        var transactions = TransferPersistence.getAllByAddress(from: selectedAddress)
-        transactions.txSort()
-        print("localtxs: ", transactions.map {$0.txhash!})
-        guard let existTxs = dataSource[selectedAddress], existTxs.count > 0 else {
-            dataSource[selectedAddress] = transactions
+        let pendingTransactions = getPendingTransation()
+        dataSource[selectedAddress] = dataSource[selectedAddress]?.filter { $0.sequence != nil && $0.sequence != 0 }
+        guard dataSource[selectedAddress] != nil else {
+            dataSource[selectedAddress] = pendingTransactions
             return
         }
-        let txHashes = existTxs.map { $0.txhash! }
-        let newTxs = transactions.filter { !txHashes.contains($0.txhash!) }
-        dataSource[selectedAddress]?.insert(contentsOf: newTxs, at: 0)
+        dataSource[selectedAddress]!.insert(contentsOf: pendingTransactions, at: 0)
         tableView.reloadData()
+    }
+    
+    func getPendingTransation() -> [Transaction] {
+        guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return [] }
+        var transactions = TransferPersistence.getAllPendingTransactionsByAddress(from: selectedAddress)
+        transactions.txSort()
+        return transactions.detached
     }
     
     //MARK: - Notification
@@ -167,9 +169,9 @@ extension AssetTransactionViewControllerV060{
         self.tableView.reloadData()
     }
     
-    func fetchTransaction(beginSequence: Int, direction: String) {
+    func fetchTransaction(beginSequence: Int64) {
         guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return }
-        TransactionService.service.getBatchTransaction(addresses: [selectedAddress], beginSequence: beginSequence, listSize: listSize, direction: direction) { [weak self] (result, response) in
+        TransactionService.service.getBatchTransaction(addresses: [selectedAddress], beginSequence: beginSequence, listSize: listSize, direction: "new") { [weak self] (result, response) in
             
             guard let self = self else {
                 return
@@ -202,36 +204,19 @@ extension AssetTransactionViewControllerV060{
                         return tx
                     }
                 })
-                
-                // 下拉刷新时，先请除非本地缓存的数据
-                if beginSequence == -1 {
-                    self.dataSource[selectedAddress] = self.dataSource[selectedAddress]?.filter { $0.sequence == nil }
-                }
-                
-                if beginSequence != -1 && direction == "new" {
-                    AssetService.sharedInstace.fetchWalletBalanceForV7(nil)
-                }
 
                 guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else {
                     return
                 }
                 
-                if let existTxs = self.dataSource[selectedAddress], existTxs.count > 0 {
-                    let txHashes = transactions.map { $0.txhash!.add0x() }
-                    
-                    let delTxHashes = existTxs.filter { txHashes.contains($0.txhash!.add0x()) && $0.sequence == nil }.map { return $0.txhash! }
-                    TransferPersistence.deleteByTxHashs(delTxHashes)
-                    
-                    self.dataSource[selectedAddress] = existTxs.filter { !txHashes.contains($0.txhash!.add0x()) }
-                    
-                    if direction == "new" && beginSequence > -1 {
-                        self.dataSource[selectedAddress]?.insert(contentsOf: transactions, at: 0)
-                    } else {
-                        self.dataSource[selectedAddress]?.append(contentsOf: transactions)
-                    }
-                } else {
-                    self.dataSource[selectedAddress] = transactions
-                }
+                var pendingTransaction = self.getPendingTransation()
+                let txHashes = transactions.map { $0.txhash!.add0x() }
+                pendingTransaction = pendingTransaction.filter { !txHashes.contains($0.txhash!.add0x()) }
+                pendingTransaction.append(contentsOf: transactions)
+                self.dataSource[selectedAddress] = pendingTransaction
+                
+                AssetService.sharedInstace.fetchWalletBalanceForV7(nil)
+                
                 self.tableView.mj_footer.isHidden = (self.dataSource[selectedAddress]?.count ?? 0 < self.listSize)
                 self.tableView.reloadData()
             case .fail(_, _):
@@ -250,29 +235,21 @@ extension AssetTransactionViewControllerV060{
 
 // 下拉刷新及加载更多
 extension AssetTransactionViewControllerV060 {
-    func fetchDataByWalletChanged() {
-        guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return }
-        guard let count = self.dataSource[selectedAddress]?.count, count <= 0 else {
-            pollingWalletTransactions()
-            return
-        }
-        fetchTransactionLastest()
-    }
+//    func fetchDataByWalletChanged() {
+//        guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return }
+//        guard let count = self.dataSource[selectedAddress]?.count, count <= 0 else {
+//            pollingWalletTransactions()
+//            return
+//        }
+//    }
     
     func fetchTransactionLastest() {
-        fetchTransaction(beginSequence: -1, direction: "new")
+        fetchTransaction(beginSequence: -1)
     }
     
     @objc func pollingWalletTransactions() {
-        guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return }
-        let transaction = dataSource[selectedAddress]?.filter { $0.sequence != nil }.first
-        guard let lastestTransaction = transaction else {
-            fetchTransactionLastest()
-            return
-        }
-        
-        guard let sequence = Int(lastestTransaction.sequence ?? "0") else { return }
-        fetchTransaction(beginSequence: sequence, direction: "new")
+        guard AssetVCSharedData.sharedData.walletList.count > 0 else { return }
+        fetchTransactionLastest()
     }
 }
  

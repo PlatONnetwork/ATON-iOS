@@ -19,7 +19,10 @@ extension Delegate {
     var balance: String {
 //        let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.key?.address == walletAddress }.first
 //        return localWallet?.balance ?? "0.00"
-        return (availableDelegationBalance ?? "0.00").vonToLATString
+        guard let abalance = availableDelegationBalance else {
+            return "--"
+        }
+        return abalance.vonToLATString ?? "--"
     }
     
     var walletAvatar: UIImage? {
@@ -29,11 +32,11 @@ extension Delegate {
     }
     
     var delegateValue: String {
-        return (delegate ?? "0").vonToLATString
+        return delegate?.vonToLATString ?? "0"
     }
     
     var redeemValue: String {
-        return (redeem ?? "0").vonToLATString
+        return redeem?.vonToLATString ?? "0"
     }
 }
 
@@ -53,22 +56,38 @@ extension DelegateDetail {
     }
     
     var lockedString: String {
+        if locked == "0" {
+            return "--"
+        }
         return locked?.vonToLATString ?? "--"
     }
     
     var unlockedString: String {
+        if unLocked == "0" {
+            return "--"
+        }
         return unLocked?.vonToLATString ?? "--"
     }
     
     var releasedString: String {
+        if released == "0" {
+            return "--"
+        }
         return released?.vonToLATString ?? "--"
     }
     
     var undelegateString: String {
+        if redeem == "0" {
+            return "--"
+        }
         return redeem?.vonToLATString ?? "--"
     }
     
-    func getLeftButtonIsEnable(address: String) -> Bool {
+    var delgateButtonIsSelected: Bool {
+        return (BigUInt(released ?? "0") ?? BigUInt.zero > BigUInt.zero) || nodeStatus == .Exiting || nodeStatus == .Exited
+    }
+    
+    func getDelegateButtonIsEnable(address: String) -> Bool {
         let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.key?.address.lowercased() == address.lowercased() }.first
         return localWallet != nil
     }

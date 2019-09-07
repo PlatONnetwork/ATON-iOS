@@ -59,7 +59,6 @@ class TransactionService : BaseService{
     
     @objc func OnPendingTxPolling(){
         self.EnergonTransferPooling()
-        self.ContractTransactionsPolling()
     }
     
     func getEthGasPrice(completion: PlatonCommonCompletion?){
@@ -79,48 +78,12 @@ class TransactionService : BaseService{
      
     func EnergonTransferPooling(){
         TransferPersistence.getUnConfirmedTransactions { (txs) in
-            for item in txs{
+            for item in txs {
                 guard (item.txhash != nil) else{
                     continue
-                }
-                guard TransanctionType(rawValue: item.transactionType) != .Vote else {
-                    continue
-                }
-                let byteCode = try! EthereumData(ethereumValue: item.txhash!)
-                let data = try! EthereumData(ethereumValue: byteCode)
-                let newItem = Transaction.init(value: item)
-                newItem.txhash = item.txhash
-                web3.platon.getTransactionReceipt(transactionHash: data) { (txResp) in
-                    switch txResp.status{
-                    case .success(_):
-                        let realm = RealmHelper.getNewRealm()
-                        try? realm.write {
-                            newItem.blockNumber = String(txResp.result??.blockNumber.quantity ?? BigUInt(0))
-                            newItem.confirmTimes = 0
-                            newItem.gasUsed = String(txResp.result??.gasUsed.quantity ?? BigUInt(0))
-                            realm.add(newItem, update: true)
-                            let hash = newItem.txhash
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-                                NotificationCenter.default.post(name: NSNotification.Name(DidUpdateTransactionByHashNotification), object: hash)
-                            })
-                        }
-
-                    case .failure(_):
-                        do{}
-                    }
                 }
                 
-            }
-        }
-    }
-     
-    func ContractTransactionsPolling(){
-        TransferPersistence.getUnConfirmedTransactions { (txs) in
-            for item in txs{
-                guard (item.txhash != nil) else{
-                    continue
-                }
-                guard item.txType! != .transfer else {
+                guard let txtype = item.txType else {
                     continue
                 }
                 
@@ -131,78 +94,47 @@ class TransactionService : BaseService{
                 
                 web3.platon.getTransactionReceipt(transactionHash: data) { (txResp) in
                     switch txResp.status{
-                    case .success(let resp): 
-                        guard let receipt = resp, receipt.logs.count > 0, receipt.logs[0].data.hex().count > 0 else{
-                            return
-                        }
-                        guard let rlpItem = try? RLPDecoder().decode(receipt.logs[0].data.bytes), let respBytes = rlpItem.array?[0].bytes else {
-                            return
-                        }
-                        guard let dic = try? JSONSerialization.jsonObject(with: Data(bytes: respBytes), options: .mutableContainers) as? [String:Any] else{
-                            return
-                        }
-                        guard let responseJson = String(bytes: respBytes, encoding: .utf8) else{
-                            return
-                        }  
-                        DispatchQueue.main.async {
-                            guard let status = dic?["Status"] as? Int else { return }
+                    case .success(let resp):
+                        if txtype == .transfer {
                             guard let txhash = newItem.txhash else { return }
-                            let blockNumber = String(receipt.blockNumber.quantity)
-                            let gasUsed = String(receipt.gasUsed.quantity)
-                            TransferPersistence.update(txhash: txhash, status: status, blockNumber: blockNumber, gasUsed: gasUsed, {
+                            let blockNumber = String(txResp.result??.blockNumber.quantity ?? BigUInt(0))
+                            let gasUsed = String(txResp.result??.gasUsed.quantity ?? BigUInt(0))
+                            TransferPersistence.update(txhash: txhash, status: 1, blockNumber: blockNumber, gasUsed: gasUsed, {
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-                                    NotificationCenter.default.post(name: NSNotification.Name(DidUpdateVoteTransactionByHashNotification), object: txhash)
                                     NotificationCenter.default.post(name: NSNotification.Name(DidUpdateTransactionByHashNotification), object: txhash)
                                     
                                 })
                             })
-                            
-//                            guard let dataString = dic?["Data"] as? String,
-//                                dataString.split(separator: ":").count == 2,
-//                                let validCountStr = String(dataString.split(separator: ":")[0]) as? String,
-//                                let priceStr = String(dataString.split(separator: ":")[1]) as? String else{
-//                                    return
-//                            }
-//
-//                            RealmWriteQueue.async {
-//                                autoreleasepool(invoking: {
-//                                    let realm = RealmHelper.getNewRealm()
-//                                    let hash = newItem.txhash
-//
-//                                    let singleVote = realm.object(ofType: SingleVote.self, forPrimaryKey: newItem.txhash)
-//
-//                                    try? realm.write {
-//                                        newItem.blockNumber = String(receipt.blockNumber.quantity)
-//                                        newItem.gasUsed = String(receipt.gasUsed.quantity)
-//                                        newItem.extra = responseJson
-//                                        realm.add(newItem, update: true)
-//                                        if singleVote != nil{
-//                                            singleVote?.deposit = priceStr
-//                                            singleVote?.validNum = validCountStr
-//                                            realm.add(singleVote!, update: true)
-//                                            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-//                                                NotificationCenter.default.post(name: NSNotification.Name(DidUpdateVoteTransactionByHashNotification), object: hash)
-//                                                NotificationCenter.default.post(name: NSNotification.Name(DidUpdateTransactionByHashNotification), object: hash)
-//
-//                                            })
-//                                        }
-//                                    }
-//
-//
-//                                })
-//                            }
-                            
-                            
+                        } else {
+                            guard let receipt = resp, receipt.logs.count > 0, receipt.logs[0].data.hex().count > 0 else{
+                                return
+                            }
+                            guard let rlpItem = try? RLPDecoder().decode(receipt.logs[0].data.bytes), let respBytes = rlpItem.array?[0].bytes else {
+                                return
+                            }
+                            guard let dic = try? JSONSerialization.jsonObject(with: Data(bytes: respBytes), options: .mutableContainers) as? [String:Any] else{
+                                return
+                            }
+                            DispatchQueue.main.async {
+                                guard let status = dic?["Status"] as? Int else { return }
+                                guard let txhash = newItem.txhash else { return }
+                                let blockNumber = String(receipt.blockNumber.quantity)
+                                let gasUsed = String(receipt.gasUsed.quantity)
+                                TransferPersistence.update(txhash: txhash, status: status, blockNumber: blockNumber, gasUsed: gasUsed, {
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+                                        NotificationCenter.default.post(name: NSNotification.Name(DidUpdateTransactionByHashNotification), object: txhash)
+                                        
+                                    })
+                                })
+                            }
                         }
                         
                     case .failure(_):
                         do{}
                     }
                 }
-                
             }
         }
-
     }
     
     func sendAPTTransfer(from : String,to : String, amount : String, InputGasPrice : BigUInt, estimatedGas : String, memo : String, pri : String,completion : PlatonCommonCompletion?) -> Transaction {

@@ -198,15 +198,22 @@ class Transaction : Object, Decodable {
 
     @objc dynamic var createTime = 0
     
-    @objc dynamic var transactionType = 0
+    @objc dynamic var transactionType = 0 //0.7版本之前的字段，延用。等txtype
     
     @objc dynamic var extra: String?
     
     @objc dynamic var nodeURLStr: String = ""
     
-    var sequence: String?
+    var sequence: Int64?
     
-    var txType: TxType? = .unknown
+    var txType: TxType? {
+        get {
+            return TxType(rawValue: String(transactionType))
+        }
+        set {
+            transactionType = Int(newValue?.rawValue ?? "0") ?? 0
+        }
+    }
     
     var actualTxCost: String? = ""
     
@@ -291,7 +298,7 @@ class Transaction : Object, Decodable {
         value = try? container.decode(String.self, forKey: .value)
         gasUsed = try? container.decode(String.self, forKey: .gasUsed)
         gasPrice = try? container.decode(String.self, forKey: .gasPrice)
-        sequence = try? container.decode(String.self, forKey: .sequence)
+        sequence = try? container.decode(Int64.self, forKey: .sequence)
         txType = (try? container.decode(TxType.self, forKey: .txType)) ?? .unknown
         let timeStampString = try? container.decode(String.self, forKey: .confirmTimes)
         if let ts = Int(timeStampString ?? "0") {
@@ -347,7 +354,7 @@ extension Transaction {
             guard value != nil else{
                 return "0.00"
             }
-            return BigUInt(value!)?.divide(by: ETHToWeiMultiplier, round: 8)
+            return BigUInt(value!)?.divide(by: ETHToWeiMultiplier, round: 8).displayForMicrometerLevel(maxRound: 8)
         }
     }
     

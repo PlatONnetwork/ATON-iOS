@@ -406,7 +406,7 @@ extension DelegateViewController {
                 }
                 
                 if let feeString = data?.description {
-                    cell.amountView.feeLabel.text = feeString.vonToLATString.displayFeeString
+                    cell.amountView.feeLabel.text = (feeString.vonToLATString ?? "0.00").displayFeeString
                 }
             case .fail(_, _):
                 break
@@ -415,10 +415,13 @@ extension DelegateViewController {
     }
     
     func doShowTransactionDetail(_ transaction: Transaction) {
-        let controller = TransactionDetailViewController()
-        controller.transaction = transaction
-        controller.backToViewController = navigationController?.viewController(self.indexOfViewControllers - 1)
-        navigationController?.pushViewController(controller, animated: true)
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            let controller = TransactionDetailViewController()
+            controller.transaction = transaction
+            controller.backToViewController = self.navigationController?.viewController(self.indexOfViewControllers - 1)
+            self.navigationController?.pushViewController(controller, animated: true)
+        }
     }
 }
 
