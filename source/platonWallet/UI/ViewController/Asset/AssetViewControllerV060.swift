@@ -186,7 +186,7 @@ class AssetViewControllerV060: BaseViewController ,PopupMenuTableDelegate{
         assetHeaderStyle = (false,false)
         
         NotificationCenter.default.addObserver(self, selector: #selector(OnBeginEditing(_:)), name: UITextField.textDidBeginEditingNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(updateWalletList), name: Notification.Name(updateWalletList_Notification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateWalletList), name: Notification.Name.ATON.updateWalletList, object: nil)
     }
     
     //MARK: - Constraint

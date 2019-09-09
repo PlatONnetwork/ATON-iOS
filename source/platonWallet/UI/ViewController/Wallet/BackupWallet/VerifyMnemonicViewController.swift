@@ -195,7 +195,7 @@ class VerifyMnemonicViewController: BaseViewController,MnemonicGridViewDelegate 
                 return
             } 
             WalletService.sharedInstance.afterBackupMnemonic(wallet: wallet)
-            NotificationCenter.default.post(name: NSNotification.Name(updateWalletList_Notification), object: nil)
+            NotificationCenter.default.post(name: Notification.Name.ATON.updateWalletList, object: nil)
         }else {
             showErrorAlert()
         }

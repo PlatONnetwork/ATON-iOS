@@ -151,7 +151,7 @@ struct CommonService {
         }
         
         if checkBalance{
-            let balance = AssetService.sharedInstace.assets[text]
+            let balance = AssetService.sharedInstace.balances.first(where:  { $0.addr.lowercased() == text.lowercased() })
             if balance == nil{
                 //balance not exist return true
                 return (true, "")

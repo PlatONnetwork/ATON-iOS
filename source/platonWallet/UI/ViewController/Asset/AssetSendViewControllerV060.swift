@@ -140,7 +140,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        NotificationCenter.default.addObserver(self, selector: #selector(DidUpdateAllAsset), name: NSNotification.Name(DidUpdateAllAssetNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(DidUpdateAllAsset), name: Notification.Name.ATON.DidUpdateAllAsset, object: nil)
         initSubViews()
         initdata()
     }
@@ -191,7 +191,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
     }
        
     func refreshData(){
-        NotificationCenter.default.addObserver(self, selector: #selector(DidNodeGasPriceUpdate), name: NSNotification.Name(DidNodeGasPriceUpdateNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(DidNodeGasPriceUpdate), name: Notification.Name.ATON.DidNodeGasPriceUpdate, object: nil)
         guard AssetVCSharedData.sharedData.selectedWallet != nil else {
             return
         }

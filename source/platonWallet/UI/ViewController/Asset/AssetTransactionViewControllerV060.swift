@@ -83,9 +83,9 @@ class AssetTransactionViewControllerV060: BaseViewController, EmptyDataSetDelega
         } else {
             automaticallyAdjustsScrollViewInsets = false
         }
-        NotificationCenter.default.addObserver(self, selector: #selector(willDeleteWallet(_:)), name: NSNotification.Name(WillDeleateWallet_Notification), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(updateWalletList), name: NSNotification.Name(updateWalletList_Notification), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(nodeDidSwitch), name: NSNotification.Name(NodeStoreService.didSwitchNodeNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(willDeleteWallet(_:)), name: Notification.Name.ATON.WillDeleateWallet, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateWalletList), name: Notification.Name.ATON.updateWalletList, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(nodeDidSwitch), name: Notification.Name(NodeStoreService.didSwitchNodeNotification), object: nil)
         
         refreshFooterView.loadMoreTapHandle = { [weak self] in
             self?.goTransactionList()
@@ -123,7 +123,7 @@ extension AssetTransactionViewControllerV060{
     
     func commonInit(){
         if transactionsTimer == nil {
-            transactionsTimer = Timer.scheduledTimer(timeInterval:TimeInterval(jointWalletUpdateTxListTimerInterval), target: self, selector: #selector(pollingWalletTransactions), userInfo: nil, repeats: true)
+            transactionsTimer = Timer.scheduledTimer(timeInterval:TimeInterval(AppConfig.TimerSetting.pendingTransactionPollingTimerInterval), target: self, selector: #selector(pollingWalletTransactions), userInfo: nil, repeats: true)
         }
     }
     

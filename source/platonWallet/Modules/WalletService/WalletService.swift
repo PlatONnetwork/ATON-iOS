@@ -362,7 +362,7 @@ public final class WalletService {
     
     public func deleteWallet(_ wallet:Wallet) {
         
-        NotificationCenter.default.post(name: NSNotification.Name(WillDeleateWallet_Notification), object: wallet)
+        NotificationCenter.default.post(name: Notification.Name.ATON.WillDeleateWallet, object: wallet)
         
         AssetService.sharedInstace.balances = AssetService.sharedInstace.balances.filter { $0.addr.lowercased() != wallet.key?.address }
 //        AssetService.sharedInstace.assets.removeValue(forKey: (wallet.key?.address)!)

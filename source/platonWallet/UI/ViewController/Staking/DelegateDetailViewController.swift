@@ -165,11 +165,11 @@ extension DelegateDetailViewController: UITableViewDelegate, UITableViewDataSour
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "NodeAboutDelegateTableViewCell") as! NodeAboutDelegateTableViewCell
-        let delegateDetail = self.listData[indexPath.row]
+        var delegateDetail = self.listData[indexPath.row]
         cell.delegateDetail = delegateDetail
         cell.delegateButton.isEnabled = delegateDetail.getDelegateButtonIsEnable(address: delegate!.walletAddress)
-        cell.delegateButton.isSelected = delegateDetail.delgateButtonIsSelected
-        cell.delegateButton.backgroundColor = delegateDetail.getDelegateButtonIsEnable(address: delegate!.walletAddress) && !delegateDetail.delgateButtonIsSelected ? UIColor.white : UIColor(rgb: 0xDCDFE8, alpha: 0.4)
+        cell.delegateButton.isSelected = delegateDetail.hasReleased || (delegateDetail.nodeStatus == .Exiting || delegateDetail.nodeStatus == .Exited)
+        cell.delegateButton.backgroundColor = delegateDetail.getDelegateButtonIsEnable(address: delegate!.walletAddress) && !delegateDetail.hasReleased && (delegateDetail.nodeStatus == .Active || delegateDetail.nodeStatus == .Candidate) ? UIColor.white : UIColor(rgb: 0xDCDFE8, alpha: 0.4)
         cell.withDrawButton.isHidden = !delegateDetail.rightButtonStatus.0
         cell.moveOutButton.isHidden = delegateDetail.rightButtonStatus.0
         cell.withDrawButton.isEnabled = delegateDetail.rightButtonStatus.1
@@ -182,7 +182,7 @@ extension DelegateDetailViewController: UITableViewDelegate, UITableViewDataSour
         }
         cell.didDelegateHandler = { [weak self] _ in
             if delegateDetail.nodeStatus == .Exited || delegateDetail.nodeStatus == .Exiting {
-                if cell.delegateButton.isSelected {
+                if delegateDetail.hasReleased {
                     self?.showMessage(text: Localized("delegate_detail_unable_alert"))
                     return
                 }

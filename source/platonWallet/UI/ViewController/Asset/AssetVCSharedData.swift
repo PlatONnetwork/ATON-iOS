@@ -112,7 +112,7 @@ class AssetVCSharedData{
     
     @objc func didSwithNode(){
         self.reloadWallets()
-        NotificationCenter.default.post(name: NSNotification.Name(updateWalletList_Notification), object: nil)
+        NotificationCenter.default.post(name: Notification.Name.ATON.updateWalletList, object: nil)
     }
     
     public func willDeleteWallet(object: AnyObject){
@@ -132,7 +132,7 @@ class AssetVCSharedData{
         }
         
         self.reloadWallets()
-        NotificationCenter.default.post(name: NSNotification.Name(updateWalletList_Notification), object: nil)
+        NotificationCenter.default.post(name: Notification.Name.ATON.updateWalletList, object: nil)
     }
     
     public func reloadWallets(){

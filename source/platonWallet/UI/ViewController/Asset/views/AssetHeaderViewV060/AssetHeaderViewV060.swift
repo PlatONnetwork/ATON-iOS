@@ -27,8 +27,8 @@ class AssetHeaderViewV060: UIView {
         super.awakeFromNib()
         initSubviews()
  
-        NotificationCenter.default.addObserver(self, selector: #selector(didUpdateAllAsset), name: Notification.Name(DidUpdateAllAssetNotification), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(shouldUpdateWalletList), name: Notification.Name(updateWalletList_Notification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didUpdateAllAsset), name: Notification.Name.ATON.DidUpdateAllAsset, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(shouldUpdateWalletList), name: Notification.Name.ATON.updateWalletList, object: nil)
     }
     
     

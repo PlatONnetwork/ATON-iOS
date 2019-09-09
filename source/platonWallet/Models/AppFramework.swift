@@ -34,11 +34,11 @@ class AppFramework {
     }
     
     func initBugly(){
-        Bugly.start(withAppId: BuglyAppleID)
+        Bugly.start(withAppId: AppConfig.Keys.BuglyAppleID)
     }
     
     func initUMeng() {
-        UMConfigure.initWithAppkey(Production_Umeng_key, channel: "App Store")
+        UMConfigure.initWithAppkey(AppConfig.Keys.Production_Umeng_key, channel: "App Store")
         MobClick.setAutoPageEnabled(true)
         UMConfigure.setLogEnabled(true)
     }

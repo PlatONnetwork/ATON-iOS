@@ -32,7 +32,7 @@ extension String {
     }
     
     var displayFeeString: String {
-        return Localized("transferVC_confirm_Fee") + self.ATPSuffix()
+        return Localized("VoteConfirm_fee_colon") + self.ATPSuffix()
     }
 }
 
@@ -333,16 +333,16 @@ extension String{
     
     func nodeIdForDisplayShort() -> String {
         if !self.hasPrefix("0x"){
-            return "0x" + self.substr(0, 2)! + "...." + self.substr(36, 4)!
+            return "0x" + self.substr(0, 2)! + "...." + self.substr(124, 4)!
         }
-        return self.substr(0, 4)! + "...." + self.substr(38, 4)!
+        return self.substr(0, 4)! + "...." + self.substr(126, 4)!
     }
     
     func nodeIdForDisplay() -> String {
         if !self.hasPrefix("0x"){
-            return "0x" + self.substr(0, 8)! + "......" + self.substr(54, 10)!
+            return "0x" + self.substr(0, 8)! + "......" + self.substr(118, 10)!
         }
-        return self.substr(0, 10)! + "......" + self.substr(56, 10)!
+        return self.substr(0, 10)! + "......" + self.substr(120, 10)!
     }
     
     func addressForDisplayShort() -> String {

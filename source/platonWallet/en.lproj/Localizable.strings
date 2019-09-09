@@ -59,7 +59,6 @@
 "transferVC_Wallet_name_des" = "Wallet name";
 "transferVC_switch_des" = "Change";
 "transferVC_switch_memo_placeholder" = "Memo(Non-compulsory)";
-"transferVC_selectFee_des" = "Select Fee";
 "transferVC_cheaper_des" = "Cheaper";
 "transferVC_faster_des" = "Faster";
 "transferVC_estima_des" = "Estimated transaction confirmation time:\nprobably within";

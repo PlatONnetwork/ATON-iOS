@@ -27,9 +27,9 @@ class JointWalletCollectionViewCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        NotificationCenter.default.addObserver(self, selector: #selector(didUpdatejointWalletProgress), name: NSNotification.Name(DidJointWalletUpdateProgress_Notification), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(updateUnreadDot), name: Notification.Name(WillUpdateUnreadDot_Notification), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(willDeleteWallet(_:)), name: Notification.Name(WillDeleateWallet_Notification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didUpdatejointWalletProgress), name: Notification.Name.ATON.DidJointWalletUpdateProgress, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateUnreadDot), name: Notification.Name.ATON.WillUpdateUnreadDot, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(willDeleteWallet(_:)), name: Notification.Name.ATON.WillDeleateWallet, object: nil)
         
     } 
     

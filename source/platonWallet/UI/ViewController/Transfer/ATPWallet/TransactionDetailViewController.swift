@@ -37,12 +37,10 @@ class TransactionDetailViewController: BaseViewController {
         initSubViews()
         super.leftNavigationTitle = "TransactionDetailVC_nav_title"
        
-        NotificationCenter.default.addObserver(self, selector: #selector(didReceiveTransactionUpdate(_:)), name:NSNotification.Name(DidUpdateTransactionByHashNotification) , object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didReceiveTransactionUpdate(_:)), name:Notification.Name.ATON.DidUpdateTransactionByHash, object: nil)
     }
     
     @objc func didReceiveTransactionUpdate(_ notification: Notification){
-        print("============didReceiveTransactionUpdate============")
-        print(notification.object)
         guard let hash = notification.object as? String  else {
             return
         }

@@ -28,14 +28,13 @@ extension TransactionService {
         parameters["listSize"] = listSize
         parameters["direction"] = direction
         
-        let url = SettingService.getCentralizationURL() + "transaction/list"
+        let url = SettingService.getCentralizationURL() + "/transaction/list"
         
         var request = URLRequest(url: try! url.asURL())
         request.httpBody = try! JSONSerialization.data(withJSONObject: parameters)
         request.httpMethod = "POST"
         request.timeoutInterval = requestTimeout
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue(SettingService.getChainID(), forHTTPHeaderField: "x-aton-cid")
         
         Alamofire.request(request).responseData { response in
             switch response.result {
@@ -71,14 +70,13 @@ extension TransactionService {
         parameters["direction"] = direction
         parameters["type"] = type
         
-        let url = SettingService.getCentralizationURL() + "transaction/delegateRecord"
+        let url = SettingService.getCentralizationURL() + "/transaction/delegateRecord"
         
         var request = URLRequest(url: try! url.asURL())
         request.httpBody = try! JSONSerialization.data(withJSONObject: parameters)
         request.httpMethod = "POST"
         request.timeoutInterval = requestTimeout
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue(SettingService.getChainID(), forHTTPHeaderField: "x-aton-cid")
         
         Alamofire.request(request).responseData { response in
             switch response.result {

@@ -24,8 +24,8 @@ extension RealmHelper{
         
         migration.enumerateObjects(ofType: Transaction.className()) { (old, new) in
             if old != nil && new != nil{
-                if let nodeURL = old!["nodeURLStr"] as? String, nodeURL == DefaultNodeURL_Alpha {
-                    new!["nodeURLStr"] = DefaultNodeURL_Alpha_V071
+                if let nodeURL = old!["nodeURLStr"] as? String, nodeURL == AppConfig.NodeURL.DefaultNodeURL_Alpha {
+                    new!["nodeURLStr"] = AppConfig.NodeURL.DefaultNodeURL_Alpha_V071
                 }
             }
         }
@@ -65,8 +65,8 @@ extension RealmHelper{
         
         migration.enumerateObjects(ofType: NodeInfo.className()) { (old, new) in
             if old != nil && new != nil{
-                if let nodeURL = old!["nodeURLStr"] as? String, nodeURL == DefaultNodeURL_Alpha_deprecated{
-                    new!["nodeURLStr"] = DefaultNodeURL_Alpha
+                if let nodeURL = old!["nodeURLStr"] as? String, nodeURL == AppConfig.NodeURL.DefaultNodeURL_Alpha_deprecated{
+                    new!["nodeURLStr"] = AppConfig.NodeURL.DefaultNodeURL_Alpha
                     new!["desc"] = "SettingsVC_nodeSet_defaultTestNetwork_Amigo_des"
                 }
             }
@@ -76,7 +76,7 @@ extension RealmHelper{
     
     public static func doNodeULRStringMigration_below_7(_ old: MigrationObject?, _ new: MigrationObject?){
         if old != nil && new != nil{
-            new!["nodeURLStr"] = DefaultNodeURL_Alpha_V071
+            new!["nodeURLStr"] = AppConfig.NodeURL.DefaultNodeURL_Alpha_V071
         }
     }
     
@@ -85,7 +85,7 @@ extension RealmHelper{
             let path = old!["keystorePath"] as? String
             let keystore = try? Keystore(contentsOf: URL(fileURLWithPath: keystoreFolderPath + "/" + path!))
             if (path != nil && keystore != nil){
-                new!["primaryKeyIdentifier"] = keystore!.address + DefaultNodeURL_Alpha_V071
+                new!["primaryKeyIdentifier"] = keystore!.address + AppConfig.NodeURL.DefaultNodeURL_Alpha_V071
             }
         }
     }
@@ -93,7 +93,7 @@ extension RealmHelper{
     
     public static func doNodeULRStringMigration_below_6(_ old: MigrationObject?, _ new: MigrationObject?){
         if old != nil && new != nil{
-            new!["nodeURLStr"] = DefaultNodeURL_Alpha
+            new!["nodeURLStr"] = AppConfig.NodeURL.DefaultNodeURL_Alpha
         }
     }
     
@@ -102,7 +102,7 @@ extension RealmHelper{
             let path = old!["keystorePath"] as? String
             let keystore = try? Keystore(contentsOf: URL(fileURLWithPath: keystoreFolderPath + "/" + path!))
             if (path != nil && keystore != nil){
-                new!["primaryKeyIdentifier"] = keystore!.address + DefaultNodeURL_Alpha
+                new!["primaryKeyIdentifier"] = keystore!.address + AppConfig.NodeURL.DefaultNodeURL_Alpha
             }
         }
     }

@@ -49,6 +49,7 @@ class ValidatorNodeListViewController: BaseViewController, IndicatorInfoProvider
     
     lazy var refreshFooter: MJRefreshFooter = {
         let footer = MJRefreshAutoNormalFooter(refreshingTarget: self, refreshingAction: #selector(fetchDataMore))!
+        footer.stateLabel.isHidden = true
         return footer
     }()
     

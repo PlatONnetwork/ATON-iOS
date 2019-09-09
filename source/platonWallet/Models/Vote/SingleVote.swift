@@ -10,46 +10,6 @@ import Foundation
 import RealmSwift
 import platonWeb3
 
-class VoteTransaction: Decodable {
-    var nodeId: String?
-    var name: String?
-    var validNum: String?
-    var deadLine: String?
-    var totalTicketNum: String?
-    var locked: String?
-    var earnings: String?
-    var transactionTime: String?
-    var countryCode: String?
-    var sequence: String?
-    var price: String?
-    var walletAddress: String?
-    
-    var invalidNumber: Int{
-        get{
-            if let total = Int(totalTicketNum ?? "0"), let valid = Int(validNum ?? "0"){
-                return total - valid
-            }
-            return 0
-        }
-    }
-    
-    var walletName : String{
-        guard let walletAddr = walletAddress else { return "" }
-        if (walletAddr.length) > 0{
-            if let wallet = WalletService.sharedInstance.getWalletByAddress(address: walletAddr){
-                return wallet.name
-            }
-        }
-        return ""
-    }
-}
-
-class VoteTransactionResponse: Decodable {
-    var errMsg: String = ""
-    var code: Int = 0
-    var data: [VoteTransaction]
-}
-
 class SingleVote: Object {
     
     @objc dynamic var txHash: String = ""

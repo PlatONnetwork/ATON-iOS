@@ -60,13 +60,9 @@ extension Wallet{
     }
     
     func WalletBalanceStatus() -> BalanceStatus{
-        let balance = AssetService.sharedInstace.assets[(self.key?.address)!]
-        if let b = balance{
-            if String((b!.balance)!) == "0"{
-                return .NotSufficient
-            }
-            return .Sufficient
-        }
-        return BalanceStatus.unknowStatus
+        let balance = AssetService.sharedInstace.balances.first(where: { $0.addr.lowercased() == key?.address.lowercased() })
+        guard let b = balance else { return .unknowStatus }
+        guard let free = b.free, free != "0" else { return .NotSufficient }
+        return .Sufficient
     }
 }

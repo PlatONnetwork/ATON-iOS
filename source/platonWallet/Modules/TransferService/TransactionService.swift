@@ -11,6 +11,7 @@ import BigInt
 import platonWeb3
 
 
+public let DefaultRPCTimeOut = 30.0
 public let DefaultAddress = "0x0000000000000000000000000000000000000000"
 
 class TransactionService : BaseService{
@@ -28,13 +29,13 @@ class TransactionService : BaseService{
     public override init() {
         super.init()
         
-        if blockNumberQueryTimerEnable {
-            timer = Timer.scheduledTimer(timeInterval: TimeInterval(blockNumberQueryTimerInterval), target: self, selector: #selector(OnTimerFirer), userInfo: nil, repeats: true)
+        if AppConfig.TimerSetting.blockNumberQueryTimerEnable {
+            timer = Timer.scheduledTimer(timeInterval: TimeInterval(AppConfig.TimerSetting.blockNumberQueryTimerInterval), target: self, selector: #selector(OnTimerFirer), userInfo: nil, repeats: true)
             timer?.fire()
         }
         
-        if pendingTransactionPollingTimerEnable{
-            pendingTransactionPollingTimer = Timer.scheduledTimer(timeInterval: TimeInterval(pendingTransactionPollingTimerInterval), target: self, selector: #selector( OnPendingTxPolling), userInfo: nil, repeats: true)
+        if AppConfig.TimerSetting.pendingTransactionPollingTimerEnable{
+            pendingTransactionPollingTimer = Timer.scheduledTimer(timeInterval: TimeInterval(AppConfig.TimerSetting.pendingTransactionPollingTimerInterval), target: self, selector: #selector( OnPendingTxPolling), userInfo: nil, repeats: true)
             pendingTransactionPollingTimer?.fire() 
         }
         
@@ -67,7 +68,7 @@ class TransactionService : BaseService{
             case .success(_):
                 DispatchQueue.main.async {
                     self.ethGasPrice = res.result?.quantity
-                    NotificationCenter.default.post(name: NSNotification.Name(DidNodeGasPriceUpdateNotification), object: nil)
+                    NotificationCenter.default.post(name: Notification.Name.ATON.DidNodeGasPriceUpdate, object: nil)
 
                 }
             case .failure(_):
@@ -101,8 +102,7 @@ class TransactionService : BaseService{
                             let gasUsed = String(txResp.result??.gasUsed.quantity ?? BigUInt(0))
                             TransferPersistence.update(txhash: txhash, status: 1, blockNumber: blockNumber, gasUsed: gasUsed, {
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-                                    NotificationCenter.default.post(name: NSNotification.Name(DidUpdateTransactionByHashNotification), object: txhash)
-                                    
+                                    NotificationCenter.default.post(name: Notification.Name.ATON.DidUpdateTransactionByHash, object: txhash)
                                 })
                             })
                         } else {
@@ -122,7 +122,7 @@ class TransactionService : BaseService{
                                 let gasUsed = String(receipt.gasUsed.quantity)
                                 TransferPersistence.update(txhash: txhash, status: status, blockNumber: blockNumber, gasUsed: gasUsed, {
                                     DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-                                        NotificationCenter.default.post(name: NSNotification.Name(DidUpdateTransactionByHashNotification), object: txhash)
+                                        NotificationCenter.default.post(name: Notification.Name.ATON.DidUpdateTransactionByHash, object: txhash)
                                         
                                     })
                                 })
@@ -239,7 +239,7 @@ class TransactionService : BaseService{
         web3.platon.getTransactionReceipt(transactionHash: hash!) { (receptionResp) in
             DispatchQueue.main.async {
                 wallet?.deployReceptionLooptime = (wallet?.deployReceptionLooptime)! + 1
-                NotificationCenter.default.post(name: NSNotification.Name(DidJointWalletUpdateProgress_Notification), object: wallet?.deployHash)
+                NotificationCenter.default.post(name: Notification.Name.ATON.DidJointWalletUpdateProgress, object: wallet?.deployHash)
                 switch receptionResp.status{
                 case .success(_):
                     if receptionResp.result != nil && receptionResp.result??.contractAddress != nil{
@@ -248,7 +248,7 @@ class TransactionService : BaseService{
                         
                         STransferPersistence.updateJointWalletCreation(contractAddress: (receptionResp.result??.contractAddress?.hex())!, hash: (receptionResp.result??.transactionHash.hex())!)
                         
-                        NotificationCenter.default.post(name: NSNotification.Name(DidJointWalletUpdateProgress_Notification), object: wallet?.deployHash)
+                        NotificationCenter.default.post(name: Notification.Name.ATON.DidJointWalletUpdateProgress, object: wallet?.deployHash)
                     }
                     
                 case .failure(_):
