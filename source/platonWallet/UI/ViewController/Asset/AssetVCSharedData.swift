@@ -33,8 +33,6 @@ class AssetVCSharedData{
             var rangeWallets = tmp.filter { obj -> Bool in
                 if let cwallet = obj as? Wallet{
                     return cwallet.userArrangementIndex != -1 
-                }else if let jwallet = obj as? SWallet{
-                    return jwallet.userArrangementIndex != -1
                 }
                 return false
             }
@@ -43,8 +41,6 @@ class AssetVCSharedData{
             var unrangeWallets = tmp.filter { obj -> Bool in
                 if let cwallet = obj as? Wallet{
                     return cwallet.userArrangementIndex == -1 
-                }else if let jwallet = obj as? SWallet{
-                    return jwallet.userArrangementIndex == -1
                 }
                 return false
             }
@@ -82,28 +78,16 @@ class AssetVCSharedData{
         }
         return wallet
     }
-    var jWallet: SWallet?{
-        guard let wallet = selectedWallet as? SWallet  else {
-            return nil
-        }
-        return wallet
-    }
     
     var selectedWalletName: String?{
         if cWallet != nil{
             return cWallet?.name
-        }
-        if jWallet != nil{
-            return jWallet?.name
         }
         return ""
     }
     var selectedWalletAddress: String?{
         if cWallet != nil{
             return cWallet?.key?.address
-        }
-        if jWallet != nil{
-            return jWallet?.contractAddress
         }
         return ""
     }
@@ -123,12 +107,6 @@ class AssetVCSharedData{
                     AssetVCSharedData.sharedData.selectedWallet = nil
                 }
             }
-        }else if let swallet = object as? SWallet{
-            if let selectedWallet = AssetVCSharedData.sharedData.selectedWallet as? SWallet{
-                if selectedWallet.contractAddress.ishexStringEqual(other: swallet.contractAddress){
-                    AssetVCSharedData.sharedData.selectedWallet = nil
-                }
-            } 
         }
         
         self.reloadWallets()

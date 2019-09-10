@@ -45,12 +45,6 @@ class WalletManagerTableViewCell: UITableViewCell {
                 self.backupButton.isEnabled = true
             }
             jointIcon.isHidden = true
-        }else if let swallet = wallet as? SWallet{
-            walletName.text = swallet.name
-            address.text = swallet.contractAddress
-            let av = swallet.contractAddress.walletAddressLastCharacterAvatar()
-            walletIcon.image = UIImage(named: av)?.circleImage()
-            jointIcon.isHidden = false
         }
     }
 

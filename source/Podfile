@@ -27,7 +27,8 @@ target 'platonWallet' do
   #pod 'BigInt', '~> 3.1'
   #pod 'CryptoSwift', '~> 0.8'
   pod 'secp256k1.swift', '~> 0.1'
-  pod 'Bugly', '2.5.0'
+#  pod 'Bugly', '2.5.0'
+  pod 'BuglyHotfix'
   
   pod 'Alamofire', '4.8.1'
   pod 'Aspects', '1.4.1'

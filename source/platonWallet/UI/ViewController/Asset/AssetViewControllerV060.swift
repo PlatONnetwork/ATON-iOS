@@ -511,7 +511,6 @@ extension AssetViewControllerV060{
         }
         viewController.hidesBottomBarWhenPushed = true
         nav.pushViewController(viewController, animated: true)
-        //MainTabBarViewController.setTabbarHide(hide: true)
     }
     
     static func popViewController(){
@@ -520,7 +519,6 @@ extension AssetViewControllerV060{
                 return
         }
         nav.popViewController(animated: true)
-        //MainTabBarViewController.setTabbarHide(hide: false)
     }
     
     static func setScrollViewScrollEnable(enable: Bool){
@@ -590,7 +588,6 @@ extension AssetViewControllerV060{
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        //MainTabBarViewController.setTabbarHide(hide: false)
     }
 }
 

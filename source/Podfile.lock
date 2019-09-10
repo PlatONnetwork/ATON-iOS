@@ -2,7 +2,9 @@ PODS:
   - Alamofire (4.8.1)
   - Aspects (1.4.1)
   - BigInt (4.0.0)
-  - Bugly (2.5.0)
+  - BuglyHotfix (2.1.0):
+    - BuglyHotfix/Core (= 2.1.0)
+  - BuglyHotfix/Core (2.1.0)
   - CryptoSwift (0.10.0)
   - EmptyDataSet-Swift (4.2.0)
   - Kingfisher (4.10.1)
@@ -41,7 +43,7 @@ DEPENDENCIES:
   - Alamofire (= 4.8.1)
   - Aspects (= 1.4.1)
   - BigInt (= 4.0)
-  - Bugly (= 2.5.0)
+  - BuglyHotfix
   - CryptoSwift (~> 0.10.0)
   - EmptyDataSet-Swift (~> 4.2.0)
   - Kingfisher
@@ -69,7 +71,7 @@ SPEC REPOS:
     - Alamofire
     - Aspects
     - BigInt
-    - Bugly
+    - BuglyHotfix
     - CryptoSwift
     - EmptyDataSet-Swift
     - Kingfisher
@@ -106,7 +108,7 @@ SPEC CHECKSUMS:
   Alamofire: 16ce2c353fb72865124ddae8a57c5942388f4f11
   Aspects: 7595ba96a6727a58ebcbfc954497fc5d2fdde546
   BigInt: 2aad1a9942dc932ec8b84290d2c564a3d76f97ab
-  Bugly: 3ca9f255c01025582df26f9222893b383c7e4b4e
+  BuglyHotfix: 99a969c77da1baae823a7537acb16e4f1985a5f5
   CryptoSwift: 6c778d69282bed3b4e975ff97a79d074f20bb011
   EmptyDataSet-Swift: 1fa0b35f530a35f852ecb2b53564728b0c300aaf
   Kingfisher: c148cd7b47ebde9989f6bc7c27dcaa79d81279a0
@@ -130,6 +132,6 @@ SPEC CHECKSUMS:
   UMCCommon: 0263a057a2e1ae1da4c8308541e56904a493ce13
   UMCCommonLog: 05a2d5de21858e3d870551562cff405c1366d244
 
-PODFILE CHECKSUM: f004158cad881a8de11224988e8f6111c74adf70
+PODFILE CHECKSUM: c1b6ec54534dad5849264c8155d027060e903502
 
 COCOAPODS: 1.5.3

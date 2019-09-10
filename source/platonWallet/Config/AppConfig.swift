@@ -10,15 +10,13 @@ import Foundation
 
 struct AppConfig {
     struct Keys {
-        static let BuglyAppleID = "e8f57be7d2"
+//        static let BuglyAppleID = "e8f57be7d2"
+        static let BuglyAppleID = "beeb997bda"
         static let Production_Umeng_key = "5d551ffd3fc1959f6b000113"
         static let Test_Umeng_key = "5d57a9ba570df380e2000b23"
     }
     
     struct NodeURL {
-        static let DefaultNodeURL_Alpha_deprecated = "https://syde.platon.network/test"
-        static let DefaultNodeURL_Alpha = "https://test-amigo.platon.network/test"
-        static let DefaultNodeURL_Beta = "https://test-beta.platon.network/test"
         static let DefaultNodeURL_Alpha_V071 = "http://192.168.9.190:1000/rpc"
     }
     
@@ -26,7 +24,8 @@ struct AppConfig {
         static let blockNumberQueryTimerEnable = true
         static let blockNumberQueryTimerInterval = 8
         static let pendingTransactionPollingTimerEnable = true
-        static let pendingTransactionPollingTimerInterval = 8
+        static let pendingTransactionPollingTimerInterval = 3
+        static let notPendingTransactionPollingTimerInterval = 10
     }
     
     struct H5URL {

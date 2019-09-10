@@ -32,11 +32,6 @@ class QRDisplayViewController: BaseViewController {
             qrCodeView.addressLabel.text = wallet.key?.address
 //            qrCodeView.publicKeyLabel.text = wallet.key?.publicKey
 //            qrCodeView.walletNameLabel.text = wallet.name
-        }else if let swallet = walletInstance as? SWallet{
-            let qrImage = setupQRCodeImage(swallet.contractAddress, image: nil)
-            qrCodeView.qrCodeImageView.image = qrImage
-            qrCodeView.addressLabel.text = swallet.contractAddress
-//            qrCodeView.walletNameLabel.text = swallet.name
         }
         
         qrCodeView.saveImgAndShreadBtn.addTarget(self, action: #selector(onSaveImgAndShared), for: .touchUpInside)
@@ -132,8 +127,6 @@ class QRDisplayViewController: BaseViewController {
         var string : String?
         if let wallet = self.walletInstance as? Wallet{
             string = wallet.key?.address
-        }else if let swallet = self.walletInstance as? SWallet{
-            string = swallet.contractAddress
         }
         
         UIApplication.rootViewController().showLoadingHUD(text: Localized("SharedQRViewSaving"), animated: true)
@@ -147,11 +140,6 @@ class QRDisplayViewController: BaseViewController {
                     //self.sharedQRView.walletName.text = wallet.name
                     self.sharedQRView.logoImage.image = UIImage(named: (wallet.key?.address.walletAddressLastCharacterAvatar())!)
                     
-                }else if let swallet = self.walletInstance as? SWallet{
-                    self.sharedQRView.qrImageView.image = image
-                    self.sharedQRView.walletAddress.text = swallet.contractAddress
-                    //self.sharedQRView.walletName.text = swallet.name
-                    self.sharedQRView.logoImage.image = UIImage(named: (swallet.contractAddress.walletAddressLastCharacterAvatar()))
                 }
                 
                 let vc = SharedPresentedVC()

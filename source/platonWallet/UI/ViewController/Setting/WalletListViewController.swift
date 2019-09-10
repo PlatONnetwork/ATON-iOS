@@ -180,8 +180,6 @@ extension WalletListViewController: UITableViewDelegate, UITableViewDataSource {
         for (i,element) in array.enumerated(){
             if let classicWallet = element as? Wallet{
                 classicWallet.userArrangementIndex = i
-            }else if let jointWallet = element as? SWallet{
-                jointWallet.userArrangementIndex = i
             }
         }
         try? RealmInstance?.commitWrite()

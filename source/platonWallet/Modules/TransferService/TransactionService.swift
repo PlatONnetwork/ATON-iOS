@@ -35,7 +35,7 @@ class TransactionService : BaseService{
         }
         
         if AppConfig.TimerSetting.pendingTransactionPollingTimerEnable{
-            pendingTransactionPollingTimer = Timer.scheduledTimer(timeInterval: TimeInterval(AppConfig.TimerSetting.pendingTransactionPollingTimerInterval), target: self, selector: #selector( OnPendingTxPolling), userInfo: nil, repeats: true)
+            pendingTransactionPollingTimer = Timer.scheduledTimer(timeInterval: TimeInterval(AppConfig.TimerSetting.pendingTransactionPollingTimerInterval), target: self, selector: #selector(OnPendingTxPolling), userInfo: nil, repeats: true)
             pendingTransactionPollingTimer?.fire() 
         }
         
@@ -59,7 +59,7 @@ class TransactionService : BaseService{
     }
     
     @objc func OnPendingTxPolling(){
-        self.EnergonTransferPooling()
+        EnergonTransferPooling()
     }
     
     func getEthGasPrice(completion: PlatonCommonCompletion?){
@@ -231,34 +231,6 @@ class TransactionService : BaseService{
         }
         
         return ptx;
-    }
-    
-    func DeployJointWalletReceiptPolling(wallet: SWallet?){
-    
-        let hash = try? EthereumData(bytes: EthereumData(bytes: Data(hex: (wallet?.deployHash)!).bytes))
-        web3.platon.getTransactionReceipt(transactionHash: hash!) { (receptionResp) in
-            DispatchQueue.main.async {
-                wallet?.deployReceptionLooptime = (wallet?.deployReceptionLooptime)! + 1
-                NotificationCenter.default.post(name: Notification.Name.ATON.DidJointWalletUpdateProgress, object: wallet?.deployHash)
-                switch receptionResp.status{
-                case .success(_):
-                    if receptionResp.result != nil && receptionResp.result??.contractAddress != nil{
-                        wallet?.contractAddress = (receptionResp.result?!.contractAddress?.hex())!
-                        wallet?.creationStatus = ECreationStatus.deploy_ReceiptGenerated.rawValue
-                        
-                        STransferPersistence.updateJointWalletCreation(contractAddress: (receptionResp.result??.contractAddress?.hex())!, hash: (receptionResp.result??.transactionHash.hex())!)
-                        
-                        NotificationCenter.default.post(name: Notification.Name.ATON.DidJointWalletUpdateProgress, object: wallet?.deployHash)
-                    }
-                    
-                case .failure(_):
-                    do{}
-                }
-                
-            }
-        }
-        
-
     }
 }
 

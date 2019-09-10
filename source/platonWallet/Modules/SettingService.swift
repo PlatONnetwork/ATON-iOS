@@ -44,7 +44,7 @@ class SettingService {
         }
         
         let semaphore = DispatchSemaphore(value: 0)
-        var URLString : String = AppConfig.NodeURL.DefaultNodeURL_Alpha
+        var URLString : String = AppConfig.NodeURL.DefaultNodeURL_Alpha_V071
         DispatchQueue.main.async {
             URLString = self.getCurrentNodeURLString()
             semaphore.signal()

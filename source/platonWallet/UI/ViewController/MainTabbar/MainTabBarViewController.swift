@@ -114,11 +114,10 @@ class MainTabBarViewController: UITabBarController {
         let tabBarViewController = MainTabBarViewController()
         
         let assetVC = AssetViewControllerV060()
-        let assetNav =  BaseNavigationController(rootViewController: assetVC)
+        let assetNav = BaseNavigationController(rootViewController: assetVC)
 
         let stakingVC = StakingMainViewController()
-//        let candidateVC = CandidatesListViewController()
-        let candidateListNav =  BaseNavigationController(rootViewController: stakingVC)
+        let candidateListNav = BaseNavigationController(rootViewController: stakingVC)
         
         let personalVC = PersonalViewController()
         let personalNav = BaseNavigationController(rootViewController: personalVC)
@@ -182,14 +181,6 @@ class MainTabBarViewController: UITabBarController {
         delegate = self
         self.tabBar.isTranslucent = false
         self.navigationController?.setNavigationBarHidden(true, animated: false)
-    }
-    
-
-    static func setTabbarHide(hide: Bool){
-        return
-        if let tabbarViewController = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarViewController{
-            tabbarViewController.setTabBarVisible(visible: !hide, animated: true)
-        }
     }
     
     /*

@@ -14,12 +14,6 @@ extension Array{
         self.sort(by: { (obj1, obj2) -> Bool in
             if let obj1 = obj1 as? Transaction, let obj2 = obj2 as? Transaction{
                 return obj1.createTime > obj2.createTime
-            }else if let obj1 = obj1 as? STransaction , let obj2 = obj2 as? Transaction{
-                return Int(obj1.createTime) > obj2.createTime
-            }else if let obj1 = obj1 as? Transaction , let obj2 = obj2 as? STransaction{
-                return obj1.createTime > Int(obj2.createTime)
-            }else if let obj1 = obj1 as? STransaction , let obj2 = obj2 as? STransaction{
-                return obj1.createTime > obj2.createTime
             }
             return false
         })
@@ -29,12 +23,6 @@ extension Array{
         self.sort(by: { (obj1, obj2) -> Bool in
             if let obj1 = obj1 as? Wallet, let obj2 = obj2 as? Wallet{
                 return obj1.createTime < obj2.createTime
-            }else if let obj1 = obj1 as? Wallet , let obj2 = obj2 as? SWallet{
-                return Int(obj1.createTime) < obj2.createTime
-            }else if let obj1 = obj1 as? SWallet , let obj2 = obj2 as? Wallet{
-                return obj1.createTime < Int(obj2.createTime)
-            }else if let obj1 = obj1 as? SWallet , let obj2 = obj2 as? SWallet{
-                return obj1.createTime < obj2.createTime
             }
             return false
         })
@@ -43,12 +31,6 @@ extension Array{
     mutating func userArrangementSort(){
         self.sort(by: { (obj1, obj2) -> Bool in
             if let obj1 = obj1 as? Wallet, let obj2 = obj2 as? Wallet{
-                return obj1.userArrangementIndex < obj2.userArrangementIndex
-            }else if let obj1 = obj1 as? SWallet , let obj2 = obj2 as? SWallet{
-                return Int(obj1.userArrangementIndex) < obj2.userArrangementIndex
-            }else if let obj1 = obj1 as? Wallet , let obj2 = obj2 as? SWallet{
-                return obj1.userArrangementIndex < Int(obj2.userArrangementIndex)
-            }else if let obj1 = obj1 as? SWallet , let obj2 = obj2 as? Wallet{
                 return obj1.userArrangementIndex < obj2.userArrangementIndex
             }
             return false
@@ -69,64 +51,6 @@ extension Array where Element == Any {
             }) as! [Wallet]
         }
     }
-    
-    var filterSharedWallet : [SWallet]{
-        get{
-            return filter({ (element) -> Bool in
-                if let _ = element as? SWallet{
-                    return true
-                }
-                return false
-            }) as! [SWallet]
-        }
-    }
-}
-
-
-extension Array where Element == Ticket {
-    
-    var validTicketCount : Int{
-        get{
-            return reduce(0) { (acc, ticket) -> Int in
-                ticket.ticketStatus == .normal ? acc + 1 : acc
-            }
-        }
-    }
-    
-    var invalidTicketCount: Int{
-        get{
-            return reduce(0) { (acc, ticket) -> Int in
-                ticket.ticketStatus != .normal ? acc + 1 : acc
-            }
-        }
-    }
-
-    var lockedAssetSum: BigUInt{
-        get{
-            return reduce(BigUInt(0)) { (acc, ticket) -> BigUInt in
-                
-                ticket.ticketStatus == .normal ? acc + (BigUInt(ticket.deposit ?? "") ?? BigUInt.zero) : acc
-                
-            }
-        }
-    }
-
-    var releasedAssetSum: BigUInt{
-        get{
-            return reduce(BigUInt(0)) { (acc, ticket) -> BigUInt in
-                
-                ticket.ticketStatus != .normal ? acc + (BigUInt(ticket.deposit ?? "") ?? BigUInt.zero) : acc
-                
-            }
-        }
-    }
-
-    var tickets_voteEarnings: String?{
-        get{
-            return "-"
-        }
-    }
-    
 }
 
 extension Array {
@@ -149,13 +73,8 @@ extension Array {
             if let castItem = item as? Wallet {
                 return castItem.nodeURLStr == SettingService.getCurrentNodeURLString()
             }
-            if let castItem = item as? SWallet {
-                return castItem.nodeURLStr == SettingService.getCurrentNodeURLString()
-            }
+            
             if let castItem = item as? Transaction{
-                return castItem.nodeURLStr == SettingService.getCurrentNodeURLString()
-            }
-            if let castItem = item as? STransaction{
                 return castItem.nodeURLStr == SettingService.getCurrentNodeURLString()
             }
 

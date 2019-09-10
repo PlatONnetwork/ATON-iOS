@@ -205,11 +205,7 @@ class BaseViewController: UIViewController {
         }
     }
     
-    func setLeftBarButtonItemWithTitle(backTitle: String?) {
-    }
-    
     func getBasicLeftBarButtonItemWithBasicStyle(localizedText: String?) -> UIBarButtonItem{
-        
         let label = UILabel(frame: CGRect(x: 25, y: 0, width: 200, height: 44))
         label.textColor = UIColor.black
         label.font = UIFont.systemFont(ofSize: 16) 
@@ -245,8 +241,6 @@ class BaseViewController: UIViewController {
         self.innerLeftBarButtonItem = leftBarButtonItem
         return leftBarButtonItem
     }
-        
-    
     
     @objc func onCustomBack() {
         guard let controller = backToViewController else {
@@ -266,7 +260,6 @@ class BaseViewController: UIViewController {
         }
         return UIBarButtonItem(image: UIImage(named: "nav_back"), style: .plain, target: self, action: #selector(back))
     }
-    
     
     
     @objc func back() {
