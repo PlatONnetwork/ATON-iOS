@@ -205,7 +205,7 @@ class TransactionService : BaseService{
             ptx.from = walletAddr?.hex(eip55: true)
             
             
-            let chainID = EthereumQuantity(quantity: BigUInt(PlatonConfig.PlatonChainId.defaultChainId)!)
+            let chainID = EthereumQuantity(quantity: BigUInt(web3.chainId)!)
             let signedTx = try? tx.sign(with: pk!, chainId: chainID) as EthereumSignedTransaction
             
             web3.platon.sendRawTransaction(transaction: signedTx!, response: { (resp) in
