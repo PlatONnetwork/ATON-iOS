@@ -84,5 +84,4 @@ source/platonWallet.xcodeproj/xcuserdata/
 source/platonWallet.xcworkspace/xcuserdata/
 source/Pods/Pods.xcodeproj/xcuserdata
 
-# secure key file
 source/platonWallet/Config/AppConfig.swift
