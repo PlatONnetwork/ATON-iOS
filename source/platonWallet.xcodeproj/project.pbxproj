@@ -93,6 +93,7 @@
 		81718D8F22312FB100DB04F6 /* MnemonicGridView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 81718D8E22312FB100DB04F6 /* MnemonicGridView.xib */; };
 		81729BA323274A5C00CBD72F /* JPEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 81729BA023274A5C00CBD72F /* JPEngine.m */; };
 		81729BA423274A5C00CBD72F /* JSPatch.js in Resources */ = {isa = PBXBuildFile; fileRef = 81729BA223274A5C00CBD72F /* JSPatch.js */; };
+		81729BA82327CEEB00CBD72F /* CommonConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81729BA72327CEEB00CBD72F /* CommonConfig.swift */; };
 		817ABE2221B50C2A00E8030E /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817ABE2121B50C2A00E8030E /* UIApplication+Extensions.swift */; };
 		817ABE7E21B776CC00E8030E /* UITabBar+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817ABE7D21B776CC00E8030E /* UITabBar+Extensions.swift */; };
 		817F88E72174724E0041B6A5 /* CreateIndividualWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817F88E62174724E0041B6A5 /* CreateIndividualWalletViewController.swift */; };
@@ -224,7 +225,6 @@
 		9A56557D2176CB05002A1F6C /* HDPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A56557C2176CB05002A1F6C /* HDPath.swift */; };
 		9A56557F21772DE3002A1F6C /* WalletUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A56557E21772DE2002A1F6C /* WalletUtil.swift */; };
 		9A76E5232307F37A00E0B79A /* AnalysisHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A76E5222307F37A00E0B79A /* AnalysisHelper.swift */; };
-		9A76E5252308000500E0B79A /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A76E5242308000500E0B79A /* AppConfig.swift */; };
 		9A79A07521956493000EB4C5 /* BaseImportWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A79A07421956493000EB4C5 /* BaseImportWalletViewController.swift */; };
 		9A79A08C219BCA74000EB4C5 /* CustomPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A79A08B219BCA74000EB4C5 /* CustomPickerView.swift */; };
 		9A79A08E219BCA89000EB4C5 /* CustomPickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A79A08D219BCA89000EB4C5 /* CustomPickerView.xib */; };
@@ -424,6 +424,7 @@
 		81729BA223274A5C00CBD72F /* JSPatch.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = JSPatch.js; sourceTree = "<group>"; };
 		81729BA523274AA900CBD72F /* BuglyHotfixConfuse_pch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BuglyHotfixConfuse_pch.h; sourceTree = "<group>"; };
 		81729BA623274C0200CBD72F /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
+		81729BA72327CEEB00CBD72F /* CommonConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonConfig.swift; sourceTree = "<group>"; };
 		817ABE2121B50C2A00E8030E /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
 		817ABE7D21B776CC00E8030E /* UITabBar+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITabBar+Extensions.swift"; sourceTree = "<group>"; };
 		817F88E62174724E0041B6A5 /* CreateIndividualWalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateIndividualWalletViewController.swift; sourceTree = "<group>"; };
@@ -568,7 +569,6 @@
 		9A56557C2176CB05002A1F6C /* HDPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HDPath.swift; sourceTree = "<group>"; };
 		9A56557E21772DE2002A1F6C /* WalletUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletUtil.swift; sourceTree = "<group>"; };
 		9A76E5222307F37A00E0B79A /* AnalysisHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisHelper.swift; sourceTree = "<group>"; };
-		9A76E5242308000500E0B79A /* AppConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfig.swift; sourceTree = "<group>"; };
 		9A79A07421956493000EB4C5 /* BaseImportWalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseImportWalletViewController.swift; sourceTree = "<group>"; };
 		9A79A08B219BCA74000EB4C5 /* CustomPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPickerView.swift; sourceTree = "<group>"; };
 		9A79A08D219BCA89000EB4C5 /* CustomPickerView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomPickerView.xib; sourceTree = "<group>"; };
@@ -847,7 +847,7 @@
 			isa = PBXGroup;
 			children = (
 				9AD11DDC21806C2D002CD905 /* CommonService.swift */,
-				9A76E5242308000500E0B79A /* AppConfig.swift */,
+				81729BA72327CEEB00CBD72F /* CommonConfig.swift */,
 			);
 			path = Config;
 			sourceTree = "<group>";
@@ -1983,7 +1983,6 @@
 				9A2DA84922561AD200368212 /* CustomLoading.swift in Sources */,
 				81D7E24722E7F5F20069CDED /* PTSIndicatorInfo.swift in Sources */,
 				81EE99CD2175F4BC008DF8CB /* PTextFieldWithPadding.swift in Sources */,
-				9A76E5252308000500E0B79A /* AppConfig.swift in Sources */,
 				81E2E8522186B90C008B7504 /* AddressBookService.swift in Sources */,
 				811AB2B522EECC1100284F1A /* DelegateViewController.swift in Sources */,
 				81B5CE71224332C500ACFE96 /* UITextFieldWithSearch.swift in Sources */,
@@ -2129,6 +2128,7 @@
 				9A25B9B6218850B600B9433A /* AddWalletMenuViewController.swift in Sources */,
 				818A91412182C23300D03D57 /* NSDecimal+Swift.swift in Sources */,
 				9AE31424218C27D400B5433F /* NodeInfoPersistence.swift in Sources */,
+				81729BA82327CEEB00CBD72F /* CommonConfig.swift in Sources */,
 				81CB8ADD228EA99C009E8AA0 /* TransactionResponse.swift in Sources */,
 				813C3412223A327300DE92F1 /* DropDownVIew.swift in Sources */,
 				9ADE4517217F0801006F1C81 /* MainImportWalletViewController.swift in Sources */,

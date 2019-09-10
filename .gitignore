@@ -83,5 +83,3 @@ source/.DS_Store
 source/platonWallet.xcodeproj/xcuserdata/
 source/platonWallet.xcworkspace/xcuserdata/
 source/Pods/Pods.xcodeproj/xcuserdata
-
-source/platonWallet/Config/AppConfig.swift
