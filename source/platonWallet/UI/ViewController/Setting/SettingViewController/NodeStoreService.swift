@@ -53,7 +53,7 @@ class NodeStoreService {
                 editingNodeList.removeAll()
             }
              
-            NotificationCenter.default.post(name: NSNotification.Name(NodeStoreService.didEditStateChangeNotification), object: self, userInfo: ["isEdit":isEdit])
+            NotificationCenter.default.post(name: Notification.Name(NodeStoreService.didEditStateChangeNotification), object: self, userInfo: ["isEdit":isEdit])
         }
     }
     
@@ -116,13 +116,13 @@ class NodeStoreService {
                 if item.id == selectedNodeBeforeEdit.id && item.nodeURLStr != selectedNodeBeforeEdit.nodeURLStr {
                     
                     item.isSelected = false
-                    NotificationCenter.default.post(name: NSNotification.Name(NodeStoreService.selectedNodeUrlHadChangedNotification), object: self, userInfo: ["node":item ,"oldUrl":selectedNodeBeforeEdit.nodeURLStr])
+                    NotificationCenter.default.post(name: Notification.Name(NodeStoreService.selectedNodeUrlHadChangedNotification), object: self, userInfo: ["node":item ,"oldUrl":selectedNodeBeforeEdit.nodeURLStr])
                 }
                 SettingService.shareInstance.addOrUpdateNode(item)
             }
         }
         if nonNodeSelected {
-            NotificationCenter.default.post(name: NSNotification.Name(NodeStoreService.selectedNodeUrlHadChangedNotification), object: self, userInfo: ["node":editingNodeList[0]])
+            NotificationCenter.default.post(name: Notification.Name(NodeStoreService.selectedNodeUrlHadChangedNotification), object: self, userInfo: ["node":editingNodeList[0]])
         }
         
         
@@ -131,12 +131,12 @@ class NodeStoreService {
     
     func add() {
         editingNodeList.append(NodeInfo())
-        NotificationCenter.default.post(name: NSNotification.Name(NodeStoreService.didNodeListChangeNotification), object: self, userInfo: ["editType":NodeEditType.add])
+        NotificationCenter.default.post(name: Notification.Name(NodeStoreService.didNodeListChangeNotification), object: self, userInfo: ["editType":NodeEditType.add])
     }
     
     func delete(index: Int) {
         editingNodeList.remove(at: index)
-        NotificationCenter.default.post(name: NSNotification.Name(NodeStoreService.didNodeListChangeNotification), object: self, userInfo: ["editType":NodeEditType.delete(index: index)])
+        NotificationCenter.default.post(name: Notification.Name(NodeStoreService.didNodeListChangeNotification), object: self, userInfo: ["editType":NodeEditType.delete(index: index)])
     }
     
     func switchNode(node: NodeInfo) {
@@ -147,7 +147,7 @@ class NodeStoreService {
         
         self.nodeWillSuccessSwitch()
          
-        NotificationCenter.default.post(name: NSNotification.Name(NodeStoreService.didSwitchNodeNotification), object: self, userInfo: ["node":node])
+        NotificationCenter.default.post(name: Notification.Name(NodeStoreService.didSwitchNodeNotification), object: self, userInfo: ["node":node])
         
         selectedNodeBeforeEdit = nodeList.first(where: { (item) -> Bool in
             item.isSelected == true

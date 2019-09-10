@@ -17,7 +17,7 @@ class NodeInfoTableViewCell: UITableViewCell {
     public var node: Node? {
         didSet {
             nameLabel.text = node?.name
-            addressLabel.text = node?.nodeId
+            addressLabel.text = node?.nodeId?.nodeIdForDisplay()
         }
     }
     

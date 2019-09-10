@@ -66,35 +66,9 @@ class RealmHelper {
     
     public class func getConfig() -> Realm.Configuration{
         //v0.7.0 update scheme version to 8
-        let schemaVersion: UInt64 = 13
+        let schemaVersion: UInt64 = 1
         
         let config = Realm.Configuration(schemaVersion: schemaVersion, migrationBlock: { migration, oldSchemaVersion in
-            
-            if oldSchemaVersion < 4 { 
-                self.migrationBelow4(migration: migration, schemaVersion: schemaVersion, oldSchemaVersion: oldSchemaVersion)
-            }
-            
-            if oldSchemaVersion < 6{ 
-                RealmHelper.migrationBelow6(migration: migration, schemaVersion: schemaVersion, oldSchemaVersion: oldSchemaVersion)
-            }
-            
-            if oldSchemaVersion < 7 {
-                // 0.6.2
-            }
-            
-            if oldSchemaVersion < 8 {
-                // 增加锁仓余额 lockedBalance
-            }
-            
-            if oldSchemaVersion < 12 {
-                // 增加Node table
-                RealmHelper.migrationBelow7(migration: migration, schemaVersion: schemaVersion, oldSchemaVersion: oldSchemaVersion)
-            }
-            
-            if oldSchemaVersion < 13 {
-                // 修改被移除委托详解i表的列名
-                RealmHelper.migrationBelow71(migration: migration, schemaVersion: schemaVersion, oldSchemaVersion: oldSchemaVersion)
-            }
             
         },shouldCompactOnLaunch: {(totalBytes, usedBytes) in
             //set db max size as 500M

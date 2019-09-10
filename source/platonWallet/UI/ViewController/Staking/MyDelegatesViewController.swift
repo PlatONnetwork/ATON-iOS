@@ -87,7 +87,7 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
 
         tableView.mj_header = refreshHeader
         
-        NotificationCenter.default.addObserver(self, selector: #selector(shouldUpdateDelegateData), name: Notification.Name(updateWalletList_Notification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(shouldUpdateDelegateData), name: Notification.Name.ATON.updateWalletList, object: nil)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -111,7 +111,7 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
     @objc func faqTapAction() {
         let controller = WebCommonViewController()
         controller.navigationTitle = Localized("delegate_faq_title")
-        controller.requestUrl = ATONConfig.H5URL.FAQURL.faqurl
+        controller.requestUrl = AppConfig.H5URL.FAQURL.faqurl
         controller.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(controller, animated: true)
     }
@@ -119,12 +119,16 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
     @objc func tutorialTapAction() {
         let controller = WebCommonViewController()
         controller.navigationTitle = Localized("delegate_tutorial_title")
-        controller.requestUrl = ATONConfig.H5URL.TutorialURL.tutorialurl
+        controller.requestUrl = AppConfig.H5URL.TutorialURL.tutorialurl
         controller.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(controller, animated: true)
     }
     
     func updateDelagateHeader() {
+        guard listData.count > 0 else {
+            headerView.totalBalanceLabel.text = "--"
+            return
+        }
         let total = listData.reduce(BigUInt(0)) { (result, delegate) -> BigUInt in
             return result + BigUInt(delegate.delegate ?? "0")!
         }

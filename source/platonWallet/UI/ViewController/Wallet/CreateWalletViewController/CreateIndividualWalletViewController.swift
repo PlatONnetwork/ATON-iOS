@@ -34,7 +34,7 @@ class CreateIndividualWalletViewController: BaseViewController,StartBackupMnemon
         super.viewDidLoad()
         
         setupUI()
-        NotificationCenter.default.addObserver(self, selector: #selector(afterBackup), name: NSNotification.Name(BackupMnemonicFinishNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(afterBackup), name: Notification.Name.ATON.BackupMnemonicFinish, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {

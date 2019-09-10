@@ -44,7 +44,7 @@ class SettingService {
         }
         
         let semaphore = DispatchSemaphore(value: 0)
-        var URLString : String = DefaultNodeURL_Alpha
+        var URLString : String = AppConfig.NodeURL.DefaultNodeURL_Alpha_V071
         DispatchQueue.main.async {
             URLString = self.getCurrentNodeURLString()
             semaphore.signal()
@@ -63,15 +63,15 @@ class SettingService {
         }
         
         guard let nodeURL = SettingService.shareInstance.currentNodeURL else{
-            return DefaultNodeURL_Alpha_V071
+            return AppConfig.NodeURL.DefaultNodeURL_Alpha_V071
         }
         return nodeURL
     }
     
     
     static func getCentralizationURL() -> String {
-        let CentralizationURL = "http://192.168.9.190:1000/app-203/v0700/"
-        let DebugCentralizationURL = "http://192.168.9.190:443/app-203/v0700/"
+        let CentralizationURL =  AppConfig.ServerURL.HOST.TESTNET + AppConfig.ServerURL.PATH
+        let DebugCentralizationURL = AppConfig.ServerURL.HOST.DEVNET + AppConfig.ServerURL.PATH
         
         let url = self.getCurrentNodeURLString()
         if url == "http://192.168.9.190:1000/rpc" {
@@ -81,22 +81,8 @@ class SettingService {
         }
     }
     
-    // v0.6.2 新增获取链ID
-    static func getChainID() -> String {
-        let url = getCurrentNodeURLString()
-        switch url {
-        case DefaultNodeURL_Alpha:
-            return "103"
-        case DefaultNodeURL_Beta:
-            return "104"
-        default:
-            return "203"
-        }
-    }
-    
     func getNodes() -> [NodeInfo] {
         return nodeStorge?.getAll() ?? []
-        
     }
     
     func addOrUpdateNode(_ node: NodeInfo) {
@@ -124,15 +110,13 @@ class SettingService {
     
     
     public func getRemoteVersion(completion: PlatonCommonCompletion?) {
-        let url = "http://192.168.9.190:443/config/aton-update.json"
+        let url = AppConfig.ServerURL.HOST.TESTNET +  "/config/aton-update.json"
         
         var request = URLRequest(url: try! url.asURL())
         request.httpMethod = "GET"
         request.timeoutInterval = requestTimeout
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        Alamofire.request(request).responseJSON { (response) in
-            print(response)
-        }
+
         Alamofire.request(request).responseData { [weak self] response in
             switch response.result {
             case .success(let data):

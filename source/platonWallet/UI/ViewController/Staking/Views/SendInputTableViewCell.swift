@@ -13,7 +13,7 @@ import BigInt
 class SendInputTableViewCell: UITableViewCell {
     
     var cellDidContentChangeHandler: (() -> Void)?
-    var cellDidContentEditingHandler: ((BigUInt) -> Void)?
+    var cellDidContentEditingHandler: ((BigUInt, Bool) -> Void)?
     
     // 最少输入的数量
     var minAmountLimit: BigUInt?
@@ -27,7 +27,7 @@ class SendInputTableViewCell: UITableViewCell {
         amountView.addAction(title: "send_sendAll", action: { [weak self] in
             if let maxAmount = self?.maxAmountLimit {
                 amountView.textField.text = maxAmount.divide(by: ETHToWeiMultiplier, round: 8)
-                self?.cellDidContentEditingHandler?(maxAmount)
+                self?.cellDidContentEditingHandler?(maxAmount, true)
             }
         })
         amountView.checkInput(mode: .all, check: { [weak self] text -> (Bool, String) in
@@ -47,7 +47,7 @@ class SendInputTableViewCell: UITableViewCell {
         amountView.shouldChangeCharactersCompletion = { [weak self] (concatenated,replacement) in
             print("concatenated: \(concatenated), replacement: \(replacement)")
             if replacement == "" {
-                self?.cellDidContentEditingHandler?((BigUInt(concatenated) ?? BigUInt.zero).multiplied(by: BigUInt(ETHToWeiMultiplier)!))
+                self?.cellDidContentEditingHandler?(BigUInt.mutiply(a: concatenated, by: ETHToWeiMultiplier) ?? BigUInt.zero, false)
                 return true
             }
             
@@ -59,11 +59,12 @@ class SendInputTableViewCell: UITableViewCell {
                 return false
             }
             
-            self?.cellDidContentEditingHandler?((BigUInt(concatenated) ?? BigUInt.zero).multiplied(by: BigUInt(ETHToWeiMultiplier)!))
+            self?.cellDidContentEditingHandler?(BigUInt.mutiply(a: concatenated, by: ETHToWeiMultiplier) ?? BigUInt.zero, true)
             return true
         }
         
         amountView.endEditCompletion = { [weak self] text in
+            self?.cellDidContentEditingHandler?(BigUInt.mutiply(a: text, by: ETHToWeiMultiplier) ?? BigUInt.zero, true)
 //            let _ = self?.checkConfirmButtonAvailable()
 //            let _ = amountView.checkInvalidNow(showErrorMsg: false)
         }

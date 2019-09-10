@@ -29,20 +29,25 @@ class TransactionDetailViewController: BaseViewController {
         let view = TransactionDetailHeaderView()
         return view
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        super.leftNavigationTitle = "TransactionDetailVC_nav_title"
         initData()
         initSubViews()
-        super.leftNavigationTitle = "TransactionDetailVC_nav_title"
-       
-        NotificationCenter.default.addObserver(self, selector: #selector(didReceiveTransactionUpdate(_:)), name:NSNotification.Name(DidUpdateTransactionByHashNotification) , object: nil)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        NotificationCenter.default.addObserver(self, selector: #selector(didReceiveTransactionUpdate(_:)), name:Notification.Name.ATON.DidUpdateTransactionByHash, object: nil)
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        NotificationCenter.default.removeObserver(self)
     }
     
     @objc func didReceiveTransactionUpdate(_ notification: Notification){
-        print("============didReceiveTransactionUpdate============")
-        print(notification.object)
         guard let hash = notification.object as? String  else {
             return
         }

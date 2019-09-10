@@ -30,13 +30,4 @@ class SwitchWalletTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-    
-    func updateBalanceStyle(balance: WalletBalance?){
-        if balance == nil || balance?.balance == nil || String((balance?.balance)!) == "0"{
-            self.contentView.backgroundColor = .white
-        }else{
-            self.contentView.backgroundColor = .white
-        }
-    }
-    
 }

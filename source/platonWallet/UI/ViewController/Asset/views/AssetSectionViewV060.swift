@@ -93,7 +93,7 @@ class AssetSectionViewV060: UIView {
         
         walletAvatar.addTarget(self, action: #selector(walletAvatarTapAction), for: .touchUpInside)
         
-        NotificationCenter.default.addObserver(self, selector: #selector(didUpdateAllAsset), name: NSNotification.Name(DidUpdateAllAssetNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didUpdateAllAsset), name: Notification.Name.ATON.DidUpdateAllAsset, object: nil)
         
         lockedBalanceLabel.adjustsFontSizeToFitWidth = true
         lockedBalanceLabel.isUserInteractionEnabled = true

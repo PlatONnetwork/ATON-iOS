@@ -20,7 +20,7 @@ final class StakingService: BaseService {
         var parameters: [String: Any] = [:]
         parameters["walletAddrs"] = adddresses
         
-        let url = SettingService.getCentralizationURL() + "node/listDelegateGroupByAddr"
+        let url = SettingService.getCentralizationURL() + "/node/listDelegateGroupByAddr"
         
         var request = URLRequest(url: try! url.asURL())
         request.httpBody = try! JSONSerialization.data(withJSONObject: parameters)
@@ -50,7 +50,7 @@ final class StakingService: BaseService {
     }
     
     func updateNodeListData(completion: PlatonCommonCompletion?) {
-        let url = SettingService.getCentralizationURL() + "node/nodelist"
+        let url = SettingService.getCentralizationURL() + "/node/nodelist"
         
         var request = URLRequest(url: try! url.asURL())
         request.httpMethod = "POST"
@@ -98,7 +98,7 @@ final class StakingService: BaseService {
         var parameters: [String: Any] = [:]
         parameters["nodeId"] = nodeId
         
-        let url = SettingService.getCentralizationURL() + "node/nodeDetails"
+        let url = SettingService.getCentralizationURL() + "/node/nodeDetails"
         
         var request = URLRequest(url: try! url.asURL())
         request.httpBody = try! JSONSerialization.data(withJSONObject: parameters)
@@ -131,7 +131,7 @@ final class StakingService: BaseService {
         var parameters: [String: Any] = [:]
         parameters["addr"] = address
         
-        let url = SettingService.getCentralizationURL() + "node/delegateDetails"
+        let url = SettingService.getCentralizationURL() + "/node/delegateDetails"
         
         var request = URLRequest(url: try! url.asURL())
         request.httpBody = try! JSONSerialization.data(withJSONObject: parameters)
@@ -169,7 +169,7 @@ final class StakingService: BaseService {
         parameters["addr"] = addr
         parameters["nodeId"] = nodeId
         
-        let url = SettingService.getCentralizationURL() + "node/getDelegationValue"
+        let url = SettingService.getCentralizationURL() + "/node/getDelegationValue"
         
         var request = URLRequest(url: try! url.asURL())
         request.httpBody = try! JSONSerialization.data(withJSONObject: parameters)
@@ -202,7 +202,7 @@ final class StakingService: BaseService {
         parameters["addr"] = addr
         parameters["nodeId"] = nodeId
         
-        let url = SettingService.getCentralizationURL() + "node/canDelegation"
+        let url = SettingService.getCentralizationURL() + "/node/canDelegation"
         
         var request = URLRequest(url: try! url.asURL())
         request.httpBody = try! JSONSerialization.data(withJSONObject: parameters)

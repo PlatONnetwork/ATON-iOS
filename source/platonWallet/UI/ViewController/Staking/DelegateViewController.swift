@@ -225,7 +225,7 @@ extension DelegateViewController: UITableViewDelegate, UITableViewDataSource {
             cell.cellDidContentChangeHandler = { [weak self] in
                 self?.updateHeightOfRow(cell)
             }
-            cell.cellDidContentEditingHandler = { [weak self] amountVON in
+            cell.cellDidContentEditingHandler = { [weak self] (amountVON, _) in
                 self?.isDelegateAll = (amountVON == cell.maxAmountLimit)
                 self?.estimateGas(amountVON, cell)
                 self?.currentAmount = amountVON

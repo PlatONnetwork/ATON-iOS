@@ -246,8 +246,6 @@ class Transaction : Object, Decodable {
                 "senderAddress",
                 "sequence",
                 "actualTxCost",
-                "nodeName",
-                "nodeId",
                 "lockAddress",
                 "reportType",
                 "version",
@@ -431,37 +429,6 @@ extension Transaction {
                 }
             }
         }
-    }
-    
-    private func transactionReachTrustworthyStatus() -> (String,UIColor){
-        var des : String = ""
-        var color : UIColor = .white
-        
-        if (TransactionService.service.lastedBlockNumber != nil) && (TransactionService.service.lastedBlockNumber?.length)! > 0{
-            let lastedBlockNumber = BigUInt(TransactionService.service.lastedBlockNumber!)
-            let txBlockNumber = BigUInt((self.blockNumber)!)
-            
-            var lastedBlockNumberCopy = BigUInt(String((lastedBlockNumber!)))
-            let overflow = lastedBlockNumberCopy?.subtractReportingOverflow(txBlockNumber!)
-            if overflow! {
-                return (des,color)
-            }
-            
-            let blockDiff = BigUInt.safeSubStractToUInt64(a: lastedBlockNumber!, b: txBlockNumber!)
-            if Int64(blockDiff) > MinTransactionConfirmations{
-                //success
-                des = Localized("walletDetailVC_tx_status_success")
-                color = cell_Transaction_success_color
-            }else{
-                //block confirming or chain data rollback(debug)
-                des = String(format: "%@(%d/%d)", Localized("walletDetailVC_tx_status_confirming"),blockDiff,MinTransactionConfirmations)
-                color = cell_Transaction_success_color
-            }
-        }else{
-            //network unreachable
-            des = "--"
-        }
-        return (des,color)
     }
     
     func copyTransaction() -> Transaction {

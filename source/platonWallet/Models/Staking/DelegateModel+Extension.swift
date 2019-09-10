@@ -83,8 +83,8 @@ extension DelegateDetail {
         return redeem?.vonToLATString ?? "--"
     }
     
-    var delgateButtonIsSelected: Bool {
-        return (BigUInt(released ?? "0") ?? BigUInt.zero > BigUInt.zero) || nodeStatus == .Exiting || nodeStatus == .Exited
+    var hasReleased: Bool {
+        return (BigUInt(released ?? "0") ?? BigUInt.zero > BigUInt.zero)
     }
     
     func getDelegateButtonIsEnable(address: String) -> Bool {

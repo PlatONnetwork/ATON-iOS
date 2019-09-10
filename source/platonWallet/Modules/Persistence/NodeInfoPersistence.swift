@@ -17,7 +17,7 @@ private let defalutNodes = [
 */
 
 private let defalutNodes = [
-    (nodeURL: DefaultNodeURL_Alpha_V071, desc: "SettingsVC_nodeSet_defaultTestNetwork_Amigo_des", isSelected: true),
+    (nodeURL: AppConfig.NodeURL.DefaultNodeURL_Alpha_V071, desc: "SettingsVC_nodeSet_defaultTestNetwork_Amigo_des", isSelected: true),
 ]
 
 class NodeInfoPersistence {
@@ -49,7 +49,7 @@ class NodeInfoPersistence {
         
         if !existSelected {
             for item in nodes {
-                if item.nodeURLStr == DefaultNodeURL_Alpha_V071 {
+                if item.nodeURLStr == AppConfig.NodeURL.DefaultNodeURL_Alpha_V071 {
                     try? realm.write {
                         item.isSelected = true
                     }

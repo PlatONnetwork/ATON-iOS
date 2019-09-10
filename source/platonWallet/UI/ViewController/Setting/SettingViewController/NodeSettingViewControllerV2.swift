@@ -82,10 +82,10 @@ class NodeSettingViewControllerV2: BaseViewController {
         setupUI()
         
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame(_:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(editStateChange(_:)), name: NSNotification.Name(rawValue: NodeStoreService.didEditStateChangeNotification), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(nodeListChange(_:)), name: NSNotification.Name(rawValue: NodeStoreService.didNodeListChangeNotification), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(selectedNodeChange(_:)), name: NSNotification.Name(NodeStoreService.didSwitchNodeNotification), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(reconnectNode(_:)), name: NSNotification.Name(NodeStoreService.selectedNodeUrlHadChangedNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(editStateChange(_:)), name: Notification.Name(rawValue: NodeStoreService.didEditStateChangeNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(nodeListChange(_:)), name: Notification.Name(rawValue: NodeStoreService.didNodeListChangeNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(selectedNodeChange(_:)), name: Notification.Name(NodeStoreService.didSwitchNodeNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(reconnectNode(_:)), name: Notification.Name(NodeStoreService.selectedNodeUrlHadChangedNotification), object: nil)
         
     }
     
@@ -165,7 +165,7 @@ class NodeSettingViewControllerV2: BaseViewController {
                 
             }else {
                 
-                NotificationCenter.default.post(name: NSNotification.Name(NodeStoreService.didSwitchNodeNotification), object: nil)
+                NotificationCenter.default.post(name: Notification.Name(NodeStoreService.didSwitchNodeNotification), object: nil)
             }
             NodeStoreService.share.switchNode(node: newNode)
             

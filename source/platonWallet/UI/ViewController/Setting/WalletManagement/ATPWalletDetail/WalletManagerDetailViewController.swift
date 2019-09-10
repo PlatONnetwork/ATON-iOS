@@ -219,7 +219,7 @@ class WalletManagerDetailViewController: BaseViewController {
             AssetService.sharedInstace.balances = AssetService.sharedInstace.balances.filter { $0.addr.lowercased() != self?.wallet.key?.address.lowercased() }
             WalletService.sharedInstance.deleteWallet(self!.wallet)
             self?.navigationController?.popViewController(animated: true)
-            NotificationCenter.default.post(name: NSNotification.Name(updateWalletList_Notification), object: nil)
+            NotificationCenter.default.post(name: Notification.Name.ATON.updateWalletList, object: nil)
         }
     }
     

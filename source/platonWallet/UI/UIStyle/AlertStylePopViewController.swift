@@ -401,13 +401,13 @@ class AlertStylePopViewController: UIViewController,UITextFieldDelegate {
     func dismissWithCompletion(){
         //prevent mutiply show
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             self.dismiss(animated: false, completion: nil)
             guard self.dismissCompletion != nil else {
                 return 
             }
             self.dismissCompletion!()
-        }
+//        }
     }
     
     func showInputErrorTip(string: String?){

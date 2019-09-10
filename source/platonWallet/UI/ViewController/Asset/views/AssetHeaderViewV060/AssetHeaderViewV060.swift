@@ -27,8 +27,8 @@ class AssetHeaderViewV060: UIView {
         super.awakeFromNib()
         initSubviews()
  
-        NotificationCenter.default.addObserver(self, selector: #selector(didUpdateAllAsset), name: Notification.Name(DidUpdateAllAssetNotification), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(shouldUpdateWalletList), name: Notification.Name(updateWalletList_Notification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didUpdateAllAsset), name: Notification.Name.ATON.DidUpdateAllAsset, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(shouldUpdateWalletList), name: Notification.Name.ATON.updateWalletList, object: nil)
     }
     
     
@@ -37,7 +37,6 @@ class AssetHeaderViewV060: UIView {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(UINib(nibName: "ClassicWalletCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "ClassicWalletCollectionViewCell")
-        collectionView.register(UINib(nibName: "JointWalletCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "JointWalletCollectionViewCell")
         collectionView.register(UINib(nibName: "CreateAndInputWalletCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "CreateAndInputWalletCollectionViewCell")
         
         
@@ -95,12 +94,6 @@ extension AssetHeaderViewV060: UICollectionViewDelegate, UICollectionViewDataSou
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ClassicWalletCollectionViewCell", for: indexPath) as! ClassicWalletCollectionViewCell
             cell.updateWallet(walletObj: cwallet)
             return cell
-        }else if let jwallet = obj as? SWallet{
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "JointWalletCollectionViewCell", for: indexPath) as! JointWalletCollectionViewCell
-            //cell.setProgress(1.0)
-            cell.updateWallet(walletObj: jwallet)
-
-            return cell
         }
 
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CreateAndInputWalletCollectionViewCell", for: indexPath) as! CreateAndInputWalletCollectionViewCell
@@ -129,18 +122,6 @@ extension AssetHeaderViewV060: UICollectionViewDelegate, UICollectionViewDataSou
                 AssetViewControllerV060.gotoImportClassicWallet()
             }
             return
-        }
-        
-        
-        if let obj = obj as? SWallet{
-            if obj.privateKey?.length ?? 0 > 0{
-                //wallet is creating, return now
-                return
-            }
-
-            if obj.isWatchAccount{
-                AssetViewControllerV060.getInstance()?.showAlertWithRedTitle(localizedTitle: "watchJointWalletTip_Notice", localizedMessage: "watchJointWalletTip_message")
-            }
         }
 
         AssetVCSharedData.sharedData.selectedWallet = obj
