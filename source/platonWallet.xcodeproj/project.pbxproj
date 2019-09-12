@@ -230,7 +230,6 @@
 		9A79A08E219BCA89000EB4C5 /* CustomPickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A79A08D219BCA89000EB4C5 /* CustomPickerView.xib */; };
 		9A831AEA224CAD1B00C91C72 /* WalletListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A831AE9224CAD1B00C91C72 /* WalletListViewController.swift */; };
 		9A9472F9221EB45300F8FEB9 /* NodeStoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9472F8221EB45300F8FEB9 /* NodeStoreService.swift */; };
-		9A9E1FED2261D38F006749CF /* RealmResults+extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9E1FEC2261D38F006749CF /* RealmResults+extensions.swift */; };
 		9AA49EEE22706572001ABB44 /* RealmWriteThread.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AA49EED22706572001ABB44 /* RealmWriteThread.swift */; };
 		9AC60C13224E37FB00A5ED6A /* CreateAndInputWalletCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AC60C11224E37FB00A5ED6A /* CreateAndInputWalletCollectionViewCell.swift */; };
 		9AC60C14224E37FB00A5ED6A /* CreateAndInputWalletCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AC60C12224E37FB00A5ED6A /* CreateAndInputWalletCollectionViewCell.xib */; };
@@ -574,7 +573,6 @@
 		9A79A08D219BCA89000EB4C5 /* CustomPickerView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomPickerView.xib; sourceTree = "<group>"; };
 		9A831AE9224CAD1B00C91C72 /* WalletListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WalletListViewController.swift; path = platonWallet/UI/ViewController/Setting/WalletListViewController.swift; sourceTree = SOURCE_ROOT; };
 		9A9472F8221EB45300F8FEB9 /* NodeStoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeStoreService.swift; sourceTree = "<group>"; };
-		9A9E1FEC2261D38F006749CF /* RealmResults+extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RealmResults+extensions.swift"; sourceTree = "<group>"; };
 		9AA49EED22706572001ABB44 /* RealmWriteThread.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmWriteThread.swift; sourceTree = "<group>"; };
 		9AC60C11224E37FB00A5ED6A /* CreateAndInputWalletCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAndInputWalletCollectionViewCell.swift; sourceTree = "<group>"; };
 		9AC60C12224E37FB00A5ED6A /* CreateAndInputWalletCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CreateAndInputWalletCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -1381,7 +1379,6 @@
 				81FCCD152179EA0F0052FC29 /* RealmHelper.swift */,
 				81E2E8532186B92E008B7504 /* AddressInfoPersistence.swift */,
 				9AE31423218C27D400B5433F /* NodeInfoPersistence.swift */,
-				9A9E1FEC2261D38F006749CF /* RealmResults+extensions.swift */,
 				9AA49EED22706572001ABB44 /* RealmWriteThread.swift */,
 				81E64A58230400F3000F2E7C /* NodePersistence.swift */,
 				81E64A5A2304FA7A000F2E7C /* DelegatePersistence.swift */,
@@ -2111,7 +2108,6 @@
 				814CB818231118630029B2E4 /* ServiceAgreementViewController.swift in Sources */,
 				9AE31422218C218100B5433F /* NodeInfo.swift in Sources */,
 				9AD67AAA2174811300A8432F /* WalletService.swift in Sources */,
-				9A9E1FED2261D38F006749CF /* RealmResults+extensions.swift in Sources */,
 				813D1FF82306A7AF00EFA397 /* AssetService+Centralization.swift in Sources */,
 				9A25B9A72187090F00B9433A /* ExportPrivateKeyOrKeystoreViewController.swift in Sources */,
 				819A52322190661D00E4C500 /* UIDevice+Extensions.swift in Sources */,

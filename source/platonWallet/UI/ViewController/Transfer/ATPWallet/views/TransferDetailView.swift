@@ -87,62 +87,8 @@ class TransferDetailView: UIView {
     }
     
     func updateContent(tx : Transaction){
-//        if tx.txType == TxType.voteForProposal {
-//            voteExtraView.isHidden = false
-//            showVoteExtraViewConstraint.priority = .defaultHigh
-//            valueTitle.text = Localized("TransactionDetailVC_voteStaked")
-        
-            if let txInfo = tx.extra, let data = txInfo.data(using: .utf8) {
-                let decoder = JSONDecoder()
-                let voteTicketInfo = try? decoder.decode(VoteTicketInfo.self, from: data)
-//                nodeNameLabel.text = voteTicketInfo?.parameters?.nodeName
-//                nodeIdLabel.text = voteTicketInfo?.parameters?.nodeId
-//                numOfTicketsLabel.text = String(describing: voteTicketInfo?.parameters?.count ?? 0)
-
-//                if voteTicketInfo?.parameters?.price?.description.count ?? 0 > 0 {
-//                    ticketPriceLabel.text = BigUInt.safeInit(str: voteTicketInfo?.parameters?.price?.description ?? "").divide(by: ETHToWeiMultiplier, round: 4).EnergonSuffix()
-//                } else {
-//                    ticketPriceLabel.text = "-".EnergonSuffix()
-//                }
-            } else {
-//                guard let singleVote = VotePersistence.getSingleVotesByTxHash(tx.txhash!) else {
-//                    nodeNameLabel.text = "-"
-//                    nodeIdLabel.text = "-"
-//                    numOfTicketsLabel.text = "-"
-//                    ticketPriceLabel.text = "-"
-//                    return
-//                }
-//
-//                let candidateInfo = VotePersistence.getCandidateInfoWithId(singleVote.candidateId ?? "")
-//                nodeNameLabel.text = candidateInfo.name
-//                nodeIdLabel.text = singleVote.candidateId?.add0x()
-//                if singleVote.validNum.count > 0{
-//                    numOfTicketsLabel.text = "\(singleVote.validNum)"
-//                }else{
-//                    numOfTicketsLabel.text = "-"
-//                }
-//                if (singleVote.deposit?.count)! > 0{
-//                    ticketPriceLabel.text = BigUInt.safeInit(str: singleVote.deposit ?? "").divide(by: ETHToWeiMultiplier, round: 4).EnergonSuffix()
-//                }else{
-//                    ticketPriceLabel.text = "-".EnergonSuffix()
-//                }
-            }
-//        } else {
-//            voteExtraView.isHidden = true
-//            showVoteExtraViewConstraint.priority = .defaultLow
-//            valueTitle.text = Localized("TransactionDetailVC_value")
-//        }
-        
-//        hashContent.text = tx.txhash?.add0x()
-//        if tx.confirmTimes != 0 {
-//            timeLabel.text = Date.toStanderTimeDescrition(millionSecondsTimeStamp: tx.confirmTimes)
-//        } else {
-//            timeLabel.text = Date.toStanderTimeDescrition(millionSecondsTimeStamp: tx.createTime)
-//        }
         fromLabel.text = tx.from
         toLabel.text = tx.to
-//        valueLabel.text = tx.valueDescription!.ATPSuffix()
-//        feeLabel.text = tx.actualTxCostDescription?.ATPSuffix()
         
         updateStatus(tx: tx)
         

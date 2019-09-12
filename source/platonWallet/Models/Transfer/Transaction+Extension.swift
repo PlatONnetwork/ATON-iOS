@@ -67,6 +67,10 @@ extension Transaction {
             return (nil, nil)
         }
         
+        if let valueStr = value, Int(valueStr) == 0 {
+            return (valueDescription, UIColor(rgb: 0xb6bbd0))
+        }
+        
         switch direction {
         case .Sent:
             guard let string = valueDescription else {
@@ -92,7 +96,26 @@ extension Transaction {
         }
     }
     
+    var amountTextString: String {
+        if let valueStr = value, Int(valueStr) == 0 {
+            return valueDescription!.ATPSuffix()
+        }
+        
+        switch direction {
+        case .Sent:
+            return "-" + valueDescription!.ATPSuffix()
+        case .Receive:
+            return "+" + valueDescription!.ATPSuffix()
+        default:
+            return "-" + valueDescription!.ATPSuffix()
+        }
+    }
+    
     var amountTextColor: UIColor {
+        if let valueStr = value, Int(valueStr) == 0 {
+            return UIColor(rgb: 0xb6bbd0)
+        }
+        
         switch direction {
         case .Receive:
             return UIColor(rgb: 0x19a20e)
@@ -118,6 +141,11 @@ extension Transaction {
         default:
             return nil
         }
+    }
+    
+    var pipString: String {
+        guard let pip = piDID else { return "--" }
+        return "eip-" + pip
     }
 }
 

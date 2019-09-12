@@ -130,13 +130,22 @@
 "TransactionDetailVC_withdrawal_amount" = "Withdrawal Amount:";
 "TransactionDetailVC_version" = "Version:";
 "TransactionDetailVC_stake_amount" = "Stake Amount:";
+"TransactionDetailVC_stake_add_amount" = "Stake Amount:";
 "TransactionDetailVC_return_amount" = "Return Amount:";
 "TransactionDetailVC_report_type" = "Report Type:";
 "TransactionDetailVC_restricted_acount" = "Restricted Account:";
 "TransactionDetailVC_restricted_amount" = "Restricted Amount:";
 "TransactionDetailVC_proposal_id" = "Proposal ID:";
+"TransactionDetailVC_proposal_pip" = "PIP SN:";
 "TransactionDetailVC_proposal_type" = "Proposal Type:";
 "TransactionDetailVC_proposal_vote" = "Vote:";
+"TransactionDetailVC_proposal_text" = "Text";
+"TransactionDetailVC_proposal_upgrade" = "Upgrade";
+"TransactionDetailVC_proposal_parameter" = "Parameter";
+"TransactionDetailVC_proposal_cancel" = "Cancel";
+"TransactionDetailVC_proposal_voteyes" = "VoteYes";
+"TransactionDetailVC_proposal_voteno" = "VoteNo";
+"TransactionDetailVC_proposal_voteabstain" = "VoteAbstain";
 
 //qr scan
 "QRScanerVC_nav_title" = "QR Scan";

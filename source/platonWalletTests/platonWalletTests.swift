@@ -47,7 +47,7 @@ class platonWalletTests: XCTestCase {
     func testUtil(){
         
         let tmp = BigUInt("0000010")
-        let sss = String(tmp!)
+//        let sss = String(tmp!)
         
         XCTAssertTrue("0.11".isValidInputAmoutWith8DecimalPlace())
         XCTAssertFalse("0000.1".isValidInputAmoutWith8DecimalPlace())
@@ -135,33 +135,33 @@ class platonWalletTests: XCTestCase {
     
     func testPlatonContranctDeploy(){
         
-        let web3 = Web3(rpcURL: "http://192.168.7.184:8545")
-        
-        let abi = "{\"version\":\"0.01\",\"abi\":[{\"method\":\"transfer\",\"args\":[{\"name\":\"from\",\"typeName\":\"\",\"realTypeName\":\"string\"},{\"name\":\"to\",\"typeName\":\"\",\"realTypeName\":\"string\"},{\"name\":\"balance\",\"typeName\":\"\",\"realTypeName\":\"int32\"}],\"return\":\"void\",\"funcType\":\"\"},{\"method\":\"transfer02\",\"args\":[{\"name\":\"from\",\"typeName\":\"\",\"realTypeName\":\"string\"},{\"name\":\"to\",\"typeName\":\"\",\"realTypeName\":\"string\"},{\"name\":\"balance\",\"typeName\":\"\",\"realTypeName\":\"int32\"}],\"return\":\"void\",\"funcType\":\"\"},{\"method\":\"getBalance\",\"args\":[{\"name\":\"from\",\"typeName\":\"\",\"realTypeName\":\"string\"}],\"return\":\"string\",\"funcType\":\"const\"}],\"event\":[{\"name\":\"Notify\",\"args\":[{\"typeName\":\"string\"}]},{\"name\":\"NotifyWithCode\",\"args\":[{\"typeName\":\"int32\"},{\"typeName\":\"string\"}]}]}"
-        let path = Bundle.main.path(forResource: "PlatonAssets/demo01", ofType: "wasm")
-        let bin = try? Data(contentsOf: URL(fileURLWithPath: path!))
-        
-        let txTypePart = RLPItem(bytes: [0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x01])
-        let binPart = RLPItem(bytes: (bin?.bytes)!)
-        let abiPart = RLPItem(bytes: (abi.data(using: .utf8)?.bytes)!)
-
-        let rlp = RLPItem(arrayLiteral: txTypePart,binPart,abiPart)
-        
-        let rawRlp = try? RLPEncoder().encode(rlp)
-        let rlpHex = rawRlp?.toHexString()
-        
-        let tmpAddr = EthereumAddress(hexString: "0xAa9afdCf179EBd392767F4113eF02B018D937488")
-        let tmpQuan = EthereumQuantity(quantity: BigUInt("0")!)
-        let call = EthereumCall(from: tmpAddr, to: tmpAddr!, gas: tmpQuan, gasPrice: tmpQuan, value: tmpQuan, data: EthereumData(bytes: rawRlp!))
-        
-        web3.eth.estimateGas(call: call) { (resp) in
-            print("\(resp)")
-            print("\(String((resp.result?.quantity)!))")
-            print("\(self)")
-        }
-        
-        
-        print("bin length")
+//        let web3 = Web3(rpcURL: "http://192.168.7.184:8545")
+//
+//        let abi = "{\"version\":\"0.01\",\"abi\":[{\"method\":\"transfer\",\"args\":[{\"name\":\"from\",\"typeName\":\"\",\"realTypeName\":\"string\"},{\"name\":\"to\",\"typeName\":\"\",\"realTypeName\":\"string\"},{\"name\":\"balance\",\"typeName\":\"\",\"realTypeName\":\"int32\"}],\"return\":\"void\",\"funcType\":\"\"},{\"method\":\"transfer02\",\"args\":[{\"name\":\"from\",\"typeName\":\"\",\"realTypeName\":\"string\"},{\"name\":\"to\",\"typeName\":\"\",\"realTypeName\":\"string\"},{\"name\":\"balance\",\"typeName\":\"\",\"realTypeName\":\"int32\"}],\"return\":\"void\",\"funcType\":\"\"},{\"method\":\"getBalance\",\"args\":[{\"name\":\"from\",\"typeName\":\"\",\"realTypeName\":\"string\"}],\"return\":\"string\",\"funcType\":\"const\"}],\"event\":[{\"name\":\"Notify\",\"args\":[{\"typeName\":\"string\"}]},{\"name\":\"NotifyWithCode\",\"args\":[{\"typeName\":\"int32\"},{\"typeName\":\"string\"}]}]}"
+//        let path = Bundle.main.path(forResource: "PlatonAssets/demo01", ofType: "wasm")
+//        let bin = try? Data(contentsOf: URL(fileURLWithPath: path!))
+//
+//        let txTypePart = RLPItem(bytes: [0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x01])
+//        let binPart = RLPItem(bytes: (bin?.bytes)!)
+//        let abiPart = RLPItem(bytes: (abi.data(using: .utf8)?.bytes)!)
+//
+//        let rlp = RLPItem(arrayLiteral: txTypePart,binPart,abiPart)
+//
+//        let rawRlp = try? RLPEncoder().encode(rlp)
+//        let rlpHex = rawRlp?.toHexString()
+//
+//        let tmpAddr = EthereumAddress(hexString: "0xAa9afdCf179EBd392767F4113eF02B018D937488")
+//        let tmpQuan = EthereumQuantity(quantity: BigUInt("0")!)
+//        let call = EthereumCall(from: tmpAddr, to: tmpAddr!, gas: tmpQuan, gasPrice: tmpQuan, value: tmpQuan, data: EthereumData(bytes: rawRlp!))
+//
+//        web3.eth.estimateGas(call: call) { (resp) in
+//            print("\(resp)")
+//            print("\(String((resp.result?.quantity)!))")
+//            print("\(self)")
+//        }
+//
+//
+//        print("bin length")
         
     }
 
@@ -204,10 +204,10 @@ class platonWalletTests: XCTestCase {
         
         let expectaion = self.expectation(description: "voteTicket.test")
         
-        VoteManager.sharedInstance.VoteTicket(count: 100, price: BigUInt("1")!, nodeId: "0x1f3a8672348ff6b789e416762ad53e69063138b8eb4d8780101658f24b2369f1a8e09499226b467d8bc0c4e03e1dc903df857eeb3c67733d21b6aaee2840e429", sender: "0x493301712671Ada506ba6Ca7891F436D29185821", privateKey: "a11859ce23effc663a9460e332ca09bd812acc390497f8dc7542b6938e13f8d7", gasPrice: BigUInt("1000000000")!, gas: deploy_UseStipulatedGas, completion: { (res, data) in
-            expectaion.fulfill()
-            XCTAssert(true)
-        })
+//        VoteManager.sharedInstance.VoteTicket(count: 100, price: BigUInt("1")!, nodeId: "0x1f3a8672348ff6b789e416762ad53e69063138b8eb4d8780101658f24b2369f1a8e09499226b467d8bc0c4e03e1dc903df857eeb3c67733d21b6aaee2840e429", sender: "0x493301712671Ada506ba6Ca7891F436D29185821", privateKey: "a11859ce23effc663a9460e332ca09bd812acc390497f8dc7542b6938e13f8d7", gasPrice: BigUInt("1000000000")!, gas: deploy_UseStipulatedGas, completion: { (res, data) in
+//            expectaion.fulfill()
+//            XCTAssert(true)
+//        })
         
         waitForExpectations(timeout: 10) { (error) in
             print(error?.localizedDescription ?? "")
@@ -219,10 +219,10 @@ class platonWalletTests: XCTestCase {
         
         let expectaion = self.expectation(description: "GetCandidateEpoch.test")
         
-        VoteManager.sharedInstance.GetCandidateEpoch(candidateId: "0x1f3a8672348ff6b789e416762ad53e69063138b8eb4d8780101658f24b2369f1a8e09499226b467d8bc0c4e03e1dc903df857eeb3c67733d21b6aaee2840e429") { (res, data) in
-            expectaion.fulfill()
-            XCTAssert(true)
-        }
+//        VoteManager.sharedInstance.GetCandidateEpoch(candidateId: "0x1f3a8672348ff6b789e416762ad53e69063138b8eb4d8780101658f24b2369f1a8e09499226b467d8bc0c4e03e1dc903df857eeb3c67733d21b6aaee2840e429") { (res, data) in
+//            expectaion.fulfill()
+//            XCTAssert(true)
+//        }
         waitForExpectations(timeout: 10) { (error) in
             print(error?.localizedDescription ?? "")
         }
@@ -232,11 +232,11 @@ class platonWalletTests: XCTestCase {
         
         let expectaion = self.expectation(description: "GetTicketDetail.test")
         
-        VoteManager.sharedInstance.GetTicketDetail(ticketId: "0x34bdecd0fa6b8d85b1fa436eac6066aca2f51cc5e84fec278bff7df781310982") { (res, data) in
-            expectaion.fulfill()
-            print(res, data)
-            XCTAssert(true)
-        }
+//        VoteManager.sharedInstance.GetTicketDetail(ticketId: "0x34bdecd0fa6b8d85b1fa436eac6066aca2f51cc5e84fec278bff7df781310982") { (res, data) in
+//            expectaion.fulfill()
+//            print(res, data)
+//            XCTAssert(true)
+//        }
         waitForExpectations(timeout: 10) { (error) in
             print(error?.localizedDescription ?? "")
         }
@@ -246,11 +246,11 @@ class platonWalletTests: XCTestCase {
         
         let expectaion = self.expectation(description: "GetBatchTicketDetail.test")
         
-        VoteManager.sharedInstance.GetBatchTicketDetail(ticketIds: ["0x34bdecd0fa6b8d85b1fa436eac6066aca2f51cc5e84fec278bff7df781310982","0x34bdecd0fa6b8d85b1fa436eac6066aca2f51cc5e84fec278bff7df781310983"]) { (res, data) in
-            expectaion.fulfill()
-            print(res, data as Any)
-            XCTAssert(true)
-        }
+//        VoteManager.sharedInstance.GetBatchTicketDetail(ticketIds: ["0x34bdecd0fa6b8d85b1fa436eac6066aca2f51cc5e84fec278bff7df781310982","0x34bdecd0fa6b8d85b1fa436eac6066aca2f51cc5e84fec278bff7df781310983"]) { (res, data) in
+//            expectaion.fulfill()
+//            print(res, data as Any)
+//            XCTAssert(true)
+//        }
 
         waitForExpectations(timeout: 10) { (error) in
             print(error?.localizedDescription ?? "")
@@ -262,11 +262,11 @@ class platonWalletTests: XCTestCase {
         
         let expectaion = self.expectation(description: "GetBatchCandidateDetail.test")
         
-        VoteManager.sharedInstance.GetBatchCandidateDetail(ids: ["0x1f3a8672348ff6b789e416762ad53e69063138b8eb4d8780101658f24b2369f1a8e09499226b467d8bc0c4e03e1dc903df857eeb3c67733d21b6aaee2840e420"], completion: { (res, data) in
-            expectaion.fulfill()
-            print(res, data as Any)
-            XCTAssert(true)
-        })
+//        VoteManager.sharedInstance.GetBatchCandidateDetail(ids: ["0x1f3a8672348ff6b789e416762ad53e69063138b8eb4d8780101658f24b2369f1a8e09499226b467d8bc0c4e03e1dc903df857eeb3c67733d21b6aaee2840e420"], completion: { (res, data) in
+//            expectaion.fulfill()
+//            print(res, data as Any)
+//            XCTAssert(true)
+//        })
         waitForExpectations(timeout: 10) { (error) in
             print(error?.localizedDescription ?? "")
         }
@@ -276,11 +276,11 @@ class platonWalletTests: XCTestCase {
         
         let expectaion = self.expectation(description: "GetBatchCandidateTicketIds.test")
         
-        VoteManager.sharedInstance.GetBatchCandidateTicketIds(candidateIds: ["0x1f3a8672348ff6b789e416762ad53e69063138b8eb4d8780101658f24b2369f1a8e09499226b467d8bc0c4e03e1dc903df857eeb3c67733d21b6aaee2840e420","0x1f3a8672348ff6b789e416762ad53e69063138b8eb4d8780101658f24b2369f1a8e09499226b467d8bc0c4e03e1dc903df857eeb3c67733d21b6aaee2840e429"], completion: { (res, data) in
-            expectaion.fulfill()
-            print(res, data as Any)
-            XCTAssert(true)
-        })
+//        VoteManager.sharedInstance.GetBatchCandidateTicketIds(candidateIds: ["0x1f3a8672348ff6b789e416762ad53e69063138b8eb4d8780101658f24b2369f1a8e09499226b467d8bc0c4e03e1dc903df857eeb3c67733d21b6aaee2840e420","0x1f3a8672348ff6b789e416762ad53e69063138b8eb4d8780101658f24b2369f1a8e09499226b467d8bc0c4e03e1dc903df857eeb3c67733d21b6aaee2840e429"], completion: { (res, data) in
+//            expectaion.fulfill()
+//            print(res, data as Any)
+//            XCTAssert(true)
+//        })
         waitForExpectations(timeout: 10) { (error) in
             print(error?.localizedDescription ?? "")
         }
