@@ -44,7 +44,7 @@ class SettingService {
         }
         
         let semaphore = DispatchSemaphore(value: 0)
-        var URLString : String = AppConfig.NodeURL.DefaultNodeURL_Alpha_V071
+        var URLString : String = AppFramework.sharedInstance.AppEnvConfig.getConfigURLInfo().NodeRPCURL
         DispatchQueue.main.async {
             URLString = self.getCurrentNodeURLString()
             semaphore.signal()
@@ -57,28 +57,30 @@ class SettingService {
     }
     
     static func getCurrentNodeURLString() -> String{
-        
+
         if SettingService.shareInstance.currentNodeURL == nil{
             SettingService.shareInstance.currentNodeURL = SettingService.shareInstance.getSelectedNodes()?.nodeURLStr
         }
         
         guard let nodeURL = SettingService.shareInstance.currentNodeURL else{
-            return AppConfig.NodeURL.DefaultNodeURL_Alpha_V071
+            return AppFramework.sharedInstance.AppEnvConfig.getConfigURLInfo().NodeRPCURL
         }
         return nodeURL
     }
     
     
     static func getCentralizationURL() -> String {
-        let CentralizationURL =  AppConfig.ServerURL.HOST.TESTNET + AppConfig.ServerURL.PATH
-        let DebugCentralizationURL = AppConfig.ServerURL.HOST.DEVNET + AppConfig.ServerURL.PATH
+        return AppFramework.sharedInstance.AppEnvConfig.getConfigURLInfo().CenterRPCURL
         
-        let url = self.getCurrentNodeURLString()
-        if url == "http://192.168.9.190:1000/rpc" {
-            return CentralizationURL
-        } else {
-            return DebugCentralizationURL
-        }
+//        let CentralizationURL =  AppConfig.ServerURL.HOST.TESTNET + AppConfig.ServerURL.PATH
+//        let DebugCentralizationURL = AppConfig.ServerURL.HOST.DEVNET + AppConfig.ServerURL.PATH
+//        
+//        let url = self.getCurrentNodeURLString()
+//        if url == "http://192.168.9.190:1000/rpc" {
+//            return CentralizationURL
+//        } else {
+//            return DebugCentralizationURL
+//        }
     }
     
     func getNodes() -> [NodeInfo] {

@@ -10,13 +10,13 @@ import Foundation
 import platonWeb3
 
 
-var web3 = Web3(rpcURL: Web3Helper.getRpcURL(), chainId: "103")
+var web3 = Web3(rpcURL: Web3Helper.getRpcURL(), chainId: "101")
 
 struct Web3Helper {
     
     static func switchRpcURL(_ url: String, completion:@escaping (_ success: Bool)->Void) {
         
-        let newWeb3 = Web3(rpcURL: url, chainId: "103")
+        let newWeb3 = Web3(rpcURL: url, chainId: "101")
         var isCallback = false
         newWeb3.platon.blockNumber { (resp) in
             
@@ -48,7 +48,7 @@ struct Web3Helper {
     
     static func switchRpcURL(_ url: String, succeedCb:@escaping ()->Void, failedCb:@escaping ()->Void) {
         
-        let newWeb3 = Web3(rpcURL: url, chainId: "103")
+        let newWeb3 = Web3(rpcURL: url, chainId: "101")
          
         var isCallback = false 
         

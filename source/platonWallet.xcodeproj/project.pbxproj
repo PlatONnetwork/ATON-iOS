@@ -221,6 +221,7 @@
 		9A25B9BA2189B09200B9433A /* WalletEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A25B9B92189B09200B9433A /* WalletEmptyView.swift */; };
 		9A25B9BC2189B0A200B9433A /* WalletEmptyView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A25B9BB2189B0A200B9433A /* WalletEmptyView.xib */; };
 		9A2DA84922561AD200368212 /* CustomLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2DA84822561AD200368212 /* CustomLoading.swift */; };
+		9A2EAE142330885F002A0C0E /* EnvConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2EAE132330885F002A0C0E /* EnvConfig.swift */; };
 		9A56557B217578EA002A1F6C /* Keystore.Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A56557A217578EA002A1F6C /* Keystore.Crypto.swift */; };
 		9A56557D2176CB05002A1F6C /* HDPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A56557C2176CB05002A1F6C /* HDPath.swift */; };
 		9A56557F21772DE3002A1F6C /* WalletUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A56557E21772DE2002A1F6C /* WalletUtil.swift */; };
@@ -565,6 +566,7 @@
 		9A25B9B92189B09200B9433A /* WalletEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletEmptyView.swift; sourceTree = "<group>"; };
 		9A25B9BB2189B0A200B9433A /* WalletEmptyView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = WalletEmptyView.xib; sourceTree = "<group>"; };
 		9A2DA84822561AD200368212 /* CustomLoading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLoading.swift; sourceTree = "<group>"; };
+		9A2EAE132330885F002A0C0E /* EnvConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnvConfig.swift; sourceTree = "<group>"; };
 		9A56557A217578EA002A1F6C /* Keystore.Crypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keystore.Crypto.swift; sourceTree = "<group>"; };
 		9A56557C2176CB05002A1F6C /* HDPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HDPath.swift; sourceTree = "<group>"; };
 		9A56557E21772DE2002A1F6C /* WalletUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletUtil.swift; sourceTree = "<group>"; };
@@ -846,6 +848,7 @@
 		812D94A8218BEE1A002A48B0 /* Config */ = {
 			isa = PBXGroup;
 			children = (
+				9A2EAE132330885F002A0C0E /* EnvConfig.swift */,
 				9AD11DDC21806C2D002CD905 /* CommonService.swift */,
 				81729BA72327CEEB00CBD72F /* CommonConfig.swift */,
 			);
@@ -1966,6 +1969,7 @@
 				9A25B9AA21870FA700B9433A /* ExportToPlainTextViewController.swift in Sources */,
 				9ADE4501217DDA27006F1C81 /* UITextField+Extensions.swift in Sources */,
 				81718D8B222F6F6500DB04F6 /* MnemonicTextField.swift in Sources */,
+				9A2EAE142330885F002A0C0E /* EnvConfig.swift in Sources */,
 				9AF9AC242182E19600E97F07 /* PAlertController.swift in Sources */,
 				812002C221A3EB390050E1B0 /* layout.swift in Sources */,
 				815968FF22E6F6F50085195C /* ValidatorNodesViewController.swift in Sources */,

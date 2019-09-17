@@ -17,6 +17,8 @@ class AppFramework {
     
     static let sharedInstance = AppFramework()
     
+    var AppEnvConfig : EnvConfig = .Production_main
+    
     func initialize() -> Bool {
         initBugly()
         languageSetting()
