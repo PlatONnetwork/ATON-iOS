@@ -72,14 +72,7 @@ class WalletDetailCell: UITableViewCell {
         self.unreadTag.isHidden = true
         tx.senderAddress = w.key?.address
         
-        switch tx.direction {
-        case .Sent:
-            transferAmoutLabel.text = "-" + (tx.valueDescription)!.ATPSuffix()
-        case .Receive:
-            transferAmoutLabel.text = "+" + (tx.valueDescription)!.ATPSuffix()
-        default:
-            transferAmoutLabel.text = "-" + (tx.valueDescription)!.ATPSuffix()
-        }
+        transferAmoutLabel.text = tx.amountTextString
         
         if tx.txType == .unknown || tx.txType == .transfer {
             txTypeLabel.text = tx.transactionStauts.localizeTitle

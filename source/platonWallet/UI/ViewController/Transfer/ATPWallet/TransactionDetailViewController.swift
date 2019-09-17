@@ -82,7 +82,7 @@ class TransactionDetailViewController: BaseViewController {
             
             if txType == .createRestrictingPlan {
                 listData.append((title: Localized("TransactionDetailVC_restricted_acount"), value: tx.lockAddress ?? "--"))
-                listData.append((title: Localized("TransactionDetailVC_restricted_amount"), value: tx.actualTxCostDescription?.displayForMicrometerLevel(maxRound: 8).ATPSuffix() ?? "0"))
+                listData.append((title: Localized("TransactionDetailVC_restricted_amount"), value: tx.valueDescription?.displayForMicrometerLevel(maxRound: 8).ATPSuffix() ?? "0"))
             } else {
                 listData.append((title: Localized("TransactionDetailVC_value"), value: tx.valueDescription?.displayForMicrometerLevel(maxRound: 8).ATPSuffix() ?? "0"))
             }
@@ -121,6 +121,8 @@ class TransactionDetailViewController: BaseViewController {
                 } else {
                     if txType == .stakingWithdraw {
                         listData.append((title: Localized("TransactionDetailVC_return_amount"), value: tx.valueDescription?.displayForMicrometerLevel(maxRound: 8).ATPSuffix() ?? "--"))
+                    } else if txType == .stakingAdd {
+                        listData.append((title: Localized("TransactionDetailVC_stake_add_amount"), value: tx.valueDescription?.displayForMicrometerLevel(maxRound: 8).ATPSuffix() ?? "--"))
                     } else {
                         listData.append((title: Localized("TransactionDetailVC_stake_amount"), value: tx.valueDescription?.displayForMicrometerLevel(maxRound: 8).ATPSuffix() ?? "--"))
                     }
@@ -132,10 +134,14 @@ class TransactionDetailViewController: BaseViewController {
                   txType == .voteForProposal {
             listData.append((title: Localized("TransactionDetailVC_voteFor"), value: tx.nodeName ?? "--"))
             listData.append((title: Localized("TransactionDetailVC_nodeId"), value: tx.nodeId ?? "--"))
-            listData.append((title: Localized("TransactionDetailVC_proposal_id"), value: tx.piDID ?? "--"))
-            listData.append((title: Localized("TransactionDetailVC_proposal_type"), value: tx.proposalType ?? "--"))
+            listData.append((title: Localized("TransactionDetailVC_proposal_id"), value: tx.txhash ?? "--"))
+            listData.append((title: Localized("TransactionDetailVC_proposal_pip"), value: tx.pipString))
+            
             if txType == .voteForProposal {
-                listData.append((title: Localized("TransactionDetailVC_proposal_vote"), value: tx.vote ?? "--"))
+                listData.append((title: Localized("TransactionDetailVC_proposal_type"), value: tx.voteProposalType?.localizedDesciption ?? "--"))
+                listData.append((title: Localized("TransactionDetailVC_proposal_vote"), value: tx.vote?.localizedDesciption ?? "--"))
+            } else {
+                listData.append((title: Localized("TransactionDetailVC_proposal_type"), value: tx.proposalType?.localizedDesciption ?? "--"))
             }
         }
         listData.append((title: Localized("TransactionDetailVC_energon_price"), value: tx.actualTxCostDescription?.displayForMicrometerLevel(maxRound: 8).ATPSuffix() ?? "0"))

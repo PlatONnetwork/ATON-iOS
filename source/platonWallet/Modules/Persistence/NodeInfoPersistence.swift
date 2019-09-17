@@ -10,15 +10,15 @@ import Foundation
 import RealmSwift
 import Localize_Swift
 
-/*
-private let defalutNodes = [
-    (nodeURL: DefaultNodeURL_Alpha, desc: "SettingsVC_nodeSet_defaultMainNetwork_title", isSelected: true),
-    (nodeURL: "192.168.9.73:6789", desc: "SettingsVC_nodeSet_defaultTestNetwork_title", isSelected: false)]
-*/
 
-private let defalutNodes = [
-    (nodeURL: AppConfig.NodeURL.DefaultNodeURL_Alpha_V071, desc: "SettingsVC_nodeSet_defaultTestNetwork_Amigo_des", isSelected: true),
-]
+//private let defalutNodes = [
+//    (nodeURL: AppConfig.NodeURL.DefaultNodeURL_Alpha_V071, desc: "SettingsVC_nodeSet_defaultTestNetwork_Amigo_des", isSelected: true),
+//]
+//
+//private let defalutNodes = [
+//    (nodeURL: AppConfig.NodeURL.DefaultNodeURL_UAT, desc: "SettingsVC_nodeSet_defaultTestNetwork_des", isSelected: true),
+//    (nodeURL: AppConfig.NodeURL.DefaultNodeURL_PRODUCT, desc: "SettingsVC_nodeSet_defaultProductNetwork_des", isSelected: true)
+//]
 
 class NodeInfoPersistence {
     
@@ -30,13 +30,11 @@ class NodeInfoPersistence {
         let nodes = getAll()
         let nodeIdentifiers = nodes.map({$0.nodeURLStr})
         
-        if nodes.count < 1 {
-            for node in defalutNodes {
-                guard !nodeIdentifiers.contains(node.nodeURL) else{
-                    continue
-                }
-                add(node: NodeInfo(nodeURLStr: node.nodeURL, desc: node.desc, isSelected: node.isSelected, isDefault: true))
+        for node in AppConfig.NodeURL.defaultNodesURL {
+            guard !nodeIdentifiers.contains(node.nodeURL) else{
+                continue
             }
+            add(node: NodeInfo(nodeURLStr: node.nodeURL, desc: node.desc, isSelected: node.isSelected, isDefault: true))
         }
         
         var existSelected = false
@@ -49,7 +47,7 @@ class NodeInfoPersistence {
         
         if !existSelected {
             for item in nodes {
-                if item.nodeURLStr == AppConfig.NodeURL.DefaultNodeURL_Alpha_V071 {
+                if item.nodeURLStr == AppConfig.NodeURL.defaultNodesURL.first!.nodeURL {
                     try? realm.write {
                         item.isSelected = true
                     }

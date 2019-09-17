@@ -14,7 +14,6 @@ import LocalAuthentication
 import platonWeb3
 import Localize_Swift
 
-
 private let userDefault_key_isLocalAuthenticationOpen = "isLocalAuthenticationOpen"
 private let userDefault_key_isFirst = "isFirst"
 
@@ -35,6 +34,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LicenseVCDelegate {
     var verifyWindow: UIWindow?
  
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        setupMonkeyTest()
+        
         let status = AppFramework.sharedInstance.initialize()
         
         let storyboard = UIStoryboard(name: "LaunchScreen", bundle: nil)

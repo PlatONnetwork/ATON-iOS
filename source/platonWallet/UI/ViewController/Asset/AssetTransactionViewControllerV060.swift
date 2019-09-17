@@ -123,7 +123,7 @@ extension AssetTransactionViewControllerV060{
     
     func commonInit(){
         if transactionsTimer == nil {
-            transactionsTimer = Timer.scheduledTimer(timeInterval:TimeInterval(AppConfig.TimerSetting.pendingTransactionPollingTimerInterval), target: self, selector: #selector(pollingWalletTransactions), userInfo: nil, repeats: true)
+            transactionsTimer = Timer.scheduledTimer(timeInterval:TimeInterval(AppConfig.TimerSetting.notPendingTransactionPollingTimerInterval), target: self, selector: #selector(pollingWalletTransactions), userInfo: nil, repeats: true)
         }
     }
     
