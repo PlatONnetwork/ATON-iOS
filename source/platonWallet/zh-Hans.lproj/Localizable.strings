@@ -394,7 +394,8 @@
 "SettingsVC_nodeSet_defaultTestNetwork_title" = "(默认测试网络)";
 
 "SettingsVC_nodeSet_defaultTestNetwork_Amigo_des" = "(Amigo测试网)";
-"SettingsVC_nodeSet_defaultTestNetwork_Batalla_des" = "(Batalla测试网)";
+"SettingsVC_nodeSet_defaultTestNetwork_des" = "(aton测试网)";
+"SettingsVC_nodeSet_defaultProductNetwork_des" = "(aton主网)";
 "SettingsVC_nodeSet_switchSuccess_tips" = "节点切换成功";
 "SettingsVC_nodeSet_switchFail_tips" = "节点切换失败";
 "SettingsVC_nodeSet_recovery_tips" = "节点连接失败，已还原修改";

@@ -46,9 +46,6 @@ class platonWalletTests: XCTestCase {
     
     func testUtil(){
         
-        let tmp = BigUInt("0000010")
-//        let sss = String(tmp!)
-        
         XCTAssertTrue("0.11".isValidInputAmoutWith8DecimalPlace())
         XCTAssertFalse("0000.1".isValidInputAmoutWith8DecimalPlace())
         XCTAssertFalse("0.123456789".isValidInputAmoutWith8DecimalPlace())
@@ -81,14 +78,12 @@ class platonWalletTests: XCTestCase {
     }
     
     func testSendAmoutInput(){
-        
         assert(!".0...1".isValidInputAmoutWith8DecimalPlace())
         assert(!"..1".isValidInputAmoutWith8DecimalPlace())
         assert(!"9.111.".isValidInputAmoutWith8DecimalPlace())
         assert(!"9.123456789".isValidInputAmoutWith8DecimalPlace())
         assert(!".111".isValidInputAmoutWith8DecimalPlace())
         assert("0.111".isValidInputAmoutWith8DecimalPlace())
-    
     }
     
     func testUIntUtilTest(){
@@ -198,92 +193,6 @@ class platonWalletTests: XCTestCase {
         let value = tmpdic["Deposit"] as! Decimal
         let stringvalue = value.description
         
-    }
-    
-    func testVoteTicket() {
-        
-        let expectaion = self.expectation(description: "voteTicket.test")
-        
-//        VoteManager.sharedInstance.VoteTicket(count: 100, price: BigUInt("1")!, nodeId: "0x1f3a8672348ff6b789e416762ad53e69063138b8eb4d8780101658f24b2369f1a8e09499226b467d8bc0c4e03e1dc903df857eeb3c67733d21b6aaee2840e429", sender: "0x493301712671Ada506ba6Ca7891F436D29185821", privateKey: "a11859ce23effc663a9460e332ca09bd812acc390497f8dc7542b6938e13f8d7", gasPrice: BigUInt("1000000000")!, gas: deploy_UseStipulatedGas, completion: { (res, data) in
-//            expectaion.fulfill()
-//            XCTAssert(true)
-//        })
-        
-        waitForExpectations(timeout: 10) { (error) in
-            print(error?.localizedDescription ?? "")
-        }
-        
-    }
-    
-    func testGetCandidateEpoch() {
-        
-        let expectaion = self.expectation(description: "GetCandidateEpoch.test")
-        
-//        VoteManager.sharedInstance.GetCandidateEpoch(candidateId: "0x1f3a8672348ff6b789e416762ad53e69063138b8eb4d8780101658f24b2369f1a8e09499226b467d8bc0c4e03e1dc903df857eeb3c67733d21b6aaee2840e429") { (res, data) in
-//            expectaion.fulfill()
-//            XCTAssert(true)
-//        }
-        waitForExpectations(timeout: 10) { (error) in
-            print(error?.localizedDescription ?? "")
-        }
-    }
-    
-    func testGetTicketDetail() {
-        
-        let expectaion = self.expectation(description: "GetTicketDetail.test")
-        
-//        VoteManager.sharedInstance.GetTicketDetail(ticketId: "0x34bdecd0fa6b8d85b1fa436eac6066aca2f51cc5e84fec278bff7df781310982") { (res, data) in
-//            expectaion.fulfill()
-//            print(res, data)
-//            XCTAssert(true)
-//        }
-        waitForExpectations(timeout: 10) { (error) in
-            print(error?.localizedDescription ?? "")
-        }
-    }
-    
-    func testGetBatchTicketDetail() {
-        
-        let expectaion = self.expectation(description: "GetBatchTicketDetail.test")
-        
-//        VoteManager.sharedInstance.GetBatchTicketDetail(ticketIds: ["0x34bdecd0fa6b8d85b1fa436eac6066aca2f51cc5e84fec278bff7df781310982","0x34bdecd0fa6b8d85b1fa436eac6066aca2f51cc5e84fec278bff7df781310983"]) { (res, data) in
-//            expectaion.fulfill()
-//            print(res, data as Any)
-//            XCTAssert(true)
-//        }
-
-        waitForExpectations(timeout: 10) { (error) in
-            print(error?.localizedDescription ?? "")
-        }
-    }
-    
-    
-    func testGetBatchCandidateDetail() {
-        
-        let expectaion = self.expectation(description: "GetBatchCandidateDetail.test")
-        
-//        VoteManager.sharedInstance.GetBatchCandidateDetail(ids: ["0x1f3a8672348ff6b789e416762ad53e69063138b8eb4d8780101658f24b2369f1a8e09499226b467d8bc0c4e03e1dc903df857eeb3c67733d21b6aaee2840e420"], completion: { (res, data) in
-//            expectaion.fulfill()
-//            print(res, data as Any)
-//            XCTAssert(true)
-//        })
-        waitForExpectations(timeout: 10) { (error) in
-            print(error?.localizedDescription ?? "")
-        }
-    }
-
-    func testGetBatchCandidateTicketIds() {
-        
-        let expectaion = self.expectation(description: "GetBatchCandidateTicketIds.test")
-        
-//        VoteManager.sharedInstance.GetBatchCandidateTicketIds(candidateIds: ["0x1f3a8672348ff6b789e416762ad53e69063138b8eb4d8780101658f24b2369f1a8e09499226b467d8bc0c4e03e1dc903df857eeb3c67733d21b6aaee2840e420","0x1f3a8672348ff6b789e416762ad53e69063138b8eb4d8780101658f24b2369f1a8e09499226b467d8bc0c4e03e1dc903df857eeb3c67733d21b6aaee2840e429"], completion: { (res, data) in
-//            expectaion.fulfill()
-//            print(res, data as Any)
-//            XCTAssert(true)
-//        })
-        waitForExpectations(timeout: 10) { (error) in
-            print(error?.localizedDescription ?? "")
-        }
     }
     
 }

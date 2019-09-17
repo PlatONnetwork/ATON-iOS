@@ -404,7 +404,8 @@
 "SettingsVC_nodeSet_defaultMainNetwork_title" = "(Default main network)";
 "SettingsVC_nodeSet_defaultTestNetwork_title" = "(Default test network)";
 "SettingsVC_nodeSet_defaultTestNetwork_Amigo_des" = "(Amigo Testnet)";
-"SettingsVC_nodeSet_defaultTestNetwork_Batalla_des" = "(Batalla Testnet)";
+"SettingsVC_nodeSet_defaultTestNetwork_des" = "(aton Testnet)";
+"SettingsVC_nodeSet_defaultProductNetwork_des" = "(aton mainnet)";
 "SettingsVC_nodeSet_switchSuccess_tips" = "Node switch Succeed";
 "SettingsVC_nodeSet_switchFail_tips" = "Node switch Failed";
 "SettingsVC_nodeSet_recovery_tips" = "Node connect failed";

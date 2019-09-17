@@ -28,10 +28,6 @@ final class StakingService: BaseService {
         request.timeoutInterval = requestTimeout
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
-        
-        Alamofire.request(request).responseJSON { (response) in
-            print(response)
-        }
         Alamofire.request(request).responseData { response in
             switch response.result {
             case .success(let data):

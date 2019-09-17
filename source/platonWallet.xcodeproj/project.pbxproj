@@ -68,6 +68,16 @@
 		813C3412223A327300DE92F1 /* DropDownVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813C3411223A327300DE92F1 /* DropDownVIew.swift */; };
 		813D1FF82306A7AF00EFA397 /* AssetService+Centralization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813D1FF72306A7AF00EFA397 /* AssetService+Centralization.swift */; };
 		813F56C4219A60FA00F797E6 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813F56C3219A60FA00F797E6 /* Utilities.swift */; };
+		81466835232F3B4E00A141D9 /* AppDelegate+MonkeyTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81466834232F3B4E00A141D9 /* AppDelegate+MonkeyTest.swift */; };
+		8146683B232F986C00A141D9 /* nodelist.json in Resources */ = {isa = PBXBuildFile; fileRef = 8146683A232F986C00A141D9 /* nodelist.json */; };
+		8146683D232FA94300A141D9 /* listDelegateGroupByAddr.json in Resources */ = {isa = PBXBuildFile; fileRef = 8146683C232FA94300A141D9 /* listDelegateGroupByAddr.json */; };
+		8146683F232FAB4700A141D9 /* nodeDetails.json in Resources */ = {isa = PBXBuildFile; fileRef = 8146683E232FAB4700A141D9 /* nodeDetails.json */; };
+		81466841232FAC0E00A141D9 /* delegateDetails.json in Resources */ = {isa = PBXBuildFile; fileRef = 81466840232FAC0E00A141D9 /* delegateDetails.json */; };
+		81466847232FB22B00A141D9 /* getBalance.json in Resources */ = {isa = PBXBuildFile; fileRef = 81466842232FB22900A141D9 /* getBalance.json */; };
+		81466848232FB22B00A141D9 /* delegationValue.json in Resources */ = {isa = PBXBuildFile; fileRef = 81466843232FB22A00A141D9 /* delegationValue.json */; };
+		81466849232FB22B00A141D9 /* transactionList.json in Resources */ = {isa = PBXBuildFile; fileRef = 81466844232FB22A00A141D9 /* transactionList.json */; };
+		8146684A232FB22B00A141D9 /* canDelegation.json in Resources */ = {isa = PBXBuildFile; fileRef = 81466845232FB22A00A141D9 /* canDelegation.json */; };
+		8146684B232FB22B00A141D9 /* delegateRecord.json in Resources */ = {isa = PBXBuildFile; fileRef = 81466846232FB22B00A141D9 /* delegateRecord.json */; };
 		8148F01521BA0E1600045546 /* BaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8148F01421BA0E1600045546 /* BaseService.swift */; };
 		814980F42191393C009F99EE /* SharedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814980F32191393C009F99EE /* SharedView.swift */; };
 		814980F921913AA7009F99EE /* SharedCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814980F721913AA7009F99EE /* SharedCollectionViewCell.swift */; };
@@ -191,7 +201,6 @@
 		81EE9A0621773B7F008DF8CB /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EE9A0521773B7F008DF8CB /* BaseNavigationController.swift */; };
 		81F1AFC622FADA2F00A74C00 /* WebCommonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F1AFC522FADA2F00A74C00 /* WebCommonViewController.swift */; };
 		81F5123D22FEE812005F3BDF /* DelegateModel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F5123C22FEE811005F3BDF /* DelegateModel+Extension.swift */; };
-		81F73C6C22AE306500368AF6 /* platon0_6_2Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F73C6B22AE306500368AF6 /* platon0_6_2Tests.swift */; };
 		81FCCCD9217970580052FC29 /* UIView+Extenstions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FCCCD8217970580052FC29 /* UIView+Extenstions.swift */; };
 		81FCCCDB2179B3F10052FC29 /* AppFramework.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FCCCDA2179B3F10052FC29 /* AppFramework.swift */; };
 		81FCCCF22179B6710052FC29 /* AssetNavigationBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FCCCE02179B6710052FC29 /* AssetNavigationBarView.swift */; };
@@ -394,6 +403,16 @@
 		813C3411223A327300DE92F1 /* DropDownVIew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownVIew.swift; sourceTree = "<group>"; };
 		813D1FF72306A7AF00EFA397 /* AssetService+Centralization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AssetService+Centralization.swift"; sourceTree = "<group>"; };
 		813F56C3219A60FA00F797E6 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
+		81466834232F3B4E00A141D9 /* AppDelegate+MonkeyTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+MonkeyTest.swift"; sourceTree = "<group>"; };
+		8146683A232F986C00A141D9 /* nodelist.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = nodelist.json; sourceTree = "<group>"; };
+		8146683C232FA94300A141D9 /* listDelegateGroupByAddr.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = listDelegateGroupByAddr.json; sourceTree = "<group>"; };
+		8146683E232FAB4700A141D9 /* nodeDetails.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = nodeDetails.json; sourceTree = "<group>"; };
+		81466840232FAC0E00A141D9 /* delegateDetails.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = delegateDetails.json; sourceTree = "<group>"; };
+		81466842232FB22900A141D9 /* getBalance.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = getBalance.json; sourceTree = "<group>"; };
+		81466843232FB22A00A141D9 /* delegationValue.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = delegationValue.json; sourceTree = "<group>"; };
+		81466844232FB22A00A141D9 /* transactionList.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = transactionList.json; sourceTree = "<group>"; };
+		81466845232FB22A00A141D9 /* canDelegation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = canDelegation.json; sourceTree = "<group>"; };
+		81466846232FB22B00A141D9 /* delegateRecord.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = delegateRecord.json; sourceTree = "<group>"; };
 		8148F01421BA0E1600045546 /* BaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseService.swift; sourceTree = "<group>"; };
 		814980F32191393C009F99EE /* SharedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedView.swift; sourceTree = "<group>"; };
 		814980F721913AA7009F99EE /* SharedCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SharedCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -534,7 +553,6 @@
 		81EE9A0521773B7F008DF8CB /* BaseNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseNavigationController.swift; sourceTree = "<group>"; };
 		81F1AFC522FADA2F00A74C00 /* WebCommonViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebCommonViewController.swift; sourceTree = "<group>"; };
 		81F5123C22FEE811005F3BDF /* DelegateModel+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DelegateModel+Extension.swift"; sourceTree = "<group>"; };
-		81F73C6B22AE306500368AF6 /* platon0_6_2Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = platon0_6_2Tests.swift; sourceTree = "<group>"; };
 		81FCCCD8217970580052FC29 /* UIView+Extenstions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extenstions.swift"; sourceTree = "<group>"; };
 		81FCCCDA2179B3F10052FC29 /* AppFramework.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFramework.swift; sourceTree = "<group>"; };
 		81FCCCE02179B6710052FC29 /* AssetNavigationBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetNavigationBarView.swift; sourceTree = "<group>"; };
@@ -995,6 +1013,7 @@
 			children = (
 				81E64A5C230528DD000F2E7C /* Resouces */,
 				81C88E0421746B39005F17F7 /* AppDelegate.swift */,
+				81466834232F3B4E00A141D9 /* AppDelegate+MonkeyTest.swift */,
 				81729BA623274C0200CBD72F /* PrefixHeader.pch */,
 				81C88E0B21746B3B005F17F7 /* Assets.xcassets */,
 				812D94A8218BEE1A002A48B0 /* Config */,
@@ -1478,9 +1497,17 @@
 		9ADE44DD217B1C64006F1C81 /* platonWalletTests */ = {
 			isa = PBXGroup;
 			children = (
+				81466845232FB22A00A141D9 /* canDelegation.json */,
+				81466846232FB22B00A141D9 /* delegateRecord.json */,
+				81466843232FB22A00A141D9 /* delegationValue.json */,
+				81466842232FB22900A141D9 /* getBalance.json */,
+				81466844232FB22A00A141D9 /* transactionList.json */,
+				81466840232FAC0E00A141D9 /* delegateDetails.json */,
+				8146683E232FAB4700A141D9 /* nodeDetails.json */,
+				8146683A232F986C00A141D9 /* nodelist.json */,
+				8146683C232FA94300A141D9 /* listDelegateGroupByAddr.json */,
 				9ADE44DE217B1C64006F1C81 /* platonWalletTests.swift */,
 				9ADE44E6217B1D97006F1C81 /* WalletServiceTests.swift */,
-				81F73C6B22AE306500368AF6 /* platon0_6_2Tests.swift */,
 				8184BB5E2325EDD000B5D3E1 /* platon071Tests.swift */,
 				9ADE44E0217B1C64006F1C81 /* Info.plist */,
 			);
@@ -1664,6 +1691,7 @@
 				81C88E1121746B3B005F17F7 /* Sources */,
 				81C88E1221746B3B005F17F7 /* Frameworks */,
 				81C88E1321746B3B005F17F7 /* Resources */,
+				8613A955262701AA07F2B53F /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1817,6 +1845,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8146684A232FB22B00A141D9 /* canDelegation.json in Resources */,
+				8146683D232FA94300A141D9 /* listDelegateGroupByAddr.json in Resources */,
+				81466849232FB22B00A141D9 /* transactionList.json in Resources */,
+				81466848232FB22B00A141D9 /* delegationValue.json in Resources */,
+				81466841232FAC0E00A141D9 /* delegateDetails.json in Resources */,
+				8146683F232FAB4700A141D9 /* nodeDetails.json in Resources */,
+				8146684B232FB22B00A141D9 /* delegateRecord.json in Resources */,
+				81466847232FB22B00A141D9 /* getBalance.json in Resources */,
+				8146683B232F986C00A141D9 /* nodelist.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1839,12 +1876,14 @@
 				"${BUILT_PRODUCTS_DIR}/Localize-Swift/Localize_Swift.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/MJRefresh/MJRefresh.framework",
+				"${BUILT_PRODUCTS_DIR}/OHHTTPStubs/OHHTTPStubs.framework",
 				"${BUILT_PRODUCTS_DIR}/RTRootNavigationController/RTRootNavigationController.framework",
 				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
 				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/ScryptSwift/ScryptSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 				"${BUILT_PRODUCTS_DIR}/Spring/Spring.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftMonkeyPaws/SwiftMonkeyPaws.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftReorder/SwiftReorder.framework",
 				"${BUILT_PRODUCTS_DIR}/SwipeCellKit/SwipeCellKit.framework",
 				"${BUILT_PRODUCTS_DIR}/TrezorCrypto/TrezorCrypto.framework",
@@ -1863,12 +1902,14 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Localize_Swift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MJRefresh.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OHHTTPStubs.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RTRootNavigationController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ScryptSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Spring.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftMonkeyPaws.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftReorder.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwipeCellKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TrezorCrypto.framework",
@@ -1915,6 +1956,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8613A955262701AA07F2B53F /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-platonWalletUITests/Pods-platonWalletUITests-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/SwiftMonkey/SwiftMonkey.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftMonkey.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-platonWalletUITests/Pods-platonWalletUITests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		C31AF10F43E8BB7D8E3F3589 /* [CP] Check Pods Manifest.lock */ = {
@@ -2005,6 +2068,7 @@
 				81FCCCDB2179B3F10052FC29 /* AppFramework.swift in Sources */,
 				9A11FC482181E90C002D9A96 /* LeftAlignLayout.swift in Sources */,
 				81926A07231DFEC500CAF498 /* RemoteVersion.swift in Sources */,
+				81466835232F3B4E00A141D9 /* AppDelegate+MonkeyTest.swift in Sources */,
 				812A7ED9219EA6A900BE9C1C /* WalletManagerDetailViewController.swift in Sources */,
 				8159690322E6FF910085195C /* StakingPageTabStripViewController.swift in Sources */,
 				9ADE4519217F0ADB006F1C81 /* ImportWalletHeaderView.swift in Sources */,
@@ -2212,7 +2276,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8184BB5F2325EDD000B5D3E1 /* platon071Tests.swift in Sources */,
-				81F73C6C22AE306500368AF6 /* platon0_6_2Tests.swift in Sources */,
 				9ADE44E7217B1D97006F1C81 /* WalletServiceTests.swift in Sources */,
 				9ADE44DF217B1C64006F1C81 /* platonWalletTests.swift in Sources */,
 			);
@@ -2441,6 +2504,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = JL97B8WL3X;
 				INFOPLIST_FILE = platonWalletUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2461,6 +2525,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = JL97B8WL3X;
 				INFOPLIST_FILE = platonWalletUITests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

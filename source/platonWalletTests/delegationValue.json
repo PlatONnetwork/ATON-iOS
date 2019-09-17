@@ -1,0 +1,11 @@
+{
+	"errMsg": "�ɹ�",
+	"code": 0,
+	"data": [{
+		"stakingBlockNum": "1062",
+		"redeem": "0",
+		"locked": "0",
+		"unLocked": "0",
+		"released": "11000000000000000000"
+	}]
+}
