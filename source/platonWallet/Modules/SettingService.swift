@@ -57,7 +57,7 @@ class SettingService {
     }
     
     static func getCurrentNodeURLString() -> String{
-        
+
         if SettingService.shareInstance.currentNodeURL == nil{
             SettingService.shareInstance.currentNodeURL = SettingService.shareInstance.getSelectedNodes()?.nodeURLStr
         }
@@ -70,6 +70,10 @@ class SettingService {
     
     
     static func getCentralizationURL() -> String {
+
+        return AppFramework.sharedInstance.AppEnvConfig.getConfigURLInfo().CenterRPCURL
+
+        /*
         let testCentralizationURL =  AppConfig.ServerURL.HOST.TESTNET + AppConfig.ServerURL.PATH
         let devCentralizationURL = AppConfig.ServerURL.HOST.DEVNET + AppConfig.ServerURL.PATH
         let uatCentralizationURL =  AppConfig.ServerURL.HOST.UATNET + AppConfig.ServerURL.PATH
@@ -85,6 +89,8 @@ class SettingService {
         } else {
             return devCentralizationURL
         }
+         */
+
     }
     
     func getNodes() -> [NodeInfo] {

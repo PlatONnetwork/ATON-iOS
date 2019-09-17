@@ -5,7 +5,6 @@
 //  Created by matrixelement on 2018/10/24.
 //  Copyright © 2018 ju. All rights reserved.
 //
-
 import Foundation
 import Localize_Swift
 import BigInt
@@ -102,7 +101,7 @@ struct CommonService {
                 return (false, Localized("wallet_pswConfirmInput_mismatch_tips"))
             }
         }
-
+        
         return (true, "")
         
     }
@@ -130,10 +129,10 @@ struct CommonService {
         
         var valid = true
         var msg = ""
-//        if text.length == 0 {
-//            msg = Localized("transferVC_amout_empty_tip")
-//            valid = false
-//        }
+        //        if text.length == 0 {
+        //            msg = Localized("transferVC_amout_empty_tip")
+        //            valid = false
+        //        }
         
         if (!(text.isValidInputAmoutWith8DecimalPlaceAndNonZero())){
             msg = Localized("transferVC_amout_amout_input_error")

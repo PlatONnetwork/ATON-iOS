@@ -11,14 +11,16 @@ import RealmSwift
 import Localize_Swift
 
 
+
 //private let defalutNodes = [
-//    (nodeURL: AppConfig.NodeURL.DefaultNodeURL_Alpha_V071, desc: "SettingsVC_nodeSet_defaultTestNetwork_Amigo_des", isSelected: true),
+//    (nodeURL: AppFramework.sharedInstance.AppEnvConfig.getConfigURLInfo().NodeRPCURL, desc: "SettingsVC_nodeSet_defaultTestNetwork_Amigo_des", isSelected: true),
 //]
-//
+
 //private let defalutNodes = [
 //    (nodeURL: AppConfig.NodeURL.DefaultNodeURL_UAT, desc: "SettingsVC_nodeSet_defaultTestNetwork_des", isSelected: true),
 //    (nodeURL: AppConfig.NodeURL.DefaultNodeURL_PRODUCT, desc: "SettingsVC_nodeSet_defaultProductNetwork_des", isSelected: true)
 //]
+
 
 class NodeInfoPersistence {
     
