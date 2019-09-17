@@ -195,7 +195,7 @@ class AssetSectionViewV060: UIView {
     
     func maskPositionWithIndex(index: Int) -> CGRect{
         
-        return .zero
+//        return .zero
         
         var label : UILabel?
         if index == 0{

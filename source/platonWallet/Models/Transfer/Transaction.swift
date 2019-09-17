@@ -233,8 +233,9 @@ class Transaction : Object, Decodable {
     var reportType: String?
     var version: String?
     var piDID: String?
-    var proposalType: String?
-    var vote: String?
+    var proposalType: ProposalType?
+    var voteProposalType: ProposalType?
+    var vote: VoteResultType?
     var unDelegation: String?
     var redeemStatus: RedeemStatus?
     
@@ -251,6 +252,7 @@ class Transaction : Object, Decodable {
                 "version",
                 "piDID",
                 "proposalType",
+                "voteProposalType",
                 "vote",
                 "unDelegation",
                 "redeemStatus"
@@ -282,6 +284,11 @@ class Transaction : Object, Decodable {
         case nodeName
         case nodeId
         case toType
+        case lockAddress
+        case proposalType
+        case voteProposalType
+        case piDID
+        case vote
     }
     
     required convenience init(from decoder: Decoder) throws {
@@ -315,6 +322,11 @@ class Transaction : Object, Decodable {
         nodeName = try? container.decode(String.self, forKey: .nodeName)
         nodeId = try? container.decode(String.self, forKey: .nodeId)
         toType = (try? container.decode(TransactionToType.self, forKey: .toType)) ?? .address
+        lockAddress = try? container.decode(String.self, forKey: .lockAddress)
+        proposalType = try? container.decode(ProposalType.self, forKey: .proposalType)
+        piDID = try? container.decode(String.self, forKey: .piDID)
+        vote = try? container.decode(VoteResultType.self, forKey: .vote)
+        voteProposalType = try? container.decode(ProposalType.self, forKey: .voteProposalType)
     }
 }
 
@@ -470,40 +482,47 @@ extension Transaction {
     }
 }
 
+enum ProposalType: Int, Decodable {
+    case text = 1
+    case version = 2
+    case parameter = 3
+    case cancel = 4
+    
+    public var localizedDesciption: String? {
+        switch self {
+        case .text:
+            return Localized("TransactionDetailVC_proposal_text")
+        case .version:
+            return Localized("TransactionDetailVC_proposal_upgrade")
+        case .parameter:
+            return Localized("TransactionDetailVC_proposal_parameter")
+        case .cancel:
+            return Localized("TransactionDetailVC_proposal_cancel")
+        }
+    }
+}
+
+enum VoteResultType: String, Decodable {
+    case VoteYes = "1"
+    case VoteNo = "2"
+    case VoteAbstain = "3"
+    
+    public var localizedDesciption: String? {
+        switch self {
+        case .VoteYes:
+            return Localized("TransactionDetailVC_proposal_voteyes")
+        case .VoteNo:
+            return Localized("TransactionDetailVC_proposal_voteno")
+        case .VoteAbstain:
+            return Localized("TransactionDetailVC_proposal_voteabstain")
+        }
+    }
+}
+
 enum RedeemStatus: String, Decodable {
     case redeeming = "1"
     case redeemSuccess = "2"
 }
-
-class VoteTicket: Decodable {
-    var price: Decimal?
-    var count: Int?
-    var nodeId: String?
-    var nodeName: String?
-    var deposit: String?
-}
-
-class VoteTicketInfo: Decodable {
-    var functionName: String?
-    var type: String?
-    var parameters: VoteTicket?
-}
-
-class CandidateDeposit: Decodable {
-    var owner: String?
-    var Extra: String?
-    var port: String?
-    var fee: String?
-    var host: String?
-    var nodeId: String?
-}
-
-class CandidateDepositInfo: Decodable {
-    var functionName: String?
-    var parameters: CandidateDeposit?
-    var type: String?
-}
-
 
 enum TransactionToType: String, Decodable {
     case contract

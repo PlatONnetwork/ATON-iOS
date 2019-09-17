@@ -17,12 +17,13 @@ class NodePersistence {
         RealmWriteQueue.async {
             autoreleasepool(invoking: {
                 let realm = RealmHelper.getNewRealm()
-                realm.beginWrite()
-                realm.delete(realm.objects(Node.self))
-                realm.add(nodes, update: true)
-                try? realm.commitWrite()
-                DispatchQueue.main.async {
-                    completion?()
+                let r = realm.objects(Node.self)
+                try? realm.write {
+                    realm.delete(r)
+                    realm.add(nodes, update: true)
+                    DispatchQueue.main.async {
+                        completion?()
+                    }
                 }
             })
         }

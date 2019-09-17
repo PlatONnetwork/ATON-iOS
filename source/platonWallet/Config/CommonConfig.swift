@@ -17,10 +17,15 @@ struct AppConfig {
     }
     
     struct NodeURL {
-        static let DefaultNodeURL_Alpha_V071 = ""
-//        static let DefaultNodeURL_Alpha_V071 = ""
-//        return "https://aton.test.platon.network/rpc"
-//        static let DefaultNodeURL_Alpha_V071 = ""
+        static let DefaultNodeURL_Alpha_V071 = ServerURL.HOST.TESTNET + "/rpc"
+        static let DefaultNodeURL_UAT = ServerURL.HOST.UATNET + "/rpc"
+        static let DefaultNodeURL_PRODUCT = ServerURL.HOST.PRODUCTNET + "/rpc"
+        
+        static let defaultNodesURL = [
+            (nodeURL: AppFramework.sharedInstance.AppEnvConfig.getConfigURLInfo().NodeRPCURL, desc: "SettingsVC_nodeSet_defaultTestNetwork_Amigo_des", isSelected: false)
+            //            (nodeURL: DefaultNodeURL_UAT, desc: "SettingsVC_nodeSet_defaultTestNetwork_des", isSelected: false),
+            //            (nodeURL: DefaultNodeURL_PRODUCT, desc: "SettingsVC_nodeSet_defaultProductNetwork_des", isSelected: false)
+        ]
     }
     
     struct TimerSetting {
@@ -71,6 +76,8 @@ struct AppConfig {
     
     struct ServerURL {
         struct HOST {
+            static let UATNET = ""
+            static let PRODUCTNET = ""
             static let TESTNET = ""
             static let DEVNET = ""
         }

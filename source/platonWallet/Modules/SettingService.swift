@@ -44,7 +44,7 @@ class SettingService {
         }
         
         let semaphore = DispatchSemaphore(value: 0)
-        var URLString : String = AppFramework.sharedInstance.AppEnvConfig.getConfigURLInfo().NodeRPCURL
+        var URLString : String = AppConfig.NodeURL.defaultNodesURL.first!.nodeURL
         DispatchQueue.main.async {
             URLString = self.getCurrentNodeURLString()
             semaphore.signal()
@@ -63,24 +63,34 @@ class SettingService {
         }
         
         guard let nodeURL = SettingService.shareInstance.currentNodeURL else{
-            return AppFramework.sharedInstance.AppEnvConfig.getConfigURLInfo().NodeRPCURL
+            return AppConfig.NodeURL.defaultNodesURL.first!.nodeURL
         }
         return nodeURL
     }
     
     
     static func getCentralizationURL() -> String {
+
         return AppFramework.sharedInstance.AppEnvConfig.getConfigURLInfo().CenterRPCURL
+
+        /*
+        let testCentralizationURL =  AppConfig.ServerURL.HOST.TESTNET + AppConfig.ServerURL.PATH
+        let devCentralizationURL = AppConfig.ServerURL.HOST.DEVNET + AppConfig.ServerURL.PATH
+        let uatCentralizationURL =  AppConfig.ServerURL.HOST.UATNET + AppConfig.ServerURL.PATH
+        let productCentralizationURL =  AppConfig.ServerURL.HOST.PRODUCTNET + AppConfig.ServerURL.PATH
         
-//        let CentralizationURL =  AppConfig.ServerURL.HOST.TESTNET + AppConfig.ServerURL.PATH
-//        let DebugCentralizationURL = AppConfig.ServerURL.HOST.DEVNET + AppConfig.ServerURL.PATH
-//        
-//        let url = self.getCurrentNodeURLString()
-//        if url == "http://192.168.9.190:1000/rpc" {
-//            return CentralizationURL
-//        } else {
-//            return DebugCentralizationURL
-//        }
+        let url = self.getCurrentNodeURLString()
+        if url == AppConfig.NodeURL.DefaultNodeURL_Alpha_V071 {
+            return testCentralizationURL
+        } else if url == AppConfig.NodeURL.DefaultNodeURL_UAT {
+            return uatCentralizationURL
+        } else if url == AppConfig.NodeURL.DefaultNodeURL_PRODUCT {
+            return productCentralizationURL
+        } else {
+            return devCentralizationURL
+        }
+         */
+
     }
     
     func getNodes() -> [NodeInfo] {

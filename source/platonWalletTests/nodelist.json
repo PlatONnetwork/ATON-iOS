@@ -1,0 +1,23 @@
+{
+	"errMsg": "�ɹ�",
+	"code": 0,
+	"data": [{
+		"nodeId": "0x2ed01bb6d18fbaec826e062039f569e87e5ee09fcc664dd8e28356568caf93c3b2e859726b010049fc5d8e3631d86e5c104afcaf9ecdbc1760197784e5f055bd",
+		"ranking": 1,
+		"name": "platon.node.1",
+		"deposit": "10000000000000000000000000",
+		"url": "",
+		"ratePA": "0",
+		"nodeStatus": "Active",
+		"isInit": true
+	}, {
+		"nodeId": "0x9e0b0968fd8977e41d321bc1f9d653f169368581028fd08c9419ddf28c1be1286aae51539aa416c2041261ae8aca4f3e2cd010dbbb1c79e14fdf432b38b8234a",
+		"ranking": 2,
+		"name": "platon.node.3",
+		"deposit": "10000000000000000000000000",
+		"url": "",
+		"ratePA": "0",
+		"nodeStatus": "Active",
+		"isInit": true
+	}]
+}

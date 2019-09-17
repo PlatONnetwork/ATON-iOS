@@ -10,9 +10,9 @@ read -p "Please input:" inputNumber
 echo
 
 beforeCommit(){
-    cp EnvConfig.swift EnvConfig-tmp.swift
-    cp CommonService.swift CommonService-tmp.swift
-    cp CommonConfig.swift CommonConfig-tmp.swift
+    # cp EnvConfig.swift EnvConfig-tmp.swift
+    # cp CommonService.swift CommonService-tmp.swift
+    # cp CommonConfig.swift CommonConfig-tmp.swift
     sed -i '*.bak' 's/ = "\(.*\)"/ = ""/g' EnvConfig.swift
     sed -i '*.bak' 's/ = "\(.*\)"/ = ""/g' CommonService.swift
     sed -i '*.bak' 's/ = "\(.*\)"/ = ""/g' CommonConfig.swift

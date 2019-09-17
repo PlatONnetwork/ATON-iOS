@@ -1,0 +1,20 @@
+{
+	"errMsg": "�ɹ�",
+	"code": 0,
+	"data": {
+		"nodeId": "0x2ed01bb6d18fbaec826e062039f569e87e5ee09fcc664dd8e28356568caf93c3b2e859726b010049fc5d8e3631d86e5c104afcaf9ecdbc1760197784e5f055bd",
+		"name": "platon.node.1",
+		"deposit": "10000000000000000000000000",
+		"website": "www.platon.network",
+		"intro": "The PlatON Node",
+		"url": "",
+		"nodeStatus": "Active",
+		"punishNumber": 0,
+		"delegateSum": "0",
+		"delegate": "0",
+		"blockOutNumber": 50745,
+		"blockRate": "7800.0",
+		"ratePA": "0",
+		"isInit": true
+	}
+}
