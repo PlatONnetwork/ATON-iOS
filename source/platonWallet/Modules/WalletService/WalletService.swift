@@ -505,10 +505,3 @@ extension WalletService {
         }
     }
 }
-
-//MARK: - Notification
-
-extension WalletService{
-    
-   
-}

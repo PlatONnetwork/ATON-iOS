@@ -103,11 +103,11 @@ extension Transaction {
         
         switch direction {
         case .Sent:
-            return "-" + valueDescription!.ATPSuffix()
+            return "-" + valueDescription!
         case .Receive:
-            return "+" + valueDescription!.ATPSuffix()
+            return "+" + valueDescription!
         default:
-            return "-" + valueDescription!.ATPSuffix()
+            return "-" + valueDescription!
         }
     }
     
@@ -145,7 +145,15 @@ extension Transaction {
     
     var pipString: String {
         guard let pip = piDID else { return "--" }
-        return "eip-" + pip
+        return pip
+    }
+    
+    var versionDisplayString: String {
+        guard let ver = version, let versionUInt32 = UInt32(ver) else { return "--" }
+        let versionUInt32Bytes = versionUInt32.makeBytes()
+        guard versionUInt32Bytes.count == 4 else { return "--" }
+        let versionString = String(format: "V%d.%d.%d", versionUInt32Bytes[1],versionUInt32Bytes[2],versionUInt32Bytes[3])
+        return versionString
     }
 }
 

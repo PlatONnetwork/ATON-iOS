@@ -140,6 +140,7 @@
 "TransactionDetailVC_proposal_voteyes" = "VoteYes";
 "TransactionDetailVC_proposal_voteno" = "VoteNo";
 "TransactionDetailVC_proposal_voteabstain" = "VoteAbstain";
+"TransactionDetailVC_doublesign" = "区块双签";
 
 //qr scan
 "QRScanerVC_nav_title" = "扫描";

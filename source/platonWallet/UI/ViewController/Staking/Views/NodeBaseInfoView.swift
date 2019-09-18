@@ -92,27 +92,38 @@ class NodeBaseInfoView: UIView {
             make.leading.equalTo(nodeNameLabel.snp.leading)
         }
         
+        let rateView = UIView()
+        rateView.isUserInteractionEnabled = false
+        addSubview(rateView)
+        rateView.snp.makeConstraints { make in
+            make.top.equalTo(nodeNameLabel)
+            make.leading.greaterThanOrEqualTo(statusButton.snp.trailing).offset(5)
+            make.trailing.equalToSuperview().offset(-10)
+        }
+        
+        
+        rateLabel.textAlignment = .center
         rateLabel.font = UIFont.systemFont(ofSize: 17, weight: UIFont.Weight.medium)
         rateLabel.textColor = common_blue_color
         rateLabel.text = "0.00%"
-        rateLabel.textAlignment = .right
-        rateLabel.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .horizontal)
-        addSubview(rateLabel)
+//        rateLabel.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .horizontal)
+        rateView.addSubview(rateLabel)
         rateLabel.snp.makeConstraints { make in
-            make.top.equalTo(nodeNameLabel)
-            make.leading.greaterThanOrEqualTo(statusButton.snp.trailing).offset(5)
-            make.trailing.equalToSuperview().offset(-20)
+            make.trailing.leading.equalToSuperview()
+            make.top.equalToSuperview()
         }
         
         let rateTitleLabel = UILabel()
+        rateTitleLabel.textAlignment = .center
         rateTitleLabel.font = .systemFont(ofSize: 11)
         rateTitleLabel.textColor = common_lightLightGray_color
         rateTitleLabel.text = Localized("staking_validator_delegate_rate_about")
-        addSubview(rateTitleLabel)
+        rateView.addSubview(rateTitleLabel)
         rateTitleLabel.snp.makeConstraints { make in
-            make.centerX.equalTo(rateLabel)
+            make.trailing.leading.equalToSuperview()
             make.top.equalTo(rateLabel.snp.bottom).offset(4)
-            make.leading.equalTo(nodeAddressLabel.snp.trailing)
+            make.bottom.equalToSuperview()
+//            make.leading.equalTo(nodeAddressLabel.snp.trailing)
         }
         
         let delegateBackgroundView = UIView()

@@ -265,9 +265,9 @@ final class DropdownTableViewCell: UITableViewCell {
         containerView.backgroundColor = .white
         contentView.addSubview(containerView)
         containerView.snp.makeConstraints { make in
+            make.top.equalToSuperview()
             make.leading.equalToSuperview()
             make.trailing.equalToSuperview()
-            make.top.equalToSuperview().offset(16)
             make.height.equalTo(60)
             make.bottom.equalToSuperview()
         }

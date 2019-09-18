@@ -37,7 +37,7 @@ public enum PopupMenuTableArrowPosition {
     case right
 }
 
-public let menuWidth : CGFloat = 175
+public let menuWidth : CGFloat = 135
 
 
 public class PopupMenuTable: UIView {

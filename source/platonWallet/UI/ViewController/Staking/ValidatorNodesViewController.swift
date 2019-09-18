@@ -27,6 +27,7 @@ class ValidatorNodesViewController: ButtonBarPagerTabStripViewController, Indica
         button.semanticContentAttribute = UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft ? .forceLeftToRight : .forceRightToLeft
         button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
         button.titleLabel?.adjustsFontSizeToFitWidth = true
+        button.titleLabel?.baselineAdjustment = .alignCenters
         button.layer.cornerRadius = 11.0
         button.layer.borderColor = common_blue_color.cgColor
         button.layer.borderWidth = 1 / UIScreen.main.scale
@@ -59,7 +60,7 @@ class ValidatorNodesViewController: ButtonBarPagerTabStripViewController, Indica
         settings.style.buttonBarRightContentInset = view.bounds.width/4.0
         
         
-        changeCurrentIndexProgressive = { [weak self] (oldCell: PTSButtonCell?, newCell: PTSButtonCell?, progressPercentage: CGFloat, changeCurrentIndex: Bool, animated: Bool) -> Void in
+        changeCurrentIndexProgressive = { (oldCell: PTSButtonCell?, newCell: PTSButtonCell?, progressPercentage: CGFloat, changeCurrentIndex: Bool, animated: Bool) -> Void in
             guard changeCurrentIndex == true else { return }
             oldCell?.label.textColor = .black
             newCell?.label.textColor = .white

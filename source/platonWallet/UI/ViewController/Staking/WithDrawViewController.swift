@@ -172,6 +172,8 @@ extension WithDrawViewController: UITableViewDelegate, UITableViewDataSource {
                 (walletStyle.wallets.count <= 1) ? nil :
                 indexPath.row == 0 ? UIImage(named: "3.icon_ drop-down") :
                 indexPath.row == walletStyle.selectedIndex + 1 ? UIImage(named: "iconApprove") : nil
+            cell.isTopCell = indexPath.row == 0
+            
             cell.cellDidHandle = { [weak self] (_ cell: WalletTableViewCell) in
                 guard let self = self, walletStyle.wallets.count > 1 else { return }
                 self.walletCellDidHandle(cell)
@@ -182,6 +184,7 @@ extension WithDrawViewController: UITableViewDelegate, UITableViewDataSource {
             cell.setupBalanceData(balanceStyle.balance(for: indexPath.row))
             cell.bottomlineV.isHidden = (indexPath.row == 0 || indexPath.row == balanceStyle.cellCount - 1)
             cell.rightImageView.image = indexPath.row == 0 ? UIImage(named: "3.icon_ drop-down") : indexPath.row == balanceStyle.selectedIndex + 1 ? UIImage(named: "iconApprove") : nil
+            cell.isTopCell = indexPath.row == 0
             
             cell.cellDidHandle = { [weak self] (_ cell: WalletBalanceTableViewCell) in
                 guard let self = self else { return }

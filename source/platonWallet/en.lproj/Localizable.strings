@@ -146,6 +146,7 @@
 "TransactionDetailVC_proposal_voteyes" = "VoteYes";
 "TransactionDetailVC_proposal_voteno" = "VoteNo";
 "TransactionDetailVC_proposal_voteabstain" = "VoteAbstain";
+"TransactionDetailVC_doublesign" = "Double Siging";
 
 //qr scan
 "QRScanerVC_nav_title" = "QR Scan";

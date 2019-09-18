@@ -111,26 +111,35 @@ class NodeTableViewCell: UITableViewCell {
             make.trailing.equalToSuperview().offset(-100)
         }
         
+        let rateView = UIView()
+        rateView.isUserInteractionEnabled = false
+        containerView.addSubview(rateView)
+        rateView.snp.makeConstraints { make in
+            make.top.equalTo(nameLabel)
+            make.leading.greaterThanOrEqualTo(statusButton.snp.trailing).offset(5)
+            make.trailing.equalToSuperview().offset(-10)
+        }
+
         rateLabel.font = UIFont.systemFont(ofSize: 17, weight: UIFont.Weight.medium)
         rateLabel.textColor = common_blue_color
         rateLabel.text = "0.00%"
-        rateLabel.textAlignment = .right
-        rateLabel.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .horizontal)
-        containerView.addSubview(rateLabel)
+        rateLabel.textAlignment = .center
+        rateView.addSubview(rateLabel)
         rateLabel.snp.makeConstraints { make in
-            make.top.equalTo(nameLabel)
-            make.leading.greaterThanOrEqualTo(statusButton.snp.trailing).offset(5)
-            make.trailing.equalToSuperview().offset(-20)
+            make.leading.trailing.equalToSuperview()
+            make.top.equalToSuperview()
         }
         
         let rateTitleLabel = UILabel()
+        rateTitleLabel.textAlignment = .center
         rateTitleLabel.font = .systemFont(ofSize: 11)
         rateTitleLabel.textColor = common_lightLightGray_color
         rateTitleLabel.localizedText = "staking_validator_delegate_rate_about"
-        containerView.addSubview(rateTitleLabel)
+        rateView.addSubview(rateTitleLabel)
         rateTitleLabel.snp.makeConstraints { make in
-            make.centerX.equalTo(rateLabel)
             make.top.equalTo(rateLabel.snp.bottom).offset(4)
+            make.bottom.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
         }
         
         

@@ -112,12 +112,12 @@ class TransactionDetailViewController: BaseViewController {
             
             if txType == .stakingCreate ||
                txType == .declareVersion {
-                listData.append((title: Localized("TransactionDetailVC_version"), value: tx.version ?? "--"))
+                listData.append((title: Localized("TransactionDetailVC_version"), value: tx.versionDisplayString))
             }
             
             if txType != .declareVersion {
                 if txType == .reportDuplicateSign {
-                    listData.append((title: Localized("TransactionDetailVC_report_type"), value: tx.reportType ?? "--"))
+                    listData.append((title: Localized("TransactionDetailVC_report_type"), value: tx.reportType?.localizedDesciption ?? "--"))
                 } else {
                     if txType == .stakingWithdraw {
                         listData.append((title: Localized("TransactionDetailVC_return_amount"), value: tx.valueDescription?.displayForMicrometerLevel(maxRound: 8).ATPSuffix() ?? "--"))

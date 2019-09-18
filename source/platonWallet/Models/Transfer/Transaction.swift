@@ -230,7 +230,7 @@ class Transaction : Object, Decodable {
     @objc dynamic var nodeName: String? = ""
     @objc dynamic var nodeId: String? = ""
     var lockAddress: String?
-    var reportType: String?
+    var reportType: ReportType?
     var version: String?
     var piDID: String?
     var proposalType: ProposalType?
@@ -289,6 +289,8 @@ class Transaction : Object, Decodable {
         case voteProposalType
         case piDID
         case vote
+        case version
+        case reportType
     }
     
     required convenience init(from decoder: Decoder) throws {
@@ -327,6 +329,8 @@ class Transaction : Object, Decodable {
         piDID = try? container.decode(String.self, forKey: .piDID)
         vote = try? container.decode(VoteResultType.self, forKey: .vote)
         voteProposalType = try? container.decode(ProposalType.self, forKey: .voteProposalType)
+        version = try? container.decode(String.self, forKey: .version)
+        reportType = try? container.decode(ReportType.self, forKey: .reportType)
     }
 }
 
@@ -498,6 +502,17 @@ enum ProposalType: Int, Decodable {
             return Localized("TransactionDetailVC_proposal_parameter")
         case .cancel:
             return Localized("TransactionDetailVC_proposal_cancel")
+        }
+    }
+}
+
+enum ReportType: String, Decodable {
+    case DoubleSign = "1"
+    
+    public var localizedDesciption: String? {
+        switch self {
+        case .DoubleSign:
+            return Localized("TransactionDetailVC_doublesign")
         }
     }
 }

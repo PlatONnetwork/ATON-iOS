@@ -195,4 +195,43 @@ class platonWalletTests: XCTestCase {
         
     }
     
+    func testSettingNodes() {
+        let nodes = SettingService.shareInstance.getNodes()
+        XCTAssert(nodes.count > 0, "nodes shoule have nodes")
+    }
+    
+    func testGetSelectedNode() {
+        let node = SettingService.shareInstance.getSelectedNodes()
+        XCTAssertNotNil(node, "selected node should be not nil")
+    }
+    
+    func testAddressBook() {
+        let addressInfo = AddressInfo()
+        addressInfo.addressType = 0
+        addressInfo.walletName = "addressbookwallet"
+        addressInfo.walletAddress = "0xa7074774f4e1e033c6cbd471ec072f7734144a0c"
+        AddressBookService.service.add(addressInfo: addressInfo)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            let wallet = AddressBookService.service.getAll().first(where: { $0.walletAddress?.lowercased() == "0xa7074774f4e1e033c6cbd471ec072f7734144a0c".lowercased() })
+            XCTAssertNotNil(wallet, "addressinfo should be not nil")
+        }
+    }
+    
+    func testDeleteAdddressInfo() {
+        let addressInfo = AddressInfo()
+        addressInfo.addressType = 0
+        addressInfo.walletName = "addressbookwallet"
+        addressInfo.walletAddress = "0xa7074774f4e1e033c6cbd471ec072f7734144a0c"
+        AddressBookService.service.add(addressInfo: addressInfo)
+        AddressBookService.service.delete(addressInfo: addressInfo)
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+            let wallet = AddressBookService.service.getAll().first(where: { $0.walletAddress?.lowercased() == "0xa7074774f4e1e033c6cbd471ec072f7734144a0c".lowercased() })
+            XCTAssertNil(wallet, "addressinfo should be nil")
+        }
+    }
+    
+    
+    
 }
