@@ -116,7 +116,7 @@ class TransactionService : BaseService{
                                 return
                             }
                             DispatchQueue.main.async {
-                                guard let status = dic?["Status"] as? Int else { return }
+                                guard let status = dic?["Code"] as? Int else { return }
                                 guard let txhash = newItem.txhash else { return }
                                 let blockNumber = String(receipt.blockNumber.quantity)
                                 let gasUsed = String(receipt.gasUsed.quantity)

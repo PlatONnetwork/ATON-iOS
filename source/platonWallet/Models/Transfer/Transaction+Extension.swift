@@ -98,7 +98,7 @@ extension Transaction {
     
     var amountTextString: String {
         if let valueStr = value, Int(valueStr) == 0 {
-            return valueDescription!.ATPSuffix()
+            return valueDescription!
         }
         
         switch direction {
