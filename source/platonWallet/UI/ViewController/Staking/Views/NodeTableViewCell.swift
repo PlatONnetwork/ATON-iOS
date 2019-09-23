@@ -41,6 +41,10 @@ class NodeTableViewCell: UITableViewCell {
         selectionStyle = .none
         backgroundColor = normal_background_color
         
+        let shadowView = UIView()
+        shadowView.backgroundColor = .white
+        contentView.addSubview(shadowView)
+        
         let containerView = UIButton()
         containerView.backgroundColor = .white
         containerView.addTarget(self, action: #selector(containerViewTapAction), for: .touchUpInside)
@@ -52,6 +56,18 @@ class NodeTableViewCell: UITableViewCell {
             make.height.equalTo(80)
             make.bottom.equalToSuperview()
         }
+        containerView.layer.cornerRadius = 2.0
+        containerView.layer.masksToBounds = true
+        
+        
+        shadowView.snp.makeConstraints { make in
+            make.edges.equalTo(containerView)
+        }
+        shadowView.layer.shadowColor = UIColor(rgb: 0x9ca7c2).cgColor
+        shadowView.layer.shadowRadius = 4.0
+        shadowView.layer.shadowOffset = CGSize(width: 2, height: 2)
+        shadowView.layer.shadowOpacity = 0.2
+        
         
         avatarIV.addMaskView(corners: .allCorners, cornerRadiiV: 21)
         avatarIV.image = UIImage(named: "walletAvatar_1")

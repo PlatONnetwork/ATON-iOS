@@ -102,6 +102,11 @@ class AssetSectionViewV060: UIView {
         
         balanceLabel.adjustsFontSizeToFitWidth = true
         balanceLabel.textColor = .black
+        
+        walletName.font = UIFont.boldSystemFont(ofSize: 16)
+        balanceLabel.font = UIFont.boldSystemFont(ofSize: 13)
+        lockedBalanceLabel.font = UIFont.boldSystemFont(ofSize: 12)
+        
     }
     
     @objc func tapGesture(_ gesture: UITapGestureRecognizer) {

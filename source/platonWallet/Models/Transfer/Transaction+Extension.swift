@@ -145,7 +145,7 @@ extension Transaction {
     
     var pipString: String {
         guard let pip = piDID else { return "--" }
-        return pip
+        return "PIP-" + pip
     }
     
     var versionDisplayString: String {

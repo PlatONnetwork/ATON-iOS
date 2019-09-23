@@ -446,44 +446,6 @@ extension Transaction {
             }
         }
     }
-    
-    func copyTransaction() -> Transaction {
-        let ts = Transaction()
-        ts.txhash = self.txhash
-        ts.nonce = self.nonce
-        ts.blockHash = self.blockHash
-        ts.blockNumber = self.blockNumber
-        ts.from = self.from
-        ts.to = self.to
-        ts.value = self.value
-        ts.gasPrice = self.gasPrice
-        ts.memo = self.memo
-        ts.input = self.input
-        ts.confirmTimes = self.confirmTimes
-        ts.createTime = self.createTime
-        ts.transactionType = self.transactionType
-        ts.extra = self.extra
-        ts.nodeURLStr = self.nodeURLStr
-        ts.sequence = self.sequence
-        ts.txType = self.txType
-        ts.actualTxCost = self.actualTxCost
-        ts.transactionIndex = self.transactionIndex
-        ts.txReceiptStatus = self.txReceiptStatus
-        ts.senderAddress = self.senderAddress
-        ts.toType = self.toType
-        ts.direction = self.direction
-        ts.nodeName = self.nodeName
-        ts.nodeId = self.nodeId
-        ts.lockAddress = self.lockAddress
-        ts.reportType = self.reportType
-        ts.version = self.version
-        ts.piDID = self.piDID
-        ts.proposalType = self.proposalType
-        ts.vote = self.vote
-        ts.unDelegation = self.unDelegation
-        ts.redeemStatus = self.redeemStatus
-        return ts
-    }
 }
 
 enum ProposalType: Int, Decodable {

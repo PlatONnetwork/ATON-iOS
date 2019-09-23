@@ -42,7 +42,7 @@ class AssetTransactionViewControllerV060: BaseViewController, EmptyDataSetDelega
     
     var walletAddress : String?
     
-    var transactionsTimer: Timer? = nil
+    var pollingTimer: Timer? = nil
     
     var assetHeaderHide = false
     
@@ -86,6 +86,7 @@ class AssetTransactionViewControllerV060: BaseViewController, EmptyDataSetDelega
         NotificationCenter.default.addObserver(self, selector: #selector(willDeleteWallet(_:)), name: Notification.Name.ATON.WillDeleateWallet, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(updateWalletList), name: Notification.Name.ATON.updateWalletList, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(nodeDidSwitch), name: Notification.Name(NodeStoreService.didSwitchNodeNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(pollingWalletTransactions), name: Notification.Name.ATON.UpdateTransactionList, object: nil)
         
         refreshFooterView.loadMoreTapHandle = { [weak self] in
             self?.goTransactionList()
@@ -122,9 +123,13 @@ extension AssetTransactionViewControllerV060{
     }
     
     func commonInit(){
-        if transactionsTimer == nil {
-            transactionsTimer = Timer.scheduledTimer(timeInterval:TimeInterval(AppConfig.TimerSetting.notPendingTransactionPollingTimerInterval), target: self, selector: #selector(pollingWalletTransactions), userInfo: nil, repeats: true)
+        if pollingTimer == nil {
+            pollingTimer = Timer.scheduledTimer(timeInterval:TimeInterval(AppConfig.TimerSetting.balancePollingTimerInterval), target: self, selector: #selector(pollingGetBalance), userInfo: nil, repeats: true)
         }
+    }
+    
+    @objc func pollingGetBalance() {
+        AssetService.sharedInstace.fetchWalletBalanceForV7(nil)
     }
     
     func refreshPendingData() {
@@ -143,7 +148,7 @@ extension AssetTransactionViewControllerV060{
         guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return [] }
         var transactions = TransferPersistence.getAllPendingTransactionsByAddress(from: selectedAddress)
         transactions.txSort()
-        return transactions.detached
+        return transactions
     }
     
     //MARK: - Notification

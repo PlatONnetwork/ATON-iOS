@@ -42,7 +42,7 @@
                     </userDefinedRuntimeAttributes>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sF2-8d-Z37" customClass="PButton" customModule="platonWallet" customModuleProvider="target">
-                    <rect key="frame" x="16" y="613" width="343" height="40"/>
+                    <rect key="frame" x="16" y="603" width="343" height="40"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="IW6-SE-3ak"/>
@@ -68,7 +68,7 @@
             <constraints>
                 <constraint firstItem="pX1-O0-KaG" firstAttribute="top" secondItem="qff-mh-Ehg" secondAttribute="bottom" constant="13" id="6WF-zS-FwW"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="qff-mh-Ehg" secondAttribute="trailing" constant="20" id="AyJ-vF-UMZ"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="sF2-8d-Z37" secondAttribute="bottom" constant="14" id="FZj-c3-Q6k"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="sF2-8d-Z37" secondAttribute="bottom" constant="24" id="FZj-c3-Q6k"/>
                 <constraint firstItem="pX1-O0-KaG" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="U1b-43-leu"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="1zq-2u-3eP" secondAttribute="trailing" constant="16" id="Xy7-GL-o7s"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="pX1-O0-KaG" secondAttribute="trailing" constant="20" id="i3x-Hc-ZDd"/>

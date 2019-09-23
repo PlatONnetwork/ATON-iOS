@@ -333,8 +333,7 @@ extension WithDrawViewController {
                         guard let self = self else { return }
                         transaction.gasUsed = self.estimateUseGas?.description
                         transaction.nodeName = self.currentNode?.name
-                        let newTransaction = transaction.copyTransaction()
-                        TransferPersistence.add(tx: newTransaction)
+                        TransferPersistence.add(tx: transaction)
                         if index == self.delegateValue.count - 1 {
                             self.doShowTransactionDetail(transaction)
                         }

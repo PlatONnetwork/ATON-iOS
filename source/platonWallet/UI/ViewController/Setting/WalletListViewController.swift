@@ -167,8 +167,6 @@ extension WalletListViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableViewDidFinishReordering(_ tableView: UITableView, from initialSourceIndexPath: IndexPath, to finalDestinationIndexPath: IndexPath){
-        print("initialSourceIndexPath:\(initialSourceIndexPath.row)")
-        print("finalDestinationIndexPath:\(finalDestinationIndexPath.row)")
         guard initialSourceIndexPath.row != finalDestinationIndexPath.row else {
             return
         }
@@ -176,13 +174,12 @@ extension WalletListViewController: UITableViewDelegate, UITableViewDataSource {
         let initItem = array[initialSourceIndexPath.row]
         array.remove(at: initialSourceIndexPath.row)
         array.insert(initItem, at: finalDestinationIndexPath.row)
-        RealmInstance?.beginWrite()
+        
         for (i,element) in array.enumerated(){
             if let classicWallet = element as? Wallet{
-                classicWallet.userArrangementIndex = i
+                WallletPersistence().updateWalletUserArrangementIndex(wallet: classicWallet, userArrangementIndex: i)
             }
         }
-        try? RealmInstance?.commitWrite()
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { 
             self.dataSource.removeAll()

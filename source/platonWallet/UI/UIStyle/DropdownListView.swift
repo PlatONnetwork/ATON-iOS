@@ -180,7 +180,7 @@ class DropdownListView: UIView {
     private func show() {
         walletsObject.isExpand = true
         UIView.animate(withDuration: 0.3, animations: {
-            self.tableViewHeightConstaint?.update(offset: min((AssetVCSharedData.sharedData.walletList.count + 2) * 50, 250))
+            self.tableViewHeightConstaint?.update(offset: min((AssetVCSharedData.sharedData.walletList.count + 1) * 60, 240))
             self.layoutIfNeeded()
         }) { (_) in
             self.showDimView()

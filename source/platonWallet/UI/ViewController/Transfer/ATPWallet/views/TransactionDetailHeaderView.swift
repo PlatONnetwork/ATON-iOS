@@ -23,7 +23,6 @@ class TransactionDetailHeaderView: UIView {
     public let copyToAddrBtn = CopyButton()
     
     public let detailContainer = UIView()
-    public let walletNameLabel = UILabel()
     public let fromAvatarIV = UIImageView()
     public let fromNameLabel = UILabel()
     public let toAvatarIV = UIImageView()
@@ -250,14 +249,6 @@ class TransactionDetailHeaderView: UIView {
             toLabel.text = tx.to
         } else {
             toLabel.text = "--"
-        }
-        
-        if let w = WalletService.sharedInstance.getWalletByAddress(address: tx.from ?? ""){
-            self.walletNameLabel.text = w.name
-        } else {
-            let walletNames = AddressBookService.service.getAll().filter { $0.walletAddress?.lowercased() == tx.from?.lowercased() }.map { $0.walletName }
-            guard walletNames.count > 0 else { return }
-            self.walletNameLabel.text = walletNames.first!
         }
         
         toNameLabel.text = tx.toNameString

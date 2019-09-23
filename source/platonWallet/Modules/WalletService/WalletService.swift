@@ -16,13 +16,12 @@ public final class WalletService {
     
     let keystoreFolderURL : URL
     
-    var walletStorge: WallletPersistence? {
-        didSet {
-            wallets = walletStorge?.getAll() ?? []
+    public var wallets: [Wallet] {
+        get {
+            return WallletPersistence.sharedInstance.getAll()
         }
+        set {}
     }
-    
-    public private(set) var wallets = [Wallet]()
     
     static let sharedInstance = WalletService()
     
@@ -40,11 +39,13 @@ public final class WalletService {
             try! fileManager.createDirectory(at: keystoreFolderURL, withIntermediateDirectories: false, attributes: nil)
         }
         
+//        wallets = WallletPersistence.sharedInstance.getAll()
+        
     }
      
     func refreshDB(){
         wallets.removeAll()
-        wallets.append(contentsOf: walletStorge?.getAll() ?? [])
+        wallets.append(contentsOf: WallletPersistence.sharedInstance.getAll())
     }
     
     func getWalletByAddress(address: String) -> Wallet?{
@@ -370,22 +371,21 @@ public final class WalletService {
         wallets.removeAll { (item) -> Bool in
             return item == wallet
         }
-        walletStorge?.delete(wallet: wallet)        
+        WallletPersistence.sharedInstance.delete(wallet: wallet)
         AssetVCSharedData.sharedData.willDeleteWallet(object: wallet as AnyObject)
         
     }
     
     public func updateWalletName(_ wallet: Wallet, name: String) {
-
-        walletStorge?.updateWalletName(wallet: wallet, name: name)
+        WallletPersistence.sharedInstance.updateWalletName(wallet: wallet, name: name)
     }
     
     public func updateWalletBalance(_ wallet: Wallet, balance: String) {
-        walletStorge?.updateWalletBalance(wallet: wallet, balance: balance)
+        WallletPersistence.sharedInstance.updateWalletBalance(wallet: wallet, balance: balance)
     }
     
     public func updateWalletLockedBalance(_ wallet: Wallet, value: String) {
-        walletStorge?.updateWalletLockedBalance(wallet: wallet, value: value)
+        WallletPersistence.sharedInstance.updateWalletLockedBalance(wallet: wallet, value: value)
     }
     
     
@@ -449,11 +449,7 @@ public final class WalletService {
 
         wallet.keystorePath = fileName
         
-        guard walletStorge != nil else {
-            fatalError("walletStorge must not be nil!")
-        }
-        
-        walletStorge?.save(wallet: wallet)
+        WallletPersistence.sharedInstance.save(wallet: wallet)
         
         wallets.removeAll { (item) -> Bool in
             item.uuid == wallet.uuid && item.nodeURLStr == wallet.nodeURLStr

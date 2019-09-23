@@ -15,8 +15,6 @@ public enum WalletType {
     case JointWallet
 }
 
-
-
 public enum WalletError: LocalizedError {
     case invalidKeyType
 }

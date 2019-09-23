@@ -121,7 +121,7 @@
                             </userDefinedRuntimeAttributes>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kOG-lR-uNM" customClass="PButton" customModule="platonWallet" customModuleProvider="target">
-                            <rect key="frame" x="24" y="220" width="327" height="44"/>
+                            <rect key="frame" x="24" y="248" width="327" height="44"/>
                             <color key="backgroundColor" red="0.062745098040000002" green="0.36078431370000003" blue="0.99607843139999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="44" id="ZBg-HS-nHP"/>
@@ -139,7 +139,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Zlw-r2-Yo3">
-                            <rect key="frame" x="24" y="280" width="327" height="44"/>
+                            <rect key="frame" x="24" y="294" width="327" height="44"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="44" id="9vv-QN-GH0"/>
                             </constraints>
@@ -171,7 +171,7 @@
                         <constraint firstItem="MOq-FT-xJb" firstAttribute="centerY" secondItem="fJv-Im-ZyI" secondAttribute="centerY" id="HM1-qR-r2s"/>
                         <constraint firstItem="kOG-lR-uNM" firstAttribute="top" secondItem="6ut-7D-pcM" secondAttribute="bottom" constant="24" id="Im6-qI-oOM"/>
                         <constraint firstItem="ejZ-Co-nZg" firstAttribute="top" secondItem="fJv-Im-ZyI" secondAttribute="bottom" constant="16" id="Jh3-tf-thF"/>
-                        <constraint firstAttribute="bottom" secondItem="Zlw-r2-Yo3" secondAttribute="bottom" constant="16" id="NKk-Qa-hqc"/>
+                        <constraint firstAttribute="bottom" secondItem="Zlw-r2-Yo3" secondAttribute="bottom" constant="2" id="NKk-Qa-hqc"/>
                         <constraint firstItem="0x1-wb-0QS" firstAttribute="leading" secondItem="UgC-Ev-brc" secondAttribute="leading" constant="16" id="NSv-vL-8JS"/>
                         <constraint firstItem="KKo-bN-pkS" firstAttribute="leading" secondItem="UgC-Ev-brc" secondAttribute="leading" constant="16" id="Oza-0x-kWf"/>
                         <constraint firstItem="kOG-lR-uNM" firstAttribute="leading" secondItem="UgC-Ev-brc" secondAttribute="leading" constant="24" id="PBm-KE-4fj"/>
@@ -196,7 +196,7 @@
                         <constraint firstItem="MOq-FT-xJb" firstAttribute="leading" secondItem="UgC-Ev-brc" secondAttribute="leading" constant="16" id="sXl-Tg-L7X"/>
                         <constraint firstItem="fJv-Im-ZyI" firstAttribute="top" secondItem="lQP-sU-K3e" secondAttribute="bottom" constant="24" id="t6P-8T-I0R"/>
                         <constraint firstItem="6ut-7D-pcM" firstAttribute="leading" secondItem="8vd-LM-MGN" secondAttribute="trailing" constant="16" id="vQW-vf-9aj"/>
-                        <constraint firstItem="Zlw-r2-Yo3" firstAttribute="top" secondItem="kOG-lR-uNM" secondAttribute="bottom" constant="16" id="xlT-1q-Y91"/>
+                        <constraint firstItem="Zlw-r2-Yo3" firstAttribute="top" secondItem="kOG-lR-uNM" secondAttribute="bottom" constant="2" id="xlT-1q-Y91"/>
                     </constraints>
                 </view>
             </subviews>

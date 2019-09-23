@@ -37,13 +37,13 @@ public enum PopupMenuTableArrowPosition {
     case right
 }
 
-public let menuWidth : CGFloat = 135
+public let menuWidth : CGFloat = 145
 
 
 public class PopupMenuTable: UIView {
     
     var menuCellSize: CGSize = CGSize(width: menuWidth, height: 48)
-    var menuTextFont: UIFont = .systemFont(ofSize: 12)
+    var menuTextFont: UIFont = .systemFont(ofSize: 14)
     var menuTextColor: UIColor = .black
     var menuBackgroundColor: UIColor = .white
     var menuLineColor: UIColor = UIColor(rgb: 0xEBEEF4)

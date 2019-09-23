@@ -21,7 +21,7 @@
 
 ///wallet common input placeholder
 "wallet_nameInput_placeholder" = "设置钱包名称";
-"wallet_pswInput_placeholder" = "设置钱包密码（不少于6位）";
+"wallet_pswInput_placeholder" = "不少于6位字符，建议混合大小写、数字、符号";
 "wallet_pswConfirmInput_placeholder" = "确认钱包密码";
 "wallet_psw_advise" = "*不少于6位字符，建议混合大小写、数字、特殊字符";
 
@@ -62,8 +62,6 @@
 "transferVC_cheaper_des" = "更便宜";
 "transferVC_faster_des" = "更快捷";
 "transferVC_estima_des" = "预计交易确认时间：";
-
-"transferVC_confirm_title" = "发送确认";
 
 "transferVC_confirm_PayInfo" = "交易信息：";
 "transferVC_confirm_From" = "发送钱包：";
@@ -106,7 +104,7 @@
 "TransactionDetailVC_nav_title" = "交易详情";
 
 "TransactionDetailVC_type" = "交易类别:";
-"TransactionDetailVC_time" = "提交时间:";
+"TransactionDetailVC_time" = "交易时间:";
 "TransactionDetailVC_value" = "数量:";
 "TransactionDetailVC_energon_price" = "交易手续费:";
 "TransactionDetailVC_Wallet" = "钱包:";
@@ -141,6 +139,7 @@
 "TransactionDetailVC_proposal_voteno" = "VoteNo";
 "TransactionDetailVC_proposal_voteabstain" = "VoteAbstain";
 "TransactionDetailVC_doublesign" = "区块双签";
+"TransactionDetailVC_transaction_hash" = "交易哈希:";
 
 //qr scan
 "QRScanerVC_nav_title" = "扫描";

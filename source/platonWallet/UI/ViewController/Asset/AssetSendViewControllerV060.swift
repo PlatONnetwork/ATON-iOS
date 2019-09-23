@@ -538,7 +538,9 @@ extension AssetSendViewControllerV060{
         if text == nil{
             return (true,"")
         }
-        let amountOfwei = BigUInt.mutiply(a: text!, by: ETHToWeiMultiplier)
+        guard let amountOfwei = BigUInt.mutiply(a: text!, by: ETHToWeiMultiplier) else {
+            return (true, "")
+        }
         var overflow = false
         
         let balance = getAvailbleBalance()
@@ -549,7 +551,7 @@ extension AssetSendViewControllerV060{
             self.resportSufficiency(isSufficient: false)
             return (false,Localized("transferVC_Insufficient_balance"))
         }
-        overflow = (newBalance?.subtractReportingOverflow(amountOfwei!, shiftedBy: 0))!
+        overflow = (newBalance?.subtractReportingOverflow(amountOfwei, shiftedBy: 0))!
         if overflow{
             //amount < balance
             self.resportSufficiency(isSufficient: false)

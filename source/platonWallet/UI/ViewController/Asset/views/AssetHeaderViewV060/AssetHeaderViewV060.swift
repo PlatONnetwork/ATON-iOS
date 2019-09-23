@@ -13,6 +13,7 @@ let AssetHidingStatus = "AssetHidingStatus"
 
 class AssetHeaderViewV060: UIView {
 
+    @IBOutlet weak var assetTipLabel: UILabel!
     @IBOutlet weak var assetLabel: UILabel!
     
     @IBOutlet weak var collectionView: UICollectionView!
@@ -29,9 +30,10 @@ class AssetHeaderViewV060: UIView {
  
         NotificationCenter.default.addObserver(self, selector: #selector(didUpdateAllAsset), name: Notification.Name.ATON.DidUpdateAllAsset, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(shouldUpdateWalletList), name: Notification.Name.ATON.updateWalletList, object: nil)
+        
+        assetTipLabel.font = UIFont.boldSystemFont(ofSize: 18)
+        assetLabel.font = UIFont.boldSystemFont(ofSize: 14)
     }
-    
-    
     
     func initSubviews() {
         collectionView.delegate = self

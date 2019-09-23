@@ -41,7 +41,7 @@ class Node: Object, Decodable {
     @objc dynamic var nodeStatus: String = NodeStatus.Active.rawValue
     @objc dynamic var isInit: Bool = false
     // 不同的链
-    @objc dynamic var chainUrl: String? = SettingService.getCurrentNodeURLString()
+    @objc dynamic var chainUrl: String? = ""
     
     required init() {
         super.init()

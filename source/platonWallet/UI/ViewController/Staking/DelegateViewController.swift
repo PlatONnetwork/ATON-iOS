@@ -312,9 +312,7 @@ extension DelegateViewController {
                     if let transaction = data as? Transaction {
                         transaction.gasUsed = self.estimateUseGas?.description
                         transaction.nodeName = self.currentNode?.name
-                        let newTransaction = transaction.copyTransaction()
-                        
-                        TransferPersistence.add(tx: newTransaction)
+                        TransferPersistence.add(tx: transaction)
                         self.doShowTransactionDetail(transaction)
                     }
                 case .fail(_, let errMsg):

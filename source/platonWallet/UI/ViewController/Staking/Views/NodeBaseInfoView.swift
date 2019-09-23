@@ -33,7 +33,7 @@ class NodeBaseInfoView: UIView {
         backgroundColor = .white
         
         let nodeBackgroundView = UIImageView()
-        nodeBackgroundView.image = UIImage(named: "bg_staking_wallet_img")?.resizableImage(withCapInsets: UIEdgeInsets(top: 3, left: 3, bottom: 3, right: 3))
+        nodeBackgroundView.image = UIImage(named: "bg_staking_wallet_img")?.resizableImage(withCapInsets: UIEdgeInsets(top: 3, left: 345, bottom: 3, right: 3))
         addSubview(nodeBackgroundView)
         nodeBackgroundView.snp.makeConstraints { make in
             make.leading.trailing.top.equalToSuperview()
@@ -93,6 +93,7 @@ class NodeBaseInfoView: UIView {
         }
         
         let rateView = UIView()
+        rateView.backgroundColor = .clear
         rateView.isUserInteractionEnabled = false
         addSubview(rateView)
         rateView.snp.makeConstraints { make in

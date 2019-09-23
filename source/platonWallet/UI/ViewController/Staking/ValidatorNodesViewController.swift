@@ -68,7 +68,7 @@ class ValidatorNodesViewController: ButtonBarPagerTabStripViewController, Indica
         
         super.viewDidLoad()
         containerView.isScrollEnabled = false
-        buttonBarView.frame = CGRect(x: buttonBarView.frame.minX, y: buttonBarView.frame.minY + UIApplication.shared.statusBarFrame.height, width: buttonBarView.frame.width, height: buttonBarView.frame.height)
+        buttonBarView.frame = CGRect(x: buttonBarView.frame.minX, y: buttonBarView.frame.minY + UIApplication.shared.statusBarFrame.height, width: buttonBarView.frame.width, height: buttonBarView.frame.height + 28)
         buttonBarView.addSubview(rankButton)
         rankButton.frame = CGRect(x: buttonBarView.frame.width - 67 - 10, y: (buttonBarView.frame.height - 22)/2.0, width: 67, height: 22)
         containerView.frame = CGRect(x: containerView.frame.minX, y: buttonBarView.frame.maxY, width: containerView.frame.width, height: containerView.frame.height - UIApplication.shared.statusBarFrame.height)
