@@ -114,7 +114,7 @@ class WithDrawViewController: BaseViewController {
     }
     
     private func initListData() {
-        let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).first { $0.key?.address.lowercased() == currentAddress?.lowercased() }
+        let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).first { $0.address.lowercased() == currentAddress?.lowercased() }
         guard
             let node = currentNode,
             let bStyle = balanceStyle,
@@ -292,8 +292,8 @@ extension WithDrawViewController {
         guard
             let walletObject = walletStyle,
             let balanceSelectedIndex = balanceStyle?.selectedIndex,
-            let nodeId = currentNode?.nodeId,
-            let currentAddress = walletObject.currentWallet.key?.address else { return }
+            let nodeId = currentNode?.nodeId else { return }
+        let currentAddress = walletObject.currentWallet.address
         
         var tempPrivateKey: String?
         

@@ -184,14 +184,18 @@
 "importKeystoreVC_keystoreInput_placeholder" = "Keystore content";
 "importKeystoreVC_nameInput_placeholder" = "Name of wallet";
 "importKeystoreVC_pswInput_placeholder" = "Wallet password";
-
+"importKeystoreVC_addressInput_placeholder" = "Wallet Address";
 "importKeystoreVC_keystore_empty_tips" = "Keystore can't be empty !";
+"importKeystoreVC_observed_empty_tips" = "Address can't be empty !";
+"importKeystoreVC_observed_invalid_tips" = "Invalid  Address";
+"importKeystoreVC_observed_existed_tips" = "Existed Address";
 
 //importWalletVC
 "importWalletVC_title" = "Import Wallet";
 "importWalletVC_tab_keystore" = "Keystore";
-"importWalletVC_tab_mnemonic" = "Mnemonic phrase";
+"importWalletVC_tab_mnemonic" = "Mnemonic";
 "importWalletVC_tab_privateKey" = "Private Key";
+"importWalletVC_tab_observedWallet" = "Observed";
 "importWalletVC_mnemonic_tips" = "Input the Mnemonic phrase. Please pay attention to case sensitivity and sequence.";
 "importWalletVC_mnemonic_textView_placeholder" = "Please separate each Mnemonic Phrase with a space";
 
@@ -202,6 +206,7 @@
 "importWalletVC_mnemonicInput_empty_tips" = "Mnemonic can't be empty !";
 "importWalletVC_privateKeyInput_empty_tips" = "PrivateKey can't be empty !";
 "importWalletVC_PasteButton" = "Paste";
+"importWalletVC_import_observed_title" = "Finish";
 
 //backupMnemonicVC
 "backupMnemonicVC_title" = "Backup Wallet";
@@ -327,6 +332,7 @@
 "Invalid mnemonic phrase" = "Invalid mnemonic phrase";
 "Invalid keystore" = "Invalid keystore";
 "Wallet already exists" = "Wallet already exists";
+"Invalid address" = "Invalid address";
 
 //Receive QR Code ViewController
 "ReceiveVC_nav_title" = "Receive";
@@ -693,10 +699,6 @@
 "scanviewcontroller_scan_loading" = "scaning";
 "scanviewcontroller_scan_result_notfound" = "No QR code found";
 
-
-"watchJointWalletTip_Notice" = "Transaction initiation failed";
-"watchJointWalletTip_message" = "The associated Classic Wallet has been removed.";
-
 "data_parser_error" = "Data parsing error.";
 "unknow_error" = "Unknow error.";
 
@@ -871,4 +873,9 @@
 "about_version_update_alert_ok" = "Update";
 
 "delegate_detail_unable_alert" = "Please withdraw first \"Released delegate\"";
+
+"import_observed_wallet_tip_1" = "Recommend observed wallet and cold wallet to jointly manage large amount of tokens.";
+"import_observed_wallet_tip_2" = "Need the cold wallet authorization for transferring tokens.";
+"import_observed_wallet_tip_3" = "Observed wallet do not hold the private key.";
+"import_observed_wallet_tip_4" = "Do not deposit tokens to the wallet that you can not control.";
 

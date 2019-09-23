@@ -38,7 +38,7 @@ extension Wallet{
     
     func lockedBalanceDescription() -> String? {
         guard
-            let balance = AssetService.sharedInstace.balances.first(where: { $0.addr.lowercased() == self.key?.address.lowercased() }),
+            let balance = AssetService.sharedInstace.balances.first(where: { $0.addr.lowercased() == self.address.lowercased() }),
             let lockValue = BigUInt(balance.lock ?? "0"), lockValue > BigUInt.zero,
             let balanceStr = balance.lock?.vonToLATString else { return nil }
         
@@ -48,7 +48,7 @@ extension Wallet{
     
     func balanceDescription() -> String{
         guard
-            let balance = AssetService.sharedInstace.balances.first(where: { $0.addr.lowercased() == self.key?.address.lowercased() }),
+            let balance = AssetService.sharedInstace.balances.first(where: { $0.addr.lowercased() == self.address.lowercased() }),
             let balanceStr = balance.free?.vonToLATString else { return "0.00".ATPSuffix() }
         
         WalletService.sharedInstance.updateWalletBalance(self, balance: balance.free ?? "0")
@@ -56,11 +56,11 @@ extension Wallet{
     }
     
     func image() -> UIImage{
-        return UIImage(named: (self.key?.address.walletAddressLastCharacterAvatar())!)!
+        return UIImage(named: address.walletAddressLastCharacterAvatar())!
     }
     
     func WalletBalanceStatus() -> BalanceStatus{
-        let balance = AssetService.sharedInstace.balances.first(where: { $0.addr.lowercased() == key?.address.lowercased() })
+        let balance = AssetService.sharedInstace.balances.first(where: { $0.addr.lowercased() == address.lowercased() })
         guard let b = balance else { return .unknowStatus }
         guard let free = b.free, free != "0" else { return .NotSufficient }
         return .Sufficient

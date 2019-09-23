@@ -446,7 +446,7 @@ extension String{
     }
     
     func addressDisplayInLocal() -> String? {
-        let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.key?.address.lowercased() == self.lowercased() }.first
+        let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.address.lowercased() == self.lowercased() }.first
         if let wallet = localWallet {
             return wallet.name + "(\(self.addressForDisplayShort()))"
         } else {

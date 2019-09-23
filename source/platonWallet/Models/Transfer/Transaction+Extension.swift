@@ -15,7 +15,7 @@ extension Transaction {
         switch txType! {
         case .transfer,
              .unknown:
-            let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.key?.address.lowercased() == to?.lowercased() }.first
+            let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.address.lowercased() == to?.lowercased() }.first
             guard let wallet = localWallet else {
                 return UIImage(named: "walletAvatar_1")
             }
@@ -30,7 +30,7 @@ extension Transaction {
     }
     
     var fromAvatarImage: UIImage? {
-        let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.key?.address == from }.first
+        let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.address.lowercased() == from?.lowercased() }.first
         guard let wallet = localWallet else {
             return UIImage(named: "walletAvatar_1")
         }
@@ -41,7 +41,7 @@ extension Transaction {
         switch txType! {
         case .transfer,
              .unknown:
-            let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.key?.address.lowercased() == to?.lowercased() }.first
+            let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.address.lowercased() == to?.lowercased() }.first
             guard let wallet = localWallet else {
                 return to?.addressForDisplayShort()
             }
@@ -55,7 +55,7 @@ extension Transaction {
     }
     
     var fromNameString: String? {
-        let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.key?.address.lowercased() == from?.lowercased() }.first
+        let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.address.lowercased() == from?.lowercased() }.first
         guard let wallet = localWallet else {
             return from?.addressForDisplayShort()
         }
@@ -214,7 +214,7 @@ extension Transaction {
     }
     
     var recordWalletName: String? {
-        let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.key?.address.lowercased() == from?.lowercased() }.first
+        let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.address.lowercased() == from?.lowercased() }.first
         return (localWallet?.name ?? "--") + "(" + (from?.addressForDisplayShort() ?? "--") + ")"
     }
 }

@@ -57,10 +57,10 @@ class TransactionListViewController: BaseViewController,UITableViewDelegate,UITa
         var addressStrs: [String] = []
         
         if let wallet = selectedWallet {
-            addressStrs.append(wallet.key!.address)
+            addressStrs.append(wallet.address)
         } else {
             let allLocalAddresses = AssetVCSharedData.sharedData.walletList.filterClassicWallet.map { cwallet in
-                return cwallet.key!.address
+                return cwallet.address
             }
             addressStrs.append(contentsOf: allLocalAddresses)
         }
@@ -77,10 +77,10 @@ class TransactionListViewController: BaseViewController,UITableViewDelegate,UITa
         var addressStrs: [String] = []
         
         if let wallet = selectedWallet {
-            addressStrs.append(wallet.key!.address)
+            addressStrs.append(wallet.address)
         } else {
             let allLocalAddresses = AssetVCSharedData.sharedData.walletList.filterClassicWallet.map { cwallet in
-                return cwallet.key!.address
+                return cwallet.address
             }
             addressStrs.append(contentsOf: allLocalAddresses)
         }
@@ -117,7 +117,7 @@ class TransactionListViewController: BaseViewController,UITableViewDelegate,UITa
                     return
                 }
                 
-                if let currentAddress = self.selectedWallet?.key?.address {
+                if let currentAddress = self.selectedWallet?.address {
                     let _ = transactions.map({ (tx) -> Transaction in
                         switch tx.txType! {
                         case .transfer:
@@ -133,7 +133,7 @@ class TransactionListViewController: BaseViewController,UITableViewDelegate,UITa
                         }
                     })
                 } else {
-                    let addresses = (AssetVCSharedData.sharedData.walletList as! [Wallet]).map { return $0.key!.address.lowercased() }
+                    let addresses = (AssetVCSharedData.sharedData.walletList as! [Wallet]).map { return $0.address.lowercased() }
                     let _ = transactions.map({ (tx) -> Transaction in
                         switch tx.txType! {
                         case .transfer:

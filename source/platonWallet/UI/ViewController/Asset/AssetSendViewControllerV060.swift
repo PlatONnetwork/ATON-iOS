@@ -36,15 +36,6 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
     var submitGas : BigUInt?
     
     var confirmGas : BigUInt?
-
-    var walletType : WalletType{
-        get{
-            if let _ = AssetVCSharedData.sharedData.selectedWallet as? Wallet{
-                return WalletType.ClassicWallet
-            }
-            return WalletType.JointWallet
-        }
-    }
     
     lazy var amountView = { () -> ATextFieldView in
         let amountView = ATextFieldView.create(title: "send_amout_colon")
@@ -322,7 +313,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
         }
         
         // 改地址已存在客户端，则直接写入
-        if let wallet = AssetVCSharedData.sharedData.walletList.filter({ ($0 as! Wallet).key!.address.ishexStringEqual(other: addressText)
+        if let wallet = AssetVCSharedData.sharedData.walletList.filter({ ($0 as! Wallet).address.ishexStringEqual(other: addressText)
         }).first {
             saveToAddressBook(addressText: addressText, name: (wallet as! Wallet).name)
             return
@@ -365,7 +356,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
         }
         let toAddress = self.walletAddressView.textField.text ?? ""
         if let wallet = AssetVCSharedData.sharedData.selectedWallet as? Wallet{
-            if toAddress.ishexStringEqual(other: wallet.key?.address){
+            if toAddress.ishexStringEqual(other: wallet.address){
                 AssetViewControllerV060.getInstance()?.showMessage(text: Localized("cannot_send_itself"))
                 return
             }
@@ -389,7 +380,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
             amountAttr.append(unionAttr)
             confirmView.totalLabel.attributedText = amountAttr
             confirmView.toAddressLabel.text = walletAddressView.textField.text!.addressDisplayInLocal() ?? "--"
-            confirmView.walletName.text = wallet.key?.address.addressDisplayInLocal() ?? "--"
+            confirmView.walletName.text = wallet.address.addressDisplayInLocal() ?? "--"
             let feeString = self.totalFee().divide(by: ETHToWeiMultiplier
                 , round: 8)
             confirmView.feeLabel.text = feeString.ATPSuffix()
@@ -458,6 +449,10 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
         if let w = AssetVCSharedData.sharedData.selectedWallet as? Wallet{
             executorWallet = w
         }
+        
+        if executorWallet?.type == WalletType.ObservedWallet {
+            return
+        }
             
         let alertVC = AlertStylePopViewController.initFromNib()
         let style = PAlertStyle.passwordInput(walletName: AssetVCSharedData.sharedData.selectedWalletName)
@@ -475,9 +470,8 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: { 
                         AssetViewControllerV060.getInstance()?.showLoadingHUD()
                     })
-                    if self?.walletType == WalletType.ClassicWallet{
-                        self?.doClassicTransfer(pri: pri!, data: nil)
-                    }
+                    
+                    self?.doClassicTransfer(pri: pri!, data: nil)
                     alertVC.dismissWithCompletion()
                 }else{
                     if let notnilAlertVC = self?.passwordInputAlert{
@@ -605,7 +599,7 @@ extension AssetSendViewControllerV060{
         
         AnalysisHelper.handleEvent(id: event_send, operation: .end)
         
-        let from = AssetVCSharedData.sharedData.cWallet?.key?.address
+        let from = AssetVCSharedData.sharedData.cWallet?.address
         let to = self.walletAddressView.textField.text!
         let amount = self.amountView.textField.text!
         let memo = ""

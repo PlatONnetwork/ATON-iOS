@@ -31,7 +31,7 @@ class WalletTableViewCell: UITableViewCell {
         
         walletNameLabel.text = wal.name
         walletAvatarIV.image = UIImage(named: wal.avatar)
-        walletAddressLabel.text = wal.key!.address.addressForDisplay()
+        walletAddressLabel.text = wal.address.addressForDisplay()
     }
     
     var isTopCell: Bool = false {

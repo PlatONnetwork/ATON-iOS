@@ -85,21 +85,6 @@ public struct Keystore {
     
     /// Decrypts the key and returns the private key.
     public func decrypt(password: String) throws -> Data {
-//        let derivedKey: Data
-//        switch crypto.kdf {
-//        case "scrypt":
-//            let scrypt = Scrypt(params: crypto.kdfParams)
-//            derivedKey = try scrypt.calculate(password: password)
-//        default:
-//            throw DecryptError.unsupportedKDF
-//        }
-//        
-//        let mac = Keystore.computeMAC(prefix: derivedKey[derivedKey.count - 16 ..< derivedKey.count], key: crypto.cipherText)
-//        if mac != crypto.mac {
-//            throw DecryptError.invalidPassword
-//        }
-        
-//        let decryptionKey = derivedKey[0...15]
         let decryptionKey = try geneDecryptionKey(password: password)
         let decryptedPK: [UInt8]
         switch crypto.cipher {

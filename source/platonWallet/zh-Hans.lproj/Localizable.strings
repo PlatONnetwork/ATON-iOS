@@ -180,13 +180,18 @@
 "importKeystoreVC_keystoreInput_placeholder" = "请输入钱包文件（.json）内容";
 "importKeystoreVC_nameInput_placeholder" = "输入钱包名称";
 "importKeystoreVC_pswInput_placeholder" = "输入钱包密码";
+"importKeystoreVC_addressInput_placeholder" = "请输入离线冷钱包地址";
 "importKeystoreVC_keystore_empty_tips" = "钱包文件(.json)不能为空！";
+"importKeystoreVC_observed_empty_tips" = "钱包地址不能为空！";
+"importKeystoreVC_observed_invalid_tips" = "钱包地址无效";
+"importKeystoreVC_observed_existed_tips" = "钱包已存在";
 
 //importWalletVC
 "importWalletVC_title" = "导入钱包";
 "importWalletVC_tab_keystore" = "钱包文件（.json）";
 "importWalletVC_tab_mnemonic" = "助记词";
 "importWalletVC_tab_privateKey" = "私钥";
+"importWalletVC_tab_observedWallet" = "观察钱包";
 "importWalletVC_mnemonic_tips" = "请将记下的助记词按顺序填入以下表格中，在每个助记词输入完成后按“空格”键可以跳转到下个单词，使用助记词导入的同时需要设定钱包密码，未来需要通过密码验证才能够进行能量发送、备份等操作。";
 "importWalletVC_mnemonic_textView_placeholder" = "请输入助记词，用空格分割";
 
@@ -197,6 +202,7 @@
 "importWalletVC_mnemonicInput_empty_tips" = "助记词不能为空";
 "importWalletVC_privateKeyInput_empty_tips" = "私钥不能为空";
 "importWalletVC_PasteButton" = "粘贴";
+"importWalletVC_import_observed_title" = "完成";
 
 //backupMnemonicVC
 "backupMnemonicVC_title" = "备份助记词";
@@ -316,6 +322,7 @@
 "Invalid mnemonic phrase" = "助记词无法识别";
 "Invalid keystore" = "钱包文件无法解析";
 "Wallet already exists" = "钱包已存在";
+"Invalid address" = "无效的地址";
 
 
 //Receive QR Code ViewController
@@ -696,9 +703,6 @@
 "scanviewcontroller_scan_loading" = "扫描中";
 "scanviewcontroller_scan_result_notfound" = "未发现二维码";
 
-"watchJointWalletTip_Notice" = "提示";
-"watchJointWalletTip_message" = "关联的普通钱包已被删除，该钱包无法发起交易！";
-
 "data_parser_error" = "数据解析失败";
 "unknow_error" = "未知错误";
 
@@ -872,3 +876,8 @@
 "about_version_update_alert_ok" = "立即更新";
 
 "delegate_detail_unable_alert" = "请先赎回 “已解除委托”";
+
+"import_observed_wallet_tip_1" = "存储大额资金建议使用观察钱包和冷钱包联动管理。";
+"import_observed_wallet_tip_2" = "交易时需要配合冷钱包进行操作。";
+"import_observed_wallet_tip_3" = "观察钱包不存有私钥。";
+"import_observed_wallet_tip_4" = "请勿将资产充值至不受控制的观察钱包。";

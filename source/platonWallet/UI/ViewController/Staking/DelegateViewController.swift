@@ -27,7 +27,7 @@ class DelegateViewController: BaseViewController {
     var canUseWallets: [Wallet] {
         get {
             let canUseWallets = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { (wallet) -> Bool in
-                let walletBalance = AssetService.sharedInstace.balances.first(where: { $0.addr.lowercased() == wallet.key?.address.lowercased() })
+                let walletBalance = AssetService.sharedInstace.balances.first(where: { $0.addr.lowercased() == wallet.address.lowercased() })
                 if let balance = walletBalance {
                     let free = BigUInt(balance.free ?? "0")
                     let lock = BigUInt(balance.lock ?? "0")
@@ -82,7 +82,7 @@ class DelegateViewController: BaseViewController {
     private func fetchCanDelegation() {
         guard
             let nodeId = currentNode?.nodeId,
-            let walletAddr = walletStyle?.currentWallet.key?.address else { return }
+            let walletAddr = walletStyle?.currentWallet.address else { return }
         
         showLoadingHUD()
         StakingService.sharedInstance.getCanDelegation(addr: walletAddr, nodeId: nodeId) { [weak self] (result, data) in
@@ -125,16 +125,16 @@ class DelegateViewController: BaseViewController {
         var index: Int? = 0
         if
             let address = currentAddress,
-            let wallet = canUseWallets.first(where: { $0.key?.address.lowercased() == address.lowercased() }) {
+            let wallet = canUseWallets.first(where: { $0.address.lowercased() == address.lowercased() }) {
             index = canUseWallets.firstIndex(of: wallet)
         } else {
-            index = canUseWallets.firstIndex(where: { $0.key?.address.lowercased() == (AssetVCSharedData.sharedData.selectedWallet as! Wallet).key?.address.lowercased() }) ?? 0
-            currentAddress = canUseWallets[index ?? 0].key?.address
+            index = canUseWallets.firstIndex(where: { $0.address.lowercased() == (AssetVCSharedData.sharedData.selectedWallet as! Wallet).address.lowercased() }) ?? 0
+            currentAddress = canUseWallets[index ?? 0].address
         }
         walletStyle = WalletsCellStyle(wallets: canUseWallets, selectedIndex: index ?? 0, isExpand: false)
         
         let balance = AssetService.sharedInstace.balances.first { (item) -> Bool in
-            return item.addr.lowercased() == walletStyle!.currentWallet.key?.address.lowercased()
+            return item.addr.lowercased() == walletStyle!.currentWallet.address.lowercased()
         }
         
         var balances: [(String, String)] = []
@@ -287,8 +287,8 @@ extension DelegateViewController {
         guard
             let walletObject = walletStyle,
             let balanceObject = balanceStyle,
-            let nodeId = currentNode?.nodeId,
-            let currentAddress = walletObject.currentWallet.key?.address else { return }
+            let nodeId = currentNode?.nodeId else { return }
+        let currentAddress = walletObject.currentWallet.address
 
         let typ = balanceObject.selectedIndex == 0 ? UInt16(0) : UInt16(1) // 0：自由金额 1：锁仓金额
 
@@ -336,7 +336,7 @@ extension DelegateViewController {
         listData[indexSection] = DelegateTableViewCellStyle.wallets(walletStyle: walletStyle!)
         
         let balance = AssetService.sharedInstace.balances.first { (item) -> Bool in
-            return item.addr.lowercased() == walletStyle?.currentWallet.key?.address.lowercased()
+            return item.addr.lowercased() == walletStyle?.currentWallet.address.lowercased()
         }
         
         var balances: [(String, String)] = []

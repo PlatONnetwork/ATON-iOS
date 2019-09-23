@@ -38,7 +38,6 @@ class WalletListViewController: BaseViewController,TableViewReorderDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupUI()
         initSubView()
     }
     
@@ -65,15 +64,6 @@ class WalletListViewController: BaseViewController,TableViewReorderDelegate {
         }
         tableView.reloadData()
     }
-    
-    func setupUI() {
-        /*
-        let titleView = UIView.viewFromXib(theClass: AssetNavigationBarView.self) as! AssetNavigationBarView
-        titleView.leftButton.addTarget(self, action: #selector(onNavigationLeft), for: .touchUpInside)
-        titleView.rightButton.addTarget(self, action: #selector(onNavigationRight), for: .touchUpInside)
-        navigationItem.titleView = titleView
-        */
-    }
 
     
     func initSubView() {
@@ -91,16 +81,6 @@ class WalletListViewController: BaseViewController,TableViewReorderDelegate {
             make.right.equalToSuperview().offset(0)
         }
         tableView.tableFooterView = UIView()
-    }
-    
-    @objc func onNavigationLeft() {
-        currentType = .ClassicWallet
-        updateUI()
-    }
-    
-    @objc func onNavigationRight() {
-        currentType = .JointWallet
-        updateUI()
     }
     
     func createIndividualWallet() {

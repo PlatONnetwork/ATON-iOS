@@ -158,7 +158,7 @@ extension AssetTransactionViewControllerV060{
             return 
         }
         if let cwallet = notification.object as? Wallet{
-            if (self.walletAddress?.ishexStringEqual(other: cwallet.key?.address))!{
+            if (self.walletAddress?.ishexStringEqual(other: cwallet.address))!{
                 self.dataSource[self.walletAddress!]?.removeAll()
                 self.tableView.reloadData()
             }

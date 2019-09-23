@@ -195,7 +195,7 @@ class CreateIndividualWalletViewController: BaseViewController,StartBackupMnemon
                 WalletService.sharedInstance.exportMnemonic(wallet: self!.wallet, password: self!.pswTF.text!, completion: { (res, error) in
                     if (error == nil && (res!.length) > 0) {
                         let vc = BackupMnemonicViewController()
-                        vc.walletAddress = self?.wallet.key?.address
+                        vc.walletAddress = self?.wallet.address
                         vc.mnemonic = res 
                         self?.rt_navigationController.pushViewController(vc, animated: true)
                         alertVC.dismissWithCompletion()
