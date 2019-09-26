@@ -10,10 +10,10 @@ import Foundation
 
 struct AppConfig {
     struct Keys {
-        //        static let BuglyAppleID = ""
-        static let BuglyAppleID = ""
-        static let Production_Umeng_key = ""
-        static let Test_Umeng_key = ""
+        //        static let BuglyAppleID = "e8f57be7d2"
+        static let BuglyAppleID = "beeb997bda"
+        static let Production_Umeng_key = "5d551ffd3fc1959f6b000113"
+        static let Test_Umeng_key = "5d57a9ba570df380e2000b23"
     }
     
     struct NodeURL {
@@ -22,7 +22,7 @@ struct AppConfig {
         static let DefaultNodeURL_PRODUCT = ServerURL.HOST.PRODUCTNET + "/rpc"
         
         static let defaultNodesURL = [
-            (nodeURL: AppFramework.sharedInstance.AppEnvConfig.getConfigURLInfo().NodeRPCURL, desc: "SettingsVC_nodeSet_defaultTestNetwork_Amigo_des", isSelected: false)
+            (nodeURL: AppFramework.sharedInstance.AppEnvConfig.getConfigURLInfo().NodeRPCURL, desc: "SettingsVC_nodeSet_defaultTestNetwork_Amigo_des", isSelected: true)
             //            (nodeURL: DefaultNodeURL_UAT, desc: "SettingsVC_nodeSet_defaultTestNetwork_des", isSelected: false),
             //            (nodeURL: DefaultNodeURL_PRODUCT, desc: "SettingsVC_nodeSet_defaultProductNetwork_des", isSelected: false)
         ]
@@ -38,8 +38,8 @@ struct AppConfig {
     
     struct H5URL {
         struct lisenceURL {
-            static let serviceurl_en = ""
-            static let serviceurl_cn = ""
+            static let serviceurl_en = "http://192.168.9.190:1000/aton-agreement/en-us/agreement.html"
+            static let serviceurl_cn = "http://192.168.9.190:1000/aton-agreement/zh-cn/agreement.html"
             
             static var serviceurl: String {
                 return GetCurrentSystemSettingLanguage() == "cn" ? serviceurl_cn : serviceurl_en
@@ -47,8 +47,8 @@ struct AppConfig {
         }
         
         struct FAQURL {
-            static let faq_en = ""
-            static let faq_cn = ""
+            static let faq_en = "https://platon.zendesk.com/hc/en-us/categories/360002174434"
+            static let faq_cn = "https://platon.zendesk.com/hc/zh-cn/categories/360002174434"
             
             static var faqurl: String {
                 return GetCurrentSystemSettingLanguage() == "cn" ? faq_cn : faq_en
@@ -56,8 +56,8 @@ struct AppConfig {
         }
         
         struct TutorialURL {
-            static let tutorial_en = ""
-            static let tutorial_cn = ""
+            static let tutorial_en = "https://platon.zendesk.com/hc/en-us/categories/360002193633"
+            static let tutorial_cn = "https://platon.zendesk.com/hc/zh-cn/categories/360002193633"
             
             static var tutorialurl: String {
                 return GetCurrentSystemSettingLanguage() == "cn" ? tutorial_cn : tutorial_en
@@ -65,8 +65,8 @@ struct AppConfig {
         }
         
         struct FeedbackURL {
-            static let feedback_en = ""
-            static let feedback_cn = ""
+            static let feedback_en = "https://platon.zendesk.com/hc/en-us"
+            static let feedback_cn = "https://platon.zendesk.com/hc/zh-cn"
             
             static var feedbackurl: String {
                 return GetCurrentSystemSettingLanguage() == "cn" ? feedback_cn : feedback_en
@@ -76,12 +76,12 @@ struct AppConfig {
     
     struct ServerURL {
         struct HOST {
-            static let UATNET = ""
-            static let PRODUCTNET = ""
-            static let TESTNET = ""
-            static let DEVNET = ""
+            static let UATNET = "https://aton.test.platon.network"
+            static let PRODUCTNET = "https://aton.main.platon.network"
+            static let TESTNET = "http://192.168.9.190:1000"
+            static let DEVNET = "http://192.168.9.190:443"
         }
-        static let PATH = ""
+        static let PATH = "/app/v0700"
     }
     
 }
