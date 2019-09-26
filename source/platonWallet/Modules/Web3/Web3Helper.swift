@@ -81,6 +81,12 @@ struct Web3Helper {
     }
     
     static func getRpcURL() -> String {
+        if AppFramework.sharedInstance.AppEnvConfig == .Dev ||
+            AppFramework.sharedInstance.AppEnvConfig == .Test ||
+            AppFramework.sharedInstance.AppEnvConfig == .Production_Test ||
+            AppFramework.sharedInstance.AppEnvConfig == .Production_main{
+            return AppFramework.sharedInstance.AppEnvConfig.getConfigURLInfo().NodeRPCURL
+        }
         guard let node = SettingService.shareInstance.getSelectedNodes() else { return "" }
         return node.nodeURLStr
     }
