@@ -146,23 +146,7 @@ class WalletUtil {
             return false 
         }
         return true
-    }
-    
-    static func isValidAddress(_ address: String) -> Bool {
-        return address.is40ByteAddress()
-    }
-    
-    
-    static func generateNewObservedWalletName() -> String {
-        let observeredWallets = WalletService.sharedInstance.wallets.filter { $0.type == .observed }
-        guard let lastObWallet = observeredWallets.last else {
-            return "LAT-Wallet-1"
-        }
         
-        let walletName = lastObWallet.name
-        let indexString = String(walletName.suffix(from: walletName.index(walletName.startIndex, offsetBy: 11)))
-        guard let index = Int(indexString) else { return "LAT-Wallet-1" }
-        return String(format: "LAT-Wallet-%d", index + 1)
     }
 }
 

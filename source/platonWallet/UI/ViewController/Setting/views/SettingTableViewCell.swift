@@ -19,7 +19,6 @@ class SettingTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .none
-        sepline.backgroundColor = UIColor(hex: "e4e7f3")
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

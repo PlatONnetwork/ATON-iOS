@@ -93,8 +93,8 @@ class PLevelSlider: UIView {
 //        //draw circle
 //        let w = (lLayer.frame.width - 2 * radius_s) / CGFloat(level-1)
         
-        path.addArc(withCenter: CGPoint(x: radius_s+0.5, y: center_y), radius: radius_s, startAngle: 0, endAngle: CGFloat.pi*2, clockwise: true)
-        path.addArc(withCenter: CGPoint(x: radius_s-0.5 + (lLayer.frame.width - 2 * radius_s), y: center_y), radius: radius_s, startAngle: 0, endAngle: CGFloat.pi*2, clockwise: true)
+        path.addArc(withCenter: CGPoint(x: radius_s, y: center_y), radius: radius_s, startAngle: 0, endAngle: CGFloat.pi*2, clockwise: true)
+        path.addArc(withCenter: CGPoint(x: radius_s + (lLayer.frame.width - 2 * radius_s), y: center_y), radius: radius_s, startAngle: 0, endAngle: CGFloat.pi*2, clockwise: true)
         
         lLayer.path = path.cgPath
         glayer.mask = lLayer

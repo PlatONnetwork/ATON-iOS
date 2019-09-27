@@ -12,6 +12,8 @@ import Localize_Swift
 
 class SettingService {
     
+    var nodeStorge: NodeInfoPersistence?
+    
     var currentNodeURL : String?
     
     var currentVersion: RemoteVersion?
@@ -92,29 +94,30 @@ class SettingService {
     }
     
     func getNodes() -> [NodeInfo] {
-        return NodeInfoPersistence.sharedInstance.getAll()
+        return nodeStorge?.getAll() ?? []
     }
     
     func addOrUpdateNode(_ node: NodeInfo) {
-        NodeInfoPersistence.sharedInstance.add(node: node)
+        
+        nodeStorge?.add(node: node)
     }
     
     func deleteNodeList(_ list: [NodeInfo]) {
-        NodeInfoPersistence.sharedInstance.deleteList(list)
+        nodeStorge?.deleteList(list)
     }
     
     func updateSelectedNode(_ node: NodeInfo) {
         getNodes().forEach { (item) in
             if item.id == node.id {
-                NodeInfoPersistence.sharedInstance.update(node: item, isSelected: true)
+                nodeStorge?.update(node: item, isSelected: true)
             }else {
-                NodeInfoPersistence.sharedInstance.update(node: item, isSelected: false)
+                nodeStorge?.update(node: item, isSelected: false)
             }
         }
     }
     
     func deleteNode(_ node: NodeInfo) {
-        NodeInfoPersistence.sharedInstance.delete(node: node)
+        nodeStorge?.delete(node: node)
     }
     
     

@@ -33,14 +33,9 @@ class TransferConfirmView: UIView {
     
     @IBOutlet weak var executorNameLabel: UILabel!
     
-    var onCompletion: (() -> Void)?
-    var dismissCompletion: (() -> Void)?
-    
     override func awakeFromNib() {
         submitBtn.style = .blue
         totalLabel.adjustsFontSizeToFitWidth = true
-        submitBtn.addTarget(self, action: #selector(submitAction), for: .touchUpInside)
-        submitBtn.addTarget(self, action: #selector(closeAction), for: .touchUpInside)
     }
     
     func hideExecutor(){
@@ -49,11 +44,4 @@ class TransferConfirmView: UIView {
         self.executorNameLabel.isHidden = true
     }
     
-    @objc func submitAction() {
-        onCompletion?()
-    }
-    
-    @objc func closeAction() {
-        dismissCompletion?()
-    }
 }

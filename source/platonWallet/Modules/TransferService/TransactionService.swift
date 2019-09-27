@@ -24,13 +24,38 @@ class TransactionService : BaseService{
 
     public var ethGasPrice : BigUInt?
     
+    public var lastedBlockNumber : String?
+    
     public override init() {
         super.init()
+        
+        if AppConfig.TimerSetting.blockNumberQueryTimerEnable {
+            timer = Timer.scheduledTimer(timeInterval: TimeInterval(AppConfig.TimerSetting.blockNumberQueryTimerInterval), target: self, selector: #selector(OnTimerFirer), userInfo: nil, repeats: true)
+            timer?.fire()
+        }
         
         if AppConfig.TimerSetting.pendingTransactionPollingTimerEnable{
             pendingTransactionPollingTimer = Timer.scheduledTimer(timeInterval: TimeInterval(AppConfig.TimerSetting.pendingTransactionPollingTimerInterval), target: self, selector: #selector(OnPendingTxPolling), userInfo: nil, repeats: true)
             pendingTransactionPollingTimer?.fire() 
         }
+        
+        self.getEthGasPrice(completion: nil)
+    }
+    
+    //MARK: - Timer Selector
+    
+    @objc func OnTimerFirer() {
+        
+        web3.platon.getBlockByNumber(block: .latest, fullTransactionObjects: true) { resp in
+            //EthereumBlockObject
+            guard let blockObj = resp.result else{
+                return
+            }
+            self.lastedBlockNumber = String((blockObj!.number?.quantity)!)
+            //NSLog("lasted BlockNumber \(String((blockObj!.number?.quantity)!))")
+        }
+        
+        self.getEthGasPrice(completion: nil)
     }
     
     @objc func OnPendingTxPolling(){
@@ -44,6 +69,7 @@ class TransactionService : BaseService{
                 DispatchQueue.main.async {
                     self.ethGasPrice = res.result?.quantity
                     NotificationCenter.default.post(name: Notification.Name.ATON.DidNodeGasPriceUpdate, object: nil)
+
                 }
             case .failure(_):
                 do{}
@@ -52,59 +78,60 @@ class TransactionService : BaseService{
     }
      
     func EnergonTransferPooling(){
-        let txs = TransferPersistence.getUnConfirmedTransactions()
-        for item in txs {
-            guard (item.txhash != nil) else{
-                continue
-            }
-            
-            guard let txtype = item.txType else {
-                continue
-            }
-            
-            let byteCode = try! EthereumData(ethereumValue: item.txhash!)
-            let data = try! EthereumData(ethereumValue: byteCode)
-            let newItem = Transaction.init(value: item)
-            newItem.txhash = item.txhash
-            
-            web3.platon.getTransactionReceipt(transactionHash: data) { (txResp) in
-                switch txResp.status{
-                case .success(let resp):
-                    if txtype == .transfer {
-                        guard let txhash = newItem.txhash else { return }
-                        let blockNumber = String(txResp.result??.blockNumber.quantity ?? BigUInt(0))
-                        let gasUsed = String(txResp.result??.gasUsed.quantity ?? BigUInt(0))
-                        TransferPersistence.update(txhash: txhash, status: 1, blockNumber: blockNumber, gasUsed: gasUsed, {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-                                NotificationCenter.default.post(name: Notification.Name.ATON.DidUpdateTransactionByHash, object: txhash)
-                            })
-                        })
-                    } else {
-                        guard let receipt = resp, receipt.logs.count > 0, receipt.logs[0].data.hex().count > 0 else{
-                            return
-                        }
-                        guard let rlpItem = try? RLPDecoder().decode(receipt.logs[0].data.bytes), let respBytes = rlpItem.array?[0].bytes else {
-                            return
-                        }
-                        guard let dic = try? JSONSerialization.jsonObject(with: Data(bytes: respBytes), options: .mutableContainers) as? [String:Any] else{
-                            return
-                        }
-                        DispatchQueue.main.async {
-                            guard let status = dic?["Code"] as? Int else { return }
+        TransferPersistence.getUnConfirmedTransactions { (txs) in
+            for item in txs {
+                guard (item.txhash != nil) else{
+                    continue
+                }
+                
+                guard let txtype = item.txType else {
+                    continue
+                }
+                
+                let byteCode = try! EthereumData(ethereumValue: item.txhash!)
+                let data = try! EthereumData(ethereumValue: byteCode)
+                let newItem = Transaction.init(value: item)
+                newItem.txhash = item.txhash
+                
+                web3.platon.getTransactionReceipt(transactionHash: data) { (txResp) in
+                    switch txResp.status{
+                    case .success(let resp):
+                        if txtype == .transfer {
                             guard let txhash = newItem.txhash else { return }
-                            let blockNumber = String(receipt.blockNumber.quantity)
-                            let gasUsed = String(receipt.gasUsed.quantity)
-                            TransferPersistence.update(txhash: txhash, status: status, blockNumber: blockNumber, gasUsed: gasUsed, {
+                            let blockNumber = String(txResp.result??.blockNumber.quantity ?? BigUInt(0))
+                            let gasUsed = String(txResp.result??.gasUsed.quantity ?? BigUInt(0))
+                            TransferPersistence.update(txhash: txhash, status: 1, blockNumber: blockNumber, gasUsed: gasUsed, {
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
                                     NotificationCenter.default.post(name: Notification.Name.ATON.DidUpdateTransactionByHash, object: txhash)
-                                    
                                 })
                             })
+                        } else {
+                            guard let receipt = resp, receipt.logs.count > 0, receipt.logs[0].data.hex().count > 0 else{
+                                return
+                            }
+                            guard let rlpItem = try? RLPDecoder().decode(receipt.logs[0].data.bytes), let respBytes = rlpItem.array?[0].bytes else {
+                                return
+                            }
+                            guard let dic = try? JSONSerialization.jsonObject(with: Data(bytes: respBytes), options: .mutableContainers) as? [String:Any] else{
+                                return
+                            }
+                            DispatchQueue.main.async {
+                                guard let status = dic?["Status"] as? Int else { return }
+                                guard let txhash = newItem.txhash else { return }
+                                let blockNumber = String(receipt.blockNumber.quantity)
+                                let gasUsed = String(receipt.gasUsed.quantity)
+                                TransferPersistence.update(txhash: txhash, status: status, blockNumber: blockNumber, gasUsed: gasUsed, {
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+                                        NotificationCenter.default.post(name: Notification.Name.ATON.DidUpdateTransactionByHash, object: txhash)
+                                        
+                                    })
+                                })
+                            }
                         }
+                        
+                    case .failure(_):
+                        do{}
                     }
-                    
-                case .failure(_):
-                    do{}
                 }
             }
         }

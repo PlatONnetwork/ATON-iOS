@@ -11,6 +11,8 @@ import RealmSwift
 
 class NodeInfo: Object {
     
+    static var realm: Realm!
+    
     @objc dynamic private(set) var id: Int = 0
     @objc dynamic var nodeURLStr: String = ""
     @objc dynamic var isDefault: Bool = false 
@@ -32,13 +34,14 @@ class NodeInfo: Object {
     }
     
     private static func autoIncrementId() -> Int {
-        let realm = try! Realm(configuration: RealmHelper.getConfig())
+        
         let res = realm.objects(self).sorted(byKeyPath: "id")
         if res.count > 0 {
             return res.last!.id + 1
-        } else {
+        }else {
             return 1
         }
+        
     }
     
     override func copy() -> Any {
@@ -51,4 +54,9 @@ class NodeInfo: Object {
         
         return newOne
     }
+    
+//    public static func == (lhs: NodeInfo, rhs: NodeInfo) -> Bool {
+//        return lhs.id == rhs.id
+//    }
+    
 }

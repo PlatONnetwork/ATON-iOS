@@ -16,12 +16,13 @@ public final class WalletService {
     
     let keystoreFolderURL : URL
     
-    public var wallets: [Wallet] {
-        get {
-            return WallletPersistence.sharedInstance.getAll()
+    var walletStorge: WallletPersistence? {
+        didSet {
+            wallets = walletStorge?.getAll() ?? []
         }
-        set {}
     }
+    
+    public private(set) var wallets = [Wallet]()
     
     static let sharedInstance = WalletService()
     
@@ -39,19 +40,17 @@ public final class WalletService {
             try! fileManager.createDirectory(at: keystoreFolderURL, withIntermediateDirectories: false, attributes: nil)
         }
         
-//        wallets = WallletPersistence.sharedInstance.getAll()
-        
     }
      
     func refreshDB(){
         wallets.removeAll()
-        wallets.append(contentsOf: WallletPersistence.sharedInstance.getAll())
+        wallets.append(contentsOf: walletStorge?.getAll() ?? [])
     }
     
     func getWalletByAddress(address: String) -> Wallet?{
 
         for item in wallets{
-            if item.address.ishexStringEqual(other: address) {
+            if (item.key?.address.ishexStringEqual(other: address))!{
 
                 return item
             }
@@ -91,30 +90,6 @@ public final class WalletService {
             
         }
         
-    }
-    
-    public func `import`(address: String, completion: @escaping (Wallet?, Error?) -> Void) {
-        guard WalletUtil.isValidAddress(address) else {
-            completion(nil, Error.invalidAddress)
-            return
-        }
-        
-        walletQueue.async {
-            let walletName = WalletUtil.generateNewObservedWalletName()
-            let wallet = Wallet(name: walletName, address: address)
-            DispatchQueue.main.async {
-                do{
-                    try self.saveObservedWalletToDB(wallet: wallet)
-                } catch Error.walletAlreadyExists {
-                    completion(nil, Error.walletAlreadyExists)
-                    return
-                } catch {
-                    completion(nil, Error.keystoreFileSaveFailed)
-                    return
-                }
-                completion(wallet, nil)
-            }
-        }
     }
     
     /// importWalletFromMnemonic
@@ -389,27 +364,28 @@ public final class WalletService {
         
         NotificationCenter.default.post(name: Notification.Name.ATON.WillDeleateWallet, object: wallet)
         
-        AssetService.sharedInstace.balances = AssetService.sharedInstace.balances.filter { $0.addr.lowercased() != wallet.address.lowercased() }
+        AssetService.sharedInstace.balances = AssetService.sharedInstace.balances.filter { $0.addr.lowercased() != wallet.key?.address }
 //        AssetService.sharedInstace.assets.removeValue(forKey: (wallet.key?.address)!)
         
         wallets.removeAll { (item) -> Bool in
             return item == wallet
         }
-        WallletPersistence.sharedInstance.delete(wallet: wallet)
+        walletStorge?.delete(wallet: wallet)        
         AssetVCSharedData.sharedData.willDeleteWallet(object: wallet as AnyObject)
         
     }
     
     public func updateWalletName(_ wallet: Wallet, name: String) {
-        WallletPersistence.sharedInstance.updateWalletName(wallet: wallet, name: name)
+
+        walletStorge?.updateWalletName(wallet: wallet, name: name)
     }
     
     public func updateWalletBalance(_ wallet: Wallet, balance: String) {
-        WallletPersistence.sharedInstance.updateWalletBalance(wallet: wallet, balance: balance)
+        walletStorge?.updateWalletBalance(wallet: wallet, balance: balance)
     }
     
     public func updateWalletLockedBalance(_ wallet: Wallet, value: String) {
-        WallletPersistence.sharedInstance.updateWalletLockedBalance(wallet: wallet, value: value)
+        walletStorge?.updateWalletLockedBalance(wallet: wallet, value: value)
     }
     
     
@@ -431,24 +407,6 @@ public final class WalletService {
         
         let components = Calendar(identifier: .iso8601).dateComponents(in: timeZone, from: date)
         return String(format: "%04d-%02d-%02dT%02d-%02d-%02d.%09d%@", components.year!, components.month!, components.day!, components.hour!, components.minute!, components.second!, components.nanosecond!, tz)
-    }
-    
-    private func saveObservedWalletToDB(wallet: Wallet) throws {
-        let sameUuidWallet = wallets.first { (item) -> Bool in
-            item.uuid == wallet.uuid && item.nodeURLStr == wallet.nodeURLStr
-        }
-        
-        if sameUuidWallet != nil {
-            throw Error.walletAlreadyExists
-        }
-        
-        WallletPersistence.sharedInstance.save(wallet: wallet)
-        
-        wallets.removeAll { (item) -> Bool in
-            item.uuid == wallet.uuid && item.nodeURLStr == wallet.nodeURLStr
-        }
-        
-        wallets.append(wallet)
     }
     
     private func saveToDB(wallet: Wallet) throws {
@@ -491,7 +449,11 @@ public final class WalletService {
 
         wallet.keystorePath = fileName
         
-        WallletPersistence.sharedInstance.save(wallet: wallet)
+        guard walletStorge != nil else {
+            fatalError("walletStorge must not be nil!")
+        }
+        
+        walletStorge?.save(wallet: wallet)
         
         wallets.removeAll { (item) -> Bool in
             item.uuid == wallet.uuid && item.nodeURLStr == wallet.nodeURLStr
@@ -516,7 +478,6 @@ extension WalletService {
         case invalidKey
         case invalidKeystore
         case invalidWallet
-        case invalidAddress
         
         public var errorDescription: String? {
             switch self {
@@ -540,9 +501,14 @@ extension WalletService {
                 return Localized("Invalid private key")
             case .invalidKeystore:
                 return Localized("Invalid keystore")
-            case .invalidAddress:
-                return Localized("Invalid address")
             }
         }
     }
+}
+
+//MARK: - Notification
+
+extension WalletService{
+    
+   
 }

@@ -13,7 +13,6 @@ public struct CommunityContactStyle {
     var contact: String
     var qrcodeImage: UIImage? = nil
     var action: CommunityAction
-    var isSelected: Bool = false
     
     public enum CommunityAction {
         case scan

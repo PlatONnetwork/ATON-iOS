@@ -7,27 +7,25 @@
 //
 
 import Foundation
-import RealmSwift
 
 class AssetPersistence {
     public class func add(addrInfo : AddressInfo){
-        let addrInfo = addrInfo.detached()
-        
         RealmWriteQueue.async {
             autoreleasepool(invoking: {
-                let realm = try! Realm(configuration: RealmHelper.getConfig())
-                try? realm.write {
-                    realm.add(addrInfo)
+                try? RealmInstance!.write {
+                    RealmInstance!.add(addrInfo)
+                    NSLog("AddressInfo add")
                 }
             })
+            
         }
     }
     
-    public class func getAll() -> [AddressInfo] {
-        let realm = try! Realm(configuration: RealmHelper.getConfig())
-        let r = realm.objects(AddressInfo.self)
+    public class func getAll() -> [AddressInfo]{
+        let r = RealmInstance!.objects(AddressInfo.self)
         let array = Array(r)
         return array
     }
+
 }
 

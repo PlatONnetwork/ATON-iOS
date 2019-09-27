@@ -80,13 +80,13 @@ class TransferSwitchWallet: UIView,UITableViewDataSource,UITableViewDelegate {
         
             cell.walletName.text = wallet.name
             
-            if (selectedAddress != nil) && (wallet.address.ishexStringEqual(other: selectedAddress!)) {
+            if (selectedAddress != nil) && (wallet.key?.address.ishexStringEqual(other: selectedAddress!))!{
                 cell.checkIcon.isHidden = false
             }else{
                 cell.checkIcon.isHidden = true
             }
             
-            let av = wallet.address.walletAddressLastCharacterAvatar()
+            let av = wallet.key?.address.walletAddressLastCharacterAvatar()
             cell.walletIcon.image = UIImage(named: av ?? "" )?.circleImage()
             cell.walletBalance.text = Localized("transferVC_transfer_balance")  + wallet.balanceDescription()
             
