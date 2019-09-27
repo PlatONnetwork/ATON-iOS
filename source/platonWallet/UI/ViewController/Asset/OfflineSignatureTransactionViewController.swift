@@ -191,23 +191,17 @@ class OfflineSignatureTransactionViewController: BaseViewController {
         let nonce = EthereumQuantity(quantity: nonceBigInt)
         let amount = EthereumQuantity(quantity: amountBigInt)
         
-        web3.platon.platonSignTransaction(to: to, nonce: nonce, data: [], sender: sender, privateKey: pri, gasPrice: gasPrice, gas: gasLimit, value: amount, estimated: true) { (result, txSigned) in
-            switch result {
-            case .success:
-                guard
-                    let transactionSigned = txSigned,
-                    let txSignedString = transactionSigned.rlp().bytes?.toHexString()
-                    else { return }
-                let signedData = SignatureQrcode(signedDatas: [txSignedString], from: sender, type: 0)
-                let qrcodeData = QrcodeData(qrCodeType: 1, qrCodeData: signedData)
-                guard
-                    let jsonData = try? JSONEncoder().encode(qrcodeData),
-                    let jsonString = String(data: jsonData, encoding: .utf8) else { return }
-                self.generateQrcodeForSignedTx(content: jsonString)
-            case .fail(let code, let message):
-                break
-            }
-        }
+        let txSigned = web3.platon.platonSignTransaction(to: to, nonce: nonce, data: [], sender: sender, privateKey: pri, gasPrice: gasPrice, gas: gasLimit, value: amount, estimated: true)
+        guard
+            let transactionSigned = txSigned,
+            let txSignedString = transactionSigned.rlp().bytes?.toHexString()
+            else { return }
+        let signedData = SignatureQrcode(signedDatas: [txSignedString], from: sender, type: 0)
+        let qrcodeData = QrcodeData(qrCodeType: 1, qrCodeData: signedData)
+        guard
+            let jsonData = try? JSONEncoder().encode(qrcodeData),
+            let jsonString = String(data: jsonData, encoding: .utf8) else { return }
+        generateQrcodeForSignedTx(content: jsonString)
     }
     
     func signedWithdrawTx(pri: String, txQrcode: TransactionQrcode) {
@@ -226,18 +220,12 @@ class OfflineSignatureTransactionViewController: BaseViewController {
                 let nonceBigInt = BigUInt(txQrcode.nonce ?? "0") else { continue }
             let nonce = EthereumQuantity(quantity: nonceBigInt)
             let funcType = FuncType.withdrewDelegate(stakingBlockNum: stakingBlockNum, nodeId: nodeId, amount: amount)
-            web3.platon.platonSignTransaction(to: PlatonConfig.ContractAddress.stakingContractAddress, nonce: nonce, data: funcType.rlpData.bytes, sender: sender, privateKey: pri, gasPrice: funcType.gasPrice, gas: funcType.gas, value: nil, estimated: true) { (result, txSigned) in
-                switch result {
-                case .success:
-                    guard
-                        let transactionSigned = txSigned,
-                        let txSignedString = transactionSigned.rlp().bytes?.toHexString()
-                        else { return }
-                    signedStrings.append(txSignedString)
-                case .fail(let code, let message):
-                    return
-                }
-            }
+            let txSigned = web3.platon.platonSignTransaction(to: PlatonConfig.ContractAddress.stakingContractAddress, nonce: nonce, data: funcType.rlpData.bytes, sender: sender, privateKey: pri, gasPrice: funcType.gasPrice, gas: funcType.gas, value: nil, estimated: true)
+            guard
+                let transactionSigned = txSigned,
+                let txSignedString = transactionSigned.rlp().bytes?.toHexString()
+                else { return }
+            signedStrings.append(txSignedString)
         }
         
         let signedData = SignatureQrcode(signedDatas: signedStrings, from: sender, type: 1005)
@@ -261,23 +249,18 @@ class OfflineSignatureTransactionViewController: BaseViewController {
         }
         let nonce = EthereumQuantity(quantity: nonceBigInt)
         let funcType = FuncType.createDelegate(typ: typ, nodeId: nodeId, amount: amount)
-        web3.platon.platonSignTransaction(to: PlatonConfig.ContractAddress.stakingContractAddress, nonce: nonce, data: funcType.rlpData.bytes, sender: sender, privateKey: pri, gasPrice: funcType.gasPrice, gas: funcType.gas, value: nil, estimated: true) { (result, txSigned) in
-            switch result {
-            case .success:
-                guard
-                    let transactionSigned = txSigned,
-                    let txSignedString = transactionSigned.rlp().bytes?.toHexString()
-                    else { return }
-                let signedData = SignatureQrcode(signedDatas: [txSignedString], from: sender, type: 1004)
-                let qrcodeData = QrcodeData(qrCodeType: 1, qrCodeData: signedData)
-                guard
-                    let jsonData = try? JSONEncoder().encode(qrcodeData),
-                    let jsonString = String(data: jsonData, encoding: .utf8) else { return }
-                self.generateQrcodeForSignedTx(content: jsonString)
-            case .fail(let code, let message):
-                break
-            }
-        }
+        let txSigned = web3.platon.platonSignTransaction(to: PlatonConfig.ContractAddress.stakingContractAddress, nonce: nonce, data: funcType.rlpData.bytes, sender: sender, privateKey: pri, gasPrice: funcType.gasPrice, gas: funcType.gas, value: nil, estimated: true)
+        
+        guard
+            let transactionSigned = txSigned,
+            let txSignedString = transactionSigned.rlp().bytes?.toHexString()
+            else { return }
+        let signedData = SignatureQrcode(signedDatas: [txSignedString], from: sender, type: 1004)
+        let qrcodeData = QrcodeData(qrCodeType: 1, qrCodeData: signedData)
+        guard
+            let jsonData = try? JSONEncoder().encode(qrcodeData),
+            let jsonString = String(data: jsonData, encoding: .utf8) else { return }
+        generateQrcodeForSignedTx(content: jsonString)
     }
 
 }

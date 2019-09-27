@@ -137,7 +137,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LicenseVCDelegate {
     }
     
     func gotoMainTab() {
-        let navController = BaseNavigationController(rootViewController: MainTabBarViewController.newTabBar())
+        let navController = UINavigationController(rootViewController: MainTabBarViewController.newTabBar())
+        navController.setNavigationBarHidden(true, animated: false)
         self.window?.rootViewController = navController
     }
     
