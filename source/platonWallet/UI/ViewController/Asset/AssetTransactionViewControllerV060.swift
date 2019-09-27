@@ -231,6 +231,7 @@ extension AssetTransactionViewControllerV060{
     }
     
     private func goTransactionList() {
+        
         let controller = TransactionListViewController()
         controller.selectedWallet = AssetVCSharedData.sharedData.selectedWallet as? Wallet
         controller.hidesBottomBarWhenPushed = true

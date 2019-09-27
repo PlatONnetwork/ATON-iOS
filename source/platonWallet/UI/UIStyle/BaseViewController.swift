@@ -203,6 +203,12 @@ class BaseViewController: UIViewController {
             navigationController?.navigationBar.setBackgroundImage(backgroundImage, for: .default)
             navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 16.0),NSAttributedString.Key.foregroundColor:UIColor.white]
         }
+        
+        if let nav = UIApplication.shared.keyWindow?.rootViewController as? BaseNavigationController {
+            nav.navigationBar.backgroundColor = .yellow
+            nav.setNavigationBarHidden(true, animated: false)
+            nav.rt_navigationController.navigationBar.backgroundColor = .orange
+        }
     }
     
     func getBasicLeftBarButtonItemWithBasicStyle(localizedText: String?) -> UIBarButtonItem{

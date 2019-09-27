@@ -676,6 +676,7 @@
 //AssetViewController
 "Asset_segment_Transaction" = "交易";
 "Asset_segment_Send" = "发送";
+"Asset_segment_Send_offline" = "离线钱包";
 "Asset_segment_Receive" = "接收";
 
 //common
@@ -881,3 +882,18 @@
 "import_observed_wallet_tip_2" = "交易时需要配合冷钱包进行操作。";
 "import_observed_wallet_tip_3" = "观察钱包不存有私钥。";
 "import_observed_wallet_tip_4" = "请勿将资产充值至不受控制的观察钱包。";
+
+"confirm_generate_qrcode_for_transaction" = "冷钱包确认";
+"confirm_generate_qrcode_for_transaction_tip" = "请使用冷钱包扫描下方二维码进行授权签名";
+"confirm_button_next" = "下一步";
+"confirm_scan_qrcode_for_read" = "读取签名数据";
+"confirm_scan_qrcode_for_read_tip" = "扫描冷钱包页面的授权二维码，获取签名数据。";
+"confirm_button_send" = "发送交易";
+"confirm_authorize_button_send" = "授权签名";
+"confirm_authorize_function_type" = "交易信息:";
+"confirm_authorize_from" = "发送钱包:";
+"confirm_authorize_to" = "接收地址:";
+"confirm_authorize_fee" = "交易手续费:";
+"confirm_generate_qrcode_for_signed_tx" = "授权签名";
+"confirm_generate_qrcode_for_signed_tx_tip" = "使用对应观察钱包扫描下方二维码，完成授权";
+"confirm_button_signed_tx" = "完成";

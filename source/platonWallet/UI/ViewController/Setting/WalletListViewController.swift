@@ -18,7 +18,7 @@ class WalletListViewController: BaseViewController,TableViewReorderDelegate {
      
     lazy var atpWalletEmptyView : WalletEmptyView! = {
         
-        let view = WalletEmptyView(walletType: .ClassicWallet, createBtnClickHandler: { [weak self] in 
+        let view = WalletEmptyView(walletType: .classic, createBtnClickHandler: { [weak self] in
             self?.createIndividualWallet()
             
         }) { [weak self] in 
@@ -31,9 +31,6 @@ class WalletListViewController: BaseViewController,TableViewReorderDelegate {
         }
         return view
     }()
-    
-    var currentType: WalletType = .ClassicWallet
-
 
     override func viewDidLoad() {
         super.viewDidLoad()
