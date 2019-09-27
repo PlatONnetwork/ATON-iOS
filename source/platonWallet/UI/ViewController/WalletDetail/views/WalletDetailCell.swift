@@ -70,7 +70,7 @@ class WalletDetailCell: UITableViewCell {
     func updateCellWithAPTTransfer(tx: Transaction, wallet: Wallet?) {
         guard let w = wallet else { return }
         self.unreadTag.isHidden = true
-        tx.senderAddress = w.address
+        tx.senderAddress = w.key?.address
         
         transferAmoutLabel.text = tx.amountTextString
         

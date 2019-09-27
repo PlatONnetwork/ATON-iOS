@@ -44,7 +44,6 @@ class ImportWalletHeaderView: UIView {
         var arr:[UIButton] = []
         for i in 0..<tabLists.count {
             let btn = UIButton(type: .custom)
-            btn.titleLabel?.adjustsFontSizeToFitWidth = true
             btn.titleLabel?.font = UIFont.systemFont(ofSize: 14.0)
             btn.setTitle(tabLists[i], for: .normal)
             btn.tag = 100 + i
@@ -102,15 +101,18 @@ class ImportWalletHeaderView: UIView {
 
             btn.snp.makeConstraints { (maker) in
                 maker.top.bottom.equalToSuperview()
-                maker.width.equalToSuperview().dividedBy(tabBtns.count)
+                
                 if index == 0 {
-                    maker.left.equalToSuperview()
+                    maker.width.equalToSuperview().dividedBy(tabBtns.count)
+                    maker.left.equalToSuperview().offset(16)
                 }else if index == tabBtns.count - 1 {
                     maker.left.equalTo(tabBtns[index - 1].snp.right)
                     maker.right.equalToSuperview()
                 }else {
+                    maker.width.equalToSuperview().dividedBy(tabBtns.count)
                     maker.left.equalTo(tabBtns[index - 1].snp.right)
                 }
+                
             }
             
         }

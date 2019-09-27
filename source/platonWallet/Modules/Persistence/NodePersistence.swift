@@ -12,17 +12,18 @@ import RealmSwift
 class NodePersistence {
     
     public class func add(nodes: [Node], _ completion: (() -> Void)?) {
-        let nodes = nodes.detached
         let _ = nodes.map { $0.chainUrl = SettingService.getCurrentNodeURLString() }
         
         RealmWriteQueue.async {
             autoreleasepool(invoking: {
-               let realm = try! Realm(configuration: RealmHelper.getConfig())
-
+                let realm = RealmHelper.getNewRealm()
+                let r = realm.objects(Node.self)
                 try? realm.write {
-                    realm.delete(realm.objects(Node.self))
+                    realm.delete(r)
                     realm.add(nodes, update: true)
-                    completion?()
+                    DispatchQueue.main.async {
+                        completion?()
+                    }
                 }
             })
         }
@@ -33,33 +34,30 @@ class NodePersistence {
             SortDescriptor(keyPath: isRankingSorted ? "ranking" : "ratePA", ascending: isRankingSorted ? true : false),
             SortDescriptor(keyPath: isRankingSorted ? "ratePA" : "ranking", ascending: isRankingSorted ? true : false)
         ]
-        let realm = try! Realm(configuration: RealmHelper.getConfig())
-        let r = realm.objects(Node.self).sorted(by: sortPropertis)
-        let array = Array(r)
-        return array
+        RealmInstance!.refresh()
+        let r = RealmInstance!.objects(Node.self).sorted(by: sortPropertis)
+        return Array(r)
     }
     
     public class func getActiveNode(isRankingSorted: Bool = true) -> [Node] {
+        RealmInstance!.refresh()
         let predicate = NSPredicate(format: "nodeStatus == 'Active'")
         let sortPropertis = [
             SortDescriptor(keyPath: isRankingSorted ? "ranking" : "ratePA", ascending: isRankingSorted ? true : false),
             SortDescriptor(keyPath: isRankingSorted ? "ratePA" : "ranking", ascending: isRankingSorted ? true : false)
         ]
-        let realm = try! Realm(configuration: RealmHelper.getConfig())
-        let r = realm.objects(Node.self).filter(predicate).sorted(by: sortPropertis)
-        let array = Array(r)
-        return array
+        let r = RealmInstance!.objects(Node.self).filter(predicate).sorted(by: sortPropertis)
+        return Array(r)
     }
     
     public class func getCandiateNode(isRankingSorted: Bool = true) -> [Node] {
+        RealmInstance!.refresh()
         let predicate = NSPredicate(format: "nodeStatus == 'Candidate'")
         let sortPropertis = [
             SortDescriptor(keyPath: isRankingSorted ? "ranking" : "ratePA", ascending: isRankingSorted ? true : false),
             SortDescriptor(keyPath: isRankingSorted ? "ratePA" : "ranking", ascending: isRankingSorted ? true : false)
         ]
-        let realm = try! Realm(configuration: RealmHelper.getConfig())
-        let r = realm.objects(Node.self).filter(predicate).sorted(by: sortPropertis)
-        let array = Array(r)
-        return array
+        let r = RealmInstance!.objects(Node.self).filter(predicate).sorted(by: sortPropertis)
+        return Array(r)
     }
 }

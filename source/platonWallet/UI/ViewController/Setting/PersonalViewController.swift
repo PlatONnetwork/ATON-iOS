@@ -37,11 +37,11 @@ class PersonalViewController: BaseViewController,UITableViewDelegate,UITableView
     }
     
     func tableviewHeader() -> UIView {
-        let container = UIView(frame: CGRect(x: 0, y: 0, width: kUIScreenWidth, height: 24))
+        let container = UIView(frame: CGRect(x: 0, y: 0, width: kUIScreenWidth, height: 18))
         let label = UILabel(frame: .zero)
         label.textColor = .black
         label.localizedText = "PersonalVC_nav_title"
-        label.font = UIFont.systemFont(ofSize: 24)
+        label.font = UIFont.systemFont(ofSize: 18)
         container.addSubview(label)
         label.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(16)
@@ -58,7 +58,7 @@ class PersonalViewController: BaseViewController,UITableViewDelegate,UITableView
         var height = header.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
         var newFrame = header.frame
         if height == 0.0{
-            height = 24
+            height = 18
         }
         newFrame.size.height = height;
         header.frame = newFrame

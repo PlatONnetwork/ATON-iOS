@@ -27,10 +27,7 @@ class MainImportWalletViewController: BaseViewController,UIScrollViewDelegate,Im
     
     lazy var headerView: ImportWalletHeaderView = {
 
-        let view = ImportWalletHeaderView(tabLists: [Localized("importWalletVC_tab_keystore"),
-                                                     Localized("importWalletVC_tab_mnemonic"),
-                                                     Localized("importWalletVC_tab_privateKey"),
-                                                     Localized("importWalletVC_tab_observedWallet")], currentIndex: currentIndex)
+        let view = ImportWalletHeaderView(tabLists: [Localized("importWalletVC_tab_keystore"),Localized("importWalletVC_tab_mnemonic"),Localized("importWalletVC_tab_privateKey")], currentIndex: currentIndex)
         view.delegate = self
         return view
         
@@ -40,8 +37,7 @@ class MainImportWalletViewController: BaseViewController,UIScrollViewDelegate,Im
         
         return [ImportKeystoreViewController(),
                 ImportMnemonicOrPrivateKeyViewController(type: .mnemonic),
-                ImportMnemonicOrPrivateKeyViewController(type: .privateKey),
-                ImportObservedWalletViewController()]
+                ImportMnemonicOrPrivateKeyViewController(type: .privateKey)]
         
     }()
     
@@ -88,8 +84,7 @@ class MainImportWalletViewController: BaseViewController,UIScrollViewDelegate,Im
             } else {
                 maker.top.equalToSuperview().offset(44 + 20)
             }
-            maker.left.equalToSuperview().offset(16)
-            maker.right.equalToSuperview().offset(-16)
+            maker.left.right.equalToSuperview()
             maker.height.equalTo(42)
         }
         
