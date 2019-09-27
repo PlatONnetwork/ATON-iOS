@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -27,13 +27,14 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dq0-W3-aM6">
-                        <rect key="frame" x="54" y="21.5" width="138" height="17"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <rect key="frame" x="54" y="20" width="138" height="19.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vhQ-Ej-uLP" userLabel="sepline">
                         <rect key="frame" x="0.0" y="59.5" width="320" height="0.5"/>
                         <color key="backgroundColor" red="0.89411764705882346" green="0.90588235294117647" blue="0.95294117647058818" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="0.5" id="GL5-v8-pgu"/>
                         </constraints>
@@ -52,6 +53,7 @@
                     <constraint firstItem="dq0-W3-aM6" firstAttribute="leading" secondItem="FAK-jt-rT4" secondAttribute="trailing" constant="16" id="R88-hE-Ur4"/>
                     <constraint firstItem="iQE-aP-Ta5" firstAttribute="centerY" secondItem="FAK-jt-rT4" secondAttribute="centerY" id="SfE-DB-ZF5"/>
                     <constraint firstItem="dq0-W3-aM6" firstAttribute="centerY" secondItem="FAK-jt-rT4" secondAttribute="centerY" id="cNW-tR-lf6"/>
+                    <constraint firstItem="FAK-jt-rT4" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="n5z-Hn-odl"/>
                 </constraints>
             </tableViewCellContentView>
             <constraints>
@@ -59,7 +61,6 @@
                 <constraint firstItem="FAK-jt-rT4" firstAttribute="leading" secondItem="njF-e1-oar" secondAttribute="leading" constant="18" id="EJ9-su-FJr"/>
                 <constraint firstItem="vhQ-Ej-uLP" firstAttribute="trailing" secondItem="njF-e1-oar" secondAttribute="trailing" id="OAj-AZ-Wj4"/>
                 <constraint firstItem="njF-e1-oar" firstAttribute="trailing" secondItem="dq0-W3-aM6" secondAttribute="trailing" constant="128" id="VcA-k6-gWb"/>
-                <constraint firstItem="FAK-jt-rT4" firstAttribute="top" secondItem="njF-e1-oar" secondAttribute="top" constant="20" id="W3l-1L-iJi"/>
                 <constraint firstItem="vhQ-Ej-uLP" firstAttribute="leading" secondItem="njF-e1-oar" secondAttribute="leading" id="bGJ-Uu-V7r"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>

@@ -92,7 +92,7 @@ class DropdownListView: UIView {
     
     lazy var walletsObject = { () -> DropdownCellStyle in
         let selectedIndex = (AssetVCSharedData.sharedData.walletList as! [Wallet]).firstIndex(where: { (wallet) -> Bool in
-            return wallet.key?.address == selectedWallet?.key?.address
+            return wallet.address == selectedWallet?.address
         })
         
         let style = DropdownCellStyle(wallets: AssetVCSharedData.sharedData.walletList as! [Wallet], selectedIndex: selectedIndex ?? 0, isExpand: false)
@@ -180,7 +180,7 @@ class DropdownListView: UIView {
     private func show() {
         walletsObject.isExpand = true
         UIView.animate(withDuration: 0.3, animations: {
-            self.tableViewHeightConstaint?.update(offset: min((AssetVCSharedData.sharedData.walletList.count + 2) * 50, 250))
+            self.tableViewHeightConstaint?.update(offset: min((AssetVCSharedData.sharedData.walletList.count + 1) * 60, 240))
             self.layoutIfNeeded()
         }) { (_) in
             self.showDimView()
@@ -265,9 +265,9 @@ final class DropdownTableViewCell: UITableViewCell {
         containerView.backgroundColor = .white
         contentView.addSubview(containerView)
         containerView.snp.makeConstraints { make in
+            make.top.equalToSuperview()
             make.leading.equalToSuperview()
             make.trailing.equalToSuperview()
-            make.top.equalToSuperview().offset(16)
             make.height.equalTo(60)
             make.bottom.equalToSuperview()
         }

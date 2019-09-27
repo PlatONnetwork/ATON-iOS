@@ -27,6 +27,7 @@ class ValidatorNodesViewController: ButtonBarPagerTabStripViewController, Indica
         button.semanticContentAttribute = UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft ? .forceLeftToRight : .forceRightToLeft
         button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
         button.titleLabel?.adjustsFontSizeToFitWidth = true
+        button.titleLabel?.baselineAdjustment = .alignCenters
         button.layer.cornerRadius = 11.0
         button.layer.borderColor = common_blue_color.cgColor
         button.layer.borderWidth = 1 / UIScreen.main.scale
@@ -59,7 +60,7 @@ class ValidatorNodesViewController: ButtonBarPagerTabStripViewController, Indica
         settings.style.buttonBarRightContentInset = view.bounds.width/4.0
         
         
-        changeCurrentIndexProgressive = { [weak self] (oldCell: PTSButtonCell?, newCell: PTSButtonCell?, progressPercentage: CGFloat, changeCurrentIndex: Bool, animated: Bool) -> Void in
+        changeCurrentIndexProgressive = { (oldCell: PTSButtonCell?, newCell: PTSButtonCell?, progressPercentage: CGFloat, changeCurrentIndex: Bool, animated: Bool) -> Void in
             guard changeCurrentIndex == true else { return }
             oldCell?.label.textColor = .black
             newCell?.label.textColor = .white
@@ -67,7 +68,7 @@ class ValidatorNodesViewController: ButtonBarPagerTabStripViewController, Indica
         
         super.viewDidLoad()
         containerView.isScrollEnabled = false
-        buttonBarView.frame = CGRect(x: buttonBarView.frame.minX, y: buttonBarView.frame.minY + UIApplication.shared.statusBarFrame.height, width: buttonBarView.frame.width, height: buttonBarView.frame.height)
+        buttonBarView.frame = CGRect(x: buttonBarView.frame.minX, y: buttonBarView.frame.minY + UIApplication.shared.statusBarFrame.height, width: buttonBarView.frame.width, height: buttonBarView.frame.height + 28)
         buttonBarView.addSubview(rankButton)
         rankButton.frame = CGRect(x: buttonBarView.frame.width - 67 - 10, y: (buttonBarView.frame.height - 22)/2.0, width: 67, height: 22)
         containerView.frame = CGRect(x: containerView.frame.minX, y: buttonBarView.frame.maxY, width: containerView.frame.width, height: containerView.frame.height - UIApplication.shared.statusBarFrame.height)

@@ -55,7 +55,7 @@ class CommunityContentTableViewCell: UITableViewCell {
         }
         
         rightButton.setImage(UIImage(named: "4.icon-jump"), for: .normal)
-        rightButton.addTarget(self, action: #selector(rightTapAction(_:)), for: .touchUpInside)
+        rightButton.addTarget(self, action: #selector(rightTapAction), for: .touchUpInside)
         contentView.addSubview(rightButton)
         rightButton.snp.makeConstraints { make in
             make.width.height.equalTo(34)
@@ -97,17 +97,7 @@ class CommunityContentTableViewCell: UITableViewCell {
         cellDidCopyHandle?(contentLabel.text)
     }
     
-    @objc func rightTapAction(_ sender: UIButton) {
-        if contact?.action == .scan {
-            sender.isSelected = !sender.isSelected
-            if sender.isSelected {
-                qrcodeBottomConstraint?.activate()
-                qrcodeHeightConstraint?.activate()
-            } else {
-                qrcodeBottomConstraint?.deactivate()
-                qrcodeHeightConstraint?.deactivate()
-            }
-        }
+    @objc func rightTapAction() {
         cellDidRightHandle?()
     }
 

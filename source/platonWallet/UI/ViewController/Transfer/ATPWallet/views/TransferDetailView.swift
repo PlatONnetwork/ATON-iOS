@@ -79,8 +79,8 @@ class TransferDetailView: UIView {
     override func awakeFromNib() {
         super.awakeFromNib()
         
-//        copyFromAddrBtn.attachTextView = fromLabel
-//        copyToAddrBtn.attachTextView = toLabel
+        copyFromAddrBtn.attachTextView = fromLabel
+        copyToAddrBtn.attachTextView = toLabel
 ////        copyTxBtn.attachTextView = hashContent
 //        self.memoContent.isHidden = true
 //        self.pendingLoadingImage.isHidden = true

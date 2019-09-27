@@ -164,7 +164,7 @@ class SettingTableViewController: BaseViewController, UITableViewDelegate, UITab
         
         let titleL = UILabel(frame: .zero)
         titleL.textColor = UIColor.black
-        titleL.font = UIFont.systemFont(ofSize: 14)
+        titleL.font = UIFont.systemFont(ofSize: 16)
         titleL.localizedText = title
         cell.contentView.addSubview(titleL)
         cell.contentView.backgroundColor = UIColor(rgb: 0xffffff)

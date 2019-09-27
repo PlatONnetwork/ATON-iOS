@@ -260,7 +260,7 @@ extension NodeSettingViewControllerV2: UITableViewDelegate, UITableViewDataSourc
         
         let didSelectNode = NodeStoreService.share.nodeList[indexPath.row]
         
-        if didSelectNode.id == NodeStoreService.share.selectedNodeBeforeEdit.id {
+        if didSelectNode.id == NodeStoreService.share.selectedNodeBeforeEdit?.id {
             return
         }
         

@@ -9,18 +9,18 @@
 import Foundation
 import platonWeb3
 
-protocol PropertyReflectable { }
+//protocol PropertyReflectable { }
 
-extension PropertyReflectable {
-    subscript(key: String) -> Any? {
-        let m = Mirror(reflecting: self)
-        return m.children.first { $0.label == key }?.value
-    }
-}
+//extension PropertyReflectable {
+//    subscript(key: String) -> Any? {
+//        let m = Mirror(reflecting: self)
+//        return m.children.first { $0.label == key }?.value
+//    }
+//}
 
-struct Person {
-    let name: String
-    let age: Int
-}
+//struct Person {
+//    let name: String
+//    let age: Int
+//}
 
 //extension Web3Response.Error : PropertyReflectable {}

@@ -137,7 +137,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LicenseVCDelegate {
     }
     
     func gotoMainTab() {
-        self.window?.rootViewController = MainTabBarViewController.newTabBar()
+        let navController = UINavigationController(rootViewController: MainTabBarViewController.newTabBar())
+        navController.setNavigationBarHidden(true, animated: false)
+        self.window?.rootViewController = navController
     }
     
     func gotoWalletCreateVC() {

@@ -25,15 +25,17 @@ class NodeInfoTableViewCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
         
+        contentView.backgroundColor = normal_background_color
+        
         let containerView = UIButton()
         containerView.backgroundColor = .white
         contentView.addSubview(containerView)
         containerView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(10)
-            make.trailing.equalToSuperview().offset(-10)
-            make.top.equalToSuperview().offset(16)
-            make.height.equalTo(60)
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+            make.top.equalToSuperview()
             make.bottom.equalToSuperview()
+            make.height.equalTo(72)
         }
         
         avatarIV.addMaskView(corners: .allCorners, cornerRadiiV: 21)
@@ -41,7 +43,7 @@ class NodeInfoTableViewCell: UITableViewCell {
         containerView.addSubview(avatarIV)
         avatarIV.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
-            make.leading.equalToSuperview().offset(5)
+            make.leading.equalToSuperview().offset(13)
             make.width.height.equalTo(42)
         }
         
@@ -50,7 +52,7 @@ class NodeInfoTableViewCell: UITableViewCell {
         nameLabel.text = "--"
         containerView.addSubview(nameLabel)
         nameLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(12)
+            make.top.equalTo(avatarIV.snp.top)
             make.leading.equalTo(avatarIV.snp.trailing).offset(5)
             make.trailing.equalToSuperview().offset(-16)
             make.height.equalTo(18)

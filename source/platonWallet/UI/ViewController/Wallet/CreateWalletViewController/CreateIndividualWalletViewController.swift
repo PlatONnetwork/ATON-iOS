@@ -23,6 +23,9 @@ class CreateIndividualWalletViewController: BaseViewController,StartBackupMnemon
     
     @IBOutlet weak var pswLabelTopLayoutWithNameTips: NSLayoutConstraint!
     
+    @IBOutlet weak var pswAdviseLabelTopToStrengthLayoutConstraint: NSLayoutConstraint!
+    @IBOutlet weak var pswAdviseLabelTopToConfirmPSWLayoutConstraint: NSLayoutConstraint!
+    
     @IBOutlet weak var strengthView: PasswordStrengthView!
     
     @IBOutlet weak var createBtn: PButton!
@@ -61,6 +64,9 @@ class CreateIndividualWalletViewController: BaseViewController,StartBackupMnemon
         
         createBtn.style = .disable
         
+        pswAdviseLabelTopToStrengthLayoutConstraint.priority = .defaultLow
+        pswAdviseLabelTopToConfirmPSWLayoutConstraint.priority = .defaultHigh
+        self.strengthView.isHidden = true
     }
     
     override func rt_customBackItem(withTarget target: Any!, action: Selector!) -> UIBarButtonItem! {
@@ -189,7 +195,7 @@ class CreateIndividualWalletViewController: BaseViewController,StartBackupMnemon
                 WalletService.sharedInstance.exportMnemonic(wallet: self!.wallet, password: self!.pswTF.text!, completion: { (res, error) in
                     if (error == nil && (res!.length) > 0) {
                         let vc = BackupMnemonicViewController()
-                        vc.walletAddress = self?.wallet.key?.address
+                        vc.walletAddress = self?.wallet.address
                         vc.mnemonic = res 
                         self?.rt_navigationController.pushViewController(vc, animated: true)
                         alertVC.dismissWithCompletion()
@@ -224,9 +230,11 @@ extension CreateIndividualWalletViewController :UITextFieldDelegate {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { 
             self.checkCanEableButton()
+            self.strengthView.isHidden = !(self.pswTF.text?.count ?? 0 > 0)
+            self.pswAdviseLabelTopToStrengthLayoutConstraint.priority = self.strengthView.isHidden ? .defaultLow : .defaultHigh
+            self.pswAdviseLabelTopToConfirmPSWLayoutConstraint.priority = self.strengthView.isHidden ? .defaultHigh : .defaultLow
             
             if textField == self.pswTF {
-                
                 self.strengthView.updateFor(password: self.pswTF.text ?? "")
             }
             
@@ -245,6 +253,10 @@ extension CreateIndividualWalletViewController :UITextFieldDelegate {
         }else if textField == confirmPswTF {
             let _ = checkPswTF(showErrorMsg: true,isConfirmPsw: true)
         }
+        
+        strengthView.isHidden = !(pswTF.text?.count ?? 0 > 0)
+        pswAdviseLabelTopToStrengthLayoutConstraint.priority = strengthView.isHidden ? .defaultLow : .defaultHigh
+        pswAdviseLabelTopToConfirmPSWLayoutConstraint.priority = strengthView.isHidden ? .defaultHigh : .defaultLow
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

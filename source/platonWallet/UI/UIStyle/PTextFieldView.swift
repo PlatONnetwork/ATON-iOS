@@ -50,6 +50,7 @@ class PTextFieldView: UIView {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        title.font = .systemFont(ofSize: 16)
         textField.delegate = self
         textField.textAlignment = .left
         NotificationCenter.default.addObserver(self, selector: #selector(textDidBeginEditing(_:)), name: UITextField.textDidBeginEditingNotification, object: nil)

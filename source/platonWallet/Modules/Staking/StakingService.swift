@@ -60,7 +60,9 @@ final class StakingService: BaseService {
                     let decoder = JSONDecoder()
                     let response = try decoder.decode(JSONResponse<[Node]>.self, from: data)
                     NodePersistence.add(nodes: response.data, {
-                        completion?(.success, nil)
+                        DispatchQueue.main.async {
+                            completion?(.success, nil)
+                        }
                     })
                 } catch let error {
                     completion?(.fail(-1, error.localizedDescription), nil)
@@ -78,14 +80,14 @@ final class StakingService: BaseService {
         var completion = completion
         
         if controllerType == .active {
-            let data = NodePersistence.getActiveNode(isRankingSorted: isRankingSorted)
-            self.successCompletionOnMain(obj: data.detached as AnyObject, completion: &completion)
+            let data = NodePersistence.getActiveNode(isRankingSorted: isRankingSorted).detached
+            self.successCompletionOnMain(obj: data as AnyObject, completion: &completion)
         } else if controllerType == .candidate {
-            let data = NodePersistence.getCandiateNode(isRankingSorted: isRankingSorted)
-            self.successCompletionOnMain(obj: data.detached as AnyObject, completion: &completion)
+            let data = NodePersistence.getCandiateNode(isRankingSorted: isRankingSorted).detached
+            self.successCompletionOnMain(obj: data as AnyObject, completion: &completion)
         } else {
-            let datas = NodePersistence.getAll(isRankingSorted: isRankingSorted)
-            self.successCompletionOnMain(obj: datas.detached as AnyObject, completion: &completion)
+            let datas = NodePersistence.getAll(isRankingSorted: isRankingSorted).detached
+            self.successCompletionOnMain(obj: datas as AnyObject, completion: &completion)
         }
     }
     

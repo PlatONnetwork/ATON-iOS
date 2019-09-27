@@ -18,7 +18,7 @@ class WalletListViewController: BaseViewController,TableViewReorderDelegate {
      
     lazy var atpWalletEmptyView : WalletEmptyView! = {
         
-        let view = WalletEmptyView(walletType: .ClassicWallet, createBtnClickHandler: { [weak self] in 
+        let view = WalletEmptyView(walletType: .classic, createBtnClickHandler: { [weak self] in
             self?.createIndividualWallet()
             
         }) { [weak self] in 
@@ -31,14 +31,10 @@ class WalletListViewController: BaseViewController,TableViewReorderDelegate {
         }
         return view
     }()
-    
-    var currentType: WalletType = .ClassicWallet
-
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupUI()
         initSubView()
     }
     
@@ -65,15 +61,6 @@ class WalletListViewController: BaseViewController,TableViewReorderDelegate {
         }
         tableView.reloadData()
     }
-    
-    func setupUI() {
-        /*
-        let titleView = UIView.viewFromXib(theClass: AssetNavigationBarView.self) as! AssetNavigationBarView
-        titleView.leftButton.addTarget(self, action: #selector(onNavigationLeft), for: .touchUpInside)
-        titleView.rightButton.addTarget(self, action: #selector(onNavigationRight), for: .touchUpInside)
-        navigationItem.titleView = titleView
-        */
-    }
 
     
     func initSubView() {
@@ -91,16 +78,6 @@ class WalletListViewController: BaseViewController,TableViewReorderDelegate {
             make.right.equalToSuperview().offset(0)
         }
         tableView.tableFooterView = UIView()
-    }
-    
-    @objc func onNavigationLeft() {
-        currentType = .ClassicWallet
-        updateUI()
-    }
-    
-    @objc func onNavigationRight() {
-        currentType = .JointWallet
-        updateUI()
     }
     
     func createIndividualWallet() {
@@ -167,8 +144,6 @@ extension WalletListViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableViewDidFinishReordering(_ tableView: UITableView, from initialSourceIndexPath: IndexPath, to finalDestinationIndexPath: IndexPath){
-        print("initialSourceIndexPath:\(initialSourceIndexPath.row)")
-        print("finalDestinationIndexPath:\(finalDestinationIndexPath.row)")
         guard initialSourceIndexPath.row != finalDestinationIndexPath.row else {
             return
         }
@@ -176,13 +151,12 @@ extension WalletListViewController: UITableViewDelegate, UITableViewDataSource {
         let initItem = array[initialSourceIndexPath.row]
         array.remove(at: initialSourceIndexPath.row)
         array.insert(initItem, at: finalDestinationIndexPath.row)
-        RealmInstance?.beginWrite()
+        
         for (i,element) in array.enumerated(){
             if let classicWallet = element as? Wallet{
-                classicWallet.userArrangementIndex = i
+                WallletPersistence().updateWalletUserArrangementIndex(wallet: classicWallet, userArrangementIndex: i)
             }
         }
-        try? RealmInstance?.commitWrite()
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { 
             self.dataSource.removeAll()

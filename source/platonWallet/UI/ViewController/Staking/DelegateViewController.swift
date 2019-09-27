@@ -27,7 +27,7 @@ class DelegateViewController: BaseViewController {
     var canUseWallets: [Wallet] {
         get {
             let canUseWallets = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { (wallet) -> Bool in
-                let walletBalance = AssetService.sharedInstace.balances.first(where: { $0.addr.lowercased() == wallet.key?.address.lowercased() })
+                let walletBalance = AssetService.sharedInstace.balances.first(where: { $0.addr.lowercased() == wallet.address.lowercased() })
                 if let balance = walletBalance {
                     let free = BigUInt(balance.free ?? "0")
                     let lock = BigUInt(balance.lock ?? "0")
@@ -82,7 +82,7 @@ class DelegateViewController: BaseViewController {
     private func fetchCanDelegation() {
         guard
             let nodeId = currentNode?.nodeId,
-            let walletAddr = walletStyle?.currentWallet.key?.address else { return }
+            let walletAddr = walletStyle?.currentWallet.address else { return }
         
         showLoadingHUD()
         StakingService.sharedInstance.getCanDelegation(addr: walletAddr, nodeId: nodeId) { [weak self] (result, data) in
@@ -125,16 +125,16 @@ class DelegateViewController: BaseViewController {
         var index: Int? = 0
         if
             let address = currentAddress,
-            let wallet = canUseWallets.first(where: { $0.key?.address.lowercased() == address.lowercased() }) {
+            let wallet = canUseWallets.first(where: { $0.address.lowercased() == address.lowercased() }) {
             index = canUseWallets.firstIndex(of: wallet)
         } else {
-            index = canUseWallets.firstIndex(where: { $0.key?.address.lowercased() == (AssetVCSharedData.sharedData.selectedWallet as! Wallet).key?.address.lowercased() }) ?? 0
-            currentAddress = canUseWallets[index ?? 0].key?.address
+            index = canUseWallets.firstIndex(where: { $0.address.lowercased() == (AssetVCSharedData.sharedData.selectedWallet as! Wallet).address.lowercased() }) ?? 0
+            currentAddress = canUseWallets[index ?? 0].address
         }
         walletStyle = WalletsCellStyle(wallets: canUseWallets, selectedIndex: index ?? 0, isExpand: false)
         
         let balance = AssetService.sharedInstace.balances.first { (item) -> Bool in
-            return item.addr.lowercased() == walletStyle!.currentWallet.key?.address.lowercased()
+            return item.addr.lowercased() == walletStyle!.currentWallet.address.lowercased()
         }
         
         var balances: [(String, String)] = []
@@ -199,6 +199,7 @@ extension DelegateViewController: UITableViewDelegate, UITableViewDataSource {
                 (walletStyle.wallets.count <= 1) ? nil :
                 indexPath.row == 0 ? UIImage(named: "3.icon_ drop-down") :
                 indexPath.row == walletStyle.selectedIndex + 1 ? UIImage(named: "iconApprove") : nil
+            cell.isTopCell = indexPath.row == 0
             
             cell.cellDidHandle = { [weak self] (_ cell: WalletTableViewCell) in
                 guard let self = self, walletStyle.wallets.count > 1 else { return }
@@ -211,6 +212,7 @@ extension DelegateViewController: UITableViewDelegate, UITableViewDataSource {
             cell.bottomlineV.isHidden = (indexPath.row == 0 || indexPath.row == balanceStyle.cellCount - 1)
             cell.rightImageView.image = (balanceStyle.balances.count <= 1) ? nil :
                 indexPath.row == 0 ? UIImage(named: "3.icon_ drop-down") : indexPath.row == balanceStyle.selectedIndex + 1 ? UIImage(named: "iconApprove") : nil
+            cell.isTopCell = indexPath.row == 0
             
             cell.cellDidHandle = { [weak self] (_ cell: WalletBalanceTableViewCell) in
                 guard let self = self, balanceStyle.balances.count > 1 else { return }
@@ -285,8 +287,8 @@ extension DelegateViewController {
         guard
             let walletObject = walletStyle,
             let balanceObject = balanceStyle,
-            let nodeId = currentNode?.nodeId,
-            let currentAddress = walletObject.currentWallet.key?.address else { return }
+            let nodeId = currentNode?.nodeId else { return }
+        let currentAddress = walletObject.currentWallet.address
 
         let typ = balanceObject.selectedIndex == 0 ? UInt16(0) : UInt16(1) // 0：自由金额 1：锁仓金额
 
@@ -310,9 +312,7 @@ extension DelegateViewController {
                     if let transaction = data as? Transaction {
                         transaction.gasUsed = self.estimateUseGas?.description
                         transaction.nodeName = self.currentNode?.name
-                        let newTransaction = transaction.copyTransaction()
-                        
-                        TransferPersistence.add(tx: newTransaction)
+                        TransferPersistence.add(tx: transaction)
                         self.doShowTransactionDetail(transaction)
                     }
                 case .fail(_, let errMsg):
@@ -336,7 +336,7 @@ extension DelegateViewController {
         listData[indexSection] = DelegateTableViewCellStyle.wallets(walletStyle: walletStyle!)
         
         let balance = AssetService.sharedInstace.balances.first { (item) -> Bool in
-            return item.addr.lowercased() == walletStyle?.currentWallet.key?.address.lowercased()
+            return item.addr.lowercased() == walletStyle?.currentWallet.address.lowercased()
         }
         
         var balances: [(String, String)] = []
@@ -384,13 +384,20 @@ extension DelegateViewController {
     
     
     func estimateGas(_ amountVon: BigUInt, _ cell: SendInputTableViewCell) {
+        var needEstimateGas = amountVon
         guard
             let balanceObject = balanceStyle,
             let nodeId = currentNode?.nodeId else { return }
         
         let typ = balanceObject.selectedIndex == 0 ? UInt16(0) : UInt16(1) // 0：自由金额 1：锁仓金额
         
-        web3.staking.estimateCreateDelegate(typ: typ, nodeId: nodeId, amount: amountVon, gasPrice: gasPrice) { [weak self] (result, data) in
+        if isDelegateAll {
+            // 当全部委托的时候把0替换为1，防止出现0字节导致gas不足的情况
+            let amountStr = amountVon.description.replacingOccurrences(of: "0", with: "1")
+            needEstimateGas = BigUInt(amountStr) ?? BigUInt.zero
+        }
+        
+        web3.staking.estimateCreateDelegate(typ: typ, nodeId: nodeId, amount: needEstimateGas, gasPrice: gasPrice) { [weak self] (result, data) in
             switch result {
             case .success:
                 self?.estimateUseGas = data

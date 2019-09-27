@@ -30,7 +30,7 @@ class AssetService : BaseService{
     
     func fetchWalletBalanceForV7(_ completion: PlatonCommonCompletion?) {
         let completion = completion
-        let addresses = (AssetVCSharedData.sharedData.walletList as! [Wallet]).map { return $0.key!.address }
+        let addresses = (AssetVCSharedData.sharedData.walletList as! [Wallet]).map { return $0.address }
         guard addresses.count > 0 else {
             NotificationCenter.default.post(name: Notification.Name.ATON.DidUpdateAllAsset, object: nil)
             return
@@ -40,6 +40,19 @@ class AssetService : BaseService{
             switch result {
             case .success:
                 if let newData = data as? [Balance] {
+                    
+                    for bal in newData {
+                        let oriBalance = self?.balances.first(where: { $0.addr.lowercased() == bal.addr.lowercased() })
+                        if oriBalance == nil {
+                            continue
+                        }
+                        
+                        if oriBalance?.free != bal.free || oriBalance?.lock != bal.lock {
+                            NotificationCenter.default.post(name: Notification.Name.ATON.UpdateTransactionList, object: nil)
+                            break
+                        }
+                    }
+                    
                     self?.balances = newData
                     NotificationCenter.default.post(name: Notification.Name.ATON.DidUpdateAllAsset, object: nil)
                     completion?(PlatonCommonResult.success, newData as AnyObject)

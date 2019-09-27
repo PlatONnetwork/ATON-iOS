@@ -180,7 +180,8 @@ class MainTabBarViewController: UITabBarController {
         super.viewDidLoad()
         delegate = self
         self.tabBar.isTranslucent = false
-        self.navigationController?.setNavigationBarHidden(true, animated: false)
+        
+        navigationController?.navigationBar.backgroundColor = .blue
     }
     
     /*

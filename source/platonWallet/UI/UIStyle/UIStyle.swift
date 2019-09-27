@@ -61,3 +61,6 @@ let status_green_color = UIColor(rgb: 0x19A20E)
 let status_red_color = UIColor(rgb: 0xF5302C)
 let status_darkgray_color = UIColor(rgb: 0x525768)
 let status_lightgray_color = UIColor(rgb: 0x9EABBE)
+
+let wallet_orange_color = UIColor(rgb: 0xF5A623)
+let wallet_gray_color = UIColor(rgb: 0x61646E)

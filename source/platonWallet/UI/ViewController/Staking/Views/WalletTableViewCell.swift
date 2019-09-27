@@ -17,6 +17,7 @@ class WalletTableViewCell: UITableViewCell {
     public let walletAddressLabel = UILabel()
     public let bottomlineV = UIView()
     public let rightImageView = UIImageView()
+    public let containerView = UIButton()
     
     var cellDidHandle: ((_ cell: WalletTableViewCell) -> Void)?
     
@@ -30,14 +31,23 @@ class WalletTableViewCell: UITableViewCell {
         
         walletNameLabel.text = wal.name
         walletAvatarIV.image = UIImage(named: wal.avatar)
-        walletAddressLabel.text = wal.key!.address.addressForDisplay()
+        walletAddressLabel.text = wal.address.addressForDisplay()
+    }
+    
+    var isTopCell: Bool = false {
+        didSet {
+            containerView.snp.updateConstraints { make in
+                make.height.equalTo(isTopCell ? 60 : 72)
+                make.top.equalToSuperview().offset(isTopCell ? 16 : 0)
+            }
+        }
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
+        contentView.backgroundColor = normal_background_color
         
-        let containerView = UIButton()
         containerView.addTarget(self, action: #selector(containerTapAction), for: .touchUpInside)
         containerView.backgroundColor = .white
         contentView.addSubview(containerView)

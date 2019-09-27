@@ -145,7 +145,7 @@ extension UIViewController {
                 if (error == nil && (res!.length) > 0) {
                     let vc = BackupMnemonicViewController()
                     vc.mnemonic = res
-                    vc.walletAddress = wallet.key?.address
+                    vc.walletAddress = wallet.address
                     vc.view.backgroundColor = .white
                     vc.hidesBottomBarWhenPushed = true
                     self?.rt_navigationController!.pushViewController(vc, animated: true)
