@@ -384,13 +384,20 @@ extension DelegateViewController {
     
     
     func estimateGas(_ amountVon: BigUInt, _ cell: SendInputTableViewCell) {
+        var needEstimateGas = amountVon
         guard
             let balanceObject = balanceStyle,
             let nodeId = currentNode?.nodeId else { return }
         
         let typ = balanceObject.selectedIndex == 0 ? UInt16(0) : UInt16(1) // 0：自由金额 1：锁仓金额
         
-        web3.staking.estimateCreateDelegate(typ: typ, nodeId: nodeId, amount: amountVon, gasPrice: gasPrice) { [weak self] (result, data) in
+        if isDelegateAll {
+            // 当全部委托的时候把0替换为1，防止出现0字节导致gas不足的情况
+            let amountStr = amountVon.description.replacingOccurrences(of: "0", with: "1")
+            needEstimateGas = BigUInt(amountStr) ?? BigUInt.zero
+        }
+        
+        web3.staking.estimateCreateDelegate(typ: typ, nodeId: nodeId, amount: needEstimateGas, gasPrice: gasPrice) { [weak self] (result, data) in
             switch result {
             case .success:
                 self?.estimateUseGas = data

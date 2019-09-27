@@ -54,6 +54,9 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
             self?.onSendAll()
         })
         amountView.checkInput(mode: .all, check: {[weak self] text -> (Bool, String) in
+            if text.count == 0 {
+                return (false, "amount must be not empty")
+            }
             
             let inputformat = CommonService.checkTransferAmoutInput(text: text, checkBalance: false, fee: nil)
             if !inputformat.0{
@@ -453,6 +456,13 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
     // MARK: - PopUp
     
     func showPasswordInputPswAlert() { 
+        
+        guard
+            let amount = self.amountView.textField.text,
+            let amountBigInt = BigUInt(amount), amountBigInt > BigUInt.zero else {
+                AssetViewControllerV060.getInstance()?.showMessage(text: "amount must be > 0", delay: 2.0)
+                return
+        }
         
         var executorWallet : Wallet? 
         if let w = AssetVCSharedData.sharedData.selectedWallet as? Wallet{

@@ -34,7 +34,6 @@ class NodeStoreService {
             let nodes = SettingService.shareInstance.getNodes()
             return nodes
         }
-        
     }
     
     var editingNodeList: [NodeInfo] = []
