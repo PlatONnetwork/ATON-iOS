@@ -176,8 +176,8 @@ class TransactionService : BaseService{
                 case .success(_):
                     nonce = resp.result
                     semaphore.signal()
-                case .failure(_):
-                    self.failCompletionOnMainThread(code: -1, errorMsg: resp.getErrorLocalizedDescription(), completion: &completion)
+                case .failure(let error):
+                    self.failCompletionOnMainThread(code: error.code, errorMsg: error.message, completion: &completion)
                     semaphore.signal()
                 }
             }
@@ -224,8 +224,8 @@ class TransactionService : BaseService{
                         TransferPersistence.add(tx: ptx)
                     }
                     self.successCompletionOnMain(obj: nil, completion: &completion)
-                case .failure(_):
-                    self.failCompletionOnMainThread(code: -1, errorMsg: resp.getErrorLocalizedDescription(), completion: &completion)
+                case .failure(let error):
+                    self.failCompletionOnMainThread(code: error.code, errorMsg: error.message, completion: &completion)
                 }
             })
         }

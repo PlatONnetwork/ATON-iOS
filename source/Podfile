@@ -43,6 +43,8 @@ target 'platonWallet' do
   pod 'UMCCommon'
   pod 'UMCAnalytics'
   pod 'UMCCommonLog'
+  pod 'SwiftMonkeyPaws'
+  pod 'OHHTTPStubs/Swift', :configurations => ['Debug']
 
   target 'platonWalletTests' do
       inherit! :search_paths
@@ -52,6 +54,7 @@ target 'platonWallet' do
   target 'platonWalletUITests' do
     inherit! :search_paths
     # Pods for testing
+    pod 'SwiftMonkey'
   end
 
 end
