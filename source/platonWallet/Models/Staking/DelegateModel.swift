@@ -52,7 +52,7 @@ class DelegateDetailDel: Object {
     @objc dynamic var delegationBlockNum: String = ""
     @objc dynamic var compoundKey: String = ""
     // 不同的链
-    @objc dynamic var chainUrl: String? = SettingService.getCurrentNodeURLString()
+    @objc dynamic var chainUrl: String? = ""
     
     override static func primaryKey() -> String? {
         return "compoundKey"

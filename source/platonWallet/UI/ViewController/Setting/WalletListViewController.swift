@@ -18,7 +18,7 @@ class WalletListViewController: BaseViewController,TableViewReorderDelegate {
      
     lazy var atpWalletEmptyView : WalletEmptyView! = {
         
-        let view = WalletEmptyView(walletType: .ClassicWallet, createBtnClickHandler: { [weak self] in 
+        let view = WalletEmptyView(walletType: .classic, createBtnClickHandler: { [weak self] in
             self?.createIndividualWallet()
             
         }) { [weak self] in 
@@ -31,14 +31,12 @@ class WalletListViewController: BaseViewController,TableViewReorderDelegate {
         }
         return view
     }()
-    
-    var currentType: WalletType = .ClassicWallet
-
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        setupUI()
+        NotificationCenter.default.addObserver(self, selector: #selector(shouldUpdateWalletStatus), name: Notification.Name.ATON.DidNetworkStatusChange, object: nil)
+        
         initSubView()
     }
     
@@ -65,15 +63,6 @@ class WalletListViewController: BaseViewController,TableViewReorderDelegate {
         }
         tableView.reloadData()
     }
-    
-    func setupUI() {
-        /*
-        let titleView = UIView.viewFromXib(theClass: AssetNavigationBarView.self) as! AssetNavigationBarView
-        titleView.leftButton.addTarget(self, action: #selector(onNavigationLeft), for: .touchUpInside)
-        titleView.rightButton.addTarget(self, action: #selector(onNavigationRight), for: .touchUpInside)
-        navigationItem.titleView = titleView
-        */
-    }
 
     
     func initSubView() {
@@ -93,16 +82,6 @@ class WalletListViewController: BaseViewController,TableViewReorderDelegate {
         tableView.tableFooterView = UIView()
     }
     
-    @objc func onNavigationLeft() {
-        currentType = .ClassicWallet
-        updateUI()
-    }
-    
-    @objc func onNavigationRight() {
-        currentType = .JointWallet
-        updateUI()
-    }
-    
     func createIndividualWallet() {
         
         dismiss(animated: false, completion: nil)
@@ -116,6 +95,12 @@ class WalletListViewController: BaseViewController,TableViewReorderDelegate {
         let importWallet = MainImportWalletViewController()
         
         navigationController?.pushViewController(importWallet, animated: true)
+    }
+    
+    @objc func shouldUpdateWalletStatus(){
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
     }
 }
 
@@ -167,8 +152,6 @@ extension WalletListViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableViewDidFinishReordering(_ tableView: UITableView, from initialSourceIndexPath: IndexPath, to finalDestinationIndexPath: IndexPath){
-        print("initialSourceIndexPath:\(initialSourceIndexPath.row)")
-        print("finalDestinationIndexPath:\(finalDestinationIndexPath.row)")
         guard initialSourceIndexPath.row != finalDestinationIndexPath.row else {
             return
         }
@@ -176,13 +159,12 @@ extension WalletListViewController: UITableViewDelegate, UITableViewDataSource {
         let initItem = array[initialSourceIndexPath.row]
         array.remove(at: initialSourceIndexPath.row)
         array.insert(initItem, at: finalDestinationIndexPath.row)
-        RealmInstance?.beginWrite()
+        
         for (i,element) in array.enumerated(){
             if let classicWallet = element as? Wallet{
-                classicWallet.userArrangementIndex = i
+                WallletPersistence().updateWalletUserArrangementIndex(wallet: classicWallet, userArrangementIndex: i)
             }
         }
-        try? RealmInstance?.commitWrite()
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { 
             self.dataSource.removeAll()
@@ -190,4 +172,6 @@ extension WalletListViewController: UITableViewDelegate, UITableViewDataSource {
             self.tableView.reloadData()
         }
     }
+    
+    
 }

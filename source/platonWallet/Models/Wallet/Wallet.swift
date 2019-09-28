@@ -11,11 +11,10 @@ import RealmSwift
 
 /// Support account types.
 public enum WalletType {
-    case ClassicWallet
-    case JointWallet
+    case classic
+    case observed
+    case cold
 }
-
-
 
 public enum WalletError: LocalizedError {
     case invalidKeyType
@@ -46,7 +45,24 @@ public final class Wallet: Object {
     
     @objc dynamic var lockedBalance: String = ""
     
-    var type: WalletType = .ClassicWallet
+    // 钱包类型
+    var type: WalletType {
+        if key == nil {
+            return .observed
+        } else {
+            if NetworkManager.shared.reachabilityManager?.isReachable == true {
+                return .classic
+            } else {
+                return .cold
+            }
+        }
+    }
+    
+    // 0.7.3增加离线钱包，因为只有一个address，不能生成keystore，且之前uuid是key.address赋值，所以增加address，值为uuid
+    var address: String {
+        guard let ks = key else { return uuid }
+        return ks.address
+    }
     
     public var key: Keystore?
     
@@ -56,22 +72,14 @@ public final class Wallet: Object {
         }
     }
     
-//    public var keystoreJson: String? {
-//        
-//        return try? String(contentsOfFile: keystoreFolderPath + "/\(keystorePath)")
-//        
-//    }
+    convenience init(name: String, address: String) {
+        self.init()
+        primaryKeyIdentifier = address + SettingService.threadSafeGetCurrentNodeURLString()
+        self.uuid = address
+        self.name = name
+        self.avatar = address.walletAddressLastCharacterAvatar()
+    }
     
-//    convenience public init(name: String, keystoreFileURL: URL, keystoreObject: Keystore) {
-//        
-//        self.init()
-//        uuid = keystoreObject.address
-//        key = keystoreObject
-//        keystorePath = keystoreFileURL.absoluteString
-//        self.name = name
-//        
-//    }
-//    
     convenience public init(name: String, keystoreObject:Keystore) {
         
         self.init()

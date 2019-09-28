@@ -12,8 +12,6 @@ import Localize_Swift
 
 class SettingService {
     
-    var nodeStorge: NodeInfoPersistence?
-    
     var currentNodeURL : String?
     
     var currentVersion: RemoteVersion?
@@ -57,7 +55,7 @@ class SettingService {
     }
     
     static func getCurrentNodeURLString() -> String{
-
+        
         if SettingService.shareInstance.currentNodeURL == nil{
             SettingService.shareInstance.currentNodeURL = SettingService.shareInstance.getSelectedNodes()?.nodeURLStr
         }
@@ -70,10 +68,6 @@ class SettingService {
     
     
     static func getCentralizationURL() -> String {
-
-        return AppFramework.sharedInstance.AppEnvConfig.getConfigURLInfo().CenterRPCURL
-
-        /*
         let testCentralizationURL =  AppConfig.ServerURL.HOST.TESTNET + AppConfig.ServerURL.PATH
         let devCentralizationURL = AppConfig.ServerURL.HOST.DEVNET + AppConfig.ServerURL.PATH
         let uatCentralizationURL =  AppConfig.ServerURL.HOST.UATNET + AppConfig.ServerURL.PATH
@@ -89,35 +83,32 @@ class SettingService {
         } else {
             return devCentralizationURL
         }
-         */
-
     }
     
     func getNodes() -> [NodeInfo] {
-        return nodeStorge?.getAll() ?? []
+        return NodeInfoPersistence.sharedInstance.getAll()
     }
     
     func addOrUpdateNode(_ node: NodeInfo) {
-        
-        nodeStorge?.add(node: node)
+        NodeInfoPersistence.sharedInstance.add(node: node)
     }
     
     func deleteNodeList(_ list: [NodeInfo]) {
-        nodeStorge?.deleteList(list)
+        NodeInfoPersistence.sharedInstance.deleteList(list)
     }
     
     func updateSelectedNode(_ node: NodeInfo) {
         getNodes().forEach { (item) in
             if item.id == node.id {
-                nodeStorge?.update(node: item, isSelected: true)
+                NodeInfoPersistence.sharedInstance.update(node: item, isSelected: true)
             }else {
-                nodeStorge?.update(node: item, isSelected: false)
+                NodeInfoPersistence.sharedInstance.update(node: item, isSelected: false)
             }
         }
     }
     
     func deleteNode(_ node: NodeInfo) {
-        nodeStorge?.delete(node: node)
+        NodeInfoPersistence.sharedInstance.delete(node: node)
     }
     
     

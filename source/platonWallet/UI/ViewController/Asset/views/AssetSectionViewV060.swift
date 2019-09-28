@@ -60,7 +60,9 @@ class AssetSectionViewV060: UIView {
     
     var isDraging : Bool = false
     
-    var onSelectItem : ((_ index: Int) -> Void)?
+    var onSelectItem: ((Int) -> Bool)?
+    
+//    var onSelectItem : ((_ index: Int) -> Void)?
     
     var onWalletAvatarTapAction: (() -> Void)?
     
@@ -85,11 +87,12 @@ class AssetSectionViewV060: UIView {
         updateWaleltInfo() 
         AssetVCSharedData.sharedData.registerHandler(object: self) {[weak self] in
             self?.updateWaleltInfo()
+            self?.updateSendTabUIStatus()
         }
         
-        self.grayoutBackground.addSubview(bottomSelectIndicator)
+        grayoutBackground.addSubview(bottomSelectIndicator)
         bottomSelectIndicator.backgroundColor = UIColor(rgb: 0x105CFE)
-        self.updateBottonIndicator(index: 0)
+        updateBottonIndicator(index: 0)
         
         walletAvatar.addTarget(self, action: #selector(walletAvatarTapAction), for: .touchUpInside)
         
@@ -102,6 +105,11 @@ class AssetSectionViewV060: UIView {
         
         balanceLabel.adjustsFontSizeToFitWidth = true
         balanceLabel.textColor = .black
+        
+        walletName.font = UIFont.boldSystemFont(ofSize: 16)
+        balanceLabel.font = UIFont.boldSystemFont(ofSize: 13)
+        lockedBalanceLabel.font = UIFont.boldSystemFont(ofSize: 12)
+        
     }
     
     @objc func tapGesture(_ gesture: UITapGestureRecognizer) {
@@ -124,7 +132,7 @@ class AssetSectionViewV060: UIView {
     }
     
     private func updateBottonIndicator(index: Int){
-        self.bottomSelectIndicator.snp.removeConstraints()
+        bottomSelectIndicator.snp.removeConstraints()
         UIView.animate(withDuration: 0.2) { 
             self.bottomSelectIndicator.snp.makeConstraints { (make) in
                 var alignView : UIView?
@@ -224,12 +232,12 @@ class AssetSectionViewV060: UIView {
     }
     
     func setSectionSelectedIndex(index: Int){
-        selectedIndex = index
-        updateBottonIndicator(index: index)
-        self.layoutIfNeeded()
-        self.setNeedsLayout()
-        if onSelectItem != nil{
-            onSelectItem!(selectedIndex)
+        let result = onSelectItem?(index)
+        if result == true {
+            selectedIndex = index
+            updateBottonIndicator(index: index)
+            self.layoutIfNeeded()
+            self.setNeedsLayout()
         }
     }
     
@@ -290,7 +298,17 @@ class AssetSectionViewV060: UIView {
     // MARK: - Notification
     
     @objc func didUpdateAllAsset(){
-        self.updateWaleltInfo()
+        updateWaleltInfo()
+    }
+    
+    func updateSendTabUIStatus() {
+        if NetworkManager.shared.reachabilityManager?.isReachable == false && (AssetVCSharedData.sharedData.selectedWallet as? Wallet)?.type == .cold {
+            // offline
+            sendLabel.localizedText = "Asset_segment_Send_offline"
+        } else {
+            // online
+            sendLabel.localizedText = "Asset_segment_Send"
+        }
     }
     
 }

@@ -9,48 +9,18 @@
 import Foundation
 import RealmSwift
 
-public let RealmInstance = RealmHelper.getRealm()
- 
-//var RealmWriteQueue = DispatchQueue(label: "com.platon.RealmWriteQueue")
-//var RealmReadeQueue = DispatchQueue(label: "com.platon.RealmReadQueue")
-
 var RealmWriteQueue = DispatchQueue(label: "com.platon.RealmWriteQueue", qos: .userInitiated, attributes: .concurrent)
-var RealmReadeQueue = DispatchQueue(label: "com.platon.RealmReadQueue", qos: .userInitiated, attributes: .concurrent)
 
 class RealmHelper {
     
-    private static var defaultRealm : Realm?
-    
-    public static var readInstance : Realm?
-    
     public static var writeInstance : Realm?
     
-    public class func getRealm() -> Realm?{
-        return defaultRealm
-    }
-    
-    public class func initReadRealm(){
-        RealmReadeQueue.async {
-            readInstance = try? Realm(configuration: self.getConfig())
-        }
-    }
-    
-    public class func initWriteRealm(){
+    public class func initWriteRealm() {
         RealmWriteQueue.async {
-            autoreleasepool(invoking: {
-                writeInstance = try? Realm(configuration: self.getConfig())
-            })
-            
+//            writeInstance = try? Realm(configuration: self.getConfig())
+//            print("init write instance")
+//            completion(writeInstance != nil)
         }
-    }
-    
-    public class func getNewRealm() -> Realm{
-        let realm = try? Realm(configuration: self.getConfig())
-        return realm!
-    }
-    
-    public static func setDefaultInstance(r: Realm?){
-        defaultRealm = r
     }
     
     /*
@@ -66,7 +36,7 @@ class RealmHelper {
     
     public class func getConfig() -> Realm.Configuration{
         //v0.7.0 update scheme version to 8
-        let schemaVersion: UInt64 = 1
+        let schemaVersion: UInt64 = 22
         
         let config = Realm.Configuration(schemaVersion: schemaVersion, migrationBlock: { migration, oldSchemaVersion in
             
@@ -75,8 +45,6 @@ class RealmHelper {
             let oneHundredMB = 500 * 1024 * 1024
             return (totalBytes > oneHundredMB) && (Double(usedBytes) / Double(totalBytes)) < 0.5
         })
-        
-        
         return config
     }
     
@@ -84,9 +52,9 @@ class RealmHelper {
 
 
 public extension Object {
-    
+
     func detached() -> Self {
-        
+
         let detached = type(of: self).init()
         for property in objectSchema.properties {
             guard let value = value(forKey: property.name) else { continue }
@@ -98,14 +66,14 @@ public extension Object {
         }
         return detached
     }
-    
+
 }
 
 public extension Sequence where Iterator.Element:Object  {
-    
+
     var detached:[Element] {
         return self.map({ $0.detached() })
     }
-    
+
 }
 

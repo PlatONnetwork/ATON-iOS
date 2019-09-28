@@ -18,6 +18,7 @@ class AssetFeeViewV060: UIView {
     }
     */
     
+    @IBOutlet weak var feeTip: UILabel!
     @IBOutlet weak var fee: UILabel!
     
     @IBOutlet weak var centerView: UIView!
@@ -53,5 +54,6 @@ class AssetFeeViewV060: UIView {
         levelView.snp.makeConstraints { (make) in
             make.edges.equalToSuperview()
         }
+        feeTip.font = .systemFont(ofSize: 16)
     }
 }

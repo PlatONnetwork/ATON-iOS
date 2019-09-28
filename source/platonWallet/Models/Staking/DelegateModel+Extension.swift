@@ -17,8 +17,6 @@ extension Delegate {
     }
     
     var balance: String {
-//        let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.key?.address == walletAddress }.first
-//        return localWallet?.balance ?? "0.00"
         guard let abalance = availableDelegationBalance else {
             return "--"
         }
@@ -26,8 +24,8 @@ extension Delegate {
     }
     
     var walletAvatar: UIImage? {
-        let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.key?.address == walletAddress }.first
-        guard let avatarString = localWallet?.key?.address.walletAddressLastCharacterAvatar() else { return nil }
+        let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.address.lowercased() == walletAddress.lowercased() }.first
+        guard let avatarString = localWallet?.address.walletAddressLastCharacterAvatar() else { return nil }
         return UIImage(named: avatarString)
     }
     
@@ -88,7 +86,7 @@ extension DelegateDetail {
     }
     
     func getDelegateButtonIsEnable(address: String) -> Bool {
-        let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.key?.address.lowercased() == address.lowercased() }.first
+        let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.address.lowercased() == address.lowercased() }.first
         return localWallet != nil
     }
     

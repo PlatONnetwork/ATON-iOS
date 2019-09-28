@@ -87,6 +87,8 @@ class QRScannerViewController: BaseViewController,AVCaptureMetadataOutputObjects
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        navigationController?.setNavigationBarHidden(false, animated: false)
+        
         startScanLineAnimation()
         if (captureSession?.isRunning == false) {
             captureSession.startRunning()
@@ -95,6 +97,8 @@ class QRScannerViewController: BaseViewController,AVCaptureMetadataOutputObjects
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        
+        navigationController?.setNavigationBarHidden(true, animated: false)
         stopScanLineAnimation()
         if (captureSession?.isRunning == true) {
             captureSession.stopRunning()
@@ -292,9 +296,6 @@ class QRScannerViewController: BaseViewController,AVCaptureMetadataOutputObjects
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
         return .portrait
     }
-    
-
-
 }
 
 extension QRScannerViewController {

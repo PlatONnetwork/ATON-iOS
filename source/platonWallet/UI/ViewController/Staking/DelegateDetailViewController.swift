@@ -165,7 +165,7 @@ extension DelegateDetailViewController: UITableViewDelegate, UITableViewDataSour
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "NodeAboutDelegateTableViewCell") as! NodeAboutDelegateTableViewCell
-        var delegateDetail = self.listData[indexPath.row]
+        let delegateDetail = self.listData[indexPath.row]
         cell.delegateDetail = delegateDetail
         cell.delegateButton.isEnabled = delegateDetail.getDelegateButtonIsEnable(address: delegate!.walletAddress)
         cell.delegateButton.isSelected = delegateDetail.hasReleased || (delegateDetail.nodeStatus == .Exiting || delegateDetail.nodeStatus == .Exited)
@@ -178,7 +178,7 @@ extension DelegateDetailViewController: UITableViewDelegate, UITableViewDataSour
         cell.moveOutButton.backgroundColor = delegateDetail.rightButtonStatus.1 ? UIColor.white : UIColor(rgb: 0xDCDFE8, alpha: 0.4)
         
         cell.didLinkHanlder = { [weak self] _ in
-            self?.openWebSiteController(delegateDetail.url)
+            self?.openWebSiteController(delegateDetail.website)
         }
         cell.didDelegateHandler = { [weak self] _ in
             if delegateDetail.nodeStatus == .Exited || delegateDetail.nodeStatus == .Exiting {

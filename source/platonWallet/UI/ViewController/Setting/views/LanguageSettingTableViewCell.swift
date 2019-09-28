@@ -16,6 +16,7 @@ class LanguageSettingTableViewCell: UITableViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         selectionStyle = .none
+        detailLabel.font = .systemFont(ofSize: 16)
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

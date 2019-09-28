@@ -11,41 +11,118 @@ import XCTest
 
 class WalletServiceTests: XCTestCase {
     
-//    func testCreatWallet() {
-//
-//        let wallet = try! WalletService.sharedInstance.createWallet(name: "wallet-create", password: "12345678")
-//        XCTAssertTrue(wallet.key != nil && !wallet.keystorePath.isEmpty)
-//
-//    }
-//
-//    func testImportAndExportKeystore() {
-//
-//        let wallet = try! WalletService.sharedInstance.import(keystore: "{\"version\":3,\"id\":\"590d88ae-39af-4adb-a0da-83f81abca461\",\"crypto\":{\"ciphertext\":\"f53edc20614afec1de7e4e0dbc1bc50f9597edb0eb2cffc566fc4da822cbcdd2\",\"cipherparams\":{\"iv\":\"fc875b5dc9331794fed47f9e69edd396\"},\"kdf\":\"scrypt\",\"kdfparams\":{\"r\":8,\"p\":6,\"n\":4096,\"dklen\":32,\"salt\":\"2da1deb1c8c8f7485087f8fbe4c24d7004d6b5888ae2bc8237734b6a88cea9d5\"},\"mac\":\"0f6aacb62ae6830bce019eaad330063453c4a610eee4e284d3541a8fddf4029d\",\"cipher\":\"aes-128-ctr\"},\"walletType\":\"mnemonic\",\"address\":\"0xbf97c94099C28d094e556b7B73636c058d61F9a0\"}", walletName: "wallet-keystore", password: "12345678")
-//
-//        XCTAssertTrue(wallet.key != nil && !wallet.keystorePath.isEmpty)
-//
-//        let json = try! WalletService.sharedInstance.exportKeystore(wallet: wallet, password: "12345678")
-//        XCTAssertTrue(json.count > 0)
-//
-//    }
-//
-//    func testImportAndExportPrivateKey() {
-//
-//        let wallet = try! WalletService.sharedInstance.import(privateKey: "0xfaea7503017a0bd596de0ea7f1323a71ce3e0fefed623246e682271404863b8c", walletName: "wallet-privateKey", walletPassword: "12345678")
-//
-//        XCTAssertTrue(wallet.key != nil && !wallet.keystorePath.isEmpty)
-//
-//        let priv = try! WalletService.sharedInstance.exportPrivateKey(wallet: wallet, password: "12345678")
-//        XCTAssertTrue(priv.count == 64)
-//
-//    }
-//
-//    func testImportMnemonic() {
-//
-//        let wallet = try! WalletService.sharedInstance.import(mnemonic: "indoor dizzy lecture laptop funny another tail child divide hour pulse", walletName: "wallet-mnemonic", walletPassword: "12345678")
-//
-//        XCTAssertTrue(wallet.key != nil && !wallet.keystorePath.isEmpty)
-//    }
-//
+    override func setUp() {
+        // Put setup code here. This method is called before the invocation of each test method in the class.
+    }
+    
+    override func tearDown() {
+        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    }
+    
+    func testCreatWallet() {
+        let expectaion = self.expectation(description: "testCreatWallet")
+        
+        WalletService.sharedInstance.createWallet(name: "wallet-create-070", password: "123456", completion: { (wallet, error) in
+            expectaion.fulfill()
+        })
+        
+        waitForExpectations(timeout: 10) { (error) in
+            print(error?.localizedDescription ?? "")
+        }
+        
+//        let wallets = WalletService.sharedInstance.wallets
+//        let result = wallets.first(where: { $0.name == "wallet-create-070" })
+//        XCTAssertTrue(result != nil, "create wallet should be save to db")
+    }
+    
+    func testImportKeystore() {
+        let expectaion = self.expectation(description: "testImportKeystore")
+        let keystore = "{\"version\":3,\"id\":\"b5018de2-ace5-4d4a-a93e-300562263d3c\",\"crypto\":{\"ciphertext\":\"f0c7d751ebcc9a08cee73c1f374208b45856c388e6e90bfd3bfbdc89941253f3\",\"cipherparams\":{\"iv\":\"3dbffae8974865298169d1ae4c57c8ad\"},\"kdf\":\"scrypt\",\"kdfparams\":{\"r\":8,\"p\":6,\"n\":4096,\"dklen\":32,\"salt\":\"b48949c48983f9bc8cf020fcf4fd5a50281fdfee922ff8bbfabb6673d0f58426\"},\"mac\":\"1f1fd59fbffc53ae02411443f6e92bae1fdedeef2b5b8f03e8ba118755a8348f\",\"cipher\":\"aes-128-ctr\"},\"address\":\"0x493301712671Ada506ba6Ca7891F436D29185821\"}"
+        WalletService.sharedInstance.import(keystore: keystore, walletName: "wallet-import-keystore", password: "123456") { (_, _) in
+            expectaion.fulfill()
+        }
+        waitForExpectations(timeout: 10) { (error) in
+            print(error?.localizedDescription ?? "")
+        }
+//        let wallets = WalletService.sharedInstance.wallets
+//        let result = wallets.first(where: { $0.name == "wallet-import-keystore" })
+//        XCTAssertTrue(result != nil, "import keystore should be save to db")
+        
+    }
+    
+    func testImportPrivateKey() {
+        let expectaion = self.expectation(description: "testImportPrivateKey")
+        let privateKey = "a11859ce23effc663a9460e332ca09bd812acc390497f8dc7542b6938e13f8d7"
+        WalletService.sharedInstance.import(privateKey: privateKey, walletName: "wallet-import-privatekey", walletPassword: "123456") { (_, _) in
+            expectaion.fulfill()
+        }
+        waitForExpectations(timeout: 10) { (error) in
+            print(error?.localizedDescription ?? "")
+        }
+//        let wallets = WalletService.sharedInstance.wallets
+//        let result = wallets.first(where: { $0.name == "wallet-import-privatekey" })
+//        XCTAssertTrue(result != nil, "import privatekey should be save to db")
+    }
+    
+    func testImportMnemonic() {
+        let expectaion = self.expectation(description: "testImportMnemonic")
+        let mnemonic = "magic human crystal broken busy upper jump broccoli fine raccoon chef radar"
+        WalletService.sharedInstance.import(mnemonic: mnemonic, walletName: "wallet-import-mnemonic", walletPassword: "123456") { (_, _) in
+            expectaion.fulfill()
+        }
+        waitForExpectations(timeout: 10) { (error) in
+            print(error?.localizedDescription ?? "")
+        }
+        let wallets = WalletService.sharedInstance.wallets
+        let result = wallets.first(where: { $0.name == "wallet-import-mnemonic" })
+        XCTAssertTrue(result != nil, "import mnemonic should be save to db")
+    }
+    
+    func testExportKeyStore() {
+        let expectaion = self.expectation(description: "testExportKeyStore")
+        let keystore = "{\"version\":3,\"id\":\"b5018de2-ace5-4d4a-a93e-300562263d3c\",\"crypto\":{\"ciphertext\":\"f0c7d751ebcc9a08cee73c1f374208b45856c388e6e90bfd3bfbdc89941253f3\",\"cipherparams\":{\"iv\":\"3dbffae8974865298169d1ae4c57c8ad\"},\"kdf\":\"scrypt\",\"kdfparams\":{\"r\":8,\"p\":6,\"n\":4096,\"dklen\":32,\"salt\":\"b48949c48983f9bc8cf020fcf4fd5a50281fdfee922ff8bbfabb6673d0f58426\"},\"mac\":\"1f1fd59fbffc53ae02411443f6e92bae1fdedeef2b5b8f03e8ba118755a8348f\",\"cipher\":\"aes-128-ctr\"},\"address\":\"0x493301712671Ada506ba6Ca7891F436D29185821\"}"
+        WalletService.sharedInstance.import(keystore: keystore, walletName: "wallet-import-keystore", password: "123456") { (_, _) in
+            expectaion.fulfill()
+        }
+        waitForExpectations(timeout: 10) { (error) in
+            print(error?.localizedDescription ?? "")
+        }
+//        let wallets = WalletService.sharedInstance.wallets
+//        let result = wallets.first(where: { $0.name == "wallet-import-keystore" })
+////        XCTAssertNotNil(result, "wallet should be not nil")
+//        let export = WalletService.sharedInstance.exportKeystore(wallet: result!)
+//        XCTAssertEqual(keystore, export.keystore, "keystore should be equal")
+    }
+    
+    func testExportPrivateKey() {
+        let expectaion = self.expectation(description: "testExportPrivateKey")
+        let privateKey = "a11859ce23effc663a9460e332ca09bd812acc390497f8dc7542b6938e13f8d7"
+        WalletService.sharedInstance.import(privateKey: privateKey, walletName: "wallet-import-privatekey", walletPassword: "123456") { (_, _) in
+            expectaion.fulfill()
+        }
+        waitForExpectations(timeout: 10) { (error) in
+            print(error?.localizedDescription ?? "")
+        }
+//        let wallets = WalletService.sharedInstance.wallets
+//        let result = wallets.first(where: { $0.name == "wallet-import-privatekey" })
+////        XCTAssertNotNil(result, "wallet should be not nil")
+//        WalletService.sharedInstance.exportPrivateKey(wallet: result!, password: "123456") { (export, _) in
+////            XCTAssertEqual(export, privateKey, "privatekey should be equal")
+//        }
+    }
+    
+    func testExportMnemonic() {
+        let expectaion = self.expectation(description: "testExportMnemonic")
+        let mnemonic = "magic human crystal broken busy upper jump broccoli fine raccoon chef radar"
+        WalletService.sharedInstance.import(mnemonic: mnemonic, walletName: "wallet-import-mnemonic", walletPassword: "123456") { (_, _) in
+            expectaion.fulfill()
+        }
+        waitForExpectations(timeout: 10) { (error) in
+            print(error?.localizedDescription ?? "")
+        }
+//        let wallets = WalletService.sharedInstance.wallets
+//        let result = wallets.first(where: { $0.name == "wallet-import-mnemonic" })
+////        XCTAssertNotNil(result, "wallet should be not nil")
+    }
     
 }

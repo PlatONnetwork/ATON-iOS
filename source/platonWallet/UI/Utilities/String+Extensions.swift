@@ -90,6 +90,12 @@ extension String{
         return false
     }
     
+    func isPureFloat() -> Bool {
+        let scan: Scanner = Scanner(string: self)
+        var val: Float = 0
+        return scan.scanFloat(&val) && scan.isAtEnd
+    }
+    
     func ispureUint() -> Bool{
         let regex = "([1-9]{1}\\d*)"
         let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
@@ -440,7 +446,7 @@ extension String{
     }
     
     func addressDisplayInLocal() -> String? {
-        let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.key?.address.lowercased() == self.lowercased() }.first
+        let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.address.lowercased() == self.lowercased() }.first
         if let wallet = localWallet {
             return wallet.name + "(\(self.addressForDisplayShort()))"
         } else {

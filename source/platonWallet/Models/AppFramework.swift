@@ -17,10 +17,9 @@ class AppFramework {
     
     static let sharedInstance = AppFramework()
     
-    var AppEnvConfig : EnvConfig = .Production_main
-    
     func initialize() -> Bool {
         initBugly()
+        initNetworkObserver()
         languageSetting()
         initUMeng()
         doSwizzle()
@@ -33,6 +32,10 @@ class AppFramework {
     
     func initweb3(){
         Debugger.enableDebug(true)
+    }
+    
+    func initNetworkObserver() {
+        NetworkManager.shared.startNetworkReachabilityObserver()
     }
     
     func initBugly(){
@@ -87,36 +90,19 @@ class AppFramework {
     }
 
     func RealmConfiguration() -> Bool {
-        
-        let readRealm = try? Realm(configuration: RealmHelper.getConfig())
-        RealmWriteQueue.async {
-            autoreleasepool(invoking: {
-                RealmHelper.initWriteRealm()
-            })
-        }
-        
-        RealmReadeQueue.async {
-            RealmHelper.initReadRealm()
-        }
-        
-        RealmHelper.setDefaultInstance(r: readRealm)
-        
-        guard readRealm != nil else {
-            print("realm open fail")
+        do {
+            let _ = try Realm(configuration: RealmHelper.getConfig())
+            NodeInfoPersistence.sharedInstance.initConfig()
+            // 删除缓存在本地且已经被链上确认删除的交易
+            TransferPersistence.deleteConfirmedTransaction()
+            return true
+        } catch let e as Realm.Error where e.code == .addressSpaceExhausted {
+            print("realm缓存文件太大了")
+            // 处理
+            return false
+        } catch {
             return false
         }
-        //set node storage first
-        let nodeStorge = NodeInfoPersistence(realm: RealmInstance!)
-        SettingService.shareInstance.nodeStorge = nodeStorge
-
-        let walletStorge = WallletPersistence(realm: RealmInstance!)
-        WalletService.sharedInstance.walletStorge = walletStorge
-        
-        // 删除缓存在本地且已经被链上确认删除的交易
-        TransferPersistence.deleteConfirmedTransaction()
-        
-        return true
-        
     }
     
     func doSwizzle(){
