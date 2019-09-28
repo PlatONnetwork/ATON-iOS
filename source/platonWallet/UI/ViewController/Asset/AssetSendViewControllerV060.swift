@@ -431,8 +431,16 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
         let scanView = OfflineSignatureScanView()
         scanView.scanCompletion = { [weak self] in
             self?.doShowScanController(completion: { (data) in
-                guard let qrcode = data else { return }
-                scanView.textView.text = qrcode.qrCodeData?.signedDatas?.joined(separator: ";")
+                guard
+                    let qrcode = data,
+                    let signedDatas = qrcode.qrCodeData else { return }
+                var signedStrings: [String] = []
+                for itemData in signedDatas {
+                    guard let signedData = itemData.signedData else { continue }
+                    signedStrings.append(signedData)
+                }
+                
+                scanView.textView.text = signedStrings.joined(separator: ";")
                 qrcodeData = qrcode
             })
         }
@@ -470,8 +478,9 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
                 case .success:
                     guard let nonce = blockNonce else { return }
                     let nonceString = nonce.quantity.description
-                    let transactionData = TransactionQrcode(amount: amount, chainId: web3.properties.chainId, from: wallet.address, to: to, gasLimit: gasLimit, gasPrice: gasPrice, nonce: nonceString, platOnFunction: nil)
-                    let qrcodeData = QrcodeData(qrCodeType: 0, qrCodeData: transactionData)
+                    
+                    let transactionData = TransactionQrcode(amount: amount, chainId: web3.properties.chainId, from: wallet.address, to: to, gasLimit: gasLimit, gasPrice: gasPrice, nonce: nonceString, typ: nil, nodeId: nil, sender: wallet.address, stakingBlockNum: nil, type: 0)
+                    let qrcodeData = QrcodeData(qrCodeType: 0, qrCodeData: [transactionData])
                     guard
                         let data = try? JSONEncoder().encode(qrcodeData),
                         let content = String(data: data, encoding: .utf8) else { return }

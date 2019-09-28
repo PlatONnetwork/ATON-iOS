@@ -519,11 +519,18 @@ extension AssetViewControllerV060 : UIScrollViewDelegate,ChildScrollViewDidScrol
     }
     
     func doShowQrcodeScan(qrcode: QrcodeData<SignatureQrcode>) {
-        guard let contents = qrcode.qrCodeData?.signedDatas else { return }
+        guard
+            let signedDatas = qrcode.qrCodeData, signedDatas.count > 0
+            else { return }
         
+        var signedStrings: [String] = []
+        for itemData in signedDatas {
+            guard let signedData = itemData.signedData else { continue }
+            signedStrings.append(signedData)
+        }
         
         let signatureView = OfflineSignatureScanView()
-        let contentString = contents.joined(separator: ",")
+        let contentString = signedStrings.joined(separator: ";")
         signatureView.textView.text = contentString
         
         let type = ConfirmViewType.qrcodeScan(contentView: signatureView)
@@ -581,10 +588,10 @@ extension AssetViewControllerV060{
     static func sendSignatureTransaction(qrcode: QrcodeData<SignatureQrcode>) {
         
         guard
-            let qrcodeData = qrcode.qrCodeData,
-            let signatureArr = qrcodeData.signedDatas else { return }
+            let signatureArr = qrcode.qrCodeData else { return }
         for (index, signature) in signatureArr.enumerated() {
-            let bytes = signature.hexToBytes()
+            guard let signatureData = signature.signedData else { continue }
+            let bytes = signatureData.hexToBytes()
             if let signedTransaction = try? EthereumSignedTransaction(rlp: RLPItem(bytes: bytes)) {
                 
                 web3.platon.sendRawTransaction(transaction: signedTransaction) { (response) in
@@ -592,13 +599,13 @@ extension AssetViewControllerV060{
                     case .success(let result):
                         guard
                             let to = signedTransaction.to?.rawAddress.toHexString(),
-                            let transactionType = qrcodeData.type
+                            let transactionType = signature.type
                             else { return }
                         let gasPrice = signedTransaction.gasPrice.quantity.description
                         let gasLimit = signedTransaction.gasLimit.quantity.description
                         let amount = signedTransaction.value.quantity.description
                         let tx = Transaction()
-                        tx.from = qrcodeData.from
+                        tx.from = signature.from
                         tx.to = to
                         tx.gas = gasLimit
                         tx.gasPrice = gasPrice
