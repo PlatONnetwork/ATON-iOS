@@ -43,6 +43,10 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
         })
         amountView.checkInput(mode: .all, check: {[weak self] text -> (Bool, String) in
             
+            if text.count == 0 {
+                return (false, "amount must be > 0")
+            }
+            
             let inputformat = CommonService.checkTransferAmoutInput(text: text, checkBalance: false, fee: nil)
             if !inputformat.0{
                 return inputformat
@@ -399,15 +403,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
             AssetViewControllerV060.popViewController()
         }
         
-//        if let popUpController = self.presentedViewController as? PopUpViewController {
-//            popController = popUpController
-//            popUpController.onDismissViewController(animated: true) {
-//                AssetViewControllerV060.pushViewController(viewController: controller)
-//            }
-//        } else {
-//            AssetViewControllerV060.pushViewController(viewController: controller)
-//        }
-        (UIApplication.shared.keyWindow?.rootViewController as? UINavigationController)?.pushViewController(controller, animated: true)
+        (UIApplication.shared.keyWindow?.rootViewController as? BaseNavigationController)?.pushViewController(controller, animated: true)
     }
     
     func showOfflineConfirmView(content: String) {

@@ -622,8 +622,10 @@ extension AssetViewControllerV060{
     }
     
     static func pushViewController(viewController: UIViewController){
-        guard let tabvc = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarViewController,
-        let nav = tabvc.viewControllers?.first as? BaseNavigationController else{
+        guard
+            let tabNav = UIApplication.shared.keyWindow?.rootViewController as? BaseNavigationController,
+            let tabvc = tabNav.rt_topViewController as? MainTabBarViewController,
+            let nav = tabvc.viewControllers?.first as? BaseNavigationController else{
             return
         }
         viewController.hidesBottomBarWhenPushed = true
@@ -631,7 +633,9 @@ extension AssetViewControllerV060{
     }
     
     static func popViewController(){
-        guard let tabvc = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarViewController,
+        guard
+            let tabNav = UIApplication.shared.keyWindow?.rootViewController as? BaseNavigationController,
+            let tabvc = tabNav.rt_topViewController as? MainTabBarViewController,
             let nav = tabvc.viewControllers?.first as? BaseNavigationController else{
                 return
         }
@@ -639,7 +643,9 @@ extension AssetViewControllerV060{
     }
     
     static func setScrollViewScrollEnable(enable: Bool){
-        guard let tabvc = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarViewController,
+        guard
+            let tabNav = UIApplication.shared.keyWindow?.rootViewController as? BaseNavigationController,
+            let tabvc = tabNav.rt_topViewController as? MainTabBarViewController,
             let nav = tabvc.viewControllers?.first as? BaseNavigationController else{
                 return
         }
@@ -657,10 +663,13 @@ extension AssetViewControllerV060{
     
     
     static func getInstance() -> AssetViewControllerV060?{
-        guard let tabvc = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarViewController,
-            let nav = tabvc.viewControllers?.first as? BaseNavigationController else{
+        guard
+            let tabNav = UIApplication.shared.keyWindow?.rootViewController as? BaseNavigationController,
+            let tabvc = tabNav.rt_topViewController as? MainTabBarViewController,
+            let nav = tabvc.viewControllers?.first as? BaseNavigationController else {
                 return nil
         }
+        
         guard let navofAssetV60 = nav.viewControllers.first as? RTContainerController else {
             return nil 
         }

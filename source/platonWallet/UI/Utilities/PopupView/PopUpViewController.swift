@@ -61,7 +61,7 @@ class PopUpViewController: UIViewController {
         if let confirmView = contentView as? TransferConfirmView {
             confirmView.onCompletion = { [weak self] in
                 guard let self = self else { return }
-                self.presentingViewController?.dismiss(animated: false, completion: {
+                self.onDismissViewController(animated: true, completion: {
                     self.onCompletion?()
                 })
             }
@@ -73,7 +73,7 @@ class PopUpViewController: UIViewController {
         if let confirmView = contentView as? OfflineSignatureConfirmView {
             confirmView.onCompletion = { [weak self] in
                 guard let self = self else { return }
-                self.presentingViewController?.dismiss(animated: false, completion: {
+                self.onDismissViewController(animated: true, completion: {
                     self.onCompletion?()
                 })
             }

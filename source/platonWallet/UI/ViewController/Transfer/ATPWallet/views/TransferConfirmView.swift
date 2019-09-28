@@ -40,7 +40,7 @@ class TransferConfirmView: UIView {
         submitBtn.style = .blue
         totalLabel.adjustsFontSizeToFitWidth = true
         submitBtn.addTarget(self, action: #selector(submitAction), for: .touchUpInside)
-        submitBtn.addTarget(self, action: #selector(closeAction), for: .touchUpInside)
+        closeButton.addTarget(self, action: #selector(closeAction), for: .touchUpInside)
     }
     
     func hideExecutor(){
