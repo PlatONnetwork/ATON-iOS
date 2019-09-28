@@ -30,7 +30,7 @@ class PasswordAuthViewController: BaseViewController {
     var selectedWallet: Wallet! {
         didSet {
             walletName.text = selectedWallet.name
-            address.text = selectedWallet.address
+            address.text = selectedWallet.key?.address
             walletIcon.image = selectedWallet.image()
         }
     }
@@ -102,7 +102,7 @@ class PasswordAuthViewController: BaseViewController {
         
         let popUpVC = PopUpViewController()
         let view = UIView.viewFromXib(theClass: TransferSwitchWallet.self) as! TransferSwitchWallet
-        view.selectedAddress = self.selectedWallet.address
+        view.selectedAddress = self.selectedWallet.key?.address
         view.checkSufficient = false
         view.refresh()
         popUpVC.setUpContentView(view: view, size: CGSize(width: PopUpContentWidth, height: 289))

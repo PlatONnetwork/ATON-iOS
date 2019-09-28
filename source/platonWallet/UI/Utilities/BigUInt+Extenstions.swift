@@ -31,10 +31,6 @@ extension BigUInt{
     
     static func mutiply(a : String, by : String) -> BigUInt?{
         
-        if !a.isPureFloat() {
-            return nil
-        }
-        
         let regex = "10*" //
         let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
         let isValid = predicate.evaluate(with: by)

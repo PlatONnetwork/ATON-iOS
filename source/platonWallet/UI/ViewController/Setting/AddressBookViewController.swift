@@ -102,7 +102,7 @@ extension AddressBookViewController:UITableViewDataSource,UITableViewDelegate,Sw
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if (selectionCompletion != nil) {
-            if (AssetVCSharedData.sharedData.selectedWallet as! Wallet).address.lowercased() == dataSource![indexPath.row].walletAddress?.lowercased() {
+            if (AssetVCSharedData.sharedData.selectedWallet as! Wallet).key?.address.lowercased() == dataSource![indexPath.row].walletAddress?.lowercased() {
                 return
             }
             

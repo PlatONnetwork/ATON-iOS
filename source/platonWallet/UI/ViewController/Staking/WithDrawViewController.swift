@@ -114,7 +114,7 @@ class WithDrawViewController: BaseViewController {
     }
     
     private func initListData() {
-        let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).first { $0.address.lowercased() == currentAddress?.lowercased() }
+        let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).first { $0.key?.address.lowercased() == currentAddress?.lowercased() }
         guard
             let node = currentNode,
             let bStyle = balanceStyle,
@@ -172,8 +172,6 @@ extension WithDrawViewController: UITableViewDelegate, UITableViewDataSource {
                 (walletStyle.wallets.count <= 1) ? nil :
                 indexPath.row == 0 ? UIImage(named: "3.icon_ drop-down") :
                 indexPath.row == walletStyle.selectedIndex + 1 ? UIImage(named: "iconApprove") : nil
-            cell.isTopCell = indexPath.row == 0
-            
             cell.cellDidHandle = { [weak self] (_ cell: WalletTableViewCell) in
                 guard let self = self, walletStyle.wallets.count > 1 else { return }
                 self.walletCellDidHandle(cell)
@@ -184,7 +182,6 @@ extension WithDrawViewController: UITableViewDelegate, UITableViewDataSource {
             cell.setupBalanceData(balanceStyle.balance(for: indexPath.row))
             cell.bottomlineV.isHidden = (indexPath.row == 0 || indexPath.row == balanceStyle.cellCount - 1)
             cell.rightImageView.image = indexPath.row == 0 ? UIImage(named: "3.icon_ drop-down") : indexPath.row == balanceStyle.selectedIndex + 1 ? UIImage(named: "iconApprove") : nil
-            cell.isTopCell = indexPath.row == 0
             
             cell.cellDidHandle = { [weak self] (_ cell: WalletBalanceTableViewCell) in
                 guard let self = self else { return }
@@ -292,8 +289,8 @@ extension WithDrawViewController {
         guard
             let walletObject = walletStyle,
             let balanceSelectedIndex = balanceStyle?.selectedIndex,
-            let nodeId = currentNode?.nodeId else { return }
-        let currentAddress = walletObject.currentWallet.address
+            let nodeId = currentNode?.nodeId,
+            let currentAddress = walletObject.currentWallet.key?.address else { return }
         
         var tempPrivateKey: String?
         
@@ -333,7 +330,8 @@ extension WithDrawViewController {
                         guard let self = self else { return }
                         transaction.gasUsed = self.estimateUseGas?.description
                         transaction.nodeName = self.currentNode?.name
-                        TransferPersistence.add(tx: transaction)
+                        let newTransaction = transaction.copyTransaction()
+                        TransferPersistence.add(tx: newTransaction)
                         if index == self.delegateValue.count - 1 {
                             self.doShowTransactionDetail(transaction)
                         }

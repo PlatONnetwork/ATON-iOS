@@ -87,7 +87,7 @@ class AssetVCSharedData{
     }
     var selectedWalletAddress: String?{
         if cWallet != nil{
-            return cWallet?.address
+            return cWallet?.key?.address
         }
         return ""
     }
@@ -102,8 +102,8 @@ class AssetVCSharedData{
     public func willDeleteWallet(object: AnyObject){
         //issue mutiply thread access wallet object?
         if let wallet = object as? Wallet{
-            if let selectedWallet = AssetVCSharedData.sharedData.selectedWallet as? Wallet {
-                if selectedWallet.address.ishexStringEqual(other: wallet.address) {
+            if let selectedWallet = AssetVCSharedData.sharedData.selectedWallet as? Wallet{
+                if (selectedWallet.key?.address.ishexStringEqual(other: wallet.key?.address))!{
                     AssetVCSharedData.sharedData.selectedWallet = nil
                 }
             }
@@ -126,7 +126,7 @@ class AssetVCSharedData{
 extension AssetVCSharedData {
     // 通过地址查询本地的账号名称
     func getWalletName(for address: String) -> String? {
-        let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.address.lowercased() == address.lowercased() }.first
+        let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.key?.address.lowercased() == address.lowercased() }.first
         return localWallet?.name
     }
 }

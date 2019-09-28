@@ -105,7 +105,7 @@ class DelegateRecordViewController: BaseViewController, IndicatorInfoProvider {
 extension DelegateRecordViewController {
     private func fetchData(sequence: String, direction: RefreshDirection) {
         
-        let addresses = (AssetVCSharedData.sharedData.walletList as! [Wallet]).map { return $0.address }
+        let addresses = (AssetVCSharedData.sharedData.walletList as! [Wallet]).map { return $0.key!.address }
         guard addresses.count > 0 else { return }
         
         TransactionService.service.getDelegateRecord(

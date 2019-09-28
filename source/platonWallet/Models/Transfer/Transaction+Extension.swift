@@ -15,7 +15,7 @@ extension Transaction {
         switch txType! {
         case .transfer,
              .unknown:
-            let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.address.lowercased() == to?.lowercased() }.first
+            let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.key?.address.lowercased() == to?.lowercased() }.first
             guard let wallet = localWallet else {
                 return UIImage(named: "walletAvatar_1")
             }
@@ -30,7 +30,7 @@ extension Transaction {
     }
     
     var fromAvatarImage: UIImage? {
-        let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.address.lowercased() == from?.lowercased() }.first
+        let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.key?.address == from }.first
         guard let wallet = localWallet else {
             return UIImage(named: "walletAvatar_1")
         }
@@ -41,7 +41,7 @@ extension Transaction {
         switch txType! {
         case .transfer,
              .unknown:
-            let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.address.lowercased() == to?.lowercased() }.first
+            let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.key?.address.lowercased() == to?.lowercased() }.first
             guard let wallet = localWallet else {
                 return to?.addressForDisplayShort()
             }
@@ -55,7 +55,7 @@ extension Transaction {
     }
     
     var fromNameString: String? {
-        let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.address.lowercased() == from?.lowercased() }.first
+        let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.key?.address.lowercased() == from?.lowercased() }.first
         guard let wallet = localWallet else {
             return from?.addressForDisplayShort()
         }
@@ -98,16 +98,16 @@ extension Transaction {
     
     var amountTextString: String {
         if let valueStr = value, Int(valueStr) == 0 {
-            return valueDescription!
+            return valueDescription!.ATPSuffix()
         }
         
         switch direction {
         case .Sent:
-            return "-" + valueDescription!
+            return "-" + valueDescription!.ATPSuffix()
         case .Receive:
-            return "+" + valueDescription!
+            return "+" + valueDescription!.ATPSuffix()
         default:
-            return "-" + valueDescription!
+            return "-" + valueDescription!.ATPSuffix()
         }
     }
     
@@ -145,15 +145,7 @@ extension Transaction {
     
     var pipString: String {
         guard let pip = piDID else { return "--" }
-        return "PIP-" + pip
-    }
-    
-    var versionDisplayString: String {
-        guard let ver = version, let versionUInt32 = UInt32(ver) else { return "--" }
-        let versionUInt32Bytes = versionUInt32.makeBytes()
-        guard versionUInt32Bytes.count == 4 else { return "--" }
-        let versionString = String(format: "V%d.%d.%d", versionUInt32Bytes[1],versionUInt32Bytes[2],versionUInt32Bytes[3])
-        return versionString
+        return "eip-" + pip
     }
 }
 
@@ -214,7 +206,7 @@ extension Transaction {
     }
     
     var recordWalletName: String? {
-        let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.address.lowercased() == from?.lowercased() }.first
+        let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.key?.address.lowercased() == from?.lowercased() }.first
         return (localWallet?.name ?? "--") + "(" + (from?.addressForDisplayShort() ?? "--") + ")"
     }
 }

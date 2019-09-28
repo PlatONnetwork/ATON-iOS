@@ -10,7 +10,6 @@ import XCTest
 import BigInt
 import platonWeb3
 import OHHTTPStubs
-import RealmSwift
 @testable import platonWallet
 
 class platon071Tests: XCTestCase {
@@ -71,7 +70,7 @@ class platon071Tests: XCTestCase {
         }
         
         let result = NodePersistence.getAll().filter { $0.nodeId?.lowercased() == nodeId.lowercased() }
-//        XCTAssert(result.count > 0, "node should be save")
+        XCTAssert(result.count > 0, "node should be save")
     }
     
     func testRemoveDelegateRecord() {
@@ -100,7 +99,7 @@ class platon071Tests: XCTestCase {
         DelegatePersistence.add(delegates: [detailDel])
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             let predicate = NSPredicate(format: "compoundKey == %@ AND chainUrl == %@", "\(walletAddress)\(nodeId)", SettingService.getCurrentNodeURLString())
-            let r = try! Realm(configuration: RealmHelper.getConfig()).objects(DelegateDetailDel.self).filter(predicate)
+            let r = RealmInstance!.objects(DelegateDetailDel.self).filter(predicate)
             let result = Array(r)
             XCTAssert(result.count > 0, "delgate record should be exist")
         }
@@ -118,7 +117,8 @@ class platon071Tests: XCTestCase {
         transaction.nodeId = "0x81f4ab0012303bff59c35cead6c2487909cbf59bb0b2b677c2ff36d7009b39a572b2f73214d8590022d20410cbf92631844a7ce8a7d5b840c0e25cd93dc234d5"
         transaction.txReceiptStatus = 1
         
-        TransferPersistence.add(tx: transaction)
+        let newTransaction = transaction.copyTransaction()
+        TransferPersistence.add(tx: newTransaction)
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             let result = TransferPersistence.getByTxhash(transaction.txhash)
@@ -128,7 +128,7 @@ class platon071Tests: XCTestCase {
     
     func testUpdateTransactionPersistence() {
         let expectaion = self.expectation(description: "testNodeListAPI")
-        let txhash = "0x06931bb2492a0090b7cb177c0f7f401d0d62c2e32550f993a95ae80e44f23691"
+        let txhash = "0x06931bb2492a0090b7cb177c0f7f401d0d62c2e32550f993a95ae80e44f23692"
         
         let transaction = Transaction()
         transaction.txhash = txhash
@@ -140,7 +140,8 @@ class platon071Tests: XCTestCase {
         transaction.nodeName = "节点1"
         transaction.nodeId = "0x81f4ab0012303bff59c35cead6c2487909cbf59bb0b2b677c2ff36d7009b39a572b2f73214d8590022d20410cbf92631844a7ce8a7d5b840c0e35cd93dc234d5"
         transaction.txReceiptStatus = 1
-        TransferPersistence.add(tx: transaction)
+        let newTransaction = transaction.copyTransaction()
+        TransferPersistence.add(tx: newTransaction)
         
         Thread.sleep(forTimeInterval: 2)
         
@@ -151,9 +152,9 @@ class platon071Tests: XCTestCase {
         waitForExpectations(timeout: 10) { (error) in
             print(error?.localizedDescription ?? "")
         }
-
+        
         let result = TransferPersistence.getByTxhash(txhash)
-        XCTAssertEqual(result?.txReceiptStatus, 1, "update transaction status failure")
+        XCTAssertEqual(result?.txReceiptStatus, 0, "update transaction status failure")
     }
     
     func testNodeListAPI() {

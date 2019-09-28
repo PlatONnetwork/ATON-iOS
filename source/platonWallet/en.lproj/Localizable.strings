@@ -63,6 +63,7 @@
 "transferVC_faster_des" = "Faster";
 "transferVC_estima_des" = "Estimated transaction confirmation time:\nprobably within";
 
+"transferVC_confirm_title" = "Confirm";
 "transferVC_confirm_PayInfo" = "Txn Info:";
 "transferVC_confirm_executor" = "Executor:";
 "transferVC_confirm_From" = "Sender:";
@@ -145,8 +146,6 @@
 "TransactionDetailVC_proposal_voteyes" = "VoteYes";
 "TransactionDetailVC_proposal_voteno" = "VoteNo";
 "TransactionDetailVC_proposal_voteabstain" = "VoteAbstain";
-"TransactionDetailVC_doublesign" = "Double Siging";
-"TransactionDetailVC_transaction_hash" = "Tx Hash:";
 
 //qr scan
 "QRScanerVC_nav_title" = "QR Scan";
@@ -184,18 +183,14 @@
 "importKeystoreVC_keystoreInput_placeholder" = "Keystore content";
 "importKeystoreVC_nameInput_placeholder" = "Name of wallet";
 "importKeystoreVC_pswInput_placeholder" = "Wallet password";
-"importKeystoreVC_addressInput_placeholder" = "Wallet Address";
+
 "importKeystoreVC_keystore_empty_tips" = "Keystore can't be empty !";
-"importKeystoreVC_observed_empty_tips" = "Address can't be empty !";
-"importKeystoreVC_observed_invalid_tips" = "Invalid  Address";
-"importKeystoreVC_observed_existed_tips" = "Existed Address";
 
 //importWalletVC
 "importWalletVC_title" = "Import Wallet";
 "importWalletVC_tab_keystore" = "Keystore";
-"importWalletVC_tab_mnemonic" = "Mnemonic";
+"importWalletVC_tab_mnemonic" = "Mnemonic phrase";
 "importWalletVC_tab_privateKey" = "Private Key";
-"importWalletVC_tab_observedWallet" = "Observed";
 "importWalletVC_mnemonic_tips" = "Input the Mnemonic phrase. Please pay attention to case sensitivity and sequence.";
 "importWalletVC_mnemonic_textView_placeholder" = "Please separate each Mnemonic Phrase with a space";
 
@@ -206,7 +201,6 @@
 "importWalletVC_mnemonicInput_empty_tips" = "Mnemonic can't be empty !";
 "importWalletVC_privateKeyInput_empty_tips" = "PrivateKey can't be empty !";
 "importWalletVC_PasteButton" = "Paste";
-"importWalletVC_import_observed_title" = "Finish";
 
 //backupMnemonicVC
 "backupMnemonicVC_title" = "Backup Wallet";
@@ -332,7 +326,6 @@
 "Invalid mnemonic phrase" = "Invalid mnemonic phrase";
 "Invalid keystore" = "Invalid keystore";
 "Wallet already exists" = "Wallet already exists";
-"Invalid address" = "Invalid address";
 
 //Receive QR Code ViewController
 "ReceiveVC_nav_title" = "Receive";
@@ -670,9 +663,7 @@
 //AssetViewController
 "Asset_segment_Transaction" = "Txn";
 "Asset_segment_Send" = "Send";
-"Asset_segment_Send_offline" = "Offline Signature";
 "Asset_segment_Receive" = "Receive";
-
 
 //common
 "savetoaddressbook" = "Save to Address Book";
@@ -700,6 +691,10 @@
 "scanviewcontroller_nav_right_item" = "Album";
 "scanviewcontroller_scan_loading" = "scaning";
 "scanviewcontroller_scan_result_notfound" = "No QR code found";
+
+
+"watchJointWalletTip_Notice" = "Transaction initiation failed";
+"watchJointWalletTip_message" = "The associated Classic Wallet has been removed.";
 
 "data_parser_error" = "Data parsing error.";
 "unknow_error" = "Unknow error.";
@@ -876,22 +871,3 @@
 
 "delegate_detail_unable_alert" = "Please withdraw first \"Released delegate\"";
 
-"import_observed_wallet_tip_1" = "Recommend observed wallet and cold wallet to jointly manage large amount of tokens.";
-"import_observed_wallet_tip_2" = "Need the cold wallet authorization for transferring tokens.";
-"import_observed_wallet_tip_3" = "Observed wallet do not hold the private key.";
-"import_observed_wallet_tip_4" = "Do not deposit tokens to the wallet that you can not control.";
-
-"confirm_generate_qrcode_for_transaction" = "Transaction Authorization";
-"confirm_generate_qrcode_for_transaction_tip" = "Please scan below QR code using the cold wallet that holds the private key.";
-"confirm_button_next" = "Next";
-"confirm_scan_qrcode_for_read" = "Transaction Signature";
-"confirm_scan_qrcode_for_read_tip" = "Scan the OR code displayed on the cold wallet to get the transaction signature.";
-"confirm_button_send" = "Finish";
-"confirm_authorize_button_send" = "Next";
-"confirm_authorize_function_type" = "Txn info:";
-"confirm_authorize_from" = "Sender:";
-"confirm_authorize_to" = "Recipient:";
-"confirm_authorize_fee" = "Fee:";
-"confirm_generate_qrcode_for_signed_tx" = "Authorization Signature";
-"confirm_generate_qrcode_for_signed_tx_tip" = "Scan the OR code to finish your authorization for the observed wallet.";
-"confirm_button_signed_tx" = "Finish";

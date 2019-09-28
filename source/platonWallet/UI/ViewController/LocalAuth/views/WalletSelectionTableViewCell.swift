@@ -28,6 +28,7 @@ class WalletSelectionTableViewCell: UITableViewCell {
         
         walletIconImgV.image = UIImage(named: wallet.avatar)?.circleImage()
         walletNameLabel.text = wallet.name
+        //addressLabel.text = wallet.key?.address
         addressLabel.text = wallet.balanceDescription()
         selectionImgV.isHidden = !isSelected
         

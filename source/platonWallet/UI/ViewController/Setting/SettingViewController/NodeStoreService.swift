@@ -34,10 +34,12 @@ class NodeStoreService {
             let nodes = SettingService.shareInstance.getNodes()
             return nodes
         }
+        
     }
     
-    var editingNodeList: [NodeInfo] = []
-    var selectedNodeBeforeEdit: NodeInfo?
+    var editingNodeList: [NodeInfo]!
+    
+    var selectedNodeBeforeEdit: NodeInfo!
     
     var isEdit: Bool = false {
         didSet{
@@ -57,16 +59,17 @@ class NodeStoreService {
     
     private init() {
         
-        //default setting
-        if let selectedNode = nodeList.first(where: { $0.isSelected == true }) {
-            selectedNodeBeforeEdit = selectedNode.copy() as? NodeInfo
-        } else {
-            
-            if nodeList.count > 0 {
-                SettingService.shareInstance.updateSelectedNode(nodeList.first!)
-                selectedNodeBeforeEdit = nodeList.first?.copy() as? NodeInfo
-            }
+        //default setting 
+        let selectedNode = nodeList.filter { (item) -> Bool in
+            return item.isSelected
         }
+        if selectedNode.count == 0 && nodeList.count > 0{
+            nodeList.first?.isSelected = true
+        }
+        
+        selectedNodeBeforeEdit = (nodeList.first(where: { (item) -> Bool in
+            item.isSelected == true
+        })!.copy() as! NodeInfo)
         
     }
     
@@ -110,9 +113,10 @@ class NodeStoreService {
                     nonNodeSelected = false
                 }
                 
-                if let selectedNodeBefore = selectedNodeBeforeEdit, (item.id == selectedNodeBefore.id && item.nodeURLStr != selectedNodeBefore.nodeURLStr)  {
+                if item.id == selectedNodeBeforeEdit.id && item.nodeURLStr != selectedNodeBeforeEdit.nodeURLStr {
+                    
                     item.isSelected = false
-                    NotificationCenter.default.post(name: Notification.Name(NodeStoreService.selectedNodeUrlHadChangedNotification), object: self, userInfo: ["node":item ,"oldUrl":selectedNodeBefore.nodeURLStr])
+                    NotificationCenter.default.post(name: Notification.Name(NodeStoreService.selectedNodeUrlHadChangedNotification), object: self, userInfo: ["node":item ,"oldUrl":selectedNodeBeforeEdit.nodeURLStr])
                 }
                 SettingService.shareInstance.addOrUpdateNode(item)
             }

@@ -13,7 +13,6 @@ let AssetHidingStatus = "AssetHidingStatus"
 
 class AssetHeaderViewV060: UIView {
 
-    @IBOutlet weak var assetTipLabel: UILabel!
     @IBOutlet weak var assetLabel: UILabel!
     
     @IBOutlet weak var collectionView: UICollectionView!
@@ -32,29 +31,22 @@ class AssetHeaderViewV060: UIView {
         NotificationCenter.default.addObserver(self, selector: #selector(shouldUpdateWalletList), name: Notification.Name.ATON.updateWalletList, object: nil)
     }
     
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
+    
     
     func initSubviews() {
-        
         collectionView.delegate = self
         collectionView.dataSource = self
-        collectionView.register(WalletCollectionViewCell.self, forCellWithReuseIdentifier: "WalletCollectionViewCell")
-        collectionView.register(CreateImportCollectionViewCell.self, forCellWithReuseIdentifier: "CreateImportCollectionViewCell")
-        
-        assetTipLabel.font = UIFont.boldSystemFont(ofSize: 18)
-        assetLabel.font = UIFont.boldSystemFont(ofSize: 14)
+        collectionView.register(UINib(nibName: "ClassicWalletCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "ClassicWalletCollectionViewCell")
+        collectionView.register(UINib(nibName: "CreateAndInputWalletCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "CreateAndInputWalletCollectionViewCell")
         
         
         if let isHide = UserDefaults.standard.object(forKey: AssetHidingStatus) as? Bool{
-            updateAssetHiddingStatus(isHide: isHide, syncTopersist: false)
+            self.updateAssetHiddingStatus(isHide: isHide, syncTopersist: false)
         }else{
-            updateAssetHiddingStatus(isHide: false, syncTopersist: false)
+            self.updateAssetHiddingStatus(isHide: false, syncTopersist: false)
         }
     }
     
-    // 余额是否可见
     func updateAssetHiddingStatus(isHide: Bool, syncTopersist: Bool){
         if syncTopersist{
             UserDefaults.standard.set(isHide, forKey: AssetHidingStatus)
@@ -63,15 +55,13 @@ class AssetHeaderViewV060: UIView {
         if isHide{
             hideAssetButton.setImage(UIImage(named: "pwdInvisable"), for: .normal)
             assetLabel.text = "--"
-            didUpdateAllAsset()
+            self.didUpdateAllAsset()
         }else{
             hideAssetButton.setImage(UIImage(named: "pwdvisable"), for: .normal)
-            didUpdateAllAsset()
+            self.didUpdateAllAsset()
         }
-    }
-    
-    func updateWalletStatus() {
-        collectionView.reloadData()
+
+        
     }
     
     var dataSource : [AnyObject]{
@@ -101,16 +91,15 @@ extension AssetHeaderViewV060: UICollectionViewDelegate, UICollectionViewDataSou
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let obj = dataSource[indexPath.row]
         if let cwallet = obj as? Wallet{
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "WalletCollectionViewCell", for: indexPath) as! WalletCollectionViewCell
-            cell.wallet = cwallet
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ClassicWalletCollectionViewCell", for: indexPath) as! ClassicWalletCollectionViewCell
+            cell.updateWallet(walletObj: cwallet)
             return cell
         }
 
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CreateImportCollectionViewCell", for: indexPath) as! CreateImportCollectionViewCell
-        if let index = obj as? Int{
-            cell.index = index
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CreateAndInputWalletCollectionViewCell", for: indexPath) as! CreateAndInputWalletCollectionViewCell
+        if let obj = obj as? Int{
+            cell.updateCell(index: obj)
         }
-        
         return cell
         
     }
