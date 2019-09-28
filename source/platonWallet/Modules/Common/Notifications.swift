@@ -19,6 +19,7 @@ extension Notification.Name {
         public static let updateWalletList = Notification.Name("updateWalletList_Notification")
         public static let BackupMnemonicFinish = Notification.Name("BackupMnemonicFinishNotification")
         public static let UpdateTransactionList = Notification.Name("UpdateTransactionList_Notification")
+        public static let DidNetworkStatusChange = Notification.Name("DidNetworkStatusChange")
     }
 }
 

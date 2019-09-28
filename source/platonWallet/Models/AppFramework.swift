@@ -19,6 +19,7 @@ class AppFramework {
     
     func initialize() -> Bool {
         initBugly()
+        initNetworkObserver()
         languageSetting()
         initUMeng()
         doSwizzle()
@@ -31,6 +32,10 @@ class AppFramework {
     
     func initweb3(){
         Debugger.enableDebug(true)
+    }
+    
+    func initNetworkObserver() {
+        NetworkManager.shared.startNetworkReachabilityObserver()
     }
     
     func initBugly(){

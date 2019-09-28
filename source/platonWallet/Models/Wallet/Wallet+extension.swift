@@ -66,3 +66,60 @@ extension Wallet{
         return .Sufficient
     }
 }
+
+extension Wallet {
+    var normalIcon: UIImage? {
+        switch type {
+        case .classic:
+            return UIImage(named: "home_classicWallet_icon_normal")
+        case .cold:
+            return UIImage(named: "icon_cold_unselected")
+        case .observed:
+            return UIImage(named: "icon_observer_unselected")
+        }
+    }
+    
+    var selectedIcon: UIImage? {
+        switch type {
+        case .classic:
+            return UIImage(named: "home_classicWallet_icon_selected")
+        case .cold:
+            return UIImage(named: "icon_cold_selected")
+        case .observed:
+            return UIImage(named: "icon_observer_selected")
+        }
+    }
+    
+    var normalImg: UIImage? {
+        switch type {
+        case .classic:
+            return UIImage(named: "img_normal_default")
+        case .cold:
+            return UIImage(named: "img_cold_default")
+        case .observed:
+            return UIImage(named: "img_observed_default")
+        }
+    }
+    
+    var selectedImg: UIImage? {
+        switch type {
+        case .classic:
+            return UIImage(named: "img_normal_selected")
+        case .cold:
+            return UIImage(named: "img_cold_selected")
+        case .observed:
+            return UIImage(named: "img_observed_selected")
+        }
+    }
+    
+    var walletNameTextColor: UIColor {
+        switch type {
+        case .classic:
+            return common_blue_color
+        case .cold:
+            return wallet_gray_color
+        case .observed:
+            return wallet_orange_color
+        }
+    }
+}
