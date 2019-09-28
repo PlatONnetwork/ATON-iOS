@@ -109,7 +109,7 @@ class MainTabBarViewController: UITabBarController {
     
     var lastDate: Date = Date(timeIntervalSince1970: 0)
     
-    public static func newTabBar() -> UIViewController{
+    public static func newTabBar() -> UINavigationController {
         
         let tabBarViewController = MainTabBarViewController()
         
@@ -143,7 +143,11 @@ class MainTabBarViewController: UITabBarController {
         tabBarViewController.tabBar.layer.borderColor = UIColor.clear.cgColor
         tabBarViewController.tabBar.clipsToBounds = true
         
-        return tabBarViewController
+        let navController = UINavigationController(rootViewController: tabBarViewController)
+//        navController.navigationBar.backgroundColor = .red
+        navController.setNavigationBarHidden(true, animated: false)
+        
+        return navController
     }
     
     static func configureTabbarStyle(){
@@ -180,8 +184,6 @@ class MainTabBarViewController: UITabBarController {
         super.viewDidLoad()
         delegate = self
         self.tabBar.isTranslucent = false
-        
-        navigationController?.navigationBar.backgroundColor = .blue
     }
     
     /*
