@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ExportToQRCodeViewController" customModule="platonWallet" customModuleProvider="target">
             <connections>
+                <outlet property="copyButton" destination="ZsD-U2-d2n" id="Mla-Mo-75y"/>
                 <outlet property="noteLabel" destination="852-Jq-T9a" id="qpe-Ju-JkU"/>
                 <outlet property="qrCodeImg" destination="J4w-5W-foi" id="Dhl-xb-xE0"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -44,9 +45,26 @@
                         <constraint firstAttribute="width" secondItem="TBc-7h-95a" secondAttribute="height" multiplier="1:1" id="dm1-eZ-ADd"/>
                     </constraints>
                 </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZsD-U2-d2n" customClass="PButton" customModule="platonWallet" customModuleProvider="target">
+                    <rect key="frame" x="16" y="613" width="343" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="FCU-nX-8Xh"/>
+                    </constraints>
+                    <state key="normal" title="Button"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="localizedNormalTitle" value="ExportVC_copyBtn_title"/>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="copyText:" destination="-1" eventType="touchUpInside" id="piI-5L-d1V"/>
+                    </connections>
+                </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="ZsD-U2-d2n" secondAttribute="bottom" constant="14" id="F3m-Ik-KCI"/>
+                <constraint firstItem="ZsD-U2-d2n" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="Gfe-ae-pLQ"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="ZsD-U2-d2n" secondAttribute="trailing" constant="16" id="Kjd-zf-0nT"/>
+                <constraint firstItem="ZsD-U2-d2n" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="MNH-ie-Yg7"/>
                 <constraint firstItem="852-Jq-T9a" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="23" id="Msv-mm-Tpl"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="852-Jq-T9a" secondAttribute="trailing" constant="20" id="OhC-wA-bRh"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="TBc-7h-95a" secondAttribute="trailing" constant="16" id="OsA-L6-P2S"/>

@@ -77,6 +77,11 @@ class AddressBookViewController: BaseViewController {
     
     @objc func onNavRight() {
         let newAddrInfo = NewAddressInfoViewController()
+        newAddrInfo.addCompletion = { [weak self] in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+                self?.initData()
+            })
+        }
         navigationController?.pushViewController(newAddrInfo, animated: true)
     }
  
@@ -137,6 +142,11 @@ extension AddressBookViewController:UITableViewDataSource,UITableViewDelegate,Sw
         let editAction = SwipeAction(style: .default, title: Localized("AddressBookVC_cell_edit_title")) { (action, indexPath) in
             
             let vc = NewAddressInfoViewController()
+            vc.addCompletion = { [weak self] in
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+                    self?.initData()
+                })
+            }
             vc.fromScene = .edit
             vc.addressInfo = self.dataSource![indexPath.row]
             self.navigationController?.pushViewController(vc, animated: true)

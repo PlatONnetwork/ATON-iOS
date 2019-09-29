@@ -132,6 +132,7 @@ class TransactionDetailViewController: BaseViewController {
         } else if txType == .submitText ||
                   txType == .submitParam ||
                   txType == .submitVersion ||
+                  txType == .submitCancel ||
                   txType == .voteForProposal {
             listData.append((title: Localized("TransactionDetailVC_voteFor"), value: tx.nodeName ?? "--", copy: false))
             listData.append((title: Localized("TransactionDetailVC_nodeId"), value: tx.nodeId ?? "--", copy: false))

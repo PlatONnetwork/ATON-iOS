@@ -38,6 +38,7 @@ enum TxType: String, Decodable {
     case submitParam = "2002"
     case voteForProposal = "2003"
     case declareVersion = "2004"
+    case submitCancel = "2005"
     case reportDuplicateSign = "3000"
     case createRestrictingPlan = "4000"
     case unknown = "-1"
@@ -82,6 +83,8 @@ enum TxType: String, Decodable {
             return Localized("TransactionStatus_reportDuplicateSign_title")
         case .createRestrictingPlan:
             return Localized("TransactionStatus_createRestrictingPlan_title")
+        case .submitCancel:
+            return Localized("TransactionStatus_submitCancel_title")
         case .unknown:
             return Localized("TransactionStatus_unknown_title")
         }
@@ -427,6 +430,7 @@ extension Transaction {
                  .submitText,
                  .submitVersion,
                  .submitParam,
+                 .submitCancel,
                  .voteForProposal,
                  .reportDuplicateSign,
                  .declareVersion,

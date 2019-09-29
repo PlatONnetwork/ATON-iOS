@@ -192,12 +192,22 @@ extension Transaction {
         } else if let redeemSt = redeemStatus, redeemSt == .redeemSuccess, txType! == .delegateWithdraw {
             return (Localized("TransactionStatus_succeed_undelegate"), status_green_color)
         } else {
-            if txReceiptStatus == 1 {
-                return (Localized("TransactionStatus_succeed_desc"), status_green_color)
-            } else if txReceiptStatus == 0 {
-                return (Localized("TransactionStatus_failed_desc"), status_red_color)
+            if let type = txType, type == .delegateCreate {
+                if txReceiptStatus == 1 {
+                    return (Localized("TransactionStatus_succeed_delegate"), status_green_color)
+                } else if txReceiptStatus == 0 {
+                    return (Localized("TransactionStatus_failed_delegate"), status_red_color)
+                } else {
+                    return (Localized("TransactionStatus_pending_desc"), status_blue_color)
+                }
             } else {
-                return (Localized("TransactionStatus_pending_desc"), status_blue_color)
+                if txReceiptStatus == 1 {
+                    return (Localized("TransactionStatus_succeed_desc"), status_green_color)
+                } else if txReceiptStatus == 0 {
+                    return (Localized("TransactionStatus_failed_desc"), status_red_color)
+                } else {
+                    return (Localized("TransactionStatus_pending_desc"), status_blue_color)
+                }
             }
         }
     }

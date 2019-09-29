@@ -7,11 +7,13 @@
 //
 
 import UIKit
+import Localize_Swift
 
 class ExportToQRCodeViewController: BaseViewController {
 
     @IBOutlet weak var noteLabel: UILabel!
     @IBOutlet weak var qrCodeImg: UIImageView!
+    @IBOutlet weak var copyButton: PButton!
     
     var note: String!
     var plainText: String!
@@ -25,8 +27,15 @@ class ExportToQRCodeViewController: BaseViewController {
         qrCodeImg.backgroundColor = UIColor.white
         qrCodeImg.image = UIImage.geneQRCodeImageFor(plainText, size: 230)
         qrCodeImg.contentMode = .center
+        copyButton.style = .blue
     }
 
+    @IBAction func copyText(_ sender: Any) {
+        
+        let pasteb = UIPasteboard.general
+        pasteb.string = plainText
+        showMessage(text: Localized("ExportVC_copy_success"))
+    }
 
     /*
     // MARK: - Navigation

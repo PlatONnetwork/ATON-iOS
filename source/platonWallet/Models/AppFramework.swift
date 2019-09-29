@@ -19,7 +19,6 @@ class AppFramework {
     
     func initialize() -> Bool {
         initBugly()
-        languageSetting()
         initUMeng()
         doSwizzle()
         if !RealmConfiguration(){
@@ -70,18 +69,6 @@ class AppFramework {
     func modulesConfigure(){
         let _ = AssetService.sharedInstace
         let _ = TransactionService.service
-    }
-     
-    func languageSetting() {
-        let defaullt = UserDefaults.standard.object(forKey: "LCLCurrentLanguageKey")
-        if  defaullt == nil {
-            let curlan = GetCurrentSystemSettingLanguage()
-            if curlan == "cn"{
-                Localize.setCurrentLanguage("zh-Hans")
-            }else{
-                Localize.setCurrentLanguage("en")
-            }
-        }
     }
 
     func RealmConfiguration() -> Bool {

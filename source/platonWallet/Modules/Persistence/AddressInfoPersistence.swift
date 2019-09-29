@@ -13,6 +13,9 @@ class AddressInfoPersistence {
     
     public class func add(addrInfo : AddressInfo){
         let addrInfo = addrInfo.detached()
+        if addrInfo.nodeURLStr.count == 0 {
+            addrInfo.nodeURLStr = SettingService.getCurrentNodeURLString()
+        }
         
         RealmWriteQueue.async {
             autoreleasepool(invoking: {
@@ -24,8 +27,10 @@ class AddressInfoPersistence {
         }
     }
     
-    public class func replaceInto(addrInfo : AddressInfo){
-        
+    public class func replaceInto(addrInfo : AddressInfo, completion: (() -> Void)? = nil){
+        if addrInfo.nodeURLStr.count == 0 {
+            addrInfo.nodeURLStr = SettingService.getCurrentNodeURLString()
+        }
         RealmWriteQueue.async {
             autoreleasepool(invoking: {
                 let realm = try! Realm(configuration: RealmHelper.getConfig())
@@ -35,10 +40,12 @@ class AddressInfoPersistence {
                     let existedObj = r.first
                     try? realm.write {
                         existedObj?.walletName = addrInfo.walletName
+                        completion?()
                     }
                 }else{
                     try? realm.write {
                         realm.add(addrInfo, update: true)
+                        completion?()
                     }
                 }
             })

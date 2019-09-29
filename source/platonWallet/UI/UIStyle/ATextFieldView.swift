@@ -132,34 +132,48 @@ class ATextFieldView: UIView {
     func addAction(title: String? = nil, icon: UIImage? = nil, action: @escaping (()->Void)) {
         
         let btn = UIButton(type: .custom)
-        var itemWidth : CGFloat = 32
         if title != nil {
             btn.localizedNormalTitle = title
             btn.setTitleColor(common_blue_color, for: .normal)
             btn.titleLabel?.font = UIFont.systemFont(ofSize: 12)
-            let wordWidth = (Localized(title!) as NSString).boundingRect(with: CGSize(width: 300, height: 13), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 13)], context: nil).width
-            itemWidth = wordWidth
         }
         if icon != nil {
             btn.setImage(icon, for: .normal)
             btn.imageView?.contentMode = .center
         }
         
-        btn.tag = actions.count
+        btn.tag = 100 + actions.count
         btn.addTarget(self, action: #selector(action(_:)), for: .touchUpInside)
+        btn.setContentCompressionResistancePriority(.required, for: .horizontal)
+        btn.setContentHuggingPriority(.required, for: .horizontal)
         addSubview(btn)
+        
+        var lastButton = viewWithTag(100 + actions.count - 1)
         btn.snp.makeConstraints { make in
             make.height.equalTo(40)
-            make.trailing.equalToSuperview().offset(-(actions.count * 32))
+            if let view = lastButton {
+                make.trailing.equalTo(view.snp.leading)
+            } else {
+                make.trailing.equalToSuperview()
+            }
+
             make.centerY.equalTo(textField)
-            make.width.equalTo(itemWidth)
         }
         
         actions.append(action)
         
         
-        textField.snp.updateConstraints { make in
-            make.trailing.equalToSuperview().offset(-(actions.count * 32)-12)
+        lastButton = viewWithTag(100 + actions.count - 1)
+        textField.snp.remakeConstraints { make in
+            make.leading.equalToSuperview()
+            textFieldToTitleConstraint = make.top.equalTo(titleLabel.snp.bottom).offset(7).priorityHigh().constraint
+            make.top.equalTo(magnitudeLabel.snp.bottom).offset(7)
+            if let view = lastButton {
+                make.trailing.equalTo(view.snp.leading).offset(-12)
+            } else {
+                make.trailing.equalToSuperview()
+            }
+            make.height.equalTo(40)
         }
         
         layoutIfNeeded()
@@ -187,7 +201,7 @@ class ATextFieldView: UIView {
     }
     
     @objc private func action(_ sender: UIButton) {
-        actions[sender.tag]()
+        actions[sender.tag - 100]()
     }
     
     private func startCheck(text: String, showErrorMsg: Bool = true, isEditing: Bool = false) -> (correct:Bool, errMsg:String)? {

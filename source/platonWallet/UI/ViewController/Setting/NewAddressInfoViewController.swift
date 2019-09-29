@@ -19,6 +19,8 @@ class NewAddressInfoViewController: BaseViewController , UITextFieldDelegate{
     var addressInfo: AddressInfo?
     
     var defaultAddress: String = ""
+    
+    var addCompletion: (() -> Void)?
 
     let contentView = UIView.viewFromXib(theClass: AddAddressInfoView.self) as! AddAddressInfoView
     
@@ -118,7 +120,7 @@ class NewAddressInfoViewController: BaseViewController , UITextFieldDelegate{
             info.walletAddress = contentView.addressField.text
             info.createTime = Date().millisecondsSince1970
             info.addressType = AddressType_AddressBook
-            AddressBookService.service.replaceInto(addrInfo: info)
+            AddressBookService.service.replaceInto(addrInfo: info, completion: addCompletion)
         }else if fromScene == .edit {
             
             guard let info = addressInfo else {
@@ -130,7 +132,7 @@ class NewAddressInfoViewController: BaseViewController , UITextFieldDelegate{
             newA.createTime = info.createTime
             newA.addressType = AddressType_AddressBook
             newA.updateTime = Date().millisecondsSince1970
-            AddressBookService.service.replaceInto(addrInfo: newA)
+            AddressBookService.service.replaceInto(addrInfo: newA, completion: addCompletion)
             
             if contentView.addressField.text != info.walletAddress {
                 AddressBookService.service.delete(addressInfo: info)

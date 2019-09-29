@@ -266,7 +266,7 @@ extension DelegateViewController {
         }
         
         guard currentAmount > BigUInt.zero else {
-            showMessage(text: "提交的数量应大于0")
+            showMessage(text: Localized("staking_delegate_input_amount_minlimit_error"))
             return
         }
         
@@ -316,7 +316,11 @@ extension DelegateViewController {
                         self.doShowTransactionDetail(transaction)
                     }
                 case .fail(_, let errMsg):
-                    self.showMessage(text: errMsg ?? "call web3 error", delay: 2.0)
+                    if let message = errMsg, message == "insufficient funds for gas * price + value" {
+                        self.showMessage(text: Localized(message), delay: 2.0)
+                    } else {
+                        self.showMessage(text: errMsg ?? "call web3 error", delay: 2.0)
+                    }
                 }
             })
         }
