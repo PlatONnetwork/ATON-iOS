@@ -11,13 +11,13 @@ import Localize_Swift
 
 struct QrcodeData<QRData: Codable>: Codable {
     var qrCodeType: Int?
-    var qrCodeData: [QRData]?
+    var qrCodeData: QRData?
 }
 
 struct SignatureQrcode: Codable {
-    var signedData: String?
+    var signedData: [String]?
     var from: String?
-    var type: Int?
+    var type: UInt16?
 }
 
 struct TransactionQrcode: Codable {

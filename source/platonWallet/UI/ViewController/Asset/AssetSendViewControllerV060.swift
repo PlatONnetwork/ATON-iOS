@@ -433,14 +433,8 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
             self?.doShowScanController(completion: { (data) in
                 guard
                     let qrcode = data,
-                    let signedDatas = qrcode.qrCodeData else { return }
-                var signedStrings: [String] = []
-                for itemData in signedDatas {
-                    guard let signedData = itemData.signedData else { continue }
-                    signedStrings.append(signedData)
-                }
-                
-                scanView.textView.text = signedStrings.joined(separator: ";")
+                    let signedDatas = qrcode.qrCodeData?.signedData else { return }
+                scanView.textView.text = signedDatas.joined(separator: ";")
                 qrcodeData = qrcode
             })
         }

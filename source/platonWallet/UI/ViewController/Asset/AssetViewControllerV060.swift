@@ -469,13 +469,14 @@ extension AssetViewControllerV060 : UIScrollViewDelegate,ChildScrollViewDidScrol
         menu.delegate = self
     }
     
-    @objc func onScan(){ 
-        let scanner = QRScannerViewController { [weak self](res) in
-            self?.navigationController?.popViewController(animated: true)
+    @objc func onScan(){
+        let controller = QRScannerViewController()
+        controller.scanCompletion = { [weak self] (res) in
+            (UIApplication.shared.keyWindow?.rootViewController as? BaseNavigationController)?.popViewController(animated: true)
             self?.handleScanResp(res)
         }
-        scanner.hidesBottomBarWhenPushed = true
-        navigationController?.pushViewController(scanner, animated: true)
+        controller.hidesBottomBarWhenPushed = true
+        (UIApplication.shared.keyWindow?.rootViewController as? BaseNavigationController)?.pushViewController(controller, animated: true)
     }
     
     @objc func onBackup(){
@@ -488,7 +489,7 @@ extension AssetViewControllerV060 : UIScrollViewDelegate,ChildScrollViewDidScrol
     //MARK: - Login
     
     func handleScanResp(_ res: String) {
-        if let data = res.data(using: .utf8), let result = try? JSONDecoder().decode(QrcodeData<TransactionQrcode>.self, from: data) {
+        if let data = res.data(using: .utf8), let result = try? JSONDecoder().decode(QrcodeData<[TransactionQrcode]>.self, from: data) {
             doShowConfirmViewController(qrcode: result)
         } else if let data = res.data(using: .utf8), let result = try? JSONDecoder().decode(QrcodeData<SignatureQrcode>.self, from: data) {
             doShowQrcodeScan(qrcode: result)
@@ -511,7 +512,7 @@ extension AssetViewControllerV060 : UIScrollViewDelegate,ChildScrollViewDidScrol
         }
     }
     
-    func doShowConfirmViewController(qrcode: QrcodeData<TransactionQrcode>) {
+    func doShowConfirmViewController(qrcode: QrcodeData<[TransactionQrcode]>) {
         let controller = OfflineSignatureTransactionViewController()
         controller.qrcode = qrcode
         controller.hidesBottomBarWhenPushed = true
@@ -520,17 +521,11 @@ extension AssetViewControllerV060 : UIScrollViewDelegate,ChildScrollViewDidScrol
     
     func doShowQrcodeScan(qrcode: QrcodeData<SignatureQrcode>) {
         guard
-            let signedDatas = qrcode.qrCodeData, signedDatas.count > 0
+            let signedDatas = qrcode.qrCodeData?.signedData, signedDatas.count > 0
             else { return }
         
-        var signedStrings: [String] = []
-        for itemData in signedDatas {
-            guard let signedData = itemData.signedData else { continue }
-            signedStrings.append(signedData)
-        }
-        
         let signatureView = OfflineSignatureScanView()
-        let contentString = signedStrings.joined(separator: ";")
+        let contentString = signedDatas.joined(separator: ";")
         signatureView.textView.text = contentString
         
         let type = ConfirmViewType.qrcodeScan(contentView: signatureView)
@@ -588,24 +583,24 @@ extension AssetViewControllerV060{
     static func sendSignatureTransaction(qrcode: QrcodeData<SignatureQrcode>) {
         
         guard
-            let signatureArr = qrcode.qrCodeData else { return }
+            let qrCodeData = qrcode.qrCodeData,
+            let signatureArr = qrCodeData.signedData,
+            let type = qrCodeData.type,
+            let from = qrCodeData.from else { return }
         for (index, signature) in signatureArr.enumerated() {
-            guard let signatureData = signature.signedData else { continue }
-            let bytes = signatureData.hexToBytes()
+            let bytes = signature.hexToBytes()
             if let signedTransaction = try? EthereumSignedTransaction(rlp: RLPItem(bytes: bytes)) {
                 
                 web3.platon.sendRawTransaction(transaction: signedTransaction) { (response) in
                     switch response.status {
                     case .success(let result):
                         guard
-                            let to = signedTransaction.to?.rawAddress.toHexString(),
-                            let transactionType = signature.type
-                            else { return }
+                            let to = signedTransaction.to?.rawAddress.toHexString() else { return }
                         let gasPrice = signedTransaction.gasPrice.quantity.description
                         let gasLimit = signedTransaction.gasLimit.quantity.description
                         let amount = signedTransaction.value.quantity.description
                         let tx = Transaction()
-                        tx.from = signature.from
+                        tx.from = from
                         tx.to = to
                         tx.gas = gasLimit
                         tx.gasPrice = gasPrice
@@ -613,8 +608,8 @@ extension AssetViewControllerV060{
                         tx.txhash = result.bytes.toHexString().add0x()
                         tx.txReceiptStatus = -1
                         tx.value = amount
-                        tx.transactionType = transactionType
-                        tx.toType = (transactionType != 0) ? .contract : .address
+                        tx.transactionType = Int(type)
+                        tx.toType = (type != 0) ? .contract : .address
                         TransferPersistence.add(tx: tx)
                         
                         if index == signatureArr.count - 1 {

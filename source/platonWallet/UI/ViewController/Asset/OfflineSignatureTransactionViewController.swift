@@ -14,7 +14,7 @@ import platonWeb3
 class OfflineSignatureTransactionViewController: BaseViewController {
     
     var listData: [(title: String, value: String)] = []
-    var qrcode: QrcodeData<TransactionQrcode>?
+    var qrcode: QrcodeData<[TransactionQrcode]>?
     
     lazy var tableView = { () -> UITableView in
         let tbView = UITableView(frame: .zero)
@@ -173,25 +173,26 @@ class OfflineSignatureTransactionViewController: BaseViewController {
                 return
             }
             
-            var signedDatas: [SignatureQrcode] = []
+            var signedStrings: [String] = []
             for code in codes {
                 if code.type == 1004 {
-                    let signatureData = self.signedDelegateTx(pri: pri, txQrcode: code)
-                    guard let signedData = signatureData else { continue }
-                    signedDatas.append(signedData)
+                    guard let signatureString = self.signedDelegateTx(pri: pri, txQrcode: code) else { continue }
+                    signedStrings.append(signatureString)
                 } else if code.type == 1005 {
-                    let signatureData = self.signedWithdrawTx(pri: pri, txQrcode: code)
-                    guard let signedData = signatureData else { continue }
-                    signedDatas.append(signedData)
+                    guard let signatureString = self.signedWithdrawTx(pri: pri, txQrcode: code) else { continue }
+                    signedStrings.append(signatureString)
                 } else {
-                    let signatureData = self.signedTransferTx(pri: pri, txQrcode: code)
-                    guard let signedData = signatureData else { continue }
-                    signedDatas.append(signedData)
+                    guard let signatureString = self.signedTransferTx(pri: pri, txQrcode: code) else { continue }
+                    signedStrings.append(signatureString)
                 }
             }
             
-
-            let qrcodeData = QrcodeData(qrCodeType: 1, qrCodeData: signedDatas)
+            guard
+                let code = codes.first,
+                let sender = code.sender,
+                let type = code.type else { return }
+            let signedData = SignatureQrcode(signedData: signedStrings, from: sender, type: type)
+            let qrcodeData = QrcodeData(qrCodeType: 1, qrCodeData: signedData)
             guard
                 let jsonData = try? JSONEncoder().encode(qrcodeData),
                 let jsonString = String(data: jsonData, encoding: .utf8) else { return }
@@ -199,7 +200,7 @@ class OfflineSignatureTransactionViewController: BaseViewController {
         }
     }
     
-    func signedTransferTx(pri: String, txQrcode: TransactionQrcode) -> SignatureQrcode? {
+    func signedTransferTx(pri: String, txQrcode: TransactionQrcode) -> String? {
         guard
             let sender = txQrcode.from,
             let amountBigInt = BigUInt(txQrcode.amount ?? "0"),
@@ -215,12 +216,11 @@ class OfflineSignatureTransactionViewController: BaseViewController {
             let transactionSigned = txSigned,
             let txSignedString = transactionSigned.rlp().bytes?.toHexString()
             else { return nil }
-        let signedData = SignatureQrcode(signedData: txSignedString, from: sender, type: 0)
-        return signedData
+        return txSignedString
     }
     
     
-    func signedWithdrawTx(pri: String, txQrcode: TransactionQrcode) -> SignatureQrcode? {
+    func signedWithdrawTx(pri: String, txQrcode: TransactionQrcode) -> String? {
         guard
             let stakingBlockNum = UInt64(txQrcode.stakingBlockNum ?? "0"),
             let nodeId = txQrcode.nodeId,
@@ -235,11 +235,10 @@ class OfflineSignatureTransactionViewController: BaseViewController {
             let transactionSigned = txSigned,
             let txSignedString = transactionSigned.rlp().bytes?.toHexString()
             else { return nil }
-        let signedData = SignatureQrcode(signedData: txSignedString, from: sender, type: 1005)
-        return signedData
+        return txSignedString
     }
     
-    func signedDelegateTx(pri: String, txQrcode: TransactionQrcode) -> SignatureQrcode? {
+    func signedDelegateTx(pri: String, txQrcode: TransactionQrcode) -> String? {
         guard
             let typ = txQrcode.typ,
             let sender = txQrcode.from,
@@ -258,8 +257,7 @@ class OfflineSignatureTransactionViewController: BaseViewController {
             let transactionSigned = txSigned,
             let txSignedString = transactionSigned.rlp().bytes?.toHexString()
             else { return nil }
-        let signedData = SignatureQrcode(signedData: txSignedString, from: sender, type: 1004)
-        return signedData
+        return txSignedString
     }
 
 }
