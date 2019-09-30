@@ -239,7 +239,7 @@
 "alert_screenshot_ban_confirmBtn_title" = "Understood";
 "alert_backupFailed_title" = "Backup Failed";
 "alert_backupFailed_msg" = "Please check the words' order.";
-"alert_backupFailed_confirmBtn_title" = "OK";
+"alert_backupFailed_confirmBtn_title" = "Understood";
 "alert_disclaimer_title" = "Disclaimer";
 "alert_disclaimer_msg" = "Please be sure to keep the mnemonic phrase in a safe place. ATON is not responsible for any loss of assets caused by forgetting losing or theft.";
 "alert_disclaimer_confirmBtn_title" = "Understood";
