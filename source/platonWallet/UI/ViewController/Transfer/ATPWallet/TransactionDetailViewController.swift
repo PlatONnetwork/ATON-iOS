@@ -12,6 +12,7 @@ import Localize_Swift
 class TransactionDetailViewController: BaseViewController {
     
     public var transaction : Transaction?
+    var txSendAddress: String?
     
     var listData: [(title: String, value: String, copy: Bool)] = []
     
@@ -57,6 +58,19 @@ class TransactionDetailViewController: BaseViewController {
             let tx = TransferPersistence.getByTxhash(transaction?.txhash)
             guard let transaction = tx else { return }
             DispatchQueue.main.async { [weak self] in
+                
+                if let senderAddress = self?.txSendAddress {
+                    switch transaction.txType! {
+                    case .transfer:
+                        transaction.direction = (senderAddress.lowercased() == transaction.from?.lowercased() ? .Sent : senderAddress.lowercased() == transaction.to?.lowercased() ? .Receive : .unknown)
+                    case .delegateWithdraw,
+                         .stakingWithdraw:
+                        transaction.direction = .Receive
+                    default:
+                        transaction.direction = .Sent
+                    }
+                }
+                
                 self?.transferDetailView.updateContent(tx: transaction)
             }
         }

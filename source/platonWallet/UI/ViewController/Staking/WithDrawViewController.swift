@@ -441,6 +441,7 @@ extension WithDrawViewController {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             let controller = TransactionDetailViewController()
+            controller.txSendAddress = transaction.from
             controller.transaction = transaction
             controller.backToViewController = self.navigationController?.viewController(self.indexOfViewControllers - 1)
             self.navigationController?.pushViewController(controller, animated: true)
