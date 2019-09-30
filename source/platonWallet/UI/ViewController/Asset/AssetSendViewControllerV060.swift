@@ -396,7 +396,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
                 AssetViewControllerV060.getInstance()?.showMessage(text: Localized("QRScan_failed_tips"))
                 completion?(nil)
             }
-            AssetViewControllerV060.popViewController()
+            (UIApplication.shared.keyWindow?.rootViewController as? BaseNavigationController)?.popViewController(animated: true)
         }
         
         (UIApplication.shared.keyWindow?.rootViewController as? BaseNavigationController)?.pushViewController(controller, animated: true)
@@ -430,7 +430,9 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
                 guard
                     let qrcode = data,
                     let signedDatas = qrcode.qrCodeData?.signedData else { return }
-                scanView.textView.text = signedDatas.joined(separator: ";")
+                DispatchQueue.main.async {
+                    scanView.textView.text = signedDatas.joined(separator: ";")
+                }
                 qrcodeData = qrcode
             })
         }
@@ -456,11 +458,12 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
         if wallet.type == .observed {
             guard
                 let to = walletAddressView.textField.text, to.count > 0,
-                let amount = amountView.textField.text,
+                let amountLATString = amountView.textField.text,
                 let inputGasPrice = gasPrice
                 else { return }
             let gasPrice = inputGasPrice.description
             let gasLimit = estimatedGas.description
+            let amount = amountLATString.LATToVon.description
             
             web3.platon.platonGetNonce(sender: wallet.address) { [weak self] (result, blockNonce) in
                 guard let self = self else { return }

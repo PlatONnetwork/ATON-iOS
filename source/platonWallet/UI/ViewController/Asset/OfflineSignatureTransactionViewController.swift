@@ -33,6 +33,7 @@ class OfflineSignatureTransactionViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        leftNavigationTitle = "offline_signature_title"
         // Do any additional setup after loading the view.
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
@@ -78,33 +79,6 @@ class OfflineSignatureTransactionViewController: BaseViewController {
         tableView.tableHeaderView = headerView
         tableView.tableFooterView = footerView
         
-//        let dic = [
-//            "qrCodeType": 0,
-//            "qrCodeData": [
-//                "amount": "10000",
-//                "chainId": "100",
-//                "from": "0x0772fd8e5126C01b98D3a93C64546306149202ED",
-//                "to": "0x2e95e3ce0a54951eb9a99152a6d5827872dfb4fd",
-//                "gasLimit": "1000000000",
-//                "gasPrice": "1000000000",
-//                "nonce": "100",
-//                "platOnFunction": [
-//                    "type": 0,
-//                    "parameters": [
-//                        [
-//                            "nodeId": "0x0",
-//                            "sender": "0x0",
-//                            "amount": "10000"
-//                        ]
-//                    ]
-//                ]
-//            ]
-//            ] as [String : Any]
-        
-//        let data = try! JSONSerialization.data(withJSONObject: dic, options: [])
-//        let result = try! JSONDecoder().decode(QrcodeData<TransactionQrcode>.self, from: data)
-//        qrcode = result
-        
         guard let codes = result.qrCodeData, codes.count > 0 else {
             return
         }
@@ -125,16 +99,14 @@ class OfflineSignatureTransactionViewController: BaseViewController {
         listData.append((title: Localized("confirm_authorize_from"), value: codes.first?.from ?? "--"))
         listData.append((title: Localized("confirm_authorize_to"), value: codes.first?.to ?? "--"))
         
-        if
-            let gasPrice = codes.first?.gasPrice,
-            let gasLimited = codes.first?.gasLimit,
-            let gasPriceInt = BigUInt(gasPrice),
-            let gasLimitedInt = BigUInt(gasLimited) {
-            let gas = gasPriceInt.multiplied(by: gasLimitedInt).description.vonToLAT
-            listData.append((title: Localized("confirm_authorize_fee"), value: gas.description.displayForMicrometerLevel(maxRound: 8).ATPSuffix()))
-        } else {
-            listData.append((title: Localized("confirm_authorize_fee"), value: "--"))
+        let totalGas = codes.reduce(BigUInt.zero) { (result, txCode) -> BigUInt in
+            let gasPrice = BigUInt(txCode.gasPrice ?? "0") ?? BigUInt.zero
+            let gasLimit = BigUInt(txCode.gasLimit ?? "0") ?? BigUInt.zero
+            let gas = gasPrice.multiplied(by: gasLimit)
+            return result + gas
         }
+        
+        listData.append((title: Localized("confirm_authorize_fee"), value: (totalGas.description.vonToLATString ?? "0.00").ATPSuffix()))
     }
     
     func generateQrcodeForSignedTx(content: String) {
@@ -213,10 +185,13 @@ class OfflineSignatureTransactionViewController: BaseViewController {
         
         let txSigned = web3.platon.platonSignTransaction(to: to, nonce: nonce, data: [], sender: sender, privateKey: pri, gasPrice: gasPrice, gas: gasLimit, value: amount, estimated: true)
         guard
-            let transactionSigned = txSigned,
-            let txSignedString = transactionSigned.rlp().bytes?.toHexString()
-            else { return nil }
-        return txSignedString
+            let transactionSigned = txSigned else { return nil }
+        
+        let bytes = try? RLPEncoder().encode(transactionSigned.rlp())
+        
+        guard
+            let signedString = bytes?.toHexString().add0x() else { return nil }
+        return signedString
     }
     
     
@@ -232,10 +207,12 @@ class OfflineSignatureTransactionViewController: BaseViewController {
         let funcType = FuncType.withdrewDelegate(stakingBlockNum: stakingBlockNum, nodeId: nodeId, amount: amount)
         let txSigned = web3.platon.platonSignTransaction(to: PlatonConfig.ContractAddress.stakingContractAddress, nonce: nonce, data: funcType.rlpData.bytes, sender: sender, privateKey: pri, gasPrice: funcType.gasPrice, gas: funcType.gas, value: nil, estimated: true)
         guard
-            let transactionSigned = txSigned,
-            let txSignedString = transactionSigned.rlp().bytes?.toHexString()
-            else { return nil }
-        return txSignedString
+            let transactionSigned = txSigned else { return nil }
+        let bytes = try? RLPEncoder().encode(transactionSigned.rlp())
+        
+        guard
+            let signedString = bytes?.toHexString().add0x() else { return nil }
+        return signedString
     }
     
     func signedDelegateTx(pri: String, txQrcode: TransactionQrcode) -> String? {
@@ -254,10 +231,12 @@ class OfflineSignatureTransactionViewController: BaseViewController {
         let txSigned = web3.platon.platonSignTransaction(to: PlatonConfig.ContractAddress.stakingContractAddress, nonce: nonce, data: funcType.rlpData.bytes, sender: sender, privateKey: pri, gasPrice: funcType.gasPrice, gas: funcType.gas, value: nil, estimated: true)
         
         guard
-            let transactionSigned = txSigned,
-            let txSignedString = transactionSigned.rlp().bytes?.toHexString()
-            else { return nil }
-        return txSignedString
+            let transactionSigned = txSigned else { return nil }
+        let bytes = try? RLPEncoder().encode(transactionSigned.rlp())
+        
+        guard
+            let signedString = bytes?.toHexString().add0x() else { return nil }
+        return signedString
     }
 
 }

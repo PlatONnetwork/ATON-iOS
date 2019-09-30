@@ -902,3 +902,4 @@
 "confirm_generate_qrcode_for_signed_tx" = "授权签名";
 "confirm_generate_qrcode_for_signed_tx_tip" = "使用对应观察钱包扫描下方二维码，完成授权";
 "confirm_button_signed_tx" = "完成";
+"offline_signature_title" = "交易预览";

@@ -11,7 +11,7 @@ import UIKit
 import Localize_Swift
 
 enum ImportWalletVCType: Int {
-    case keystore = 0,mnemonic,privateKey
+    case keystore = 0,mnemonic,privateKey,observer
 }
 
 class MainImportWalletViewController: BaseViewController,UIScrollViewDelegate,ImportWalletHeaderViewDelegate {
@@ -122,19 +122,17 @@ class MainImportWalletViewController: BaseViewController,UIScrollViewDelegate,Im
     }
     
     func handleScanResp(_ resp: String) {
-        
         var index = currentIndex
         
-        if resp.isValidKeystore() {
-            
-            index = ImportWalletVCType.keystore.rawValue
+        if resp.isValidAddress() {
+            index = ImportWalletVCType.observer.rawValue
             gotoVCForTabIndex(index, text: resp)
-
         }else if resp.isValidPrivateKey() {
-            
             index = ImportWalletVCType.privateKey.rawValue
             gotoVCForTabIndex(index, text: resp)
-            
+        }else if resp.isValidKeystore() {
+            index = ImportWalletVCType.keystore.rawValue
+            gotoVCForTabIndex(index, text: resp)
         }else {
             showMessage(text: Localized("QRScan_failed_tips"))
         }
@@ -155,7 +153,9 @@ class MainImportWalletViewController: BaseViewController,UIScrollViewDelegate,Im
             
             if index == ImportWalletVCType.keystore.rawValue {
                 (self.viewControllers[index] as! ImportKeystoreViewController).keystoreTextView.text = text
-            }else {
+            } else if index == ImportWalletVCType.observer.rawValue {
+                (self.viewControllers[index] as! ImportObservedWalletViewController).addresstextView.text = text
+            } else {
                 (self.viewControllers[index] as! ImportMnemonicOrPrivateKeyViewController).textView.text = text
             }
         }

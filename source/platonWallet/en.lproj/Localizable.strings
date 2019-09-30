@@ -899,3 +899,4 @@
 "confirm_generate_qrcode_for_signed_tx" = "Authorization Signature";
 "confirm_generate_qrcode_for_signed_tx_tip" = "Scan the OR code to finish your authorization for the observed wallet.";
 "confirm_button_signed_tx" = "Finish";
+"offline_signature_title" = "Details";
