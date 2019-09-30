@@ -60,7 +60,7 @@
 "transferVC_switch_des" = "切换钱包";
 "transferVC_switch_memo_placeholder" = "备注（选填）";
 "transferVC_cheaper_des" = "更便宜";
-"transferVC_faster_des" = "更快捷";
+"transferVC_faster_des" = "更快速";
 "transferVC_estima_des" = "预计交易确认时间：";
 
 "transferVC_confirm_PayInfo" = "交易信息：";
@@ -68,6 +68,7 @@
 "transferVC_confirm_executor" = "执行钱包：";
 "transferVC_confirm_To" = "接收地址：";
 "transferVC_confirm_Fee" = "交易手续费：";
+"transferVC_send_Fee" = "交易费用";
 
 "transferVC_confirm_ATP_send" = "LAT 发送";
 "transferVC_confirm_Submit" = "发送";
@@ -304,7 +305,7 @@
 "AddAddressVC_add_button_title" = "添加";
 
 "NewAddress_name_empty_tip" = "名称不能为空";
-"NewAddress_name_Incorrect_tip" = "请输入 1～12位名称";
+"NewAddress_name_Incorrect_tip" = "请输入 1～12位地址名称";
 "NewAddress_address_empty_tip" = "地址不能为空";
 "NewAddress_address_Incorrect_tip" = "地址格式不正确";
 
@@ -376,7 +377,8 @@
 "TransactionStatus_create_proposal" = "创建提案";
 "TransactionStatus_submitText_title" = "创建提案";
 "TransactionStatus_submitVersion_title" = "创建提案";
-"TransactionStatus_submitParam_title" = "参数提案";
+"TransactionStatus_submitParam_title" = "创建提案";
+"TransactionStatus_submitCancel_title" = "创建提案";
 "TransactionStatus_voteForProposal_title" = "提案投票";
 "TransactionStatus_declareVersion_title" = "版本声明";
 "TransactionStatus_reportDuplicateSign_title" = "举报验证节点";
@@ -423,7 +425,7 @@
 "BiometricsAuthVC_authFaceIDBtn_title" = "点击唤起人脸识别验证";
 "BiometricsAuthVC_authTouchIDBtn_title" = "点击唤起指纹验证";
 "BiometricsAuthVC_switchBtn_title" = "使用钱包密码登录解锁";
-"BiometricsAuthVC_initFailed_tips" = "Touch ID 或 Face ID 无法启动，请使用钱包密码登录解锁";
+"BiometricsAuthVC_initFailed_tips" = "多次验证不通过，请使用钱包密码登录解锁";
 
 //PasswordAuthVC
 "PasswordAuthVC_title" = "钱包密码解锁";
@@ -714,6 +716,7 @@
 "send_address_placeholder" = "输入钱包地址";
 "send_amount_placeholder" = "输入发送数量";
 "vote_confirm_from" = "支付钱包：";
+"staking_amount_placeholder" = "输入数量（不少于10LAT）";
 
 
 "createOrImport_guide_text" = "已有钱包？使用钱包文件(json)、助记词、私钥导入";
@@ -863,6 +866,8 @@
 
 "asset_alert_restricted_info" = "锁仓的LAT支持委托";
 
+"staking_delegate_input_amount_minlimit_error" = "请输入委托的数量";
+"staking_withdraw_input_amount_minlimit_error" = "请输入赎回的数量";
 "staking_input_amount_minlimit_error" = "委托数量不能少于10LAT";
 "staking_input_amount_maxlimit_error" = "余额不足，无法委托";
 

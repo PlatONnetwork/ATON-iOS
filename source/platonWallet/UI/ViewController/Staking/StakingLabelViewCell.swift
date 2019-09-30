@@ -19,6 +19,8 @@ class StakingLabelViewCell: UICollectionViewCell {
         label.textColor = .black
         label.font = UIFont.systemFont(ofSize: 18)
         label.textAlignment = .left
+        label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        label.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
         addSubview(label)
         label.snp.makeConstraints { make in
             make.edges.equalToSuperview()

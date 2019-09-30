@@ -43,10 +43,6 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
         })
         amountView.checkInput(mode: .all, check: {[weak self] text -> (Bool, String) in
             
-            if text.count == 0 {
-                return (false, "amount must be > 0")
-            }
-            
             let inputformat = CommonService.checkTransferAmoutInput(text: text, checkBalance: false, fee: nil)
             if !inputformat.0{
                 return inputformat
@@ -503,6 +499,12 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
     
     func checkConfirmButtonAvailable() -> Bool{
         self.checkQuickAddAddress()
+        
+        if self.amountView.textField.text?.count == 0 {
+            self.sendBtn.style = .disable
+            return false
+        }
+        
         if self.amountView.checkInvalidNow(showErrorMsg: false)!.0 && self.walletAddressView.checkInvalidNow(showErrorMsg: false)!.0{
             self.sendBtn.style = .blue
             return true

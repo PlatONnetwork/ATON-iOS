@@ -55,7 +55,7 @@ class DelegateRecordViewController: BaseViewController, IndicatorInfoProvider {
     }()
     
     lazy var refreshFooter: MJRefreshFooter = {
-        let footer = MJRefreshAutoNormalFooter(refreshingTarget: self, refreshingAction: #selector(fetchDataMore))!
+        let footer = MJRefreshAutoFooter(refreshingTarget: self, refreshingAction: #selector(fetchDataMore))!
         return footer
     }()
     

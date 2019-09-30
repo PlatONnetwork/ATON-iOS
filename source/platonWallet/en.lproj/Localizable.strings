@@ -13,7 +13,7 @@
 
 "password_strength_level_0" = "Strength";
 "password_strength_level_1" = "Weak";
-"password_strength_level_2" = "So-so";
+"password_strength_level_2" = "Ordinary";
 "password_strength_level_3" = "Good";
 "password_strength_level_4" = "Strong";
 
@@ -22,20 +22,20 @@
 ///wallet common input placeholder
 "wallet_nameInput_placeholder" = "Name of Wallet";
 "wallet_pswInput_placeholder" = "Set password";
-"wallet_pswConfirmInput_placeholder" = "Confirm password";
+"wallet_pswConfirmInput_placeholder" = "Repeat password";
 "wallet_psw_advise" = "*At least 6 characters,recommended to mix uppercase and lowercase alphabets,numbers and symbols";
 
 ///wallet common input illegal tips
 "wallet_nameInput_empty_tips" = "Name can't be empty !";
 "wallet_nameInput_lengthIllegal_tips" = "Name's length should be 1~12 characters";
-"wallet_pswInput_empty_tips" = "Password can't be empty !";
-"wallet_pswInput_lengthIllegal_tips" = "Password's Length at least 6 characters";
-"wallet_pswConfirmInput_empty_tips" = "Password can't be empty !";
+"wallet_pswInput_empty_tips" = "Confirm password can't be empty";
+"wallet_pswInput_lengthIllegal_tips" = "6 characters at least";
+"wallet_pswConfirmInput_empty_tips" = "Confirm password can't be empty";
 "wallet_pswConfirmInput_mismatch_tips" = "Password don't match !";
 
 //createWalletVC
 "createWalletVC_title" = "Create Wallet";
-"createWalletVC_walletName" = "Name:";
+"createWalletVC_walletName" = "Wallet Name:";
 "createWalletVC_password" = "Password:";
 "createWalletVC_pswStrength" = "Strength";
 "createWalletVC_note" = "Note: Be sure to keep your wallet password in mind, the server will not store your password, you will not be able to retrieve the password if forgetting or losing!";
@@ -68,6 +68,7 @@
 "transferVC_confirm_From" = "Sender:";
 "transferVC_confirm_To" = "Recipient:";
 "transferVC_confirm_Fee" = "Fee:";
+"transferVC_send_Fee" = "Fee:";
 
 "transferVC_confirm_ATP_send" = "LAT Send";
 "transferVC_confirm_Submit" = "Send";
@@ -111,7 +112,7 @@
 "TransactionDetailVC_nav_title" = "Transaction Detail";
 
 "TransactionDetailVC_type" = "Type:";
-"TransactionDetailVC_time" = "Submission Time:";
+"TransactionDetailVC_time" = "Timestamp:";
 "TransactionDetailVC_value" = "Amount:";
 "TransactionDetailVC_energon_price" = "Fee:";
 "TransactionDetailVC_Wallet" = "Wallet:";
@@ -151,12 +152,12 @@
 //qr scan
 "QRScanerVC_nav_title" = "QR Scan";
 "QRScan_success_tips" = "Success";
-"QRScan_failed_tips" = "Unrecognized QR code";
+"QRScan_failed_tips" = "Unrecognized content";
 
 //qr code view
 "QRView_public_key" = "Public Key";
 "QRView_wallet_address" = "Wallet Address";
-"QRView_share_to_friend" = "Share with friends";
+"QRView_share_to_friend" = "Share to friends";
 "QRView_transfer_tip_title" = "Warning";
 "QRView_transfer_tip" = "You are on the PlatON Test Network. Be careful not to transfer real funds to this address.";
 
@@ -201,7 +202,7 @@
 
 "importWalletVC_privateKey_tips" = "Input the Private Key, or scan the Qr Code generated with Private Key to import. Please pay attention to case sensitivity.";
 "importWalletVC_privateKey_textView_placeholder" = "Enter Private Key";
-"importWalletVC_importBtn_title" = "Start Importing";
+"importWalletVC_importBtn_title" = "Start to import";
 "importWalletVC_success_tips" = "success";
 "importWalletVC_mnemonicInput_empty_tips" = "Mnemonic can't be empty !";
 "importWalletVC_privateKeyInput_empty_tips" = "PrivateKey can't be empty !";
@@ -210,14 +211,14 @@
 
 //backupMnemonicVC
 "backupMnemonicVC_title" = "Backup Wallet";
-"backupMnemonicVC_tips1" = "Please write down the Mnemonics in the paper";
+"backupMnemonicVC_tips1" = "Please write down the words on the paper";
 "backupMnemonicVC_tips2" = "Those 12 mnemonic words are for recovering your wallet, write down correctly on paper and keep in a safe place.";
 "backupMnemonicVC_nextBtn_title" = "Next";
 "backupskip" = "Skip";
 
 //verifyMnemonicVC
-"verifyMnemonicVC_title" = "Verification of Mnemonic";
-"verifyMnemonicVC_tips" = "Please choose mnemonic words in order and make sure your mnemonic was correct written";
+"verifyMnemonicVC_title" = "Backup Wallet";
+"verifyMnemonicVC_tips" = "Please choose mnemonic words in order.";
 "verifyMnemonicVC_submitBtn_title" = "Submit";
 "verifyMnemonicVC_emptyBtn_title" = "Empty";
 
@@ -232,18 +233,18 @@
 "alert_psw_input_error_msg" = "Re-enter Password";
 "alert_psw_input_error_backBtn_title" = "Back";
 "alert_screenshot_ban_title" = "Do not screenshot";
-"alert_screenshot_privateKey_ban_msg" = "Please keep the Private Key to prevent theft of assets.";
-"alert_backupMnemonic_ban_msg" = "Please keep the mnemonics to prevent theft of your assets.";
-"alert_screenshot_keystore_ban_msg" = "Please keep the Keystore to prevent theft of assets.";
+"alert_screenshot_privateKey_ban_msg" = "Please keep the Private Key safe to prevent theft of assets.";
+"alert_backupMnemonic_ban_msg" = "Please keep the mnemonic to prevent theft of your assets.";
+"alert_screenshot_keystore_ban_msg" = "Please keep the Keystore safe to prevent theft of assets.";
 "alert_screenshot_ban_confirmBtn_title" = "Understood";
 "alert_backupFailed_title" = "Backup Failed";
-"alert_backupFailed_msg" = "Confirm failed,please examine your mnemonic words.";
+"alert_backupFailed_msg" = "Please check the words' order.";
 "alert_backupFailed_confirmBtn_title" = "OK";
 "alert_disclaimer_title" = "Disclaimer";
-"alert_disclaimer_msg" = "Please be sure to keep your mnemonics in a safe place. ATON is not responsible for any loss of assets caused by forgetting、losing or stolen.";
+"alert_disclaimer_msg" = "Please be sure to keep the mnemonic phrase in a safe place. ATON is not responsible for any loss of assets caused by forgetting losing or theft.";
 "alert_disclaimer_confirmBtn_title" = "Understood";
 
-"alert_modifyWalletName_title" = "Change Wallet Name";
+"alert_modifyWalletName_title" = "Rename Wallet";
 "alert_modifyWalletName_confirmBtn_title" = "Submit";
 "alert_modifyWalletName_error_title" = "Format Error";
 "alert_modifyWalletName_error_msg" = "Please enter 1-12 characters";
@@ -309,13 +310,13 @@
 //NewAddressInfoViewController
 
 "AddAddress_nav_title"= "Add New Address";
-"AddAddress_textFieldPlaceHolder_address_Name"= "Name";
-"AddAddress_textFieldPlaceHolder_Wallet_Address"= "Address";
+"AddAddress_textFieldPlaceHolder_address_Name"= "Name of Wallet";
+"AddAddress_textFieldPlaceHolder_Wallet_Address"= "Addr of Wallet";
 "AddAddressVC_tip" = "Please backup your address before deleting this App";
 "AddAddressVC_add_button_title" = "Add";
 
 "NewAddress_name_empty_tip" = "Name is empty";
-"NewAddress_name_Incorrect_tip" = "The name must be between 0 and 12 characters";
+"NewAddress_name_Incorrect_tip" = "Please enter 1-12 characters";
 "NewAddress_address_empty_tip" = "Address is empty";
 "NewAddress_address_Incorrect_tip" = "Address is incorrect ";
 
@@ -328,9 +329,9 @@
 
 "Invalid password" = "Password Incorrect";
 "Invalid wallet" = "Invalid wallet";
-"Invalid private key" = "Invalid private key";
+"Invalid private key" = "Private key cannot be parsed";
 "Invalid mnemonic phrase" = "Invalid mnemonic phrase";
-"Invalid keystore" = "Invalid keystore";
+"Invalid keystore" = "keystore cannot be parsed";
 "Wallet already exists" = "Wallet already exists";
 "Invalid address" = "Invalid address";
 
@@ -386,10 +387,11 @@
 "TransactionStatus_delegateCreate_title" = "Delegate";
 "TransactionStatus_delegateWithdraw_title" = "Undelegate";
 "TransactionStatus_create_proposal" = "CreateProposal";
-"TransactionStatus_submitText_title" = "Text";
-"TransactionStatus_submitVersion_title" = "Upgrade";
-"TransactionStatus_submitParam_title" = "Parameter";
-"TransactionStatus_voteForProposal_title" = "VotingProposal(VoteYes\VoteNo\VoteAbstain)";
+"TransactionStatus_submitText_title" = "CreateProposal";
+"TransactionStatus_submitVersion_title" = "CreateProposal";
+"TransactionStatus_submitParam_title" = "CreateProposal";
+"TransactionStatus_submitCancel_title" = "CreateProposal";
+"TransactionStatus_voteForProposal_title" = "VotingProposal";
 "TransactionStatus_declareVersion_title" = "DeclareVersion";
 "TransactionStatus_reportDuplicateSign_title" = "ReportValidator";
 "TransactionStatus_createRestrictingPlan_title" = "CreateRestricting";
@@ -434,7 +436,7 @@
 "BiometricsAuthVC_authFaceIDBtn_title" = "Click to evoke Face Recognition Verification";
 "BiometricsAuthVC_authTouchIDBtn_title" = "Click to evoke Fingerprint Verification";
 "BiometricsAuthVC_switchBtn_title" = "Unlock with Wallet Password";
-"BiometricsAuthVC_initFailed_tips" = "Touch ID or Face ID won't start, please Unlock with Wallet Password";
+"BiometricsAuthVC_initFailed_tips" = "Fingerprint suspended, Please Unlock with Wallet Password";
 
 //PasswordAuthVC
 "PasswordAuthVC_title" = "Unlock with Wallet Password";
@@ -444,7 +446,7 @@
 "PasswordAuthVC_unlockBtn_title" = "Unlock";
 "PasswordAuthVC_unlocking_text" = "Unlocking...";
 "PasswordAuthVC_unlockSuccess_text" = "Unlock succeed";
-"PasswordAuthVC_unlockFail_text" = "Unlock failed";
+"PasswordAuthVC_unlockFail_text" = "Incorrect Password";
 
 //protocol
 
@@ -585,7 +587,7 @@
 //About
 "AboutVC_nav_title" = "About";
 "AboutVC_AboutUs" = "About us";
-"AboutVC_update" = "Software update";
+"AboutVC_update" = "APP Update";
 
 //Vote
 "CandidateListVC_title" = "Vote";
@@ -704,14 +706,14 @@
 "data_parser_error" = "Data parsing error.";
 "unknow_error" = "Unknow error.";
 
-"send_wallet_colon" = "Wallet Address:";
+"send_wallet_colon" = "Recipient:";
 "send_amout_colon" = "Amout:";
 "send_sendAll" = "Send all";
 
 "send_address_placeholder" = "Input wallet address";
 "send_amount_placeholder" = "Input Amount";
 "vote_confirm_from" = "From:";
-
+"staking_amount_placeholder" = "Input Amount (not less than 10 LAT)";
 
 
 "createOrImport_guide_text" = "Have a wallet? Import using keystore(json),mnemonic phrase, private key.";
@@ -770,7 +772,7 @@
 "statking_validator_blocks" = "Blocks";
 "statking_validator_blocks_rate" = "Block rate";
 
-"statking_validator_Institutional" = "Institutional Name";
+"statking_validator_Institutional" = "Introduction";
 "statking_validator_Website" = "Website";
 
 "statking_validator_Withdraw" = "Withdraw";
@@ -861,6 +863,8 @@
 
 "asset_alert_restricted_info" = "Non tradable LAT，but can be delegated";
 
+"staking_delegate_input_amount_minlimit_error" = "Please input amount";
+"staking_withdraw_input_amount_minlimit_error" = "Please input amount";
 "staking_input_amount_minlimit_error" = "The Amount cannot be less than 10 LAT";
 "staking_input_amount_maxlimit_error" = "Insufficient balance, unable to delegate";
 

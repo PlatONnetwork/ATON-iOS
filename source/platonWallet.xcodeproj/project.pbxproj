@@ -67,7 +67,6 @@
 		813C3410223A03A800DE92F1 /* Wallet+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813C340F223A03A800DE92F1 /* Wallet+extension.swift */; };
 		813C3412223A327300DE92F1 /* DropDownVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813C3411223A327300DE92F1 /* DropDownVIew.swift */; };
 		813D1FF82306A7AF00EFA397 /* AssetService+Centralization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813D1FF72306A7AF00EFA397 /* AssetService+Centralization.swift */; };
-		813F56C4219A60FA00F797E6 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813F56C3219A60FA00F797E6 /* Utilities.swift */; };
 		8141E6622338782D001A9351 /* TransactionDetailHashTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8141E6612338782D001A9351 /* TransactionDetailHashTableViewCell.swift */; };
 		8141E6672338AE46001A9351 /* ImportObservedWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8141E6652338AE46001A9351 /* ImportObservedWalletViewController.swift */; };
 		8141E66A2338E607001A9351 /* WalletCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8141E6692338E607001A9351 /* WalletCollectionViewCell.swift */; };
@@ -406,7 +405,6 @@
 		813C340F223A03A800DE92F1 /* Wallet+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Wallet+extension.swift"; sourceTree = "<group>"; };
 		813C3411223A327300DE92F1 /* DropDownVIew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownVIew.swift; sourceTree = "<group>"; };
 		813D1FF72306A7AF00EFA397 /* AssetService+Centralization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AssetService+Centralization.swift"; sourceTree = "<group>"; };
-		813F56C3219A60FA00F797E6 /* Utilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		8141E6612338782D001A9351 /* TransactionDetailHashTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailHashTableViewCell.swift; sourceTree = "<group>"; };
 		8141E6652338AE46001A9351 /* ImportObservedWalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportObservedWalletViewController.swift; sourceTree = "<group>"; };
 		8141E6692338E607001A9351 /* WalletCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -721,7 +719,6 @@
 			children = (
 				8115BEA4218AC9A5009FFE3B /* Notifications.swift */,
 				8115BC4D2188615D009FFE3B /* PropertyReflectable.swift */,
-				813F56C3219A60FA00F797E6 /* Utilities.swift */,
 				81926A06231DFEC500CAF498 /* RemoteVersion.swift */,
 				8141E66B2338EBE3001A9351 /* NetworkManager.swift */,
 				8141E677233CA673001A9351 /* QRCodeDecoder.swift */,
@@ -2129,7 +2126,6 @@
 				9AF9AC1A2182E04000E97F07 /* PopupDialogButton.swift in Sources */,
 				811AB2C322EEE30600284F1A /* DoubtTableViewCell.swift in Sources */,
 				9A76E5232307F37A00E0B79A /* AnalysisHelper.swift in Sources */,
-				813F56C4219A60FA00F797E6 /* Utilities.swift in Sources */,
 				81D7E25E22E802200069CDED /* MyDelegatesViewController.swift in Sources */,
 				9ADB60B7222E806B0044918D /* AssetSendViewControllerV060.swift in Sources */,
 				9AF9AC162182E04000E97F07 /* UIView+Animations.swift in Sources */,

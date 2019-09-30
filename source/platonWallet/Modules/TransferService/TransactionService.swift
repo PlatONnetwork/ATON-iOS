@@ -35,6 +35,7 @@ class TransactionService : BaseService{
     
     @objc func OnPendingTxPolling(){
         EnergonTransferPooling()
+        getEthGasPrice(completion: nil)
     }
     
     func getEthGasPrice(completion: PlatonCommonCompletion?){

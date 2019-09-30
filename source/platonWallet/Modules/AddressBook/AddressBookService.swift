@@ -15,8 +15,8 @@ class AddressBookService {
         AddressInfoPersistence.add(addrInfo: addressInfo)
     }
     
-    func replaceInto(addrInfo: AddressInfo){
-        AddressInfoPersistence.replaceInto(addrInfo: addrInfo)
+    func replaceInto(addrInfo: AddressInfo, completion: (() -> Void)? = nil) {
+        AddressInfoPersistence.replaceInto(addrInfo: addrInfo, completion: completion)
     }
     
     func getAll() -> [AddressInfo]{

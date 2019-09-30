@@ -246,6 +246,7 @@ extension StakingService {
                     transaction.txReceiptStatus = -1
                     transaction.value = amount.description
                     transaction.nodeId = nodeId
+                    transaction.direction = .Sent
                     transaction.confirmTimes = Int(Date().timeIntervalSince1970 * 1000)
                     transaction.to = PlatonConfig.ContractAddress.stakingContractAddress
                     DispatchQueue.main.async {
@@ -285,6 +286,7 @@ extension StakingService {
                     transaction.value = amount.description
                     transaction.nodeId = nodeId
                     transaction.confirmTimes = Int(Date().timeIntervalSince1970 * 1000)
+                    transaction.direction = .Receive
                     transaction.to = PlatonConfig.ContractAddress.stakingContractAddress
                     DispatchQueue.main.async {
                         completion?(PlatonCommonResult.success, transaction as AnyObject)

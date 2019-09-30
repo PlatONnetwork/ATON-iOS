@@ -302,7 +302,7 @@ class AlertStylePopViewController: UIViewController,UITextFieldDelegate {
         //self.item1Des.isHidden = true
         //self.item1Content.isHidden = true
         self.textInputDes.isHidden = true
-        self.textFieldInputContainerHeight.constant = 50
+        self.textFieldInputContainerHeight.constant = 70
     }
     
     override func viewDidLayoutSubviews() {
