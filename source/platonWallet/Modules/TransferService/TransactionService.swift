@@ -92,7 +92,7 @@ class TransactionService : BaseService{
                             guard let txhash = newItem.txhash else { return }
                             let blockNumber = String(receipt.blockNumber.quantity)
                             let gasUsed = String(receipt.gasUsed.quantity)
-                            TransferPersistence.update(txhash: txhash, status: status, blockNumber: blockNumber, gasUsed: gasUsed, {
+                            TransferPersistence.update(txhash: txhash, status: status == 0 ? 1 : 0, blockNumber: blockNumber, gasUsed: gasUsed, {
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
                                     NotificationCenter.default.post(name: Notification.Name.ATON.DidUpdateTransactionByHash, object: txhash)
                                     

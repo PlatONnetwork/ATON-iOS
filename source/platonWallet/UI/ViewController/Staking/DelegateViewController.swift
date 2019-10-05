@@ -287,10 +287,40 @@ extension DelegateViewController {
         guard
             let walletObject = walletStyle,
             let balanceObject = balanceStyle,
-            let nodeId = currentNode?.nodeId else { return }
+            let nodeId = currentNode?.nodeId,
+            let gasPrice = gasPrice?.description else { return }
         let currentAddress = walletObject.currentWallet.address
 
         let typ = balanceObject.selectedIndex == 0 ? UInt16(0) : UInt16(1) // 0：自由金额 1：锁仓金额
+        
+        if walletObject.currentWallet.type == .observed {
+            
+            let funcType = FuncType.createDelegate(typ: typ, nodeId: nodeId, amount: self.currentAmount)
+            
+            
+            web3.platon.platonGetNonce(sender: walletObject.currentWallet.address) { [weak self] (result, blockNonce) in
+                guard let self = self else { return }
+                switch result {
+                case .success:
+                    guard let nonce = blockNonce else { return }
+                    let nonceString = nonce.quantity.description
+                    
+                    let transactionData = TransactionQrcode(amount: self.currentAmount.description, chainId: web3.properties.chainId, from: walletObject.currentWallet.address, to: PlatonConfig.ContractAddress.stakingContractAddress, gasLimit: funcType.gas.description, gasPrice: gasPrice, nonce: nonceString, typ: typ, nodeId: nodeId, sender: walletObject.currentWallet.address, stakingBlockNum: nil, type: funcType.typeValue)
+                    
+                    
+                    let qrcodeData = QrcodeData(qrCodeType: 0, qrCodeData: [transactionData])
+                    guard
+                        let data = try? JSONEncoder().encode(qrcodeData),
+                        let content = String(data: data, encoding: .utf8) else { return }
+                    DispatchQueue.main.async {
+                        self.showOfflineConfirmView(content: content)
+                    }
+                case .fail(let code, let message):
+                    break
+                }
+            }
+            return
+        }
 
         showPasswordInputPswAlert(for: walletObject.currentWallet) { [weak self] (privateKey, error) in
             guard let self = self else { return }
@@ -323,6 +353,123 @@ extension DelegateViewController {
                     }
                 }
             })
+        }
+    }
+    
+    func showOfflineConfirmView(content: String) {
+        let qrcodeView = OfflineSignatureQRCodeView()
+        let qrcodeImage = UIImage.geneQRCodeImageFor(content, size: 160)
+        qrcodeView.imageView.image = qrcodeImage
+        
+        let type = ConfirmViewType.qrcodeGenerate(contentView: qrcodeView)
+        let offlineConfirmView = OfflineSignatureConfirmView(confirmType: type)
+        offlineConfirmView.titleLabel.localizedText = "confirm_generate_qrcode_for_transaction"
+        offlineConfirmView.descriptionLabel.localizedText = "confirm_generate_qrcode_for_transaction_tip"
+        offlineConfirmView.submitBtn.localizedNormalTitle = "confirm_button_next"
+        
+        let controller = PopUpViewController()
+        controller.onCompletion = { [weak self] in
+            self?.showQrcodeScan()
+        }
+        controller.setUpConfirmView(view: offlineConfirmView, width: PopUpContentWidth)
+        controller.show(inViewController: self)
+    }
+    
+    func showQrcodeScan() {
+        var qrcodeData: QrcodeData<SignatureQrcode>?
+        let scanView = OfflineSignatureScanView()
+        scanView.scanCompletion = { [weak self] in
+            self?.doShowScanController(completion: { (data) in
+                guard
+                    let qrcode = data,
+                    let signedDatas = qrcode.qrCodeData?.signedData else { return }
+                DispatchQueue.main.async {
+                    scanView.textView.text = signedDatas.joined(separator: ";")
+                }
+                qrcodeData = qrcode
+            })
+        }
+        let type = ConfirmViewType.qrcodeScan(contentView: scanView)
+        let offlineConfirmView = OfflineSignatureConfirmView(confirmType: type)
+        offlineConfirmView.titleLabel.localizedText = "confirm_scan_qrcode_for_read"
+        offlineConfirmView.descriptionLabel.localizedText = "confirm_scan_qrcode_for_read_tip"
+        offlineConfirmView.submitBtn.localizedNormalTitle = "confirm_button_send"
+        
+        let controller = PopUpViewController()
+        controller.onCompletion = {
+            guard let qrcode = qrcodeData else { return }
+            self.sendSignatureTransaction(qrcode: qrcode)
+        }
+        controller.setUpConfirmView(view: offlineConfirmView, width: PopUpContentWidth)
+        controller.show(inViewController: self)
+    }
+    
+    func doShowScanController(completion: ((QrcodeData<SignatureQrcode>?) -> Void)?) {
+        let controller = QRScannerViewController()
+        controller.hidesBottomBarWhenPushed = true
+        controller.scanCompletion = { result in
+            guard let qrcodeType = QRCodeDecoder().decode(result) else { return }
+            switch qrcodeType {
+            case .signedTransaction(let data):
+                completion?(data)
+            default:
+                AssetViewControllerV060.getInstance()?.showMessage(text: Localized("QRScan_failed_tips"))
+                completion?(nil)
+            }
+            (UIApplication.shared.keyWindow?.rootViewController as? BaseNavigationController)?.popViewController(animated: true)
+        }
+        
+        (UIApplication.shared.keyWindow?.rootViewController as? BaseNavigationController)?.pushViewController(controller, animated: true)
+    }
+    
+    func sendSignatureTransaction(qrcode: QrcodeData<SignatureQrcode>) {
+        
+        guard
+            let qrCodeData = qrcode.qrCodeData,
+            let signatureArr = qrCodeData.signedData,
+            let type = qrCodeData.type,
+            let from = qrCodeData.from else { return }
+        for (index, signature) in signatureArr.enumerated() {
+            let bytes = signature.hexToBytes()
+            let rlpItem = try? RLPDecoder().decode(bytes)
+            
+            if
+                let signedTransactionRLP = rlpItem,
+                let signedTransaction = try? EthereumSignedTransaction(rlp: signedTransactionRLP) {
+                web3.platon.sendRawTransaction(transaction: signedTransaction) { (response) in
+                    switch response.status {
+                    case .success(let result):
+                        guard
+                            let to = signedTransaction.to?.rawAddress.toHexString() else { return }
+                        let gasPrice = signedTransaction.gasPrice.quantity.description
+                        let gasLimit = signedTransaction.gasLimit.quantity.description
+                        let amount = self.currentAmount.description
+                        let tx = Transaction()
+                        tx.from = from
+                        tx.to = to
+                        tx.gas = gasLimit
+                        tx.gasPrice = gasPrice
+                        tx.createTime = Int(Date().timeIntervalSince1970 * 1000)
+                        tx.txhash = result.bytes.toHexString().add0x()
+                        tx.txReceiptStatus = -1
+                        tx.value = amount
+                        tx.transactionType = Int(type)
+                        tx.toType = .contract
+                        tx.gasUsed = self.estimateUseGas?.description
+                        tx.nodeName = self.currentNode?.name
+                        tx.txType = .delegateCreate
+                        tx.direction = .Sent
+                        tx.nodeId = self.currentNode?.nodeId
+                        TransferPersistence.add(tx: tx)
+                        
+                        if index == signatureArr.count - 1 {
+                            self.doShowTransactionDetail(tx)
+                        }
+                    case .failure(let error):
+                        break
+                    }
+                }
+            }
         }
     }
     

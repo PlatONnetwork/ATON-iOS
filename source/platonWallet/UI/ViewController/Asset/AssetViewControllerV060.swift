@@ -490,26 +490,25 @@ extension AssetViewControllerV060 : UIScrollViewDelegate,ChildScrollViewDidScrol
     //MARK: - Login
     
     func handleScanResp(_ res: String) {
-        if let data = res.data(using: .utf8), let result = try? JSONDecoder().decode(QrcodeData<[TransactionQrcode]>.self, from: data) {
-            doShowConfirmViewController(qrcode: result)
-        } else if let data = res.data(using: .utf8), let result = try? JSONDecoder().decode(QrcodeData<SignatureQrcode>.self, from: data) {
-            doShowQrcodeScan(qrcode: result)
-        } else {
-            var targetVC: UIViewController?
-            if res.isValidAddress() {
-                self.sectionView.setSectionSelectedIndex(index: 1)
-                sendVC.walletAddressView.textField.text = res
-            }else if res.isValidPrivateKey() {
-                targetVC = MainImportWalletViewController(type: .privateKey, text: res)
-            }else if res.isValidKeystore() {
-                targetVC = MainImportWalletViewController(type: .keystore, text: res)
-            }else {
-                showMessage(text: Localized("QRScan_failed_tips"))
-            }
-            if targetVC != nil {
-                targetVC!.hidesBottomBarWhenPushed = true
-                navigationController?.pushViewController(targetVC!, animated: true)
-            }
+        guard let qrcodeType = QRCodeDecoder().decode(res) else { return }
+        switch qrcodeType {
+        case .transaction(let data):
+            doShowConfirmViewController(qrcode: data)
+//        case .signedTransaction(let data):
+//             doShowQrcodeScan(qrcode: data)
+        case .address(let data):
+            sectionView.setSectionSelectedIndex(index: 1)
+            sendVC.walletAddressView.textField.text = data
+        case .keystore(let data):
+            let targetVC = MainImportWalletViewController(type: .keystore, text: data)
+            targetVC.hidesBottomBarWhenPushed = true
+            navigationController?.pushViewController(targetVC, animated: true)
+        case .privatekey(let data):
+            let targetVC = MainImportWalletViewController(type: .privateKey, text: data)
+            targetVC.hidesBottomBarWhenPushed = true
+            navigationController?.pushViewController(targetVC, animated: true)
+        default:
+            showMessage(text: Localized("QRScan_failed_tips"))
         }
     }
     
@@ -590,8 +589,12 @@ extension AssetViewControllerV060{
             let from = qrCodeData.from else { return }
         for (index, signature) in signatureArr.enumerated() {
             let bytes = signature.hexToBytes()
-            if let signedTransaction = try? EthereumSignedTransaction(rlp: RLPItem(bytes: bytes)) {
-                
+            let rlpItem = try? RLPDecoder().decode(bytes)
+            
+            
+            if
+                let signedTransactionRLP = rlpItem,
+                let signedTransaction = try? EthereumSignedTransaction(rlp: signedTransactionRLP) {
                 web3.platon.sendRawTransaction(transaction: signedTransaction) { (response) in
                     switch response.status {
                     case .success(let result):
@@ -614,7 +617,9 @@ extension AssetViewControllerV060{
                         TransferPersistence.add(tx: tx)
                         
                         if index == signatureArr.count - 1 {
-                            getInstance()?.doShowTransactionDetail(tx)
+                            DispatchQueue.main.async {
+                                getInstance()?.doShowTransactionDetail(tx)
+                            }
                         }
                     case .failure(let error):
                         break
