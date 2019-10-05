@@ -33,11 +33,7 @@ class AppFramework {
     }
     
     func initBugly(){
-        let buglyConfig = BuglyConfig()
-        buglyConfig.debugMode = true
-        buglyConfig.reportLogLevel = .info
-        Bugly.start(withAppId: AppConfig.Keys.BuglyAppleID, config: buglyConfig)
-//        Bugly.start(withAppId: AppConfig.Keys.BuglyAppleID)
+        Bugly.start(withAppId: AppConfig.Keys.BuglyAppleID)
         
         JPEngine.handleException { (msg) in
             let exception = NSException(name: NSExceptionName(rawValue: "Hotfix Exception"), reason: msg, userInfo: nil)

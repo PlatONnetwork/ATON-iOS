@@ -21,15 +21,12 @@ class TransactionService : BaseService{
     var timer : Timer? = nil
     
     private var pendingTransactionPollingTimer : Timer? = nil
-
     public var ethGasPrice : BigUInt?
     
-    public override init() {
-        super.init()
-        
+    func startTimerFire() {
         if AppConfig.TimerSetting.pendingTransactionPollingTimerEnable{
             pendingTransactionPollingTimer = Timer.scheduledTimer(timeInterval: TimeInterval(AppConfig.TimerSetting.pendingTransactionPollingTimerInterval), target: self, selector: #selector(OnPendingTxPolling), userInfo: nil, repeats: true)
-            pendingTransactionPollingTimer?.fire() 
+            pendingTransactionPollingTimer?.fire()
         }
     }
     
