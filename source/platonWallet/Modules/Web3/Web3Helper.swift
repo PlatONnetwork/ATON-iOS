@@ -14,6 +14,7 @@ var web3 = Web3(rpcURL: Web3Helper.getRpcURL(), chainId: "103")
 
 struct Web3Helper {
     
+    
     static func switchRpcURL(_ url: String, completion:@escaping (_ success: Bool)->Void) {
         
         let newWeb3 = Web3(rpcURL: url, chainId: "103")

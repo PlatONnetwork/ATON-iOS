@@ -76,6 +76,7 @@ class AssetViewControllerV060: BaseViewController ,PopupMenuTableDelegate{
         super.viewDidLoad()
         
         transactionVC.parentController = self
+        TransactionService.service.startTimerFire()
         
         initData()
         initUI()
