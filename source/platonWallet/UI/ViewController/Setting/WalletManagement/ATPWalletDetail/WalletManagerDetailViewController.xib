@@ -14,7 +14,10 @@
             <connections>
                 <outlet property="address" destination="szA-Er-tQX" id="zb7-3W-Lcx"/>
                 <outlet property="deleteBtn" destination="t45-Hp-c5r" id="uci-bs-QuV"/>
+                <outlet property="exportKeyStore" destination="azg-Ua-yhT" id="LjE-Ef-eOh"/>
                 <outlet property="exportMnemonicContainer" destination="0Fp-MQ-Iyw" id="HIU-9Q-HoE"/>
+                <outlet property="exportPriContainer" destination="Kau-gz-wyk" id="ny9-A7-vkf"/>
+                <outlet property="renameContainer" destination="sbg-hK-o6n" id="XVh-hL-udE"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
                 <outlet property="walletName" destination="gDM-Be-xxa" id="Qr9-as-AMh"/>
             </connections>

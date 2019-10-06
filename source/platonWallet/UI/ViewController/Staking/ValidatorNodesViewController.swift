@@ -72,8 +72,17 @@ class ValidatorNodesViewController: ButtonBarPagerTabStripViewController, Indica
         buttonBarView.addSubview(rankButton)
         rankButton.frame = CGRect(x: buttonBarView.frame.width - 67 - 10, y: (buttonBarView.frame.height - 22)/2.0, width: 67, height: 22)
         containerView.frame = CGRect(x: containerView.frame.minX, y: buttonBarView.frame.maxY, width: containerView.frame.width, height: containerView.frame.height - UIApplication.shared.statusBarFrame.height)
+        
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        GuidanceViewMgr.sharedInstance.checkGuidance(page: .ValidatorNodesViewController, presentedVC: self)
+    }
 
     override func viewControllers(for pagerTabStripController: PagerTabStripViewController) -> [UIViewController] {
         let child_1 = ValidatorNodeListViewController(itemInfo: "staking_validator_node_all")

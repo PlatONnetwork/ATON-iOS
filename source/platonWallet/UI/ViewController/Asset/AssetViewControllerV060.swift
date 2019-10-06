@@ -83,6 +83,7 @@ class AssetViewControllerV060: BaseViewController ,PopupMenuTableDelegate{
         
         scrollView.mj_header = refreshHeader
         refreshHeader.beginRefreshing()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -721,6 +722,7 @@ extension AssetViewControllerV060{
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        GuidanceViewMgr.sharedInstance.checkGuidance(page: GuidancePage.AssetViewControllerV060, presentedVC: self)
     }
 }
 

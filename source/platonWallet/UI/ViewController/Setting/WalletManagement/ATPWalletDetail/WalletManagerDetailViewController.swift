@@ -23,6 +23,12 @@ class WalletManagerDetailViewController: BaseViewController {
     
     @IBOutlet weak var exportMnemonicContainer: UIView!
     
+    @IBOutlet weak var renameContainer: UIView!
+    
+    @IBOutlet weak var exportPriContainer: UIView!
+    
+    @IBOutlet weak var exportKeyStore: UIView!
+    
     var wallet: Wallet!
     
     var alertPswInput: String?
@@ -54,6 +60,14 @@ class WalletManagerDetailViewController: BaseViewController {
         walletName.text = wallet.name
         address.text = wallet.address
         self.exportMnemonicContainer.isHidden = !self.wallet.canBackupMnemonic
+        
+        if self.wallet.type == .observed{
+            self.exportMnemonicContainer.isHidden = true
+            self.renameContainer.isHidden = true
+            self.exportPriContainer.isHidden = true
+            self.exportKeyStore.isHidden = true
+        }
+        
     }
 
     @IBAction func exportPrivateKey(_ sender: Any) {

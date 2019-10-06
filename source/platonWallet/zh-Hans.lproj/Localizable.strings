@@ -271,6 +271,10 @@
 "WalletManagerDetailVC_deleteBtn_title" = "删除钱包";
 "WalletManager_backUp" = "备份";
 
+"Offline_Walle_Tag" = "冷钱包";
+"Observed_Wallet_Tag" = "观察钱包";
+
+
 //ExportPrivateKeyVC
 "ExportPrivateKeyVC_title" = "导出私钥";
 "ExportPrivateKeyVC_note" = "注意：不要截图，请检查周围，以防他人偷看或拍摄，请妥善保管私钥，切勿存储在网盘中";
@@ -897,3 +901,4 @@
 "confirm_generate_qrcode_for_signed_tx" = "授权签名";
 "confirm_generate_qrcode_for_signed_tx_tip" = "使用对应观察钱包扫描下方二维码，完成授权";
 "confirm_button_signed_tx" = "完成";
+

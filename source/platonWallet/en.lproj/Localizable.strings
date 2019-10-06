@@ -283,7 +283,8 @@
 "WalletManagerDetailVC_Mnemonicsbackup" = "Mnemonics backup";
 "WalletManagerDetailVC_deleteBtn_title" = "Delete";
 "WalletManager_backUp" = "Backup";
-
+"Offline_Walle_Tag" = "Cold";
+"Observed_Wallet_Tag" = "Observed";
 
 //ExportPrivateKeyVC
 "ExportPrivateKeyVC_title" = "Export Private Key";

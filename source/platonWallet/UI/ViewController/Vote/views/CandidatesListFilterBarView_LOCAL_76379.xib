@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CandidatesListFilterBarView" customModule="platonWallet" customModuleProvider="target">
+            <connections>
+                <outlet property="filterButtonContainer" destination="MNu-kS-L7I" id="0Tx-G4-Oys"/>
+                <outlet property="filterContainerLeading" destination="COi-0t-eoN" id="FhY-y4-eD7"/>
+                <outlet property="filterContainerTrailing" destination="T1I-o8-5R9" id="HHb-mx-Prs"/>
+                <outlet property="searchBtn" destination="hc5-KM-QTz" id="Nzu-Yw-xgf"/>
+                <outlet property="searchBtnTrailing" destination="IEc-oc-Xo0" id="CD9-0T-LXM"/>
+                <outlet property="searchTF" destination="fCV-ej-GGQ" id="Sox-Y1-jQv"/>
+                <outlet property="searchTextFieldLeading" destination="w1q-kO-PUR" id="jU6-FW-bWx"/>
+                <outlet property="searchTextFieldTrailing" destination="W0z-yO-kEA" id="vuw-od-FUg"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="CandidatesListFilterBarView" customModule="platonWallet" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="355" height="42"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <textField hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="搜索框" placeholder="1" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="fCV-ej-GGQ" customClass="UITextFieldWithSearch" customModule="platonWallet" customModuleProvider="target">
+                    <rect key="frame" x="250" y="5" width="55" height="32"/>
+                    <color key="backgroundColor" red="1" green="0.41960784309999999" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="32" id="1ZV-bM-XwU"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <textInputTraits key="textInputTraits"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="string" keyPath="LocalizePlaceholder" value="CandidateListVC_searchTF_placeholder"/>
+                    </userDefinedRuntimeAttributes>
+                </textField>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hc5-KM-QTz">
+                    <rect key="frame" x="309" y="9" width="30" height="24"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="24" id="GI2-UJ-Oew"/>
+                        <constraint firstAttribute="width" constant="30" id="cZx-XJ-HB5"/>
+                    </constraints>
+                    <state key="normal" image="vote_search_icon_s">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <connections>
+                        <action selector="showSearchTF:" destination="-1" eventType="touchUpInside" id="ftu-Qe-Awn"/>
+                    </connections>
+                </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MNu-kS-L7I" userLabel="filterButtonContainer">
+                    <rect key="frame" x="16" y="0.0" width="201.5" height="42"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="42" id="2QM-lA-Dr4"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="MNu-kS-L7I" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="COi-0t-eoN"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="hc5-KM-QTz" secondAttribute="trailing" priority="250" constant="16" id="IEc-oc-Xo0"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="centerX" secondItem="MNu-kS-L7I" secondAttribute="trailing" constant="-40" id="T1I-o8-5R9"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="fCV-ej-GGQ" secondAttribute="trailing" constant="50" id="W0z-yO-kEA"/>
+                <constraint firstItem="MNu-kS-L7I" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="ZuZ-cO-if9"/>
+                <constraint firstItem="fCV-ej-GGQ" firstAttribute="centerY" secondItem="hc5-KM-QTz" secondAttribute="centerY" id="aFP-kp-YZV"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="hc5-KM-QTz" secondAttribute="bottom" constant="9" id="dbk-rb-XyF"/>
+                <constraint firstItem="fCV-ej-GGQ" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="250" id="w1q-kO-PUR"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <point key="canvasLocation" x="221.59999999999999" y="470.46476761619192"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="vote_search_icon_s" width="14" height="14"/>
+    </resources>
+</document>
