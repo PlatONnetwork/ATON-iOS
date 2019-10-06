@@ -513,34 +513,45 @@ extension AssetViewControllerV060 : UIScrollViewDelegate,ChildScrollViewDidScrol
     }
     
     func doShowConfirmViewController(qrcode: QrcodeData<[TransactionQrcode]>) {
+        guard let codes = qrcode.qrCodeData, codes.count > 0 else {
+            showErrorMessage(text: Localized("offline_signature_invalid"), delay: 2.0)
+            return
+        }
+        
+        let wallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).first(where: { $0.address.lowercased() == codes.first?.from?.lowercased() })
+        guard wallet != nil else {
+            showErrorMessage(text: Localized("offline_signature_notmatch_wallet"), delay: 2.0)
+            return
+        }
+        
         let controller = OfflineSignatureTransactionViewController()
         controller.qrcode = qrcode
         controller.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(controller, animated: true)
     }
     
-    func doShowQrcodeScan(qrcode: QrcodeData<SignatureQrcode>) {
-        guard
-            let signedDatas = qrcode.qrCodeData?.signedData, signedDatas.count > 0
-            else { return }
-        
-        let signatureView = OfflineSignatureScanView()
-        let contentString = signedDatas.joined(separator: ";")
-        signatureView.textView.text = contentString
-        
-        let type = ConfirmViewType.qrcodeScan(contentView: signatureView)
-        let offlineConfirmView = OfflineSignatureConfirmView(confirmType: type)
-        offlineConfirmView.titleLabel.localizedText = "confirm_scan_qrcode_for_read"
-        offlineConfirmView.descriptionLabel.localizedText = "confirm_scan_qrcode_for_read_tip"
-        offlineConfirmView.submitBtn.localizedNormalTitle = "confirm_button_send"
-        
-        let controller = PopUpViewController()
-        controller.setUpConfirmView(view: offlineConfirmView, width: PopUpContentWidth)
-        controller.show(inViewController: self)
-        controller.onCompletion = { [weak self] in
-            AssetViewControllerV060.sendSignatureTransaction(qrcode: qrcode)
-        }
-    }
+//    func doShowQrcodeScan(qrcode: QrcodeData<SignatureQrcode>) {
+//        guard
+//            let signedDatas = qrcode.qrCodeData?.signedData, signedDatas.count > 0
+//            else { return }
+//
+//        let signatureView = OfflineSignatureScanView()
+//        let contentString = signedDatas.joined(separator: ";")
+//        signatureView.textView.text = contentString
+//
+//        let type = ConfirmViewType.qrcodeScan(contentView: signatureView)
+//        let offlineConfirmView = OfflineSignatureConfirmView(confirmType: type)
+//        offlineConfirmView.titleLabel.localizedText = "confirm_scan_qrcode_for_read"
+//        offlineConfirmView.descriptionLabel.localizedText = "confirm_scan_qrcode_for_read_tip"
+//        offlineConfirmView.submitBtn.localizedNormalTitle = "confirm_button_send"
+//
+//        let controller = PopUpViewController()
+//        controller.setUpConfirmView(view: offlineConfirmView, width: PopUpContentWidth)
+//        controller.show(inViewController: self)
+//        controller.onCompletion = { [weak self] in
+//            AssetViewControllerV060.sendSignatureTransaction(qrcode: qrcode)
+//        }
+//    }
     
     func doShowTransactionDetail(_ transaction: Transaction) {
         DispatchQueue.main.async { [weak self] in

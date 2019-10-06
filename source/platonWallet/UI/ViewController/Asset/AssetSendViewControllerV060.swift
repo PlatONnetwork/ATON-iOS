@@ -33,6 +33,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
     //Joint wallet property
     var submitGas : BigUInt?
     var confirmGas : BigUInt?
+    var generateQrCode: QrcodeData<[TransactionQrcode]>?
     
     lazy var amountView = { () -> ATextFieldView in
         let amountView = ATextFieldView.create(title: "send_amout_colon")
@@ -403,7 +404,6 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
     }
     
     func showOfflineConfirmView(content: String) {
-        print(content)
         let qrcodeView = OfflineSignatureQRCodeView()
         let qrcodeImage = UIImage.geneQRCodeImageFor(content, size: 160)
         qrcodeView.imageView.image = qrcodeImage
@@ -430,6 +430,10 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
                 guard
                     let qrcode = data,
                     let signedDatas = qrcode.qrCodeData?.signedData else { return }
+                if qrcode.timestamp != self?.generateQrCode?.timestamp {
+                    self?.showErrorMessage(text: Localized("offline_signature_invalid"), delay: 2.0)
+                    return
+                }
                 DispatchQueue.main.async {
                     scanView.textView.text = signedDatas.joined(separator: ";")
                 }
@@ -472,11 +476,12 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
                     guard let nonce = blockNonce else { return }
                     let nonceString = nonce.quantity.description
                     
-                    let transactionData = TransactionQrcode(amount: amount, chainId: web3.properties.chainId, from: wallet.address, to: to, gasLimit: gasLimit, gasPrice: gasPrice, nonce: nonceString, typ: nil, nodeId: nil, sender: wallet.address, stakingBlockNum: nil, type: 0)
-                    let qrcodeData = QrcodeData(qrCodeType: 0, qrCodeData: [transactionData])
+                    let transactionData = TransactionQrcode(amount: amount, chainId: web3.properties.chainId, from: wallet.address, to: to, gasLimit: gasLimit, gasPrice: gasPrice, nonce: nonceString, typ: nil, nodeId: nil, nodeName: nil, sender: wallet.address, stakingBlockNum: nil, type: 0)
+                    let qrcodeData = QrcodeData(qrCodeType: 0, qrCodeData: [transactionData], timestamp: Int(Date().timeIntervalSince1970 * 1000))
                     guard
                         let data = try? JSONEncoder().encode(qrcodeData),
                         let content = String(data: data, encoding: .utf8) else { return }
+                    self.generateQrCode = qrcodeData
                     DispatchQueue.main.async {
                         self.showOfflineConfirmView(content: content)
                     }

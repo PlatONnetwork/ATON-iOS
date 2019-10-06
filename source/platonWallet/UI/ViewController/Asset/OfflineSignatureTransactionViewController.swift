@@ -95,9 +95,8 @@ class OfflineSignatureTransactionViewController: BaseViewController {
         
         
         listData.append((title: Localized("confirm_authorize_function_type"), value: codes.first?.typeString ?? "--"))
-        
-        listData.append((title: Localized("confirm_authorize_from"), value: codes.first?.from ?? "--"))
-        listData.append((title: Localized("confirm_authorize_to"), value: codes.first?.to ?? "--"))
+        listData.append((title: Localized("confirm_authorize_from"), value:  codes.first?.fromName ?? "--"))
+        listData.append((title: Localized("confirm_authorize_to"), value: codes.first?.toName ?? "--"))
         
         let totalGas = codes.reduce(BigUInt.zero) { (result, txCode) -> BigUInt in
             let gasPrice = BigUInt(txCode.gasPrice ?? "0") ?? BigUInt.zero
@@ -134,7 +133,10 @@ class OfflineSignatureTransactionViewController: BaseViewController {
             return
         }
         
-        guard let wallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).first(where: { $0.address.lowercased() == codes.first?.from?.lowercased() }) else { return }
+        guard let wallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).first(where: { $0.address.lowercased() == codes.first?.from?.lowercased() }) else {
+            showErrorMessage(text: Localized("offline_signature_notmatch_wallet"), delay: 2.0)
+            return
+        }
         
         showPasswordInputPswAlert(for: wallet) { [weak self] (privateKey, error) in
             guard let self = self else { return }
@@ -164,7 +166,7 @@ class OfflineSignatureTransactionViewController: BaseViewController {
                 let sender = code.sender,
                 let type = code.type else { return }
             let signedData = SignatureQrcode(signedData: signedStrings, from: sender, type: type)
-            let qrcodeData = QrcodeData(qrCodeType: 1, qrCodeData: signedData)
+            let qrcodeData = QrcodeData(qrCodeType: 1, qrCodeData: signedData, timestamp: self.qrcode?.timestamp)
             guard
                 let jsonData = try? JSONEncoder().encode(qrcodeData),
                 let jsonString = String(data: jsonData, encoding: .utf8) else { return }

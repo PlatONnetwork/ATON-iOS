@@ -23,6 +23,7 @@ class DelegateViewController: BaseViewController {
     var gasPrice: BigUInt?
     var estimateUseGas: BigUInt?
     var isDelegateAll: Bool = false
+    var generateQrCode: QrcodeData<[TransactionQrcode]>?
     
     var canUseWallets: [Wallet] {
         get {
@@ -305,13 +306,14 @@ extension DelegateViewController {
                     guard let nonce = blockNonce else { return }
                     let nonceString = nonce.quantity.description
                     
-                    let transactionData = TransactionQrcode(amount: self.currentAmount.description, chainId: web3.properties.chainId, from: walletObject.currentWallet.address, to: PlatonConfig.ContractAddress.stakingContractAddress, gasLimit: funcType.gas.description, gasPrice: gasPrice, nonce: nonceString, typ: typ, nodeId: nodeId, sender: walletObject.currentWallet.address, stakingBlockNum: nil, type: funcType.typeValue)
+                    let transactionData = TransactionQrcode(amount: self.currentAmount.description, chainId: web3.properties.chainId, from: walletObject.currentWallet.address, to: PlatonConfig.ContractAddress.stakingContractAddress, gasLimit: funcType.gas.description, gasPrice: gasPrice, nonce: nonceString, typ: typ, nodeId: nodeId, nodeName: self.currentNode?.name, sender: walletObject.currentWallet.address, stakingBlockNum: nil, type: funcType.typeValue)
                     
                     
-                    let qrcodeData = QrcodeData(qrCodeType: 0, qrCodeData: [transactionData])
+                    let qrcodeData = QrcodeData(qrCodeType: 0, qrCodeData: [transactionData], timestamp: Int(Date().timeIntervalSince1970 * 1000))
                     guard
                         let data = try? JSONEncoder().encode(qrcodeData),
                         let content = String(data: data, encoding: .utf8) else { return }
+                    self.generateQrCode = qrcodeData
                     DispatchQueue.main.async {
                         self.showOfflineConfirmView(content: content)
                     }
@@ -383,6 +385,10 @@ extension DelegateViewController {
                 guard
                     let qrcode = data,
                     let signedDatas = qrcode.qrCodeData?.signedData else { return }
+                if qrcode.timestamp != self?.generateQrCode?.timestamp {
+                    self?.showErrorMessage(text: Localized("offline_signature_invalid"), delay: 2.0)
+                    return
+                }
                 DispatchQueue.main.async {
                     scanView.textView.text = signedDatas.joined(separator: ";")
                 }
