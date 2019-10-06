@@ -105,6 +105,7 @@ class OfflineSignatureTransactionViewController: BaseViewController {
             return result + gas
         }
         
+        
         listData.append((title: Localized("confirm_authorize_fee"), value: (totalGas.description.vonToLATString ?? "0.00").ATPSuffix()))
     }
     
