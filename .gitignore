@@ -83,17 +83,3 @@ source/.DS_Store
 source/platonWallet.xcodeproj/xcuserdata/
 source/platonWallet.xcworkspace/xcuserdata/
 source/Pods/Pods.xcodeproj/xcuserdata
-
-source/.scannerwork/.sonar_lock
-source/Gemfile
-source/compile_commands.json
-source/fastlane/Appfile
-source/fastlane/Fastfile
-source/fastlane/README.md
-source/fastlane/report.xml
-source/fastlane/test_output/report.html
-source/fastlane/test_output/report.junit
-source/platonWallet/Config/CommonConfig.swift
-source/run-sonar-swift.sh
-source/sonar-project.properties
-source/xcodebuild.log
