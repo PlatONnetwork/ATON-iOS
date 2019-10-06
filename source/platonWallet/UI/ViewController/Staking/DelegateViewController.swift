@@ -76,6 +76,11 @@ class DelegateViewController: BaseViewController {
         tableView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(cancelFirstResponser)))
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        GuidanceViewMgr.sharedInstance.checkGuidance(page: GuidancePage.DelegateAction, presentedVC: self)
+    }
+    
     @objc private func cancelFirstResponser() {
         view.endEditing(true)
     }

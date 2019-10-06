@@ -92,6 +92,11 @@ class DelegateDetailViewController: BaseViewController {
             tableView.mj_header.beginRefreshing()
         }
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        GuidanceViewMgr.sharedInstance.checkGuidance(page: GuidancePage.DelegateDetailViewController, presentedVC: self)
+    }
 }
 
 extension DelegateDetailViewController {

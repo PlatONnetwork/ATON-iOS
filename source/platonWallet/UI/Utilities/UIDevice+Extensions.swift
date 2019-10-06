@@ -33,6 +33,18 @@ extension UIDevice {
         return 0.0
     }
     
+    // status bar height
+    class var notchoffset: CGFloat{
+        if #available(iOS 11.0, tvOS 11.0, *) {
+            // with home indicator: 34.0 on iPhone X, XS, XS Max, XR.
+            // with home indicator: 20.0 on iPad Pro 12.9" 3rd generation.
+            if UIApplication.shared.delegate?.window??.safeAreaInsets.bottom ?? 0 > 0{
+                return 34.0
+            }
+        }
+        return 10.0
+    }
+    
     var iPhoneX: Bool {
         return UIScreen.main.nativeBounds.height == 2436
     }

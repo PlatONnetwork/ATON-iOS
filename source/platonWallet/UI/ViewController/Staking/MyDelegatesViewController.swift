@@ -88,11 +88,13 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
         tableView.mj_header = refreshHeader
         
         NotificationCenter.default.addObserver(self, selector: #selector(shouldUpdateDelegateData), name: Notification.Name.ATON.updateWalletList, object: nil)
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         shouldUpdateDelegateData()
+        GuidanceViewMgr.sharedInstance.checkGuidance(page: GuidancePage.MyDelegatesViewController, presentedVC: self)
     }
     
     @objc func shouldUpdateDelegateData() {

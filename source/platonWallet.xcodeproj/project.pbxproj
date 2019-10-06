@@ -241,6 +241,7 @@
 		9A56557B217578EA002A1F6C /* Keystore.Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A56557A217578EA002A1F6C /* Keystore.Crypto.swift */; };
 		9A56557D2176CB05002A1F6C /* HDPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A56557C2176CB05002A1F6C /* HDPath.swift */; };
 		9A56557F21772DE3002A1F6C /* WalletUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A56557E21772DE2002A1F6C /* WalletUtil.swift */; };
+		9A6A7C05233F5A9F003DBEF1 /* GuidanceViewMgr.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6A7C04233F5A9F003DBEF1 /* GuidanceViewMgr.swift */; };
 		9A76E5232307F37A00E0B79A /* AnalysisHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A76E5222307F37A00E0B79A /* AnalysisHelper.swift */; };
 		9A79A07521956493000EB4C5 /* BaseImportWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A79A07421956493000EB4C5 /* BaseImportWalletViewController.swift */; };
 		9A79A08C219BCA74000EB4C5 /* CustomPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A79A08B219BCA74000EB4C5 /* CustomPickerView.swift */; };
@@ -596,6 +597,7 @@
 		9A56557A217578EA002A1F6C /* Keystore.Crypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Keystore.Crypto.swift; sourceTree = "<group>"; };
 		9A56557C2176CB05002A1F6C /* HDPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HDPath.swift; sourceTree = "<group>"; };
 		9A56557E21772DE2002A1F6C /* WalletUtil.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletUtil.swift; sourceTree = "<group>"; };
+		9A6A7C04233F5A9F003DBEF1 /* GuidanceViewMgr.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GuidanceViewMgr.swift; sourceTree = "<group>"; };
 		9A76E5222307F37A00E0B79A /* AnalysisHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalysisHelper.swift; sourceTree = "<group>"; };
 		9A79A07421956493000EB4C5 /* BaseImportWalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseImportWalletViewController.swift; sourceTree = "<group>"; };
 		9A79A08B219BCA74000EB4C5 /* CustomPickerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomPickerView.swift; sourceTree = "<group>"; };
@@ -1297,6 +1299,7 @@
 		81FCCCDC2179B6710052FC29 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				9A6A7C03233F4A44003DBEF1 /* Guidance */,
 				81F1AFC422FAD9FF00A74C00 /* Web */,
 				815968F922E6F51B0085195C /* Staking */,
 				8120028921A3EB390050E1B0 /* Transfer */,
@@ -1460,6 +1463,14 @@
 				9A25B9BB2189B0A200B9433A /* WalletEmptyView.xib */,
 			);
 			path = EmptyView;
+			sourceTree = "<group>";
+		};
+		9A6A7C03233F4A44003DBEF1 /* Guidance */ = {
+			isa = PBXGroup;
+			children = (
+				9A6A7C04233F5A9F003DBEF1 /* GuidanceViewMgr.swift */,
+			);
+			path = Guidance;
 			sourceTree = "<group>";
 		};
 		9A76E5212307F36D00E0B79A /* Analysis */ = {
@@ -2063,6 +2074,7 @@
 				817F88E72174724E0041B6A5 /* CreateIndividualWalletViewController.swift in Sources */,
 				9A9472F9221EB45300F8FEB9 /* NodeStoreService.swift in Sources */,
 				9AF9AC212182E04000E97F07 /* PresentationManager.swift in Sources */,
+				9A6A7C05233F5A9F003DBEF1 /* GuidanceViewMgr.swift in Sources */,
 				811AB2D722F1894B00284F1A /* CommunityContentTableViewCell.swift in Sources */,
 				8101BDAF22ED6104004A009E /* ValidatorNodeListViewController.swift in Sources */,
 				81FCCD162179EA0F0052FC29 /* RealmHelper.swift in Sources */,

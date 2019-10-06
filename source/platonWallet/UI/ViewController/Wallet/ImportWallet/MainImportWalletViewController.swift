@@ -25,6 +25,11 @@ class MainImportWalletViewController: BaseViewController,UIScrollViewDelegate,Im
         
     }()
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        GuidanceViewMgr.sharedInstance.checkGuidance(page: .MainImportWalletViewController, presentedVC: self)
+    }
+    
     lazy var headerView: ImportWalletHeaderView = {
 
         let view = ImportWalletHeaderView(tabLists: [Localized("importWalletVC_tab_keystore"),

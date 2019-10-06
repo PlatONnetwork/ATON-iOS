@@ -35,6 +35,8 @@ class WalletListViewController: BaseViewController,TableViewReorderDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        NotificationCenter.default.addObserver(self, selector: #selector(shouldUpdateWalletStatus), name: Notification.Name.ATON.DidNetworkStatusChange, object: nil)
+        
         initSubView()
     }
     
@@ -93,6 +95,12 @@ class WalletListViewController: BaseViewController,TableViewReorderDelegate {
         let importWallet = MainImportWalletViewController()
         
         navigationController?.pushViewController(importWallet, animated: true)
+    }
+    
+    @objc func shouldUpdateWalletStatus(){
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
     }
 }
 
@@ -164,4 +172,6 @@ extension WalletListViewController: UITableViewDelegate, UITableViewDataSource {
             self.tableView.reloadData()
         }
     }
+    
+    
 }
