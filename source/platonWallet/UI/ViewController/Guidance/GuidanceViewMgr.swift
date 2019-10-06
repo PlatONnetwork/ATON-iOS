@@ -201,6 +201,7 @@ public class GuidanceViewMgr: NSObject {
         vc.definesPresentationContext = true
         vc.modalPresentationStyle = .overCurrentContext
         presentedVC.present(vc, animated: false, completion: nil)
+        UserDefaults.standard.set(true, forKey: skey)
     }
     
 }
