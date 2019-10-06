@@ -154,6 +154,12 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
         self.feeView.levelView.backgroundColor = commonbgcolor
         
         AnalysisHelper.handleEvent(id: event_send, operation: .begin)
+        TransactionService.service.startGasTimer()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        TransactionService.service.stopGasTimer()
     }
     
     override func viewDidDisappear(_ animated: Bool) {

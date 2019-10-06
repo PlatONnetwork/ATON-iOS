@@ -18,8 +18,7 @@ class TransactionService : BaseService{
 
     static let service = TransactionService() 
     
-    var timer : Timer? = nil
-    
+    private var gasPriceTimer : Timer? = nil
     private var pendingTransactionPollingTimer : Timer? = nil
     public var ethGasPrice : BigUInt?
     
@@ -30,9 +29,22 @@ class TransactionService : BaseService{
         }
     }
     
+    func startGasTimer() {
+        gasPriceTimer = Timer.scheduledTimer(timeInterval: TimeInterval(AppConfig.TimerSetting.balancePollingTimerInterval), target: self, selector: #selector(onPendingTxGasPrice), userInfo: nil, repeats: true)
+        gasPriceTimer?.fire()
+    }
+    
+    func stopGasTimer() {
+        gasPriceTimer?.invalidate()
+        gasPriceTimer = nil
+    }
+    
+    @objc func onPendingTxGasPrice() {
+        getEthGasPrice(completion: nil)
+    }
+    
     @objc func OnPendingTxPolling(){
         EnergonTransferPooling()
-        getEthGasPrice(completion: nil)
     }
     
     func getEthGasPrice(completion: PlatonCommonCompletion?){
