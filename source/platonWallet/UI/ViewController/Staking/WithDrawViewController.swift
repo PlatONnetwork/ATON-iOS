@@ -61,6 +61,11 @@ class WithDrawViewController: BaseViewController {
         getGasPrice()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        GuidanceViewMgr.sharedInstance.checkGuidance(page: GuidancePage.RedeemAction, presentedVC: self)
+    }
+    
     @objc private func cancelFirstResponser() {
         view.endEditing(true)
     }
