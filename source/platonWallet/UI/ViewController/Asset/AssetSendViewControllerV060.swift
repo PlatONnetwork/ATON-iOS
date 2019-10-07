@@ -462,7 +462,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
         
         guard
             let amount = self.amountView.textField.text,
-            let amountBigInt = BigUInt(amount), amountBigInt > BigUInt.zero else {
+            let amountVON = BigUInt.mutiply(a: amount, by: ETHToWeiMultiplier), amountVON > BigUInt.zero else {
                 AssetViewControllerV060.getInstance()?.showMessage(text: "amount must be > 0", delay: 2.0)
                 return
         }
