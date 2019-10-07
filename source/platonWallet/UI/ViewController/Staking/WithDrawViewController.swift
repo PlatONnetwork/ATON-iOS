@@ -417,7 +417,8 @@ extension WithDrawViewController {
     
     func showOfflineConfirmView(content: String) {
         let qrcodeView = OfflineSignatureQRCodeView()
-        let qrcodeImage = UIImage.geneQRCodeImageFor(content, size: 160)
+        let qrcodeWidth = PopUpContentWidth - 32
+        let qrcodeImage = UIImage.geneQRCodeImageFor(content, size: qrcodeWidth)
         qrcodeView.imageView.image = qrcodeImage
         
         let type = ConfirmViewType.qrcodeGenerate(contentView: qrcodeView)
