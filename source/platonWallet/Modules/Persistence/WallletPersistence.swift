@@ -108,11 +108,18 @@ class WallletPersistence {
         }
     }
         
-    func getAll() -> [Wallet] {
+    func getAll(detached: Bool = false) -> [Wallet] {
         let realm = try! Realm(configuration: RealmHelper.getConfig())
         
         let res = realm.objects(Wallet.self).sorted(byKeyPath: "createTime")
-        var wallets = Array(res)
+        var wallets : [Wallet] = []
+        if detached{
+            for item in Array(res){
+                wallets.append(item.detached())
+            }
+        }else{
+            wallets = Array(res)
+        }
         wallets = wallets.filterArrayByCurrentNodeUrlString()
         
         for item in wallets {

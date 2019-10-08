@@ -154,7 +154,8 @@ class WalletUtil {
     
     
     static func generateNewObservedWalletName() -> String {
-        let observeredWallets = WalletService.sharedInstance.wallets.filter { $0.type == .observed }
+        let wallets = WallletPersistence.sharedInstance.getAll(detached: true)
+        let observeredWallets = wallets.filter { $0.type == .observed }
         guard let lastObWallet = observeredWallets.last else {
             return "LAT-Wallet-1"
         }
