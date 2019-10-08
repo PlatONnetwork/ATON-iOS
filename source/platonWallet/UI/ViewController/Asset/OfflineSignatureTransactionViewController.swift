@@ -110,7 +110,8 @@ class OfflineSignatureTransactionViewController: BaseViewController {
     }
     
     func generateQrcodeForSignedTx(content: String) {
-        let qrcodeImage = UIImage.geneQRCodeImageFor(content, size: 160)
+        let qrcodeWidth = PopUpContentWidth - 32
+        let qrcodeImage = UIImage.geneQRCodeImageFor(content, size: qrcodeWidth)
         
         let qrcodeView = OfflineSignatureQRCodeView()
         qrcodeView.imageView.image = qrcodeImage

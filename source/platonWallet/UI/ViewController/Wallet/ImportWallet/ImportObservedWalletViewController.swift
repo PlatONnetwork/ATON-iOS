@@ -192,32 +192,31 @@ class ImportObservedWalletViewController: BaseImportWalletViewController {
     }
     
     func checkObservedWalletTV(showError: Bool = true) -> Bool {
-        if showError {
-            if addresstextView.text!.isEmpty {
-                textViewTipLabel.text = Localized("importKeystoreVC_observed_empty_tips")
-                submitButtonTopConstaint?.activate()
-                textViewTipLabel.isHidden = false
-                self.view.layoutIfNeeded()
-                return false
-            }
-            
-            if !addresstextView.text!.is40ByteAddress() {
-                textViewTipLabel.text = Localized("importKeystoreVC_observed_invalid_tips")
-                submitButtonTopConstaint?.activate()
-                textViewTipLabel.isHidden = false
-                self.view.layoutIfNeeded()
-                return false
-            }
-            
-            let addresses = (AssetVCSharedData.sharedData.walletList as! [Wallet]).map { $0.address.add0x().lowercased() }
-            if addresses.contains(addresstextView.text!.add0x().lowercased()) {
-                textViewTipLabel.text = Localized("importKeystoreVC_observed_existed_tips")
-                submitButtonTopConstaint?.activate()
-                textViewTipLabel.isHidden = false
-                self.view.layoutIfNeeded()
-                return false
-            }
+        if addresstextView.text!.isEmpty {
+            textViewTipLabel.text = Localized("importKeystoreVC_observed_empty_tips")
+            submitButtonTopConstaint?.activate()
+            textViewTipLabel.isHidden = false
+            self.view.layoutIfNeeded()
+            return false
         }
+        
+        if !addresstextView.text!.is40ByteAddress() {
+            textViewTipLabel.text = Localized("importKeystoreVC_observed_invalid_tips")
+            submitButtonTopConstaint?.activate()
+            textViewTipLabel.isHidden = false
+            self.view.layoutIfNeeded()
+            return false
+        }
+        
+        let addresses = (AssetVCSharedData.sharedData.walletList as! [Wallet]).map { $0.address.add0x().lowercased() }
+        if addresses.contains(addresstextView.text!.add0x().lowercased()) {
+            textViewTipLabel.text = Localized("importKeystoreVC_observed_existed_tips")
+            submitButtonTopConstaint?.activate()
+            textViewTipLabel.isHidden = false
+            self.view.layoutIfNeeded()
+            return false
+        }
+        
         submitButtonTopConstaint?.deactivate()
         textViewTipLabel.isHidden = true
         self.view.layoutIfNeeded()
@@ -239,7 +238,7 @@ class ImportObservedWalletViewController: BaseImportWalletViewController {
         
         view.endEditing(true)
         
-        guard checkInputValueIsValid() else { return }
+        guard checkInputValueIsValid(), submitButton.style == .blue else { return }
         
         showLoadingHUD()
         
@@ -285,6 +284,10 @@ extension ImportObservedWalletViewController: UITextFieldDelegate, UITextViewDel
             self.checkCanEableButton()
         }
         return true
+    }
+    
+    func textViewDidChangeSelection(_ textView: UITextView) {
+        checkCanEableButton()
     }
     
 }

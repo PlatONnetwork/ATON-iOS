@@ -27,9 +27,9 @@ class OfflineSignatureQRCodeView: UIView {
     func setupUI() {
         addSubview(imageView)
         imageView.snp.makeConstraints { make in
-            make.height.width.equalTo(160)
-            make.centerX.equalToSuperview()
-            make.top.bottom.equalToSuperview()
+            make.edges.equalToSuperview()
+//            make.centerX.equalToSuperview()
+//            make.top.bottom.equalToSuperview()
         }
     }
 }
@@ -160,6 +160,7 @@ class OfflineSignatureConfirmView: UIView {
         }
         
         let contentView = type.contentView
+        contentView.backgroundColor = .red
         addSubview(contentView)
         contentView.snp.makeConstraints { make in
             make.top.equalTo(descriptionLabel.snp.bottom).offset(16)

@@ -209,10 +209,6 @@ extension AssetTransactionViewControllerV060{
                         return tx
                     }
                 })
-
-                guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else {
-                    return
-                }
                 
                 var pendingTransaction = self.getPendingTransation()
                 let txHashes = transactions.map { $0.txhash!.add0x() }
