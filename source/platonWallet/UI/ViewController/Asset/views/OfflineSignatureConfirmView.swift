@@ -160,7 +160,6 @@ class OfflineSignatureConfirmView: UIView {
         }
         
         let contentView = type.contentView
-        contentView.backgroundColor = .red
         addSubview(contentView)
         contentView.snp.makeConstraints { make in
             make.top.equalTo(descriptionLabel.snp.bottom).offset(16)
