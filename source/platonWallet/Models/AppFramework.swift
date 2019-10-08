@@ -20,7 +20,7 @@ class AppFramework {
     func initialize() -> Bool {
         initBugly()
         initNetworkObserver()
-        languageSetting()
+
         initUMeng()
         doSwizzle()
         if !RealmConfiguration(){
@@ -39,11 +39,7 @@ class AppFramework {
     }
     
     func initBugly(){
-        let buglyConfig = BuglyConfig()
-        buglyConfig.debugMode = true
-        buglyConfig.reportLogLevel = .info
-        Bugly.start(withAppId: AppConfig.Keys.BuglyAppleID, config: buglyConfig)
-//        Bugly.start(withAppId: AppConfig.Keys.BuglyAppleID)
+        Bugly.start(withAppId: AppConfig.Keys.BuglyAppleID)
         
         JPEngine.handleException { (msg) in
             let exception = NSException(name: NSExceptionName(rawValue: "Hotfix Exception"), reason: msg, userInfo: nil)
@@ -75,18 +71,6 @@ class AppFramework {
     func modulesConfigure(){
         let _ = AssetService.sharedInstace
         let _ = TransactionService.service
-    }
-     
-    func languageSetting() {
-        let defaullt = UserDefaults.standard.object(forKey: "LCLCurrentLanguageKey")
-        if  defaullt == nil {
-            let curlan = GetCurrentSystemSettingLanguage()
-            if curlan == "cn"{
-                Localize.setCurrentLanguage("zh-Hans")
-            }else{
-                Localize.setCurrentLanguage("en")
-            }
-        }
     }
 
     func RealmConfiguration() -> Bool {

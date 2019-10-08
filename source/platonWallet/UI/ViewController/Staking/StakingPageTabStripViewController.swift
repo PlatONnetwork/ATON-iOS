@@ -96,5 +96,4 @@ class StakingPageTabStripViewController: BaseButtonBarPagerTabStripViewControlle
     @IBAction func closeAction(_ sender: UIButton) {
         dismiss(animated: true, completion: nil)
     }
-    
 }

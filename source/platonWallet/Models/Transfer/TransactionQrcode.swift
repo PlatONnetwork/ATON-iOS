@@ -11,13 +11,14 @@ import Localize_Swift
 
 struct QrcodeData<QRData: Codable>: Codable {
     var qrCodeType: Int?
-    var qrCodeData: [QRData]?
+    var qrCodeData: QRData?
+    var timestamp: Int?
 }
 
 struct SignatureQrcode: Codable {
-    var signedData: String?
+    var signedData: [String]?
     var from: String?
-    var type: Int?
+    var type: UInt16?
 }
 
 struct TransactionQrcode: Codable {
@@ -30,6 +31,7 @@ struct TransactionQrcode: Codable {
     var nonce: String?
     var typ: UInt16?
     var nodeId: String?
+    var nodeName: String?
     var sender: String?
     var stakingBlockNum: String?
     var type: UInt16?
@@ -49,4 +51,26 @@ extension TransactionQrcode {
             return Localized("TransactionStatus_sending_title")
         }
     }
+    
+    var fromName: String {
+        guard let wallet = (AssetVCSharedData.sharedData.walletList as? [Wallet])?.first(where: { $0.address.lowercased() == from?.lowercased() }) else {
+            return from ?? "--"
+        }
+        return wallet.name + "（\(wallet.address.addressForDisplayShort())）"
+    }
+    
+    var toName: String {
+        switch type! {
+        case 0:
+            guard let wallet = (AssetVCSharedData.sharedData.walletList as? [Wallet])?.first(where: { $0.address.lowercased() == to?.lowercased() }) else {
+                return to ?? "--"
+            }
+            return wallet.name + "（\(wallet.address)）"
+        default:
+            guard let nid = nodeId else { return "--" }
+            guard let nName = nodeName else { return nid }
+            return nName + "\n（\(nid)）"
+        }
+    }
+    
 }

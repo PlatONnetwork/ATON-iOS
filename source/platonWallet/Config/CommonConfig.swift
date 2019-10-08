@@ -7,13 +7,14 @@
 //
 
 import Foundation
+import Localize_Swift
 
 struct AppConfig {
     struct Keys {
-        //        static let BuglyAppleID = ""
-        static let BuglyAppleID = ""
-        static let Production_Umeng_key = ""
-        static let Test_Umeng_key = ""
+        //        static let BuglyAppleID = "e8f57be7d2"
+        static let BuglyAppleID = "beeb997bda"
+        static let Production_Umeng_key = "5d551ffd3fc1959f6b000113"
+        static let Test_Umeng_key = "5d57a9ba570df380e2000b23"
     }
     
     struct NodeURL {
@@ -23,8 +24,8 @@ struct AppConfig {
         
         static let defaultNodesURL = [
             (nodeURL: AppConfig.NodeURL.DefaultNodeURL_Alpha_V071, desc: "SettingsVC_nodeSet_defaultTestNetwork_Amigo_des", isSelected: true)
-            ,(nodeURL: DefaultNodeURL_UAT, desc: "SettingsVC_nodeSet_defaultTestNetwork_des", isSelected: false),
-            (nodeURL: DefaultNodeURL_PRODUCT, desc: "SettingsVC_nodeSet_defaultProductNetwork_des", isSelected: false)
+//            (nodeURL: DefaultNodeURL_UAT, desc: "SettingsVC_nodeSet_defaultTestNetwork_des", isSelected: true),
+//            (nodeURL: DefaultNodeURL_PRODUCT, desc: "SettingsVC_nodeSet_defaultProductNetwork_des", isSelected: false)
         ]
     }
     
@@ -40,7 +41,7 @@ struct AppConfig {
             static let serviceurl_cn = "http://192.168.9.190:1000/aton-agreement/zh-cn/agreement.html"
             
             static var serviceurl: String {
-                return GetCurrentSystemSettingLanguage() == "cn" ? serviceurl_cn : serviceurl_en
+                return Localize.currentLanguage() == "en" ? serviceurl_en : serviceurl_cn
             }
         }
         
@@ -49,7 +50,7 @@ struct AppConfig {
             static let faq_cn = "https://platon.zendesk.com/hc/zh-cn/categories/360002174434"
             
             static var faqurl: String {
-                return GetCurrentSystemSettingLanguage() == "cn" ? faq_cn : faq_en
+                return Localize.currentLanguage() == "en" ? faq_en : faq_cn
             }
         }
         
@@ -58,7 +59,7 @@ struct AppConfig {
             static let tutorial_cn = "https://platon.zendesk.com/hc/zh-cn/categories/360002193633"
             
             static var tutorialurl: String {
-                return GetCurrentSystemSettingLanguage() == "cn" ? tutorial_cn : tutorial_en
+                return Localize.currentLanguage() == "en" ? tutorial_en : tutorial_cn
             }
         }
         
@@ -67,7 +68,7 @@ struct AppConfig {
             static let feedback_cn = "https://platon.zendesk.com/hc/zh-cn"
             
             static var feedbackurl: String {
-                return GetCurrentSystemSettingLanguage() == "cn" ? feedback_cn : feedback_en
+                return Localize.currentLanguage() == "en" ? feedback_en : feedback_cn
             }
         }
     }

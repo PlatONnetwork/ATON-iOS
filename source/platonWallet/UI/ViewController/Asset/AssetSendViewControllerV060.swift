@@ -33,6 +33,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
     //Joint wallet property
     var submitGas : BigUInt?
     var confirmGas : BigUInt?
+    var generateQrCode: QrcodeData<[TransactionQrcode]>?
     
     lazy var amountView = { () -> ATextFieldView in
         let amountView = ATextFieldView.create(title: "send_amout_colon")
@@ -42,10 +43,6 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
             self?.onSendAll()
         })
         amountView.checkInput(mode: .all, check: {[weak self] text -> (Bool, String) in
-            
-            if text.count == 0 {
-                return (false, "amount must be > 0")
-            }
             
             let inputformat = CommonService.checkTransferAmoutInput(text: text, checkBalance: false, fee: nil)
             if !inputformat.0{
@@ -157,6 +154,12 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
         self.feeView.levelView.backgroundColor = commonbgcolor
         
         AnalysisHelper.handleEvent(id: event_send, operation: .begin)
+        TransactionService.service.startGasTimer()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        TransactionService.service.stopGasTimer()
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -400,14 +403,13 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
                 AssetViewControllerV060.getInstance()?.showMessage(text: Localized("QRScan_failed_tips"))
                 completion?(nil)
             }
-            AssetViewControllerV060.popViewController()
+            (UIApplication.shared.keyWindow?.rootViewController as? BaseNavigationController)?.popViewController(animated: true)
         }
         
         (UIApplication.shared.keyWindow?.rootViewController as? BaseNavigationController)?.pushViewController(controller, animated: true)
     }
     
     func showOfflineConfirmView(content: String) {
-        print(content)
         let qrcodeView = OfflineSignatureQRCodeView()
         let qrcodeImage = UIImage.geneQRCodeImageFor(content, size: 160)
         qrcodeView.imageView.image = qrcodeImage
@@ -433,14 +435,14 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
             self?.doShowScanController(completion: { (data) in
                 guard
                     let qrcode = data,
-                    let signedDatas = qrcode.qrCodeData else { return }
-                var signedStrings: [String] = []
-                for itemData in signedDatas {
-                    guard let signedData = itemData.signedData else { continue }
-                    signedStrings.append(signedData)
+                    let signedDatas = qrcode.qrCodeData?.signedData else { return }
+                if qrcode.timestamp != self?.generateQrCode?.timestamp {
+                    self?.showErrorMessage(text: Localized("offline_signature_invalid"), delay: 2.0)
+                    return
                 }
-                
-                scanView.textView.text = signedStrings.joined(separator: ";")
+                DispatchQueue.main.async {
+                    scanView.textView.text = signedDatas.joined(separator: ";")
+                }
                 qrcodeData = qrcode
             })
         }
@@ -466,11 +468,12 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
         if wallet.type == .observed {
             guard
                 let to = walletAddressView.textField.text, to.count > 0,
-                let amount = amountView.textField.text,
+                let amountLATString = amountView.textField.text,
                 let inputGasPrice = gasPrice
                 else { return }
             let gasPrice = inputGasPrice.description
             let gasLimit = estimatedGas.description
+            let amount = amountLATString.LATToVon.description
             
             web3.platon.platonGetNonce(sender: wallet.address) { [weak self] (result, blockNonce) in
                 guard let self = self else { return }
@@ -479,11 +482,12 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
                     guard let nonce = blockNonce else { return }
                     let nonceString = nonce.quantity.description
                     
-                    let transactionData = TransactionQrcode(amount: amount, chainId: web3.properties.chainId, from: wallet.address, to: to, gasLimit: gasLimit, gasPrice: gasPrice, nonce: nonceString, typ: nil, nodeId: nil, sender: wallet.address, stakingBlockNum: nil, type: 0)
-                    let qrcodeData = QrcodeData(qrCodeType: 0, qrCodeData: [transactionData])
+                    let transactionData = TransactionQrcode(amount: amount, chainId: web3.properties.chainId, from: wallet.address, to: to, gasLimit: gasLimit, gasPrice: gasPrice, nonce: nonceString, typ: nil, nodeId: nil, nodeName: nil, sender: wallet.address, stakingBlockNum: nil, type: 0)
+                    let qrcodeData = QrcodeData(qrCodeType: 0, qrCodeData: [transactionData], timestamp: Int(Date().timeIntervalSince1970 * 1000))
                     guard
                         let data = try? JSONEncoder().encode(qrcodeData),
                         let content = String(data: data, encoding: .utf8) else { return }
+                    self.generateQrCode = qrcodeData
                     DispatchQueue.main.async {
                         self.showOfflineConfirmView(content: content)
                     }
@@ -509,6 +513,12 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
     
     func checkConfirmButtonAvailable() -> Bool{
         self.checkQuickAddAddress()
+        
+        if self.amountView.textField.text?.count == 0 {
+            self.sendBtn.style = .disable
+            return false
+        }
+        
         if self.amountView.checkInvalidNow(showErrorMsg: false)!.0 && self.walletAddressView.checkInvalidNow(showErrorMsg: false)!.0{
             self.sendBtn.style = .blue
             return true

@@ -9,7 +9,7 @@
 import Foundation
 
 enum QRCodeType {
-    case transaction(data: QrcodeData<TransactionQrcode>)
+    case transaction(data: QrcodeData<[TransactionQrcode]>)
     case signedTransaction(data: QrcodeData<SignatureQrcode>)
     case address(data: String)
     case privatekey(data: String)
@@ -20,7 +20,7 @@ open class QRCodeDecoder {
     public init() {}
     
     func decode(_ res: String) -> QRCodeType? {
-        if let data = res.data(using: .utf8), let result = try? JSONDecoder().decode(QrcodeData<TransactionQrcode>.self, from: data) {
+        if let data = res.data(using: .utf8), let result = try? JSONDecoder().decode(QrcodeData<[TransactionQrcode]>.self, from: data) {
             return QRCodeType.transaction(data: result)
         } else if let data = res.data(using: .utf8), let result = try? JSONDecoder().decode(QrcodeData<SignatureQrcode>.self, from: data) {
             return QRCodeType.signedTransaction(data: result)

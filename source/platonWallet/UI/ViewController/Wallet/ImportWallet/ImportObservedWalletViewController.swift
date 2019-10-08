@@ -143,6 +143,12 @@ class ImportObservedWalletViewController: BaseImportWalletViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.checkKeyboard()
+        
+        if checkObservedWalletTV(showError: false) {
+            submitButton.style = .blue
+        } else {
+            submitButton.style = .disable
+        }
     }
     
     @objc func onPasteboardChange(){
@@ -174,9 +180,9 @@ class ImportObservedWalletViewController: BaseImportWalletViewController {
     }
     
     func checkCanEableButton() {
-        if self.checkInputValueIsValid(){
+        if checkObservedWalletTV(showError: true) {
             submitButton.style = .blue
-        }else{
+        } else {
             submitButton.style = .disable
         }
     }
@@ -224,6 +230,7 @@ class ImportObservedWalletViewController: BaseImportWalletViewController {
         if let pasteBoardString = UIPasteboard.general.string{
             if pasteBoardString.is40ByteAddress() {
                 self.addresstextView.text = pasteBoardString
+                self.checkCanEableButton()
             }
         }
     }
@@ -250,7 +257,6 @@ class ImportObservedWalletViewController: BaseImportWalletViewController {
             })
         }
     }
-
 }
 
 extension ImportObservedWalletViewController: UITextFieldDelegate, UITextViewDelegate {
@@ -267,7 +273,8 @@ extension ImportObservedWalletViewController: UITextFieldDelegate, UITextViewDel
     func textViewDidEndEditing(_ textView: UITextView) {
         
         if textView == addresstextView {
-            let _ = checkObservedWalletTV()
+            self.checkCanEableButton()
+//            let _ = checkObservedWalletTV()
         }
         
     }

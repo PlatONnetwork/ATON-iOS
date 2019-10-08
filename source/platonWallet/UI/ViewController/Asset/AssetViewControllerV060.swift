@@ -76,6 +76,7 @@ class AssetViewControllerV060: BaseViewController ,PopupMenuTableDelegate{
         super.viewDidLoad()
         
         transactionVC.parentController = self
+        TransactionService.service.startTimerFire()
         
         initData()
         initUI()
@@ -470,13 +471,14 @@ extension AssetViewControllerV060 : UIScrollViewDelegate,ChildScrollViewDidScrol
         menu.delegate = self
     }
     
-    @objc func onScan(){ 
-        let scanner = QRScannerViewController { [weak self](res) in
-            self?.navigationController?.popViewController(animated: true)
+    @objc func onScan(){
+        let controller = QRScannerViewController()
+        controller.scanCompletion = { [weak self] (res) in
+            (UIApplication.shared.keyWindow?.rootViewController as? BaseNavigationController)?.popViewController(animated: true)
             self?.handleScanResp(res)
         }
-        scanner.hidesBottomBarWhenPushed = true
-        navigationController?.pushViewController(scanner, animated: true)
+        controller.hidesBottomBarWhenPushed = true
+        (UIApplication.shared.keyWindow?.rootViewController as? BaseNavigationController)?.pushViewController(controller, animated: true)
     }
     
     @objc func onBackup(){
@@ -489,64 +491,68 @@ extension AssetViewControllerV060 : UIScrollViewDelegate,ChildScrollViewDidScrol
     //MARK: - Login
     
     func handleScanResp(_ res: String) {
-        if let data = res.data(using: .utf8), let result = try? JSONDecoder().decode(QrcodeData<TransactionQrcode>.self, from: data) {
-            doShowConfirmViewController(qrcode: result)
-        } else if let data = res.data(using: .utf8), let result = try? JSONDecoder().decode(QrcodeData<SignatureQrcode>.self, from: data) {
-            doShowQrcodeScan(qrcode: result)
-        } else {
-            var targetVC: UIViewController?
-            if res.isValidAddress() {
-                self.sectionView.setSectionSelectedIndex(index: 1)
-                sendVC.walletAddressView.textField.text = res
-            }else if res.isValidPrivateKey() {
-                targetVC = MainImportWalletViewController(type: .privateKey, text: res)
-            }else if res.isValidKeystore() {
-                targetVC = MainImportWalletViewController(type: .keystore, text: res)
-            }else {
-                showMessage(text: Localized("QRScan_failed_tips"))
-            }
-            if targetVC != nil {
-                targetVC!.hidesBottomBarWhenPushed = true
-                navigationController?.pushViewController(targetVC!, animated: true)
-            }
+        guard let qrcodeType = QRCodeDecoder().decode(res) else { return }
+        switch qrcodeType {
+        case .transaction(let data):
+            doShowConfirmViewController(qrcode: data)
+//        case .signedTransaction(let data):
+//             doShowQrcodeScan(qrcode: data)
+        case .address(let data):
+            sectionView.setSectionSelectedIndex(index: 1)
+            sendVC.walletAddressView.textField.text = data
+        case .keystore(let data):
+            let targetVC = MainImportWalletViewController(type: .keystore, text: data)
+            targetVC.hidesBottomBarWhenPushed = true
+            navigationController?.pushViewController(targetVC, animated: true)
+        case .privatekey(let data):
+            let targetVC = MainImportWalletViewController(type: .privateKey, text: data)
+            targetVC.hidesBottomBarWhenPushed = true
+            navigationController?.pushViewController(targetVC, animated: true)
+        default:
+            showMessage(text: Localized("QRScan_failed_tips"))
         }
     }
     
-    func doShowConfirmViewController(qrcode: QrcodeData<TransactionQrcode>) {
+    func doShowConfirmViewController(qrcode: QrcodeData<[TransactionQrcode]>) {
+        guard let codes = qrcode.qrCodeData, codes.count > 0 else {
+            showErrorMessage(text: Localized("offline_signature_invalid"), delay: 2.0)
+            return
+        }
+        
+        let wallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).first(where: { $0.address.lowercased() == codes.first?.from?.lowercased() })
+        guard wallet != nil else {
+            showErrorMessage(text: Localized("offline_signature_notmatch_wallet"), delay: 2.0)
+            return
+        }
+        
         let controller = OfflineSignatureTransactionViewController()
         controller.qrcode = qrcode
         controller.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(controller, animated: true)
     }
     
-    func doShowQrcodeScan(qrcode: QrcodeData<SignatureQrcode>) {
-        guard
-            let signedDatas = qrcode.qrCodeData, signedDatas.count > 0
-            else { return }
-        
-        var signedStrings: [String] = []
-        for itemData in signedDatas {
-            guard let signedData = itemData.signedData else { continue }
-            signedStrings.append(signedData)
-        }
-        
-        let signatureView = OfflineSignatureScanView()
-        let contentString = signedStrings.joined(separator: ";")
-        signatureView.textView.text = contentString
-        
-        let type = ConfirmViewType.qrcodeScan(contentView: signatureView)
-        let offlineConfirmView = OfflineSignatureConfirmView(confirmType: type)
-        offlineConfirmView.titleLabel.localizedText = "confirm_scan_qrcode_for_read"
-        offlineConfirmView.descriptionLabel.localizedText = "confirm_scan_qrcode_for_read_tip"
-        offlineConfirmView.submitBtn.localizedNormalTitle = "confirm_button_send"
-        
-        let controller = PopUpViewController()
-        controller.setUpConfirmView(view: offlineConfirmView, width: PopUpContentWidth)
-        controller.show(inViewController: self)
-        controller.onCompletion = { [weak self] in
-            AssetViewControllerV060.sendSignatureTransaction(qrcode: qrcode)
-        }
-    }
+//    func doShowQrcodeScan(qrcode: QrcodeData<SignatureQrcode>) {
+//        guard
+//            let signedDatas = qrcode.qrCodeData?.signedData, signedDatas.count > 0
+//            else { return }
+//
+//        let signatureView = OfflineSignatureScanView()
+//        let contentString = signedDatas.joined(separator: ";")
+//        signatureView.textView.text = contentString
+//
+//        let type = ConfirmViewType.qrcodeScan(contentView: signatureView)
+//        let offlineConfirmView = OfflineSignatureConfirmView(confirmType: type)
+//        offlineConfirmView.titleLabel.localizedText = "confirm_scan_qrcode_for_read"
+//        offlineConfirmView.descriptionLabel.localizedText = "confirm_scan_qrcode_for_read_tip"
+//        offlineConfirmView.submitBtn.localizedNormalTitle = "confirm_button_send"
+//
+//        let controller = PopUpViewController()
+//        controller.setUpConfirmView(view: offlineConfirmView, width: PopUpContentWidth)
+//        controller.show(inViewController: self)
+//        controller.onCompletion = { [weak self] in
+//            AssetViewControllerV060.sendSignatureTransaction(qrcode: qrcode)
+//        }
+//    }
     
     func doShowTransactionDetail(_ transaction: Transaction) {
         DispatchQueue.main.async { [weak self] in
@@ -589,24 +595,28 @@ extension AssetViewControllerV060{
     static func sendSignatureTransaction(qrcode: QrcodeData<SignatureQrcode>) {
         
         guard
-            let signatureArr = qrcode.qrCodeData else { return }
+            let qrCodeData = qrcode.qrCodeData,
+            let signatureArr = qrCodeData.signedData,
+            let type = qrCodeData.type,
+            let from = qrCodeData.from else { return }
         for (index, signature) in signatureArr.enumerated() {
-            guard let signatureData = signature.signedData else { continue }
-            let bytes = signatureData.hexToBytes()
-            if let signedTransaction = try? EthereumSignedTransaction(rlp: RLPItem(bytes: bytes)) {
-                
+            let bytes = signature.hexToBytes()
+            let rlpItem = try? RLPDecoder().decode(bytes)
+            
+            
+            if
+                let signedTransactionRLP = rlpItem,
+                let signedTransaction = try? EthereumSignedTransaction(rlp: signedTransactionRLP) {
                 web3.platon.sendRawTransaction(transaction: signedTransaction) { (response) in
                     switch response.status {
                     case .success(let result):
                         guard
-                            let to = signedTransaction.to?.rawAddress.toHexString(),
-                            let transactionType = signature.type
-                            else { return }
+                            let to = signedTransaction.to?.rawAddress.toHexString() else { return }
                         let gasPrice = signedTransaction.gasPrice.quantity.description
                         let gasLimit = signedTransaction.gasLimit.quantity.description
                         let amount = signedTransaction.value.quantity.description
                         let tx = Transaction()
-                        tx.from = signature.from
+                        tx.from = from
                         tx.to = to
                         tx.gas = gasLimit
                         tx.gasPrice = gasPrice
@@ -614,12 +624,14 @@ extension AssetViewControllerV060{
                         tx.txhash = result.bytes.toHexString().add0x()
                         tx.txReceiptStatus = -1
                         tx.value = amount
-                        tx.transactionType = transactionType
-                        tx.toType = (transactionType != 0) ? .contract : .address
+                        tx.transactionType = Int(type)
+                        tx.toType = (type != 0) ? .contract : .address
                         TransferPersistence.add(tx: tx)
                         
                         if index == signatureArr.count - 1 {
-                            getInstance()?.doShowTransactionDetail(tx)
+                            DispatchQueue.main.async {
+                                getInstance()?.doShowTransactionDetail(tx)
+                            }
                         }
                     case .failure(let error):
                         break

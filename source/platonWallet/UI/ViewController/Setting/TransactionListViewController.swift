@@ -41,7 +41,7 @@ class TransactionListViewController: BaseViewController,UITableViewDelegate,UITa
     }()
     
     lazy var refreshFooter: MJRefreshFooter = {
-        let footer = MJRefreshAutoNormalFooter(refreshingTarget: self, refreshingAction: #selector(fetchTransactionMore))!
+        let footer = MJRefreshAutoFooter(refreshingTarget: self, refreshingAction: #selector(fetchTransactionMore))!
         return footer
     }()
     

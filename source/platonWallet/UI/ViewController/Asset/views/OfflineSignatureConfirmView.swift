@@ -64,6 +64,9 @@ class OfflineSignatureScanView: UIView {
         textView.layer.borderColor = UIColor(rgb: 0x1861FE).cgColor
         textView.layer.borderWidth = 1
         textView.backgroundColor = UIColor(rgb: 0xFAFDFF)
+        textView.textColor = .black
+        textView.contentInset = UIEdgeInsets(top: 3, left: 3, bottom: 3, right: 3)
+        textView.font = UIFont.systemFont(ofSize: 14)
         addSubview(textView)
         textView.snp.makeConstraints { make in
             make.top.equalTo(scanButton.snp.bottom).offset(14)
