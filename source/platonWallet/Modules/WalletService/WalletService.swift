@@ -16,12 +16,7 @@ public final class WalletService {
     
     let keystoreFolderURL : URL
     
-    public var wallets: [Wallet] {
-        get {
-            return WallletPersistence.sharedInstance.getAll()
-        }
-        set {}
-    }
+    public var wallets: [Wallet] = WallletPersistence.sharedInstance.getAll()
     
     static let sharedInstance = WalletService()
     
@@ -392,12 +387,11 @@ public final class WalletService {
         AssetService.sharedInstace.balances = AssetService.sharedInstace.balances.filter { $0.addr.lowercased() != wallet.address.lowercased() }
 //        AssetService.sharedInstace.assets.removeValue(forKey: (wallet.key?.address)!)
         
-        wallets.removeAll { (item) -> Bool in
-            return item == wallet
-        }
-        WallletPersistence.sharedInstance.delete(wallet: wallet)
+        wallets.removeAll(where: { $0.uuid == wallet.uuid && $0.nodeURLStr == wallet.nodeURLStr })
+
         AssetVCSharedData.sharedData.willDeleteWallet(object: wallet as AnyObject)
         
+        WallletPersistence.sharedInstance.delete(wallet: wallet)
     }
     
     public func updateWalletName(_ wallet: Wallet, name: String) {
