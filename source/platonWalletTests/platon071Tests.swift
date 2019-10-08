@@ -13,6 +13,19 @@ import OHHTTPStubs
 import RealmSwift
 @testable import platonWallet
 
+extension RLPItem {
+    init(epoch: UInt64,
+         amount: BigUInt) {
+        let epochData = Data.newData(unsignedLong: epoch)
+        let epochBytes = epochData.bytes
+        self = .array(
+            .bytes(epochBytes),
+            .bigUInt(amount)
+        )
+    }
+}
+
+
 class platon071Tests: XCTestCase {
 
     override func setUp() {
@@ -376,5 +389,13 @@ class platon071Tests: XCTestCase {
         waitForExpectations(timeout: 10) { (error) in
             print(error?.localizedDescription ?? "")
         }
+    }
+    
+    func testRestrict(){
+        let plan = try? RestrictingPlan(rlp: RLPItem.init(epoch: 1000000, amount: BigUInt("100000000000000000000000")))
+        
+        web3.restricting.createRestrictingPlan(account: "0x1f9EF81fCdebdef5d6498e69CC46c1e3588dB90D", plans: [plan!], sender: "0x2e95e3ce0a54951eb9a99152a6d5827872dfb4fd", privateKey: "a689f0879f53710e9e0c1025af410a530d6381eebb5916773195326e123b822b", completion: { (ret, data) in
+            
+        })
     }
 }
