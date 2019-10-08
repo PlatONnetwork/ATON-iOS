@@ -406,6 +406,12 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
     
     func checkConfirmButtonAvailable() -> Bool{
         self.checkQuickAddAddress()
+        
+        if self.amountView.textField.text?.count == 0 {
+            self.sendBtn.style = .disable
+            return false
+        }
+        
         if self.amountView.checkInvalidNow(showErrorMsg: false)!.0 && self.walletAddressView.checkInvalidNow(showErrorMsg: false)!.0{
             self.sendBtn.style = .blue
             return true
@@ -444,6 +450,13 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
     // MARK: - PopUp
     
     func showPasswordInputPswAlert() { 
+        
+        guard
+            let amount = self.amountView.textField.text,
+            let amountVON = BigUInt.mutiply(a: amount, by: ETHToWeiMultiplier), amountVON > BigUInt.zero else {
+                AssetViewControllerV060.getInstance()?.showMessage(text: "amount must be > 0", delay: 2.0)
+                return
+        }
         
         var executorWallet : Wallet? 
         if let w = AssetVCSharedData.sharedData.selectedWallet as? Wallet{

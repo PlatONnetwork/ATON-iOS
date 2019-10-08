@@ -74,15 +74,13 @@ class AssetViewControllerV060: BaseViewController ,PopupMenuTableDelegate{
         super.viewDidLoad()
         
         transactionVC.parentController = self
+        TransactionService.service.startTimerFire()
         
         initData()
         initUI()
         
         scrollView.mj_header = refreshHeader
         refreshHeader.beginRefreshing()
-        
-        let uuids = (AssetVCSharedData.sharedData.walletList as! [Wallet]).map { return $0.uuid }
-        print(uuids)
     }
     
     override func viewWillAppear(_ animated: Bool) {

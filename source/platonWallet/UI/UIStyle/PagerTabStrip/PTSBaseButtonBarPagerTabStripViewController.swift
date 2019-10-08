@@ -89,6 +89,9 @@ open class BaseButtonBarPagerTabStripViewController<ButtonBarCellType: UICollect
         super.viewWillAppear(animated)
         buttonBarView.layoutIfNeeded()
         isViewAppearing = true
+        
+        cachedCellWidths = calculateWidths()
+        buttonBarView.collectionViewLayout.invalidateLayout()
     }
     
     open override func viewDidAppear(_ animated: Bool) {
