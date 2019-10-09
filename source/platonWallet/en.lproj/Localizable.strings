@@ -284,7 +284,8 @@
 "WalletManagerDetailVC_Mnemonicsbackup" = "Mnemonics backup";
 "WalletManagerDetailVC_deleteBtn_title" = "Delete";
 "WalletManager_backUp" = "Backup";
-
+"Offline_Walle_Tag" = "Cold";
+"Observed_Wallet_Tag" = "Observed";
 
 //ExportPrivateKeyVC
 "ExportPrivateKeyVC_title" = "Export Private Key";
@@ -672,7 +673,9 @@
 //AssetViewController
 "Asset_segment_Transaction" = "Txn";
 "Asset_segment_Send" = "Send";
+"Asset_segment_Send_offline" = "Offline Signature";
 "Asset_segment_Receive" = "Receive";
+
 
 //common
 "savetoaddressbook" = "Save to Address Book";
@@ -883,3 +886,21 @@
 "import_observed_wallet_tip_3" = "Observed wallet do not hold the private key.";
 "import_observed_wallet_tip_4" = "Do not deposit tokens to the wallet that you can not control.";
 
+"confirm_generate_qrcode_for_transaction" = "Transaction Authorization";
+"confirm_generate_qrcode_for_transaction_tip" = "Please scan below QR code using the cold wallet that holds the private key.";
+"confirm_button_next" = "Next";
+"confirm_scan_qrcode_for_read" = "Transaction Signature";
+"confirm_scan_qrcode_for_read_tip" = "Scan the OR code displayed on the cold wallet to get the transaction signature.";
+"confirm_button_send" = "Finish";
+"confirm_authorize_button_send" = "Next";
+"confirm_authorize_function_type" = "Txn info:";
+"confirm_authorize_from" = "Sender:";
+"confirm_authorize_to" = "Recipient:";
+"confirm_authorize_fee" = "Fee:";
+"confirm_generate_qrcode_for_signed_tx" = "Authorization Signature";
+"confirm_generate_qrcode_for_signed_tx_tip" = "Scan the OR code to finish your authorization for the observed wallet.";
+"confirm_button_signed_tx" = "Finish";
+"offline_signature_title" = "Details";
+
+"offline_signature_invalid" = "Invalid Signature";
+"offline_signature_notmatch_wallet" = "Wallet Mismatch";

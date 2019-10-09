@@ -83,3 +83,6 @@ source/.DS_Store
 source/platonWallet.xcodeproj/xcuserdata/
 source/platonWallet.xcworkspace/xcuserdata/
 source/Pods/Pods.xcodeproj/xcuserdata
+source/platonWallet/Config/EnvConfig-tmp.swift
+source/platonWallet/Config/CommonService-tmp.swift
+source/platonWallet/Config/CommonConfig-tmp.swift

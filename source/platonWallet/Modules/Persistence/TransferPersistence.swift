@@ -43,7 +43,7 @@ class TransferPersistence {
                 }
                 
                 try? realm.write {
-                    transaction.txReceiptStatus = (status == 0) ? 1 : 0
+                    transaction.txReceiptStatus = status
                     transaction.blockNumber = blockNumber
                     transaction.gasUsed = gasUsed
                     completion?()

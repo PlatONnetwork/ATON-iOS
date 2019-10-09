@@ -64,6 +64,7 @@ class StakingPageTabStripViewController: BaseButtonBarPagerTabStripViewControlle
         
         navigationController?.navigationBar.shadowImage = UIImage()
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        
     }
     
     // MARK: - PagerTabStripDataSource

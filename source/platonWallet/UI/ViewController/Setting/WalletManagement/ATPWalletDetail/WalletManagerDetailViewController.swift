@@ -23,6 +23,12 @@ class WalletManagerDetailViewController: BaseViewController {
     
     @IBOutlet weak var exportMnemonicContainer: UIView!
     
+    @IBOutlet weak var renameContainer: UIView!
+    
+    @IBOutlet weak var exportPriContainer: UIView!
+    
+    @IBOutlet weak var exportKeyStore: UIView!
+    
     var wallet: Wallet!
     
     var alertPswInput: String?
@@ -54,6 +60,14 @@ class WalletManagerDetailViewController: BaseViewController {
         walletName.text = wallet.name
         address.text = wallet.address
         self.exportMnemonicContainer.isHidden = !self.wallet.canBackupMnemonic
+        
+        if self.wallet.type == .observed{
+            self.exportMnemonicContainer.isHidden = true
+            self.renameContainer.isHidden = true
+            self.exportPriContainer.isHidden = true
+            self.exportKeyStore.isHidden = true
+        }
+        
     }
 
     @IBAction func exportPrivateKey(_ sender: Any) {
@@ -102,6 +116,11 @@ class WalletManagerDetailViewController: BaseViewController {
     }
     
     func showInputPswAlertFor(_ type: AlertActionType) {
+        if wallet.type == .observed && type == .deleteWallet {
+            confirmToDeleteObserverWallet()
+            return
+        }
+        
         let alertVC = AlertStylePopViewController.initFromNib()
         alertVC.style = PAlertStyle.passwordInput(walletName: self.wallet.name)
         alertVC.onAction(confirm: {[weak self] (text, _) -> (Bool)  in
@@ -221,6 +240,14 @@ class WalletManagerDetailViewController: BaseViewController {
             self?.navigationController?.popViewController(animated: true)
             NotificationCenter.default.post(name: Notification.Name.ATON.updateWalletList, object: nil)
         }
+    }
+    
+    func confirmToDeleteObserverWallet() {
+        
+        AssetService.sharedInstace.balances = AssetService.sharedInstace.balances.filter { $0.addr.lowercased() != wallet.address.lowercased() }
+        WalletService.sharedInstance.deleteWallet(wallet)
+        navigationController?.popViewController(animated: true)
+        NotificationCenter.default.post(name: Notification.Name.ATON.updateWalletList, object: nil)
     }
     
     func verifyPassword(_ psw: String, type: AlertActionType, completionCallback:@escaping (_ privateKey: String?) -> Void) {

@@ -133,12 +133,22 @@ class ImportObservedWalletViewController: BaseImportWalletViewController {
         
         submitButton.style = .disable
         submitButtonTopConstaint?.deactivate()
+        
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+    }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.checkKeyboard()
+        
+        if checkObservedWalletTV(showError: false) {
+            submitButton.style = .blue
+        } else {
+            submitButton.style = .disable
+        }
     }
     
     @objc func onPasteboardChange(){
@@ -170,9 +180,9 @@ class ImportObservedWalletViewController: BaseImportWalletViewController {
     }
     
     func checkCanEableButton() {
-        if self.checkInputValueIsValid(){
+        if checkObservedWalletTV(showError: true) {
             submitButton.style = .blue
-        }else{
+        } else {
             submitButton.style = .disable
         }
     }
@@ -182,32 +192,31 @@ class ImportObservedWalletViewController: BaseImportWalletViewController {
     }
     
     func checkObservedWalletTV(showError: Bool = true) -> Bool {
-        if showError {
-            if addresstextView.text!.isEmpty {
-                textViewTipLabel.text = Localized("importKeystoreVC_observed_empty_tips")
-                submitButtonTopConstaint?.activate()
-                textViewTipLabel.isHidden = false
-                self.view.layoutIfNeeded()
-                return false
-            }
-            
-            if !addresstextView.text!.is40ByteAddress() {
-                textViewTipLabel.text = Localized("importKeystoreVC_observed_invalid_tips")
-                submitButtonTopConstaint?.activate()
-                textViewTipLabel.isHidden = false
-                self.view.layoutIfNeeded()
-                return false
-            }
-            
-            let addresses = (AssetVCSharedData.sharedData.walletList as! [Wallet]).map { $0.address.add0x().lowercased() }
-            if addresses.contains(addresstextView.text!.add0x().lowercased()) {
-                textViewTipLabel.text = Localized("importKeystoreVC_observed_existed_tips")
-                submitButtonTopConstaint?.activate()
-                textViewTipLabel.isHidden = false
-                self.view.layoutIfNeeded()
-                return false
-            }
+        if addresstextView.text!.isEmpty {
+            textViewTipLabel.text = Localized("importKeystoreVC_observed_empty_tips")
+            submitButtonTopConstaint?.activate()
+            textViewTipLabel.isHidden = false
+            self.view.layoutIfNeeded()
+            return false
         }
+        
+        if !addresstextView.text!.is40ByteAddress() {
+            textViewTipLabel.text = Localized("importKeystoreVC_observed_invalid_tips")
+            submitButtonTopConstaint?.activate()
+            textViewTipLabel.isHidden = false
+            self.view.layoutIfNeeded()
+            return false
+        }
+        
+        let addresses = (AssetVCSharedData.sharedData.walletList as! [Wallet]).map { $0.address.add0x().lowercased() }
+        if addresses.contains(addresstextView.text!.add0x().lowercased()) {
+            textViewTipLabel.text = Localized("importKeystoreVC_observed_existed_tips")
+            submitButtonTopConstaint?.activate()
+            textViewTipLabel.isHidden = false
+            self.view.layoutIfNeeded()
+            return false
+        }
+       
         submitButtonTopConstaint?.deactivate()
         textViewTipLabel.isHidden = true
         self.view.layoutIfNeeded()
@@ -220,6 +229,7 @@ class ImportObservedWalletViewController: BaseImportWalletViewController {
         if let pasteBoardString = UIPasteboard.general.string{
             if pasteBoardString.is40ByteAddress() {
                 self.addresstextView.text = pasteBoardString
+                self.checkCanEableButton()
             }
         }
     }
@@ -228,7 +238,7 @@ class ImportObservedWalletViewController: BaseImportWalletViewController {
         
         view.endEditing(true)
         
-        guard checkInputValueIsValid() else { return }
+        guard checkInputValueIsValid(), submitButton.style == .blue else { return }
         
         showLoadingHUD()
         
@@ -246,7 +256,6 @@ class ImportObservedWalletViewController: BaseImportWalletViewController {
             })
         }
     }
-
 }
 
 extension ImportObservedWalletViewController: UITextFieldDelegate, UITextViewDelegate {
@@ -263,7 +272,8 @@ extension ImportObservedWalletViewController: UITextFieldDelegate, UITextViewDel
     func textViewDidEndEditing(_ textView: UITextView) {
         
         if textView == addresstextView {
-            let _ = checkObservedWalletTV()
+            self.checkCanEableButton()
+//            let _ = checkObservedWalletTV()
         }
         
     }
@@ -274,6 +284,10 @@ extension ImportObservedWalletViewController: UITextFieldDelegate, UITextViewDel
             self.checkCanEableButton()
         }
         return true
+    }
+    
+    func textViewDidChangeSelection(_ textView: UITextView) {
+        checkCanEableButton()
     }
     
 }

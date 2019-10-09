@@ -18,7 +18,7 @@ class WalletListViewController: BaseViewController,TableViewReorderDelegate {
      
     lazy var atpWalletEmptyView : WalletEmptyView! = {
         
-        let view = WalletEmptyView(walletType: .ClassicWallet, createBtnClickHandler: { [weak self] in 
+        let view = WalletEmptyView(walletType: .classic, createBtnClickHandler: { [weak self] in
             self?.createIndividualWallet()
             
         }) { [weak self] in 
@@ -31,12 +31,11 @@ class WalletListViewController: BaseViewController,TableViewReorderDelegate {
         }
         return view
     }()
-    
-    var currentType: WalletType = .ClassicWallet
-
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(shouldUpdateWalletStatus), name: Notification.Name.ATON.DidNetworkStatusChange, object: nil)
         
         initSubView()
     }
@@ -96,6 +95,12 @@ class WalletListViewController: BaseViewController,TableViewReorderDelegate {
         let importWallet = MainImportWalletViewController()
         
         navigationController?.pushViewController(importWallet, animated: true)
+    }
+    
+    @objc func shouldUpdateWalletStatus(){
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
     }
 }
 
@@ -167,4 +172,6 @@ extension WalletListViewController: UITableViewDelegate, UITableViewDataSource {
             self.tableView.reloadData()
         }
     }
+    
+    
 }

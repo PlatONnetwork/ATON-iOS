@@ -28,12 +28,6 @@ class NodeInfoPersistence {
         let nodes = getAll()
         
         let nodeIdentifiers = nodes.map({$0.nodeURLStr})
-        for node in AppConfig.NodeURL.defaultNodesURL {
-            guard !nodeIdentifiers.contains(node.nodeURL) else{
-                continue
-            }
-            add(node: NodeInfo(nodeURLStr: node.nodeURL, desc: node.desc, isSelected: node.isSelected, isDefault: true))
-        }
         
         var existSelected = false
         for item in nodes {
@@ -43,13 +37,37 @@ class NodeInfoPersistence {
             }
         }
         
-        if !existSelected {
-            for item in nodes {
-                if item.nodeURLStr == AppConfig.NodeURL.defaultNodesURL.first!.nodeURL {
+        var newNodes: [(nodeURL: String, desc: String, isSelected: Bool)] = []
+        for node in AppConfig.NodeURL.defaultNodesURL {
+            guard !nodeIdentifiers.contains(node.nodeURL) else { continue }
+            newNodes.append(node)
+        }
+        
+        if existSelected {
+            for (index, item) in nodes.enumerated() {
+                if index == 0 {
                     update(node: item, isSelected: true)
-                    break
+                } else {
+                    update(node: item, isSelected: false)
                 }
             }
+            for node in newNodes {
+                add(node: NodeInfo(nodeURLStr: node.nodeURL, desc: node.desc, isSelected: false, isDefault: true))
+            }
+        } else {
+            if newNodes.count > 0 {
+                for (index, node) in newNodes.enumerated() {
+                    add(node: NodeInfo(nodeURLStr: node.nodeURL, desc: node.desc, isSelected: index == 0, isDefault: true))
+                }
+            } else {
+                for item in nodes {
+                    if item.nodeURLStr == AppConfig.NodeURL.defaultNodesURL.first!.nodeURL {
+                        update(node: item, isSelected: true)
+                        break
+                    }
+                }
+            }
+            
         }
     }
     
@@ -96,7 +114,7 @@ class NodeInfoPersistence {
     }
     
     func update(node: NodeInfo, isSelected:Bool) {
-        let predicate = NSPredicate(format: "nodeURLStr == %@ && id == %d", SettingService.getCurrentNodeURLString(), node.id)
+        let predicate = NSPredicate(format: "nodeURLStr == %@ && id == %d", node.nodeURLStr, node.id)
         RealmWriteQueue.async {
             autoreleasepool(invoking: {
                 let realm = try! Realm(configuration: RealmHelper.getConfig())

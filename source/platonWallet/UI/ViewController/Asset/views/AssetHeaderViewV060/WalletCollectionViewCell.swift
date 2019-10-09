@@ -14,6 +14,30 @@ class WalletCollectionViewCell: UICollectionViewCell {
     let iconImgV = UIImageView()
     let walletNameLabel = UILabel()
     
+    var wallet: Wallet? {
+        didSet {
+            walletNameLabel.text = wallet?.name
+            guard
+                let selectedWallet = AssetVCSharedData.sharedData.selectedWallet as? Wallet,
+                selectedWallet.address.lowercased() == wallet?.address.lowercased() else {
+                    iconImgV.image = wallet?.normalIcon
+                    bgImgV.image = wallet?.normalImg
+                    walletNameLabel.textColor = wallet?.walletNameTextColor
+                    layer.shadowOpacity = 0
+                    return
+            }
+            iconImgV.image = wallet?.selectedIcon
+            bgImgV.image = wallet?.selectedImg
+            walletNameLabel.textColor = .white
+            
+            layer.shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: 4).cgPath
+            layer.shadowOpacity = 0.8
+            layer.shadowOffset = CGSize(width: 0, height: 2)
+            layer.shadowRadius = 3
+            layer.shadowColor = wallet?.walletNameTextColor.cgColor
+        }
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -38,6 +62,8 @@ class WalletCollectionViewCell: UICollectionViewCell {
             make.width.height.equalTo(24)
         }
         
+        walletNameLabel.adjustsFontSizeToFitWidth = true
+
         walletNameLabel.font = UIFont.systemFont(ofSize: 12)
         contentView.addSubview(walletNameLabel)
         walletNameLabel.snp.makeConstraints { make in
@@ -46,37 +72,5 @@ class WalletCollectionViewCell: UICollectionViewCell {
             make.trailing.equalToSuperview()
         }
     }
-    
-    func setUnhighlightState() {
-        layer.shadowOpacity = 0
-        bgImgV.image = UIImage(named: "home_classicWallet_bg_normal")
-        iconImgV.image = UIImage(named: "home_classicWallet_icon_normal")
-        walletNameLabel.textColor = common_blue_color
-    }
-    
-    func setHighlightState() {
-        layer.masksToBounds = false
-        layer.shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: 4).cgPath
-        layer.shadowOpacity = 0.8
-        layer.shadowOffset = CGSize(width: 0, height: 2)
-        layer.shadowRadius = 3
-        layer.shadowColor = common_blue_color.cgColor
-        bgImgV.image = UIImage(named: "home_classicWallet_bg_selected")
-        iconImgV.image = UIImage(named: "home_classicWallet_icon_selected")
-        walletNameLabel.textColor = UIColor.white
-    }
-    
-    func updateWallet(walletObj: Wallet){
-        walletNameLabel.text = walletObj.name
-        //iconImgV.image = walletObj.image()
-        guard let tmp = AssetVCSharedData.sharedData.selectedWallet as? Wallet else {
-            self.setUnhighlightState()
-            return
-        }
-        if tmp == walletObj{
-            setHighlightState()
-        }else{
-            setUnhighlightState()
-        }
-    }
+
 }

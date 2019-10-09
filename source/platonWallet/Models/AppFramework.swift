@@ -19,6 +19,8 @@ class AppFramework {
     
     func initialize() -> Bool {
         initBugly()
+        initNetworkObserver()
+
         initUMeng()
         doSwizzle()
         if !RealmConfiguration(){
@@ -30,6 +32,10 @@ class AppFramework {
     
     func initweb3(){
         Debugger.enableDebug(true)
+    }
+    
+    func initNetworkObserver() {
+        NetworkManager.shared.startNetworkReachabilityObserver()
     }
     
     func initBugly(){

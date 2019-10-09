@@ -180,7 +180,6 @@ class BaseViewController: UIViewController {
     }
      
     func setDefaultUIStyle() {
-        
         view.backgroundColor = UIViewController_backround
         
          navigationController?.navigationBar.shadowImage = UIImage()
