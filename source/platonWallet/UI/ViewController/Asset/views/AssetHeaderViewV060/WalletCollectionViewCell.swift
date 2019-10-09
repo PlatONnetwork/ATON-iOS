@@ -38,7 +38,6 @@ class WalletCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -64,6 +63,7 @@ class WalletCollectionViewCell: UICollectionViewCell {
         }
         
         walletNameLabel.adjustsFontSizeToFitWidth = true
+
         walletNameLabel.font = UIFont.systemFont(ofSize: 12)
         contentView.addSubview(walletNameLabel)
         walletNameLabel.snp.makeConstraints { make in
@@ -72,4 +72,5 @@ class WalletCollectionViewCell: UICollectionViewCell {
             make.trailing.equalToSuperview()
         }
     }
+
 }

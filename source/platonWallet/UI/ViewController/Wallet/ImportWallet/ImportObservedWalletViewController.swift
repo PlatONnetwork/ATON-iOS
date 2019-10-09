@@ -216,7 +216,7 @@ class ImportObservedWalletViewController: BaseImportWalletViewController {
             self.view.layoutIfNeeded()
             return false
         }
-        
+       
         submitButtonTopConstaint?.deactivate()
         textViewTipLabel.isHidden = true
         self.view.layoutIfNeeded()
