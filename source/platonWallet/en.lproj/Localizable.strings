@@ -259,9 +259,9 @@
 //PersonalViewController
 
 
-"PersonalVC_nav_title" = "Me";
+"PersonalVC_nav_title" = "Management";
 
-"PersonalVC_cell_wallet_manager" = "Wallet Manage";
+"PersonalVC_cell_wallet_manager" = "Wallet Management";
 //"PersonalVC_cell_wallet_Transactions" = "Transactions";
 "PersonalVC_cell_wallet_Transactions" = "Transactions";
 "PersonalVC_cell_wallet_address_book" = "Address Book";
@@ -270,8 +270,6 @@
 "PersonalVC_cell_wallet_About" = "About";
 "PersonalVC_cell_wallet_community" = "Official Community";
 "PersonalVC_cell_wallet_feedback" = "Support and feedback";
-
-
 
 
 //WalletManagerDetailViewController
@@ -849,8 +847,10 @@
 
 "node_quit_consensus_tip" = "Node has exited consensus,voting failed";
 
-"delegate_error_result_amountzero" = "amount must greater 0";
-"delegate_error_result_nodeexit" = "Please withdraw first \"Released delegate\"";
+"delegate_error_result_amountzero" = "amount must greater 0.";
+"delegate_error_result_nodeexit" = "The Validator has Exited and cannot be delegated.";
+"delegate_error_result_associate" = "The wallet associated with the validator is not allowed for delegation.";
+"delegate_error_result_balancezero" = "Wallet balance is 0, unable to delegate.";
 
 "empty_string_my_delegates_left" = "View all validators, ";
 "empty_string_my_delegates_right" = "Delegate";
@@ -904,3 +904,5 @@
 
 "offline_signature_invalid" = "Invalid Signature";
 "offline_signature_notmatch_wallet" = "Wallet Mismatch";
+"touchid_auth_text" = "Please verify your fingerprint";
+"touchid_verify_fail" = "Fingerprint verification failed, please try again! !";

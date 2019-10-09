@@ -27,16 +27,8 @@ class DelegateViewController: BaseViewController {
     
     var canUseWallets: [Wallet] {
         get {
-            let canUseWallets = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { (wallet) -> Bool in
-                let walletBalance = AssetService.sharedInstace.balances.first(where: { $0.addr.lowercased() == wallet.address.lowercased() })
-                if let balance = walletBalance {
-                    let free = BigUInt(balance.free ?? "0")
-                    let lock = BigUInt(balance.lock ?? "0")
-                    return free! + lock! > BigUInt.zero
-                }
-                return false
-            }
-            return canUseWallets
+            let wallets = (AssetVCSharedData.sharedData.walletList as! [Wallet]).sorted(by: <)
+            return wallets
         }
     }
     
@@ -65,7 +57,7 @@ class DelegateViewController: BaseViewController {
         super.viewDidLoad()
         super.leftNavigationTitle = "delegate_delegate_title"
         // Do any additional setup after loading the view.
-        fetchWalletsBalance()
+        initListData()
         getGasPrice()
 
         view.addSubview(tableView)
@@ -85,7 +77,7 @@ class DelegateViewController: BaseViewController {
         view.endEditing(true)
     }
     
-    private func fetchCanDelegation() {
+    private func fetchCanDelegation(completion: (() -> Void)? = nil) {
         guard
             let nodeId = currentNode?.nodeId,
             let walletAddr = walletStyle?.currentWallet.address else { return }
@@ -97,27 +89,18 @@ class DelegateViewController: BaseViewController {
                 switch result {
                 case .success:
                     if let newData = data as? CanDelegation {
+                        var walletBalance = AssetService.sharedInstace.balances.first(where: { $0.addr.lowercased() == walletAddr.lowercased() })
+                        walletBalance?.free = newData.free
+                        walletBalance?.lock = newData.lock
+                        
                         self?.canDelegation = newData
                         self?.tableView.reloadData()
                     }
+                    completion?()
                 case .fail(_, _):
+                    completion?()
                     break
                 }
-        }
-    }
-    
-    private func fetchWalletsBalance() {
-        
-        showLoadingHUD()
-        
-        AssetService.sharedInstace.fetchWalletBalanceForV7 { [weak self] (result, data) in
-            self?.hideLoadingHUD()
-            switch result {
-            case .success:
-                self?.initListData()
-            case .fail(_, _):
-                break
-            }
         }
     }
     
@@ -230,6 +213,7 @@ extension DelegateViewController: UITableViewDelegate, UITableViewDataSource {
             cell.amountView.titleLabel.text = Localized("ATextFieldView_delegate_title")
             cell.minAmountLimit = "10".LATToVon
             cell.maxAmountLimit = BigUInt(balanceStyle?.currentBalance.1 ?? "0")
+            cell.amountView.isUserInteractionEnabled = (canDelegation?.canDelegation == true)
             cell.cellDidContentChangeHandler = { [weak self] in
                 self?.updateHeightOfRow(cell)
             }
@@ -243,7 +227,8 @@ extension DelegateViewController: UITableViewDelegate, UITableViewDataSource {
         case .singleButton(let title):
             let cell = tableView.dequeueReusableCell(withIdentifier: "SingleButtonTableViewCell") as! SingleButtonTableViewCell
             cell.button.setTitle(title, for: .normal)
-            cell.unavaliableTapAction = (currentAmount <= BigUInt.zero || canDelegation == nil || canDelegation?.canDelegation == false)
+            cell.canDelegation = canDelegation
+//            cell.unavaliableTapAction = (currentAmount <= BigUInt.zero || canDelegation == nil || canDelegation?.canDelegation == false)
             cell.cellDidTapHandle = { [weak self] in
                 guard let self = self else { return }
                 self.nextButtonCellDidHandle()
@@ -263,8 +248,15 @@ extension DelegateViewController: UITableViewDelegate, UITableViewDataSource {
 
 extension DelegateViewController {
     func nextButtonCellDidHandle() {
-        
         view.endEditing(true)
+        
+        fetchCanDelegation { [weak self] in
+            guard let self = self else { return }
+            self.submitDelgate()
+        }
+    }
+    
+    func submitDelgate() {
         
         if let canDet = canDelegation, canDet.canDelegation == false {
             showMessage(text: canDet.message?.localizedDesciption ?? "can't delegate", delay: 2.0)

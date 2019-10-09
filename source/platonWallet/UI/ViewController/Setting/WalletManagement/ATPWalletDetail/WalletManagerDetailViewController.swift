@@ -146,8 +146,8 @@ class WalletManagerDetailViewController: BaseViewController {
                     alertVC.dismissWithCompletion()
                 }else{
                     self?.hideLoadingHUD()
-                    alertVC.hideLoadingHUD()
-                    alertVC.showInputErrorTip(string: Localized((err?.errorDescription)!))
+//                    alertVC.hideLoadingHUD()
+                    alertVC.showErrorMessage(text: Localized(err?.errorDescription ?? ""), delay: 2.0)
                 }
             })
             return false

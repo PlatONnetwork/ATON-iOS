@@ -173,8 +173,8 @@ extension DelegateDetailViewController: UITableViewDelegate, UITableViewDataSour
         let delegateDetail = self.listData[indexPath.row]
         cell.delegateDetail = delegateDetail
         cell.delegateButton.isEnabled = delegateDetail.getDelegateButtonIsEnable(address: delegate!.walletAddress)
-        cell.delegateButton.isSelected = delegateDetail.hasReleased || (delegateDetail.nodeStatus == .Exiting || delegateDetail.nodeStatus == .Exited)
-        cell.delegateButton.backgroundColor = delegateDetail.getDelegateButtonIsEnable(address: delegate!.walletAddress) && !delegateDetail.hasReleased && (delegateDetail.nodeStatus == .Active || delegateDetail.nodeStatus == .Candidate) ? UIColor.white : UIColor(rgb: 0xDCDFE8, alpha: 0.4)
+        cell.delegateButton.isSelected = delegateDetail.isInit || (delegateDetail.nodeStatus == .Exiting || delegateDetail.nodeStatus == .Exited)
+        cell.delegateButton.backgroundColor = delegateDetail.getDelegateButtonIsEnable(address: delegate!.walletAddress) && !delegateDetail.isInit && (delegateDetail.nodeStatus == .Active || delegateDetail.nodeStatus == .Candidate) ? UIColor.white : UIColor(rgb: 0xDCDFE8, alpha: 0.4)
         cell.withDrawButton.isHidden = !delegateDetail.rightButtonStatus.0
         cell.moveOutButton.isHidden = delegateDetail.rightButtonStatus.0
         cell.withDrawButton.isEnabled = delegateDetail.rightButtonStatus.1
@@ -187,10 +187,10 @@ extension DelegateDetailViewController: UITableViewDelegate, UITableViewDataSour
         }
         cell.didDelegateHandler = { [weak self] _ in
             if delegateDetail.nodeStatus == .Exited || delegateDetail.nodeStatus == .Exiting {
-                if delegateDetail.hasReleased {
-                    self?.showMessage(text: Localized("delegate_detail_unable_alert"))
-                    return
-                }
+                return
+            }
+            if delegateDetail.isInit {
+                self?.showMessage(text: Localized("staking_validator_isInit_doubt"))
                 return
             }
             self?.gotoDelgateController(delegateDetail)

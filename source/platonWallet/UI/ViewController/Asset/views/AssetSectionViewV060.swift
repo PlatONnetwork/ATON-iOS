@@ -97,6 +97,7 @@ class AssetSectionViewV060: UIView {
         walletAvatar.addTarget(self, action: #selector(walletAvatarTapAction), for: .touchUpInside)
         
         NotificationCenter.default.addObserver(self, selector: #selector(didUpdateAllAsset), name: Notification.Name.ATON.DidUpdateAllAsset, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didUpdateAllAsset), name: Notification.Name.ATON.DidAssetBalanceVisiableChange, object: nil)
         
         lockedBalanceLabel.adjustsFontSizeToFitWidth = true
         lockedBalanceLabel.isUserInteractionEnabled = true
@@ -241,7 +242,7 @@ class AssetSectionViewV060: UIView {
         }
     }
     
-    func updateWaleltInfo(){ 
+    func updateWaleltInfo(){
         guard AssetVCSharedData.sharedData.selectedWallet != nil else {
             self.walletName.text = "--"
             self.balanceLabel.text = "--"
@@ -249,12 +250,12 @@ class AssetSectionViewV060: UIView {
             self.backupContainer.isHidden = true
             return
         }
-        self.walelt = AssetVCSharedData.sharedData.selectedWallet
-        if let cwallet = self.walelt as? Wallet{
+        
+        if let cwallet = AssetVCSharedData.sharedData.selectedWallet as? Wallet{
             self.walletName.text = cwallet.name
             self.lockedBalanceLabel.attributedText = cwallet.lockedBalanceAttrForDisplayAsset()
             
-            self.balanceLabel.text = cwallet.balanceDescription()
+            self.balanceLabel.text = cwallet.balanceDescriptionForDisplayAsset()
             self.walletAvatar.setImage(cwallet.image(), for: .normal)
             self.backupContainer.isHidden = !cwallet.canBackupMnemonic
         }

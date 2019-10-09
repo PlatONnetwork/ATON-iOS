@@ -81,10 +81,6 @@ extension DelegateDetail {
         return redeem?.vonToLATString ?? "--"
     }
     
-    var hasReleased: Bool {
-        return (BigUInt(released ?? "0") ?? BigUInt.zero > BigUInt.zero)
-    }
-    
     func getDelegateButtonIsEnable(address: String) -> Bool {
         let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.address.lowercased() == address.lowercased() }.first
         return localWallet != nil

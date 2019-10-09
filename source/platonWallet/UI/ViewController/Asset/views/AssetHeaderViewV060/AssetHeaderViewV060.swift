@@ -88,9 +88,8 @@ class AssetHeaderViewV060: UIView {
         }else{
             self.updateAssetHiddingStatus(isHide: true, syncTopersist: true)
         }
+        NotificationCenter.default.post(name: Notification.Name.ATON.DidAssetBalanceVisiableChange, object: nil)
     }
-    
-
 }
 
 extension AssetHeaderViewV060: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
