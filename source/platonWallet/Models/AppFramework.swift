@@ -40,26 +40,6 @@ class AppFramework {
     
     func initBugly(){
         Bugly.start(withAppId: AppConfig.Keys.BuglyAppleID)
-        
-        JPEngine.handleException { (msg) in
-            let exception = NSException(name: NSExceptionName(rawValue: "Hotfix Exception"), reason: msg, userInfo: nil)
-            Bugly.report(exception)
-        }
-        
-        BuglyMender.shared().checkRemoteConfig { (event:BuglyHotfixEvent, info:[AnyHashable : Any]?) in
-            if (event == BuglyHotfixEvent.patchValid || event == BuglyHotfixEvent.newPatch) {
-                let patchDirectory = BuglyMender.shared().patchDirectory() as NSString
-                let patchFileName = "main.js"
-                let patchFilePath = patchDirectory.appendingPathComponent(patchFileName)
-                if (FileManager.default.fileExists(atPath: patchFilePath) && JPEngine.evaluateScript(withPath: patchFilePath) != nil) {
-                    BuglyLog.level(.info, logs: "evaluateScript success")
-                    BuglyMender.shared().report(.activeSucess)
-                }else {
-                    BuglyLog.level(.error, logs: "evaluateScript fail")
-                    BuglyMender.shared().report(.activeFail)
-                }
-            }
-        }
     }
     
     func initUMeng() {
