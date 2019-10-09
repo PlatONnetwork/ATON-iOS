@@ -87,6 +87,7 @@ public final class Wallet: Object {
         primaryKeyIdentifier = keystoreObject.address + SettingService.threadSafeGetCurrentNodeURLString()
         key = keystoreObject
         keystorePath = ""
+        nodeURLStr = SettingService.threadSafeGetCurrentNodeURLString()
         self.name = name
         self.avatar = keystoreObject.address.walletAddressLastCharacterAvatar()
     }
