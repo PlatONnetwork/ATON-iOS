@@ -437,7 +437,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
             self?.doShowScanController(completion: { (data) in
                 guard
                     let qrcode = data,
-                    let signedDatas = qrcode.qrCodeData?.signedData else { return }
+                    let signedDatas = qrcode.qrCodeData?.signedData, qrcode.chainid == web3.chainId else { return }
                 if qrcode.timestamp != self?.generateQrCode?.timestamp {
                     self?.showErrorMessage(text: Localized("offline_signature_invalid"), delay: 2.0)
                     return
@@ -485,7 +485,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
                     let nonceString = nonce.quantity.description
                     
                     let transactionData = TransactionQrcode(amount: amount, chainId: web3.properties.chainId, from: wallet.address, to: to, gasLimit: gasLimit, gasPrice: gasPrice, nonce: nonceString, typ: nil, nodeId: nil, nodeName: nil, sender: wallet.address, stakingBlockNum: nil, type: 0)
-                    let qrcodeData = QrcodeData(qrCodeType: 0, qrCodeData: [transactionData], timestamp: Int(Date().timeIntervalSince1970 * 1000))
+                    let qrcodeData = QrcodeData(qrCodeType: 0, qrCodeData: [transactionData], timestamp: Int(Date().timeIntervalSince1970 * 1000), chainid: web3.chainId)
                     guard
                         let data = try? JSONEncoder().encode(qrcodeData),
                         let content = String(data: data, encoding: .utf8) else { return }

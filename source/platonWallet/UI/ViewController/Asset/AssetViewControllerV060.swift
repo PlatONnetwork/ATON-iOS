@@ -514,7 +514,7 @@ extension AssetViewControllerV060 : UIScrollViewDelegate,ChildScrollViewDidScrol
     }
     
     func doShowConfirmViewController(qrcode: QrcodeData<[TransactionQrcode]>) {
-        guard let codes = qrcode.qrCodeData, codes.count > 0 else {
+        guard let codes = qrcode.qrCodeData, codes.count > 0, qrcode.chainid == web3.chainId else {
             showErrorMessage(text: Localized("offline_signature_invalid"), delay: 2.0)
             return
         }

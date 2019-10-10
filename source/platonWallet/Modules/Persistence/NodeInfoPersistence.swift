@@ -51,13 +51,14 @@ class NodeInfoPersistence {
                     update(node: item, isSelected: false)
                 }
             }
+            
             for node in newNodes {
-                add(node: NodeInfo(nodeURLStr: node.nodeURL, desc: node.desc, isSelected: false, isDefault: true))
+                add(nodeURLStr: node.nodeURL, desc: node.desc, isSelected: false, isDefault: true)
             }
         } else {
             if newNodes.count > 0 {
                 for (index, node) in newNodes.enumerated() {
-                    add(node: NodeInfo(nodeURLStr: node.nodeURL, desc: node.desc, isSelected: index == 0, isDefault: true))
+                    add(nodeURLStr: node.nodeURL, desc: node.desc, isSelected: index == 0, isDefault: true)
                 }
             } else {
                 for item in nodes {
@@ -97,6 +98,19 @@ class NodeInfoPersistence {
                 }
             })
             
+        }
+    }
+    
+    func add(nodeURLStr: String, desc: String, isSelected: Bool, isDefault: Bool) {
+        RealmWriteQueue.async {
+            autoreleasepool(invoking: {
+                let node = NodeInfo(nodeURLStr: nodeURLStr, desc: desc, isSelected: isSelected, isDefault: isDefault)
+                let realm = try! Realm(configuration: RealmHelper.getConfig())
+                
+                try? realm.write {
+                    realm.add(node, update: true)
+                }
+            })
         }
     }
     

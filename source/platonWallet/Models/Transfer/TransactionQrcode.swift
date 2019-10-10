@@ -13,6 +13,7 @@ struct QrcodeData<QRData: Codable>: Codable {
     var qrCodeType: Int?
     var qrCodeData: QRData?
     var timestamp: Int?
+    var chainid: String?
 }
 
 struct SignatureQrcode: Codable {
