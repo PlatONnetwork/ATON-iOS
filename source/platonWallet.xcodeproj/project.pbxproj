@@ -13,7 +13,6 @@
 		8115BC4B2188444E009FFE3B /* CopyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8115BC4A2188444E009FFE3B /* CopyButton.swift */; };
 		8115BC4E2188615D009FFE3B /* PropertyReflectable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8115BC4D2188615D009FFE3B /* PropertyReflectable.swift */; };
 		8115BEA5218AC9A5009FFE3B /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8115BEA4218AC9A5009FFE3B /* Notifications.swift */; };
-		8115BEAA218B04CD009FFE3B /* PlatonAssets in Resources */ = {isa = PBXBuildFile; fileRef = 8115BEA9218B04CD009FFE3B /* PlatonAssets */; };
 		8115BEAC218B1DDA009FFE3B /* TransactionListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8115BEAB218B1DDA009FFE3B /* TransactionListViewController.swift */; };
 		8115BEAF218B2025009FFE3B /* TransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8115BEAD218B2025009FFE3B /* TransactionCell.swift */; };
 		8115BEB0218B2025009FFE3B /* TransactionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8115BEAE218B2025009FFE3B /* TransactionCell.xib */; };
@@ -348,7 +347,6 @@
 		8115BC4A2188444E009FFE3B /* CopyButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CopyButton.swift; sourceTree = "<group>"; };
 		8115BC4D2188615D009FFE3B /* PropertyReflectable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyReflectable.swift; sourceTree = "<group>"; };
 		8115BEA4218AC9A5009FFE3B /* Notifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
-		8115BEA9218B04CD009FFE3B /* PlatonAssets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = PlatonAssets; sourceTree = "<group>"; };
 		8115BEAB218B1DDA009FFE3B /* TransactionListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionListViewController.swift; sourceTree = "<group>"; };
 		8115BEAD218B2025009FFE3B /* TransactionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCell.swift; sourceTree = "<group>"; };
 		8115BEAE218B2025009FFE3B /* TransactionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransactionCell.xib; sourceTree = "<group>"; };
@@ -1016,7 +1014,6 @@
 				81C88E0821746B39005F17F7 /* Main.storyboard */,
 				81EE99D921770977008DF8CB /* Models */,
 				81EE99DC21770977008DF8CB /* Modules */,
-				8115BEA9218B04CD009FFE3B /* PlatonAssets */,
 				81EE99C22175B79C008DF8CB /* UI */,
 				8115BE07218A9AA8009FFE3B /* Vendors */,
 				81C88E0621746B39005F17F7 /* ViewController.swift */,
@@ -1797,7 +1794,6 @@
 				9A25B9B32188060E00B9433A /* PasswordStrengthView.xib in Resources */,
 				814980FE2191715A009F99EE /* SettingFooter.xib in Resources */,
 				9AD11DE2218171CA002CD905 /* BackupMnemonicViewController.xib in Resources */,
-				8115BEAA218B04CD009FFE3B /* PlatonAssets in Resources */,
 				81EE99BE21757E40008DF8CB /* Localizable.strings in Resources */,
 				9ADB60B8222E806B0044918D /* AssetSendViewControllerV060.xib in Resources */,
 				81D7E24322E7F5610069CDED /* PTSButtonCell.xib in Resources */,

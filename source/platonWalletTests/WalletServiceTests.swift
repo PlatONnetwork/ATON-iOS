@@ -19,6 +19,44 @@ class WalletServiceTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
     
+    func testGenerateMnemonic() {
+        let result = try? WalletUtil.generateMnemonic(strength: 128)
+        let arr = result?.split(separator: " ")
+        XCTAssertTrue(arr?.count == 12, "mnemonic count should be 12")
+    }
+    
+    func testHdNodeFromSeed() {
+        let mnemonic = "focus coconut spray develop coyote puppy dress enjoy bounce fatigue inner grace"
+        let seed = WalletUtil.seedFromMnemonic(mnemonic, passphrase: "")
+        XCTAssertNotNil(seed, "seed should not be nil")
+        
+        let hdNode = WalletUtil.hdNodeFromSeed(seed)
+        XCTAssertNotNil(hdNode, "hdNode should not be nil")
+    }
+    
+    func testPrivateKeyFromHDNode() {
+        let mnemonic = "focus coconut spray develop coyote puppy dress enjoy bounce fatigue inner grace"
+        let seed = WalletUtil.seedFromMnemonic(mnemonic, passphrase: "")
+        var hdNode = WalletUtil.hdNodeFromSeed(seed)
+        
+        let privateKey = try? WalletUtil.privateKeyFromHDNode(&hdNode, hdPath: HDPATH)
+        XCTAssertNotNil(privateKey, "privateKey should not be nil")
+        let string = String(data: privateKey!, encoding: .utf8)
+        XCTAssertNotNil(string, "privateKey string should not be nil")
+        XCTAssertNotNil(string!.count > 0, "privateKey length shoule be > 0")
+    }
+    
+//    func testPublicKeyFromPrivateKey() {
+//        let privateKey = "627b3df47efbe6918469af7e55c35ef746ad367d3fded6410e45438bf418e37d"
+//        let privateKeyData = privateKey.data(using: .utf8)
+//        
+//        let publicKeyData = WalletUtil.publicKeyFromPrivateKey(privateKeyData!)
+//        XCTAssertNotNil(publicKeyData, "publicKeyData string should not be nil")
+//        publicKeyData.
+//    }
+    
+    
+    
     func testCreatWallet() {
         let expectaion = self.expectation(description: "testCreatWallet")
         

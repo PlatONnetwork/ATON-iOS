@@ -94,13 +94,13 @@ class platon071Tests: XCTestCase {
         DelegatePersistence.add(delegates: [detailDel])
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-            let delegateDetail = DelegateDetail(nodeId: nodeId, stakingBlockNum: "0x1000", delegationBlockNum: "0x1000", nodeName: "", website: "", url: "", nodeStatus: .Active, redeem: "", locked: "", unLocked: "", released: "", sequence: "")
+            let delegateDetail = DelegateDetail(nodeId: nodeId, stakingBlockNum: "0x1000", delegationBlockNum: "0x1000", nodeName: "", website: "", url: "", nodeStatus: .Active, redeem: "", locked: "", unLocked: "", released: "", sequence: "", isInit: false)
             let result = DelegatePersistence.isDeleted(walletAddress, delegateDetail)
             XCTAssert(result, "blocknum should be equal")
         }
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) {
-            let delegateDetail = DelegateDetail(nodeId: nodeId, stakingBlockNum: "0x1001", delegationBlockNum: "0x1001", nodeName: "", website: "", url: "", nodeStatus: .Active, redeem: "", locked: "", unLocked: "", released: "", sequence: "")
+            let delegateDetail = DelegateDetail(nodeId: nodeId, stakingBlockNum: "0x1001", delegationBlockNum: "0x1001", nodeName: "", website: "", url: "", nodeStatus: .Active, redeem: "", locked: "", unLocked: "", released: "", sequence: "", isInit: false)
             let result = DelegatePersistence.isDeleted(walletAddress, delegateDetail)
             XCTAssertFalse(result, "delegateDel should be delete")
         }
