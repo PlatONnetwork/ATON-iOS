@@ -8,6 +8,7 @@
 
 import UIKit
 import LocalAuthentication
+import Localize_Swift
 
 class BiometricsAuthViewController: BaseViewController {
     
@@ -83,7 +84,7 @@ class BiometricsAuthViewController: BaseViewController {
             tips.isHidden = false
             return
         }
-        laCtx.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: " ") { [weak self](success, error) in
+        laCtx.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: Localized("touchid_auth_text")) { [weak self](success, error) in
             
             DispatchQueue.main.async {
                 if success {

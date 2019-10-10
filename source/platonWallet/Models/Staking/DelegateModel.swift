@@ -36,6 +36,7 @@ public struct DelegateDetail: Decodable {
     var unLocked: String?
     var released: String?
     var sequence: String?
+    var isInit: Bool = false
 }
 
 class DelegateDetailDel: Object {
@@ -113,12 +114,16 @@ extension DelegationValue {
 
 // 是否能委托response
 public struct CanDelegation: Decodable {
+    var free: String?
+    var lock: String?
     var canDelegation: Bool = true
     var message: Message?
     
     public enum Message: String, Decodable {
         case amountGreaterZero = "1"
         case nodeExitingOrExited = "2"
+        case nodeAssociationWallet = "3"
+        case balanceZero = "4"
         
         
         public var localizedDesciption: String? {
@@ -127,6 +132,10 @@ public struct CanDelegation: Decodable {
                 return Localized("delegate_error_result_amountzero")
             case .nodeExitingOrExited:
                 return Localized("delegate_error_result_nodeexit")
+            case .nodeAssociationWallet:
+                return Localized("delegate_error_result_associate")
+            case .balanceZero:
+                return Localized("delegate_error_result_balancezero")
             }
         }
     }

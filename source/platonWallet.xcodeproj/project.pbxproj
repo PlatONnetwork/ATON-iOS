@@ -109,8 +109,6 @@
 		81718D8B222F6F6500DB04F6 /* MnemonicTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81718D8A222F6F6500DB04F6 /* MnemonicTextField.swift */; };
 		81718D8D22312F9C00DB04F6 /* MnemonicGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81718D8C22312F9C00DB04F6 /* MnemonicGridView.swift */; };
 		81718D8F22312FB100DB04F6 /* MnemonicGridView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 81718D8E22312FB100DB04F6 /* MnemonicGridView.xib */; };
-		81729BA323274A5C00CBD72F /* JPEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 81729BA023274A5C00CBD72F /* JPEngine.m */; };
-		81729BA423274A5C00CBD72F /* JSPatch.js in Resources */ = {isa = PBXBuildFile; fileRef = 81729BA223274A5C00CBD72F /* JSPatch.js */; };
 		817ABE2221B50C2A00E8030E /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817ABE2121B50C2A00E8030E /* UIApplication+Extensions.swift */; };
 		817ABE7E21B776CC00E8030E /* UITabBar+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817ABE7D21B776CC00E8030E /* UITabBar+Extensions.swift */; };
 		817F88E72174724E0041B6A5 /* CreateIndividualWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817F88E62174724E0041B6A5 /* CreateIndividualWalletViewController.swift */; };
@@ -449,10 +447,6 @@
 		81718D8A222F6F6500DB04F6 /* MnemonicTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MnemonicTextField.swift; sourceTree = "<group>"; };
 		81718D8C22312F9C00DB04F6 /* MnemonicGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MnemonicGridView.swift; sourceTree = "<group>"; };
 		81718D8E22312FB100DB04F6 /* MnemonicGridView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MnemonicGridView.xib; sourceTree = "<group>"; };
-		81729BA023274A5C00CBD72F /* JPEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JPEngine.m; sourceTree = "<group>"; };
-		81729BA123274A5C00CBD72F /* JPEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JPEngine.h; sourceTree = "<group>"; };
-		81729BA223274A5C00CBD72F /* JSPatch.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = JSPatch.js; sourceTree = "<group>"; };
-		81729BA523274AA900CBD72F /* BuglyHotfixConfuse_pch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BuglyHotfixConfuse_pch.h; sourceTree = "<group>"; };
 		81729BA623274C0200CBD72F /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		817ABE2121B50C2A00E8030E /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
 		817ABE7D21B776CC00E8030E /* UITabBar+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITabBar+Extensions.swift"; sourceTree = "<group>"; };
@@ -947,17 +941,6 @@
 			path = views;
 			sourceTree = "<group>";
 		};
-		81729B9F23274A5C00CBD72F /* JSPatch */ = {
-			isa = PBXGroup;
-			children = (
-				81729BA523274AA900CBD72F /* BuglyHotfixConfuse_pch.h */,
-				81729BA023274A5C00CBD72F /* JPEngine.m */,
-				81729BA123274A5C00CBD72F /* JPEngine.h */,
-				81729BA223274A5C00CBD72F /* JSPatch.js */,
-			);
-			path = JSPatch;
-			sourceTree = "<group>";
-		};
 		818A91392181B7D600D03D57 /* Web3 */ = {
 			isa = PBXGroup;
 			children = (
@@ -1183,7 +1166,6 @@
 		81EE99C72175E648008DF8CB /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				81729B9F23274A5C00CBD72F /* JSPatch */,
 				81E2E86321870956008B7504 /* BigUInt+Extenstions.swift */,
 				81EE99C82175E665008DF8CB /* CommonUtilities.swift */,
 				818A913E2181E6BA00D03D57 /* Date+Extenstions.swift */,
@@ -1823,7 +1805,6 @@
 				9A25B9BC2189B0A200B9433A /* WalletEmptyView.xib in Resources */,
 				9AD11DE62181BC6F002CD905 /* VerifyMnemonicViewController.xib in Resources */,
 				9ADB60C0222E88630044918D /* PTextFieldView.xib in Resources */,
-				81729BA423274A5C00CBD72F /* JSPatch.js in Resources */,
 				8156664821C1ECA3000E02D4 /* AboutViewController.xib in Resources */,
 				813191502235FB48002D4A72 /* TSLXIBViewController.xib in Resources */,
 				81C88E0A21746B39005F17F7 /* Main.storyboard in Resources */,
@@ -2149,7 +2130,6 @@
 				812002AC21A3EB390050E1B0 /* SwitchWalletTableViewCell.swift in Sources */,
 				81FCCCFB2179B6710052FC29 /* PersonalViewController.swift in Sources */,
 				9AF9AC182182E04000E97F07 /* PopupDialog.swift in Sources */,
-				81729BA323274A5C00CBD72F /* JPEngine.m in Sources */,
 				81718D8D22312F9C00DB04F6 /* MnemonicGridView.swift in Sources */,
 				81FCCCF22179B6710052FC29 /* AssetNavigationBarView.swift in Sources */,
 				8115BEAC218B1DDA009FFE3B /* TransactionListViewController.swift in Sources */,

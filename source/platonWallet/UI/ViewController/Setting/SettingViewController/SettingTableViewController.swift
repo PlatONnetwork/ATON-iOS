@@ -64,7 +64,7 @@ class SettingTableViewController: BaseViewController, UITableViewDelegate, UITab
         var error: NSError?
         if laCtx.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
             
-            laCtx.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: " ") { (success, error) in
+            laCtx.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: Localized("touchid_auth_text")) { (success, error) in
                 
                 DispatchQueue.main.async {
                     

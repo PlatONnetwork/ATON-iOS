@@ -19,6 +19,7 @@ enum BalanceStatus {
 extension Wallet{
     
     func lockedBalanceAttrForDisplayAsset() -> NSAttributedString? {
+        let balanceVisiable = UserDefaults.standard.object(forKey: AssetHidingStatus) as? Bool
         guard let lockedBalanceString = lockedBalanceDescription() else { return nil }
         
         let attachment = NSTextAttachment()
@@ -31,7 +32,7 @@ extension Wallet{
         let lockedBalanceAttr = NSMutableAttributedString(string: "(")
         lockedBalanceAttr.append(iconAttr)
         
-        lockedBalanceAttr.append(NSAttributedString(string: " " + Localized("wallet_balance_restricted") + lockedBalanceString))
+        lockedBalanceAttr.append(NSAttributedString(string: " " + Localized("wallet_balance_restricted") + (balanceVisiable == true ? "--" : lockedBalanceString)))
         lockedBalanceAttr.append(NSAttributedString(string: ")"))
         return lockedBalanceAttr
     }
@@ -44,6 +45,11 @@ extension Wallet{
         
         WalletService.sharedInstance.updateWalletLockedBalance(self, value: balance.lock ?? "0")
         return balanceStr.ATPSuffix()
+    }
+    
+    func balanceDescriptionForDisplayAsset() -> String {
+        let balanceVisiable = UserDefaults.standard.object(forKey: AssetHidingStatus) as? Bool
+        return balanceVisiable == true ? "--" : balanceDescription()
     }
     
     func balanceDescription() -> String{

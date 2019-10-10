@@ -8,6 +8,7 @@
 
 import Foundation
 import RealmSwift
+import BigInt
 
 /// Support account types.
 public enum WalletType {
@@ -87,6 +88,7 @@ public final class Wallet: Object {
         primaryKeyIdentifier = keystoreObject.address + SettingService.threadSafeGetCurrentNodeURLString()
         key = keystoreObject
         keystorePath = ""
+        nodeURLStr = SettingService.threadSafeGetCurrentNodeURLString()
         self.name = name
         self.avatar = keystoreObject.address.walletAddressLastCharacterAvatar()
     }
@@ -112,4 +114,25 @@ public final class Wallet: Object {
         uuid = key!.address
     }
 
+}
+
+extension Wallet: Comparable {
+    public static func < (lhs: Wallet, rhs: Wallet) -> Bool {
+        let lhsB = AssetService.sharedInstace.balances.first(where: { $0.addr.lowercased() == lhs.address.lowercased() })
+        let rhsB = AssetService.sharedInstace.balances.first(where: { $0.addr.lowercased() == rhs.address.lowercased() })
+        
+        guard
+            let lhsBBigUInt = BigUInt(lhsB?.free ?? "0"),
+            let rhsBBigUInt = BigUInt(rhsB?.free ?? "0") else {
+                return lhs.createTime > rhs.createTime
+        }
+        
+        if lhsBBigUInt == rhsBBigUInt {
+            return lhs.createTime > rhs.createTime
+        }
+        
+        return lhsBBigUInt > rhsBBigUInt
+    }
+    
+    
 }

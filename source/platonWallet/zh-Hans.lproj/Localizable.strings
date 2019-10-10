@@ -856,7 +856,9 @@
 "node_quit_consensus_tip" = "节点已退出共识，投票失败！";
 
 "delegate_error_result_amountzero" = "解除委托金额大于0";
-"delegate_error_result_nodeexit" = "节点已退出或退出中";
+"delegate_error_result_nodeexit" = "委托节点已退出，无法委托";
+"delegate_error_result_associate" = "节点关联的钱包地址，不可参与委托";
+"delegate_error_result_balancezero" = "可用余额为0，无法委托";
 
 "empty_string_my_delegates_left" = "查看验证节点, ";
 "empty_string_my_delegates_right" = "参与委托";
@@ -911,3 +913,5 @@
 
 "offline_signature_invalid" = "无效签名";
 "offline_signature_notmatch_wallet" = "钱包不匹配";
+"touchid_auth_text" = "请验证指纹";
+"touchid_verify_fail" = "指纹识别失败，请再试一次";
