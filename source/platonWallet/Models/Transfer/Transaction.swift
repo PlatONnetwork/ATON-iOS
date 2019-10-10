@@ -171,6 +171,14 @@ enum TransactionStatus {
     }
 }
 
+//-1为处理中，兼容本地缓存的数据，后台只返回1：成功 0：失败
+enum TransactionReceiptStatus: Int {
+    case timeout = -2           //超过24小时，仍然没有回执返回
+    case pending = -1           //处理中
+    case sucess = 1             //转账成功或合约业务成功
+    case businessCodeError = 0 //合约业务错误
+}
+
 class Transaction : Object, Decodable {
     
     @objc dynamic var txhash : String? = ""
@@ -222,7 +230,7 @@ class Transaction : Object, Decodable {
     
     var transactionIndex: Int = 0
     
-    @objc dynamic var txReceiptStatus: Int = -1 //-1为处理中，兼容本地缓存的数据，后台只返回1：成功 0：失败
+    @objc dynamic var txReceiptStatus: Int = TransactionReceiptStatus.pending.rawValue 
     
     //to confirm send or receive
     var senderAddress: String?

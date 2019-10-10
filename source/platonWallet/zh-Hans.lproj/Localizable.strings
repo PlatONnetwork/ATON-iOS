@@ -355,6 +355,7 @@
 "TransactionStatus_voting_title" = "投票";
 "TransactionStatus_voteSucceed_title" = "投票";
 "TransactionStatus_voteFailed_title" = "投票";
+"TransactionStatus_timeout_title" = "交易超时";
 
 "TransactionStatus_pending_desc" = "处理中";
 "TransactionStatus_succeed_desc" = "已完成";
