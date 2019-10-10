@@ -79,12 +79,11 @@ class platon071Tests: XCTestCase {
             expectaion.fulfill()
         })
         
-        waitForExpectations(timeout: 10) { (error) in
-            print(error?.localizedDescription ?? "")
+        wait(for: [expectaion], timeout: 5.0)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            let result = NodePersistence.getAll().filter { $0.nodeId?.lowercased() == nodeId.lowercased() }
+            XCTAssert(result.count > 0, "node should be save")
         }
-        
-        let result = NodePersistence.getAll().filter { $0.nodeId?.lowercased() == nodeId.lowercased() }
-//        XCTAssert(result.count > 0, "node should be save")
     }
     
     func testRemoveDelegateRecord() {
