@@ -1,46 +1,56 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<testsuites name='platonWalletTests.xctest' tests='37' failures='0'>
-  <testsuite name='platonWalletTests.WalletServiceTests' tests='7' failures='0'>
+<testsuites name='platonWalletTests.xctest' tests='47' failures='0'>
+  <testsuite name='platonWalletTests.WalletServiceTests' tests='16' failures='0'>
+    <testcase classname='platonWalletTests.WalletServiceTests' name='testCreateObserveWallet' time='0.027'/>
     <testcase classname='platonWalletTests.WalletServiceTests' name='testCreatWallet' time='4.206'/>
-    <testcase classname='platonWalletTests.WalletServiceTests' name='testExportKeyStore' time='1.788'/>
-    <testcase classname='platonWalletTests.WalletServiceTests' name='testExportMnemonic' time='1.766'/>
-    <testcase classname='platonWalletTests.WalletServiceTests' name='testExportPrivateKey' time='1.653'/>
-    <testcase classname='platonWalletTests.WalletServiceTests' name='testImportKeystore' time='1.777'/>
-    <testcase classname='platonWalletTests.WalletServiceTests' name='testImportMnemonic' time='1.660'/>
-    <testcase classname='platonWalletTests.WalletServiceTests' name='testImportPrivateKey' time='1.651'/>
+    <testcase classname='platonWalletTests.WalletServiceTests' name='testExportKeyStore' time='1.966'/>
+    <testcase classname='platonWalletTests.WalletServiceTests' name='testExportMnemonic' time='1.916'/>
+    <testcase classname='platonWalletTests.WalletServiceTests' name='testExportPrivateKey' time='1.938'/>
+    <testcase classname='platonWalletTests.WalletServiceTests' name='testGenerateMnemonic' time='0.001'/>
+    <testcase classname='platonWalletTests.WalletServiceTests' name='testHdNodeFromSeed' time='0.008'/>
+    <testcase classname='platonWalletTests.WalletServiceTests' name='testImportKeystore' time='5.015'/>
+    <testcase classname='platonWalletTests.WalletServiceTests' name='testImportMnemonic' time='1.724'/>
+    <testcase classname='platonWalletTests.WalletServiceTests' name='testImportPrivateKey' time='1.801'/>
+    <testcase classname='platonWalletTests.WalletServiceTests' name='testKeystoreDecrypt' time='4.016'/>
+    <testcase classname='platonWalletTests.WalletServiceTests' name='testKeystoreInitWithMnemonic' time='1.727'/>
+    <testcase classname='platonWalletTests.WalletServiceTests' name='testKeystoreInitWithPassword' time='3.339'/>
+    <testcase classname='platonWalletTests.WalletServiceTests' name='testObserverWalletName' time='0.021'/>
+    <testcase classname='platonWalletTests.WalletServiceTests' name='testPrivateKeyFromHDNode' time='0.002'/>
+    <testcase classname='platonWalletTests.WalletServiceTests' name='testPublicKeyFromPrivateKey' time='0.002'/>
   </testsuite>
-  <testsuite name='platonWalletTests.platon071Tests' tests='17' failures='0'>
-    <testcase classname='platonWalletTests.platon071Tests' name='testCanDelegateAPI' time='0.018'/>
-    <testcase classname='platonWalletTests.platon071Tests' name='testDelegateDetailAPI' time='0.013'/>
-    <testcase classname='platonWalletTests.platon071Tests' name='testDelegateValueAPI' time='0.009'/>
-    <testcase classname='platonWalletTests.platon071Tests' name='testExample' time='0.000'/>
+  <testsuite name='platonWalletTests.platon071Tests' tests='18' failures='0'>
+    <testcase classname='platonWalletTests.platon071Tests' name='testCanDelegateAPI' time='0.020'/>
+    <testcase classname='platonWalletTests.platon071Tests' name='testDelegateDetailAPI' time='0.009'/>
+    <testcase classname='platonWalletTests.platon071Tests' name='testDelegateValueAPI' time='0.005'/>
+    <testcase classname='platonWalletTests.platon071Tests' name='testExample' time='0.001'/>
     <testcase classname='platonWalletTests.platon071Tests' name='testGetBalanceAPI' time='0.006'/>
-    <testcase classname='platonWalletTests.platon071Tests' name='testGetDelegateRecordAPI' time='0.009'/>
+    <testcase classname='platonWalletTests.platon071Tests' name='testGetDelegateRecordAPI' time='0.010'/>
     <testcase classname='platonWalletTests.platon071Tests' name='testGetNodePersistence' time='0.005'/>
-    <testcase classname='platonWalletTests.platon071Tests' name='testGetTransactionListAPI' time='0.007'/>
-    <testcase classname='platonWalletTests.platon071Tests' name='testMyDelegateAPI' time='0.008'/>
-    <testcase classname='platonWalletTests.platon071Tests' name='testNodeDetailAPI' time='0.006'/>
-    <testcase classname='platonWalletTests.platon071Tests' name='testNodeListAPI' time='0.009'/>
-    <testcase classname='platonWalletTests.platon071Tests' name='testPerformanceExample' time='0.609'/>
+    <testcase classname='platonWalletTests.platon071Tests' name='testGetTransactionListAPI' time='0.009'/>
+    <testcase classname='platonWalletTests.platon071Tests' name='testMyDelegateAPI' time='0.005'/>
+    <testcase classname='platonWalletTests.platon071Tests' name='testNodeDetailAPI' time='0.005'/>
+    <testcase classname='platonWalletTests.platon071Tests' name='testNodeListAPI' time='0.007'/>
+    <testcase classname='platonWalletTests.platon071Tests' name='testPerformanceExample' time='1.027'/>
     <testcase classname='platonWalletTests.platon071Tests' name='testRemoveDelegateRecord' time='0.002'/>
+    <testcase classname='platonWalletTests.platon071Tests' name='testRestrict' time='0.449'/>
     <testcase classname='platonWalletTests.platon071Tests' name='testSaveDelegateRecord' time='0.001'/>
-    <testcase classname='platonWalletTests.platon071Tests' name='testSaveNodePersistence' time='0.004'/>
-    <testcase classname='platonWalletTests.platon071Tests' name='testSaveTransactionPersistence' time='0.001'/>
-    <testcase classname='platonWalletTests.platon071Tests' name='testUpdateTransactionPersistence' time='2.006'/>
+    <testcase classname='platonWalletTests.platon071Tests' name='testSaveNodePersistence' time='0.003'/>
+    <testcase classname='platonWalletTests.platon071Tests' name='testSaveTransactionPersistence' time='0.002'/>
+    <testcase classname='platonWalletTests.platon071Tests' name='testUpdateTransactionPersistence' time='2.007'/>
   </testsuite>
   <testsuite name='platonWalletTests.platonWalletTests' tests='13' failures='0'>
-    <testcase classname='platonWalletTests.platonWalletTests' name='testAddressBook' time='0.001'/>
-    <testcase classname='platonWalletTests.platonWalletTests' name='testBigUintExtensionTest' time='0.003'/>
+    <testcase classname='platonWalletTests.platonWalletTests' name='testAddressBook' time='0.002'/>
+    <testcase classname='platonWalletTests.platonWalletTests' name='testBigUintExtensionTest' time='0.005'/>
     <testcase classname='platonWalletTests.platonWalletTests' name='testDeleteAdddressInfo' time='0.001'/>
     <testcase classname='platonWalletTests.platonWalletTests' name='testGetSelectedNode' time='0.002'/>
     <testcase classname='platonWalletTests.platonWalletTests' name='testIPQuery' time='0.003'/>
-    <testcase classname='platonWalletTests.platonWalletTests' name='testJsonwithbn' time='0.002'/>
-    <testcase classname='platonWalletTests.platonWalletTests' name='testPerformanceExample' time='0.252'/>
+    <testcase classname='platonWalletTests.platonWalletTests' name='testJsonwithbn' time='0.004'/>
+    <testcase classname='platonWalletTests.platonWalletTests' name='testPerformanceExample' time='0.253'/>
     <testcase classname='platonWalletTests.platonWalletTests' name='testPlatonContranctDeploy' time='0.001'/>
     <testcase classname='platonWalletTests.platonWalletTests' name='testRlpDecode' time='0.002'/>
     <testcase classname='platonWalletTests.platonWalletTests' name='testSendAmoutInput' time='0.001'/>
     <testcase classname='platonWalletTests.platonWalletTests' name='testSettingNodes' time='0.001'/>
-    <testcase classname='platonWalletTests.platonWalletTests' name='testUIntUtilTest' time='0.001'/>
+    <testcase classname='platonWalletTests.platonWalletTests' name='testUIntUtilTest' time='0.002'/>
     <testcase classname='platonWalletTests.platonWalletTests' name='testUtil' time='0.003'/>
   </testsuite>
 </testsuites>
