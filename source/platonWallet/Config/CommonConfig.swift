@@ -11,19 +11,25 @@ import Localize_Swift
 
 struct AppConfig {
     struct Keys {
-        //        static let BuglyAppleID = "e8f57be7d2"
-        static let BuglyAppleID = "beeb997bda"
+        static let BuglyAppleID = "e8f57be7d2"
         static let Production_Umeng_key = "5d551ffd3fc1959f6b000113"
         static let Test_Umeng_key = "5d57a9ba570df380e2000b23"
     }
     
+    struct ChainID {
+        static let TEST = "103"
+        static let PRODUCT = "101"
+    }
+    
     struct NodeURL {
         static let DefaultNodeURL_Alpha_V071 = ServerURL.HOST.TESTNET + "/rpc"
+        static let DefaultNodeURL_Alpha_V071_DEV = ServerURL.HOST.DEVNET + "/rpc"
         static let DefaultNodeURL_UAT = ServerURL.HOST.UATNET + "/rpc"
         static let DefaultNodeURL_PRODUCT = ServerURL.HOST.PRODUCTNET + "/rpc"
         
         static let defaultNodesURL = [
             (nodeURL: AppConfig.NodeURL.DefaultNodeURL_Alpha_V071, desc: "SettingsVC_nodeSet_defaultTestNetwork_Amigo_des", isSelected: true)
+//            (nodeURL: AppConfig.NodeURL.DefaultNodeURL_Alpha_V071_DEV, desc: "", isSelected: false)
 //            (nodeURL: DefaultNodeURL_UAT, desc: "SettingsVC_nodeSet_defaultTestNetwork_des", isSelected: true),
 //            (nodeURL: DefaultNodeURL_PRODUCT, desc: "SettingsVC_nodeSet_defaultProductNetwork_des", isSelected: false)
         ]
@@ -82,5 +88,16 @@ struct AppConfig {
         }
         static let PATH = "/app/v0700"
     }
-    
+}
+
+extension String {
+    var chainid: String {
+        switch self {
+        case AppConfig.NodeURL.DefaultNodeURL_Alpha_V071_DEV,
+             AppConfig.NodeURL.DefaultNodeURL_UAT:
+            return AppConfig.ChainID.TEST
+        default:
+            return AppConfig.ChainID.PRODUCT
+        }
+    }
 }

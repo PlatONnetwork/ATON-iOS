@@ -165,7 +165,7 @@ class WalletServiceTests: XCTestCase {
             tempWallet = wallet
             expectaion.fulfill()
         }
-        wait(for: [expectaion], timeout: 5.0)
+        wait(for: [expectaion], timeout: 10.0)
         if let wallet = tempWallet {
             WalletService.sharedInstance.deleteWallet(wallet)
         }
