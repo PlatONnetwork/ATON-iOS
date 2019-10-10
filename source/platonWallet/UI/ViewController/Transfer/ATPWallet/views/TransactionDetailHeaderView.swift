@@ -289,5 +289,11 @@ class TransactionDetailHeaderView: UIView {
             self.pendingLoadingImage.isHidden = true
             statusIconImageVIew.image = UIImage(named: "statusFail")
         }
+        //最后判断超时
+        if tx.txReceiptStatus == TransactionReceiptStatus.timeout.rawValue{
+            statusIconImageVIew.image = UIImage(named: "txTimeout")
+            self.pendingLoadingImage.isHidden = true
+            statusLabel.text = Localized("TransactionStatus_timeout_title")
+        }
     }
 }

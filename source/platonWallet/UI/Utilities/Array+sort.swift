@@ -19,6 +19,15 @@ extension Array{
         })
     }
     
+    mutating func sortByConfirmTimes(){
+        self.sort(by: { (obj1, obj2) -> Bool in
+            if let obj1 = obj1 as? Transaction, let obj2 = obj2 as? Transaction{
+                return obj1.confirmTimes > obj2.confirmTimes
+            }
+            return false
+        })
+    }
+    
     mutating func walletCreateTimeSort(){
         self.sort(by: { (obj1, obj2) -> Bool in
             if let obj1 = obj1 as? Wallet, let obj2 = obj2 as? Wallet{

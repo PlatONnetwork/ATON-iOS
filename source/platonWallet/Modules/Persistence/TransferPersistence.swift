@@ -42,12 +42,17 @@ class TransferPersistence {
                     return
                 }
                 
-                try? realm.write {
-                    transaction.txReceiptStatus = status
-                    transaction.blockNumber = blockNumber
-                    transaction.gasUsed = gasUsed
-                    completion?()
+                do{
+                    try realm.write {
+                        transaction.txReceiptStatus = status
+                        transaction.blockNumber = blockNumber
+                        transaction.gasUsed = gasUsed
+                        completion?()
+                    }
+                }catch let e{
+                    print("fatal error:\(e)")
                 }
+                
             })
         }
     }
@@ -68,18 +73,30 @@ class TransferPersistence {
         return result
     }
     
-    public class func getAllPendingTransactionsByAddress(from: String) -> [Transaction] {
+    
+    public class func getTransactionsByAddress(from: String, status: TransactionReceiptStatus, detached: Bool = false) -> [Transaction] {
         let realm = try! Realm(configuration: RealmHelper.getConfig())
-        let predicate = NSPredicate(format: "(from contains[cd] %@ OR to contains[cd] %@) AND nodeURLStr == %@ AND blockNumber == %@ AND txhash != %@", from, from, SettingService.getCurrentNodeURLString(), "", "")
+        let predicate = NSPredicate(format: "(from contains[cd] %@ OR to contains[cd] %@) AND nodeURLStr == %@ AND blockNumber == %@ AND txhash != %@ AND txReceiptStatus = %d",
+                                    from,
+                                    from,
+                                    SettingService.getCurrentNodeURLString(),
+                                    "",
+                                    "",
+                                    status.rawValue)
         let r = realm.objects(Transaction.self).filter(predicate).sorted(byKeyPath: "createTime", ascending: false)
-        let array = Array(r)
+        var array : [Transaction] = []
+        if detached{
+            array = Array(r).detached
+        }else{
+            array = Array(r)
+        }
         return array
     }
     
     public class func getUnConfirmedTransactions() -> [Transaction] {
         let realm = try! Realm(configuration: RealmHelper.getConfig())
         
-        let predicate = NSPredicate(format: "txhash != %@ AND blockNumber == %@ AND nodeURLStr == %@", "","",SettingService.getCurrentNodeURLString())
+        let predicate = NSPredicate(format: "txhash != %@ AND blockNumber == %@ AND nodeURLStr == %@ AND txReceiptStatus == %d", "","",SettingService.getCurrentNodeURLString(), TransactionReceiptStatus.pending.rawValue)
         let r = realm.objects(Transaction.self).filter(predicate).sorted(byKeyPath: "createTime")
         let array = Array(r)
         return array

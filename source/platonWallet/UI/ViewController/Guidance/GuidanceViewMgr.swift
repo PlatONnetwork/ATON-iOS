@@ -137,7 +137,9 @@ enum GuidancePage {
                 let imgViewWidth = (kUIScreenWidth - leading * 2)
                 let imgViewHeight = (imgViewWidth * size.height)/size.width 
                 let imgViewSize = CGSize(width: imgViewWidth, height: imgViewHeight)
-                make.top.equalToSuperview().offset((75 + UIDevice.notchoffset))
+                //let top : CGFloat= 75
+                let top : CGFloat = 10
+                make.top.equalToSuperview().offset((top + UIDevice.notchoffset))
                 make.centerX.equalToSuperview()
                 make.size.equalTo(imgViewSize)
             }
@@ -149,7 +151,17 @@ enum GuidancePage {
 
 class GuidanceVC: UIViewController {
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if UIScreen.main.nativeBounds.height < 667{
+            let gesture = UITapGestureRecognizer(target: self, action: #selector(self.onTap))
+            self.view.addGestureRecognizer(gesture)
+        }
+    }
+    
     var pageType = GuidancePage.AssetViewControllerV060
+    
+    let dismissButton = UIButton()
     
     override func viewDidLoad() {
         let cnSuffix = "_cn"
@@ -170,14 +182,14 @@ class GuidanceVC: UIViewController {
         self.view.addSubview(imageView)
         self.view.backgroundColor = UIColor.init(rgb: 0x000000, alpha: 0.75)
         
-        let gesture = UITapGestureRecognizer(target: self, action: #selector(onTap))
-        self.view.addGestureRecognizer(gesture)
-        
-        let size = image?.size
-        let leading : CGFloat = 0
-        let imgViewWidth = (kUIScreenWidth - leading * 2)
-        let imgViewHeight = (imgViewWidth * size!.height)/size!.width 
-        let imgViewSize = CGSize(width: imgViewWidth, height: imgViewHeight)
+        imageView.addSubview(dismissButton)
+        dismissButton.backgroundColor = .clear
+        dismissButton.addTarget(self, action: #selector(onTap), for: .touchUpInside)
+        dismissButton.snp.makeConstraints { (make) in
+            make.centerX.equalToSuperview()
+            make.bottom.equalToSuperview()
+            make.size.equalTo(CGSize(width: 100, height: 40))
+        }
         
         imageView.snp.makeConstraints(pageType.getConstraint())
     }

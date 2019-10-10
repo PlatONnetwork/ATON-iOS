@@ -8,6 +8,22 @@
 
 import UIKit
 
+extension UITextField{
+    func disableAutoFilled(){
+        if #available(iOS 12, *) {
+            // iOS 12: Not the best solution, but it works.
+            self.textContentType = .oneTimeCode
+        } else {
+            // iOS 11: Disables the autofill accessory view. 
+            if #available(iOS 10.0, *) {
+                self.textContentType = .init(rawValue: "")
+            } else {
+                // Fallback on earlier versions
+            }
+        }
+    }
+}
+
 extension UIViewController {
     static func initFromNib() -> Self {
         func instanceFromNib<T: UIViewController>() -> T {
@@ -112,6 +128,8 @@ class AlertStylePopViewController: UIViewController,UITextFieldDelegate {
         self.textFieldInput.autocorrectionType = .no
         self.textFieldInput.tintColor = UIColor(rgb: 0x0077FF)
         self.errorLabel.text = ""
+        
+        self.textFieldInput.disableAutoFilled()
         
         switch style {
         case .passwordInput(let walletName)?:
@@ -384,7 +402,7 @@ class AlertStylePopViewController: UIViewController,UITextFieldDelegate {
             viewController.present(self, animated: animated, completion: nil)
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
-                self.contentCenterYConstraint.constant = -30
+                self.contentCenterYConstraint.constant = -66
                 UIView.animate(withDuration: 0.35,
                                delay: 0,
                                usingSpringWithDamping: CGFloat(0.75),
@@ -427,9 +445,9 @@ internal extension AlertStylePopViewController {
     func centerPopup(){
 
         let p2 = self.whiteContentView.convert(self.whiteContentView.bounds, to: self.view)
-        let m = kUIScreenHeight - p2.maxY
-        let whiteContentBottomToKeyboardView = (m - keyboardHeight)// - 30
-        self.contentCenterYConstraint.constant = whiteContentBottomToKeyboardView - 5
+        let accurateCenter = kUIScreenHeight - (CGFloat(0.5) * p2.size.height + keyboardHeight)
+        let offset = accurateCenter - kUIScreenHeight * CGFloat(0.5) - 10
+        self.contentCenterYConstraint.constant = offset
         UIView.animate(withDuration: 0.35,
                        delay: 0,
                        usingSpringWithDamping: CGFloat(0.75),
@@ -448,6 +466,11 @@ internal extension AlertStylePopViewController {
         NotificationCenter.default.addObserver(self,
                                                selector: #selector(keyboardWillShow),
                                                name: UIResponder.keyboardWillShowNotification,
+                                               object: nil)
+        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(keyboardDid),
+                                               name: UIResponder.keyboardDidShowNotification,
                                                object: nil)
         
         NotificationCenter.default.addObserver(self,
@@ -487,8 +510,12 @@ internal extension AlertStylePopViewController {
      - parameter notification: NSNotification
      */
     @objc fileprivate func keyboardWillShow(_ notification: Notification) {
+    }
+    
+    @objc fileprivate func keyboardDid(_ notification: Notification){
         keyboardShown = true
         centerPopup()
+        print("keyboardHeight:\(keyboardHeight)")
     }
     
     /*!
