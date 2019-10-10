@@ -198,7 +198,12 @@ class WalletServiceTests: XCTestCase {
         let mnemonic = "magic human crystal broken busy upper jump broccoli fine raccoon chef radar"
         
         var tempWallet: Wallet?
-        WalletService.sharedInstance.import(mnemonic: mnemonic, walletName: "wallet-import-mnemonic", walletPassword: "123456") { (wallet, _) in
+        WalletService.sharedInstance.import(mnemonic: mnemonic, walletName: "wallet-import-mnemonic", walletPassword: "123456") { (wallet, error) in
+            guard let err = error, err != .walletAlreadyExists else {
+                tempWallet = wallet
+                expectaion.fulfill()
+                return
+            }
             XCTAssertNotNil(wallet, "create wallet shoulde be not nil")
             tempWallet = wallet
             expectaion.fulfill()
@@ -265,7 +270,12 @@ class WalletServiceTests: XCTestCase {
         let mnemonic = "magic human crystal broken busy upper jump broccoli fine raccoon chef radar"
         
         var tempWallet: Wallet?
-        WalletService.sharedInstance.import(mnemonic: mnemonic, walletName: "wallet-export-mnemonic", walletPassword: "123456") { (wallet, _) in
+        WalletService.sharedInstance.import(mnemonic: mnemonic, walletName: "wallet-export-mnemonic", walletPassword: "123456") { (wallet, error) in
+            guard let err = error, err != .walletAlreadyExists else {
+                tempWallet = wallet
+                expectaion.fulfill()
+                return
+            }
             XCTAssertNotNil(wallet, "create wallet shoulde be not nil")
             tempWallet = wallet
             expectaion.fulfill()
