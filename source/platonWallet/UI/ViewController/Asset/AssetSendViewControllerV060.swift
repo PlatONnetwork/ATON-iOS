@@ -34,6 +34,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
     var submitGas : BigUInt?
     var confirmGas : BigUInt?
     var generateQrCode: QrcodeData<[TransactionQrcode]>?
+
     
     lazy var amountView = { () -> ATextFieldView in
         let amountView = ATextFieldView.create(title: "send_amout_colon")
@@ -553,7 +554,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
 //        }
 //        view.layoutIfNeeded()
     }
-    
+
     func updateBalance(balance: BigUInt){
         let ret = balance.divide(by: ETHToWeiMultiplier, round: 8)
         self.balanceLabel.text = ret.balanceFixToDisplay(maxRound: 8).ATPSuffix()

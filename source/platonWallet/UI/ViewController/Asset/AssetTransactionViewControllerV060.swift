@@ -146,7 +146,15 @@ extension AssetTransactionViewControllerV060{
     
     func getPendingTransation() -> [Transaction] {
         guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return [] }
-        var transactions = TransferPersistence.getAllPendingTransactionsByAddress(from: selectedAddress)
+        
+        var transactions = TransferPersistence.getTransactionsByAddress(from: selectedAddress, status: TransactionReceiptStatus.pending)
+        transactions.txSort()
+        return transactions
+    }
+    
+    func getTimeoutTransaction() -> [Transaction] {
+        guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return [] }
+        var transactions = TransferPersistence.getTransactionsByAddress(from: selectedAddress, status: TransactionReceiptStatus.timeout, detached: true)
         transactions.txSort()
         return transactions
     }
@@ -190,12 +198,12 @@ extension AssetTransactionViewControllerV060{
             switch result {
             case .success:
                 // 返回的交易数据条数为0，则显示无加载更多
-                guard let transactions = response as? [Transaction], transactions.count > 0 else {
+                guard let remoteTransactions = response as? [Transaction], remoteTransactions.count > 0 else {
                     self.tableView.mj_footer.isHidden = (self.dataSource[selectedAddress]?.count ?? 0 < self.listSize)
                     return
                 }
                 
-                let _ = transactions.map({ (tx) -> Transaction in
+                let _ = remoteTransactions.map({ (tx) -> Transaction in
                     switch tx.txType! {
                     case .transfer:
                         tx.direction = (selectedAddress.lowercased() == tx.from?.lowercased() ? .Sent : selectedAddress.lowercased() == tx.to?.lowercased() ? .Receive : .unknown)
@@ -210,10 +218,24 @@ extension AssetTransactionViewControllerV060{
                     }
                 })
                 
+                var pendingexcludedTxs : [Transaction] = []
+                pendingexcludedTxs.append(contentsOf: remoteTransactions)
+                
+                let timeouttxs = self.getTimeoutTransaction()
+                if timeouttxs.count > 0{
+                    let mappedTimeoutTxs = timeouttxs.map({ (t) -> Transaction in
+                        //交易时间临时赋值给确认时间，仅用于交易的排序
+                        t.confirmTimes = t.createTime
+                        return t
+                    })
+                    pendingexcludedTxs.append(contentsOf: mappedTimeoutTxs)
+                    pendingexcludedTxs.sortByConfirmTimes()
+                }
+                
                 var pendingTransaction = self.getPendingTransation()
-                let txHashes = transactions.map { $0.txhash!.add0x() }
+                let txHashes = remoteTransactions.map { $0.txhash!.add0x() }
                 pendingTransaction = pendingTransaction.filter { !txHashes.contains($0.txhash!.add0x()) }
-                pendingTransaction.append(contentsOf: transactions)
+                pendingTransaction.append(contentsOf: pendingexcludedTxs)
                 self.dataSource[selectedAddress] = pendingTransaction
                 
                 AssetService.sharedInstace.fetchWalletBalanceForV7(nil)

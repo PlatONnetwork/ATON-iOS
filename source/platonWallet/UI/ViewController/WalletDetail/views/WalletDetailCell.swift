@@ -84,6 +84,24 @@ class WalletDetailCell: UITableViewCell {
         txIcon.image = tx.txTypeIcon
         pendingLayer.isHidden = tx.txTypeIcon != nil
         
+        //最后处理超时状态
+        if tx.txReceiptStatus == TransactionReceiptStatus.timeout.rawValue{
+            guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return }
+            var direction = TransactionDirection.unknown
+            switch tx.txType! {
+            case .transfer:
+                selectedAddress.ishexStringEqual(other: tx.from)
+                direction = (selectedAddress.lowercased() == tx.from?.lowercased() ? .Sent : selectedAddress.lowercased() == tx.to?.lowercased() ? .Receive : .unknown)
+            case .delegateWithdraw,
+                 .stakingWithdraw:
+                direction = .Receive
+            default:
+                direction = .Sent
+            }
+            txIcon.image = Transaction.getTxTypeIconByDirection(direction: direction, txType: tx.txType)
+            pendingLayer.isHidden = true
+        }
+        
         guard (tx.confirmTimes != 0) else{
             guard tx.createTime != 0 else {
                 timeLabel.text = "--:--:-- --:--"
@@ -92,9 +110,7 @@ class WalletDetailCell: UITableViewCell {
             timeLabel.text = Date.toStanderTimeDescrition(millionSecondsTimeStamp: tx.createTime)
             return
         }
-        
         timeLabel.text = Date.toStanderTimeDescrition(millionSecondsTimeStamp: tx.confirmTimes)
-        
     }
     
 }

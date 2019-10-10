@@ -138,7 +138,10 @@ class TransferDetailView: UIView {
             self.pendingLoadingImage.isHidden = true
             statusIconImageVIew.image = UIImage(named: "statusFail")
         }
-
+        if tx.txReceiptStatus == TransactionReceiptStatus.timeout.rawValue{
+            self.pendingLoadingImage.isHidden = true
+            statusIconImageVIew.image = UIImage(named: "txTimeout")
+        }
         
     }
     

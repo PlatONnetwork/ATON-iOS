@@ -362,6 +362,7 @@
 "TransactionStatus_voting_title" = "Voting";
 "TransactionStatus_voteSucceed_title" = "Voted";
 "TransactionStatus_voteFailed_title" = "Voted";
+"TransactionStatus_timeout_title" = "Timeout";
 
 "TransactionStatus_pending_desc" = "Pending";
 "TransactionStatus_succeed_desc" = "Success";

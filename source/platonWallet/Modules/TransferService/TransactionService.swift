@@ -76,6 +76,16 @@ class TransactionService : BaseService{
             let data = try! EthereumData(ethereumValue: byteCode)
             let newItem = Transaction.init(value: item)
             newItem.txhash = item.txhash
+            var getReceiptTimeout = false
+            
+            let cdata = Date(milliseconds: UInt64(newItem.createTime))
+            
+            let expiredDate = Date(timeInterval: TimeInterval(24 * 3600), since: cdata)
+            let nowData = Date()
+            
+            if nowData.compare(expiredDate) == .orderedDescending{
+                getReceiptTimeout = true
+            }
             
             web3.platon.getTransactionReceipt(transactionHash: data) { (txResp) in
                 switch txResp.status{
@@ -84,7 +94,8 @@ class TransactionService : BaseService{
                         guard let txhash = newItem.txhash else { return }
                         let blockNumber = String(txResp.result??.blockNumber.quantity ?? BigUInt(0))
                         let gasUsed = String(txResp.result??.gasUsed.quantity ?? BigUInt(0))
-                        TransferPersistence.update(txhash: txhash, status: 1, blockNumber: blockNumber, gasUsed: gasUsed, {
+                        let rcpStatus = TransactionReceiptStatus.sucess.rawValue
+                        TransferPersistence.update(txhash: txhash, status: rcpStatus, blockNumber: blockNumber, gasUsed: gasUsed, {
                             DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
                                 NotificationCenter.default.post(name: Notification.Name.ATON.DidUpdateTransactionByHash, object: txhash)
                             })
@@ -100,11 +111,13 @@ class TransactionService : BaseService{
                             return
                         }
                         DispatchQueue.main.async {
-                            guard let status = dic?["Code"] as? Int else { return }
+                            guard let businessCode = dic?["Code"] as? Int else { return }
                             guard let txhash = newItem.txhash else { return }
                             let blockNumber = String(receipt.blockNumber.quantity)
                             let gasUsed = String(receipt.gasUsed.quantity)
-                            TransferPersistence.update(txhash: txhash, status: status == 0 ? 1 : 0, blockNumber: blockNumber, gasUsed: gasUsed, {
+                            let rcpSuccessStatus = TransactionReceiptStatus.sucess.rawValue
+                            let businessError = TransactionReceiptStatus.businessCodeError.rawValue
+                            TransferPersistence.update(txhash: txhash, status: businessCode == 0 ? rcpSuccessStatus : businessError, blockNumber: blockNumber, gasUsed: gasUsed, {
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
                                     NotificationCenter.default.post(name: Notification.Name.ATON.DidUpdateTransactionByHash, object: txhash)
                                     
@@ -113,8 +126,23 @@ class TransactionService : BaseService{
                         }
                     }
                     
-                case .failure(_):
-                    do{}
+                case .failure(let err):
+                    if err.code == Web3Error.emptyResponse.code && getReceiptTimeout{
+                        //超过24小时后通过hash取回执返回空（非网络错误），就认为是超时
+                        DispatchQueue.main.async {
+                            let timeoutCode = TransactionReceiptStatus.timeout.rawValue
+                            guard let txhash = newItem.txhash else { return }
+                            TransferPersistence.update(txhash: txhash, status: timeoutCode, blockNumber: "", gasUsed: newItem.gasUsed ?? "", {
+                                DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+                                    NotificationCenter.default.post(name: Notification.Name.ATON.DidUpdateTransactionByHash, object: txhash)
+                                    
+                                })
+                            })
+                        }
+                    }else{
+                        //network error
+                    }
+                    
                 }
             }
         }

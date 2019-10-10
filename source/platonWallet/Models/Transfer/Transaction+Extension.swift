@@ -126,6 +126,13 @@ extension Transaction {
         }
     }
     
+    static func getTxTypeIconByDirection(direction: TransactionDirection, txType: TxType?) -> UIImage?{
+        let tx = Transaction()
+        tx.direction = direction
+        tx.txType = txType
+        return tx.txTypeIcon
+    }
+    
     var txTypeIcon: UIImage? {
         switch direction {
         case .Receive:
