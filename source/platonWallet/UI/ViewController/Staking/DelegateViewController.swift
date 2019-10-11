@@ -306,7 +306,7 @@ extension DelegateViewController {
                     let transactionData = TransactionQrcode(amount: self.currentAmount.description, chainId: web3.properties.chainId, from: walletObject.currentWallet.address, to: PlatonConfig.ContractAddress.stakingContractAddress, gasLimit: funcType.gas.description, gasPrice: gasPrice, nonce: nonceString, typ: typ, nodeId: nodeId, nodeName: self.currentNode?.name, sender: walletObject.currentWallet.address, stakingBlockNum: nil, type: funcType.typeValue)
                     
                     
-                    let qrcodeData = QrcodeData(qrCodeType: 0, qrCodeData: [transactionData], timestamp: Int(Date().timeIntervalSince1970 * 1000))
+                    let qrcodeData = QrcodeData(qrCodeType: 0, qrCodeData: [transactionData], timestamp: Int(Date().timeIntervalSince1970 * 1000), chainid: web3.chainId)
                     guard
                         let data = try? JSONEncoder().encode(qrcodeData),
                         let content = String(data: data, encoding: .utf8) else { return }
@@ -382,7 +382,7 @@ extension DelegateViewController {
             self?.doShowScanController(completion: { (data) in
                 guard
                     let qrcode = data,
-                    let signedDatas = qrcode.qrCodeData?.signedData else { return }
+                    let signedDatas = qrcode.qrCodeData?.signedData, qrcode.chainid == web3.chainId else { return }
                 if qrcode.timestamp != self?.generateQrCode?.timestamp {
                     self?.showErrorMessage(text: Localized("offline_signature_invalid"), delay: 2.0)
                     return

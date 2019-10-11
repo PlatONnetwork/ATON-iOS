@@ -405,7 +405,7 @@ extension WithDrawViewController {
             }
         }
         
-        let qrcodeData = QrcodeData(qrCodeType: 0, qrCodeData: qrcodeArr, timestamp: Int(Date().timeIntervalSince1970 * 1000))
+        let qrcodeData = QrcodeData(qrCodeType: 0, qrCodeData: qrcodeArr, timestamp: Int(Date().timeIntervalSince1970 * 1000), chainid: web3.chainId)
         guard
             let data = try? JSONEncoder().encode(qrcodeData),
             let content = String(data: data, encoding: .utf8) else { return }
@@ -442,7 +442,7 @@ extension WithDrawViewController {
             self?.doShowScanController(completion: { (data) in
                 guard
                     let qrcode = data,
-                    let signedDatas = qrcode.qrCodeData?.signedData else { return }
+                    let signedDatas = qrcode.qrCodeData?.signedData, qrcode.chainid == web3.chainId else { return }
                 if qrcode.timestamp != self?.generateQrCode?.timestamp {
                     self?.showErrorMessage(text: Localized("offline_signature_invalid"), delay: 2.0)
                     return
