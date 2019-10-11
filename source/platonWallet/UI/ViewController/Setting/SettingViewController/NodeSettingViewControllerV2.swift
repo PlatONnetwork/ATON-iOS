@@ -197,8 +197,9 @@ class NodeSettingViewControllerV2: BaseViewController {
     }
     
     @objc func onRigthItemClick(_ sender: UIBarButtonItem) {
+        view.endEditing(true)
         
-        view.becomeFirstResponder()
+//        view.becomeFirstResponder()
         if NodeStoreService.share.isEdit { //save
             do{
                 try NodeStoreService.share.save()
@@ -260,21 +261,20 @@ extension NodeSettingViewControllerV2: UITableViewDelegate, UITableViewDataSourc
         
         let didSelectNode = NodeStoreService.share.nodeList[indexPath.row]
         
-        if didSelectNode.id == NodeStoreService.share.selectedNodeBeforeEdit?.id {
+        // 当前点击的节点已经为选中状态，则不往下
+        guard !didSelectNode.isSelected else {
             return
         }
         
         showLoadingHUD()
-        
         Web3Helper.switchRpcURL(didSelectNode.nodeURLStr, succeedCb: { [weak self] in
             
             guard let self = self else {
                 return
             }
             self.hideLoadingHUD()
-            self.showMessage(text: Localized("SettingsVC_nodeSet_switchSuccess_tips"))
             NodeStoreService.share.switchNode(node: didSelectNode)
-            
+            self.showMessage(text: Localized("SettingsVC_nodeSet_switchSuccess_tips"))
         }) { [weak self] in
             
             self?.hideLoadingHUD()
@@ -285,7 +285,7 @@ extension NodeSettingViewControllerV2: UITableViewDelegate, UITableViewDataSourc
     
     //MARK: NodeSettingTableViewCellDelegate
     func deleteNode(_ cell: NodeSettingTableViewCell) {
-        guard let indexPath = tableView .indexPath(for: cell) else {
+        guard let indexPath = tableView.indexPath(for: cell) else {
             return
         }
         NodeStoreService.share.delete(index: indexPath.row)
@@ -293,14 +293,13 @@ extension NodeSettingViewControllerV2: UITableViewDelegate, UITableViewDataSourc
     }
     
     func editNode(_ cell:NodeSettingTableViewCell) {
-        guard let indexPath = tableView .indexPath(for: cell) else {
+        guard let indexPath = tableView.indexPath(for: cell) else {
             return
         }
         
         if indexPath.row >= NodeStoreService.share.editingNodeList.count {
             return
         }
-        
-        NodeStoreService.share.editingNodeList[indexPath.row].nodeURLStr = cell.nodeTF.text!
+        NodeStoreService.share.edit(index: indexPath.row, newText: cell.nodeTF.text!)
     }
 }
