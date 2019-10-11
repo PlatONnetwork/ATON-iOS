@@ -7,9 +7,9 @@
 <body>
 <header><div class="row"><a href="index.html"><img src="logo.jpg" alt="Slather logo"></a></div></header><div class="row"><div id="reports">
 <h2 class="cov_title">
-<span>Coverage for "ByteHelper.swift" : </span><span class="cov_low">35.62%</span>
+<span>Coverage for "ByteHelper.swift" : </span><span class="cov_low">64.38%</span>
 </h2>
-<h4 class="cov_subtitle">(26 of 73 relevant lines covered)</h4>
+<h4 class="cov_subtitle">(47 of 73 relevant lines covered)</h4>
 <h4 class="cov_filepath">platonWallet/Vendors/BytesHelper/ByteHelper.swift</h4>
 <table class="source_code">
 <tr class="never">
@@ -92,65 +92,65 @@
 <td class="src"><pre><code class="objc">    /// - parameter hex: The hex string without any spaces; should only have [0-9A-Fa-f].</code></pre></td>
 <td class="coverage"></td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">17</td>
 <td class="src"><pre><code class="objc">    init?(hexStr: String) {</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">1x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">18</td>
 <td class="src"><pre><code class="objc">        if hexStr.count % 2 != 0 {</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">1x</td>
 </tr>
 <tr class="missed">
 <td class="num">19</td>
 <td class="src"><pre><code class="objc">            return nil</code></pre></td>
 <td class="coverage">!</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">20</td>
 <td class="src"><pre><code class="objc">        }</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">1x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">21</td>
 <td class="src"><pre><code class="objc">        </code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">1x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">22</td>
 <td class="src"><pre><code class="objc">        let hexArray = Array(hexStr)</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">1x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">23</td>
 <td class="src"><pre><code class="objc">        var bytes: [UInt8] = []</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">1x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">24</td>
 <td class="src"><pre><code class="objc">        </code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">1x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">25</td>
 <td class="src"><pre><code class="objc">        for index in stride(from: 0, to: hexArray.count, by: 2) {</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">1x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">26</td>
 <td class="src"><pre><code class="objc">            guard let byte = UInt8("\(hexArray[index])\(hexArray[index + 1])", radix: 16) else {</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">1x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">27</td>
 <td class="src"><pre><code class="objc">                return nil</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">1x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">28</td>
 <td class="src"><pre><code class="objc">            }</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">1x</td>
 </tr>
 <tr class="missed">
 <td class="num">29</td>
@@ -402,25 +402,25 @@
 <td class="src"><pre><code class="objc">    /// - parameter data: The unsigned integer to be appended.</code></pre></td>
 <td class="coverage"></td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">79</td>
 <td class="src"><pre><code class="objc">    mutating func append(unsignedInteger data: UInt32, bigEndian: Bool = true) {</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">1x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">80</td>
 <td class="src"><pre><code class="objc">        var data = bigEndian ? data.bigEndian : data.littleEndian</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">1x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">81</td>
 <td class="src"><pre><code class="objc">        self.append(UnsafeBufferPointer(start: &amp;data, count: 1))</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">1x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">82</td>
 <td class="src"><pre><code class="objc">    }</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">1x</td>
 </tr>
 <tr class="never">
 <td class="num">83</td>
@@ -512,35 +512,35 @@
 <td class="src"><pre><code class="objc">    </code></pre></td>
 <td class="coverage"></td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">101</td>
 <td class="src"><pre><code class="objc">    static func newData(uint32data: UInt32, bigEndian: Bool = true) -&gt; Data{</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">1x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">102</td>
 <td class="src"><pre><code class="objc">        let data = bigEndian ? uint32data.bigEndian : uint32data.littleEndian</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">1x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">103</td>
 <td class="src"><pre><code class="objc">        var ret = Data(count: 0)</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">1x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">104</td>
 <td class="src"><pre><code class="objc">        ret.append(unsignedInteger: data)</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">1x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">105</td>
 <td class="src"><pre><code class="objc">        return ret</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">1x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">106</td>
 <td class="src"><pre><code class="objc">    }</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">1x</td>
 </tr>
 <tr class="never">
 <td class="num">107</td>
