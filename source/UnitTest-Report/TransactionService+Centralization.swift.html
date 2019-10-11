@@ -120,127 +120,127 @@
 <tr class="covered">
 <td class="num">22</td>
 <td class="src"><pre><code class="objc">        completion: PlatonCommonCompletion?) {</code></pre></td>
-<td class="coverage">25x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="covered">
 <td class="num">23</td>
 <td class="src"><pre><code class="objc">        var completion = completion</code></pre></td>
-<td class="coverage">25x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="covered">
 <td class="num">24</td>
 <td class="src"><pre><code class="objc">        var parameters : Dictionary&lt;String,Any&gt; = [:]</code></pre></td>
-<td class="coverage">25x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="covered">
 <td class="num">25</td>
 <td class="src"><pre><code class="objc">        </code></pre></td>
-<td class="coverage">25x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="covered">
 <td class="num">26</td>
 <td class="src"><pre><code class="objc">        parameters["walletAddrs"] = addresses</code></pre></td>
-<td class="coverage">25x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="covered">
 <td class="num">27</td>
 <td class="src"><pre><code class="objc">        parameters["beginSequence"] = beginSequence</code></pre></td>
-<td class="coverage">25x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="covered">
 <td class="num">28</td>
 <td class="src"><pre><code class="objc">        parameters["listSize"] = listSize</code></pre></td>
-<td class="coverage">25x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="covered">
 <td class="num">29</td>
 <td class="src"><pre><code class="objc">        parameters["direction"] = direction</code></pre></td>
-<td class="coverage">25x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="covered">
 <td class="num">30</td>
 <td class="src"><pre><code class="objc">        </code></pre></td>
-<td class="coverage">25x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="covered">
 <td class="num">31</td>
 <td class="src"><pre><code class="objc">        let url = SettingService.getCentralizationURL() + "/transaction/list"</code></pre></td>
-<td class="coverage">25x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="covered">
 <td class="num">32</td>
 <td class="src"><pre><code class="objc">        </code></pre></td>
-<td class="coverage">25x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="covered">
 <td class="num">33</td>
 <td class="src"><pre><code class="objc">        var request = URLRequest(url: try! url.asURL())</code></pre></td>
-<td class="coverage">25x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="covered">
 <td class="num">34</td>
 <td class="src"><pre><code class="objc">        request.httpBody = try! JSONSerialization.data(withJSONObject: parameters)</code></pre></td>
-<td class="coverage">25x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="covered">
 <td class="num">35</td>
 <td class="src"><pre><code class="objc">        request.httpMethod = "POST"</code></pre></td>
-<td class="coverage">25x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="covered">
 <td class="num">36</td>
 <td class="src"><pre><code class="objc">        request.timeoutInterval = requestTimeout</code></pre></td>
-<td class="coverage">25x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="covered">
 <td class="num">37</td>
 <td class="src"><pre><code class="objc">        request.setValue("application/json", forHTTPHeaderField: "Content-Type")</code></pre></td>
-<td class="coverage">25x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="covered">
 <td class="num">38</td>
 <td class="src"><pre><code class="objc">        </code></pre></td>
-<td class="coverage">25x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="covered">
 <td class="num">39</td>
 <td class="src"><pre><code class="objc">        Alamofire.request(request).responseData { response in</code></pre></td>
-<td class="coverage">25x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="covered">
 <td class="num">40</td>
 <td class="src"><pre><code class="objc">            switch response.result {</code></pre></td>
-<td class="coverage">25x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="covered">
 <td class="num">41</td>
 <td class="src"><pre><code class="objc">            case .success(let data):</code></pre></td>
-<td class="coverage">25x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="covered">
 <td class="num">42</td>
 <td class="src"><pre><code class="objc">                do {</code></pre></td>
-<td class="coverage">25x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="covered">
 <td class="num">43</td>
 <td class="src"><pre><code class="objc">                    let decoder = JSONDecoder()</code></pre></td>
-<td class="coverage">25x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="covered">
 <td class="num">44</td>
 <td class="src"><pre><code class="objc">                    let response = try decoder.decode(TransactionResponse.self, from: data)</code></pre></td>
-<td class="coverage">25x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="covered">
 <td class="num">45</td>
 <td class="src"><pre><code class="objc">                    self.successCompletionOnMain(obj: response.data as AnyObject, completion: &amp;completion)</code></pre></td>
-<td class="coverage">25x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="covered">
 <td class="num">46</td>
 <td class="src"><pre><code class="objc">                } catch let err {</code></pre></td>
-<td class="coverage">25x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="missed">
 <td class="num">47</td>
@@ -255,12 +255,12 @@
 <tr class="covered">
 <td class="num">49</td>
 <td class="src"><pre><code class="objc">                }</code></pre></td>
-<td class="coverage">25x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="covered">
 <td class="num">50</td>
 <td class="src"><pre><code class="objc">            case .failure(let error):</code></pre></td>
-<td class="coverage">25x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="missed">
 <td class="num">51</td>
@@ -275,17 +275,17 @@
 <tr class="covered">
 <td class="num">53</td>
 <td class="src"><pre><code class="objc">            }</code></pre></td>
-<td class="coverage">25x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="covered">
 <td class="num">54</td>
 <td class="src"><pre><code class="objc">        }</code></pre></td>
-<td class="coverage">25x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="covered">
 <td class="num">55</td>
 <td class="src"><pre><code class="objc">    }</code></pre></td>
-<td class="coverage">25x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="never">
 <td class="num">56</td>

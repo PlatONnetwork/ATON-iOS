@@ -7,9 +7,9 @@
 <body>
 <header><div class="row"><a href="index.html"><img src="logo.jpg" alt="Slather logo"></a></div></header><div class="row"><div id="reports">
 <h2 class="cov_title">
-<span>Coverage for "NodeInfo.swift" : </span><span class="cov_low">9.68%</span>
+<span>Coverage for "NodeInfo.swift" : </span><span class="cov_low">21.43%</span>
 </h2>
-<h4 class="cov_subtitle">(3 of 31 relevant lines covered)</h4>
+<h4 class="cov_subtitle">(6 of 28 relevant lines covered)</h4>
 <h4 class="cov_filepath">platonWallet/Models/Setting/NodeInfo.swift</h4>
 <table class="source_code">
 <tr class="never">
@@ -69,216 +69,266 @@
 </tr>
 <tr class="never">
 <td class="num">12</td>
-<td class="src"><pre><code class="objc">class NodeInfo: Object {</code></pre></td>
+<td class="src"><pre><code class="objc">enum NodeActionStatus {</code></pre></td>
 <td class="coverage"></td>
 </tr>
 <tr class="never">
 <td class="num">13</td>
-<td class="src"><pre><code class="objc">    </code></pre></td>
+<td class="src"><pre><code class="objc">    case none</code></pre></td>
 <td class="coverage"></td>
 </tr>
 <tr class="never">
 <td class="num">14</td>
-<td class="src"><pre><code class="objc">    @objc dynamic private(set) var id: Int = 0</code></pre></td>
+<td class="src"><pre><code class="objc">    case create</code></pre></td>
 <td class="coverage"></td>
 </tr>
 <tr class="never">
 <td class="num">15</td>
-<td class="src"><pre><code class="objc">    @objc dynamic var nodeURLStr: String = ""</code></pre></td>
+<td class="src"><pre><code class="objc">    case edit</code></pre></td>
 <td class="coverage"></td>
 </tr>
 <tr class="never">
 <td class="num">16</td>
-<td class="src"><pre><code class="objc">    @objc dynamic var isDefault: Bool = false </code></pre></td>
+<td class="src"><pre><code class="objc">    case delete</code></pre></td>
 <td class="coverage"></td>
 </tr>
 <tr class="never">
 <td class="num">17</td>
-<td class="src"><pre><code class="objc">    @objc dynamic var isSelected: Bool = false</code></pre></td>
+<td class="src"><pre><code class="objc">}</code></pre></td>
 <td class="coverage"></td>
 </tr>
 <tr class="never">
 <td class="num">18</td>
-<td class="src"><pre><code class="objc">    @objc dynamic var desc: String = ""</code></pre></td>
+<td class="src"><pre><code class="objc"></code></pre></td>
 <td class="coverage"></td>
 </tr>
 <tr class="never">
 <td class="num">19</td>
+<td class="src"><pre><code class="objc">class NodeInfo: Object {</code></pre></td>
+<td class="coverage"></td>
+</tr>
+<tr class="never">
+<td class="num">20</td>
+<td class="src"><pre><code class="objc">    </code></pre></td>
+<td class="coverage"></td>
+</tr>
+<tr class="never">
+<td class="num">21</td>
+<td class="src"><pre><code class="objc">    @objc dynamic var id: String = UUID().uuidString</code></pre></td>
+<td class="coverage"></td>
+</tr>
+<tr class="never">
+<td class="num">22</td>
+<td class="src"><pre><code class="objc">    @objc dynamic var nodeURLStr: String = ""</code></pre></td>
+<td class="coverage"></td>
+</tr>
+<tr class="never">
+<td class="num">23</td>
+<td class="src"><pre><code class="objc">    @objc dynamic var isDefault: Bool = false </code></pre></td>
+<td class="coverage"></td>
+</tr>
+<tr class="never">
+<td class="num">24</td>
+<td class="src"><pre><code class="objc">    @objc dynamic var isSelected: Bool = false</code></pre></td>
+<td class="coverage"></td>
+</tr>
+<tr class="never">
+<td class="num">25</td>
+<td class="src"><pre><code class="objc">    @objc dynamic var desc: String = ""</code></pre></td>
+<td class="coverage"></td>
+</tr>
+<tr class="never">
+<td class="num">26</td>
+<td class="src"><pre><code class="objc">    </code></pre></td>
+<td class="coverage"></td>
+</tr>
+<tr class="never">
+<td class="num">27</td>
+<td class="src"><pre><code class="objc">    var status: NodeActionStatus = .none</code></pre></td>
+<td class="coverage"></td>
+</tr>
+<tr class="never">
+<td class="num">28</td>
 <td class="src"><pre><code class="objc">    </code></pre></td>
 <td class="coverage"></td>
 </tr>
 <tr class="covered">
-<td class="num">20</td>
+<td class="num">29</td>
 <td class="src"><pre><code class="objc">    override public static func primaryKey() -&gt; String? {</code></pre></td>
 <td class="coverage">1x</td>
 </tr>
 <tr class="covered">
-<td class="num">21</td>
+<td class="num">30</td>
 <td class="src"><pre><code class="objc">        return "id"</code></pre></td>
 <td class="coverage">1x</td>
 </tr>
 <tr class="covered">
-<td class="num">22</td>
+<td class="num">31</td>
 <td class="src"><pre><code class="objc">    }</code></pre></td>
 <td class="coverage">1x</td>
 </tr>
 <tr class="never">
-<td class="num">23</td>
+<td class="num">32</td>
+<td class="src"><pre><code class="objc">    </code></pre></td>
+<td class="coverage"></td>
+</tr>
+<tr class="covered">
+<td class="num">33</td>
+<td class="src"><pre><code class="objc">    override public static func ignoredProperties() -&gt;[String] {</code></pre></td>
+<td class="coverage">2x</td>
+</tr>
+<tr class="covered">
+<td class="num">34</td>
+<td class="src"><pre><code class="objc">        return ["status"]</code></pre></td>
+<td class="coverage">2x</td>
+</tr>
+<tr class="covered">
+<td class="num">35</td>
+<td class="src"><pre><code class="objc">    }</code></pre></td>
+<td class="coverage">2x</td>
+</tr>
+<tr class="never">
+<td class="num">36</td>
 <td class="src"><pre><code class="objc">    </code></pre></td>
 <td class="coverage"></td>
 </tr>
 <tr class="missed">
-<td class="num">24</td>
+<td class="num">37</td>
 <td class="src"><pre><code class="objc">    convenience init(nodeURLStr: String = "", desc: String = "", isSelected: Bool = false, isDefault: Bool = false) {</code></pre></td>
 <td class="coverage">!</td>
 </tr>
 <tr class="missed">
-<td class="num">25</td>
-<td class="src"><pre><code class="objc">        </code></pre></td>
-<td class="coverage">!</td>
-</tr>
-<tr class="missed">
-<td class="num">26</td>
-<td class="src"><pre><code class="objc">        self.init()</code></pre></td>
-<td class="coverage">!</td>
-</tr>
-<tr class="missed">
-<td class="num">27</td>
-<td class="src"><pre><code class="objc">        self.id = NodeInfo.autoIncrementId()</code></pre></td>
-<td class="coverage">!</td>
-</tr>
-<tr class="missed">
-<td class="num">28</td>
-<td class="src"><pre><code class="objc">        self.nodeURLStr = nodeURLStr</code></pre></td>
-<td class="coverage">!</td>
-</tr>
-<tr class="missed">
-<td class="num">29</td>
-<td class="src"><pre><code class="objc">        self.desc = desc</code></pre></td>
-<td class="coverage">!</td>
-</tr>
-<tr class="missed">
-<td class="num">30</td>
-<td class="src"><pre><code class="objc">        self.isSelected = isSelected</code></pre></td>
-<td class="coverage">!</td>
-</tr>
-<tr class="missed">
-<td class="num">31</td>
-<td class="src"><pre><code class="objc">        self.isDefault = isDefault</code></pre></td>
-<td class="coverage">!</td>
-</tr>
-<tr class="missed">
-<td class="num">32</td>
-<td class="src"><pre><code class="objc">    }</code></pre></td>
-<td class="coverage">!</td>
-</tr>
-<tr class="never">
-<td class="num">33</td>
-<td class="src"><pre><code class="objc">    </code></pre></td>
-<td class="coverage"></td>
-</tr>
-<tr class="missed">
-<td class="num">34</td>
-<td class="src"><pre><code class="objc">    private static func autoIncrementId() -&gt; Int {</code></pre></td>
-<td class="coverage">!</td>
-</tr>
-<tr class="missed">
-<td class="num">35</td>
-<td class="src"><pre><code class="objc">        let realm = try! Realm(configuration: RealmHelper.getConfig())</code></pre></td>
-<td class="coverage">!</td>
-</tr>
-<tr class="missed">
-<td class="num">36</td>
-<td class="src"><pre><code class="objc">        let res = realm.objects(self).sorted(byKeyPath: "id")</code></pre></td>
-<td class="coverage">!</td>
-</tr>
-<tr class="missed">
-<td class="num">37</td>
-<td class="src"><pre><code class="objc">        if res.count &gt; 0 {</code></pre></td>
-<td class="coverage">!</td>
-</tr>
-<tr class="missed">
 <td class="num">38</td>
-<td class="src"><pre><code class="objc">            return res.last!.id + 1</code></pre></td>
+<td class="src"><pre><code class="objc">        </code></pre></td>
 <td class="coverage">!</td>
 </tr>
 <tr class="missed">
 <td class="num">39</td>
-<td class="src"><pre><code class="objc">        } else {</code></pre></td>
+<td class="src"><pre><code class="objc">        self.init()</code></pre></td>
 <td class="coverage">!</td>
 </tr>
 <tr class="missed">
 <td class="num">40</td>
-<td class="src"><pre><code class="objc">            return 1</code></pre></td>
+<td class="src"><pre><code class="objc">        self.id = UUID().uuidString</code></pre></td>
 <td class="coverage">!</td>
 </tr>
 <tr class="missed">
 <td class="num">41</td>
-<td class="src"><pre><code class="objc">        }</code></pre></td>
+<td class="src"><pre><code class="objc">        self.nodeURLStr = nodeURLStr</code></pre></td>
 <td class="coverage">!</td>
 </tr>
 <tr class="missed">
 <td class="num">42</td>
-<td class="src"><pre><code class="objc">    }</code></pre></td>
+<td class="src"><pre><code class="objc">        self.desc = desc</code></pre></td>
 <td class="coverage">!</td>
 </tr>
-<tr class="never">
+<tr class="missed">
 <td class="num">43</td>
-<td class="src"><pre><code class="objc">    </code></pre></td>
-<td class="coverage"></td>
+<td class="src"><pre><code class="objc">        self.isSelected = isSelected</code></pre></td>
+<td class="coverage">!</td>
 </tr>
 <tr class="missed">
 <td class="num">44</td>
-<td class="src"><pre><code class="objc">    override func copy() -&gt; Any {</code></pre></td>
+<td class="src"><pre><code class="objc">        self.isDefault = isDefault</code></pre></td>
 <td class="coverage">!</td>
 </tr>
 <tr class="missed">
 <td class="num">45</td>
-<td class="src"><pre><code class="objc">        let newOne = NodeInfo()</code></pre></td>
-<td class="coverage">!</td>
-</tr>
-<tr class="missed">
-<td class="num">46</td>
-<td class="src"><pre><code class="objc">        newOne.id = self.id</code></pre></td>
-<td class="coverage">!</td>
-</tr>
-<tr class="missed">
-<td class="num">47</td>
-<td class="src"><pre><code class="objc">        newOne.nodeURLStr = self.nodeURLStr</code></pre></td>
-<td class="coverage">!</td>
-</tr>
-<tr class="missed">
-<td class="num">48</td>
-<td class="src"><pre><code class="objc">        newOne.desc = self.desc</code></pre></td>
-<td class="coverage">!</td>
-</tr>
-<tr class="missed">
-<td class="num">49</td>
-<td class="src"><pre><code class="objc">        newOne.isDefault = self.isDefault</code></pre></td>
-<td class="coverage">!</td>
-</tr>
-<tr class="missed">
-<td class="num">50</td>
-<td class="src"><pre><code class="objc">        newOne.isSelected = self.isSelected</code></pre></td>
-<td class="coverage">!</td>
-</tr>
-<tr class="missed">
-<td class="num">51</td>
-<td class="src"><pre><code class="objc">        </code></pre></td>
-<td class="coverage">!</td>
-</tr>
-<tr class="missed">
-<td class="num">52</td>
-<td class="src"><pre><code class="objc">        return newOne</code></pre></td>
-<td class="coverage">!</td>
-</tr>
-<tr class="missed">
-<td class="num">53</td>
 <td class="src"><pre><code class="objc">    }</code></pre></td>
 <td class="coverage">!</td>
 </tr>
 <tr class="never">
+<td class="num">46</td>
+<td class="src"><pre><code class="objc">    </code></pre></td>
+<td class="coverage"></td>
+</tr>
+<tr class="missed">
+<td class="num">47</td>
+<td class="src"><pre><code class="objc">    override func copy() -&gt; Any {</code></pre></td>
+<td class="coverage">!</td>
+</tr>
+<tr class="missed">
+<td class="num">48</td>
+<td class="src"><pre><code class="objc">        let newOne = NodeInfo()</code></pre></td>
+<td class="coverage">!</td>
+</tr>
+<tr class="missed">
+<td class="num">49</td>
+<td class="src"><pre><code class="objc">        newOne.id = self.id</code></pre></td>
+<td class="coverage">!</td>
+</tr>
+<tr class="missed">
+<td class="num">50</td>
+<td class="src"><pre><code class="objc">        newOne.nodeURLStr = self.nodeURLStr</code></pre></td>
+<td class="coverage">!</td>
+</tr>
+<tr class="missed">
+<td class="num">51</td>
+<td class="src"><pre><code class="objc">        newOne.desc = self.desc</code></pre></td>
+<td class="coverage">!</td>
+</tr>
+<tr class="missed">
+<td class="num">52</td>
+<td class="src"><pre><code class="objc">        newOne.isDefault = self.isDefault</code></pre></td>
+<td class="coverage">!</td>
+</tr>
+<tr class="missed">
+<td class="num">53</td>
+<td class="src"><pre><code class="objc">        newOne.isSelected = self.isSelected</code></pre></td>
+<td class="coverage">!</td>
+</tr>
+<tr class="missed">
 <td class="num">54</td>
+<td class="src"><pre><code class="objc">        </code></pre></td>
+<td class="coverage">!</td>
+</tr>
+<tr class="missed">
+<td class="num">55</td>
+<td class="src"><pre><code class="objc">        return newOne</code></pre></td>
+<td class="coverage">!</td>
+</tr>
+<tr class="missed">
+<td class="num">56</td>
+<td class="src"><pre><code class="objc">    }</code></pre></td>
+<td class="coverage">!</td>
+</tr>
+<tr class="never">
+<td class="num">57</td>
+<td class="src"><pre><code class="objc">}</code></pre></td>
+<td class="coverage"></td>
+</tr>
+<tr class="never">
+<td class="num">58</td>
+<td class="src"><pre><code class="objc"></code></pre></td>
+<td class="coverage"></td>
+</tr>
+<tr class="never">
+<td class="num">59</td>
+<td class="src"><pre><code class="objc"></code></pre></td>
+<td class="coverage"></td>
+</tr>
+<tr class="never">
+<td class="num">60</td>
+<td class="src"><pre><code class="objc">extension Sequence where Iterator.Element: NodeInfo {</code></pre></td>
+<td class="coverage"></td>
+</tr>
+<tr class="missed">
+<td class="num">61</td>
+<td class="src"><pre><code class="objc">    var notDeleteArray: [Element] {</code></pre></td>
+<td class="coverage">!</td>
+</tr>
+<tr class="missed">
+<td class="num">62</td>
+<td class="src"><pre><code class="objc">        return self.filter { $0.status != .delete}</code></pre></td>
+<td class="coverage">!</td>
+</tr>
+<tr class="missed">
+<td class="num">63</td>
+<td class="src"><pre><code class="objc">    }</code></pre></td>
+<td class="coverage">!</td>
+</tr>
+<tr class="never">
+<td class="num">64</td>
 <td class="src"><pre><code class="objc">}</code></pre></td>
 <td class="coverage"></td>
 </tr>

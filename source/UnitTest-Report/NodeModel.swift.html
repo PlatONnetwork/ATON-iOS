@@ -7,9 +7,9 @@
 <body>
 <header><div class="row"><a href="index.html"><img src="logo.jpg" alt="Slather logo"></a></div></header><div class="row"><div id="reports">
 <h2 class="cov_title">
-<span>Coverage for "NodeModel.swift" : </span><span class="cov_medium">74.14%</span>
+<span>Coverage for "NodeModel.swift" : </span><span class="cov_high">94.83%</span>
 </h2>
-<h4 class="cov_subtitle">(43 of 58 relevant lines covered)</h4>
+<h4 class="cov_subtitle">(55 of 58 relevant lines covered)</h4>
 <h4 class="cov_filepath">platonWallet/Models/Staking/NodeModel.swift</h4>
 <table class="source_code">
 <tr class="never">
@@ -107,65 +107,65 @@
 <td class="src"><pre><code class="objc">    </code></pre></td>
 <td class="coverage"></td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">20</td>
 <td class="src"><pre><code class="objc">    var description: String {</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">4x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">21</td>
 <td class="src"><pre><code class="objc">        switch self {</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">4x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">22</td>
 <td class="src"><pre><code class="objc">        case .Active:</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">4x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">23</td>
 <td class="src"><pre><code class="objc">            return Localized("node_status_active")</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">1x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">24</td>
 <td class="src"><pre><code class="objc">        case .Candidate:</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">4x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">25</td>
 <td class="src"><pre><code class="objc">            return Localized("node_status_candidate")</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">1x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">26</td>
 <td class="src"><pre><code class="objc">        case .Exiting:</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">4x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">27</td>
 <td class="src"><pre><code class="objc">            return Localized("node_status_exiting")</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">1x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">28</td>
 <td class="src"><pre><code class="objc">        case .Exited:</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">4x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">29</td>
 <td class="src"><pre><code class="objc">            return Localized("node_status_exited")</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">1x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">30</td>
 <td class="src"><pre><code class="objc">        }</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">4x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">31</td>
 <td class="src"><pre><code class="objc">    }</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">4x</td>
 </tr>
 <tr class="never">
 <td class="num">32</td>
@@ -240,17 +240,17 @@
 <tr class="covered">
 <td class="num">46</td>
 <td class="src"><pre><code class="objc">    required init() {</code></pre></td>
-<td class="coverage">10x</td>
+<td class="coverage">14x</td>
 </tr>
 <tr class="covered">
 <td class="num">47</td>
 <td class="src"><pre><code class="objc">        super.init()</code></pre></td>
-<td class="coverage">10x</td>
+<td class="coverage">14x</td>
 </tr>
 <tr class="covered">
 <td class="num">48</td>
 <td class="src"><pre><code class="objc">    }</code></pre></td>
-<td class="coverage">10x</td>
+<td class="coverage">14x</td>
 </tr>
 <tr class="never">
 <td class="num">49</td>
@@ -365,57 +365,57 @@
 <tr class="covered">
 <td class="num">71</td>
 <td class="src"><pre><code class="objc">        ) {</code></pre></td>
-<td class="coverage">4x</td>
+<td class="coverage">8x</td>
 </tr>
 <tr class="covered">
 <td class="num">72</td>
 <td class="src"><pre><code class="objc">        self.init()</code></pre></td>
-<td class="coverage">4x</td>
+<td class="coverage">8x</td>
 </tr>
 <tr class="covered">
 <td class="num">73</td>
 <td class="src"><pre><code class="objc">        self.nodeId = nodeId</code></pre></td>
-<td class="coverage">4x</td>
+<td class="coverage">8x</td>
 </tr>
 <tr class="covered">
 <td class="num">74</td>
 <td class="src"><pre><code class="objc">        self.ranking = ranking ?? 0</code></pre></td>
-<td class="coverage">4x</td>
+<td class="coverage">8x</td>
 </tr>
 <tr class="covered">
 <td class="num">75</td>
 <td class="src"><pre><code class="objc">        self.name = name</code></pre></td>
-<td class="coverage">4x</td>
+<td class="coverage">8x</td>
 </tr>
 <tr class="covered">
 <td class="num">76</td>
 <td class="src"><pre><code class="objc">        self.deposit = deposit</code></pre></td>
-<td class="coverage">4x</td>
+<td class="coverage">8x</td>
 </tr>
 <tr class="covered">
 <td class="num">77</td>
 <td class="src"><pre><code class="objc">        self.url = url</code></pre></td>
-<td class="coverage">4x</td>
+<td class="coverage">8x</td>
 </tr>
 <tr class="covered">
 <td class="num">78</td>
 <td class="src"><pre><code class="objc">        self.ratePA = ratePA</code></pre></td>
-<td class="coverage">4x</td>
+<td class="coverage">8x</td>
 </tr>
 <tr class="covered">
 <td class="num">79</td>
 <td class="src"><pre><code class="objc">        self.nodeStatus = nStatus.rawValue</code></pre></td>
-<td class="coverage">4x</td>
+<td class="coverage">8x</td>
 </tr>
 <tr class="covered">
 <td class="num">80</td>
 <td class="src"><pre><code class="objc">        self.isInit = isInit</code></pre></td>
-<td class="coverage">4x</td>
+<td class="coverage">8x</td>
 </tr>
 <tr class="covered">
 <td class="num">81</td>
 <td class="src"><pre><code class="objc">    }</code></pre></td>
-<td class="coverage">4x</td>
+<td class="coverage">8x</td>
 </tr>
 <tr class="never">
 <td class="num">82</td>

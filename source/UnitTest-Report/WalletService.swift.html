@@ -7,9 +7,9 @@
 <body>
 <header><div class="row"><a href="index.html"><img src="logo.jpg" alt="Slather logo"></a></div></header><div class="row"><div id="reports">
 <h2 class="cov_title">
-<span>Coverage for "WalletService.swift" : </span><span class="cov_low">65.42%</span>
+<span>Coverage for "WalletService.swift" : </span><span class="cov_low">66.36%</span>
 </h2>
-<h4 class="cov_subtitle">(280 of 428 relevant lines covered)</h4>
+<h4 class="cov_subtitle">(284 of 428 relevant lines covered)</h4>
 <h4 class="cov_filepath">platonWallet/Modules/WalletService/WalletService.swift</h4>
 <table class="source_code">
 <tr class="never">
@@ -1032,20 +1032,20 @@
 <td class="src"><pre><code class="objc">                }catch Error.walletAlreadyExists {</code></pre></td>
 <td class="coverage">2x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">205</td>
 <td class="src"><pre><code class="objc">                    completion(nil, Error.walletAlreadyExists)</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">1x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">206</td>
 <td class="src"><pre><code class="objc">                    return</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">1x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">207</td>
 <td class="src"><pre><code class="objc">                }catch {</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">1x</td>
 </tr>
 <tr class="missed">
 <td class="num">208</td>
@@ -1060,22 +1060,22 @@
 <tr class="covered">
 <td class="num">210</td>
 <td class="src"><pre><code class="objc">                }</code></pre></td>
-<td class="coverage">2x</td>
+<td class="coverage">1x</td>
 </tr>
 <tr class="covered">
 <td class="num">211</td>
 <td class="src"><pre><code class="objc">                </code></pre></td>
-<td class="coverage">2x</td>
+<td class="coverage">1x</td>
 </tr>
 <tr class="covered">
 <td class="num">212</td>
 <td class="src"><pre><code class="objc">                completion(wallet, nil)</code></pre></td>
-<td class="coverage">2x</td>
+<td class="coverage">1x</td>
 </tr>
 <tr class="covered">
 <td class="num">213</td>
 <td class="src"><pre><code class="objc">            }</code></pre></td>
-<td class="coverage">2x</td>
+<td class="coverage">1x</td>
 </tr>
 <tr class="covered">
 <td class="num">214</td>
@@ -1390,17 +1390,17 @@
 <tr class="covered">
 <td class="num">276</td>
 <td class="src"><pre><code class="objc">    public func exportPrivateKey(wallet: Wallet, password: String, completion: @escaping (String?, Error?) -&gt; Void) {</code></pre></td>
-<td class="coverage">3x</td>
+<td class="coverage">2x</td>
 </tr>
 <tr class="covered">
 <td class="num">277</td>
 <td class="src"><pre><code class="objc">        </code></pre></td>
-<td class="coverage">3x</td>
+<td class="coverage">2x</td>
 </tr>
 <tr class="covered">
 <td class="num">278</td>
 <td class="src"><pre><code class="objc">        guard let keystore = wallet.key else {</code></pre></td>
-<td class="coverage">3x</td>
+<td class="coverage">2x</td>
 </tr>
 <tr class="missed">
 <td class="num">279</td>
@@ -1415,27 +1415,27 @@
 <tr class="covered">
 <td class="num">281</td>
 <td class="src"><pre><code class="objc">        }</code></pre></td>
-<td class="coverage">3x</td>
+<td class="coverage">2x</td>
 </tr>
 <tr class="covered">
 <td class="num">282</td>
 <td class="src"><pre><code class="objc">        </code></pre></td>
-<td class="coverage">3x</td>
+<td class="coverage">2x</td>
 </tr>
 <tr class="covered">
 <td class="num">283</td>
 <td class="src"><pre><code class="objc">        walletQueue.async {</code></pre></td>
-<td class="coverage">3x</td>
+<td class="coverage">2x</td>
 </tr>
 <tr class="covered">
 <td class="num">284</td>
 <td class="src"><pre><code class="objc">            </code></pre></td>
-<td class="coverage">3x</td>
+<td class="coverage">2x</td>
 </tr>
 <tr class="covered">
 <td class="num">285</td>
 <td class="src"><pre><code class="objc">            guard let privateKeyData = try? keystore.decrypt(password: password) else {</code></pre></td>
-<td class="coverage">3x</td>
+<td class="coverage">2x</td>
 </tr>
 <tr class="missed">
 <td class="num">286</td>
@@ -1465,17 +1465,17 @@
 <tr class="covered">
 <td class="num">291</td>
 <td class="src"><pre><code class="objc">            }</code></pre></td>
-<td class="coverage">3x</td>
+<td class="coverage">2x</td>
 </tr>
 <tr class="covered">
 <td class="num">292</td>
 <td class="src"><pre><code class="objc">            </code></pre></td>
-<td class="coverage">3x</td>
+<td class="coverage">2x</td>
 </tr>
 <tr class="covered">
 <td class="num">293</td>
 <td class="src"><pre><code class="objc">            guard WalletUtil.isValidPrivateKeyData(privateKeyData) else {</code></pre></td>
-<td class="coverage">3x</td>
+<td class="coverage">2x</td>
 </tr>
 <tr class="missed">
 <td class="num">294</td>
@@ -1490,57 +1490,57 @@
 <tr class="covered">
 <td class="num">296</td>
 <td class="src"><pre><code class="objc">            }</code></pre></td>
-<td class="coverage">3x</td>
+<td class="coverage">2x</td>
 </tr>
 <tr class="covered">
 <td class="num">297</td>
 <td class="src"><pre><code class="objc">            </code></pre></td>
-<td class="coverage">3x</td>
+<td class="coverage">2x</td>
 </tr>
 <tr class="covered">
 <td class="num">298</td>
 <td class="src"><pre><code class="objc">            DispatchQueue.main.async {</code></pre></td>
-<td class="coverage">3x</td>
+<td class="coverage">2x</td>
 </tr>
 <tr class="covered">
 <td class="num">299</td>
 <td class="src"><pre><code class="objc">                let res = privateKeyData.toHexString()</code></pre></td>
-<td class="coverage">3x</td>
+<td class="coverage">2x</td>
 </tr>
 <tr class="covered">
 <td class="num">300</td>
 <td class="src"><pre><code class="objc">                print("&#128273;privateKey:\(res)")</code></pre></td>
-<td class="coverage">3x</td>
+<td class="coverage">2x</td>
 </tr>
 <tr class="covered">
 <td class="num">301</td>
 <td class="src"><pre><code class="objc">                completion(res, nil)</code></pre></td>
-<td class="coverage">3x</td>
+<td class="coverage">2x</td>
 </tr>
 <tr class="covered">
 <td class="num">302</td>
 <td class="src"><pre><code class="objc">            }</code></pre></td>
-<td class="coverage">3x</td>
+<td class="coverage">2x</td>
 </tr>
 <tr class="covered">
 <td class="num">303</td>
 <td class="src"><pre><code class="objc">            </code></pre></td>
-<td class="coverage">3x</td>
+<td class="coverage">2x</td>
 </tr>
 <tr class="covered">
 <td class="num">304</td>
 <td class="src"><pre><code class="objc">        }</code></pre></td>
-<td class="coverage">3x</td>
+<td class="coverage">2x</td>
 </tr>
 <tr class="covered">
 <td class="num">305</td>
 <td class="src"><pre><code class="objc"></code></pre></td>
-<td class="coverage">3x</td>
+<td class="coverage">2x</td>
 </tr>
 <tr class="covered">
 <td class="num">306</td>
 <td class="src"><pre><code class="objc">    }</code></pre></td>
-<td class="coverage">3x</td>
+<td class="coverage">2x</td>
 </tr>
 <tr class="never">
 <td class="num">307</td>
@@ -1925,67 +1925,67 @@
 <tr class="covered">
 <td class="num">383</td>
 <td class="src"><pre><code class="objc">    public func deleteWallet(_ wallet:Wallet) {</code></pre></td>
-<td class="coverage">8x</td>
+<td class="coverage">7x</td>
 </tr>
 <tr class="covered">
 <td class="num">384</td>
 <td class="src"><pre><code class="objc">        </code></pre></td>
-<td class="coverage">8x</td>
+<td class="coverage">7x</td>
 </tr>
 <tr class="covered">
 <td class="num">385</td>
 <td class="src"><pre><code class="objc">        NotificationCenter.default.post(name: Notification.Name.ATON.WillDeleateWallet, object: wallet)</code></pre></td>
-<td class="coverage">8x</td>
+<td class="coverage">7x</td>
 </tr>
 <tr class="covered">
 <td class="num">386</td>
 <td class="src"><pre><code class="objc">        </code></pre></td>
-<td class="coverage">8x</td>
+<td class="coverage">7x</td>
 </tr>
 <tr class="covered">
 <td class="num">387</td>
 <td class="src"><pre><code class="objc">        AssetService.sharedInstace.balances = AssetService.sharedInstace.balances.filter { $0.addr.lowercased() != wallet.address.lowercased() }</code></pre></td>
-<td class="coverage">17x</td>
+<td class="coverage">7x</td>
 </tr>
 <tr class="covered">
 <td class="num">388</td>
 <td class="src"><pre><code class="objc">//        AssetService.sharedInstace.assets.removeValue(forKey: (wallet.key?.address)!)</code></pre></td>
-<td class="coverage">8x</td>
+<td class="coverage">7x</td>
 </tr>
 <tr class="covered">
 <td class="num">389</td>
 <td class="src"><pre><code class="objc">        </code></pre></td>
-<td class="coverage">8x</td>
+<td class="coverage">7x</td>
 </tr>
 <tr class="covered">
 <td class="num">390</td>
 <td class="src"><pre><code class="objc">        wallets.removeAll(where: { $0.uuid == wallet.uuid &amp;&amp; $0.nodeURLStr == wallet.nodeURLStr })</code></pre></td>
-<td class="coverage">24x</td>
+<td class="coverage">14x</td>
 </tr>
 <tr class="covered">
 <td class="num">391</td>
 <td class="src"><pre><code class="objc"></code></pre></td>
-<td class="coverage">8x</td>
+<td class="coverage">7x</td>
 </tr>
 <tr class="covered">
 <td class="num">392</td>
 <td class="src"><pre><code class="objc">        AssetVCSharedData.sharedData.willDeleteWallet(object: wallet as AnyObject)</code></pre></td>
-<td class="coverage">8x</td>
+<td class="coverage">7x</td>
 </tr>
 <tr class="covered">
 <td class="num">393</td>
 <td class="src"><pre><code class="objc">        </code></pre></td>
-<td class="coverage">8x</td>
+<td class="coverage">7x</td>
 </tr>
 <tr class="covered">
 <td class="num">394</td>
 <td class="src"><pre><code class="objc">        WallletPersistence.sharedInstance.delete(wallet: wallet)</code></pre></td>
-<td class="coverage">8x</td>
+<td class="coverage">7x</td>
 </tr>
 <tr class="covered">
 <td class="num">395</td>
 <td class="src"><pre><code class="objc">    }</code></pre></td>
-<td class="coverage">8x</td>
+<td class="coverage">7x</td>
 </tr>
 <tr class="never">
 <td class="num">396</td>
@@ -2015,17 +2015,17 @@
 <tr class="covered">
 <td class="num">401</td>
 <td class="src"><pre><code class="objc">    public func updateWalletBalance(_ wallet: Wallet, balance: String) {</code></pre></td>
-<td class="coverage">28x</td>
+<td class="coverage">25x</td>
 </tr>
 <tr class="covered">
 <td class="num">402</td>
 <td class="src"><pre><code class="objc">        WallletPersistence.sharedInstance.updateWalletBalance(wallet: wallet, balance: balance)</code></pre></td>
-<td class="coverage">28x</td>
+<td class="coverage">25x</td>
 </tr>
 <tr class="covered">
 <td class="num">403</td>
 <td class="src"><pre><code class="objc">    }</code></pre></td>
-<td class="coverage">28x</td>
+<td class="coverage">25x</td>
 </tr>
 <tr class="never">
 <td class="num">404</td>
@@ -2065,27 +2065,27 @@
 <tr class="covered">
 <td class="num">411</td>
 <td class="src"><pre><code class="objc">    func generateFileName(identifier: String, date: Date = Date(), timeZone: TimeZone = .current) -&gt; String {</code></pre></td>
-<td class="coverage">7x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="covered">
 <td class="num">412</td>
 <td class="src"><pre><code class="objc">        // keyFileName implements the naming convention for keyfiles:</code></pre></td>
-<td class="coverage">7x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="covered">
 <td class="num">413</td>
 <td class="src"><pre><code class="objc">        // UTC--&lt;created_at UTC ISO8601&gt;-&lt;address hex&gt;</code></pre></td>
-<td class="coverage">7x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="covered">
 <td class="num">414</td>
 <td class="src"><pre><code class="objc">        return "UTC--\(filenameTimestamp(for: date, in: timeZone))--\(identifier)"</code></pre></td>
-<td class="coverage">7x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="covered">
 <td class="num">415</td>
 <td class="src"><pre><code class="objc">    }</code></pre></td>
-<td class="coverage">7x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="never">
 <td class="num">416</td>
@@ -2095,22 +2095,22 @@
 <tr class="covered">
 <td class="num">417</td>
 <td class="src"><pre><code class="objc">    private func filenameTimestamp(for date: Date, in timeZone: TimeZone = .current) -&gt; String {</code></pre></td>
-<td class="coverage">7x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="covered">
 <td class="num">418</td>
 <td class="src"><pre><code class="objc">        var tz = ""</code></pre></td>
-<td class="coverage">7x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="covered">
 <td class="num">419</td>
 <td class="src"><pre><code class="objc">        let offset = timeZone.secondsFromGMT()</code></pre></td>
-<td class="coverage">7x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="covered">
 <td class="num">420</td>
 <td class="src"><pre><code class="objc">        if offset == 0 {</code></pre></td>
-<td class="coverage">7x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="missed">
 <td class="num">421</td>
@@ -2120,37 +2120,37 @@
 <tr class="covered">
 <td class="num">422</td>
 <td class="src"><pre><code class="objc">        } else {</code></pre></td>
-<td class="coverage">7x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="covered">
 <td class="num">423</td>
 <td class="src"><pre><code class="objc">            tz = String(format: "%03d00", offset/60)</code></pre></td>
-<td class="coverage">7x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="covered">
 <td class="num">424</td>
 <td class="src"><pre><code class="objc">        }</code></pre></td>
-<td class="coverage">7x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="covered">
 <td class="num">425</td>
 <td class="src"><pre><code class="objc">        </code></pre></td>
-<td class="coverage">7x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="covered">
 <td class="num">426</td>
 <td class="src"><pre><code class="objc">        let components = Calendar(identifier: .iso8601).dateComponents(in: timeZone, from: date)</code></pre></td>
-<td class="coverage">7x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="covered">
 <td class="num">427</td>
 <td class="src"><pre><code class="objc">        return String(format: "%04d-%02d-%02dT%02d-%02d-%02d.%09d%@", components.year!, components.month!, components.day!, components.hour!, components.minute!, components.second!, components.nanosecond!, tz)</code></pre></td>
-<td class="coverage">7x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="covered">
 <td class="num">428</td>
 <td class="src"><pre><code class="objc">    }</code></pre></td>
-<td class="coverage">7x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="never">
 <td class="num">429</td>
@@ -2165,17 +2165,17 @@
 <tr class="covered">
 <td class="num">431</td>
 <td class="src"><pre><code class="objc">        let sameUuidWallet = wallets.first { (item) -&gt; Bool in</code></pre></td>
-<td class="coverage">2x</td>
+<td class="coverage">1x</td>
 </tr>
 <tr class="covered">
 <td class="num">432</td>
 <td class="src"><pre><code class="objc">            item.uuid == wallet.uuid &amp;&amp; item.nodeURLStr == wallet.nodeURLStr</code></pre></td>
-<td class="coverage">2x</td>
+<td class="coverage">1x</td>
 </tr>
 <tr class="covered">
 <td class="num">433</td>
 <td class="src"><pre><code class="objc">        }</code></pre></td>
-<td class="coverage">2x</td>
+<td class="coverage">1x</td>
 </tr>
 <tr class="covered">
 <td class="num">434</td>
@@ -2215,17 +2215,17 @@
 <tr class="covered">
 <td class="num">441</td>
 <td class="src"><pre><code class="objc">        wallets.removeAll { (item) -&gt; Bool in</code></pre></td>
-<td class="coverage">2x</td>
+<td class="coverage">1x</td>
 </tr>
 <tr class="covered">
 <td class="num">442</td>
 <td class="src"><pre><code class="objc">            item.uuid == wallet.uuid &amp;&amp; item.nodeURLStr == wallet.nodeURLStr</code></pre></td>
-<td class="coverage">2x</td>
+<td class="coverage">1x</td>
 </tr>
 <tr class="covered">
 <td class="num">443</td>
 <td class="src"><pre><code class="objc">        }</code></pre></td>
-<td class="coverage">2x</td>
+<td class="coverage">1x</td>
 </tr>
 <tr class="covered">
 <td class="num">444</td>
@@ -2280,17 +2280,17 @@
 <tr class="covered">
 <td class="num">454</td>
 <td class="src"><pre><code class="objc">        let sameUuidWallet = wallets.first { (item) -&gt; Bool in</code></pre></td>
-<td class="coverage">14x</td>
+<td class="coverage">7x</td>
 </tr>
 <tr class="covered">
 <td class="num">455</td>
 <td class="src"><pre><code class="objc">            item.uuid == wallet.uuid &amp;&amp; item.nodeURLStr == wallet.nodeURLStr</code></pre></td>
-<td class="coverage">14x</td>
+<td class="coverage">7x</td>
 </tr>
 <tr class="covered">
 <td class="num">456</td>
 <td class="src"><pre><code class="objc">        }</code></pre></td>
-<td class="coverage">14x</td>
+<td class="coverage">7x</td>
 </tr>
 <tr class="covered">
 <td class="num">457</td>
@@ -2302,60 +2302,60 @@
 <td class="src"><pre><code class="objc">        if sameUuidWallet != nil {</code></pre></td>
 <td class="coverage">7x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">459</td>
 <td class="src"><pre><code class="objc">            throw Error.walletAlreadyExists</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">1x</td>
 </tr>
 <tr class="covered">
 <td class="num">460</td>
 <td class="src"><pre><code class="objc">        }</code></pre></td>
-<td class="coverage">7x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="covered">
 <td class="num">461</td>
 <td class="src"><pre><code class="objc">        </code></pre></td>
-<td class="coverage">7x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="covered">
 <td class="num">462</td>
 <td class="src"><pre><code class="objc">        let fileName = generateFileName(identifier: "\(keystore.address).json")</code></pre></td>
-<td class="coverage">7x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="covered">
 <td class="num">463</td>
 <td class="src"><pre><code class="objc">        </code></pre></td>
-<td class="coverage">7x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="covered">
 <td class="num">464</td>
 <td class="src"><pre><code class="objc">        let fileURL = keystoreFolderURL.appendingPathComponent(fileName)</code></pre></td>
-<td class="coverage">7x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="covered">
 <td class="num">465</td>
 <td class="src"><pre><code class="objc">        </code></pre></td>
-<td class="coverage">7x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="covered">
 <td class="num">466</td>
 <td class="src"><pre><code class="objc">        let json = try JSONEncoder().encode(keystore)</code></pre></td>
-<td class="coverage">7x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="covered">
 <td class="num">467</td>
 <td class="src"><pre><code class="objc">        do {</code></pre></td>
-<td class="coverage">7x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="covered">
 <td class="num">468</td>
 <td class="src"><pre><code class="objc">            try json.write(to: fileURL, options: [.atomicWrite])</code></pre></td>
-<td class="coverage">7x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="covered">
 <td class="num">469</td>
 <td class="src"><pre><code class="objc">        } catch  {</code></pre></td>
-<td class="coverage">7x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="missed">
 <td class="num">470</td>
@@ -2365,132 +2365,132 @@
 <tr class="covered">
 <td class="num">471</td>
 <td class="src"><pre><code class="objc">        }</code></pre></td>
-<td class="coverage">7x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="covered">
 <td class="num">472</td>
 <td class="src"><pre><code class="objc">        </code></pre></td>
-<td class="coverage">7x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="covered">
 <td class="num">473</td>
 <td class="src"><pre><code class="objc">        /*</code></pre></td>
-<td class="coverage">7x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="covered">
 <td class="num">474</td>
 <td class="src"><pre><code class="objc">        if var paths = FileManager.default.subpaths(atPath: keystoreFolderPath) {</code></pre></td>
-<td class="coverage">7x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="covered">
 <td class="num">475</td>
 <td class="src"><pre><code class="objc">            paths.removeAll { (p) -&gt; Bool in</code></pre></td>
-<td class="coverage">7x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="covered">
 <td class="num">476</td>
 <td class="src"><pre><code class="objc">                p == fileName</code></pre></td>
-<td class="coverage">7x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="covered">
 <td class="num">477</td>
 <td class="src"><pre><code class="objc">            }</code></pre></td>
-<td class="coverage">7x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="covered">
 <td class="num">478</td>
 <td class="src"><pre><code class="objc">            for path in paths {</code></pre></td>
-<td class="coverage">7x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="covered">
 <td class="num">479</td>
 <td class="src"><pre><code class="objc">                if String(path.split(separator: "-").last!) == "\(keystore.address).json" {</code></pre></td>
-<td class="coverage">7x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="covered">
 <td class="num">480</td>
 <td class="src"><pre><code class="objc">                    try FileManager.default.removeItem(at: keystoreFolderURL.appendingPathComponent(path))</code></pre></td>
-<td class="coverage">7x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="covered">
 <td class="num">481</td>
 <td class="src"><pre><code class="objc">                }</code></pre></td>
-<td class="coverage">7x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="covered">
 <td class="num">482</td>
 <td class="src"><pre><code class="objc">            }</code></pre></td>
-<td class="coverage">7x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="covered">
 <td class="num">483</td>
 <td class="src"><pre><code class="objc">        }</code></pre></td>
-<td class="coverage">7x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="covered">
 <td class="num">484</td>
 <td class="src"><pre><code class="objc">    */</code></pre></td>
-<td class="coverage">7x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="covered">
 <td class="num">485</td>
 <td class="src"><pre><code class="objc"></code></pre></td>
-<td class="coverage">7x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="covered">
 <td class="num">486</td>
 <td class="src"><pre><code class="objc">        wallet.keystorePath = fileName</code></pre></td>
-<td class="coverage">7x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="covered">
 <td class="num">487</td>
 <td class="src"><pre><code class="objc">        </code></pre></td>
-<td class="coverage">7x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="covered">
 <td class="num">488</td>
 <td class="src"><pre><code class="objc">        WallletPersistence.sharedInstance.save(wallet: wallet)</code></pre></td>
-<td class="coverage">7x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="covered">
 <td class="num">489</td>
 <td class="src"><pre><code class="objc">        </code></pre></td>
-<td class="coverage">7x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="covered">
 <td class="num">490</td>
 <td class="src"><pre><code class="objc">        wallets.removeAll { (item) -&gt; Bool in</code></pre></td>
-<td class="coverage">14x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="covered">
 <td class="num">491</td>
 <td class="src"><pre><code class="objc">            item.uuid == wallet.uuid &amp;&amp; item.nodeURLStr == wallet.nodeURLStr</code></pre></td>
-<td class="coverage">14x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="covered">
 <td class="num">492</td>
 <td class="src"><pre><code class="objc">        }</code></pre></td>
-<td class="coverage">14x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="covered">
 <td class="num">493</td>
 <td class="src"><pre><code class="objc">        </code></pre></td>
-<td class="coverage">7x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="covered">
 <td class="num">494</td>
 <td class="src"><pre><code class="objc">        wallets.append(wallet)</code></pre></td>
-<td class="coverage">7x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="covered">
 <td class="num">495</td>
 <td class="src"><pre><code class="objc">        </code></pre></td>
-<td class="coverage">7x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="covered">
 <td class="num">496</td>
 <td class="src"><pre><code class="objc">    }</code></pre></td>
-<td class="coverage">7x</td>
+<td class="coverage">6x</td>
 </tr>
 <tr class="never">
 <td class="num">497</td>

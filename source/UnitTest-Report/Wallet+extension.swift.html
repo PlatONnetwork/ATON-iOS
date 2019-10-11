@@ -7,9 +7,9 @@
 <body>
 <header><div class="row"><a href="index.html"><img src="logo.jpg" alt="Slather logo"></a></div></header><div class="row"><div id="reports">
 <h2 class="cov_title">
-<span>Coverage for "Wallet+extension.swift" : </span><span class="cov_low">66.33%</span>
+<span>Coverage for "Wallet+extension.swift" : </span><span class="cov_low">50.00%</span>
 </h2>
-<h4 class="cov_subtitle">(65 of 98 relevant lines covered)</h4>
+<h4 class="cov_subtitle">(49 of 98 relevant lines covered)</h4>
 <h4 class="cov_filepath">platonWallet/Models/Wallet/Wallet+extension.swift</h4>
 <table class="source_code">
 <tr class="never">
@@ -115,17 +115,17 @@
 <tr class="covered">
 <td class="num">21</td>
 <td class="src"><pre><code class="objc">    func lockedBalanceAttrForDisplayAsset() -&gt; NSAttributedString? {</code></pre></td>
-<td class="coverage">21x</td>
+<td class="coverage">18x</td>
 </tr>
 <tr class="covered">
 <td class="num">22</td>
 <td class="src"><pre><code class="objc">        let balanceVisiable = UserDefaults.standard.object(forKey: AssetHidingStatus) as? Bool</code></pre></td>
-<td class="coverage">21x</td>
+<td class="coverage">18x</td>
 </tr>
 <tr class="covered">
 <td class="num">23</td>
 <td class="src"><pre><code class="objc">        guard let lockedBalanceString = lockedBalanceDescription() else { return nil }</code></pre></td>
-<td class="coverage">21x</td>
+<td class="coverage">18x</td>
 </tr>
 <tr class="missed">
 <td class="num">24</td>
@@ -200,7 +200,7 @@
 <tr class="covered">
 <td class="num">38</td>
 <td class="src"><pre><code class="objc">    }</code></pre></td>
-<td class="coverage">21x</td>
+<td class="coverage">18x</td>
 </tr>
 <tr class="never">
 <td class="num">39</td>
@@ -210,27 +210,27 @@
 <tr class="covered">
 <td class="num">40</td>
 <td class="src"><pre><code class="objc">    func lockedBalanceDescription() -&gt; String? {</code></pre></td>
-<td class="coverage">21x</td>
+<td class="coverage">18x</td>
 </tr>
 <tr class="covered">
 <td class="num">41</td>
 <td class="src"><pre><code class="objc">        guard</code></pre></td>
-<td class="coverage">21x</td>
+<td class="coverage">18x</td>
 </tr>
 <tr class="covered">
 <td class="num">42</td>
 <td class="src"><pre><code class="objc">            let balance = AssetService.sharedInstace.balances.first(where: { $0.addr.lowercased() == self.address.lowercased() }),</code></pre></td>
-<td class="coverage">37x</td>
+<td class="coverage">26x</td>
 </tr>
 <tr class="covered">
 <td class="num">43</td>
 <td class="src"><pre><code class="objc">            let lockValue = BigUInt(balance.lock ?? "0"), lockValue &gt; BigUInt.zero,</code></pre></td>
-<td class="coverage">21x</td>
+<td class="coverage">18x</td>
 </tr>
 <tr class="covered">
 <td class="num">44</td>
 <td class="src"><pre><code class="objc">            let balanceStr = balance.lock?.vonToLATString else { return nil }</code></pre></td>
-<td class="coverage">21x</td>
+<td class="coverage">18x</td>
 </tr>
 <tr class="missed">
 <td class="num">45</td>
@@ -250,7 +250,7 @@
 <tr class="covered">
 <td class="num">48</td>
 <td class="src"><pre><code class="objc">    }</code></pre></td>
-<td class="coverage">21x</td>
+<td class="coverage">18x</td>
 </tr>
 <tr class="never">
 <td class="num">49</td>
@@ -260,22 +260,22 @@
 <tr class="covered">
 <td class="num">50</td>
 <td class="src"><pre><code class="objc">    func balanceDescriptionForDisplayAsset() -&gt; String {</code></pre></td>
-<td class="coverage">21x</td>
+<td class="coverage">18x</td>
 </tr>
 <tr class="covered">
 <td class="num">51</td>
 <td class="src"><pre><code class="objc">        let balanceVisiable = UserDefaults.standard.object(forKey: AssetHidingStatus) as? Bool</code></pre></td>
-<td class="coverage">21x</td>
+<td class="coverage">18x</td>
 </tr>
 <tr class="covered">
 <td class="num">52</td>
 <td class="src"><pre><code class="objc">        return balanceVisiable == true ? "--" : balanceDescription()</code></pre></td>
-<td class="coverage">21x</td>
+<td class="coverage">18x</td>
 </tr>
 <tr class="covered">
 <td class="num">53</td>
 <td class="src"><pre><code class="objc">    }</code></pre></td>
-<td class="coverage">21x</td>
+<td class="coverage">18x</td>
 </tr>
 <tr class="never">
 <td class="num">54</td>
@@ -285,42 +285,42 @@
 <tr class="covered">
 <td class="num">55</td>
 <td class="src"><pre><code class="objc">    func balanceDescription() -&gt; String{</code></pre></td>
-<td class="coverage">30x</td>
+<td class="coverage">26x</td>
 </tr>
 <tr class="covered">
 <td class="num">56</td>
 <td class="src"><pre><code class="objc">        guard</code></pre></td>
-<td class="coverage">30x</td>
+<td class="coverage">26x</td>
 </tr>
 <tr class="covered">
 <td class="num">57</td>
 <td class="src"><pre><code class="objc">            let balance = AssetService.sharedInstace.balances.first(where: { $0.addr.lowercased() == self.address.lowercased() }),</code></pre></td>
-<td class="coverage">46x</td>
+<td class="coverage">34x</td>
 </tr>
 <tr class="covered">
 <td class="num">58</td>
 <td class="src"><pre><code class="objc">            let balanceStr = balance.free?.vonToLATString else { return "0.00".ATPSuffix() }</code></pre></td>
-<td class="coverage">30x</td>
+<td class="coverage">26x</td>
 </tr>
 <tr class="covered">
 <td class="num">59</td>
 <td class="src"><pre><code class="objc">        </code></pre></td>
-<td class="coverage">28x</td>
+<td class="coverage">25x</td>
 </tr>
 <tr class="covered">
 <td class="num">60</td>
 <td class="src"><pre><code class="objc">        WalletService.sharedInstance.updateWalletBalance(self, balance: balance.free ?? "0")</code></pre></td>
-<td class="coverage">28x</td>
+<td class="coverage">25x</td>
 </tr>
 <tr class="covered">
 <td class="num">61</td>
 <td class="src"><pre><code class="objc">        return balanceStr.ATPSuffix()</code></pre></td>
-<td class="coverage">28x</td>
+<td class="coverage">25x</td>
 </tr>
 <tr class="covered">
 <td class="num">62</td>
 <td class="src"><pre><code class="objc">    }</code></pre></td>
-<td class="coverage">30x</td>
+<td class="coverage">26x</td>
 </tr>
 <tr class="never">
 <td class="num">63</td>
@@ -330,17 +330,17 @@
 <tr class="covered">
 <td class="num">64</td>
 <td class="src"><pre><code class="objc">    func image() -&gt; UIImage{</code></pre></td>
-<td class="coverage">21x</td>
+<td class="coverage">18x</td>
 </tr>
 <tr class="covered">
 <td class="num">65</td>
 <td class="src"><pre><code class="objc">        return UIImage(named: address.walletAddressLastCharacterAvatar())!</code></pre></td>
-<td class="coverage">21x</td>
+<td class="coverage">18x</td>
 </tr>
 <tr class="covered">
 <td class="num">66</td>
 <td class="src"><pre><code class="objc">    }</code></pre></td>
-<td class="coverage">21x</td>
+<td class="coverage">18x</td>
 </tr>
 <tr class="never">
 <td class="num">67</td>
@@ -392,55 +392,55 @@
 <td class="src"><pre><code class="objc">extension Wallet {</code></pre></td>
 <td class="coverage"></td>
 </tr>
-<tr class="covered">
+<tr class="missed">
 <td class="num">77</td>
 <td class="src"><pre><code class="objc">    var normalIcon: UIImage? {</code></pre></td>
-<td class="coverage">11x</td>
+<td class="coverage">!</td>
 </tr>
-<tr class="covered">
+<tr class="missed">
 <td class="num">78</td>
 <td class="src"><pre><code class="objc">        switch type {</code></pre></td>
-<td class="coverage">11x</td>
+<td class="coverage">!</td>
 </tr>
-<tr class="covered">
+<tr class="missed">
 <td class="num">79</td>
 <td class="src"><pre><code class="objc">        case .classic:</code></pre></td>
-<td class="coverage">11x</td>
+<td class="coverage">!</td>
 </tr>
-<tr class="covered">
+<tr class="missed">
 <td class="num">80</td>
 <td class="src"><pre><code class="objc">            return UIImage(named: "home_classicWallet_icon_normal")</code></pre></td>
-<td class="coverage">11x</td>
+<td class="coverage">!</td>
 </tr>
-<tr class="covered">
+<tr class="missed">
 <td class="num">81</td>
 <td class="src"><pre><code class="objc">        case .cold:</code></pre></td>
-<td class="coverage">11x</td>
+<td class="coverage">!</td>
 </tr>
 <tr class="missed">
 <td class="num">82</td>
 <td class="src"><pre><code class="objc">            return UIImage(named: "icon_cold_unselected")</code></pre></td>
 <td class="coverage">!</td>
 </tr>
-<tr class="covered">
+<tr class="missed">
 <td class="num">83</td>
 <td class="src"><pre><code class="objc">        case .observed:</code></pre></td>
-<td class="coverage">11x</td>
+<td class="coverage">!</td>
 </tr>
 <tr class="missed">
 <td class="num">84</td>
 <td class="src"><pre><code class="objc">            return UIImage(named: "icon_observer_unselected")</code></pre></td>
 <td class="coverage">!</td>
 </tr>
-<tr class="covered">
+<tr class="missed">
 <td class="num">85</td>
 <td class="src"><pre><code class="objc">        }</code></pre></td>
-<td class="coverage">11x</td>
+<td class="coverage">!</td>
 </tr>
-<tr class="covered">
+<tr class="missed">
 <td class="num">86</td>
 <td class="src"><pre><code class="objc">    }</code></pre></td>
-<td class="coverage">11x</td>
+<td class="coverage">!</td>
 </tr>
 <tr class="never">
 <td class="num">87</td>
@@ -450,27 +450,27 @@
 <tr class="covered">
 <td class="num">88</td>
 <td class="src"><pre><code class="objc">    var selectedIcon: UIImage? {</code></pre></td>
-<td class="coverage">10x</td>
+<td class="coverage">9x</td>
 </tr>
 <tr class="covered">
 <td class="num">89</td>
 <td class="src"><pre><code class="objc">        switch type {</code></pre></td>
-<td class="coverage">10x</td>
+<td class="coverage">9x</td>
 </tr>
 <tr class="covered">
 <td class="num">90</td>
 <td class="src"><pre><code class="objc">        case .classic:</code></pre></td>
-<td class="coverage">10x</td>
+<td class="coverage">9x</td>
 </tr>
 <tr class="covered">
 <td class="num">91</td>
 <td class="src"><pre><code class="objc">            return UIImage(named: "home_classicWallet_icon_selected")</code></pre></td>
-<td class="coverage">10x</td>
+<td class="coverage">9x</td>
 </tr>
 <tr class="covered">
 <td class="num">92</td>
 <td class="src"><pre><code class="objc">        case .cold:</code></pre></td>
-<td class="coverage">10x</td>
+<td class="coverage">9x</td>
 </tr>
 <tr class="missed">
 <td class="num">93</td>
@@ -480,7 +480,7 @@
 <tr class="covered">
 <td class="num">94</td>
 <td class="src"><pre><code class="objc">        case .observed:</code></pre></td>
-<td class="coverage">10x</td>
+<td class="coverage">9x</td>
 </tr>
 <tr class="missed">
 <td class="num">95</td>
@@ -490,67 +490,67 @@
 <tr class="covered">
 <td class="num">96</td>
 <td class="src"><pre><code class="objc">        }</code></pre></td>
-<td class="coverage">10x</td>
+<td class="coverage">9x</td>
 </tr>
 <tr class="covered">
 <td class="num">97</td>
 <td class="src"><pre><code class="objc">    }</code></pre></td>
-<td class="coverage">10x</td>
+<td class="coverage">9x</td>
 </tr>
 <tr class="never">
 <td class="num">98</td>
 <td class="src"><pre><code class="objc">    </code></pre></td>
 <td class="coverage"></td>
 </tr>
-<tr class="covered">
+<tr class="missed">
 <td class="num">99</td>
 <td class="src"><pre><code class="objc">    var normalImg: UIImage? {</code></pre></td>
-<td class="coverage">11x</td>
+<td class="coverage">!</td>
 </tr>
-<tr class="covered">
+<tr class="missed">
 <td class="num">100</td>
 <td class="src"><pre><code class="objc">        switch type {</code></pre></td>
-<td class="coverage">11x</td>
+<td class="coverage">!</td>
 </tr>
-<tr class="covered">
+<tr class="missed">
 <td class="num">101</td>
 <td class="src"><pre><code class="objc">        case .classic:</code></pre></td>
-<td class="coverage">11x</td>
+<td class="coverage">!</td>
 </tr>
-<tr class="covered">
+<tr class="missed">
 <td class="num">102</td>
 <td class="src"><pre><code class="objc">            return UIImage(named: "img_normal_default")</code></pre></td>
-<td class="coverage">11x</td>
+<td class="coverage">!</td>
 </tr>
-<tr class="covered">
+<tr class="missed">
 <td class="num">103</td>
 <td class="src"><pre><code class="objc">        case .cold:</code></pre></td>
-<td class="coverage">11x</td>
+<td class="coverage">!</td>
 </tr>
 <tr class="missed">
 <td class="num">104</td>
 <td class="src"><pre><code class="objc">            return UIImage(named: "img_cold_default")</code></pre></td>
 <td class="coverage">!</td>
 </tr>
-<tr class="covered">
+<tr class="missed">
 <td class="num">105</td>
 <td class="src"><pre><code class="objc">        case .observed:</code></pre></td>
-<td class="coverage">11x</td>
+<td class="coverage">!</td>
 </tr>
 <tr class="missed">
 <td class="num">106</td>
 <td class="src"><pre><code class="objc">            return UIImage(named: "img_observed_default")</code></pre></td>
 <td class="coverage">!</td>
 </tr>
-<tr class="covered">
+<tr class="missed">
 <td class="num">107</td>
 <td class="src"><pre><code class="objc">        }</code></pre></td>
-<td class="coverage">11x</td>
+<td class="coverage">!</td>
 </tr>
-<tr class="covered">
+<tr class="missed">
 <td class="num">108</td>
 <td class="src"><pre><code class="objc">    }</code></pre></td>
-<td class="coverage">11x</td>
+<td class="coverage">!</td>
 </tr>
 <tr class="never">
 <td class="num">109</td>
@@ -560,27 +560,27 @@
 <tr class="covered">
 <td class="num">110</td>
 <td class="src"><pre><code class="objc">    var selectedImg: UIImage? {</code></pre></td>
-<td class="coverage">10x</td>
+<td class="coverage">9x</td>
 </tr>
 <tr class="covered">
 <td class="num">111</td>
 <td class="src"><pre><code class="objc">        switch type {</code></pre></td>
-<td class="coverage">10x</td>
+<td class="coverage">9x</td>
 </tr>
 <tr class="covered">
 <td class="num">112</td>
 <td class="src"><pre><code class="objc">        case .classic:</code></pre></td>
-<td class="coverage">10x</td>
+<td class="coverage">9x</td>
 </tr>
 <tr class="covered">
 <td class="num">113</td>
 <td class="src"><pre><code class="objc">            return UIImage(named: "img_normal_selected")</code></pre></td>
-<td class="coverage">10x</td>
+<td class="coverage">9x</td>
 </tr>
 <tr class="covered">
 <td class="num">114</td>
 <td class="src"><pre><code class="objc">        case .cold:</code></pre></td>
-<td class="coverage">10x</td>
+<td class="coverage">9x</td>
 </tr>
 <tr class="missed">
 <td class="num">115</td>
@@ -590,7 +590,7 @@
 <tr class="covered">
 <td class="num">116</td>
 <td class="src"><pre><code class="objc">        case .observed:</code></pre></td>
-<td class="coverage">10x</td>
+<td class="coverage">9x</td>
 </tr>
 <tr class="missed">
 <td class="num">117</td>
@@ -600,12 +600,12 @@
 <tr class="covered">
 <td class="num">118</td>
 <td class="src"><pre><code class="objc">        }</code></pre></td>
-<td class="coverage">10x</td>
+<td class="coverage">9x</td>
 </tr>
 <tr class="covered">
 <td class="num">119</td>
 <td class="src"><pre><code class="objc">    }</code></pre></td>
-<td class="coverage">10x</td>
+<td class="coverage">9x</td>
 </tr>
 <tr class="never">
 <td class="num">120</td>
@@ -615,27 +615,27 @@
 <tr class="covered">
 <td class="num">121</td>
 <td class="src"><pre><code class="objc">    var walletNameTextColor: UIColor {</code></pre></td>
-<td class="coverage">21x</td>
+<td class="coverage">9x</td>
 </tr>
 <tr class="covered">
 <td class="num">122</td>
 <td class="src"><pre><code class="objc">        switch type {</code></pre></td>
-<td class="coverage">21x</td>
+<td class="coverage">9x</td>
 </tr>
 <tr class="covered">
 <td class="num">123</td>
 <td class="src"><pre><code class="objc">        case .classic:</code></pre></td>
-<td class="coverage">21x</td>
+<td class="coverage">9x</td>
 </tr>
 <tr class="covered">
 <td class="num">124</td>
 <td class="src"><pre><code class="objc">            return common_blue_color</code></pre></td>
-<td class="coverage">21x</td>
+<td class="coverage">9x</td>
 </tr>
 <tr class="covered">
 <td class="num">125</td>
 <td class="src"><pre><code class="objc">        case .cold:</code></pre></td>
-<td class="coverage">21x</td>
+<td class="coverage">9x</td>
 </tr>
 <tr class="missed">
 <td class="num">126</td>
@@ -645,7 +645,7 @@
 <tr class="covered">
 <td class="num">127</td>
 <td class="src"><pre><code class="objc">        case .observed:</code></pre></td>
-<td class="coverage">21x</td>
+<td class="coverage">9x</td>
 </tr>
 <tr class="missed">
 <td class="num">128</td>
@@ -655,12 +655,12 @@
 <tr class="covered">
 <td class="num">129</td>
 <td class="src"><pre><code class="objc">        }</code></pre></td>
-<td class="coverage">21x</td>
+<td class="coverage">9x</td>
 </tr>
 <tr class="covered">
 <td class="num">130</td>
 <td class="src"><pre><code class="objc">    }</code></pre></td>
-<td class="coverage">21x</td>
+<td class="coverage">9x</td>
 </tr>
 <tr class="never">
 <td class="num">131</td>
