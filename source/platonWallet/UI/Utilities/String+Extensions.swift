@@ -126,10 +126,10 @@ extension String{
         
         //0x5eBb663FD101b46dBBe6465E72Ed4b291849111 -> true (wrong logic)
         //0x5eBb663FD101b46dBBe6465E72Ed4b2918491111 -> true
-        guard self.isHexString() else {
-            return false
-        }
-        return drop0x().hexToBytes().count == 20
+//        guard self.isHexString() else {
+//            return false
+//        }
+//        return drop0x().hexToBytes().count == 20
     }
     
     func isValidPrivateKey() -> Bool {

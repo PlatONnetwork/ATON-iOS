@@ -34,7 +34,6 @@ extension UIViewController {
     @objc func proj_viewWillAppear(animated: Bool) {
         self.proj_viewWillAppear(animated: animated)
         
-        let viewControllerName = NSStringFromClass(type(of: self))
         CustomLoading.viewWillAppear()
         
         guard isInCustomLoading != nil else{

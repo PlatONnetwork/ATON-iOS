@@ -493,7 +493,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
                     DispatchQueue.main.async {
                         self.showOfflineConfirmView(content: content)
                     }
-                case .fail(let code, let message):
+                case .fail(_, _):
                     break
                 }
             }

@@ -280,7 +280,6 @@ class AssetViewControllerV060: BaseViewController ,PopupMenuTableDelegate{
     var assetHeaderStyle: (hide: Bool,animated: Bool)?{
         didSet{
             let hide = assetHeaderStyle?.0 ?? false
-            let animated = assetHeaderStyle?.1 ?? false
 
             if hide{
 //                scrollView.setContentOffset(CGPoint(x: 0, y: AssetHeaderViewH), animated: animated)

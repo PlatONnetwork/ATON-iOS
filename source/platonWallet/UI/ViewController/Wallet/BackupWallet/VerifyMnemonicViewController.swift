@@ -337,7 +337,6 @@ extension VerifyMnemonicViewController:UICollectionViewDelegate,UICollectionView
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 //delay wait for text setted (self.mnemonicGridView?.setTextAtIndex(index: gridindex, text: ""))
-                let gridViewIndex = (self.mnemonicGridView?.getFirstEmptyFieldIndex())!
                 self.words_disorder_selected_Map[String(indexPath.row)] = ""
                 self.optionCollectionView.reloadData()
                 self.checkSubmitButtonEnable()

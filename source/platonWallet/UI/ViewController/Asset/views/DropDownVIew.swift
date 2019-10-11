@@ -169,11 +169,11 @@ extension PopupMenuTable {
     public func dismiss() {
         self.removeFromSuperview()
         return
-        UIView.animate(withDuration: 0.2, animations: {
-            self.tableView.frame = CGRect(x: self.tableViewStartPoint.x, y: self.tableViewStartPoint.y, width: 0, height: 0)
-        }) { (finished) in
-            self.removeFromSuperview()
-        }
+//        UIView.animate(withDuration: 0.2, animations: {
+//            self.tableView.frame = CGRect(x: self.tableViewStartPoint.x, y: self.tableViewStartPoint.y, width: 0, height: 0)
+//        }) { (finished) in
+//            self.removeFromSuperview()
+//        }
     }
 }
 

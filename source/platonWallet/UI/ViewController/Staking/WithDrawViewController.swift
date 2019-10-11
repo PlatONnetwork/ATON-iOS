@@ -398,7 +398,7 @@ extension WithDrawViewController {
                         
                         let transactionData = TransactionQrcode(amount: amount.description, chainId: web3.properties.chainId, from: walletObject.currentWallet.address, to: PlatonConfig.ContractAddress.stakingContractAddress, gasLimit: funcType.gas.description, gasPrice: gasPrice, nonce: nonceString, typ: nil, nodeId: nodeId, nodeName: self.currentNode?.name, sender: walletObject.currentWallet.address, stakingBlockNum: String(sBlockNum), type: funcType.typeValue)
                         qrcodeArr.append(transactionData)
-                    case .fail(let code, let message):
+                    case .fail(_, _):
                         break
                     }
                 }
@@ -529,7 +529,7 @@ extension WithDrawViewController {
                         if index == signatureArr.count - 1 {
                             self.doShowTransactionDetail(tx)
                         }
-                    case .failure(let error):
+                    case .failure(_):
                         break
                     }
                 }

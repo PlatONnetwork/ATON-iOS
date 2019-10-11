@@ -314,7 +314,7 @@ extension DelegateViewController {
                     DispatchQueue.main.async {
                         self.showOfflineConfirmView(content: content)
                     }
-                case .fail(let code, let message):
+                case .fail(_, _):
                     break
                 }
             }
@@ -469,7 +469,7 @@ extension DelegateViewController {
                         if index == signatureArr.count - 1 {
                             self.doShowTransactionDetail(tx)
                         }
-                    case .failure(let error):
+                    case .failure(_):
                         break
                     }
                 }
