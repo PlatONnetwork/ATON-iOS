@@ -87,7 +87,7 @@ class TransferSwitchWallet: UIView,UITableViewDataSource,UITableViewDelegate {
             }
             
             let av = wallet.address.walletAddressLastCharacterAvatar()
-            cell.walletIcon.image = UIImage(named: av ?? "" )?.circleImage()
+            cell.walletIcon.image = UIImage(named: av )?.circleImage()
             cell.walletBalance.text = Localized("transferVC_transfer_balance")  + wallet.balanceDescription()
             
         }else{

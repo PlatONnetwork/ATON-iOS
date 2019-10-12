@@ -91,7 +91,7 @@ class DropdownListView: UIView {
     var selectedWallet: Wallet?
     
     lazy var walletsObject = { () -> DropdownCellStyle in
-        let selectedIndex = (AssetVCSharedData.sharedData.walletList as! [Wallet]).firstIndex(where: { (wallet) -> Bool in
+        let selectedIndex = (AssetVCSharedData.sharedData.walletList as? [Wallet])?.firstIndex(where: { (wallet) -> Bool in
             return wallet.address == selectedWallet?.address
         })
         

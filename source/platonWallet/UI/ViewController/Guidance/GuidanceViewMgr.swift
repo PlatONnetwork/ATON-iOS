@@ -111,7 +111,7 @@ enum GuidancePage {
                 let imgViewHeight = (imgViewWidth * size.height)/size.width
                 let scaleFactor : CGFloat = (kUIScreenWidth >= 375.0 ) ? 375.0/kUIScreenWidth : 1.0
                 let imgViewSize = CGSize(width: kUIScreenWidth, height: imgViewHeight * scaleFactor)
-                var top : CGFloat = 72
+                let top : CGFloat = 72
                 make.top.equalToSuperview().offset((top + UIDevice.notchoffset))
                 make.centerX.equalToSuperview()
                 make.size.equalTo(imgViewSize)
@@ -124,7 +124,7 @@ enum GuidancePage {
                 let imgViewHeight = (imgViewWidth * size.height)/size.width
                 let scaleFactor : CGFloat = (kUIScreenWidth >= 375.0 ) ? 375.0/kUIScreenWidth : 1.0
                 let imgViewSize = CGSize(width: kUIScreenWidth, height: imgViewHeight * scaleFactor)
-                var top : CGFloat = 25
+                let top : CGFloat = 25
                 
                 make.top.equalToSuperview().offset((top + UIDevice.notchoffset))
                 make.centerX.equalToSuperview()

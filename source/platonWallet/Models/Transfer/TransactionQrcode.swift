@@ -13,14 +13,17 @@ struct QrcodeData<QRData: Codable>: Codable {
     var qrCodeType: Int?
     var qrCodeData: QRData?
     var timestamp: Int?
-    var chainid: String?
+    var chainId: String?
+    var functionType: UInt16? = nil
+    var from: String? = nil
+    
 }
 
-struct SignatureQrcode: Codable {
-    var signedData: [String]?
-    var from: String?
-    var type: UInt16?
-}
+//struct SignatureQrcode: Codable {
+//    var signedData: [String]?
+//    var from: String?
+//    var type: UInt16?
+//}
 
 struct TransactionQrcode: Codable {
     var amount: String?
@@ -35,13 +38,13 @@ struct TransactionQrcode: Codable {
     var nodeName: String?
     var sender: String?
     var stakingBlockNum: String?
-    var type: UInt16?
+    var functionType: UInt16?
 }
 
 
 extension TransactionQrcode {
     var typeString: String {
-        switch type! {
+        switch functionType! {
         case 0:
             return Localized("TransactionStatus_sending_title")
         case 1004:
@@ -61,7 +64,7 @@ extension TransactionQrcode {
     }
     
     var toName: String {
-        switch type! {
+        switch functionType! {
         case 0:
             guard let wallet = (AssetVCSharedData.sharedData.walletList as? [Wallet])?.first(where: { $0.address.lowercased() == to?.lowercased() }) else {
                 return to ?? "--"

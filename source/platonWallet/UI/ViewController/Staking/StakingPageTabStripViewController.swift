@@ -37,7 +37,7 @@ class StakingPageTabStripViewController: BaseButtonBarPagerTabStripViewControlle
         
 
         
-        changeCurrentIndexProgressive = { [weak self] (oldCell: StakingLabelViewCell?, newCell: StakingLabelViewCell?, progressPercentage: CGFloat, changeCurrentIndex: Bool, animated: Bool) -> Void in
+        changeCurrentIndexProgressive = { (oldCell: StakingLabelViewCell?, newCell: StakingLabelViewCell?, progressPercentage: CGFloat, changeCurrentIndex: Bool, animated: Bool) -> Void in
             
             guard changeCurrentIndex == true else { return }
             

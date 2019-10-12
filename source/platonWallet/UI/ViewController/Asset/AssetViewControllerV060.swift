@@ -280,7 +280,6 @@ class AssetViewControllerV060: BaseViewController ,PopupMenuTableDelegate{
     var assetHeaderStyle: (hide: Bool,animated: Bool)?{
         didSet{
             let hide = assetHeaderStyle?.0 ?? false
-            let animated = assetHeaderStyle?.1 ?? false
 
             if hide{
 //                scrollView.setContentOffset(CGPoint(x: 0, y: AssetHeaderViewH), animated: animated)
@@ -514,7 +513,7 @@ extension AssetViewControllerV060 : UIScrollViewDelegate,ChildScrollViewDidScrol
     }
     
     func doShowConfirmViewController(qrcode: QrcodeData<[TransactionQrcode]>) {
-        guard let codes = qrcode.qrCodeData, codes.count > 0, qrcode.chainid == web3.chainId else {
+        guard let codes = qrcode.qrCodeData, codes.count > 0, qrcode.chainId == web3.chainId else {
             showErrorMessage(text: Localized("offline_signature_invalid"), delay: 2.0)
             return
         }
@@ -592,13 +591,12 @@ extension AssetViewControllerV060 : UIScrollViewDelegate,ChildScrollViewDidScrol
 
  
 extension AssetViewControllerV060{
-    static func sendSignatureTransaction(qrcode: QrcodeData<SignatureQrcode>) {
+    static func sendSignatureTransaction(qrcode: QrcodeData<[String]>) {
         
         guard
-            let qrCodeData = qrcode.qrCodeData,
-            let signatureArr = qrCodeData.signedData,
-            let type = qrCodeData.type,
-            let from = qrCodeData.from else { return }
+            let signatureArr = qrcode.qrCodeData,
+            let type = qrcode.functionType,
+            let from = qrcode.from else { return }
         for (index, signature) in signatureArr.enumerated() {
             let bytes = signature.hexToBytes()
             let rlpItem = try? RLPDecoder().decode(bytes)

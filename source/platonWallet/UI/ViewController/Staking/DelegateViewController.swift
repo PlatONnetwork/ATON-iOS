@@ -303,10 +303,10 @@ extension DelegateViewController {
                     guard let nonce = blockNonce else { return }
                     let nonceString = nonce.quantity.description
                     
-                    let transactionData = TransactionQrcode(amount: self.currentAmount.description, chainId: web3.properties.chainId, from: walletObject.currentWallet.address, to: PlatonConfig.ContractAddress.stakingContractAddress, gasLimit: funcType.gas.description, gasPrice: gasPrice, nonce: nonceString, typ: typ, nodeId: nodeId, nodeName: self.currentNode?.name, sender: walletObject.currentWallet.address, stakingBlockNum: nil, type: funcType.typeValue)
+                    let transactionData = TransactionQrcode(amount: self.currentAmount.description, chainId: web3.properties.chainId, from: walletObject.currentWallet.address, to: PlatonConfig.ContractAddress.stakingContractAddress, gasLimit: funcType.gas.description, gasPrice: gasPrice, nonce: nonceString, typ: typ, nodeId: nodeId, nodeName: self.currentNode?.name, sender: walletObject.currentWallet.address, stakingBlockNum: nil, functionType: funcType.typeValue)
                     
                     
-                    let qrcodeData = QrcodeData(qrCodeType: 0, qrCodeData: [transactionData], timestamp: Int(Date().timeIntervalSince1970 * 1000), chainid: web3.chainId)
+                    let qrcodeData = QrcodeData(qrCodeType: 0, qrCodeData: [transactionData], timestamp: Int(Date().timeIntervalSince1970 * 1000), chainId: web3.chainId, functionType: 1004, from: walletObject.currentWallet.address)
                     guard
                         let data = try? JSONEncoder().encode(qrcodeData),
                         let content = String(data: data, encoding: .utf8) else { return }
@@ -314,7 +314,7 @@ extension DelegateViewController {
                     DispatchQueue.main.async {
                         self.showOfflineConfirmView(content: content)
                     }
-                case .fail(let code, let message):
+                case .fail(_, _):
                     break
                 }
             }
@@ -376,13 +376,13 @@ extension DelegateViewController {
     }
     
     func showQrcodeScan() {
-        var qrcodeData: QrcodeData<SignatureQrcode>?
+        var qrcodeData: QrcodeData<[String]>?
         let scanView = OfflineSignatureScanView()
         scanView.scanCompletion = { [weak self] in
             self?.doShowScanController(completion: { (data) in
                 guard
                     let qrcode = data,
-                    let signedDatas = qrcode.qrCodeData?.signedData, qrcode.chainid == web3.chainId else { return }
+                    let signedDatas = qrcode.qrCodeData, qrcode.chainId == web3.chainId else { return }
                 if qrcode.timestamp != self?.generateQrCode?.timestamp {
                     self?.showErrorMessage(text: Localized("offline_signature_invalid"), delay: 2.0)
                     return
@@ -408,7 +408,7 @@ extension DelegateViewController {
         controller.show(inViewController: self)
     }
     
-    func doShowScanController(completion: ((QrcodeData<SignatureQrcode>?) -> Void)?) {
+    func doShowScanController(completion: ((QrcodeData<[String]>?) -> Void)?) {
         let controller = QRScannerViewController()
         controller.hidesBottomBarWhenPushed = true
         controller.scanCompletion = { result in
@@ -426,13 +426,12 @@ extension DelegateViewController {
         (UIApplication.shared.keyWindow?.rootViewController as? BaseNavigationController)?.pushViewController(controller, animated: true)
     }
     
-    func sendSignatureTransaction(qrcode: QrcodeData<SignatureQrcode>) {
+    func sendSignatureTransaction(qrcode: QrcodeData<[String]>) {
         
         guard
-            let qrCodeData = qrcode.qrCodeData,
-            let signatureArr = qrCodeData.signedData,
-            let type = qrCodeData.type,
-            let from = qrCodeData.from else { return }
+            let signatureArr = qrcode.qrCodeData,
+            let type = qrcode.functionType,
+            let from = qrcode.from else { return }
         for (index, signature) in signatureArr.enumerated() {
             let bytes = signature.hexToBytes()
             let rlpItem = try? RLPDecoder().decode(bytes)
@@ -469,7 +468,7 @@ extension DelegateViewController {
                         if index == signatureArr.count - 1 {
                             self.doShowTransactionDetail(tx)
                         }
-                    case .failure(let error):
+                    case .failure(_):
                         break
                     }
                 }
