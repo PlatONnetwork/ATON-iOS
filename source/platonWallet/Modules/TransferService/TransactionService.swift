@@ -83,7 +83,7 @@ class TransactionService : BaseService{
             let expiredDate = Date(timeInterval: TimeInterval(24 * 3600), since: cdata)
             let nowData = Date()
             
-            if nowData.compare(expiredDate) == .orderedDescending{
+            if nowData.compare(expiredDate) == .orderedDescending && newItem.createTime != 0{
                 getReceiptTimeout = true
             }
             
