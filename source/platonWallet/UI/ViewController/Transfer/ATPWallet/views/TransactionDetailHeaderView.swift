@@ -244,7 +244,7 @@ class TransactionDetailHeaderView: UIView {
         } else {
             fromLabel.text = "--"
         }
-        
+
         if let toString = tx.to, toString.count > 0 {
             toLabel.text = tx.to
         } else {
@@ -259,10 +259,11 @@ class TransactionDetailHeaderView: UIView {
         if let valueString = tx.valueString.0, let color = tx.valueString.1 {
             topValueLabel.text = valueString
             topValueLabel.textColor = color
-            baseInfoTopConstraint?.activate()
+            baseInfoTopConstraint?.update(priority: .low)
         } else {
             topValueLabel.text = nil
-            baseInfoTopConstraint?.deactivate()
+            //临时改为activate，否则label高度会有异常
+            baseInfoTopConstraint?.update(priority: .high)
         }
         
         toIconIV.image = tx.toIconImage
