@@ -5,4 +5,5 @@ if ! [ -x "$(command -v slather)" ]; then
 fi
 
 slather coverage --html --scheme platonWalletTests --ignore "*ViewController*.swift" --ignore "*view*.swift" --ignore "*View*.swift" --ignore "*UI*.swift" --output-directory UnitTest-Report --binary-basename platonWallet  --workspace platonWallet.xcworkspace platonWallet.xcodeproj &&  open UnitTest-Report/index.html
-#slather coverage --html --scheme platonWalletTests --output-directory  UnitTest-Report --source-directory platonWallet/Modules --binary-basename platonWallet  --workspace platonWallet.xcworkspace platonWallet.xcodeproj &&  open UnitTest-Report/index.html
+#slather coverage --html --scheme platonWalletTests  --output-directory UnitTest-Report --binary-basename platonWallet  --workspace platonWallet.xcworkspace platonWallet.xcodeproj &&  open UnitTest-Report/index.html
+

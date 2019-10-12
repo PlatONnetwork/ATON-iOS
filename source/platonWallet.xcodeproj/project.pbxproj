@@ -246,7 +246,7 @@
 		9A831AEA224CAD1B00C91C72 /* WalletListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A831AE9224CAD1B00C91C72 /* WalletListViewController.swift */; };
 		9A9472F9221EB45300F8FEB9 /* NodeStoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9472F8221EB45300F8FEB9 /* NodeStoreService.swift */; };
 		9AD01B002350889B0069FBAC /* commonServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD01AFF2350889B0069FBAC /* commonServiceTests.swift */; };
-		9AD01B0223508D0D0069FBAC /* AssetPersistenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD01B0123508D0D0069FBAC /* AssetPersistenceTests.swift */; };
+		9AD01B0223508D0D0069FBAC /* PersistenceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD01B0123508D0D0069FBAC /* PersistenceTests.swift */; };
 		9AD11DDD21806C2D002CD905 /* CommonService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD11DDC21806C2D002CD905 /* CommonService.swift */; };
 		9AD11DE1218171CA002CD905 /* BackupMnemonicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD11DDF218171CA002CD905 /* BackupMnemonicViewController.swift */; };
 		9AD11DE2218171CA002CD905 /* BackupMnemonicViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AD11DE0218171CA002CD905 /* BackupMnemonicViewController.xib */; };
@@ -599,7 +599,7 @@
 		9A831AE9224CAD1B00C91C72 /* WalletListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WalletListViewController.swift; path = platonWallet/UI/ViewController/Setting/WalletListViewController.swift; sourceTree = SOURCE_ROOT; };
 		9A9472F8221EB45300F8FEB9 /* NodeStoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeStoreService.swift; sourceTree = "<group>"; };
 		9AD01AFF2350889B0069FBAC /* commonServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = commonServiceTests.swift; sourceTree = "<group>"; };
-		9AD01B0123508D0D0069FBAC /* AssetPersistenceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPersistenceTests.swift; sourceTree = "<group>"; };
+		9AD01B0123508D0D0069FBAC /* PersistenceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceTests.swift; sourceTree = "<group>"; };
 		9AD11DDC21806C2D002CD905 /* CommonService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonService.swift; sourceTree = "<group>"; };
 		9AD11DDF218171CA002CD905 /* BackupMnemonicViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackupMnemonicViewController.swift; sourceTree = "<group>"; };
 		9AD11DE0218171CA002CD905 /* BackupMnemonicViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BackupMnemonicViewController.xib; sourceTree = "<group>"; };
@@ -1513,7 +1513,7 @@
 				8184BB5E2325EDD000B5D3E1 /* platon071Tests.swift */,
 				9ADE44E0217B1C64006F1C81 /* Info.plist */,
 				9AD01AFF2350889B0069FBAC /* commonServiceTests.swift */,
-				9AD01B0123508D0D0069FBAC /* AssetPersistenceTests.swift */,
+				9AD01B0123508D0D0069FBAC /* PersistenceTests.swift */,
 			);
 			path = platonWalletTests;
 			sourceTree = "<group>";
@@ -2284,7 +2284,7 @@
 				9AD01B002350889B0069FBAC /* commonServiceTests.swift in Sources */,
 				8184BB5F2325EDD000B5D3E1 /* platon071Tests.swift in Sources */,
 				9ADE44E7217B1D97006F1C81 /* WalletServiceTests.swift in Sources */,
-				9AD01B0223508D0D0069FBAC /* AssetPersistenceTests.swift in Sources */,
+				9AD01B0223508D0D0069FBAC /* PersistenceTests.swift in Sources */,
 				9ADE44DF217B1C64006F1C81 /* platonWalletTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2462,7 +2462,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				DEVELOPMENT_TEAM = VQHC4XR7AG;
+				DEVELOPMENT_TEAM = JL97B8WL3X;
 				INFOPLIST_FILE = platonWallet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2472,7 +2472,7 @@
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.platon.aton;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = developWildcard;
+				PROVISIONING_PROFILE_SPECIFIER = yujinghan_develpoment;
 				SWIFT_COMPILATION_MODE = singlefile;
 				SWIFT_OBJC_BRIDGING_HEADER = "platonWallet/UI/Utilities/platonWallet-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";

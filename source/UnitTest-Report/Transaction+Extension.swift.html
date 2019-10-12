@@ -7,9 +7,9 @@
 <body>
 <header><div class="row"><a href="index.html"><img src="logo.jpg" alt="Slather logo"></a></div></header><div class="row"><div id="reports">
 <h2 class="cov_title">
-<span>Coverage for "Transaction+Extension.swift" : </span><span class="cov_low">19.70%</span>
+<span>Coverage for "Transaction+Extension.swift" : </span><span class="cov_low">67.49%</span>
 </h2>
-<h4 class="cov_subtitle">(40 of 203 relevant lines covered)</h4>
+<h4 class="cov_subtitle">(137 of 203 relevant lines covered)</h4>
 <h4 class="cov_filepath">platonWallet/Models/Transfer/Transaction+Extension.swift</h4>
 <table class="source_code">
 <tr class="never">
@@ -77,255 +77,255 @@
 <td class="src"><pre><code class="objc">extension Transaction {</code></pre></td>
 <td class="coverage"></td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">14</td>
 <td class="src"><pre><code class="objc">    var toAvatarImage: UIImage? {</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">15</td>
 <td class="src"><pre><code class="objc">        switch txType! {</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">16</td>
 <td class="src"><pre><code class="objc">        case .transfer,</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">17</td>
 <td class="src"><pre><code class="objc">             .unknown:</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">2x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">18</td>
 <td class="src"><pre><code class="objc">            let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.address.lowercased() == to?.lowercased() }.first</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">2x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">19</td>
 <td class="src"><pre><code class="objc">            guard let wallet = localWallet else {</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">2x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">20</td>
 <td class="src"><pre><code class="objc">                return UIImage(named: "walletAvatar_1")</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">2x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">21</td>
 <td class="src"><pre><code class="objc">            }</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">2x</td>
 </tr>
 <tr class="missed">
 <td class="num">22</td>
 <td class="src"><pre><code class="objc">            return UIImage(named: wallet.avatar)</code></pre></td>
 <td class="coverage">!</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">23</td>
 <td class="src"><pre><code class="objc">        default:</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">24</td>
 <td class="src"><pre><code class="objc">            if toType == .contract {</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">19x</td>
 </tr>
 <tr class="missed">
 <td class="num">25</td>
 <td class="src"><pre><code class="objc">                return UIImage(named: "2.icon_Shared")</code></pre></td>
 <td class="coverage">!</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">26</td>
 <td class="src"><pre><code class="objc">            } else {</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">19x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">27</td>
 <td class="src"><pre><code class="objc">                return UIImage(named: "2.icon_node")</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">19x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">28</td>
 <td class="src"><pre><code class="objc">            }</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">29</td>
 <td class="src"><pre><code class="objc">        }</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">30</td>
 <td class="src"><pre><code class="objc">    }</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="never">
 <td class="num">31</td>
 <td class="src"><pre><code class="objc">    </code></pre></td>
 <td class="coverage"></td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">32</td>
 <td class="src"><pre><code class="objc">    var fromAvatarImage: UIImage? {</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">33</td>
 <td class="src"><pre><code class="objc">        let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.address.lowercased() == from?.lowercased() }.first</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">34</td>
 <td class="src"><pre><code class="objc">        guard let wallet = localWallet else {</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">35</td>
 <td class="src"><pre><code class="objc">            return UIImage(named: "walletAvatar_1")</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">36</td>
 <td class="src"><pre><code class="objc">        }</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="missed">
 <td class="num">37</td>
 <td class="src"><pre><code class="objc">        return wallet.image()</code></pre></td>
 <td class="coverage">!</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">38</td>
 <td class="src"><pre><code class="objc">    }</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="never">
 <td class="num">39</td>
 <td class="src"><pre><code class="objc">    </code></pre></td>
 <td class="coverage"></td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">40</td>
 <td class="src"><pre><code class="objc">    var toNameString: String? {</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">41</td>
 <td class="src"><pre><code class="objc">        switch txType! {</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">42</td>
 <td class="src"><pre><code class="objc">        case .transfer,</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">43</td>
 <td class="src"><pre><code class="objc">             .unknown:</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">2x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">44</td>
 <td class="src"><pre><code class="objc">            let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.address.lowercased() == to?.lowercased() }.first</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">2x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">45</td>
 <td class="src"><pre><code class="objc">            guard let wallet = localWallet else {</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">2x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">46</td>
 <td class="src"><pre><code class="objc">                return to?.addressForDisplayShort()</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">2x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">47</td>
 <td class="src"><pre><code class="objc">            }</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">2x</td>
 </tr>
 <tr class="missed">
 <td class="num">48</td>
 <td class="src"><pre><code class="objc">            return wallet.name</code></pre></td>
 <td class="coverage">!</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">49</td>
 <td class="src"><pre><code class="objc">        default:</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">50</td>
 <td class="src"><pre><code class="objc">            if let nName = nodeName, nName.count &gt; 0 {</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">19x</td>
 </tr>
 <tr class="missed">
 <td class="num">51</td>
 <td class="src"><pre><code class="objc">                return nName</code></pre></td>
 <td class="coverage">!</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">52</td>
 <td class="src"><pre><code class="objc">            }</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">19x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">53</td>
 <td class="src"><pre><code class="objc">            return to?.addressForDisplayShort()</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">19x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">54</td>
 <td class="src"><pre><code class="objc">        }</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">55</td>
 <td class="src"><pre><code class="objc">    }</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="never">
 <td class="num">56</td>
 <td class="src"><pre><code class="objc">    </code></pre></td>
 <td class="coverage"></td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">57</td>
 <td class="src"><pre><code class="objc">    var fromNameString: String? {</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">58</td>
 <td class="src"><pre><code class="objc">        let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.address.lowercased() == from?.lowercased() }.first</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">59</td>
 <td class="src"><pre><code class="objc">        guard let wallet = localWallet else {</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">60</td>
 <td class="src"><pre><code class="objc">            return from?.addressForDisplayShort()</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">61</td>
 <td class="src"><pre><code class="objc">        }</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="missed">
 <td class="num">62</td>
 <td class="src"><pre><code class="objc">        return wallet.name</code></pre></td>
 <td class="coverage">!</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">63</td>
 <td class="src"><pre><code class="objc">    }</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="never">
 <td class="num">64</td>
@@ -457,45 +457,45 @@
 <td class="src"><pre><code class="objc">    </code></pre></td>
 <td class="coverage"></td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">90</td>
 <td class="src"><pre><code class="objc">    var toIconImage: UIImage? {</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">91</td>
 <td class="src"><pre><code class="objc">        switch toType {</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">92</td>
 <td class="src"><pre><code class="objc">        case .contract:</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="missed">
 <td class="num">93</td>
 <td class="src"><pre><code class="objc">            return UIImage(named: "2.icon_Shared2")</code></pre></td>
 <td class="coverage">!</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">94</td>
 <td class="src"><pre><code class="objc">        default:</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">95</td>
 <td class="src"><pre><code class="objc">            return nil</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">96</td>
 <td class="src"><pre><code class="objc">        }</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">97</td>
 <td class="src"><pre><code class="objc">    }</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="never">
 <td class="num">98</td>
@@ -505,12 +505,12 @@
 <tr class="covered">
 <td class="num">99</td>
 <td class="src"><pre><code class="objc">    var amountTextString: String {</code></pre></td>
-<td class="coverage">4x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="covered">
 <td class="num">100</td>
 <td class="src"><pre><code class="objc">        if let valueStr = value, Int(valueStr) == 0 {</code></pre></td>
-<td class="coverage">4x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="missed">
 <td class="num">101</td>
@@ -520,57 +520,57 @@
 <tr class="covered">
 <td class="num">102</td>
 <td class="src"><pre><code class="objc">        }</code></pre></td>
-<td class="coverage">4x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="covered">
 <td class="num">103</td>
 <td class="src"><pre><code class="objc">        </code></pre></td>
-<td class="coverage">4x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="covered">
 <td class="num">104</td>
 <td class="src"><pre><code class="objc">        switch direction {</code></pre></td>
-<td class="coverage">4x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="covered">
 <td class="num">105</td>
 <td class="src"><pre><code class="objc">        case .Sent:</code></pre></td>
-<td class="coverage">4x</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="covered">
+<tr class="missed">
 <td class="num">106</td>
 <td class="src"><pre><code class="objc">            return "-" + valueDescription!</code></pre></td>
-<td class="coverage">2x</td>
+<td class="coverage">!</td>
 </tr>
 <tr class="covered">
 <td class="num">107</td>
 <td class="src"><pre><code class="objc">        case .Receive:</code></pre></td>
-<td class="coverage">4x</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="covered">
+<tr class="missed">
 <td class="num">108</td>
 <td class="src"><pre><code class="objc">            return "+" + valueDescription!</code></pre></td>
-<td class="coverage">1x</td>
+<td class="coverage">!</td>
 </tr>
 <tr class="covered">
 <td class="num">109</td>
 <td class="src"><pre><code class="objc">        default:</code></pre></td>
-<td class="coverage">4x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="covered">
 <td class="num">110</td>
 <td class="src"><pre><code class="objc">            return "-" + valueDescription!</code></pre></td>
-<td class="coverage">1x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="covered">
 <td class="num">111</td>
 <td class="src"><pre><code class="objc">        }</code></pre></td>
-<td class="coverage">4x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="covered">
 <td class="num">112</td>
 <td class="src"><pre><code class="objc">    }</code></pre></td>
-<td class="coverage">4x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="never">
 <td class="num">113</td>
@@ -580,12 +580,12 @@
 <tr class="covered">
 <td class="num">114</td>
 <td class="src"><pre><code class="objc">    var amountTextColor: UIColor {</code></pre></td>
-<td class="coverage">4x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="covered">
 <td class="num">115</td>
 <td class="src"><pre><code class="objc">        if let valueStr = value, Int(valueStr) == 0 {</code></pre></td>
-<td class="coverage">4x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="missed">
 <td class="num">116</td>
@@ -595,57 +595,57 @@
 <tr class="covered">
 <td class="num">117</td>
 <td class="src"><pre><code class="objc">        }</code></pre></td>
-<td class="coverage">4x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="covered">
 <td class="num">118</td>
 <td class="src"><pre><code class="objc">        </code></pre></td>
-<td class="coverage">4x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="covered">
 <td class="num">119</td>
 <td class="src"><pre><code class="objc">        switch direction {</code></pre></td>
-<td class="coverage">4x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="covered">
 <td class="num">120</td>
 <td class="src"><pre><code class="objc">        case .Receive:</code></pre></td>
-<td class="coverage">4x</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="covered">
+<tr class="missed">
 <td class="num">121</td>
 <td class="src"><pre><code class="objc">            return UIColor(rgb: 0x19a20e)</code></pre></td>
-<td class="coverage">1x</td>
+<td class="coverage">!</td>
 </tr>
 <tr class="covered">
 <td class="num">122</td>
 <td class="src"><pre><code class="objc">        case .Sent:</code></pre></td>
-<td class="coverage">4x</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="covered">
+<tr class="missed">
 <td class="num">123</td>
 <td class="src"><pre><code class="objc">            return UIColor(rgb: 0xff3b3b)</code></pre></td>
-<td class="coverage">2x</td>
+<td class="coverage">!</td>
 </tr>
 <tr class="covered">
 <td class="num">124</td>
 <td class="src"><pre><code class="objc">        default:</code></pre></td>
-<td class="coverage">4x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="covered">
 <td class="num">125</td>
 <td class="src"><pre><code class="objc">            return UIColor(rgb: 0xb6bbd0)</code></pre></td>
-<td class="coverage">1x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="covered">
 <td class="num">126</td>
 <td class="src"><pre><code class="objc">        }</code></pre></td>
-<td class="coverage">4x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="covered">
 <td class="num">127</td>
 <td class="src"><pre><code class="objc">    }</code></pre></td>
-<td class="coverage">4x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="never">
 <td class="num">128</td>
@@ -690,122 +690,122 @@
 <tr class="covered">
 <td class="num">136</td>
 <td class="src"><pre><code class="objc">    var txTypeIcon: UIImage? {</code></pre></td>
-<td class="coverage">8x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="covered">
 <td class="num">137</td>
 <td class="src"><pre><code class="objc">        switch direction {</code></pre></td>
-<td class="coverage">8x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="covered">
 <td class="num">138</td>
 <td class="src"><pre><code class="objc">        case .Receive:</code></pre></td>
-<td class="coverage">8x</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="covered">
+<tr class="missed">
 <td class="num">139</td>
 <td class="src"><pre><code class="objc">            if txType! == .transfer {</code></pre></td>
-<td class="coverage">2x</td>
+<td class="coverage">!</td>
 </tr>
 <tr class="missed">
 <td class="num">140</td>
 <td class="src"><pre><code class="objc">                return UIImage(named: "txRecvSign")</code></pre></td>
 <td class="coverage">!</td>
 </tr>
-<tr class="covered">
+<tr class="missed">
 <td class="num">141</td>
 <td class="src"><pre><code class="objc">            }</code></pre></td>
-<td class="coverage">2x</td>
+<td class="coverage">!</td>
 </tr>
-<tr class="covered">
+<tr class="missed">
 <td class="num">142</td>
 <td class="src"><pre><code class="objc">            return UIImage(named: "1.icon_Undelegate")</code></pre></td>
-<td class="coverage">2x</td>
+<td class="coverage">!</td>
 </tr>
 <tr class="covered">
 <td class="num">143</td>
 <td class="src"><pre><code class="objc">        case .Sent:</code></pre></td>
-<td class="coverage">8x</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="covered">
+<tr class="missed">
 <td class="num">144</td>
 <td class="src"><pre><code class="objc">            if txType! == .transfer {</code></pre></td>
-<td class="coverage">4x</td>
+<td class="coverage">!</td>
 </tr>
 <tr class="missed">
 <td class="num">145</td>
 <td class="src"><pre><code class="objc">                return UIImage(named: "txSendSign")</code></pre></td>
 <td class="coverage">!</td>
 </tr>
-<tr class="covered">
+<tr class="missed">
 <td class="num">146</td>
 <td class="src"><pre><code class="objc">            }</code></pre></td>
-<td class="coverage">4x</td>
+<td class="coverage">!</td>
 </tr>
-<tr class="covered">
+<tr class="missed">
 <td class="num">147</td>
 <td class="src"><pre><code class="objc">            return UIImage(named: "1.icon_Delegate")</code></pre></td>
-<td class="coverage">4x</td>
+<td class="coverage">!</td>
 </tr>
 <tr class="covered">
 <td class="num">148</td>
 <td class="src"><pre><code class="objc">        default:</code></pre></td>
-<td class="coverage">8x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="covered">
 <td class="num">149</td>
 <td class="src"><pre><code class="objc">            return nil</code></pre></td>
-<td class="coverage">2x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="covered">
 <td class="num">150</td>
 <td class="src"><pre><code class="objc">        }</code></pre></td>
-<td class="coverage">8x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="covered">
 <td class="num">151</td>
 <td class="src"><pre><code class="objc">    }</code></pre></td>
-<td class="coverage">8x</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="never">
 <td class="num">152</td>
 <td class="src"><pre><code class="objc">    </code></pre></td>
 <td class="coverage"></td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">153</td>
 <td class="src"><pre><code class="objc">    var pipString: String {</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">154</td>
 <td class="src"><pre><code class="objc">        guard let pip = piDID else { return "--" }</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="missed">
 <td class="num">155</td>
 <td class="src"><pre><code class="objc">        return "PIP-" + pip</code></pre></td>
 <td class="coverage">!</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">156</td>
 <td class="src"><pre><code class="objc">    }</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="never">
 <td class="num">157</td>
 <td class="src"><pre><code class="objc">    </code></pre></td>
 <td class="coverage"></td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">158</td>
 <td class="src"><pre><code class="objc">    var versionDisplayString: String {</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">159</td>
 <td class="src"><pre><code class="objc">        guard let ver = version, let versionUInt32 = UInt32(ver) else { return "--" }</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="missed">
 <td class="num">160</td>
@@ -852,250 +852,250 @@
 <td class="src"><pre><code class="objc">extension Transaction {</code></pre></td>
 <td class="coverage"></td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">169</td>
 <td class="src"><pre><code class="objc">    var recordIconIV: UIImage? {</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">170</td>
 <td class="src"><pre><code class="objc">        switch txType! {</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">171</td>
 <td class="src"><pre><code class="objc">        case .delegateCreate:</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">172</td>
 <td class="src"><pre><code class="objc">            return UIImage(named: "1.icon_Delegate")</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">1x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">173</td>
 <td class="src"><pre><code class="objc">        case .delegateWithdraw:</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">174</td>
 <td class="src"><pre><code class="objc">            return UIImage(named: "1.icon_Undelegate")</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">1x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">175</td>
 <td class="src"><pre><code class="objc">        default:</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">176</td>
 <td class="src"><pre><code class="objc">            return UIImage(named: "1.icon_Delegate")</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">19x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">177</td>
 <td class="src"><pre><code class="objc">        }</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">178</td>
 <td class="src"><pre><code class="objc">    }</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="never">
 <td class="num">179</td>
 <td class="src"><pre><code class="objc">    </code></pre></td>
 <td class="coverage"></td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">180</td>
 <td class="src"><pre><code class="objc">    var recordAmount: String? {</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">42x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">181</td>
 <td class="src"><pre><code class="objc">        switch txType! {</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">42x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">182</td>
 <td class="src"><pre><code class="objc">        case .delegateCreate:</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">42x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">183</td>
 <td class="src"><pre><code class="objc">            return value</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">2x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">184</td>
 <td class="src"><pre><code class="objc">        case .delegateWithdraw:</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">42x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">185</td>
 <td class="src"><pre><code class="objc">            return unDelegation</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">2x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">186</td>
 <td class="src"><pre><code class="objc">        default:</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">42x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">187</td>
 <td class="src"><pre><code class="objc">            return value</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">38x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">188</td>
 <td class="src"><pre><code class="objc">        }</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">42x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">189</td>
 <td class="src"><pre><code class="objc">    }</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">42x</td>
 </tr>
 <tr class="never">
 <td class="num">190</td>
 <td class="src"><pre><code class="objc">    </code></pre></td>
 <td class="coverage"></td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">191</td>
 <td class="src"><pre><code class="objc">    var recordAmountForDisplay: String {</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">192</td>
 <td class="src"><pre><code class="objc">        return (recordAmount?.vonToLATString ?? "0").balanceFixToDisplay(maxRound: 8).ATPSuffix()</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">193</td>
 <td class="src"><pre><code class="objc">    }</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="never">
 <td class="num">194</td>
 <td class="src"><pre><code class="objc">    </code></pre></td>
 <td class="coverage"></td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">195</td>
 <td class="src"><pre><code class="objc">    var recordStatus: (String, UIColor) {</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">196</td>
 <td class="src"><pre><code class="objc">        </code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">197</td>
 <td class="src"><pre><code class="objc">        if let redeemSt = redeemStatus, redeemSt == .redeeming, txType! == .delegateWithdraw {</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="missed">
 <td class="num">198</td>
 <td class="src"><pre><code class="objc">            return (Localized("TransactionStatus_loading_undelegate"), status_blue_color)</code></pre></td>
 <td class="coverage">!</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">199</td>
 <td class="src"><pre><code class="objc">        } else if let redeemSt = redeemStatus, redeemSt == .redeemSuccess, txType! == .delegateWithdraw {</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="missed">
 <td class="num">200</td>
 <td class="src"><pre><code class="objc">            return (Localized("TransactionStatus_succeed_undelegate"), status_green_color)</code></pre></td>
 <td class="coverage">!</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">201</td>
 <td class="src"><pre><code class="objc">        } else {</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">202</td>
 <td class="src"><pre><code class="objc">            if let type = txType, type == .delegateCreate {</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">203</td>
 <td class="src"><pre><code class="objc">                if txReceiptStatus == 1 {</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">1x</td>
 </tr>
 <tr class="missed">
 <td class="num">204</td>
 <td class="src"><pre><code class="objc">                    return (Localized("TransactionStatus_succeed_delegate"), status_green_color)</code></pre></td>
 <td class="coverage">!</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">205</td>
 <td class="src"><pre><code class="objc">                } else if txReceiptStatus == 0 {</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">1x</td>
 </tr>
 <tr class="missed">
 <td class="num">206</td>
 <td class="src"><pre><code class="objc">                    return (Localized("TransactionStatus_failed_delegate"), status_red_color)</code></pre></td>
 <td class="coverage">!</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">207</td>
 <td class="src"><pre><code class="objc">                } else {</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">1x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">208</td>
 <td class="src"><pre><code class="objc">                    return (Localized("TransactionStatus_pending_desc"), status_blue_color)</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">1x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">209</td>
 <td class="src"><pre><code class="objc">                }</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">1x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">210</td>
 <td class="src"><pre><code class="objc">            } else {</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">20x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">211</td>
 <td class="src"><pre><code class="objc">                if txReceiptStatus == 1 {</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">20x</td>
 </tr>
 <tr class="missed">
 <td class="num">212</td>
 <td class="src"><pre><code class="objc">                    return (Localized("TransactionStatus_succeed_desc"), status_green_color)</code></pre></td>
 <td class="coverage">!</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">213</td>
 <td class="src"><pre><code class="objc">                } else if txReceiptStatus == 0 {</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">20x</td>
 </tr>
 <tr class="missed">
 <td class="num">214</td>
 <td class="src"><pre><code class="objc">                    return (Localized("TransactionStatus_failed_desc"), status_red_color)</code></pre></td>
 <td class="coverage">!</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">215</td>
 <td class="src"><pre><code class="objc">                } else {</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">20x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">216</td>
 <td class="src"><pre><code class="objc">                    return (Localized("TransactionStatus_pending_desc"), status_blue_color)</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">20x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">217</td>
 <td class="src"><pre><code class="objc">                }</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">20x</td>
 </tr>
 <tr class="missed">
 <td class="num">218</td>
@@ -1117,80 +1117,80 @@
 <td class="src"><pre><code class="objc">    </code></pre></td>
 <td class="coverage"></td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">222</td>
 <td class="src"><pre><code class="objc">    var recordTime: String? {</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">223</td>
 <td class="src"><pre><code class="objc">        let format = DateFormatter()</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">224</td>
 <td class="src"><pre><code class="objc">        let date = Date(timeIntervalSince1970: TimeInterval(confirmTimes/1000))</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">225</td>
 <td class="src"><pre><code class="objc">        let localZone = NSTimeZone.local</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">226</td>
 <td class="src"><pre><code class="objc">        format.timeZone = localZone</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">227</td>
 <td class="src"><pre><code class="objc">        format.locale = NSLocale.current</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">228</td>
 <td class="src"><pre><code class="objc">        format.dateFormat = "#yyyy/MMdd HH:mm"</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">229</td>
 <td class="src"><pre><code class="objc">        let strDate = format.string(from: date)</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">230</td>
 <td class="src"><pre><code class="objc">        return strDate</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">231</td>
 <td class="src"><pre><code class="objc">    }</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="never">
 <td class="num">232</td>
 <td class="src"><pre><code class="objc">    </code></pre></td>
 <td class="coverage"></td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">233</td>
 <td class="src"><pre><code class="objc">    var recordWalletName: String? {</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">234</td>
 <td class="src"><pre><code class="objc">        let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.address.lowercased() == from?.lowercased() }.first</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">235</td>
 <td class="src"><pre><code class="objc">        return (localWallet?.name ?? "--") + "(" + (from?.addressForDisplayShort() ?? "--") + ")"</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
-<tr class="missed">
+<tr class="covered">
 <td class="num">236</td>
 <td class="src"><pre><code class="objc">    }</code></pre></td>
-<td class="coverage">!</td>
+<td class="coverage">21x</td>
 </tr>
 <tr class="never">
 <td class="num">237</td>

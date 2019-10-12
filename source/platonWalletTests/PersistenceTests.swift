@@ -15,7 +15,7 @@ import OHHTTPStubs
 import RealmSwift
 @testable import platonWallet
 
-class AssetPersistenceTests: XCTestCase {
+class PersistenceTests: XCTestCase {
     
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -40,12 +40,38 @@ class AssetPersistenceTests: XCTestCase {
         }
     }
     
-    func testPersistence(){
+    func testAddressInfoPersistence(){
         let addr = AddressInfo()
         addr.walletAddress = self.generateRandomBytes()?.toHexString()
+        addr.nodeURLStr = "https:\\aton.main.platon.network"
         AddressInfoPersistence.add(addrInfo: addr)
         AddressInfoPersistence.getAll()
         AddressInfoPersistence.replaceInto(addrInfo: addr)
         AddressInfoPersistence.delete(addrInfo: addr)
+        
+
+    }
+    
+    func testBalance(){
+        let b = Balance(addr: "0x5eBb663FD101b46dBBe6465E72Ed4b2918492061", free: "123", lock: "234")
+        print("\(b.lockedBalanceValue)")
+    }
+    
+    func testAssetPersistence(){
+        
+        AssetPersistence.getAll()
+        
+        let addressInfo = AddressInfo()
+        addressInfo.walletName = "testwalletName"
+        addressInfo.nodeURLStr = "https:\\aton.main.platon.network"
+        addressInfo.walletAddress = "0x5eBb663FD101b46dBBe6465E72Ed4b2918492061"
+        AssetPersistence.add(addrInfo: addressInfo)
+        
+        AssetPersistence.getAll()
+        
+    }
+    
+    func testWallletPersistence(){
+       
     }
 }
