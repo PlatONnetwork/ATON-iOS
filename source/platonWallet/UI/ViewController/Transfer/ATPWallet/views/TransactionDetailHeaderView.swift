@@ -85,7 +85,7 @@ class TransactionDetailHeaderView: UIView {
         arrowIV.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.width.height.equalTo(16)
-            baseInfoTopConstraint = make.top.equalTo(topValueLabel.snp.bottom).offset(22).constraint
+            baseInfoTopConstraint = make.top.equalTo(topValueLabel.snp.bottom).offset(22).priorityLow().constraint
             make.top.equalToSuperview().offset(22).priorityMedium()
             make.bottom.equalToSuperview().offset(-22)
         }
@@ -230,6 +230,7 @@ class TransactionDetailHeaderView: UIView {
         copyFromAddrBtn.attachTextView = fromLabel
         copyToAddrBtn.attachTextView = toLabel
         pendingLoadingImage.isHidden = true
+        baseInfoTopConstraint?.update(priority: .low)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -259,11 +260,11 @@ class TransactionDetailHeaderView: UIView {
         if let valueString = tx.valueString.0, let color = tx.valueString.1 {
             topValueLabel.text = valueString
             topValueLabel.textColor = color
-            baseInfoTopConstraint?.update(priority: .low)
+            baseInfoTopConstraint?.update(priority: .high)
         } else {
             topValueLabel.text = nil
             //临时改为activate，否则label高度会有异常
-            baseInfoTopConstraint?.update(priority: .high)
+            baseInfoTopConstraint?.update(priority: .low)
         }
         
         toIconIV.image = tx.toIconImage

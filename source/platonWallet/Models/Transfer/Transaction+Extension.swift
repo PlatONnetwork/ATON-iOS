@@ -63,7 +63,7 @@ extension Transaction {
     }
     
     var valueString: (String?, UIColor?) {
-        if txReceiptStatus == -1 || txReceiptStatus == 0 {
+        if txReceiptStatus == -1 || txReceiptStatus == 0 || txReceiptStatus == -2 {
             return (nil, nil)
         }
         

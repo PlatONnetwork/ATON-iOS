@@ -72,6 +72,11 @@ class TransactionDetailViewController: BaseViewController {
                 }
                 
                 self?.transferDetailView.updateContent(tx: transaction)
+                self?.tableView.tableHeaderView = self?.transferDetailView
+                self?.transferDetailView.setNeedsLayout()
+                self?.transferDetailView.layoutIfNeeded()
+                self?.transferDetailView.frame.size = self?.transferDetailView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize) ?? CGSize(width: UIScreen.main.bounds.width, height: 250)
+                self?.tableView.tableHeaderView = self?.transferDetailView
             }
         }
     }
