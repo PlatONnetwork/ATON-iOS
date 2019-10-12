@@ -21,7 +21,7 @@ platform :ios do
     # add actions here: https://docs.fastlane.tools/actions
   end
   lane :slatherTest do
-    swiftlint(path: "./platonWallet/", output_file: "./reports/swiftlint.txt", ignore_exit_status: true, strict: false)
+    swiftlint(path: "./platonWallet/", output_file: "./reports/swiftlint.txt", ignore_exit_status: true, strict: false, quiet: true)
     sonar
   end
   lane :metrics do

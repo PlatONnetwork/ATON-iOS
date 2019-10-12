@@ -151,10 +151,10 @@ class OfflineSignatureTransactionViewController: BaseViewController {
             
             var signedStrings: [String] = []
             for code in codes {
-                if code.type == 1004 {
+                if code.functionType == 1004 {
                     guard let signatureString = self.signedDelegateTx(pri: pri, txQrcode: code) else { continue }
                     signedStrings.append(signatureString)
-                } else if code.type == 1005 {
+                } else if code.functionType == 1005 {
                     guard let signatureString = self.signedWithdrawTx(pri: pri, txQrcode: code) else { continue }
                     signedStrings.append(signatureString)
                 } else {
@@ -166,9 +166,8 @@ class OfflineSignatureTransactionViewController: BaseViewController {
             guard
                 let code = codes.first,
                 let sender = code.sender,
-                let type = code.type else { return }
-            let signedData = SignatureQrcode(signedData: signedStrings, from: sender, type: type)
-            let qrcodeData = QrcodeData(qrCodeType: 1, qrCodeData: signedData, timestamp: self.qrcode?.timestamp, chainid: web3.chainId)
+                let type = code.functionType else { return }
+            let qrcodeData = QrcodeData(qrCodeType: 1, qrCodeData: signedStrings, timestamp: self.qrcode?.timestamp, chainId: web3.chainId, functionType: type, from: sender)
             guard
                 let jsonData = try? JSONEncoder().encode(qrcodeData),
                 let jsonString = String(data: jsonData, encoding: .utf8) else { return }

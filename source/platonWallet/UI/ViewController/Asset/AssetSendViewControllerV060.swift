@@ -392,11 +392,15 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
         controller.show(inViewController: self)
     }
     
-    func doShowScanController(completion: ((QrcodeData<SignatureQrcode>?) -> Void)?) {
+    func doShowScanController(completion: ((QrcodeData<[String]>?) -> Void)?) {
         let controller = QRScannerViewController()
         controller.hidesBottomBarWhenPushed = true
         controller.scanCompletion = { result in
-            guard let qrcodeType = QRCodeDecoder().decode(result) else { return }
+            guard let qrcodeType = QRCodeDecoder().decode(result) else {
+                AssetViewControllerV060.getInstance()?.showMessage(text: Localized("QRScan_failed_tips"))
+                (UIApplication.shared.keyWindow?.rootViewController as? BaseNavigationController)?.popViewController(animated: true)
+                return
+            }
             switch qrcodeType {
             case .signedTransaction(let data):
                 completion?(data)
@@ -431,13 +435,13 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
     }
     
     @objc func showQrcodeScan() {
-        var qrcodeData: QrcodeData<SignatureQrcode>?
+        var qrcodeData: QrcodeData<[String]>?
         let scanView = OfflineSignatureScanView()
         scanView.scanCompletion = { [weak self] in
             self?.doShowScanController(completion: { (data) in
                 guard
                     let qrcode = data,
-                    let signedDatas = qrcode.qrCodeData?.signedData, qrcode.chainid == web3.chainId else { return }
+                    let signedDatas = qrcode.qrCodeData, qrcode.chainId == web3.chainId else { return }
                 if qrcode.timestamp != self?.generateQrCode?.timestamp {
                     self?.showErrorMessage(text: Localized("offline_signature_invalid"), delay: 2.0)
                     return
@@ -484,8 +488,8 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
                     guard let nonce = blockNonce else { return }
                     let nonceString = nonce.quantity.description
                     
-                    let transactionData = TransactionQrcode(amount: amount, chainId: web3.properties.chainId, from: wallet.address, to: to, gasLimit: gasLimit, gasPrice: gasPrice, nonce: nonceString, typ: nil, nodeId: nil, nodeName: nil, sender: wallet.address, stakingBlockNum: nil, type: 0)
-                    let qrcodeData = QrcodeData(qrCodeType: 0, qrCodeData: [transactionData], timestamp: Int(Date().timeIntervalSince1970 * 1000), chainid: web3.chainId)
+                    let transactionData = TransactionQrcode(amount: amount, chainId: web3.properties.chainId, from: wallet.address, to: to, gasLimit: gasLimit, gasPrice: gasPrice, nonce: nonceString, typ: nil, nodeId: nil, nodeName: nil, sender: wallet.address, stakingBlockNum: nil, functionType: 0)
+                    let qrcodeData = QrcodeData(qrCodeType: 0, qrCodeData: [transactionData], timestamp: Int(Date().timeIntervalSince1970 * 1000), chainId: web3.chainId, functionType: nil, from: nil)
                     guard
                         let data = try? JSONEncoder().encode(qrcodeData),
                         let content = String(data: data, encoding: .utf8) else { return }

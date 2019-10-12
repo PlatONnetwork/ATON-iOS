@@ -151,7 +151,7 @@ class AlertStylePopViewController: UIViewController,UITextFieldDelegate {
                 self.textFieldInput.text = preInputText
             }
             self.configcommonInput()
-        case .commonInputWithItemDes(_, _, _, _, _)?:
+        case .commonInputWithItemDes(_, _,let inputDes,_,_)?:
             //self.item1Des.text = itemDes
             //self.item1Content.text = itemContent
             self.textInputDes.text = inputDes
