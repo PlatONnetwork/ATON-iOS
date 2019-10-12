@@ -225,7 +225,11 @@ extension AssetTransactionViewControllerV060{
                 if timeouttxs.count > 0{
                     let mappedTimeoutTxs = timeouttxs.map({ (t) -> Transaction in
                         //交易时间临时赋值给确认时间，仅用于交易的排序
-                        t.confirmTimes = t.createTime
+                        if t.createTime != 0{
+                            t.confirmTimes = t.createTime
+                        }else if t.confirmTimes != 0 && t.createTime == 0{
+                            t.createTime = t.confirmTimes
+                        }
                         return t
                     })
                     pendingexcludedTxs.append(contentsOf: mappedTimeoutTxs)
