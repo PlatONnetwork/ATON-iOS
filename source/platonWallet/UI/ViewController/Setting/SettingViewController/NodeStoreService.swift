@@ -9,176 +9,178 @@
 import Foundation
 import UIKit
 
-fileprivate let nodeURLReg = "^(http(s?)://)?([A-Z0-9a-z._%+-/:]{1,50})$"
+private let nodeURLReg = "^(http(s?)://)?([A-Z0-9a-z._%+-/:]{1,50})/rpc$"
 
 class NodeStoreService {
-    
+
     static let didEditStateChangeNotification = "didEditStateChangeNotification"
     static let didNodeListChangeNotification = "didNodeListChangeNotification"
     static let didSwitchNodeNotification = "didSwitchNodeNotification"
     static let selectedNodeUrlHadChangedNotification = "selectedNodeUrlHadChangedNotification"
-    
+
     static let share = NodeStoreService()
-    
+
     enum NodeError: Error {
         case urlIllegal
     }
-    
-    enum NodeEditType { 
+
+    enum NodeEditType {
         case add
         case delete(index: Int)
     }
-    
-    var nodeList: [NodeInfo] {
-        get { 
-            let nodes = SettingService.shareInstance.getNodes()
-            return nodes
-        }
-    }
-    
+
+    var nodeList: [NodeInfo] = NodeInfoPersistence.sharedInstance.getAll()
+
     var editingNodeList: [NodeInfo] = []
-    var selectedNodeBeforeEdit: NodeInfo?
-    
+
     var isEdit: Bool = false {
-        didSet{
-            
+        didSet {
+
             if isEdit {
                 editingNodeList = [NodeInfo]()
                 for item in nodeList {
                     editingNodeList.append(item.copy() as! NodeInfo)
                 }
-            }else {
+            } else {
                 editingNodeList.removeAll()
             }
-             
+
             NotificationCenter.default.post(name: Notification.Name(NodeStoreService.didEditStateChangeNotification), object: self, userInfo: ["isEdit":isEdit])
         }
     }
-    
+
     private init() {
-        
+
         //default setting
-        if let selectedNode = nodeList.first(where: { $0.isSelected == true }) {
-            selectedNodeBeforeEdit = selectedNode.copy() as? NodeInfo
-        } else {
-            
-            if nodeList.count > 0 {
-                SettingService.shareInstance.updateSelectedNode(nodeList.first!)
-                selectedNodeBeforeEdit = nodeList.first?.copy() as? NodeInfo
-            }
-        }
-        
+
     }
-    
+
     func nodeCount() -> Int {
-        return isEdit ? editingNodeList.count:nodeList.count
+        return isEdit ? editingNodeList.notDeleteArray.count : nodeList.count
     }
-    
+
     func item(index: Int) -> NodeInfo {
-        return isEdit ? editingNodeList[index]:nodeList[index]
+        return isEdit ? editingNodeList.notDeleteArray[index] : nodeList[index]
     }
-    
+
     func save() throws {
-        
+
         guard checkNodeUrl() else {
             throw NodeError.urlIllegal
         }
-        
-        SettingService.shareInstance.deleteNodeList(nodeList)
-        
+
         editingNodeList = editingNodeList.filter { (item) -> Bool in
             if item.nodeURLStr.length == 0 {
                 return false
-            }else {
+            } else {
                 if !item.nodeURLStr.hasPrefix("http") {
                     item.nodeURLStr = "http://\(item.nodeURLStr)"
                 }
                 return true
             }
         }
-        
+
         editingNodeList = editingNodeList.removeDuplicate { $0.nodeURLStr }
-        
+
         var nonNodeSelected = true
         for item in editingNodeList {
-            
-            if isNewNode(item) {
-                SettingService.shareInstance.addOrUpdateNode(NodeInfo(nodeURLStr: item.nodeURLStr))
-            }else {
-                
+
+            if item.status == .delete {
+                NodeInfoPersistence.sharedInstance.delete(node: item)
+                continue
+            }
+
+            if item.status == .create {
+                NodeInfoPersistence.sharedInstance.add(nodeURLStr: item.nodeURLStr, desc: "", isSelected: false, isDefault: false)
+                continue
+            }
+
+            if item.status == .edit {
+                guard let oriNode = nodeList.first(where: { $0.id == item.id && $0.nodeURLStr != item.nodeURLStr }) else { continue }
+                NodeInfoPersistence.sharedInstance.add(node: item)
+
                 if item.isSelected {
-                    nonNodeSelected = false
+                    NotificationCenter.default.post(name: Notification.Name(NodeStoreService.selectedNodeUrlHadChangedNotification), object: self, userInfo: ["node":item ,"oldUrl":oriNode.nodeURLStr])
                 }
-                
-                if let selectedNodeBefore = selectedNodeBeforeEdit, (item.id == selectedNodeBefore.id && item.nodeURLStr != selectedNodeBefore.nodeURLStr)  {
-                    item.isSelected = false
-                    NotificationCenter.default.post(name: Notification.Name(NodeStoreService.selectedNodeUrlHadChangedNotification), object: self, userInfo: ["node":item ,"oldUrl":selectedNodeBefore.nodeURLStr])
-                }
-                SettingService.shareInstance.addOrUpdateNode(item)
+            }
+
+            if item.isSelected {
+                nonNodeSelected = false
             }
         }
+
+        nodeList = editingNodeList.filter { $0.status != .delete}.map({ (nodeInfo) -> NodeInfo in
+            nodeInfo.status = .none
+            return nodeInfo
+        })
+
         if nonNodeSelected {
             NotificationCenter.default.post(name: Notification.Name(NodeStoreService.selectedNodeUrlHadChangedNotification), object: self, userInfo: ["node":editingNodeList[0]])
         }
-        
-        
-        
     }
-    
+
     func add() {
-        editingNodeList.append(NodeInfo())
+        let newNode = NodeInfo()
+        newNode.status = .create
+        editingNodeList.append(newNode)
         NotificationCenter.default.post(name: Notification.Name(NodeStoreService.didNodeListChangeNotification), object: self, userInfo: ["editType":NodeEditType.add])
     }
-    
+
     func delete(index: Int) {
-        editingNodeList.remove(at: index)
+        editingNodeList[index].status = .delete
         NotificationCenter.default.post(name: Notification.Name(NodeStoreService.didNodeListChangeNotification), object: self, userInfo: ["editType":NodeEditType.delete(index: index)])
     }
-    
-    func switchNode(node: NodeInfo) {
-        
-        SettingService.shareInstance.addOrUpdateNode(node)
-        SettingService.shareInstance.updateSelectedNode(node)
-        SettingService.shareInstance.currentNodeURL = node.nodeURLStr
-        
-        self.nodeWillSuccessSwitch()
-         
-        NotificationCenter.default.post(name: Notification.Name(NodeStoreService.didSwitchNodeNotification), object: self, userInfo: ["node":node])
-        
-        selectedNodeBeforeEdit = nodeList.first(where: { (item) -> Bool in
-            item.isSelected == true
-        })!.copy() as? NodeInfo
-        
+
+    func edit(index: Int, newText: String) {
+        if editingNodeList[index].status != .create {
+            editingNodeList[index].status = .edit
+        }
+        editingNodeList[index].nodeURLStr = newText
     }
-    
-    func nodeWillSuccessSwitch(){
+
+    func switchNode(node: NodeInfo) {
+
+        let newArr = nodeList.detached.map({ (nodeInfo) -> NodeInfo in
+            nodeInfo.isSelected = nodeInfo.id == node.id
+            return nodeInfo
+        })
+        nodeList = newArr
+
+        nodeList.forEach { (node) in
+            NodeInfoPersistence.sharedInstance.add(node: node)
+        }
+
+        SettingService.shareInstance.currentNodeURL = node.nodeURLStr
+
+        nodeWillSuccessSwitch()
+
+        NotificationCenter.default.post(name: Notification.Name(NodeStoreService.didSwitchNodeNotification), object: self, userInfo: ["node":node])
+    }
+
+    func nodeWillSuccessSwitch() {
         WalletService.sharedInstance.refreshDB()
-        
-        if AssetVCSharedData.sharedData.walletList.count == 0{
+
+        if AssetVCSharedData.sharedData.walletList.count == 0 {
             (UIApplication.shared.delegate as? AppDelegate)?.gotoWalletCreateVC()
-        } 
-    } 
-    
+        }
+    }
+
     private func checkNodeUrl() -> Bool {
-        
+
         var canSave = true
-        
+
         for node in editingNodeList {
-            
+
             if node.nodeURLStr.length == 0 {
                 continue
             }
-            
+
             if !NSPredicate(format: "SELF MATCHES %@", nodeURLReg).evaluate(with: node.nodeURLStr) {
-                canSave = false 
+                canSave = false
                 break
             }
-            
+
         }
         return canSave
-    }
-    
-    private func isNewNode(_ node: NodeInfo) -> Bool {
-        return node.id == 0
     }
 }

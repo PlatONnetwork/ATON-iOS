@@ -9,13 +9,13 @@
 import UIKit
 import Localize_Swift
 
-fileprivate let nodeURLReg = "^(http(s?)://)?([A-Z0-9a-z._%+-/:]{1,50})$"
+private let nodeURLReg = "^(http(s?)://)?([A-Z0-9a-z._%+-/:]{1,50})$"
 
 class NodeSettingViewControllerV2: BaseViewController {
-    
-    //MARK: Lazy Init
+
+    // MARK: Lazy Init
     lazy var tableView: UITableView = {
-        
+
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.register(UINib(nibName: "NodeSettingTableViewCell", bundle: nil), forCellReuseIdentifier: "NodeSettingTableViewCell")
         tableView.backgroundColor = UIViewController_backround
@@ -27,9 +27,9 @@ class NodeSettingViewControllerV2: BaseViewController {
         tableView.keyboardDismissMode = .interactive
         return tableView
     }()
-    
+
     lazy var footView: UIView = {
-        
+
         let view = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 68))
         let imgV = UIImageView(image: UIImage(named: "icon_node_add"))
         imgV.contentMode = .scaleAspectFit
@@ -57,7 +57,7 @@ class NodeSettingViewControllerV2: BaseViewController {
         view.addBottomSepline(offset: 16)
         return view
     }()
-    
+
     lazy var rightBarButton = { () -> UIButton in
         let btn = UIButton.getCommonBarButton()
         btn.setTitle(Localized("SettingsVC_nodeSet_editBtn_title"), for: .normal)
@@ -65,53 +65,53 @@ class NodeSettingViewControllerV2: BaseViewController {
         btn.setTitleColor(UIColor(rgb: 0x105CFE), for: .normal)
         return btn
     }()
-    
-    lazy var cancelBarButton = { () -> UIButton in 
+
+    lazy var cancelBarButton = { () -> UIButton in
         let btn = UIButton.getCommonBarButton()
         btn.setTitle(Localized("SettingsVC_nodeSet_cancelBtn_title"), for: .normal)
         btn.addTarget(self, action: #selector(onCancelEditClick), for: .touchUpInside)
         return btn
     }()
-    
+
     var backItem: UIBarButtonItem?
-    
+
     override func viewDidLoad() {
-        
+
         super.viewDidLoad()
-        
+
         setupUI()
-        
+
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame(_:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(editStateChange(_:)), name: Notification.Name(rawValue: NodeStoreService.didEditStateChangeNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(nodeListChange(_:)), name: Notification.Name(rawValue: NodeStoreService.didNodeListChangeNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(selectedNodeChange(_:)), name: Notification.Name(NodeStoreService.didSwitchNodeNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(reconnectNode(_:)), name: Notification.Name(NodeStoreService.selectedNodeUrlHadChangedNotification), object: nil)
-        
+
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         backItem = navigationItem.leftBarButtonItem
     }
-    
+
     @objc func editStateChange(_ notify:Notification) {
-        
+
         let newEditState = notify.userInfo?["isEdit"] as? Bool ?? false
         if newEditState {
             super.leftNavigationTitle = "SettingsVC_nodeSet_edit_title"
             navigationItem.leftBarButtonItem = UIBarButtonItem(customView: cancelBarButton)
             rightBarButton.setTitle(Localized("SettingsVC_nodeSet_saveBtn_title"), for: .normal)
             tableView.tableFooterView = footView
-        }else {
+        } else {
             super.leftNavigationTitle = "SettingsVC_nodeSet_title"
             navigationItem.leftBarButtonItem = backItem
             rightBarButton.setTitle(Localized("SettingsVC_nodeSet_editBtn_title"), for: .normal)
             tableView.tableFooterView = UIView()
         }
-        
+
         tableView.reloadData()
     }
-    
+
     @objc func nodeListChange(_ notify:Notification) {
         let type = notify.userInfo?["editType"] as! NodeStoreService.NodeEditType
         switch type {
@@ -123,184 +123,183 @@ class NodeSettingViewControllerV2: BaseViewController {
             let indexPath = IndexPath(row: index, section: 0)
             guard let cell = tableView.cellForRow(at:indexPath) as? NodeSettingTableViewCell else {
                 tableView.reloadData()
-                return;
+                return
             }
             cell.nodeTF.resignFirstResponder()
             tableView.beginUpdates()
             tableView.deleteRows(at: [indexPath], with: .automatic)
             tableView.endUpdates()
-            
+
         }
     }
-    
+
     @objc func selectedNodeChange(_ notify:Notification) {
         tableView.reloadData()
     }
-    
+
     @objc func reconnectNode(_ notify: Notification) {
-        
+
         guard let node = notify.userInfo?["node"] as? NodeInfo else {
             return
         }
-        
+
         let oldUrl = notify.userInfo?["oldUrl"] as? String
-        
+
         showLoadingHUD()
-        
+
         Web3Helper.switchRpcURL(node.nodeURLStr) { [weak self] (success) in
             guard let self = self else { return }
-            
+
             self.hideLoadingHUD()
-            
+
             let newNode = node.copy() as! NodeInfo
-            
+
             if !success {
                 if oldUrl != nil {
-                    
+
                     newNode.nodeURLStr = oldUrl!
                     self.showMessage(text: Localized("SettingsVC_nodeSet_recovery_tips"))
-                }else {
-                    
+                } else {
+
                 }
-                
-            }else {
-                
+
+            } else {
+
                 NotificationCenter.default.post(name: Notification.Name(NodeStoreService.didSwitchNodeNotification), object: nil)
             }
             NodeStoreService.share.switchNode(node: newNode)
-            
+
         }
-        
+
     }
-    
+
     ///keyboard notification
     @objc func keyboardWillChangeFrame(_ notify:Notification) {
-        
+
         let endFrame = notify.userInfo!["UIKeyboardFrameEndUserInfoKey"] as! CGRect
         if endFrame.origin.y - UIScreen.main.bounds.height < 0 {
             tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: endFrame.size.height, right: 0)
-        }else {
+        } else {
             tableView.contentInset = UIEdgeInsets.zero
         }
     }
-    
+
     func setupUI() {
         super.leftNavigationTitle = "SettingsVC_nodeSet_title"
         view.addSubview(tableView)
         tableView.snp.makeConstraints { (maker) in
             maker.edges.equalToSuperview()
         }
-        
-//#if DEBUG
+
+        #if DEBUG
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightBarButton)
-//#endif
+        #endif
     }
-    
+
     @objc func onRigthItemClick(_ sender: UIBarButtonItem) {
-        
-        view.becomeFirstResponder()
+        view.endEditing(true)
+
+        //        view.becomeFirstResponder()
         if NodeStoreService.share.isEdit { //save
-            do{
+            do {
                 try NodeStoreService.share.save()
-            }catch NodeStoreService.NodeError.urlIllegal{
+            } catch NodeStoreService.NodeError.urlIllegal {
                 showMessage(text: Localized("SettingsVC_error_node_format"))
                 return
-            }catch{
-                
+            } catch {
+
             }
         }
         NodeStoreService.share.isEdit = !NodeStoreService.share.isEdit
-        
+
     }
-    
+
     @objc func onAddClick() {
-        
+
         NodeStoreService.share.add()
-        
+
     }
-    
+
     @objc func onCancelEditClick() {
         NodeStoreService.share.isEdit = false
-        
+
     }
-    
+
 }
 
 extension NodeSettingViewControllerV2: UITableViewDelegate, UITableViewDataSource, NodeSettingTableViewCellDelegate {
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return NodeStoreService.share.nodeCount()
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        
+
         let cell = tableView.dequeueReusableCell(withIdentifier: "NodeSettingTableViewCell", for: indexPath) as! NodeSettingTableViewCell
         let nodeInfo = NodeStoreService.share.item(index: indexPath.row)
 
         let isEdit = NodeStoreService.share.isEdit
         cell.setup(node: nodeInfo.nodeURLStr, isSelected: isEdit ? false : nodeInfo.isSelected, isEdit: nodeInfo.isDefault ? false : isEdit, desc: nodeInfo.desc)
         cell.delegate = self
-        
+
         if isEdit && indexPath.row == NodeStoreService.share.nodeCount() - 1 {
             cell.nodeTF.becomeFirstResponder()
         }
-        
+
         return cell
     }
-    
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 68
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+
         guard !NodeStoreService.share.isEdit else {
             return
         }
-        
+
         let didSelectNode = NodeStoreService.share.nodeList[indexPath.row]
-        
-        if didSelectNode.id == NodeStoreService.share.selectedNodeBeforeEdit?.id {
+
+        // 当前点击的节点已经为选中状态，则不往下
+        guard !didSelectNode.isSelected else {
             return
         }
-        
+
         showLoadingHUD()
-        
         Web3Helper.switchRpcURL(didSelectNode.nodeURLStr, succeedCb: { [weak self] in
-            
+
             guard let self = self else {
                 return
             }
             self.hideLoadingHUD()
-            self.showMessage(text: Localized("SettingsVC_nodeSet_switchSuccess_tips"))
             NodeStoreService.share.switchNode(node: didSelectNode)
-            
+            self.showMessage(text: Localized("SettingsVC_nodeSet_switchSuccess_tips"))
         }) { [weak self] in
-            
+
             self?.hideLoadingHUD()
             self?.showMessage(text: Localized("SettingsVC_nodeSet_switchFail_tips"))
         }
-        
+
     }
-    
-    //MARK: NodeSettingTableViewCellDelegate
+
+    // MARK: NodeSettingTableViewCellDelegate
     func deleteNode(_ cell: NodeSettingTableViewCell) {
-        guard let indexPath = tableView .indexPath(for: cell) else {
+        guard let indexPath = tableView.indexPath(for: cell) else {
             return
         }
         NodeStoreService.share.delete(index: indexPath.row)
-        
+
     }
-    
+
     func editNode(_ cell:NodeSettingTableViewCell) {
-        guard let indexPath = tableView .indexPath(for: cell) else {
+        guard let indexPath = tableView.indexPath(for: cell) else {
             return
         }
-        
+
         if indexPath.row >= NodeStoreService.share.editingNodeList.count {
             return
         }
-        
-        NodeStoreService.share.editingNodeList[indexPath.row].nodeURLStr = cell.nodeTF.text!
+        NodeStoreService.share.edit(index: indexPath.row, newText: cell.nodeTF.text!)
     }
 }

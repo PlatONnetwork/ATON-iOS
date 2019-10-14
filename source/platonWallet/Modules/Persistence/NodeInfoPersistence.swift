@@ -10,7 +10,6 @@ import Foundation
 import RealmSwift
 import Localize_Swift
 
-
 //private let defalutNodes = [
 //    (nodeURL: AppConfig.NodeURL.DefaultNodeURL_Alpha_V071, desc: "SettingsVC_nodeSet_defaultTestNetwork_Amigo_des", isSelected: true),
 //]
@@ -21,20 +20,14 @@ import Localize_Swift
 //]
 
 class NodeInfoPersistence {
-    
+
     static let sharedInstance = NodeInfoPersistence()
-    
+
     func initConfig() {
         let nodes = getAll()
-        
+
         let nodeIdentifiers = nodes.map({$0.nodeURLStr})
-        for node in AppConfig.NodeURL.defaultNodesURL {
-            guard !nodeIdentifiers.contains(node.nodeURL) else{
-                continue
-            }
-            add(node: NodeInfo(nodeURLStr: node.nodeURL, desc: node.desc, isSelected: node.isSelected, isDefault: true))
-        }
-        
+
         var existSelected = false
         for item in nodes {
             if item.isSelected {
@@ -42,20 +35,37 @@ class NodeInfoPersistence {
                 break
             }
         }
-        
-        if !existSelected {
-            for item in nodes {
-                if item.nodeURLStr == AppConfig.NodeURL.defaultNodesURL.first!.nodeURL {
-                    update(node: item, isSelected: true)
-                    break
+
+        var newNodes: [(nodeURL: String, desc: String, isSelected: Bool)] = []
+        for node in AppConfig.NodeURL.defaultNodesURL {
+            guard !nodeIdentifiers.contains(node.nodeURL) else { continue }
+            newNodes.append(node)
+        }
+
+        if existSelected {
+            for node in newNodes {
+                add(nodeURLStr: node.nodeURL, desc: node.desc, isSelected: false, isDefault: true)
+            }
+        } else {
+            if newNodes.count > 0 {
+                for (index, node) in newNodes.enumerated() {
+                    add(nodeURLStr: node.nodeURL, desc: node.desc, isSelected: index == 0, isDefault: true)
+                }
+            } else {
+                for item in nodes {
+                    if item.nodeURLStr == AppConfig.NodeURL.defaultNodesURL.first!.nodeURL {
+                        update(node: item, isSelected: true)
+                        break
+                    }
                 }
             }
+
         }
     }
-    
+
     func getAll() -> [NodeInfo] {
         let realm = try! Realm(configuration: RealmHelper.getConfig())
-        let res = realm.objects(NodeInfo.self).sorted(byKeyPath: "id")
+        let res = realm.objects(NodeInfo.self)
         if res.count > 0 {
             let array = Array(res)
             return array
@@ -63,44 +73,57 @@ class NodeInfoPersistence {
             return []
         }
     }
-    
+
     func deleteList(_ list:[NodeInfo]) {
         let list = list.detached
-        
+
         RealmWriteQueue.async {
             autoreleasepool(invoking: {
                 let realm = try! Realm(configuration: RealmHelper.getConfig())
-                
+
                 try? realm.write {
                     for n in list {
-                        let predicate = NSPredicate(format: "nodeURLStr == %@ && id == %d", SettingService.getCurrentNodeURLString(), n.id)
+                        let predicate = NSPredicate(format: "nodeURLStr == %@ && id == %@", SettingService.getCurrentNodeURLString(), n.id)
                         realm.delete(realm.objects(NodeInfo.self).filter(predicate))
                     }
                 }
             })
-            
+
         }
     }
-    
-    func add(node: NodeInfo) {
-        let node = node.detached()
+
+    func add(nodeURLStr: String, desc: String, isSelected: Bool, isDefault: Bool) {
         RealmWriteQueue.async {
             autoreleasepool(invoking: {
+                let node = NodeInfo(nodeURLStr: nodeURLStr, desc: desc, isSelected: isSelected, isDefault: isDefault)
                 let realm = try! Realm(configuration: RealmHelper.getConfig())
-                
+
                 try? realm.write {
                     realm.add(node, update: true)
                 }
             })
         }
     }
-    
-    func update(node: NodeInfo, isSelected:Bool) {
-        let predicate = NSPredicate(format: "nodeURLStr == %@ && id == %d", SettingService.getCurrentNodeURLString(), node.id)
+
+    func add(node: NodeInfo) {
+        let node = node.detached()
         RealmWriteQueue.async {
             autoreleasepool(invoking: {
                 let realm = try! Realm(configuration: RealmHelper.getConfig())
-                
+
+                try? realm.write {
+                    realm.add(node, update: true)
+                }
+            })
+        }
+    }
+
+    func update(node: NodeInfo, isSelected:Bool) {
+        let predicate = NSPredicate(format: "nodeURLStr == %@ && id == %@", node.nodeURLStr, node.id)
+        RealmWriteQueue.async {
+            autoreleasepool(invoking: {
+                let realm = try! Realm(configuration: RealmHelper.getConfig())
+
                 let r = realm.objects(NodeInfo.self).filter(predicate)
                 try? realm.write {
                     for n in r {
@@ -110,13 +133,13 @@ class NodeInfoPersistence {
             })
         }
     }
-    
+
     func delete(node: NodeInfo) {
-        let predicate = NSPredicate(format: "nodeURLStr == %@ && id == %d", SettingService.getCurrentNodeURLString(), node.id)
+        let predicate = NSPredicate(format: "nodeURLStr == %@ && id == %@", node.nodeURLStr, node.id)
         RealmWriteQueue.async {
             autoreleasepool(invoking: {
                 let realm = try! Realm(configuration: RealmHelper.getConfig())
-                
+
                 try? realm.write {
                     realm.delete(realm.objects(NodeInfo.self).filter(predicate))
                 }
