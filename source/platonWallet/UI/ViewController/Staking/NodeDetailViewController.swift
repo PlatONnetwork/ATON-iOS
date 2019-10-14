@@ -11,23 +11,23 @@ import Localize_Swift
 import BigInt
 
 class NodeDetailViewController: BaseViewController {
-    
+
     public let nodeInfoView = NodeBaseInfoView()
     public let institutionalLabel = UILabel()
     public let websiteLabel = UILabel()
     public let doubtLabel = UILabel()
-    
+
     lazy var delegateButton = { () -> PButton in
         let button = PButton()
         button.setTitle(Localized("statking_validator_Delegate"), for: .normal)
         button.addTarget(self, action: #selector(delegateTapAction), for: .touchUpInside)
         return button
     }()
-    
+
     var nodeId: String?
-    
+
     var nodeDetail: NodeDetail?
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         super.leftNavigationTitle = "delegate_validator_detail_title"
@@ -35,7 +35,7 @@ class NodeDetailViewController: BaseViewController {
 
         // Do any additional setup after loading the view.
         nodeInfoView.nodeNameButton.addTarget(self, action: #selector(openWebSiteController), for: .touchUpInside)
-        
+
         view.addSubview(nodeInfoView)
         nodeInfoView.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(10)
@@ -43,7 +43,7 @@ class NodeDetailViewController: BaseViewController {
             make.top.equalToSuperview().offset(16)
             make.height.equalTo(236)
         }
-        
+
         let institutionalTipLabel = UILabel()
         institutionalTipLabel.text = Localized("statking_validator_Institutional")
         institutionalTipLabel.textColor = common_darkGray_color
@@ -53,7 +53,7 @@ class NodeDetailViewController: BaseViewController {
             make.leading.equalToSuperview().offset(16)
             make.top.equalTo(nodeInfoView.snp.bottom).offset(20)
         }
-        
+
         institutionalLabel.textColor = .black
         institutionalLabel.font = .systemFont(ofSize: 14)
         institutionalLabel.text = "--"
@@ -62,7 +62,7 @@ class NodeDetailViewController: BaseViewController {
             make.leading.equalTo(institutionalTipLabel)
             make.top.equalTo(institutionalTipLabel.snp.bottom).offset(10)
         }
-        
+
         let websiteTipLabel = UILabel()
         websiteTipLabel.text = Localized("statking_validator_Website")
         websiteTipLabel.textColor = common_darkGray_color
@@ -72,7 +72,7 @@ class NodeDetailViewController: BaseViewController {
             make.leading.equalToSuperview().offset(16)
             make.top.equalTo(institutionalLabel.snp.bottom).offset(16)
         }
-        
+
         websiteLabel.isUserInteractionEnabled = true
         websiteLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openWebSiteController)))
         websiteLabel.textColor = common_blue_color
@@ -83,13 +83,13 @@ class NodeDetailViewController: BaseViewController {
             make.leading.equalTo(websiteTipLabel)
             make.top.equalTo(websiteTipLabel.snp.bottom).offset(10)
         }
-        
+
         view.addSubview(delegateButton)
-        
+
         let attachment = NSTextAttachment()
         attachment.bounds = CGRect(x: 0, y: -2, width: 10, height: 10)
         attachment.image = UIImage(named: "3.icon_warning")
-        
+
         let attr = NSMutableAttributedString()
         attr.append(NSAttributedString(attachment: attachment))
         attr.append(NSAttributedString(string: " "))
@@ -106,21 +106,19 @@ class NodeDetailViewController: BaseViewController {
             make.bottom.equalTo(bottomLayoutGuide.snp.top).offset(-30)
             make.top.equalTo(delegateButton.snp.bottom).offset(15)
         }
-        
-        
-        
+
         let doubtButtonItem = UIBarButtonItem(image: UIImage(named: "3.icon_doubt"), style: .done, target: self, action: #selector(doubtTapAction))
         doubtButtonItem.tintColor = .black
         navigationItem.rightBarButtonItem = doubtButtonItem
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         if isViewLoaded {
             fetchData()
         }
     }
-    
+
     private func setupData() {
         nodeInfoView.nodeAvatarIV.kf.setImage(with: URL(string: nodeDetail?.node.url ?? ""), placeholder: UIImage(named: "3.icon_default"))
         nodeInfoView.nodeNameLabel.text = nodeDetail?.node.name ?? "--"
@@ -132,16 +130,16 @@ class NodeDetailViewController: BaseViewController {
         nodeInfoView.slashLabel.text = nodeDetail?.slash ?? "--"
         nodeInfoView.blocksLabel.text = nodeDetail?.blockOut ?? "--"
         nodeInfoView.blocksRateLabel.text = nodeDetail?.bRate ?? "--"
-        
+
         nodeInfoView.statusButton.setTitle(nodeDetail?.node.status.0 ?? "--", for: .normal)
         nodeInfoView.statusButton.setTitleColor(nodeDetail?.node.status.1 ?? status_blue_color, for: .normal)
         nodeInfoView.statusButton.layer.borderColor = (nodeDetail?.node.status.1 ?? status_blue_color).cgColor
-        
+
         institutionalLabel.text = nodeDetail?.institutionalForDisplay ?? "--"
         websiteLabel.text = nodeDetail?.websiteForDisplay ?? "--"
-        
+
         nodeInfoView.isHidden = (nodeDetail?.website == nil)
-        
+
         if nodeDetail?.node.isInit == true {
             delegateButton.snp.makeConstraints { make in
                 make.height.equalTo(40)
@@ -162,7 +160,7 @@ class NodeDetailViewController: BaseViewController {
         }
         doubtLabel.isHidden = (nodeDetail?.node.isInit == false)
     }
-    
+
     private func fetchData() {
         guard let nId = nodeId else { return }
         showLoadingHUD()
@@ -174,52 +172,52 @@ class NodeDetailViewController: BaseViewController {
                     self?.nodeDetail = newData
                     self?.setupData()
                 }
-            case .fail(_, _):
+            case .fail:
                 break
             }
         }
     }
-    
+
     @objc private func openWebSiteController() {
         let controller = WebCommonViewController()
         controller.requestUrl = nodeDetail?.website
         navigationController?.pushViewController(controller, animated: true)
     }
-    
+
     @objc private func delegateTapAction() {
         guard (AssetVCSharedData.sharedData.walletList as! [Wallet]).count > 0 else {
             showMessage(text: Localized("error_no_wallet"))
             return
         }
-        
+
         let hasBalance = AssetService.sharedInstace.balances.filter { (balance) -> Bool in
             let free = BigUInt(balance.free ?? "0")
             let lock = BigUInt(balance.lock ?? "0")
             return free! + lock! > BigUInt.zero
         }
-        
+
         if hasBalance.count == 0 {
             showMessage(text: Localized("error_wallet_no_balance"))
             return
         }
-        
+
         guard delegateButton.style != .disable else { return }
         guard let node = nodeDetail?.node else { return }
         let controller = DelegateViewController()
         controller.currentNode = node
         navigationController?.pushViewController(controller, animated: true)
     }
-    
+
     @objc private func doubtTapAction() {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.paragraphSpacing = 10
-        
+
         let titleAttr = NSAttributedString(string: Localized("staking_alert_annualized_rate") + "\n", attributes: [NSAttributedString.Key.foregroundColor: text_blue_color, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16, weight: .medium), NSAttributedString.Key.paragraphStyle: paragraphStyle])
         let detailAttr = NSAttributedString(string: Localized("staking_alert_annualized_rate_detail") + "\n", attributes: [NSAttributedString.Key.foregroundColor: common_darkGray_color, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13), NSAttributedString.Key.paragraphStyle: paragraphStyle])
-        
+
         let alertVC = AlertStylePopViewController.initFromNib()
         let style = PAlertStyle.AlertWithText(attributedStrings: [titleAttr, detailAttr])
-        alertVC.onAction(confirm: { (text, _) -> (Bool) in
+        alertVC.onAction(confirm: { (_, _) -> (Bool) in
             return true
         }) { (_, _) -> (Bool) in
             return true
@@ -227,7 +225,6 @@ class NodeDetailViewController: BaseViewController {
         alertVC.style = style
         alertVC.showInViewController(viewController: self)
     }
-    
 
     /*
     // MARK: - Navigation

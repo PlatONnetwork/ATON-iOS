@@ -10,11 +10,11 @@ import Foundation
 import RealmSwift
 
 class NodePersistence {
-    
+
     public class func add(nodes: [Node], _ completion: (() -> Void)?) {
         let nodes = nodes.detached
-        let _ = nodes.map { $0.chainUrl = SettingService.getCurrentNodeURLString() }
-        
+        _ = nodes.map { $0.chainUrl = SettingService.getCurrentNodeURLString() }
+
         RealmWriteQueue.async {
             autoreleasepool(invoking: {
                let realm = try! Realm(configuration: RealmHelper.getConfig())
@@ -27,7 +27,7 @@ class NodePersistence {
             })
         }
     }
-    
+
     public class func getAll(isRankingSorted: Bool = true) -> [Node] {
         let sortPropertis = [
             SortDescriptor(keyPath: isRankingSorted ? "ranking" : "ratePA", ascending: isRankingSorted ? true : false),
@@ -38,7 +38,7 @@ class NodePersistence {
         let array = Array(r)
         return array
     }
-    
+
     public class func getActiveNode(isRankingSorted: Bool = true) -> [Node] {
         let predicate = NSPredicate(format: "nodeStatus == 'Active'")
         let sortPropertis = [
@@ -50,7 +50,7 @@ class NodePersistence {
         let array = Array(r)
         return array
     }
-    
+
     public class func getCandiateNode(isRankingSorted: Bool = true) -> [Node] {
         let predicate = NSPredicate(format: "nodeStatus == 'Candidate'")
         let sortPropertis = [

@@ -16,8 +16,7 @@ class NodeBaseInfoView: UIView {
     public let nodeAddressLabel = UILabel()
     public let statusButton = UIButton()
     public let rateLabel = UILabel()
-    
-    
+
     public let totalStakedLabel = UILabel()
     public let delegationsLabel = UILabel()
     public let delegatorsLabel = UILabel()
@@ -25,13 +24,13 @@ class NodeBaseInfoView: UIView {
     public let blocksLabel = UILabel()
     public let blocksRateLabel = UILabel()
     public let nodeNameButton = UIButton()
-    
+
     var nodeLinkHandler: ((_ url: String) -> Void)?
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .white
-        
+
         let nodeBackgroundView = UIImageView()
         nodeBackgroundView.image = UIImage(named: "bg_staking_wallet_img")?.resizableImage(withCapInsets: UIEdgeInsets(top: 3, left: 345, bottom: 3, right: 3))
         addSubview(nodeBackgroundView)
@@ -39,7 +38,7 @@ class NodeBaseInfoView: UIView {
             make.leading.trailing.top.equalToSuperview()
             make.height.equalTo(60)
         }
-        
+
         nodeAvatarIV.addMaskView(corners: .allCorners, cornerRadiiV: 21)
         nodeAvatarIV.image = UIImage(named: "walletAvatar_1")
         nodeBackgroundView.addSubview(nodeAvatarIV)
@@ -48,7 +47,7 @@ class NodeBaseInfoView: UIView {
             make.leading.equalToSuperview().offset(5)
             make.width.height.equalTo(42)
         }
-        
+
         nodeNameLabel.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.medium)
         nodeNameLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         nodeNameLabel.textColor = .black
@@ -59,7 +58,7 @@ class NodeBaseInfoView: UIView {
             make.leading.equalTo(nodeAvatarIV.snp.trailing).offset(5)
             make.height.equalTo(18)
         }
-        
+
         statusButton.setTitle("--", for: .normal)
         statusButton.setTitleColor(common_blue_color, for: .normal)
         statusButton.layer.cornerRadius = 3.0
@@ -73,8 +72,7 @@ class NodeBaseInfoView: UIView {
             make.leading.equalTo(nodeNameLabel.snp.trailing).offset(4)
             make.centerY.equalTo(nodeNameLabel)
         }
-        
-        
+
         nodeNameButton.setImage(UIImage(named: "3.icon_link"), for: .normal)
         addSubview(nodeNameButton)
         nodeNameButton.snp.makeConstraints { make in
@@ -82,7 +80,7 @@ class NodeBaseInfoView: UIView {
             make.height.equalTo(16)
             make.centerY.equalTo(nodeNameLabel)
         }
-        
+
         nodeAddressLabel.font = UIFont.systemFont(ofSize: 13)
         nodeAddressLabel.textColor = common_darkGray_color
         nodeAddressLabel.text = "--"
@@ -91,7 +89,7 @@ class NodeBaseInfoView: UIView {
             make.top.equalTo(nodeNameLabel.snp.bottom).offset(3)
             make.leading.equalTo(nodeNameLabel.snp.leading)
         }
-        
+
         let rateView = UIView()
         rateView.backgroundColor = .clear
         rateView.isUserInteractionEnabled = false
@@ -101,8 +99,7 @@ class NodeBaseInfoView: UIView {
             make.leading.greaterThanOrEqualTo(statusButton.snp.trailing).offset(5)
             make.trailing.equalToSuperview().offset(-10)
         }
-        
-        
+
         rateLabel.textAlignment = .center
         rateLabel.font = UIFont.systemFont(ofSize: 17, weight: UIFont.Weight.medium)
         rateLabel.textColor = common_blue_color
@@ -113,7 +110,7 @@ class NodeBaseInfoView: UIView {
             make.trailing.leading.equalToSuperview()
             make.top.equalToSuperview()
         }
-        
+
         let rateTitleLabel = UILabel()
         rateTitleLabel.textAlignment = .center
         rateTitleLabel.font = .systemFont(ofSize: 11)
@@ -126,7 +123,7 @@ class NodeBaseInfoView: UIView {
             make.bottom.equalToSuperview()
 //            make.leading.equalTo(nodeAddressLabel.snp.trailing)
         }
-        
+
         let delegateBackgroundView = UIView()
         delegateBackgroundView.backgroundColor = .white
         addSubview(delegateBackgroundView)
@@ -135,7 +132,7 @@ class NodeBaseInfoView: UIView {
             make.leading.trailing.equalTo(nodeBackgroundView)
             make.bottom.equalToSuperview()
         }
-        
+
         let totalStakedTipLabel = UILabel()
         totalStakedTipLabel.text = Localized("statking_validator_total_staked")
         totalStakedTipLabel.textColor = common_lightLightGray_color
@@ -147,7 +144,7 @@ class NodeBaseInfoView: UIView {
             make.height.equalTo(14)
             make.width.equalToSuperview().offset(-24).dividedBy(2)
         }
-        
+
         totalStakedLabel.textColor = .black
         totalStakedLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium)
         totalStakedLabel.text = "--"
@@ -158,7 +155,7 @@ class NodeBaseInfoView: UIView {
             make.width.equalTo(totalStakedTipLabel.snp.width)
             make.height.equalTo(14)
         }
-        
+
         let delegationsTipLabel = UILabel()
         delegationsTipLabel.text = Localized("statking_validator_delegations")
         delegationsTipLabel.textColor = common_lightLightGray_color
@@ -169,7 +166,7 @@ class NodeBaseInfoView: UIView {
             make.top.equalTo(totalStakedTipLabel.snp.top)
             make.width.equalTo(totalStakedTipLabel)
         }
-        
+
         delegationsLabel.textColor = .black
         delegationsLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium)
         delegationsLabel.text = "--"
@@ -180,7 +177,7 @@ class NodeBaseInfoView: UIView {
             make.width.equalTo(delegationsTipLabel.snp.width)
             make.height.equalTo(14)
         }
-        
+
         let delegatorsTipLabel = UILabel()
         delegatorsTipLabel.text = Localized("statking_validator_delegators")
         delegatorsTipLabel.textColor = common_lightLightGray_color
@@ -192,7 +189,7 @@ class NodeBaseInfoView: UIView {
             make.height.equalTo(14)
             make.width.equalTo(totalStakedTipLabel)
         }
-        
+
         delegatorsLabel.textColor = .black
         delegatorsLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium)
         delegatorsLabel.text = "--"
@@ -203,7 +200,7 @@ class NodeBaseInfoView: UIView {
             make.height.equalTo(14)
             make.width.equalTo(delegatorsTipLabel.snp.width)
         }
-        
+
         let slashTipLabel = UILabel()
         slashTipLabel.text = Localized("statking_validator_slash")
         slashTipLabel.textColor = common_lightLightGray_color
@@ -214,7 +211,7 @@ class NodeBaseInfoView: UIView {
             make.top.equalTo(delegatorsTipLabel.snp.top)
             make.width.equalTo(delegatorsTipLabel)
         }
-        
+
         slashLabel.textColor = .black
         slashLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium)
         slashLabel.text = "--"
@@ -225,7 +222,7 @@ class NodeBaseInfoView: UIView {
             make.height.equalTo(14)
             make.width.equalTo(slashTipLabel.snp.width)
         }
-        
+
         let blocksTipLabel = UILabel()
         blocksTipLabel.text = Localized("statking_validator_blocks")
         blocksTipLabel.textColor = common_lightLightGray_color
@@ -237,7 +234,7 @@ class NodeBaseInfoView: UIView {
             make.height.equalTo(14)
             make.width.equalTo(delegatorsTipLabel)
         }
-        
+
         blocksLabel.textColor = .black
         blocksLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium)
         blocksLabel.text = "--"
@@ -248,7 +245,7 @@ class NodeBaseInfoView: UIView {
             make.height.equalTo(14)
             make.width.equalTo(blocksTipLabel.snp.width)
         }
-        
+
         let blocksRateTipLabel = UILabel()
         blocksRateTipLabel.text = Localized("statking_validator_blocks_rate")
         blocksRateTipLabel.textColor = common_lightLightGray_color
@@ -259,7 +256,7 @@ class NodeBaseInfoView: UIView {
             make.top.equalTo(blocksTipLabel.snp.top)
             make.width.equalTo(blocksTipLabel)
         }
-        
+
         blocksRateLabel.textColor = .black
         blocksRateLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium)
         blocksRateLabel.text = "--"
@@ -270,9 +267,9 @@ class NodeBaseInfoView: UIView {
             make.height.equalTo(14)
             make.width.equalTo(blocksRateTipLabel.snp.width)
         }
-        
+
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

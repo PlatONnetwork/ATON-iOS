@@ -11,13 +11,13 @@ import Alamofire
 
 class NetworkManager {
     static let shared = NetworkManager()
-    
+
     let reachabilityManager = Alamofire.NetworkReachabilityManager(host: "www.apple.com")
     func startNetworkReachabilityObserver() {
         reachabilityManager?.listener = { _ in
             NotificationCenter.default.post(name: Notification.Name.ATON.DidNetworkStatusChange, object: nil)
         }
-        
+
         // start listening
         reachabilityManager?.startListening()
     }

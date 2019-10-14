@@ -14,9 +14,9 @@ struct QrcodeData<QRData: Codable>: Codable {
     var qrCodeData: QRData?
     var timestamp: Int?
     var chainId: String?
-    var functionType: UInt16? = nil
-    var from: String? = nil
-    
+    var functionType: UInt16?
+    var from: String?
+
 }
 
 //struct SignatureQrcode: Codable {
@@ -41,7 +41,6 @@ struct TransactionQrcode: Codable {
     var functionType: UInt16?
 }
 
-
 extension TransactionQrcode {
     var typeString: String {
         switch functionType! {
@@ -55,26 +54,26 @@ extension TransactionQrcode {
             return Localized("TransactionStatus_sending_title")
         }
     }
-    
+
     var fromName: String {
         guard let wallet = (AssetVCSharedData.sharedData.walletList as? [Wallet])?.first(where: { $0.address.lowercased() == from?.lowercased() }) else {
             return from ?? "--"
         }
         return wallet.name + "（\(wallet.address.addressForDisplayShort())）"
     }
-    
+
     var toName: String {
         switch functionType! {
         case 0:
             guard let wallet = (AssetVCSharedData.sharedData.walletList as? [Wallet])?.first(where: { $0.address.lowercased() == to?.lowercased() }) else {
-                return to ?? "--"
+                return to?.addressForDisplayShort() ?? "--"
             }
-            return wallet.name + "（\(wallet.address)）"
+            return wallet.name + "（\(wallet.address.addressForDisplayShort())）"
         default:
             guard let nid = nodeId else { return "--" }
             guard let nName = nodeName else { return nid }
-            return nName + "\n（\(nid)）"
+            return nName + "\n（\(nid.nodeIdForDisplayShort())）"
         }
     }
-    
+
 }

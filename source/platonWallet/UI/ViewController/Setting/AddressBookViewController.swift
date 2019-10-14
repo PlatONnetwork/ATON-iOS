@@ -10,37 +10,37 @@ import UIKit
 import Localize_Swift
 import SwipeCellKit
 
-typealias SelectionCompletion = (_ addressInfo : AddressInfo?) -> ()
+typealias SelectionCompletion = (_ addressInfo: AddressInfo?) -> Void
 
 class AddressBookViewController: BaseViewController {
 
-    var selectionCompletion : SelectionCompletion?
-    
-    var dataSource : [AddressInfo]? = []
-    
-    var tableView : UITableView!
-    
+    var selectionCompletion: SelectionCompletion?
+
+    var dataSource: [AddressInfo]? = []
+
+    var tableView: UITableView!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         initSubViews()
         initNavigationItem()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         initData()
     }
-     
-    func initData(){
+
+    func initData() {
         dataSource?.removeAll()
         dataSource = AddressBookService.service.getAll()
         tableView!.reloadData()
     }
-    
+
     func initSubViews() {
-        
+
         // tableview滚动会显示导行栏透明的情况，可修改基类处理，暂定在该页面处理
         navigationController?.navigationBar.isTranslucent = false
-        
+
         view.backgroundColor = normal_background_color
         tableView = UITableView()
         tableView.backgroundColor = normal_background_color
@@ -52,21 +52,20 @@ class AddressBookViewController: BaseViewController {
         tableView!.snp.makeConstraints { (make) in
             make.edges.equalTo(self.view)
         }
-        
+
         tableView.registerCell(cellTypes: [AddressBookTableViewCell.self])
         tableView.emptyDataSetView { [weak self] view in
             view.customView(self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, Localized("AddresssBookVC_empty_tip"), "empty_no_data_img"))
         }
     }
-    
-    
-    func initNavigationItem(){
-        
+
+    func initNavigationItem() {
+
         super.leftNavigationTitle = "AddressBookVC_nav_title"
-        
+
         //let backgrouImage = UIImage(color: .white)
         //self.navigationController?.navigationBar.setBackgroundImage(backgrouImage, for: .default)
-        
+
         let addButton = UIButton(type: .custom)
         addButton.setImage(UIImage(named: "nav_add"), for: .normal)
         addButton.addTarget(self, action: #selector(onNavRight), for: .touchUpInside)
@@ -74,7 +73,7 @@ class AddressBookViewController: BaseViewController {
         let rightBarButtonItem = UIBarButtonItem(customView: addButton)
         navigationItem.rightBarButtonItem = rightBarButtonItem
     }
-    
+
     @objc func onNavRight() {
         let newAddrInfo = NewAddressInfoViewController()
         newAddrInfo.addCompletion = { [weak self] in
@@ -84,37 +83,36 @@ class AddressBookViewController: BaseViewController {
         }
         navigationController?.pushViewController(newAddrInfo, animated: true)
     }
- 
+
 }
 
+extension AddressBookViewController: UITableViewDataSource, UITableViewDelegate, SwipeTableViewCellDelegate {
 
-extension AddressBookViewController:UITableViewDataSource,UITableViewDelegate,SwipeTableViewCellDelegate {
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: AddressBookTableViewCell.self)) as! AddressBookTableViewCell
         cell.delegate = self
         cell.setUpdCell(addressInfo: dataSource![indexPath.row], isForSelectMode: selectionCompletion != nil)
         return cell
     }
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return (dataSource?.count)!
     }
-    
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 69
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if (selectionCompletion != nil) {
             if (AssetVCSharedData.sharedData.selectedWallet as! Wallet).address.lowercased() == dataSource![indexPath.row].walletAddress?.lowercased() {
                 return
             }
-            
+
             let info = dataSource![indexPath.row]
             selectionCompletion!(info)
             navigationController?.popViewController(animated: true)
-        }else {
+        } else {
             UIPasteboard.general.string = dataSource![indexPath.row].walletAddress ?? ""
             showMessage(text: Localized("ExportVC_copy_success"))
         }
@@ -124,23 +122,23 @@ extension AddressBookViewController:UITableViewDataSource,UITableViewDelegate,Sw
         if selectionCompletion != nil {
             return nil
         }
-        
+
         guard orientation == .right else { return nil }
 
         let deleteAction = SwipeAction(style: .default, title: Localized("AddressBookVC_cell_delete_title")) { action, indexPath in
-            
+
             AddressBookService.service.delete(addressInfo: self.dataSource![indexPath.row])
             self.dataSource?.remove(at: indexPath.row)
             action.fulfill(with: .delete)
             self.tableView.reloadData()
         }
         deleteAction.backgroundColor = UIColor(rgb: 0xF5302C)
-        deleteAction.textColor = UIColor(rgb: 0xFAFAFA)   
+        deleteAction.textColor = UIColor(rgb: 0xFAFAFA)
         deleteAction.font = UIFont.systemFont(ofSize: 14)
         deleteAction.hidesWhenSelected = true
-        
-        let editAction = SwipeAction(style: .default, title: Localized("AddressBookVC_cell_edit_title")) { (action, indexPath) in
-            
+
+        let editAction = SwipeAction(style: .default, title: Localized("AddressBookVC_cell_edit_title")) { (_, indexPath) in
+
             let vc = NewAddressInfoViewController()
             vc.addCompletion = { [weak self] in
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
@@ -152,31 +150,30 @@ extension AddressBookViewController:UITableViewDataSource,UITableViewDelegate,Sw
             self.navigationController?.pushViewController(vc, animated: true)
         }
         editAction.backgroundColor = UIColor(rgb: 0xF0F1F5)
-        editAction.textColor = .black   
+        editAction.textColor = .black
         editAction.font = UIFont.systemFont(ofSize: 14)
         editAction.hidesWhenSelected = true
         return [deleteAction, editAction]
     }
-    
+
     func tableView(_ tableView: UITableView, editActionsOptionsForRowAt indexPath: IndexPath, for orientation: SwipeActionsOrientation) -> SwipeOptions {
-        
+
         var options = SwipeOptions()
         options.maximumButtonWidth = 60
-        
+
         //设置expansionstyle会左拉到底会自动删除
 //        options.expansionStyle = expansionStyle
         options.transitionStyle = .border
         return options
     }
-    
-    
+
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         //bug fix for below ios10 tableView cannot response separatorInset
         if #available(iOS 10, *) {
-            
-        }else {
+
+        } else {
             cell.layoutMargins = .zero
         }
     }
-    
+
 }

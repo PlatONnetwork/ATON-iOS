@@ -9,9 +9,9 @@
 import UIKit
 
 class BaseImportWalletViewController: BaseViewController {
-    
+
     var defaultText: String = ""
-    
+
     convenience init(text: String = "") {
         self.init()
         defaultText = text
@@ -21,6 +21,5 @@ class BaseImportWalletViewController: BaseViewController {
         super.viewDidLoad()
 
     }
-    
 
 }

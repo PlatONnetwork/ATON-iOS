@@ -17,25 +17,25 @@ enum NodeActionStatus {
 }
 
 class NodeInfo: Object {
-    
+
     @objc dynamic var id: String = UUID().uuidString
     @objc dynamic var nodeURLStr: String = ""
-    @objc dynamic var isDefault: Bool = false 
+    @objc dynamic var isDefault: Bool = false
     @objc dynamic var isSelected: Bool = false
     @objc dynamic var desc: String = ""
-    
+
     var status: NodeActionStatus = .none
-    
+
     override public static func primaryKey() -> String? {
         return "id"
     }
-    
-    override public static func ignoredProperties() ->[String] {
+
+    override public static func ignoredProperties() -> [String] {
         return ["status"]
     }
-    
+
     convenience init(nodeURLStr: String = "", desc: String = "", isSelected: Bool = false, isDefault: Bool = false) {
-        
+
         self.init()
         self.id = UUID().uuidString
         self.nodeURLStr = nodeURLStr
@@ -43,7 +43,7 @@ class NodeInfo: Object {
         self.isSelected = isSelected
         self.isDefault = isDefault
     }
-    
+
     override func copy() -> Any {
         let newOne = NodeInfo()
         newOne.id = self.id
@@ -51,11 +51,10 @@ class NodeInfo: Object {
         newOne.desc = self.desc
         newOne.isDefault = self.isDefault
         newOne.isSelected = self.isSelected
-        
+
         return newOne
     }
 }
-
 
 extension Sequence where Iterator.Element: NodeInfo {
     var notDeleteArray: [Element] {

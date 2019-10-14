@@ -10,17 +10,17 @@ import UIKit
 import Localize_Swift
 
 class MyDelegateViewCell: UITableViewCell {
-    
+
     public let walletAvatarIV = UIImageView()
     public let walletNameLabel = UILabel()
     public let walletAddressLabel = UILabel()
     public let walletBalanceLabel = UILabel()
-    
+
     public let delegateLabel = UILabel()
     public let unDelegatingLabel = UILabel()
-    
+
     var cellDidHandle: ((_ cell: MyDelegateViewCell) -> Void)?
-    
+
     var delegate: Delegate? {
         didSet {
             walletAvatarIV.image = delegate?.walletAvatar ?? UIImage(named: "walletAvatar_1")
@@ -31,12 +31,12 @@ class MyDelegateViewCell: UITableViewCell {
             unDelegatingLabel.text = delegate?.redeemValue
         }
     }
-    
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
         backgroundColor = normal_background_color
-        
+
         let containerView = UIButton()
         containerView.addTarget(self, action: #selector(containerTapAction), for: .touchUpInside)
         containerView.backgroundColor = .white
@@ -48,7 +48,7 @@ class MyDelegateViewCell: UITableViewCell {
             make.height.equalTo(128)
             make.bottom.equalToSuperview()
         }
-        
+
         let walletBackgroundView = UIImageView()
         walletBackgroundView.image = UIImage(named: "bg_staking_wallet_img")?.resizableImage(withCapInsets: UIEdgeInsets(top: 3, left: 3, bottom: 3, right: 3))
         containerView.addSubview(walletBackgroundView)
@@ -97,7 +97,7 @@ class MyDelegateViewCell: UITableViewCell {
             make.leading.equalTo(walletAddressLabel.snp.trailing).offset(5)
             make.trailing.equalToSuperview().offset(-10)
         }
-        
+
         let delegateBackgroundView = UIView()
         delegateBackgroundView.isUserInteractionEnabled = false
         delegateBackgroundView.backgroundColor = .white
@@ -130,7 +130,7 @@ class MyDelegateViewCell: UITableViewCell {
             make.top.equalTo(delegateTipLabel.snp.bottom).offset(9)
             make.height.equalTo(14)
         }
-        
+
         let unDelegatingTipLabel = UILabel()
         unDelegatingTipLabel.localizedText = "staking_main_undelegating_text"
 //        unDelegatingTipLabel.backgroundColor = .blue
@@ -142,7 +142,7 @@ class MyDelegateViewCell: UITableViewCell {
             make.top.equalTo(delegateTipLabel.snp.top)
             make.width.equalTo(delegateTipLabel)
         }
-        
+
         unDelegatingLabel.textColor = .black
         unDelegatingLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium)
         unDelegatingLabel.text = "--"
@@ -152,7 +152,7 @@ class MyDelegateViewCell: UITableViewCell {
             make.top.equalTo(unDelegatingTipLabel.snp.bottom).offset(9)
             make.height.equalTo(14)
         }
-        
+
         let detailButton = UIButton()
         detailButton.localizedNormalTitle = "staking_main_delegate_detail"
         detailButton.setTitleColor(common_blue_color, for: .normal)
@@ -164,13 +164,13 @@ class MyDelegateViewCell: UITableViewCell {
             make.centerY.equalToSuperview()
             make.trailing.equalToSuperview().offset(-10)
         }
-        
+
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     @objc func containerTapAction() {
         cellDidHandle?(self)
     }

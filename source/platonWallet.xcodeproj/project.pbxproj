@@ -1678,6 +1678,7 @@
 				81C88DFF21746B39005F17F7 /* Resources */,
 				349B196BEEC64C0A8876028D /* [CP] Embed Pods Frameworks */,
 				76E5E3065DA7F32FC368B7AC /* [CP] Copy Pods Resources */,
+				81F420FD2351CC540054628E /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1940,6 +1941,23 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-platonWallet/Pods-platonWallet-resources.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		81F420FD2351CC540054628E /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
 		};
 		82C3A5B2EEE9AC77B23E62E6 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;

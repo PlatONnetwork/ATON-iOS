@@ -916,3 +916,6 @@
 "offline_signature_notmatch_wallet" = "钱包不匹配";
 "touchid_auth_text" = "请验证指纹";
 "touchid_verify_fail" = "指纹识别失败，请再试一次";
+
+"delete_observed_wallet_alert_title" = "删除观察钱包";
+"delete_observed_wallet_alert_message" = "请确认是否删除此观察钱包？";

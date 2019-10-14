@@ -9,11 +9,11 @@
 import Foundation
 
 struct HDPath {
-    
+
     var pathStr : String
-    
+
     var indices : [UInt32]? {
-        
+
         let components = pathStr.split(separator: "/")
         var indices:[UInt32] = []
         for component in components {
@@ -35,10 +35,9 @@ struct HDPath {
         guard indices.count == 5 else {
             return nil
         }
-        
-        return indices
-        
-    }
-    
-}
 
+        return indices
+
+    }
+
+}

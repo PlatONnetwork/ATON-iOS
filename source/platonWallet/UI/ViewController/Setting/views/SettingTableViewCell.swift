@@ -13,7 +13,7 @@ class SettingTableViewCell: UITableViewCell {
 
     @IBOutlet weak var iconImage: UIImageView!
     @IBOutlet weak var desLabel: UILabel!
-    
+
     @IBOutlet weak var detailIcon: UIImageView!
     @IBOutlet weak var sepline: UIView!
     override func awakeFromNib() {
@@ -25,8 +25,8 @@ class SettingTableViewCell: UITableViewCell {
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
     }
-    
-    func setCellWithIndexPath(indexPath : IndexPath){
+
+    func setCellWithIndexPath(indexPath : IndexPath) {
         sepline.alpha = 1
         switch indexPath.row {
         case 0:
@@ -73,8 +73,8 @@ class SettingTableViewCell: UITableViewCell {
                 desLabel.localizedText = "PersonalVC_cell_wallet_About"
             }
         default: break
-            
+
         }
     }
-    
+
 }

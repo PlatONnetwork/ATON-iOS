@@ -18,7 +18,7 @@ enum QRCodeType {
 
 open class QRCodeDecoder {
     public init() {}
-    
+
     func decode(_ res: String) -> QRCodeType? {
         if let data = res.data(using: .utf8), let result = try? JSONDecoder().decode(QrcodeData<[TransactionQrcode]>.self, from: data) {
             return QRCodeType.transaction(data: result)
@@ -27,9 +27,9 @@ open class QRCodeDecoder {
         } else {
             if res.isValidAddress() {
                 return QRCodeType.address(data: res)
-            }else if res.isValidPrivateKey() {
+            } else if res.isValidPrivateKey() {
                 return QRCodeType.privatekey(data: res)
-            }else if res.isValidKeystore() {
+            } else if res.isValidKeystore() {
                 return QRCodeType.keystore(data: res)
             }
             return nil

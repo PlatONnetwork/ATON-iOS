@@ -17,10 +17,10 @@ let itemratio = 1.5
 //let itemWidth = (kUIScreenWidth - CGFloat(containerEdge) * 2 - CGFloat((itemHorizontalSpacing * (itemHorizontalCount - 1))))/CGFloat(itemHorizontalCount)
 let itemWidth = CGFloat(54)
 
-class SharedView: UIView ,UICollectionViewDelegate,UICollectionViewDataSource{
+class SharedView: UIView ,UICollectionViewDelegate,UICollectionViewDataSource {
 
     let closeBtn = UIButton(type: .custom)
-    
+
     var collectionView : UICollectionView?
     let Identifier       = "SharedCollectionViewCell"
 
@@ -30,17 +30,16 @@ class SharedView: UIView ,UICollectionViewDelegate,UICollectionViewDataSource{
     var imgs : [String] = []
     var urlschemes : [String] = []
 
-    public class func getSharedViewHeight() -> CGFloat{
+    public class func getSharedViewHeight() -> CGFloat {
         return 51 + 51 + itemWidth * CGFloat(itemratio) * 2 + CGFloat(itemHorizontalSpacing * 2)
     }
 
     override init(frame: CGRect) {
-        
-        
+
         super.init(frame: frame)
-        
+
         self.initData()
-        
+
         let layout = UICollectionViewFlowLayout.init()
 
         layout.itemSize = CGSize(width: itemWidth, height: itemWidth * CGFloat(itemratio))
@@ -48,8 +47,7 @@ class SharedView: UIView ,UICollectionViewDelegate,UICollectionViewDataSource{
         layout.minimumInteritemSpacing = CGFloat(itemHorizontalSpacing)
         layout.scrollDirection = .vertical
         layout.sectionInset = UIEdgeInsets.init(top: 5, left: 5, bottom: 5, right: 5)
-        
-        
+
         collectionView = UICollectionView.init(frame: CGRect(x:0, y:0, width:0, height:0), collectionViewLayout: layout)
         collectionView?.backgroundColor = UIColor.white
         collectionView?.delegate = self
@@ -61,59 +59,56 @@ class SharedView: UIView ,UICollectionViewDelegate,UICollectionViewDataSource{
             make.trailing.equalTo(self).offset(-containerEdge)
             make.bottom.equalTo((self))
         })
-        
-        let _ = self.headerAndFooterView()
-        
+
+        _ = self.headerAndFooterView()
+
         // 注册cell
         collectionView?.register(UINib.init(nibName: "SharedCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: Identifier)
-        
+
         self.backgroundColor = .white
         collectionView!.backgroundColor = .white
         collectionView?.addBottomSepline()
     }
-    
-    
-    
-    
-    func initData(){
+
+    func initData() {
         /*
         
         urlschemes = ["weixin://","weixin://","mqq://","sinaweibo://","fb://","twitter://",""]
         titles = ["SharedWechatFriend","SharedQQ","SharedWeibo","SharedFacebook","SharedTwitter"]
          imgs = ["imgwechat","imgmoment","imgQQ","imgBlog","imgFacebook","imgTwitter","imgmore"]
          */
-        
-        if UIApplication.shared.canOpenURL(URL(string: "weixin://")!){
+
+        if UIApplication.shared.canOpenURL(URL(string: "weixin://")!) {
             urlschemes.append("weixin://")
             titles.append("SharedWechatFriend")
             imgs.append("imgwechat")
         }
-        
-        if UIApplication.shared.canOpenURL(URL(string: "mqq://")!){
+
+        if UIApplication.shared.canOpenURL(URL(string: "mqq://")!) {
             urlschemes.append("mqq://")
             titles.append("SharedQQ")
             imgs.append("imgQQ")
         }
-        if UIApplication.shared.canOpenURL(URL(string: "sinaweibo://")!){
+        if UIApplication.shared.canOpenURL(URL(string: "sinaweibo://")!) {
             urlschemes.append("sinaweibo://")
             titles.append("SharedWeibo")
             imgs.append("imgBlog")
         }
-        
-        if UIApplication.shared.canOpenURL(URL(string: "fb://")!){
+
+        if UIApplication.shared.canOpenURL(URL(string: "fb://")!) {
             urlschemes.append("fb://")
             titles.append("SharedFacebook")
             imgs.append("imgFacebook")
         }
-        
-        if UIApplication.shared.canOpenURL(URL(string: "twitter://")!){
+
+        if UIApplication.shared.canOpenURL(URL(string: "twitter://")!) {
             urlschemes.append("twitter://")
             titles.append("SharedTwitter")
             imgs.append("imgTwitter")
         }
-        
+
     }
-    
+
     func headerAndFooterView() -> UIView {
         let header = UIView()
         header.backgroundColor = .white
@@ -123,7 +118,7 @@ class SharedView: UIView ,UICollectionViewDelegate,UICollectionViewDataSource{
             make.height.equalTo(51)
         }
         header.addBottomSepline(offset: 16)
-        
+
         let label = UILabel()
         label.localizedText = "QRView_share_to_friend"
         label.font = UIFont(name: "HelveticaNeue-Medium", size: 16)
@@ -133,7 +128,7 @@ class SharedView: UIView ,UICollectionViewDelegate,UICollectionViewDataSource{
         label.snp.makeConstraints { (make) in
             make.edges.equalToSuperview()
         }
-        
+
         //closeBtn.setImage(UIImage.init(named: "closeBtn"), for: .normal)
         self.addSubview(closeBtn)
         closeBtn.snp.makeConstraints { (make) in
@@ -146,20 +141,19 @@ class SharedView: UIView ,UICollectionViewDelegate,UICollectionViewDataSource{
         closeBtn.addTopSepline(offset: 16)
         return header
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return imgs.count
     }
-    
-    
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell:SharedCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: Identifier, for: indexPath) as! SharedCollectionViewCell
         cell.backgroundColor = .clear
@@ -167,32 +161,29 @@ class SharedView: UIView ,UICollectionViewDelegate,UICollectionViewDataSource{
         cell.descptionLabel.localizedText = titles[indexPath.row]
         return cell
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print(indexPath.row)
-        
+
         let urlString = urlschemes[indexPath.row]
         if let url = URL(string: urlString) {
             //根据iOS系统版本，分别处理
             if #available(iOS 10, *) {
                 UIApplication.shared.open(url, options: [:],
                                           completionHandler: {
-                                            (success) in
+                                            (_) in
                 })
             } else {
                 UIApplication.shared.openURL(url)
             }
         }
     }
-    
-    func armColor()->UIColor{
+
+    func armColor() -> UIColor {
         let red = CGFloat(arc4random()%256)/255.0
         let green = CGFloat(arc4random()%256)/255.0
         let blue = CGFloat(arc4random()%256)/255.0
         return UIColor(red: red, green: green, blue: blue, alpha: 1.0)
     }
-
-    
-
 
 }

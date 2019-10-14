@@ -10,7 +10,7 @@ import UIKit
 
 class TSLXIBViewController: UIViewController {
     @IBOutlet weak var onNext: UIButton!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -20,7 +20,7 @@ class TSLXIBViewController: UIViewController {
     @IBAction func onNext(_ sender: Any) {
         self.navigationController?.pushViewController(TSLViewControllerTwo(), animated: false)
     }
-    
+
     /*
     // MARK: - Navigation
 

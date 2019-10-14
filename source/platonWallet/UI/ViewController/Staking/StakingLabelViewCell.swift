@@ -10,12 +10,12 @@ import UIKit
 import SnapKit
 
 class StakingLabelViewCell: UICollectionViewCell {
-    
+
     let label = UILabel()
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+
         label.textColor = .black
         label.font = UIFont.systemFont(ofSize: 18)
         label.textAlignment = .left
@@ -26,9 +26,9 @@ class StakingLabelViewCell: UICollectionViewCell {
             make.edges.equalToSuperview()
         }
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
 }

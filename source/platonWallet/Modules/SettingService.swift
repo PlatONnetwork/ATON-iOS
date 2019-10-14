@@ -11,68 +11,67 @@ import Alamofire
 import Localize_Swift
 
 class SettingService {
-    
+
     var currentNodeURL : String?
-    
+
     var currentVersion: RemoteVersion?
-    
+
     static let shareInstance = SettingService()
     private init() {
     }
-     
+
     func getSelectedNodes() -> NodeInfo? {
-        
+
         let list = getNodes()
-         
+
         guard list.count > 0 else { return nil }
-        
+
         guard let i = list.firstIndex(where: { (item) -> Bool in
             return item.isSelected
         }) else {
             return nil
         }
-        
+
         return list[i]
     }
-    
-    static func threadSafeGetCurrentNodeURLString() -> String{
-        
-        if Thread.current == .main{
+
+    static func threadSafeGetCurrentNodeURLString() -> String {
+
+        if Thread.current == .main {
             return self.getCurrentNodeURLString()
         }
-        
+
         let semaphore = DispatchSemaphore(value: 0)
         var URLString : String = AppConfig.NodeURL.defaultNodesURL.first!.nodeURL
         DispatchQueue.main.async {
             URLString = self.getCurrentNodeURLString()
             semaphore.signal()
         }
-        if semaphore.wait(timeout: .now() + 3) == DispatchTimeoutResult.timedOut{
+        if semaphore.wait(timeout: .now() + 3) == DispatchTimeoutResult.timedOut {
             return URLString
         }
-        
+
         return URLString
     }
-    
-    static func getCurrentNodeURLString() -> String{
-        
-        if SettingService.shareInstance.currentNodeURL == nil{
+
+    static func getCurrentNodeURLString() -> String {
+
+        if SettingService.shareInstance.currentNodeURL == nil {
             SettingService.shareInstance.currentNodeURL = SettingService.shareInstance.getSelectedNodes()?.nodeURLStr
         }
-        
-        guard let nodeURL = SettingService.shareInstance.currentNodeURL else{
+
+        guard let nodeURL = SettingService.shareInstance.currentNodeURL else {
             return AppConfig.NodeURL.defaultNodesURL.first!.nodeURL
         }
         return nodeURL
     }
-    
-    
+
     static func getCentralizationURL() -> String {
         let testCentralizationURL =  AppConfig.ServerURL.HOST.TESTNET + AppConfig.ServerURL.PATH
         let devCentralizationURL = AppConfig.ServerURL.HOST.DEVNET + AppConfig.ServerURL.PATH
         let uatCentralizationURL =  AppConfig.ServerURL.HOST.UATNET + AppConfig.ServerURL.PATH
         let productCentralizationURL =  AppConfig.ServerURL.HOST.PRODUCTNET + AppConfig.ServerURL.PATH
-        
+
         let url = self.getCurrentNodeURLString()
         if url == AppConfig.NodeURL.DefaultNodeURL_Alpha_V071 {
             return testCentralizationURL
@@ -84,37 +83,36 @@ class SettingService {
             return devCentralizationURL
         }
     }
-    
+
     func getNodes() -> [NodeInfo] {
         return NodeInfoPersistence.sharedInstance.getAll()
     }
-    
+
     func addOrUpdateNode(_ node: NodeInfo) {
         NodeInfoPersistence.sharedInstance.add(node: node)
     }
-    
+
     func deleteNodeList(_ list: [NodeInfo]) {
         NodeInfoPersistence.sharedInstance.deleteList(list)
     }
-    
+
     func updateSelectedNode(_ node: NodeInfo) {
         getNodes().forEach { (item) in
             if item.id == node.id {
                 NodeInfoPersistence.sharedInstance.update(node: item, isSelected: true)
-            }else {
+            } else {
                 NodeInfoPersistence.sharedInstance.update(node: item, isSelected: false)
             }
         }
     }
-    
+
     func deleteNode(_ node: NodeInfo) {
         NodeInfoPersistence.sharedInstance.delete(node: node)
     }
-    
-    
+
     public func getRemoteVersion(completion: PlatonCommonCompletion?) {
         let url = AppConfig.ServerURL.HOST.TESTNET +  "/config/aton-update.json"
-        
+
         var request = URLRequest(url: try! url.asURL())
         request.httpMethod = "GET"
         request.timeoutInterval = requestTimeout
@@ -129,12 +127,12 @@ class SettingService {
                 DispatchQueue.main.async {
                     completion?(.success, nil)
                 }
-            case .failure(_):
+            case .failure:
                 DispatchQueue.main.async {
                     completion?(.fail(-1, nil), nil)
                 }
             }
         }
     }
-    
+
 }

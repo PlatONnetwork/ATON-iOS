@@ -16,7 +16,7 @@ class SettingFooter: UIView {
     @IBOutlet weak var githubBtn: UIButton!
     @IBOutlet weak var wechatBtn: UIButton!
     @IBOutlet weak var telegtamBtn: UIButton!
-    
+
     override func awakeFromNib() {
         mediumBtn.tag = 1
         redditBtn.tag = 2
@@ -26,7 +26,7 @@ class SettingFooter: UIView {
         //wechatBtn.tag = 6
         telegtamBtn.tag = 7
     }
-    
+
     @IBAction func onButtonPress(_ sender: Any) {
         let button = sender as! UIButton
         var url : String?
@@ -38,12 +38,12 @@ class SettingFooter: UIView {
         case 2:
             do {
                 url = "https://reddit.com/user/PlatON_Network/"
-                
+
             }
         case 3:
             do {
                 url = "https://facebook.com/PlatONNetwork/"
-                
+
             }
         case 4:
             do {
@@ -60,15 +60,13 @@ class SettingFooter: UIView {
         case 7:
             do {
                 url = "https://t.me/PlatONHK/"
-                
+
             }
         default:
             break
         }
-        
+
         UIApplication.shared.openURL(URL(string: url!)!)
     }
-    
-    
-    
+
 }

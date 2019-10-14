@@ -28,7 +28,7 @@ extension Transaction {
             }
         }
     }
-    
+
     var fromAvatarImage: UIImage? {
         let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.address.lowercased() == from?.lowercased() }.first
         guard let wallet = localWallet else {
@@ -36,7 +36,7 @@ extension Transaction {
         }
         return wallet.image()
     }
-    
+
     var toNameString: String? {
         switch txType! {
         case .transfer,
@@ -53,7 +53,7 @@ extension Transaction {
             return to?.addressForDisplayShort()
         }
     }
-    
+
     var fromNameString: String? {
         let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.address.lowercased() == from?.lowercased() }.first
         guard let wallet = localWallet else {
@@ -61,16 +61,16 @@ extension Transaction {
         }
         return wallet.name
     }
-    
+
     var valueString: (String?, UIColor?) {
         if txReceiptStatus == -1 || txReceiptStatus == 0 || txReceiptStatus == -2 {
             return (nil, nil)
         }
-        
+
         if let valueStr = value, Int(valueStr) == 0 {
             return (valueDescription, UIColor(rgb: 0xb6bbd0))
         }
-        
+
         switch direction {
         case .Sent:
             guard let string = valueDescription else {
@@ -86,7 +86,7 @@ extension Transaction {
             return (nil, nil)
         }
     }
-    
+
     var toIconImage: UIImage? {
         switch toType {
         case .contract:
@@ -95,12 +95,12 @@ extension Transaction {
             return nil
         }
     }
-    
+
     var amountTextString: String {
         if let valueStr = value, Int(valueStr) == 0 {
             return valueDescription!
         }
-        
+
         switch direction {
         case .Sent:
             return "-" + valueDescription!
@@ -110,12 +110,12 @@ extension Transaction {
             return "-" + valueDescription!
         }
     }
-    
+
     var amountTextColor: UIColor {
         if let valueStr = value, Int(valueStr) == 0 {
             return UIColor(rgb: 0xb6bbd0)
         }
-        
+
         switch direction {
         case .Receive:
             return UIColor(rgb: 0x19a20e)
@@ -125,14 +125,14 @@ extension Transaction {
             return UIColor(rgb: 0xb6bbd0)
         }
     }
-    
-    static func getTxTypeIconByDirection(direction: TransactionDirection, txType: TxType?) -> UIImage?{
+
+    static func getTxTypeIconByDirection(direction: TransactionDirection, txType: TxType?) -> UIImage? {
         let tx = Transaction()
         tx.direction = direction
         tx.txType = txType
         return tx.txTypeIcon
     }
-    
+
     var txTypeIcon: UIImage? {
         switch direction {
         case .Receive:
@@ -149,12 +149,12 @@ extension Transaction {
             return nil
         }
     }
-    
+
     var pipString: String {
         guard let pip = piDID else { return "--" }
         return "PIP-" + pip
     }
-    
+
     var versionDisplayString: String {
         guard let ver = version, let versionUInt32 = UInt32(ver) else { return "--" }
         let versionUInt32Bytes = versionUInt32.makeBytes()
@@ -163,7 +163,6 @@ extension Transaction {
         return versionString
     }
 }
-
 
 extension Transaction {
     var recordIconIV: UIImage? {
@@ -176,7 +175,7 @@ extension Transaction {
             return UIImage(named: "1.icon_Delegate")
         }
     }
-    
+
     var recordAmount: String? {
         switch txType! {
         case .delegateCreate:
@@ -187,13 +186,13 @@ extension Transaction {
             return value
         }
     }
-    
+
     var recordAmountForDisplay: String {
         return (recordAmount?.vonToLATString ?? "0").balanceFixToDisplay(maxRound: 8).ATPSuffix()
     }
-    
+
     var recordStatus: (String, UIColor) {
-        
+
         if let redeemSt = redeemStatus, redeemSt == .redeeming, txType! == .delegateWithdraw {
             return (Localized("TransactionStatus_loading_undelegate"), status_blue_color)
         } else if let redeemSt = redeemStatus, redeemSt == .redeemSuccess, txType! == .delegateWithdraw {
@@ -218,7 +217,7 @@ extension Transaction {
             }
         }
     }
-    
+
     var recordTime: String? {
         let format = DateFormatter()
         let date = Date(timeIntervalSince1970: TimeInterval(confirmTimes/1000))
@@ -229,7 +228,7 @@ extension Transaction {
         let strDate = format.string(from: date)
         return strDate
     }
-    
+
     var recordWalletName: String? {
         let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.address.lowercased() == from?.lowercased() }.first
         return (localWallet?.name ?? "--") + "(" + (from?.addressForDisplayShort() ?? "--") + ")"

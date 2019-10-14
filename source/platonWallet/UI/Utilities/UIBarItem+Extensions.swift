@@ -12,8 +12,8 @@ import Localize_Swift
 
 private var AssociatedKey: UInt8 = 1
 
-extension UIBarItem{
-    
+extension UIBarItem {
+
     @IBInspectable
     public var localizedText: String? {
         get {
@@ -21,19 +21,19 @@ extension UIBarItem{
         }
         set(newValue) {
             objc_setAssociatedObject(self, &AssociatedKey, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN)
-            localizationSetup();
+            localizationSetup()
             updateLocalization()
         }
     }
-    
-    func localizationSetup(){
+
+    func localizationSetup() {
         NotificationCenter.default.addObserver(self, selector: #selector(updateLocalization), name: Notification.Name(LCLLanguageChangeNotification), object: nil)
     }
-    
+
     @objc public func updateLocalization() {
         if let localizedText = localizedText, !localizedText.isEmpty {
             title = Localized(localizedText)
         }
     }
-    
+
 }

@@ -9,7 +9,7 @@
 import UIKit
 
 class WalletBaseInfoView: UIView {
-    
+
     public let avatarIV = UIImageView()
     public let nameLabel = UILabel()
     public let addressLabel = UILabel()
@@ -17,7 +17,7 @@ class WalletBaseInfoView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .white
-        
+
         avatarIV.addMaskView(corners: .allCorners, cornerRadiiV: 21)
         avatarIV.image = UIImage(named: "walletAvatar_1")
         addSubview(avatarIV)
@@ -26,7 +26,7 @@ class WalletBaseInfoView: UIView {
             make.leading.equalToSuperview().offset(13)
             make.width.height.equalTo(42)
         }
-        
+
         nameLabel.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.medium)
         nameLabel.textColor = .black
         nameLabel.text = "--"
@@ -36,7 +36,7 @@ class WalletBaseInfoView: UIView {
             make.leading.equalTo(avatarIV.snp.trailing).offset(5)
             make.trailing.equalToSuperview().offset(-16)
         }
-        
+
         addressLabel.font = UIFont.systemFont(ofSize: 13)
         addressLabel.textColor = common_darkGray_color
         addressLabel.text = "--"
@@ -47,7 +47,7 @@ class WalletBaseInfoView: UIView {
             make.trailing.equalTo(nameLabel.snp.trailing)
         }
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

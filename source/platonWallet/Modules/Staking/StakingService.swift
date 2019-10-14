@@ -12,22 +12,22 @@ import BigInt
 import platonWeb3
 
 final class StakingService: BaseService {
-    
+
     static let sharedInstance = StakingService()
-    
+
     func getMyDelegate(adddresses: [String], completion: PlatonCommonCompletion?) {
         var completion = completion
         var parameters: [String: Any] = [:]
         parameters["walletAddrs"] = adddresses
-        
+
         let url = SettingService.getCentralizationURL() + "/node/listDelegateGroupByAddr"
-        
+
         var request = URLRequest(url: try! url.asURL())
         request.httpBody = try! JSONSerialization.data(withJSONObject: parameters)
         request.httpMethod = "POST"
         request.timeoutInterval = requestTimeout
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
+
         Alamofire.request(request).responseData { response in
             switch response.result {
             case .success(let data):
@@ -40,14 +40,14 @@ final class StakingService: BaseService {
                 }
             case .failure(let error):
                 self.failCompletionOnMainThread(code: -1, errorMsg: error.localizedDescription, completion: &completion)
-                break;
+                break
             }
         }
     }
-    
+
     func updateNodeListData(completion: PlatonCommonCompletion?) {
         let url = SettingService.getCentralizationURL() + "/node/nodelist"
-        
+
         var request = URLRequest(url: try! url.asURL())
         request.httpMethod = "POST"
         request.timeoutInterval = requestTimeout
@@ -72,13 +72,13 @@ final class StakingService: BaseService {
             }
         }
     }
-    
+
     func getNodeList(
         controllerType: NodeControllerType,
         isRankingSorted: Bool,
         completion: PlatonCommonCompletion?) {
         var completion = completion
-        
+
         if controllerType == .active {
             let data = NodePersistence.getActiveNode(isRankingSorted: isRankingSorted).detached
             self.successCompletionOnMain(obj: data as AnyObject, completion: &completion)
@@ -90,20 +90,20 @@ final class StakingService: BaseService {
             self.successCompletionOnMain(obj: datas as AnyObject, completion: &completion)
         }
     }
-    
+
     func getNodeDetail(nodeId: String, completion: PlatonCommonCompletion?) {
         var completion = completion
         var parameters: [String: Any] = [:]
         parameters["nodeId"] = nodeId
-        
+
         let url = SettingService.getCentralizationURL() + "/node/nodeDetails"
-        
+
         var request = URLRequest(url: try! url.asURL())
         request.httpBody = try! JSONSerialization.data(withJSONObject: parameters)
         request.httpMethod = "POST"
         request.timeoutInterval = requestTimeout
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
+
         Alamofire.request(request).responseData { response in
             switch response.result {
             case .success(let data):
@@ -116,31 +116,31 @@ final class StakingService: BaseService {
                 }
             case .failure(let error):
                 self.failCompletionOnMainThread(code: -1, errorMsg: error.localizedDescription, completion: &completion)
-                break;
+                break
             }
         }
     }
-    
+
     func getDelegateDetail(
         address: String,
         completion: PlatonCommonCompletion?) {
         var completion = completion
-        
+
         var parameters: [String: Any] = [:]
         parameters["addr"] = address
-        
+
         let url = SettingService.getCentralizationURL() + "/node/delegateDetails"
-        
+
         var request = URLRequest(url: try! url.asURL())
         request.httpBody = try! JSONSerialization.data(withJSONObject: parameters)
         request.httpMethod = "POST"
         request.timeoutInterval = requestTimeout
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
+
         Alamofire.request(request).responseJSON { (response) in
             print(response)
         }
-        
+
         Alamofire.request(request).responseData { response in
             switch response.result {
             case .success(let data):
@@ -156,25 +156,25 @@ final class StakingService: BaseService {
             }
         }
     }
-    
+
     func getDelegationValue(
         addr: String,
         nodeId: String,
         completion: PlatonCommonCompletion?) {
         var completion = completion
-        
+
         var parameters: [String: Any] = [:]
         parameters["addr"] = addr
         parameters["nodeId"] = nodeId
-        
+
         let url = SettingService.getCentralizationURL() + "/node/getDelegationValue"
-        
+
         var request = URLRequest(url: try! url.asURL())
         request.httpBody = try! JSONSerialization.data(withJSONObject: parameters)
         request.httpMethod = "POST"
         request.timeoutInterval = requestTimeout
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
+
         Alamofire.request(request).responseData { response in
             switch response.result {
             case .success(let data):
@@ -190,7 +190,7 @@ final class StakingService: BaseService {
             }
         }
     }
-    
+
     func getCanDelegation(
         addr: String,
         nodeId: String,
@@ -199,15 +199,15 @@ final class StakingService: BaseService {
         var parameters: [String: Any] = [:]
         parameters["addr"] = addr
         parameters["nodeId"] = nodeId
-        
+
         let url = SettingService.getCentralizationURL() + "/node/canDelegation"
-        
+
         var request = URLRequest(url: try! url.asURL())
         request.httpBody = try! JSONSerialization.data(withJSONObject: parameters)
         request.httpMethod = "POST"
         request.timeoutInterval = requestTimeout
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
+
         Alamofire.request(request).responseData { response in
             switch response.result {
             case .success(let data):
@@ -220,7 +220,6 @@ final class StakingService: BaseService {
                 }
             case .failure(let error):
                 self.failCompletionOnMainThread(code: -1, errorMsg: error.localizedDescription, completion: &completion)
-                break;
             }
         }
     }
@@ -233,7 +232,7 @@ extension StakingService {
                        sender: String,
                        privateKey: String,
                        _ completion: PlatonCommonCompletion?) {
-        
+
         web3.staking.createDelegate(typ: typ, nodeId: nodeId, amount: amount, sender: sender, privateKey: privateKey) { (result, data) in
             switch result {
             case .success:
@@ -252,12 +251,12 @@ extension StakingService {
                     DispatchQueue.main.async {
                         completion?(PlatonCommonResult.success, transaction as AnyObject)
                     }
-                    
+
                 } else {
                     DispatchQueue.main.async {
                         completion?(PlatonCommonResult.success, nil)
                     }
-                    
+
                 }
             case .fail(let errCode, let errMsg):
                 DispatchQueue.main.async {
@@ -266,7 +265,7 @@ extension StakingService {
             }
         }
     }
-    
+
     func withdrawDelegate(stakingBlockNum: UInt64,
                           nodeId: String,
                           amount: BigUInt,

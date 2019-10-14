@@ -59,7 +59,7 @@ class platonWalletUITests: XCTestCase {
         
         let element2 = scrollViewsQuery.children(matching: .other).element(boundBy: 3).children(matching: .other).element.children(matching: .other).element.children(matching: .other).element
         element2.tap()
-        elementsQuery.collectionViews/*@START_MENU_TOKEN@*/.staticTexts["opi"]/*[[".cells.staticTexts[\"opi\"]",".staticTexts[\"opi\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
+        elementsQuery.collectionViews.staticTexts["opi"].tap()
         elementsQuery.staticTexts["接收"].tap()
         elementsQuery.staticTexts["0xA7074774f4E1e033c6cBd471Ec072f7734144A0c"].tap()
         staticText.tap()

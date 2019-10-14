@@ -11,8 +11,8 @@ import Localize_Swift
 
 class SharedPresentedVC: BaseViewController {
 
-    var transitionView : UIView?
-    
+    var transitionView: UIView?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.setNavigationBarHidden(true, animated: false)
@@ -21,7 +21,6 @@ class SharedPresentedVC: BaseViewController {
             make.edges.equalTo(self.view)
         })
     }
-    
 
     /*
     // MARK: - Navigation

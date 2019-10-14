@@ -8,7 +8,7 @@
 
 import UIKit
 import RTRootNavigationController
-import RealmSwift   
+import RealmSwift
 import BigInt
 import LocalAuthentication
 import platonWeb3
@@ -17,80 +17,78 @@ import Localize_Swift
 private let userDefault_key_isLocalAuthenticationOpen = "isLocalAuthenticationOpen"
 private let userDefault_key_isFirst = "isFirst"
 
-
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, LicenseVCDelegate {
 
-    var window: UIWindow?
-    {
-        didSet{
+    var window: UIWindow? {
+        didSet {
             //must set to white,or Dark shadow on navigation bar during segue transition
             window?.backgroundColor = .white
         }
     }
 
     var laContext = LAContext()
-    
+
     var verifyWindow: UIWindow?
- 
+
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         setupMonkeyTest()
-        
+
         let status = AppFramework.sharedInstance.initialize()
-        
+
         let storyboard = UIStoryboard(name: "LaunchScreen", bundle: nil)
         let controller = storyboard.instantiateViewController(withIdentifier: "LaunchViewController")
         self.window?.rootViewController = controller
-        
+
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
             self.initUI(initSuccess:status)
         }
-        
+
         return true
     }
-    
-    func initStatusBar(){
+
+    func initStatusBar() {
         (UIApplication.shared.value(forKey: "statusBar") as? UIView)?.backgroundColor = .clear
     }
-    
+
     func initUI(initSuccess: Bool) {
-        
+
         self.initStatusBar()
-        
+
         UserDefaults.standard.register(defaults: [userDefault_key_isFirst:true, userDefault_key_isLocalAuthenticationOpen:false])
-        
+
         gotoNextVC(initSuccess:initSuccess)
-        
+
         checkIsOpenLocalAuth()
     }
-    
+
     private func checkIsOpenLocalAuth() {
-        
+
         guard isOpenLocalAuthState() else {
             return
         }
-        
+
         var closeAuthWhileUnlock = false
         var error: NSError?
         laContext.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error)
         if error != nil && error!.code == kLAErrorBiometryNotEnrolled {
             closeAuthWhileUnlock = true
         }
-            
+
         let localAuthVC: BiometricsAuthViewController
-        
+
         if #available(iOS 11.0, *), laContext.biometryType == .faceID {
-            
+
             localAuthVC = BiometricsAuthViewController(biometricsType: .face, completion: {
                 completion()
             })
-            
+
         } else {
             localAuthVC = BiometricsAuthViewController(biometricsType: .touch, completion: {
                 completion()
             })
         }
-        
+
         func completion() {
             self.verifyWindow?.isHidden = true
             self.verifyWindow?.removeFromSuperview()
@@ -103,28 +101,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LicenseVCDelegate {
         verifyWindow!.rootViewController = BaseNavigationController(rootViewController:localAuthVC)
         verifyWindow!.isHidden = false
     }
-    
+
     private func gotoNextVC(initSuccess: Bool = true) {
-        if !initSuccess{
+        if !initSuccess {
             return
         }
-        
+
 //        if UserDefaults.standard.bool(forKey: userDefault_key_isFirst) {
 //            gotoAgreementController()
 //        }else {
             gotoAtonController()
 //        }
     }
-    
+
     func gotoAtonController() {
         if WalletService.sharedInstance.wallets.count > 0 {
             gotoMainTab()
             getRemoteVersion()
-        }else {
+        } else {
             gotoWalletCreateVC()
         }
     }
-    
+
     func gotoAgreementController() {
         let controller = ServiceAgreementViewController()
         controller.nextActionHandler = { [weak self] in
@@ -135,37 +133,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LicenseVCDelegate {
         let navController = BaseNavigationController(rootViewController: controller)
         self.window?.rootViewController = navController
     }
-    
+
     func gotoMainTab() {
         self.window?.rootViewController = MainTabBarViewController.newTabBar()
     }
-    
+
     func gotoWalletCreateVC() {
         let nav = BaseNavigationController(rootViewController: WalletCreateOrImportViewController())
         self.window?.rootViewController = nav
     }
-    
-    func gotoWalletCreateSuccessVC(){
+
+    func gotoWalletCreateSuccessVC() {
         self.window?.rootViewController = BaseNavigationController(rootViewController: CreateWalletSuccessViewController())
     }
-    
-    
+
     func localAuthStateSwitch(_ open:Bool) {
         UserDefaults.standard.set(open, forKey: userDefault_key_isLocalAuthenticationOpen)
         UserDefaults.standard.synchronize()
     }
-    
+
     func isOpenLocalAuthState() -> Bool {
         return UserDefaults.standard.bool(forKey: userDefault_key_isLocalAuthenticationOpen)
     }
-    
+
     ///LicenseVCDelegate
     func didClickNextStep() {
-        
+
         UserDefaults.standard.set(false, forKey: userDefault_key_isFirst)
         UserDefaults.standard.synchronize()
         gotoNextVC()
-        
+
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -191,14 +188,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LicenseVCDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
-
 }
-
 
 extension AppDelegate {
     func getRemoteVersion() {
         guard let _ = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarViewController else { return }
-        SettingService.shareInstance.getRemoteVersion { [weak self] (result, data) in
+        SettingService.shareInstance.getRemoteVersion { [weak self] (result, _) in
             switch result {
             case .success:
                 let appBuild = Bundle.main.infoDictionary!["CFBundleVersion"] as? String ?? ""
@@ -211,18 +206,18 @@ extension AppDelegate {
                             self?.showShouldUpdateVersionAlert()
                             return
                     }
-                    
+
                     if SettingService.shareInstance.currentVersion?.isForce == true {
                         self?.showShouldUpdateVersionAlert()
                     }
                     UserDefaults.standard.set(Date(), forKey: "UpdateVersionAlertDate")
                 }
-            case .fail(_, _):
+            case .fail:
                 break
             }
         }
     }
-    
+
     func showShouldUpdateVersionAlert() {
         let controller = UIAlertController(title: Localized("about_version_update_alert_title"), message: Localized("about_version_update_alert_message_1") + (SettingService.shareInstance.currentVersion?.version ?? "") + Localized("about_version_update_alert_message_2"), preferredStyle: .alert)
         let cancelAction = UIAlertAction(title: Localized("about_version_update_alert_cancel"), style: .cancel, handler: nil)

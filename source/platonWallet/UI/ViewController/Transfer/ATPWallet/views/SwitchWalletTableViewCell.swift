@@ -15,11 +15,11 @@ class SwitchWalletTableViewCell: UITableViewCell {
 
     @IBOutlet weak var walletBalance: UILabel!
     @IBOutlet weak var walletName: UILabel!
-    
+
     @IBOutlet weak var checkIcon: UIImageView!
-    
+
     @IBOutlet weak var walletIcon: UIImageView!
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .none

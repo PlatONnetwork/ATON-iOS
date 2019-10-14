@@ -10,9 +10,9 @@ import Foundation
 import RealmSwift
 
 class WallletPersistence {
-    
+
     static let sharedInstance = WallletPersistence()
-    
+
     func save(wallet: Wallet) {
         let wallet = wallet.detached()
 
@@ -26,9 +26,9 @@ class WallletPersistence {
             })
         }
     }
-    
+
     func delete(wallet: Wallet) {
-        
+
         let predicate = NSPredicate(format: "nodeURLStr == %@ && primaryKeyIdentifier == %@", SettingService.getCurrentNodeURLString(), wallet.primaryKeyIdentifier)
         RealmWriteQueue.async {
             autoreleasepool(invoking: {
@@ -39,9 +39,9 @@ class WallletPersistence {
             })
         }
     }
-    
+
     func updateWalletName(wallet: Wallet, name: String) {
-        
+
         let predicate = NSPredicate(format: "nodeURLStr == %@ && primaryKeyIdentifier == %@", SettingService.getCurrentNodeURLString(), wallet.primaryKeyIdentifier)
         RealmWriteQueue.async {
             autoreleasepool(invoking: {
@@ -55,9 +55,9 @@ class WallletPersistence {
             })
         }
     }
-    
+
     func updateWalletUserArrangementIndex(wallet: Wallet, userArrangementIndex: Int) {
-        
+
         let predicate = NSPredicate(format: "nodeURLStr == %@ && primaryKeyIdentifier == %@", SettingService.getCurrentNodeURLString(), wallet.primaryKeyIdentifier)
         RealmWriteQueue.async {
             autoreleasepool(invoking: {
@@ -71,7 +71,7 @@ class WallletPersistence {
             })
         }
     }
-    
+
     // 0.6.2更新 增加余额缓存
     func updateWalletBalance(wallet: Wallet, balance: String) {
         print("updateWalletBalance")
@@ -88,16 +88,16 @@ class WallletPersistence {
             })
         }
     }
-    
+
     // 0.7.0版本更新 增加锁仓余额缓存
     func updateWalletLockedBalance(wallet: Wallet, value: String) {
         print("updateWalletLockedBalance")
         let predicate = NSPredicate(format: "nodeURLStr == %@ && primaryKeyIdentifier == %@", SettingService.getCurrentNodeURLString(), wallet.primaryKeyIdentifier)
-        
+
         RealmWriteQueue.async {
             autoreleasepool(invoking: {
                 let realm = try! Realm(configuration: RealmHelper.getConfig())
-                
+
                 try? realm.write {
                     let r = realm.objects(Wallet.self).filter(predicate)
                     for wal in r {
@@ -107,21 +107,21 @@ class WallletPersistence {
             })
         }
     }
-        
+
     func getAll(detached: Bool = false) -> [Wallet] {
         let realm = try! Realm(configuration: RealmHelper.getConfig())
-        
+
         let res = realm.objects(Wallet.self).sorted(byKeyPath: "createTime")
         var wallets : [Wallet] = []
-        if detached{
-            for item in Array(res){
+        if detached {
+            for item in Array(res) {
                 wallets.append(item.detached())
             }
-        }else{
+        } else {
             wallets = Array(res)
         }
         wallets = wallets.filterArrayByCurrentNodeUrlString()
-        
+
         for item in wallets {
             item.key = try? Keystore(contentsOf: URL(fileURLWithPath: keystoreFolderPath + "/\(item.keystorePath)"))
         }

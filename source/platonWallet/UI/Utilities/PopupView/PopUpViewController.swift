@@ -12,33 +12,33 @@ import Spring
 let PopUpContentWidth = kUIScreenWidth - 24 * 2
 
 class PopUpViewController: UIViewController {
-    
+
     var contentView : UIView?
-    
+
     let bgView = UIView()
-    
+
     let dismissView = UIView()
-    
-    var dismissCompletion: (() -> ())?
-    
+
+    var dismissCompletion: (() -> Void)?
+
     var onCompletion: (() -> Void)?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         view.backgroundColor = .clear
-        
+
         view.addSubview(bgView)
         bgView.backgroundColor = UIColor(rgb: 0x111111, alpha: 0.5)
         bgView.snp.makeConstraints { (make) in
             make.leading.trailing.top.bottom.equalTo(view)
         }
-        
+
         let tapGes = UITapGestureRecognizer(target: self, action: #selector(touchClose))
         dismissView.addGestureRecognizer(tapGes)
         dismissView.backgroundColor = UIColor(rgb: 0xff0000, alpha: 0)
     }
-    
+
     // 0.7版本新增适配发送交易确认页面自动布局
     func setUpConfirmView(view: UIView, width: CGFloat) {
         contentView = view
@@ -48,7 +48,7 @@ class PopUpViewController: UIViewController {
             make.bottom.equalTo(bgView.snp.bottom)
             make.width.equalTo(width)
         })
-        
+
         bgView.addSubview(dismissView)
         dismissView.snp.makeConstraints { (make) in
             make.top.leading.trailing.equalTo(bgView)
@@ -56,7 +56,6 @@ class PopUpViewController: UIViewController {
         }
         contentView?.layer.cornerRadius = 8
         contentView?.layer.masksToBounds = true
-        
 
         if let confirmView = contentView as? TransferConfirmView {
             confirmView.onCompletion = { [weak self] in
@@ -69,7 +68,7 @@ class PopUpViewController: UIViewController {
                 self?.onDismissViewController()
             }
         }
-        
+
         if let confirmView = contentView as? OfflineSignatureConfirmView {
             confirmView.onCompletion = { [weak self] in
                 guard let self = self else { return }
@@ -79,8 +78,7 @@ class PopUpViewController: UIViewController {
             }
         }
     }
-    
-    
+
     func setUpContentView(view : UIView, size : CGSize) {
 
         contentView = view
@@ -91,7 +89,7 @@ class PopUpViewController: UIViewController {
             make.width.equalTo(size.width)
             make.height.equalTo(size.height + (ScreenDesignRatio == 1 ? 0 : 10))
         })
-        
+
         bgView.addSubview(dismissView)
         dismissView.snp.makeConstraints { (make) in
             make.top.leading.trailing.equalTo(bgView)
@@ -100,17 +98,17 @@ class PopUpViewController: UIViewController {
         contentView?.layer.cornerRadius = 8
         contentView?.layer.masksToBounds = true
     }
-    
-    func setCloseEvent(button : UIButton){
+
+    func setCloseEvent(button : UIButton) {
         button.addTarget(self, action: #selector(touchClose), for: .touchUpInside)
     }
-    
-    @objc func touchClose(){
+
+    @objc func touchClose() {
         self.onDismissViewController()
     }
-    
+
     @objc func onDismissViewController(animated: Bool = true, completion: (() -> Void)? = nil) {
-        if dismissCompletion != nil{
+        if dismissCompletion != nil {
             dismissCompletion!()
         }
         if animated {
@@ -132,9 +130,9 @@ class PopUpViewController: UIViewController {
             })
         }
     }
-    
-    open func show(inViewController vc: UIViewController, animated: Bool = false){
-        
+
+    open func show(inViewController vc: UIViewController, animated: Bool = false) {
+
         modalPresentationStyle = .overCurrentContext
         vc.tabBarController!.present(self, animated: animated) {
 
@@ -150,16 +148,14 @@ class PopUpViewController: UIViewController {
                             })
                             self.contentView!.superview!.layoutIfNeeded()
 
-            },completion: { Void in()
+            },completion: { _ in()
             })
-
 
         }
     }
-    
+
     deinit {
         print("PopupViewController deinit")
     }
 
 }
-

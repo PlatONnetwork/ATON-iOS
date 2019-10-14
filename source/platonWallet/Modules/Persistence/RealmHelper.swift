@@ -12,9 +12,9 @@ import RealmSwift
 var RealmWriteQueue = DispatchQueue(label: "com.platon.RealmWriteQueue", qos: .userInitiated, attributes: .concurrent)
 
 class RealmHelper {
-    
+
     public static var writeInstance : Realm?
-    
+
     public class func initWriteRealm() {
         RealmWriteQueue.async {
 //            writeInstance = try? Realm(configuration: self.getConfig())
@@ -22,7 +22,7 @@ class RealmHelper {
 //            completion(writeInstance != nil)
         }
     }
-    
+
     /*
     public class func getRealm() -> Realm{
         let docPath = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true)[0] as String
@@ -32,14 +32,13 @@ class RealmHelper {
         return defaultRealm
     }
      */
-    
-    
-    public class func getConfig() -> Realm.Configuration{
+
+    public class func getConfig() -> Realm.Configuration {
         //v0.7.0 update scheme version to 8
         let schemaVersion: UInt64 = 22
-        
-        let config = Realm.Configuration(schemaVersion: schemaVersion, migrationBlock: { migration, oldSchemaVersion in
-            
+
+        let config = Realm.Configuration(schemaVersion: schemaVersion, migrationBlock: { _, _ in
+
         },shouldCompactOnLaunch: {(totalBytes, usedBytes) in
             //set db max size as 500M
             let oneHundredMB = 500 * 1024 * 1024
@@ -47,9 +46,8 @@ class RealmHelper {
         })
         return config
     }
-    
-}
 
+}
 
 public extension Object {
 
@@ -69,11 +67,10 @@ public extension Object {
 
 }
 
-public extension Sequence where Iterator.Element:Object  {
+public extension Sequence where Iterator.Element:Object {
 
     var detached:[Element] {
         return self.map({ $0.detached() })
     }
 
 }
-

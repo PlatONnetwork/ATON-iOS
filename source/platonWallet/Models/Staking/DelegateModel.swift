@@ -54,27 +54,27 @@ class DelegateDetailDel: Object {
     @objc dynamic var compoundKey: String = ""
     // 不同的链
     @objc dynamic var chainUrl: String? = ""
-    
+
     override static func primaryKey() -> String? {
         return "compoundKey"
     }
-    
+
     func compoundKeyValue() -> String {
         return "\(walletAddress)\(nodeId)"
     }
-    
+
     required init() {
         super.init()
     }
-    
+
     required init(value: Any, schema: RLMSchema) {
         super.init(value: value, schema: schema)
     }
-    
+
     required init(realm: RLMRealm, schema: RLMObjectSchema) {
         super.init(realm: realm, schema: schema)
     }
-    
+
     convenience init(
         walletAddress: String,
         nodeId: String,
@@ -86,7 +86,7 @@ class DelegateDetailDel: Object {
         self.delegationBlockNum = delegationBlockNum
         self.compoundKey = self.compoundKeyValue()
     }
-    
+
 }
 
 public struct DelegationValue: Decodable {
@@ -118,14 +118,13 @@ public struct CanDelegation: Decodable {
     var lock: String?
     var canDelegation: Bool = true
     var message: Message?
-    
+
     public enum Message: String, Decodable {
         case amountGreaterZero = "1"
         case nodeExitingOrExited = "2"
         case nodeAssociationWallet = "3"
         case balanceZero = "4"
-        
-        
+
         public var localizedDesciption: String? {
             switch self {
             case .amountGreaterZero:
@@ -140,8 +139,6 @@ public struct CanDelegation: Decodable {
         }
     }
 }
-
-
 
 // 委托记录
 public struct DelegateRecord: Decodable {

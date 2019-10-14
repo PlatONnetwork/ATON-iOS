@@ -14,19 +14,19 @@ protocol StartBackupMnemonicDelegate: AnyObject {
 }
 
 class CreateWalletSuccessViewController: BaseViewController {
-    
+
     @IBOutlet weak var nextButton: PButton!
     weak var delegate: StartBackupMnemonicDelegate?
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.nextButton.style = .blue
         self.nextButton.setHorizontalLinerTitleAndImage(image: UIImage(named: "nextBtnIcon")!)
         //super.leftNavigationTitle = "createWalletSuccessVC_title"
     }
-    
+
     override func rt_customBackItem(withTarget target: Any!, action: Selector!) -> UIBarButtonItem! {
-        
+
         let label = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 44))
         label.textColor = UIColor.black
         label.font = UIFont.systemFont(ofSize: 18)
@@ -34,22 +34,22 @@ class CreateWalletSuccessViewController: BaseViewController {
         let leftBarButtonItem = UIBarButtonItem(customView: label)
         return leftBarButtonItem
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.rt_disableInteractivePop = true
-    } 
-    
+    }
+
     @IBAction func startBackup(_ sender: Any) {
         delegate?.startBackup()
     }
-    
+
     override func back() {
         (UIApplication.shared.delegate as? AppDelegate)?.gotoMainTab()
     }
-    
+
     @IBAction func onSkip(_ sender: Any) {
         (UIApplication.shared.delegate as? AppDelegate)?.gotoMainTab()
     }
-    
+
 }

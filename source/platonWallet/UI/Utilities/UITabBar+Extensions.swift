@@ -11,14 +11,13 @@ import UIKit
 
 let unreadDotTag = 999
 
-extension UITabBar{
+extension UITabBar {
 
-    
-    func isRedDotHidden(_ hidden: Bool){
+    func isRedDotHidden(_ hidden: Bool) {
         var unreadDot : UIView?
         let eview = self.viewWithTag(unreadDotTag)
         eview?.removeFromSuperview()
-        if hidden{
+        if hidden {
             return
         }
         unreadDot = UIView()
@@ -28,14 +27,14 @@ extension UITabBar{
         unreadDot?.layer.masksToBounds = true
         unreadDot?.layer.cornerRadius = 3.0
         let tabFram = self.frame
-        
+
         let tabNumber = Float(2)
-        
+
         let percentX = (0.55)/tabNumber
-        let x = ceilf(Float(percentX) * Float(tabFram.size.width));
-        let y = ceilf(Float(0.1 * tabFram.size.height));
+        let x = ceilf(Float(percentX) * Float(tabFram.size.width))
+        let y = ceilf(Float(0.1 * tabFram.size.height))
         unreadDot?.frame = CGRect(x: CGFloat(x), y: CGFloat(y), width: 6, height: 6)
         unreadDot?.isHidden = hidden
     }
-    
+
 }

@@ -21,34 +21,34 @@ enum EventOperation {
 var eventTime: [String: Date] = [:]
 
 class AnalysisHelper {
-    
-    static func handleEvent(id: String, operation: EventOperation, attributes: [AnyHashable: Any]? = nil){
+
+    static func handleEvent(id: String, operation: EventOperation, attributes: [AnyHashable: Any]? = nil) {
         switch operation {
-        
+
         case .begin:
             eventTime[id] = Date()
         case .cancel:
             eventTime.removeValue(forKey: id)
         case .end:
-            guard let beginTime = eventTime[id] else{
+            guard let beginTime = eventTime[id] else {
                 return
             }
             let durationSec = Date().timeIntervalSince(beginTime)
             let durationMillion = Int32(durationSec * 1000)
             var allAtt : [AnyHashable: Any] = [:]
-            if let att = attributes{
-                for (k,v) in att.enumerated(){
+            if let att = attributes {
+                for (k,v) in att.enumerated() {
                     allAtt[k] = v
                 }
             }
-            
+
             allAtt["durationTime"] = String(format: "%ds", Int(durationSec))
             MobClick.event(id, attributes: allAtt, durations: durationMillion)
-            
+
         }
     }
-    
-    static func handleEvent(id: String){
+
+    static func handleEvent(id: String) {
         MobClick.event(id)
     }
 }

@@ -907,3 +907,6 @@
 "offline_signature_notmatch_wallet" = "Wallet Mismatch";
 "touchid_auth_text" = "Please verify your fingerprint";
 "touchid_verify_fail" = "Fingerprint verification failed, please try again! !";
+
+"delete_observed_wallet_alert_title" = "Delete Wallet";
+"delete_observed_wallet_alert_message" = "Are you sure want to delete observed wallet?";

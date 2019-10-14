@@ -10,7 +10,6 @@ import Foundation
 import RealmSwift
 import Localize_Swift
 
-
 //private let defalutNodes = [
 //    (nodeURL: AppConfig.NodeURL.DefaultNodeURL_Alpha_V071, desc: "SettingsVC_nodeSet_defaultTestNetwork_Amigo_des", isSelected: true),
 //]
@@ -21,14 +20,14 @@ import Localize_Swift
 //]
 
 class NodeInfoPersistence {
-    
+
     static let sharedInstance = NodeInfoPersistence()
-    
+
     func initConfig() {
         let nodes = getAll()
-        
+
         let nodeIdentifiers = nodes.map({$0.nodeURLStr})
-        
+
         var existSelected = false
         for item in nodes {
             if item.isSelected {
@@ -36,13 +35,13 @@ class NodeInfoPersistence {
                 break
             }
         }
-        
+
         var newNodes: [(nodeURL: String, desc: String, isSelected: Bool)] = []
         for node in AppConfig.NodeURL.defaultNodesURL {
             guard !nodeIdentifiers.contains(node.nodeURL) else { continue }
             newNodes.append(node)
         }
-        
+
         if existSelected {
             for node in newNodes {
                 add(nodeURLStr: node.nodeURL, desc: node.desc, isSelected: false, isDefault: true)
@@ -60,10 +59,10 @@ class NodeInfoPersistence {
                     }
                 }
             }
-            
+
         }
     }
-    
+
     func getAll() -> [NodeInfo] {
         let realm = try! Realm(configuration: RealmHelper.getConfig())
         let res = realm.objects(NodeInfo.self)
@@ -74,14 +73,14 @@ class NodeInfoPersistence {
             return []
         }
     }
-    
+
     func deleteList(_ list:[NodeInfo]) {
         let list = list.detached
-        
+
         RealmWriteQueue.async {
             autoreleasepool(invoking: {
                 let realm = try! Realm(configuration: RealmHelper.getConfig())
-                
+
                 try? realm.write {
                     for n in list {
                         let predicate = NSPredicate(format: "nodeURLStr == %@ && id == %@", SettingService.getCurrentNodeURLString(), n.id)
@@ -89,42 +88,42 @@ class NodeInfoPersistence {
                     }
                 }
             })
-            
+
         }
     }
-    
+
     func add(nodeURLStr: String, desc: String, isSelected: Bool, isDefault: Bool) {
         RealmWriteQueue.async {
             autoreleasepool(invoking: {
                 let node = NodeInfo(nodeURLStr: nodeURLStr, desc: desc, isSelected: isSelected, isDefault: isDefault)
                 let realm = try! Realm(configuration: RealmHelper.getConfig())
-                
+
                 try? realm.write {
                     realm.add(node, update: true)
                 }
             })
         }
     }
-    
+
     func add(node: NodeInfo) {
         let node = node.detached()
         RealmWriteQueue.async {
             autoreleasepool(invoking: {
                 let realm = try! Realm(configuration: RealmHelper.getConfig())
-                
+
                 try? realm.write {
                     realm.add(node, update: true)
                 }
             })
         }
     }
-    
+
     func update(node: NodeInfo, isSelected:Bool) {
         let predicate = NSPredicate(format: "nodeURLStr == %@ && id == %@", node.nodeURLStr, node.id)
         RealmWriteQueue.async {
             autoreleasepool(invoking: {
                 let realm = try! Realm(configuration: RealmHelper.getConfig())
-                
+
                 let r = realm.objects(NodeInfo.self).filter(predicate)
                 try? realm.write {
                     for n in r {
@@ -134,13 +133,13 @@ class NodeInfoPersistence {
             })
         }
     }
-    
+
     func delete(node: NodeInfo) {
         let predicate = NSPredicate(format: "nodeURLStr == %@ && id == %@", node.nodeURLStr, node.id)
         RealmWriteQueue.async {
             autoreleasepool(invoking: {
                 let realm = try! Realm(configuration: RealmHelper.getConfig())
-                
+
                 try? realm.write {
                     realm.delete(realm.objects(NodeInfo.self).filter(predicate))
                 }

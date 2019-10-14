@@ -12,7 +12,7 @@ import SnapKit
 
 enum GuidancePage {
     case MainImportWalletViewController, AssetViewControllerV060, DelegateAction, RedeemAction, ValidatorNodesViewController, MyDelegatesViewController, DelegateDetailViewController
-    
+
     func getStoredKey() -> String {
         switch self {
         case .MainImportWalletViewController:
@@ -31,34 +31,34 @@ enum GuidancePage {
             return "GuidancePage_CandidateDetailPage"
         }
     }
-    
+
     func getImage() -> UIImage {
         let cnSuffix = "_cn"
         let enSuffix = "_en"
         var imageName = self.getStoredKey()
-        if Localize.currentLanguage() == KLanguage.zh_Hans.desription{
-            imageName = imageName + cnSuffix
-        }else{
-            imageName = imageName + enSuffix
+        if Localize.currentLanguage() == KLanguage.zh_Hans.desription {
+            imageName += cnSuffix
+        } else {
+            imageName += enSuffix
         }
-        
+
         let image = UIImage(named: imageName)
         return image ?? UIImage()
     }
-    
-    func getConstraint() -> ((_ make: ConstraintMaker) -> Void){
-        
+
+    func getConstraint() -> ((_ make: ConstraintMaker) -> Void) {
+
         let image = self.getImage()
-        
+
         switch self {
         case .MainImportWalletViewController:
         return { (make: ConstraintMaker) -> Void in
             let size = image.size
-            let leading : CGFloat = 0
+            let leading: CGFloat = 0
             let imgViewWidth = (kUIScreenWidth - leading * 2)
             let imgViewHeight = (imgViewWidth * size.height)/size.width
-            var scaleFactor : CGFloat = (kUIScreenWidth >= 375.0 ) ? 375.0/kUIScreenWidth : 1.0
-            scaleFactor = scaleFactor * 0.65
+            var scaleFactor: CGFloat = (kUIScreenWidth >= 375.0 ) ? 375.0/kUIScreenWidth : 1.0
+            scaleFactor *= 0.65
             let imgViewSize = CGSize(width: imgViewWidth * scaleFactor, height: imgViewHeight * scaleFactor)
             make.top.equalToSuperview().offset((58 + UIDevice.notchoffset))
             make.trailing.equalToSuperview().offset(-20)
@@ -67,12 +67,12 @@ enum GuidancePage {
         case .AssetViewControllerV060:
             return { (make: ConstraintMaker) -> Void in
                 let size = image.size
-                let leading : CGFloat = 0
+                let leading: CGFloat = 0
                 let imgViewWidth = (kUIScreenWidth - leading * 2)
                 let imgViewHeight = (imgViewWidth * size.height)/size.width
-                let scaleFactor : CGFloat = (kUIScreenWidth >= 375.0 ) ? 375.0/kUIScreenWidth : 1.0
+                let scaleFactor: CGFloat = (kUIScreenWidth >= 375.0 ) ? 375.0/kUIScreenWidth : 1.0
                 let imgViewSize = CGSize(width: kUIScreenWidth, height: imgViewHeight * scaleFactor)
-                let top : CGFloat = 12
+                let top: CGFloat = 12
                 make.top.equalToSuperview().offset((top + UIDevice.notchoffset))
                 make.centerX.equalToSuperview()
                 make.size.equalTo(imgViewSize)
@@ -80,12 +80,12 @@ enum GuidancePage {
         case .DelegateAction:
             return { (make: ConstraintMaker) -> Void in
                 let size = image.size
-                let leading : CGFloat = 0
+                let leading: CGFloat = 0
                 let imgViewWidth = (kUIScreenWidth - leading * 2)
                 let imgViewHeight = (imgViewWidth * size.height)/size.width
-                let scaleFactor : CGFloat = (kUIScreenWidth >= 375.0 ) ? 375.0/kUIScreenWidth : 1.0
+                let scaleFactor: CGFloat = (kUIScreenWidth >= 375.0 ) ? 375.0/kUIScreenWidth : 1.0
                 let imgViewSize = CGSize(width: kUIScreenWidth, height: imgViewHeight * scaleFactor)
-                let top : CGFloat = 30
+                let top: CGFloat = 30
                 make.top.equalToSuperview().offset((top + UIDevice.notchoffset))
                 make.centerX.equalToSuperview()
                 make.size.equalTo(imgViewSize)
@@ -93,12 +93,12 @@ enum GuidancePage {
         case .RedeemAction:
             return { (make: ConstraintMaker) -> Void in
                 let size = image.size
-                let leading : CGFloat = 0
+                let leading: CGFloat = 0
                 let imgViewWidth = (kUIScreenWidth - leading * 2)
                 let imgViewHeight = (imgViewWidth * size.height)/size.width
-                let scaleFactor : CGFloat = (kUIScreenWidth >= 375.0 ) ? 375.0/kUIScreenWidth : 1.0
+                let scaleFactor: CGFloat = (kUIScreenWidth >= 375.0 ) ? 375.0/kUIScreenWidth : 1.0
                 let imgViewSize = CGSize(width: kUIScreenWidth, height: imgViewHeight * scaleFactor)
-                let top : CGFloat = 105
+                let top: CGFloat = 105
                 make.top.equalToSuperview().offset((top + UIDevice.notchoffset))
                 make.centerX.equalToSuperview()
                 make.size.equalTo(imgViewSize)
@@ -106,12 +106,12 @@ enum GuidancePage {
         case .ValidatorNodesViewController:
             return { (make: ConstraintMaker) -> Void in
                 let size = image.size
-                let leading : CGFloat = 0
+                let leading: CGFloat = 0
                 let imgViewWidth = (kUIScreenWidth - leading * 2)
                 let imgViewHeight = (imgViewWidth * size.height)/size.width
-                let scaleFactor : CGFloat = (kUIScreenWidth >= 375.0 ) ? 375.0/kUIScreenWidth : 1.0
+                let scaleFactor: CGFloat = (kUIScreenWidth >= 375.0 ) ? 375.0/kUIScreenWidth : 1.0
                 let imgViewSize = CGSize(width: kUIScreenWidth, height: imgViewHeight * scaleFactor)
-                let top : CGFloat = 72
+                let top: CGFloat = 72
                 make.top.equalToSuperview().offset((top + UIDevice.notchoffset))
                 make.centerX.equalToSuperview()
                 make.size.equalTo(imgViewSize)
@@ -119,13 +119,13 @@ enum GuidancePage {
         case .MyDelegatesViewController:
             return { (make: ConstraintMaker) -> Void in
                 let size = image.size
-                let leading : CGFloat = 0
+                let leading: CGFloat = 0
                 let imgViewWidth = (kUIScreenWidth - leading * 2)
                 let imgViewHeight = (imgViewWidth * size.height)/size.width
-                let scaleFactor : CGFloat = (kUIScreenWidth >= 375.0 ) ? 375.0/kUIScreenWidth : 1.0
+                let scaleFactor: CGFloat = (kUIScreenWidth >= 375.0 ) ? 375.0/kUIScreenWidth : 1.0
                 let imgViewSize = CGSize(width: kUIScreenWidth, height: imgViewHeight * scaleFactor)
-                let top : CGFloat = 25
-                
+                let top: CGFloat = 25
+
                 make.top.equalToSuperview().offset((top + UIDevice.notchoffset))
                 make.centerX.equalToSuperview()
                 make.size.equalTo(imgViewSize)
@@ -133,46 +133,46 @@ enum GuidancePage {
         case .DelegateDetailViewController:
             return { (make: ConstraintMaker) -> Void in
                 let size = image.size
-                let leading : CGFloat = 0
+                let leading: CGFloat = 0
                 let imgViewWidth = (kUIScreenWidth - leading * 2)
-                let imgViewHeight = (imgViewWidth * size.height)/size.width 
+                let imgViewHeight = (imgViewWidth * size.height)/size.width
                 let imgViewSize = CGSize(width: imgViewWidth, height: imgViewHeight)
                 //let top : CGFloat= 75
-                let top : CGFloat = 10
+                let top: CGFloat = 10
                 make.top.equalToSuperview().offset((top + UIDevice.notchoffset))
                 make.centerX.equalToSuperview()
                 make.size.equalTo(imgViewSize)
             }
         }
-        
+
         return { (make: ConstraintMaker) -> Void in }
     }
 }
 
 class GuidanceVC: UIViewController {
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if UIScreen.main.nativeBounds.height < 667{
+        if UIScreen.main.nativeBounds.height < 667 {
             let gesture = UITapGestureRecognizer(target: self, action: #selector(self.onTap))
             self.view.addGestureRecognizer(gesture)
         }
     }
-    
+
     var pageType = GuidancePage.AssetViewControllerV060
-    
+
     let dismissButton = UIButton()
-    
+
     override func viewDidLoad() {
         let cnSuffix = "_cn"
         let enSuffix = "_en"
         var imageName = pageType.getStoredKey()
-        if Localize.currentLanguage() == KLanguage.zh_Hans.desription{
-            imageName = imageName + cnSuffix
-        }else{
-            imageName = imageName + enSuffix
+        if Localize.currentLanguage() == KLanguage.zh_Hans.desription {
+            imageName += cnSuffix
+        } else {
+            imageName += enSuffix
         }
-        
+
         let image = UIImage(named: imageName)
         let imageView = UIImageView(image: image)
         //https://blog.csdn.net/annkie/article/details/49247755
@@ -181,7 +181,7 @@ class GuidanceVC: UIViewController {
         imageView.isUserInteractionEnabled = true
         self.view.addSubview(imageView)
         self.view.backgroundColor = UIColor.init(rgb: 0x000000, alpha: 0.75)
-        
+
         imageView.addSubview(dismissButton)
         dismissButton.backgroundColor = .clear
         dismissButton.addTarget(self, action: #selector(onTap), for: .touchUpInside)
@@ -190,10 +190,10 @@ class GuidanceVC: UIViewController {
             make.bottom.equalToSuperview()
             make.size.equalTo(CGSize(width: 100, height: 40))
         }
-        
+
         imageView.snp.makeConstraints(pageType.getConstraint())
     }
-    
+
     @objc func onTap() {
         self.dismiss(animated: false, completion: nil)
     }
@@ -202,8 +202,8 @@ class GuidanceVC: UIViewController {
 public class GuidanceViewMgr: NSObject {
 
     static let sharedInstance = GuidanceViewMgr()
-    
-    func checkGuidance(page: GuidancePage, presentedVC: UIViewController){
+
+    func checkGuidance(page: GuidancePage, presentedVC: UIViewController) {
         let skey = page.getStoredKey()
         guard (UserDefaults.standard.object(forKey: skey) as? Bool) == nil  else {
             return
@@ -215,5 +215,5 @@ public class GuidanceViewMgr: NSObject {
         presentedVC.present(vc, animated: false, completion: nil)
         UserDefaults.standard.set(true, forKey: skey)
     }
-    
+
 }

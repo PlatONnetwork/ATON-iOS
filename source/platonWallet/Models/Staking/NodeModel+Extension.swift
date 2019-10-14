@@ -24,11 +24,11 @@ extension Node {
             return .Active
         }
     }
-    
+
     var delegateAmount: String {
         return (deposit?.vonToLATString ?? "0.00").ATPSuffix()
     }
-    
+
     var status: (String, UIColor) {
         switch nStatus {
         case .Active:
@@ -41,7 +41,7 @@ extension Node {
             return (nStatus.description, status_lightgray_color)
         }
     }
-    
+
     var rate: String {
         if isInit {
             return "--"
@@ -49,7 +49,7 @@ extension Node {
         guard let ratePAf = Float(ratePA ?? "0"), ratePAf > 0.0 else { return "0.00%" }
         return String(format: "%.2f", (ratePAf / 100.0)) + "%"
     }
-    
+
     var rank: (String, UIImage?) {
         switch ranking {
         case 1:
@@ -65,34 +65,34 @@ extension Node {
 }
 
 extension NodeDetail {
-    
+
     var totalStaked: String {
         return node.deposit?.vonToLATString ?? "0"
     }
-    
+
     var delegations: String {
         return delegateSum?.vonToLATString ?? "0"
     }
-    
+
     var slash: String {
         return String(format: "%d", punishNumber ?? 0)
     }
-    
+
     var blockOut: String {
         return String(format: "%d", blockOutNumber ?? 0)
     }
-    
+
     var bRate: String {
         return String(format: "%.2f", ((Float(blockRate ?? "0") ?? 0) / 100.0)) + "%"
     }
-    
+
     var websiteForDisplay: String {
         if (website ?? "").count > 0 {
             return website!
         }
         return "--"
     }
-    
+
     var institutionalForDisplay: String {
         if (intro ?? "").count > 0 {
             return intro!

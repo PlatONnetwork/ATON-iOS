@@ -18,29 +18,29 @@ class UITextFieldWithSearch: UITextField {
         // Drawing code
     }
     */
-    
-    open override func leftViewRect(forBounds bounds: CGRect) -> CGRect{
-        let iconHight : CGFloat = 11
+
+    open override func leftViewRect(forBounds bounds: CGRect) -> CGRect {
+        let iconHight: CGFloat = 11
         let y = (self.frame.height - iconHight) * 0.5
         return CGRect(x: y, y: y, width: iconHight, height: iconHight)
     }
-    
-    open override func rightViewRect(forBounds bounds: CGRect) -> CGRect{
-        let iconHight : CGFloat = 11
+
+    open override func rightViewRect(forBounds bounds: CGRect) -> CGRect {
+        let iconHight: CGFloat = 11
         let y = (self.frame.height - iconHight) * 0.5
         let frame = self.frame
         let x = frame.size.width - iconHight - 10
         return CGRect(x: x, y: y, width: iconHight, height: iconHight)
     }
-    
+
     override open func textRect(forBounds bounds: CGRect) -> CGRect {
         return bounds.inset(by: searchTextFieldTextPadding)
     }
-    
+
     override open func editingRect(forBounds bounds: CGRect) -> CGRect {
         return bounds.inset(by: searchTextFieldTextPadding)
     }
-    
+
     override open func placeholderRect(forBounds bounds: CGRect) -> CGRect {
         return bounds.inset(by: searchTextFieldTextPadding)
     }
