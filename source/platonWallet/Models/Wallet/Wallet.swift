@@ -123,11 +123,11 @@ extension Wallet: Comparable {
         guard
             let lhsBBigUInt = BigUInt(lhsB?.free ?? "0"),
             let rhsBBigUInt = BigUInt(rhsB?.free ?? "0") else {
-                return lhs.createTime > rhs.createTime
+                return lhs.createTime < rhs.createTime
         }
 
         if lhsBBigUInt == rhsBBigUInt {
-            return lhs.createTime > rhs.createTime
+            return lhs.createTime < rhs.createTime
         }
 
         return lhsBBigUInt > rhsBBigUInt

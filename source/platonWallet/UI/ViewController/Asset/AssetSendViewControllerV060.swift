@@ -15,7 +15,7 @@ import platonWeb3
 
 class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
 
-    var estimatedGas = BigUInt("210000")
+    var estimatedGas = BigUInt("21000")
     var gasPriceLevel: Float = 0.00
 
     var gasPrice: BigUInt? {
@@ -30,9 +30,6 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
         }
     }
 
-    //Joint wallet property
-    var submitGas: BigUInt?
-    var confirmGas: BigUInt?
     var generateQrCode: QrcodeData<[TransactionQrcode]>?
 
     lazy var amountView = { () -> ATextFieldView in

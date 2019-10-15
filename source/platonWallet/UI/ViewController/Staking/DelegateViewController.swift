@@ -441,14 +441,14 @@ extension DelegateViewController {
                     case .success(let result):
                         guard
                             let to = signedTransaction.to?.rawAddress.toHexString() else { return }
-                        let gasPrice = signedTransaction.gasPrice.quantity.description
-                        let gasLimit = signedTransaction.gasLimit.quantity.description
+                        let gasPrice = signedTransaction.gasPrice.quantity
+                        let gasLimit = signedTransaction.gasLimit.quantity
+                        let gasUsed = gasPrice.multiplied(by: gasLimit).description
                         let amount = self.currentAmount.description
                         let tx = Transaction()
                         tx.from = from
                         tx.to = to
-                        tx.gas = gasLimit
-                        tx.gasPrice = gasPrice
+                        tx.gasUsed = gasUsed
                         tx.createTime = Int(Date().timeIntervalSince1970 * 1000)
                         tx.txhash = result.bytes.toHexString().add0x()
                         tx.txReceiptStatus = -1

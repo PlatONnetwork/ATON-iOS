@@ -44,7 +44,7 @@ class ImportWalletHeaderView: UIView {
         var arr:[UIButton] = []
         for i in 0..<tabLists.count {
             let btn = UIButton(type: .custom)
-            btn.titleLabel?.adjustsFontSizeToFitWidth = true
+//            btn.titleLabel?.adjustsFontSizeToFitWidth = true
             btn.titleLabel?.font = UIFont.systemFont(ofSize: 14.0)
             btn.setTitle(tabLists[i], for: .normal)
             btn.tag = 100 + i

@@ -174,7 +174,10 @@ extension MyDelegatesViewController: UITableViewDelegate, UITableViewDataSource 
 extension MyDelegatesViewController {
     @objc func fetchData() {
         let addresses = (AssetVCSharedData.sharedData.walletList as! [Wallet]).map { return $0.address }
-        guard addresses.count > 0 else { return }
+        guard addresses.count > 0 else {
+            self.tableView.mj_header.endRefreshing()
+            return
+        }
 
         StakingService.sharedInstance.getMyDelegate(adddresses: addresses) { [weak self] (result, data) in
             self?.tableView.mj_header.endRefreshing()

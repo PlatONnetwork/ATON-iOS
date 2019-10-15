@@ -159,6 +159,8 @@ class NodeDetailViewController: BaseViewController {
             delegateButton.style = .blue
         }
         doubtLabel.isHidden = (nodeDetail?.node.isInit == false)
+
+        delegateButton.style = AssetVCSharedData.sharedData.walletList.count == 0 ? .disable : .blue
     }
 
     private func fetchData() {

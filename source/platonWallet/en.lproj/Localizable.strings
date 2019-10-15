@@ -792,7 +792,7 @@
 "staking_doubt_reward" = "Rewards";
 "staking_doubt_reward_detail" = "Delegation rewards come from validation block reward,staking reward and transaction fees.Reward assigned by validator.For details on how to assign, please see the official website description of each validator.";
 "staking_doubt_risk" = "Risk";
-"staking_doubt_risk_detail" = "No risk.";
+"staking_doubt_risk_detail" = "Validators would be punished for double signing or low block rate. It would indirectly affect your reward. Please select qualified validators.";
 
 "staking_doubt_undelegate" = "Note";
 "staking_doubt_undelegate_detail" = "Un-delegation (i.e. withdrawal) LAT, the unlocked delegate LAT and released delegate LAT can immediately returns to the account. However,the locked delegate LAT takes 6.1 hours to unlock and return to the account.\nThe released delegate has to be withdrawal all at once;\nIf the remaining delegations has been less than 10LAT, it will be automatically returned all.";
