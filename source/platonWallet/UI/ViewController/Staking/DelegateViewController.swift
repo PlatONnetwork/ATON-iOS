@@ -57,8 +57,7 @@ class DelegateViewController: BaseViewController {
         super.viewDidLoad()
         super.leftNavigationTitle = "delegate_delegate_title"
         // Do any additional setup after loading the view.
-        initListData()
-        getGasPrice()
+
 
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
@@ -66,6 +65,12 @@ class DelegateViewController: BaseViewController {
         }
 
         tableView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(cancelFirstResponser)))
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        initListData()
+        getGasPrice()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -99,7 +104,6 @@ class DelegateViewController: BaseViewController {
                     completion?()
                 case .fail:
                     completion?()
-                    break
                 }
         }
     }
@@ -144,7 +148,7 @@ class DelegateViewController: BaseViewController {
             (Localized("staking_doubt_risk"), Localized("staking_doubt_risk_detail"))
         ]
         let item6 = DelegateTableViewCellStyle.doubt(contents: contents)
-        listData.append(contentsOf: [item1, item2, item3, item4, item5, item6])
+        listData = [item1, item2, item3, item4, item5, item6]
         tableView.reloadData()
 
         fetchCanDelegation()
@@ -256,7 +260,6 @@ extension DelegateViewController {
     }
 
     func submitDelgate() {
-
         if let canDet = canDelegation, canDet.canDelegation == false {
             showMessage(text: canDet.message?.localizedDesciption ?? "can't delegate", delay: 2.0)
             return

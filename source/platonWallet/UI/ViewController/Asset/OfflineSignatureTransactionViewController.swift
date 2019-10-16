@@ -86,7 +86,7 @@ class OfflineSignatureTransactionViewController: BaseViewController {
             return result + BigUInt(txCode.amount ?? "0")!
         }
 
-        let totalLAT = totalAmount.description.vonToLAT.description
+        let totalLAT = totalAmount.description.vonToLATString ?? "0.00"
         let unionAttr = NSAttributedString(string: " LAT", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 20)])
         let attributed = NSMutableAttributedString(string: totalLAT)
         attributed.append(unionAttr)

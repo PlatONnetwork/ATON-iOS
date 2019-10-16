@@ -471,7 +471,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
                 else { return }
             let gasPrice = inputGasPrice.description
             let gasLimit = estimatedGas.description
-            let amount = amountLATString.LATToVon.description
+            let amount = (BigUInt.mutiply(a: amountLATString, by: ETHToWeiMultiplier) ?? BigUInt.zero).description
 
             web3.platon.platonGetNonce(sender: wallet.address) { [weak self] (result, blockNonce) in
                 guard let self = self else { return }

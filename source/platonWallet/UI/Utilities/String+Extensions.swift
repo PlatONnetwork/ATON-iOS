@@ -21,7 +21,7 @@ extension String {
     }
 
     var LATToVon: BigUInt {
-        guard let lat = BigUInt(self) else { return BigUInt.zero }
+        let lat = BigUInt.safeInit(str: self)
         return lat.multiplied(by: BigUInt(ETHToWeiMultiplier)!)
     }
 

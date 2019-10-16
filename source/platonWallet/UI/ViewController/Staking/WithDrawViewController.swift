@@ -57,7 +57,10 @@ class WithDrawViewController: BaseViewController {
         }
 
         tableView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(cancelFirstResponser)))
+    }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         fetchDelegateValue()
         getGasPrice()
     }
@@ -137,7 +140,7 @@ class WithDrawViewController: BaseViewController {
             (Localized("staking_doubt_undelegate"), Localized("staking_doubt_undelegate_detail"))
         ]
         let item6 = DelegateTableViewCellStyle.doubt(contents: contents)
-        listData.append(contentsOf: [item1, item2, item3, item4, item5, item6])
+        listData = [item1, item2, item3, item4, item5, item6]
 
         tableView.reloadData()
     }
