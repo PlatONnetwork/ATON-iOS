@@ -245,9 +245,10 @@ extension UIViewController {
                 alertVC.showInputErrorTip(string: valid.1)
                 return false
             }
-            
+            if alertVC.isInCustomLoading != nil && alertVC.isInCustomLoading!{
+                return false
+            }
             alertVC.showLoadingHUD()
-            
             WalletService.sharedInstance.exportPrivateKey(
                 wallet: wallet,
                 password: (alertVC.textFieldInput?.text)!,
