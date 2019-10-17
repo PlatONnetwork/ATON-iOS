@@ -140,7 +140,12 @@ extension UIViewController {
                 alertVC.showInputErrorTip(string: valid.1)
                 return false
             }
+            if alertVC.isInCustomLoading != nil && alertVC.isInCustomLoading!{
+                return false
+            }
+            alertVC.showLoadingHUD()
             WalletService.sharedInstance.exportMnemonic(wallet: wallet, password: text!, completion: { (res, error) in
+                alertVC.hideLoadingHUD()
                 if (error == nil && (res!.length) > 0) {
                     let vc = BackupMnemonicViewController()
                     vc.mnemonic = res
@@ -150,7 +155,8 @@ extension UIViewController {
                     self?.rt_navigationController!.pushViewController(vc, animated: true)
                     alertVC.dismissWithCompletion()
                 }else{
-                    alertVC.showInputErrorTip(string: error?.errorDescription)
+                    //alertVC.showInputErrorTip(string: error?.errorDescription)
+                    alertVC.showErrorMessage(text: Localized(error?.errorDescription ?? ""), delay: 2.0)
                 }
             })
             return false
