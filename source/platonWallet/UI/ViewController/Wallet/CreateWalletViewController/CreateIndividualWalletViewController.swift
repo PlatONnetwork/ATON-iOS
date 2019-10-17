@@ -80,7 +80,9 @@ class CreateIndividualWalletViewController: BaseViewController,StartBackupMnemon
         guard checkInputValueIsValid() else {
             return
         }
-        
+        if self.isInCustomLoading != nil && self.isInCustomLoading!{
+            return
+        }
         showLoadingHUD() 
         
         WalletService.sharedInstance.createWallet(name: nameTF.text!, password: pswTF.text!) { [weak self](wallet, error) in
