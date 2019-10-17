@@ -129,6 +129,9 @@ class WalletManagerDetailViewController: BaseViewController {
                 alertVC.showInputErrorTip(string: valid.1)
                 return false
             }
+            if self?.isInCustomLoading != nil && self?.isInCustomLoading == true{
+                return false
+            }
             self?.showLoadingHUD()
             WalletService.sharedInstance.exportPrivateKey(wallet: (self?.wallet!)!, password: (alertVC.textFieldInput?.text)!, completion: { (pri, err) in
                 if (err == nil && (pri?.length)! > 0) {
