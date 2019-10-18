@@ -170,6 +170,8 @@ extension WalletListViewController: UITableViewDelegate, UITableViewDataSource {
             self.dataSource.removeAll()
             self.dataSource.append(contentsOf: array)
             self.tableView.reloadData()
+            //排序过后，强制刷新一下内存数据
+            WalletService.sharedInstance.refreshDB()
         }
     }
     
