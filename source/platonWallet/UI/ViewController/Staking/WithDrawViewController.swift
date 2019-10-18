@@ -313,7 +313,7 @@ extension WithDrawViewController {
         }
 
         var tempPrivateKey: String?
-        showPasswordInputPswAlert(for: walletObject.currentWallet) { [weak self] (privateKey, error) in
+        showPasswordInputPswAlert(for: walletObject.currentWallet) { [weak self] (privateKey, _, error) in
             guard let self = self else { return }
             guard let pri = privateKey else {
                 if let errorMsg = error?.localizedDescription {

@@ -122,6 +122,7 @@ class AlertStylePopViewController: UIViewController, UITextFieldDelegate {
         self.textFieldInput.autocorrectionType = .no
         self.textFieldInput.tintColor = UIColor(rgb: 0x0077FF)
         self.errorLabel.text = ""
+        self.confirmButton.eventInterval = 1.0
 
         self.textFieldInput.disableAutoFilled()
 

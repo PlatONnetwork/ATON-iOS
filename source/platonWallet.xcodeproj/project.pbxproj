@@ -139,6 +139,7 @@
 		81ACB9CA2301371900BB460B /* NodeModel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81ACB9C92301371900BB460B /* NodeModel+Extension.swift */; };
 		81ACB9CC2301936D00BB460B /* WalletBaseInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81ACB9CB2301936D00BB460B /* WalletBaseInfoView.swift */; };
 		81ACB9CE2302A59300BB460B /* Transaction+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81ACB9CD2302A59300BB460B /* Transaction+Extension.swift */; };
+		81B5895F2356F79000816B4E /* UIButton+Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B5895E2356F79000816B4E /* UIButton+Event.swift */; };
 		81B5CE71224332C500ACFE96 /* UITextFieldWithSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B5CE70224332C500ACFE96 /* UITextFieldWithSearch.swift */; };
 		81C88E0521746B39005F17F7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C88E0421746B39005F17F7 /* AppDelegate.swift */; };
 		81C88E0721746B39005F17F7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C88E0621746B39005F17F7 /* ViewController.swift */; };
@@ -483,6 +484,7 @@
 		81ACB9C92301371900BB460B /* NodeModel+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NodeModel+Extension.swift"; sourceTree = "<group>"; };
 		81ACB9CB2301936D00BB460B /* WalletBaseInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletBaseInfoView.swift; sourceTree = "<group>"; };
 		81ACB9CD2302A59300BB460B /* Transaction+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Transaction+Extension.swift"; sourceTree = "<group>"; };
+		81B5895E2356F79000816B4E /* UIButton+Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Event.swift"; sourceTree = "<group>"; };
 		81B5CE70224332C500ACFE96 /* UITextFieldWithSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldWithSearch.swift; sourceTree = "<group>"; };
 		81C1120D21AFBFDE00003E59 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		81C88E0121746B39005F17F7 /* platonWallet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = platonWallet.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1175,6 +1177,7 @@
 				81E2E85D2186E2C5008B7504 /* String+Extensions.swift */,
 				819A522821902E7E00E4C500 /* UIBarItem+Extensions.swift */,
 				9ADE450B217ED3DC006F1C81 /* UIButton+Extensions.swift */,
+				81B5895E2356F79000816B4E /* UIButton+Event.swift */,
 				81EE99CA2175E6B8008DF8CB /* UIColor+Extenstions.swift */,
 				814B8C2421775DED00C97E48 /* UIImage+Extensions.swift */,
 				819A52242190204500E4C500 /* UILabel+Extenstions.swift */,
@@ -2070,6 +2073,7 @@
 				814B8C2521775DED00C97E48 /* UIImage+Extensions.swift in Sources */,
 				9AF9AC132182E04000E97F07 /* InteractiveTransition.swift in Sources */,
 				8141E6672338AE46001A9351 /* ImportObservedWalletViewController.swift in Sources */,
+				81B5895F2356F79000816B4E /* UIButton+Event.swift in Sources */,
 				812002AA21A3EB390050E1B0 /* TransferDetailView.swift in Sources */,
 				812D94B6218C5115002A48B0 /* NewAddressInfoViewController.swift in Sources */,
 				817F88E72174724E0041B6A5 /* CreateIndividualWalletViewController.swift in Sources */,

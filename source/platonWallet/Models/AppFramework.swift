@@ -27,6 +27,8 @@ class AppFramework {
             return false
         }
         modulesConfigure()
+
+        UIButton.methodExchange()
         return true
     }
 

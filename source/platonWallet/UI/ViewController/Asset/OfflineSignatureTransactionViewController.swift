@@ -137,7 +137,7 @@ class OfflineSignatureTransactionViewController: BaseViewController {
             return
         }
 
-        showPasswordInputPswAlert(for: wallet) { [weak self] (privateKey, error) in
+        showPasswordInputPswAlert(for: wallet) { [weak self] (privateKey, _, error) in
             guard let self = self else { return }
             guard let pri = privateKey else {
                 if let errorMsg = error?.localizedDescription {

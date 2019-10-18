@@ -169,7 +169,6 @@ class CreateIndividualWalletViewController: BaseViewController,StartBackupMnemon
     }
 
     func showInputPswAlert() {
-
         let alertVC = AlertStylePopViewController.initFromNib()
         let style = PAlertStyle.passwordInput(walletName: self.nameTF.text)
         alertVC.onAction(confirm: {[weak self] (text, _) -> (Bool)  in

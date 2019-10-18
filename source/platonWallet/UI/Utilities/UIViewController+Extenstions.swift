@@ -230,7 +230,7 @@ extension UIViewController {
 }
 
 extension UIViewController {
-    func showPasswordInputPswAlert(for wallet: Wallet, completion: ((String?, Error?) -> Void)?) {
+    func showPasswordInputPswAlert(for wallet: Wallet, completion: ((String?, String?, Error?) -> Void)?) {
 
         let alertVC = AlertStylePopViewController.initFromNib()
         let style = PAlertStyle.passwordInput(walletName: wallet.name)
@@ -251,10 +251,10 @@ extension UIViewController {
                         alertVC.hideLoadingHUD()
                         if (err == nil && (pri?.length)! > 0) {
                             alertVC.dismissWithCompletion()
-                            completion?(pri, nil)
+                            completion?(pri, text, nil)
                         } else {
                             alertVC.showInputErrorTip(string: (err?.errorDescription)!)
-                            completion?(nil, err)
+                            completion?(nil, text, err)
                         }
                     }
             })
@@ -262,7 +262,7 @@ extension UIViewController {
 
         }) { (_, _) -> (Bool) in
             DispatchQueue.main.async {
-                completion?(nil, nil)
+                completion?(nil, nil, nil)
             }
             return true
         }

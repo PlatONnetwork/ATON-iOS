@@ -494,7 +494,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
                 }
             }
         } else {
-            showPasswordInputPswAlert(for: wallet) { [weak self] (privateKey, error) in
+            showPasswordInputPswAlert(for: wallet) { [weak self] (privateKey, _, error) in
                 guard let self = self else { return }
                 guard let pri = privateKey else {
                     if let errorMsg = error?.localizedDescription {
@@ -657,7 +657,11 @@ extension AssetSendViewControllerV060 {
 
         let from = AssetVCSharedData.sharedData.cWallet?.address
         let to = self.walletAddressView.textField.text!
-        let amount = self.amountView.textField.text!
+        guard let amount = self.amountView.textField.text, amount.count > 0 else {
+            showErrorMessage(text: "amount value is nil")
+            return
+        }
+
         let memo = ""
 
         _ = TransactionService.service.sendAPTTransfer(from: from!, to: to, amount: amount, InputGasPrice: self.gasPrice!, estimatedGas: String(self.estimatedGas), memo: memo, pri: pri, completion: {[weak self] (result, _) in
