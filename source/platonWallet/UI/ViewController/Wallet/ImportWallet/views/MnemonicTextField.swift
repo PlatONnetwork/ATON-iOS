@@ -16,25 +16,25 @@ class MnemonicTextField: UITextField {
         super.init(frame: frame)
         self.custmoInit()
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
      super.init(coder: aDecoder)
         self.custmoInit()
     }
-    
-    func custmoInit(){
+
+    func custmoInit() {
         NotificationCenter.default.addObserver(self, selector: #selector(OnBeginEditing(_:)), name: UITextField.textDidBeginEditingNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(OnDidEndEditing(_:)), name: UITextField.textDidEndEditingNotification, object: nil)
     }
-    
-    @objc func OnBeginEditing(_ notification: Notification){
-        if let textField = notification.object as? UITextField, textField == self{
+
+    @objc func OnBeginEditing(_ notification: Notification) {
+        if let textField = notification.object as? UITextField, textField == self {
             self.backgroundColor = UIColor(rgb: 0xDDDFE6)
         }
     }
-    
-    @objc func OnDidEndEditing(_ notification: Notification){
-        if let textField = notification.object as? UITextField, textField == self{
+
+    @objc func OnDidEndEditing(_ notification: Notification) {
+        if let textField = notification.object as? UITextField, textField == self {
             self.backgroundColor = UIColor(rgb: 0xF0F1F5)
         }
     }

@@ -19,9 +19,9 @@ class NodeTableViewCell: UITableViewCell {
     public let rateLabel = UILabel()
     public let statusButton = UIButton()
     public let rankingButton = UIButton()
-    
+
     var cellDidSelectedHandle: (() -> Void)?
-    
+
     var node: Node? {
         didSet {
             avatarIV.kf.setImage(with: URL(string: node?.url ?? ""), placeholder: UIImage(named: "3.icon_default"))
@@ -35,16 +35,16 @@ class NodeTableViewCell: UITableViewCell {
             rankingButton.setBackgroundImage(node?.rank.1, for: .normal)
         }
     }
-    
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
         backgroundColor = normal_background_color
-        
+
         let shadowView = UIView()
         shadowView.backgroundColor = .white
         contentView.addSubview(shadowView)
-        
+
         let containerView = UIButton()
         containerView.backgroundColor = .white
         containerView.addTarget(self, action: #selector(containerViewTapAction), for: .touchUpInside)
@@ -58,8 +58,7 @@ class NodeTableViewCell: UITableViewCell {
         }
         containerView.layer.cornerRadius = 2.0
         containerView.layer.masksToBounds = true
-        
-        
+
         shadowView.snp.makeConstraints { make in
             make.edges.equalTo(containerView)
         }
@@ -67,8 +66,7 @@ class NodeTableViewCell: UITableViewCell {
         shadowView.layer.shadowRadius = 4.0
         shadowView.layer.shadowOffset = CGSize(width: 2, height: 2)
         shadowView.layer.shadowOpacity = 0.2
-        
-        
+
         avatarIV.addMaskView(corners: .allCorners, cornerRadiiV: 21)
         avatarIV.image = UIImage(named: "walletAvatar_1")
         containerView.addSubview(avatarIV)
@@ -77,7 +75,7 @@ class NodeTableViewCell: UITableViewCell {
             make.leading.equalToSuperview().offset(5)
             make.width.height.equalTo(42)
         }
-        
+
         nameLabel.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.medium)
         nameLabel.textColor = .black
         nameLabel.text = "--"
@@ -88,7 +86,7 @@ class NodeTableViewCell: UITableViewCell {
             make.leading.equalTo(avatarIV.snp.trailing).offset(5)
             make.height.equalTo(18)
         }
-        
+
         statusButton.setTitle("--", for: .normal)
         statusButton.setTitleColor(common_blue_color, for: .normal)
         statusButton.layer.cornerRadius = 3.0
@@ -103,7 +101,7 @@ class NodeTableViewCell: UITableViewCell {
             make.height.equalTo(16)
             make.centerY.equalTo(nameLabel)
         }
-        
+
         delegateTitleLabel.font = UIFont.systemFont(ofSize: 13)
         delegateTitleLabel.textColor = common_darkGray_color
         delegateTitleLabel.localizedText = "staking_validator_delegate_total"
@@ -114,7 +112,7 @@ class NodeTableViewCell: UITableViewCell {
             make.top.equalTo(nameLabel.snp.bottom).offset(9)
             make.leading.equalTo(nameLabel.snp.leading)
         }
-        
+
         delegateAmountLabel.font = UIFont.systemFont(ofSize: 13)
         delegateAmountLabel.textColor = .black
         delegateAmountLabel.text = "--"
@@ -126,7 +124,7 @@ class NodeTableViewCell: UITableViewCell {
             make.centerY.equalTo(delegateTitleLabel)
             make.trailing.equalToSuperview().offset(-100)
         }
-        
+
         let rateView = UIView()
         rateView.isUserInteractionEnabled = false
         containerView.addSubview(rateView)
@@ -145,7 +143,7 @@ class NodeTableViewCell: UITableViewCell {
             make.leading.trailing.equalToSuperview()
             make.top.equalToSuperview()
         }
-        
+
         let rateTitleLabel = UILabel()
         rateTitleLabel.textAlignment = .center
         rateTitleLabel.font = .systemFont(ofSize: 11)
@@ -157,8 +155,7 @@ class NodeTableViewCell: UITableViewCell {
             make.bottom.equalToSuperview()
             make.leading.trailing.equalToSuperview()
         }
-        
-        
+
         rankingButton.setTitle("--", for: .normal)
         rankingButton.setBackgroundImage(UIImage(named: "3.img_mark1"), for: .normal)
         rankingButton.imageEdgeInsets = .zero
@@ -172,11 +169,11 @@ class NodeTableViewCell: UITableViewCell {
             make.height.width.equalTo(20)
         }
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     @objc func containerViewTapAction() {
         cellDidSelectedHandle?()
     }

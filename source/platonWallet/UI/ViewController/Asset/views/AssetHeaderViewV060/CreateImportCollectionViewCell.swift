@@ -9,47 +9,46 @@
 import UIKit
 
 class CreateImportCollectionViewCell: UICollectionViewCell {
-    
+
     let bgView = UIView()
     let functionIcon = UIImageView()
     let functionLabel = UILabel()
-    
+
     var index: Int? {
         didSet {
-            if index == 0{
+            if index == 0 {
                 functionIcon.image = UIImage(named: "cellItemCreate")
                 functionLabel.localizedText = "AddWalletMenuVC_createIndividualWallet_title"
-            }else{
+            } else {
                 functionIcon.image = UIImage(named: "cellItemImport")
                 functionLabel.localizedText = "AddWalletMenuVC_importIndividualWallet_title"
             }
         }
     }
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+
         setupUI()
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     func setupUI() {
         contentView.addSubview(bgView)
         bgView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        
-        
+
         contentView.addSubview(functionIcon)
         functionIcon.snp.makeConstraints { make in
             make.height.width.equalTo(26)
             make.centerX.equalToSuperview()
             make.top.equalToSuperview().offset(8)
         }
-        
+
         functionLabel.font = UIFont.systemFont(ofSize: 8)
         functionLabel.textAlignment = .center
         functionLabel.textColor = UIColor(rgb: 0xB6BBD0)
@@ -60,7 +59,7 @@ class CreateImportCollectionViewCell: UICollectionViewCell {
             make.bottom.equalToSuperview().offset(-5)
             make.top.equalTo(functionIcon.snp.bottom)
         }
-        
+
         bgView.addDashedBorder()
     }
 }

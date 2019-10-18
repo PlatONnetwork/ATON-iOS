@@ -10,25 +10,25 @@ import UIKit
 import Localize_Swift
 
 class CopyButton: UIButton {
-    
-    var attachTextView : UIView?
+
+    var attachTextView: UIView?
 
     override init(frame: CGRect) {
         super.init(frame: .zero)
         initialize()
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         initialize()
     }
-    
+
     func initialize() {
         self.addTarget(self, action: #selector(onCopy), for: .touchUpInside)
     }
-    
-    @objc func onCopy(){
-        if let label = attachTextView as? UILabel{
+
+    @objc func onCopy() {
+        if let label = attachTextView as? UILabel {
             if (label.text?.length)! > 0 {
                 let pasteboard = UIPasteboard.general
                 pasteboard.string = label.text
@@ -36,8 +36,5 @@ class CopyButton: UIButton {
             }
         }
     }
-    
-    
-    
-    
+
 }

@@ -11,10 +11,10 @@ import UIKit
 
 public struct CommunityContactStyle {
     var contact: String
-    var qrcodeImage: UIImage? = nil
+    var qrcodeImage: UIImage?
     var action: CommunityAction
     var isSelected: Bool = false
-    
+
     public enum CommunityAction {
         case scan
         case link

@@ -11,32 +11,31 @@ import BigInt
 import Localize_Swift
 
 class WalletDetailCell: UITableViewCell {
-    
+
     @IBOutlet weak var txTypeLabel: UILabel!
-    
+
     @IBOutlet weak var transferAmoutLabel: UILabel!
-    
+
     @IBOutlet weak var timeLabel: UILabel!
-    
+
     @IBOutlet weak var txIcon: UIImageView!
-    
+
     @IBOutlet weak var unreadTag: UILabel!
-    
-    
+
     @IBOutlet weak var sepline: UIView!
-    
+
     lazy var pendingLayer: CALayer = { () -> CALayer in
         let replicatorLayer = CAReplicatorLayer()
         replicatorLayer.frame = CGRect(x: 0, y: 0, width: 24, height: 24)
         replicatorLayer.instanceCount = 3
-        replicatorLayer.instanceTransform = CATransform3DMakeTranslation((replicatorLayer.frame.size.width-4)/2, 0, 0);
+        replicatorLayer.instanceTransform = CATransform3DMakeTranslation((replicatorLayer.frame.size.width-4)/2, 0, 0)
         replicatorLayer.instanceDelay = 1/3.0
-        
+
         let dotLayer = CAShapeLayer()
         dotLayer.path = UIBezierPath(ovalIn: CGRect(x: 0, y: 10, width: 4, height: 4)).cgPath
         dotLayer.fillColor = UIColor(rgb: 0x2a5ffe).cgColor
         replicatorLayer.addSublayer(dotLayer)
-        
+
         let keyAnimation = CAKeyframeAnimation(keyPath: "opacity")
         keyAnimation.isRemovedOnCompletion = false
         keyAnimation.duration = 1.0
@@ -44,26 +43,26 @@ class WalletDetailCell: UITableViewCell {
         keyAnimation.values = [1.0, 0.7, 0.5]
         keyAnimation.repeatCount = Float.infinity
         dotLayer.add(keyAnimation, forKey: nil)
-        
+
         return replicatorLayer
     }()
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
 
         unreadTag.layer.masksToBounds = true
         unreadTag.layer.cornerRadius = 3
         unreadTag.isHidden = true
-        
+
         txIcon.layer.addSublayer(pendingLayer)
     }
-    
+
     func updateTransferCell(transaction: Transaction?, wallet: Wallet?) {
         guard let tx = transaction else { return }
         updateCellWithAPTTransfer(tx: tx, wallet: wallet)
     }
-    
-    func updateCellStyle(count: Int, index: Int){
+
+    func updateCellStyle(count: Int, index: Int) {
 
     }
 
@@ -71,9 +70,9 @@ class WalletDetailCell: UITableViewCell {
         guard let w = wallet else { return }
         self.unreadTag.isHidden = true
         tx.senderAddress = w.address
-        
+
         transferAmoutLabel.text = tx.amountTextString
-        
+
         if tx.txType == .unknown || tx.txType == .transfer {
             txTypeLabel.text = tx.transactionStauts.localizeTitle
         } else {
@@ -83,9 +82,9 @@ class WalletDetailCell: UITableViewCell {
         transferAmoutLabel.textColor = tx.amountTextColor
         txIcon.image = tx.txTypeIcon
         pendingLayer.isHidden = tx.txTypeIcon != nil
-        
+
         //最后处理超时状态
-        if tx.txReceiptStatus == TransactionReceiptStatus.timeout.rawValue{
+        if tx.txReceiptStatus == TransactionReceiptStatus.timeout.rawValue {
             guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return }
             var direction = TransactionDirection.unknown
             switch tx.txType! {
@@ -101,8 +100,8 @@ class WalletDetailCell: UITableViewCell {
             txIcon.image = Transaction.getTxTypeIconByDirection(direction: direction, txType: tx.txType)
             pendingLayer.isHidden = true
         }
-        
-        guard (tx.confirmTimes != 0) else{
+
+        guard (tx.confirmTimes != 0) else {
             guard tx.createTime != 0 else {
                 timeLabel.text = "--:--:-- --:--"
                 return
@@ -112,5 +111,5 @@ class WalletDetailCell: UITableViewCell {
         }
         timeLabel.text = Date.toStanderTimeDescrition(millionSecondsTimeStamp: tx.confirmTimes)
     }
-    
+
 }

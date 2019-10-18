@@ -23,4 +23,3 @@ extension Notification.Name {
         public static let DidAssetBalanceVisiableChange = Notification.Name("DidAssetBalanceVisiableChange")
     }
 }
-

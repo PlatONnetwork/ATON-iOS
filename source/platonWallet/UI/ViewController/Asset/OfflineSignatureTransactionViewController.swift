@@ -12,10 +12,10 @@ import Localize_Swift
 import platonWeb3
 
 class OfflineSignatureTransactionViewController: BaseViewController {
-    
+
     var listData: [(title: String, value: String)] = []
     var qrcode: QrcodeData<[TransactionQrcode]>?
-    
+
     lazy var tableView = { () -> UITableView in
         let tbView = UITableView(frame: .zero)
         tbView.delegate = self
@@ -25,8 +25,7 @@ class OfflineSignatureTransactionViewController: BaseViewController {
         tbView.tableFooterView = UIView()
         return tbView
     }()
-    
-    
+
     let valueLabel = UILabel()
     let submitButton = PButton()
 
@@ -39,9 +38,9 @@ class OfflineSignatureTransactionViewController: BaseViewController {
         tableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        
+
         guard let result = qrcode else { return }
-        
+
         let headerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 155))
         valueLabel.font = UIFont.systemFont(ofSize: 30, weight: .medium)
         valueLabel.textColor = common_blue_color
@@ -52,7 +51,7 @@ class OfflineSignatureTransactionViewController: BaseViewController {
             make.trailing.equalToSuperview().offset(-16)
             make.centerY.equalToSuperview()
         }
-        
+
         let lineV = UIView()
         lineV.backgroundColor = common_line_color
         headerView.addSubview(lineV)
@@ -62,7 +61,7 @@ class OfflineSignatureTransactionViewController: BaseViewController {
             make.bottom.equalTo(headerView.snp.bottom).offset(-18)
             make.height.equalTo(1/UIScreen.main.scale)
         }
-        
+
         let footerView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 112))
         submitButton.localizedNormalTitle = "confirm_authorize_button_send"
         submitButton.addTarget(self, action: #selector(authorizeTransaction), for: .touchUpInside)
@@ -75,53 +74,51 @@ class OfflineSignatureTransactionViewController: BaseViewController {
         }
         footerView.layoutIfNeeded()
         submitButton.style = .blue
-        
+
         tableView.tableHeaderView = headerView
         tableView.tableFooterView = footerView
-        
+
         guard let codes = result.qrCodeData, codes.count > 0 else {
             return
         }
-        
+
         let totalAmount = codes.reduce(BigUInt.zero) { (result, txCode) -> BigUInt in
             return result + BigUInt(txCode.amount ?? "0")!
         }
-        
-        let totalLAT = totalAmount.description.vonToLAT.description
+
+        let totalLAT = totalAmount.description.vonToLATString ?? "0.00"
         let unionAttr = NSAttributedString(string: " LAT", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 20)])
         let attributed = NSMutableAttributedString(string: totalLAT)
         attributed.append(unionAttr)
         valueLabel.attributedText = attributed
-        
-        
+
         listData.append((title: Localized("confirm_authorize_function_type"), value: codes.first?.typeString ?? "--"))
         listData.append((title: Localized("confirm_authorize_from"), value:  codes.first?.fromName ?? "--"))
         listData.append((title: Localized("confirm_authorize_to"), value: codes.first?.toName ?? "--"))
-        
+
         let totalGas = codes.reduce(BigUInt.zero) { (result, txCode) -> BigUInt in
             let gasPrice = BigUInt(txCode.gasPrice ?? "0") ?? BigUInt.zero
             let gasLimit = BigUInt(txCode.gasLimit ?? "0") ?? BigUInt.zero
             let gas = gasPrice.multiplied(by: gasLimit)
             return result + gas
         }
-        
-        
+
         listData.append((title: Localized("confirm_authorize_fee"), value: (totalGas.description.vonToLATString ?? "0.00").ATPSuffix()))
     }
-    
+
     func generateQrcodeForSignedTx(content: String) {
         let qrcodeWidth = PopUpContentWidth - 32
         let qrcodeImage = UIImage.geneQRCodeImageFor(content, size: qrcodeWidth)
-        
+
         let qrcodeView = OfflineSignatureQRCodeView()
         qrcodeView.imageView.image = qrcodeImage
-        
+
         let type = ConfirmViewType.qrcodeGenerate(contentView: qrcodeView)
         let offlineConfirmView = OfflineSignatureConfirmView(confirmType: type)
         offlineConfirmView.titleLabel.localizedText = "confirm_generate_qrcode_for_signed_tx"
         offlineConfirmView.descriptionLabel.localizedText = "confirm_generate_qrcode_for_signed_tx_tip"
         offlineConfirmView.submitBtn.localizedNormalTitle = "confirm_button_signed_tx"
-        
+
         let controller = PopUpViewController()
         controller.setUpConfirmView(view: offlineConfirmView, width: PopUpContentWidth)
         controller.show(inViewController: self)
@@ -129,17 +126,17 @@ class OfflineSignatureTransactionViewController: BaseViewController {
             self?.navigationController?.popViewController(animated: true)
         }
     }
-    
+
     @objc func authorizeTransaction() {
         guard let codes = qrcode?.qrCodeData, codes.count > 0 else {
             return
         }
-        
+
         guard let wallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).first(where: { $0.address.lowercased() == codes.first?.from?.lowercased() }) else {
             showErrorMessage(text: Localized("offline_signature_notmatch_wallet"), delay: 2.0)
             return
         }
-        
+
         showPasswordInputPswAlert(for: wallet) { [weak self] (privateKey, error) in
             guard let self = self else { return }
             guard let pri = privateKey else {
@@ -148,7 +145,7 @@ class OfflineSignatureTransactionViewController: BaseViewController {
                 }
                 return
             }
-            
+
             var signedStrings: [String] = []
             for code in codes {
                 if code.functionType == 1004 {
@@ -162,7 +159,7 @@ class OfflineSignatureTransactionViewController: BaseViewController {
                     signedStrings.append(signatureString)
                 }
             }
-            
+
             guard
                 let code = codes.first,
                 let sender = code.sender,
@@ -174,7 +171,7 @@ class OfflineSignatureTransactionViewController: BaseViewController {
             self.generateQrcodeForSignedTx(content: jsonString)
         }
     }
-    
+
     func signedTransferTx(pri: String, txQrcode: TransactionQrcode) -> String? {
         guard
             let sender = txQrcode.from,
@@ -185,19 +182,18 @@ class OfflineSignatureTransactionViewController: BaseViewController {
             let nonceBigInt = BigUInt(txQrcode.nonce ?? "0") else { return nil }
         let nonce = EthereumQuantity(quantity: nonceBigInt)
         let amount = EthereumQuantity(quantity: amountBigInt)
-        
+
         let txSigned = web3.platon.platonSignTransaction(to: to, nonce: nonce, data: [], sender: sender, privateKey: pri, gasPrice: gasPrice, gas: gasLimit, value: amount, estimated: true)
         guard
             let transactionSigned = txSigned else { return nil }
-        
+
         let bytes = try? RLPEncoder().encode(transactionSigned.rlp())
-        
+
         guard
             let signedString = bytes?.toHexString().add0x() else { return nil }
         return signedString
     }
-    
-    
+
     func signedWithdrawTx(pri: String, txQrcode: TransactionQrcode) -> String? {
         guard
             let stakingBlockNum = UInt64(txQrcode.stakingBlockNum ?? "0"),
@@ -206,18 +202,18 @@ class OfflineSignatureTransactionViewController: BaseViewController {
             let amount = BigUInt(txQrcode.amount ?? "0"),
             let nonceBigInt = BigUInt(txQrcode.nonce ?? "0") else { return nil }
         let nonce = EthereumQuantity(quantity: nonceBigInt)
-        
+
         let funcType = FuncType.withdrewDelegate(stakingBlockNum: stakingBlockNum, nodeId: nodeId, amount: amount)
         let txSigned = web3.platon.platonSignTransaction(to: PlatonConfig.ContractAddress.stakingContractAddress, nonce: nonce, data: funcType.rlpData.bytes, sender: sender, privateKey: pri, gasPrice: funcType.gasPrice, gas: funcType.gas, value: nil, estimated: true)
         guard
             let transactionSigned = txSigned else { return nil }
         let bytes = try? RLPEncoder().encode(transactionSigned.rlp())
-        
+
         guard
             let signedString = bytes?.toHexString().add0x() else { return nil }
         return signedString
     }
-    
+
     func signedDelegateTx(pri: String, txQrcode: TransactionQrcode) -> String? {
         guard
             let typ = txQrcode.typ,
@@ -228,15 +224,15 @@ class OfflineSignatureTransactionViewController: BaseViewController {
                 self.showErrorMessage(text: "qrcode is invalid", delay: 2.0)
                 return nil
         }
-        
+
         let nonce = EthereumQuantity(quantity: nonceBigInt)
         let funcType = FuncType.createDelegate(typ: typ, nodeId: nodeId, amount: amount)
         let txSigned = web3.platon.platonSignTransaction(to: PlatonConfig.ContractAddress.stakingContractAddress, nonce: nonce, data: funcType.rlpData.bytes, sender: sender, privateKey: pri, gasPrice: funcType.gasPrice, gas: funcType.gas, value: nil, estimated: true)
-        
+
         guard
             let transactionSigned = txSigned else { return nil }
         let bytes = try? RLPEncoder().encode(transactionSigned.rlp())
-        
+
         guard
             let signedString = bytes?.toHexString().add0x() else { return nil }
         return signedString
@@ -248,7 +244,7 @@ extension OfflineSignatureTransactionViewController: UITableViewDelegate, UITabl
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return listData.count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TransactionDetailTableViewCell") as! TransactionDetailTableViewCell
         cell.selectionStyle = .none

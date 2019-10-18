@@ -25,15 +25,15 @@ struct BalancesCellStyle {
     var balances: [(String, String)] = []
     var selectedIndex: Int = 0
     var isExpand: Bool = false
-    
+
     var cellCount: Int {
         return isExpand ? balances.count + 1 : 1
     }
-    
+
     var currentBalance: (String, String) {
         return balances[selectedIndex]
     }
-    
+
     func balance(for index: Int) -> (String, String) {
         if isExpand {
             return index == 0 ? balances[selectedIndex] : balances[index - 1]
@@ -48,15 +48,15 @@ struct WalletsCellStyle {
     var wallets: [Wallet]
     var selectedIndex: Int = 0
     var isExpand: Bool = false
-    
+
     var cellCount: Int {
         return isExpand ? wallets.count + 1 : 1
     }
-    
+
     var currentWallet: Wallet {
         return wallets[selectedIndex]
     }
-    
+
     func getWallet(for index: Int) -> Wallet {
         if isExpand {
             return index == 0 ? wallets[selectedIndex] : wallets[index - 1]

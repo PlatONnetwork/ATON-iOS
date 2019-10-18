@@ -12,13 +12,13 @@ class MyDelegateNoDataView: UIView {
 
     public let label = UILabel()
     public let imageView = UIImageView()
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
 }

@@ -18,9 +18,9 @@ class WalletTableViewCell: UITableViewCell {
     public let bottomlineV = UIView()
     public let rightImageView = UIImageView()
     public let containerView = UIButton()
-    
+
     var cellDidHandle: ((_ cell: WalletTableViewCell) -> Void)?
-    
+
     func setupCellData(for wallet: Wallet?) {
         guard let wal = wallet else {
             walletNameLabel.text = "--"
@@ -28,12 +28,12 @@ class WalletTableViewCell: UITableViewCell {
             walletAddressLabel.text = "--"
             return
         }
-        
+
         walletNameLabel.text = wal.name
         walletAvatarIV.image = UIImage(named: wal.avatar)
         walletAddressLabel.text = wal.address.addressForDisplay()
     }
-    
+
     var isTopCell: Bool = false {
         didSet {
             containerView.snp.updateConstraints { make in
@@ -42,12 +42,12 @@ class WalletTableViewCell: UITableViewCell {
             }
         }
     }
-    
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
         contentView.backgroundColor = normal_background_color
-        
+
         containerView.addTarget(self, action: #selector(containerTapAction), for: .touchUpInside)
         containerView.backgroundColor = .white
         contentView.addSubview(containerView)
@@ -58,14 +58,14 @@ class WalletTableViewCell: UITableViewCell {
             make.height.equalTo(60)
             make.bottom.equalToSuperview()
         }
-        
+
         walletBackgroundView.image = UIImage(named: "bg_staking_wallet_img")?.resizableImage(withCapInsets: UIEdgeInsets(top: 3, left: 3, bottom: 3, right: 3))
         containerView.addSubview(walletBackgroundView)
         walletBackgroundView.snp.makeConstraints { make in
             make.leading.trailing.top.equalToSuperview()
             make.height.equalTo(60)
         }
-        
+
         walletAvatarIV.addMaskView(corners: .allCorners, cornerRadiiV: 21)
         walletAvatarIV.image = UIImage(named: "walletAvatar_1")
         containerView.addSubview(walletAvatarIV)
@@ -74,7 +74,7 @@ class WalletTableViewCell: UITableViewCell {
             make.leading.equalToSuperview().offset(5)
             make.width.height.equalTo(42)
         }
-        
+
         walletNameLabel.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.medium)
         walletNameLabel.textColor = .black
         walletNameLabel.text = Localized("staking_main_wallet_name")
@@ -85,7 +85,7 @@ class WalletTableViewCell: UITableViewCell {
             make.height.equalTo(18)
             make.trailing.equalToSuperview().offset(-44)
         }
-        
+
         walletAddressLabel.font = UIFont.systemFont(ofSize: 13)
         walletAddressLabel.textColor = common_darkGray_color
         walletAddressLabel.text = "--"
@@ -95,7 +95,7 @@ class WalletTableViewCell: UITableViewCell {
             make.leading.equalTo(walletNameLabel.snp.leading)
             make.trailing.equalTo(walletNameLabel.snp.trailing)
         }
-        
+
         bottomlineV.backgroundColor = UIColor(rgb: 0xE4E7F3)
         containerView.addSubview(bottomlineV)
         bottomlineV.snp.makeConstraints { make in
@@ -104,18 +104,18 @@ class WalletTableViewCell: UITableViewCell {
             make.trailing.equalToSuperview().offset(-10)
             make.bottom.equalToSuperview()
         }
-        
+
         containerView.addSubview(rightImageView)
         rightImageView.snp.makeConstraints { make in
             make.trailing.equalToSuperview().offset(-16)
             make.centerY.equalToSuperview()
         }
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     @objc func containerTapAction() {
         cellDidHandle?(self)
     }

@@ -19,10 +19,10 @@ class CommunityContentTableViewCell: UITableViewCell {
     public var lineLeadingConstraint: Constraint?
     public var qrcodeBottomConstraint: Constraint?
     public var qrcodeHeightConstraint: Constraint?
-    
+
     var cellDidCopyHandle: ((_ content: String?) -> Void)?
     var cellDidRightHandle: (() -> Void)?
-    
+
     var contact: CommunityContactStyle? {
         didSet {
             contentLabel.text = contact?.contact
@@ -31,11 +31,11 @@ class CommunityContentTableViewCell: UITableViewCell {
             qrcodeIV.isHidden = contact?.qrcodeImage == nil
         }
     }
-    
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
-        
+
         contentLabel.textColor = common_darkGray_color
         contentLabel.font = .systemFont(ofSize: 13)
         contentView.addSubview(contentLabel)
@@ -44,7 +44,7 @@ class CommunityContentTableViewCell: UITableViewCell {
             make.top.equalToSuperview().offset(16)
             make.bottom.equalToSuperview().offset(-16).priorityMedium()
         }
-        
+
         copyButton.setImage(UIImage(named: "4.icon-copy"), for: .normal)
         copyButton.addTarget(self, action: #selector(copyTapAction), for: .touchUpInside)
         contentView.addSubview(copyButton)
@@ -53,7 +53,7 @@ class CommunityContentTableViewCell: UITableViewCell {
             make.leading.equalTo(contentLabel.snp.trailing).offset(5)
             make.centerY.equalTo(contentLabel)
         }
-        
+
         rightButton.setImage(UIImage(named: "4.icon-jump"), for: .normal)
         rightButton.addTarget(self, action: #selector(rightTapAction), for: .touchUpInside)
         contentView.addSubview(rightButton)
@@ -63,7 +63,7 @@ class CommunityContentTableViewCell: UITableViewCell {
             make.trailing.equalToSuperview().offset(-10)
             make.leading.equalTo(copyButton.snp.trailing)
         }
-        
+
         qrcodeIV.backgroundColor = .red
         contentView.addSubview(qrcodeIV)
         qrcodeIV.snp.makeConstraints { make in
@@ -73,7 +73,7 @@ class CommunityContentTableViewCell: UITableViewCell {
             qrcodeHeightConstraint = make.height.width.equalTo(120).priority(999).constraint
             qrcodeBottomConstraint = make.bottom.equalToSuperview().offset(-16).priorityHigh().constraint
         }
-        
+
         lineView.backgroundColor = UIColor(rgb: 0xE4E7F3)
         contentView.addSubview(lineView)
         lineView.snp.makeConstraints { make in
@@ -83,20 +83,20 @@ class CommunityContentTableViewCell: UITableViewCell {
             make.trailing.equalToSuperview()
             make.bottom.equalToSuperview()
         }
-        
+
         qrcodeHeightConstraint?.deactivate()
         qrcodeBottomConstraint?.deactivate()
         lineLeadingConstraint?.deactivate()
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     @objc func copyTapAction() {
         cellDidCopyHandle?(contentLabel.text)
     }
-    
+
     @objc func rightTapAction() {
         cellDidRightHandle?()
     }

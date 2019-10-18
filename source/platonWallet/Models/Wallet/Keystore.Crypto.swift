@@ -11,47 +11,47 @@ import CryptoSwift
 import ScryptSwift
 
 extension Keystore {
-    
+
     public struct Crypto {
-        
+
         public var cipherText: Data
-        
+
         public var cipher = "aes-128-ctr"
-        
+
         public var cipherParams: Crypto.CipherParams
-        
+
         public var kdf: String = "scrypt"
-        
+
         public var kdfParams: ScryptParams
-        
+
         public var mac: Data
-        
+
         public init(cipherText: Data, cipherParams: CipherParams, kdfParams: ScryptParams, mac: Data) {
             self.cipherText = cipherText
             self.cipherParams = cipherParams
             self.kdfParams = kdfParams
             self.mac = mac
         }
-        
+
         public init(password: String, data: Data) throws {
             let cipherParams = CipherParams()
             let kdfParams = ScryptParams()
-            
+
             let scrypt = Scrypt(params: kdfParams)
             let derivedKey = try scrypt.calculate(password: password)
-            
+
             let encryptionKey = derivedKey[0...15]
             let aecCipher = try AES(key: encryptionKey.bytes, blockMode: CTR(iv: cipherParams.iv.bytes), padding: .noPadding)
-            
+
             let encryptedKey = try aecCipher.encrypt(data.bytes)
             let prefix = derivedKey[(derivedKey.count - 16) ..< derivedKey.count]
             let mac = Keystore.computeMAC(prefix: prefix, key: Data(bytes: encryptedKey))
-            
+
             self.init(cipherText: Data(bytes: encryptedKey), cipherParams: cipherParams, kdfParams: kdfParams, mac: mac)
         }
 
     }
-    
+
 }
 
 extension Keystore.Crypto: Codable {
@@ -63,13 +63,13 @@ extension Keystore.Crypto: Codable {
         case kdfParams = "kdfparams"
         case mac
     }
-    
+
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
 
         let cipherTextStr = try values.decode(String.self, forKey: .cipherText)
         cipherText = Data(bytes: cipherTextStr.hexToBytes())
-        
+
         cipher = try values.decode(String.self, forKey: .cipher)
         cipherParams = try values.decode(CipherParams.self, forKey: .cipherParams)
         kdf = try values.decode(String.self, forKey: .kdf)
@@ -78,7 +78,7 @@ extension Keystore.Crypto: Codable {
         let macStr = try values.decode(String.self, forKey: .mac)
         mac = Data(bytes: macStr.hexToBytes())
     }
-    
+
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(cipherText.toHexString(), forKey: .cipherText)
@@ -90,13 +90,12 @@ extension Keystore.Crypto: Codable {
     }
 }
 
-
 extension Keystore.Crypto {
-    
+
     public struct CipherParams {
         public static let blockSize = 16
         public var iv: Data
-        
+
         /// Initializes `CipherParams` with a random `iv` for AES 128.
         public init() {
             iv = Data(repeating: 0, count: CipherParams.blockSize)
@@ -106,21 +105,20 @@ extension Keystore.Crypto {
             precondition(result == errSecSuccess, "Failed to generate random number")
         }
     }
-    
-}
 
+}
 
 extension Keystore.Crypto.CipherParams:Codable {
     enum CodingKeys: String, CodingKey {
         case iv
     }
-    
+
     public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         let ivStr = try values.decode(String.self, forKey: .iv)
         iv = Data(bytes: ivStr.hexToBytes())
     }
-    
+
     public func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
         try container.encode(iv.toHexString(), forKey: .iv)

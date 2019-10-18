@@ -11,9 +11,9 @@ import UIKit
 class SharedWalletMemberCell: UITableViewCell {
 
     @IBOutlet weak var nameLabel: UILabel!
-    
+
     @IBOutlet weak var addressLabel: UILabel!
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         selectionStyle = .none
@@ -24,10 +24,10 @@ class SharedWalletMemberCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-    
-    func updateData(info : AddressInfo)  {
+
+    func updateData(info : AddressInfo) {
         nameLabel.text = info.walletName
         addressLabel.text = info.walletAddress
     }
-    
+
 }

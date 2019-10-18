@@ -8,22 +8,20 @@
 
 import UIKit
 
-
-
 class OfflineSignatureQRCodeView: UIView {
-    
+
     let imageView = UIImageView()
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+
         setupUI()
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     func setupUI() {
         addSubview(imageView)
         imageView.snp.makeConstraints { make in
@@ -35,22 +33,22 @@ class OfflineSignatureQRCodeView: UIView {
 }
 
 class OfflineSignatureScanView: UIView {
-    
+
     let scanButton = UIButton()
     let textView = UITextView()
-    
+
     var scanCompletion: (() -> Void)?
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+
         setupUI()
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     func setupUI() {
         scanButton.setImage(UIImage(named: "textField_icon_scan"), for: .normal)
         scanButton.addTarget(self, action: #selector(scanAction), for: .touchUpInside)
@@ -60,7 +58,7 @@ class OfflineSignatureScanView: UIView {
             make.centerX.equalToSuperview()
             make.height.width.equalTo(20)
         }
-        
+
         textView.layer.borderColor = UIColor(rgb: 0x1861FE).cgColor
         textView.layer.borderWidth = 1
         textView.backgroundColor = UIColor(rgb: 0xFAFDFF)
@@ -76,7 +74,7 @@ class OfflineSignatureScanView: UIView {
             make.height.equalTo(122)
         }
     }
-    
+
     @objc func scanAction() {
         scanCompletion?()
     }
@@ -89,7 +87,7 @@ protocol ViewContentProtocol {
 enum ConfirmViewType: ViewContentProtocol {
     case qrcodeGenerate(contentView: OfflineSignatureQRCodeView)
     case qrcodeScan(contentView: OfflineSignatureScanView)
-    
+
     var contentView: UIView {
         get {
             switch self {
@@ -103,31 +101,31 @@ enum ConfirmViewType: ViewContentProtocol {
 }
 
 class OfflineSignatureConfirmView: UIView {
-    
+
     let titleLabel = UILabel()
     let descriptionLabel = UILabel()
     let submitBtn = PButton()
-    
+
     var type: ConfirmViewType!
     var onCompletion: (() -> Void)?
-    
+
     convenience init(confirmType: ConfirmViewType) {
         self.init(frame: .zero)
         type = confirmType
         setupUI()
     }
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     func setupUI() {
         backgroundColor = .white
-        
+
         titleLabel.textColor = .black
         titleLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         titleLabel.textAlignment = .center
@@ -137,7 +135,7 @@ class OfflineSignatureConfirmView: UIView {
             make.trailing.equalToSuperview().offset(-16)
             make.top.equalToSuperview().offset(16)
         }
-        
+
         let lineV = UIView()
         lineV.backgroundColor = common_line_color
         addSubview(lineV)
@@ -147,7 +145,7 @@ class OfflineSignatureConfirmView: UIView {
             make.trailing.equalToSuperview().offset(-16)
             make.top.equalTo(titleLabel.snp.bottom).offset(16)
         }
-        
+
         descriptionLabel.textColor = common_darkGray_color
         descriptionLabel.font = UIFont.systemFont(ofSize: 14)
         descriptionLabel.textAlignment = .center
@@ -158,7 +156,7 @@ class OfflineSignatureConfirmView: UIView {
             make.trailing.equalToSuperview().offset(-16)
             make.top.equalTo(lineV.snp.bottom).offset(16)
         }
-        
+
         let contentView = type.contentView
         addSubview(contentView)
         contentView.snp.makeConstraints { make in
@@ -166,7 +164,7 @@ class OfflineSignatureConfirmView: UIView {
             make.leading.equalToSuperview().offset(16)
             make.trailing.equalToSuperview().offset(-16)
         }
-        
+
         submitBtn.addTarget(self, action: #selector(submitAction), for: .touchUpInside)
         addSubview(submitBtn)
         submitBtn.snp.makeConstraints { make in
@@ -177,15 +175,13 @@ class OfflineSignatureConfirmView: UIView {
             make.bottom.equalToSuperview().offset(-16)
         }
     }
-    
+
     @objc func submitAction() {
         onCompletion?()
     }
-    
+
     override func layoutSubviews() {
         super.layoutSubviews()
         submitBtn.style = .blue
     }
 }
-
-

@@ -70,7 +70,6 @@ final internal class BounceUpTransition: TransitionAnimator {
     }
 }
 
-
 /// Dialog bounces in from top and is dismissed to top
 final internal class BounceDownTransition: TransitionAnimator {
 

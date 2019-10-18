@@ -9,18 +9,18 @@
 import UIKit
 
 protocol LicenseVCDelegate: AnyObject {
-    
+
     func didClickNextStep()
-    
+
 }
 
 class LicenseViewController: BaseViewController {
 
     @IBOutlet weak var continueBtn: PButton!
     @IBOutlet weak var content: UILabel!
-    
+
     weak var delegate: LicenseVCDelegate?
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -31,15 +31,15 @@ class LicenseViewController: BaseViewController {
     @IBAction func checkBtnClick(_ sender: Any) {
         guard let btn = sender as? UIButton else {
             return
-        } 
+        }
         btn.isSelected = !btn.isSelected
         continueBtn.isEnabled = btn.isSelected
     }
-    
+
     @IBAction func `continue`(_ sender: Any) {
-        
+
         delegate?.didClickNextStep()
-        
+
     }
     /*
     // MARK: - Navigation

@@ -11,14 +11,13 @@ import UIKit
 class SharedQRView: UIView {
 
     @IBOutlet weak var logoImage: UIImageView!
-    
+
     @IBOutlet weak var walletName: UILabel!
-    
+
     @IBOutlet weak var walletAddress: UILabel!
-    
+
     @IBOutlet weak var qrImageView: UIImageView!
-    
-    
+
     override func awakeFromNib() {
     }
 }

@@ -12,12 +12,11 @@ class CommunityNameTableViewCell: UITableViewCell {
 
     public let avatarIV = UIImageView()
     public let nameLabel = UILabel()
-    
-    
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
-        
+
         avatarIV.addMaskView(corners: .allCorners, cornerRadiiV: 15)
         contentView.addSubview(avatarIV)
         avatarIV.snp.makeConstraints { make in
@@ -27,7 +26,7 @@ class CommunityNameTableViewCell: UITableViewCell {
             make.height.equalTo(30)
             make.width.equalTo(30)
         }
-        
+
         nameLabel.textColor = .black
         nameLabel.font = .systemFont(ofSize: 16, weight: .medium)
         contentView.addSubview(nameLabel)
@@ -37,9 +36,9 @@ class CommunityNameTableViewCell: UITableViewCell {
             make.trailing.equalToSuperview().offset(-16)
         }
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
 }

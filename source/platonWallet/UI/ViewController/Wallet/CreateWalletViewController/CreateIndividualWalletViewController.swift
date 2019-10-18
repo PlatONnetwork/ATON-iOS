@@ -10,128 +10,125 @@ import UIKit
 import Localize_Swift
 
 class CreateIndividualWalletViewController: BaseViewController,StartBackupMnemonicDelegate {
-    
+
     @IBOutlet weak var nameTF: PTextFieldWithPadding!
     @IBOutlet weak var pswTF: PTextFieldWithPadding!
     @IBOutlet weak var confirmPswTF: PTextFieldWithPadding!
-    
+
     @IBOutlet weak var pswAdviseLabel: UILabel!
     @IBOutlet weak var nameTipsLabel: UILabel!
     @IBOutlet weak var pswTipsLabel: UILabel!
-    
+
     @IBOutlet weak var noteLabelTopLayoutWithPswTips: NSLayoutConstraint!
-    
+
     @IBOutlet weak var pswLabelTopLayoutWithNameTips: NSLayoutConstraint!
-    
+
     @IBOutlet weak var pswAdviseLabelTopToStrengthLayoutConstraint: NSLayoutConstraint!
     @IBOutlet weak var pswAdviseLabelTopToConfirmPSWLayoutConstraint: NSLayoutConstraint!
-    
+
     @IBOutlet weak var strengthView: PasswordStrengthView!
-    
+
     @IBOutlet weak var createBtn: PButton!
-    
+
     var wallet:Wallet!
     var alertPswInput: String?
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         setupUI()
         NotificationCenter.default.addObserver(self, selector: #selector(afterBackup), name: Notification.Name.ATON.BackupMnemonicFinish, object: nil)
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+
         AnalysisHelper.handleEvent(id: event_newWallet, operation: .begin)
     }
-    
+
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        
+
         AnalysisHelper.handleEvent(id: event_newWallet, operation: .cancel)
     }
-    
+
     func setupUI() {
-        
+
         endEditingWhileTapBackgroundView = true
 
         super.leftNavigationTitle = "createWalletVC_title"
-        
+
         //showNavigationBarShadowImage()
-        
+
         nameTF.becomeFirstResponder()
-        
+
         createBtn.style = .disable
-        
+
         pswAdviseLabelTopToStrengthLayoutConstraint.priority = .defaultLow
         pswAdviseLabelTopToConfirmPSWLayoutConstraint.priority = .defaultHigh
         self.strengthView.isHidden = true
     }
-    
+
     override func rt_customBackItem(withTarget target: Any!, action: Selector!) -> UIBarButtonItem! {
         return self.getBasicLeftBarButtonItemWithBasicStyle(localizedText: "createWalletVC_title")
     }
-    
+
     @IBAction func createWallet(_ sender: Any) {
-        
+
         view.endEditing(true)
-        
+
         guard checkInputValueIsValid() else {
             return
         }
+
         if self.isInCustomLoading != nil && self.isInCustomLoading!{
             return
         }
         showLoadingHUD() 
         
         WalletService.sharedInstance.createWallet(name: nameTF.text!, password: pswTF.text!) { [weak self](wallet, error) in
-            
+
             AnalysisHelper.handleEvent(id: event_newWallet, operation: .end)
-            
+
             guard error == nil && wallet != nil else {
                 self?.showMessage(text: error!.errorDescription ?? "")
                 return
             }
-             
+
             self?.hideLoadingHUD()
             self?.wallet = wallet
             let successVC = CreateWalletSuccessViewController()
             successVC.delegate = self
             self?.navigationController?.pushViewController(successVC, animated: true)
-            
+
         }
-        
+
     }
-    
-    
-   
-    
-    //MARK: - Check Input
-    
+
+    // MARK: - Check Input
+
     func checkCanEableButton() {
-        if self.checkInputValueIsValid(){
+        if self.checkInputValueIsValid() {
             createBtn.style = .blue
-        }else{
+        } else {
             createBtn.style = .disable
         }
     }
-    
+
     func checkInputValueIsValid() -> Bool {
-        
+
         return checkNameTF() && checkPswTF(isConfirmPsw: true)
-        
+
     }
-    
-    
+
     func checkNameTF(showErrorMsg: Bool = false) -> Bool {
         let nameRes = CommonService.isValidWalletName(nameTF.text,checkDuplicate: true)
-        if showErrorMsg{
+        if showErrorMsg {
             if nameRes.0 {
                 nameTipsLabel.isHidden = true
                 pswLabelTopLayoutWithNameTips.priority = .defaultLow
                 nameTF.setBottomLineStyle(style: .Normal)
-            }else {
+            } else {
                 nameTipsLabel.text = nameRes.1 ?? ""
                 nameTipsLabel.isHidden = false
                 pswLabelTopLayoutWithNameTips.priority = .defaultHigh
@@ -140,19 +137,19 @@ class CreateIndividualWalletViewController: BaseViewController,StartBackupMnemon
         }
         self.view.layoutIfNeeded()
         return nameRes.0
-    } 
-    
+    }
+
     func checkPswTF(showErrorMsg: Bool = false,isConfirmPsw: Bool = false) -> Bool {
-        
+
         let pswRes = CommonService.isValidWalletPassword(pswTF.text, confirmPsw: isConfirmPsw ? confirmPswTF.text : nil)
-        if showErrorMsg{
+        if showErrorMsg {
             if pswRes.0 {
                 pswTipsLabel.isHidden = true
-                pswAdviseLabel.isHidden = false 
+                pswAdviseLabel.isHidden = false
                 noteLabelTopLayoutWithPswTips.priority = .defaultLow
                 pswTF.setBottomLineStyle(style: .Normal)
                 confirmPswTF.setBottomLineStyle(style: .Normal)
-            }else {
+            } else {
                 pswTipsLabel.text = pswRes.1
                 pswTipsLabel.isHidden = false
                 pswAdviseLabel.isHidden = true
@@ -164,33 +161,31 @@ class CreateIndividualWalletViewController: BaseViewController,StartBackupMnemon
         self.view.layoutIfNeeded()
         return pswRes.0
     }
-    
-    
+
     /// BackupDelegate
     func startBackup() {
         showInputPswAlert()
     }
-    
+
     @objc func afterBackup() {
         WalletService.sharedInstance.afterBackupMnemonic(wallet: wallet)
     }
-    
-    
-    func showInputPswAlert() { 
-        
+
+    func showInputPswAlert() {
+
         let alertVC = AlertStylePopViewController.initFromNib()
         let style = PAlertStyle.passwordInput(walletName: self.nameTF.text)
         alertVC.onAction(confirm: {[weak self] (text, _) -> (Bool)  in
             let valid = CommonService.isValidWalletPassword(text ?? "")
-            if !valid.0{
+            if !valid.0 {
                 alertVC.showInputErrorTip(string: valid.1)
                 return false
             }
-            
+
             if (self?.pswTF.text != text) {
                 alertVC.showInputErrorTip(string: Localized("alert_psw_input_error_title"))
                 return false
-                
+   
             }else {
                 
                 if alertVC.isInCustomLoading != nil && alertVC.isInCustomLoading!{
@@ -214,9 +209,9 @@ class CreateIndividualWalletViewController: BaseViewController,StartBackupMnemon
                     }
                 })
                 return false
-                
+
             }
-            
+
         }) { (_, _) -> (Bool) in
             if alertVC.isInCustomLoading != nil && alertVC.isInCustomLoading!{
                 return false
@@ -227,61 +222,60 @@ class CreateIndividualWalletViewController: BaseViewController,StartBackupMnemon
         alertVC.showInViewController(viewController: self)
         return
     }
-    
+
 }
 
 extension CreateIndividualWalletViewController :UITextFieldDelegate {
-    
+
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        
+
         if textField == self.pswTF || textField == self.confirmPswTF {
             if string == " " {
                 return false
             }
         }
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) { 
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             self.checkCanEableButton()
             self.strengthView.isHidden = !(self.pswTF.text?.count ?? 0 > 0)
             self.pswAdviseLabelTopToStrengthLayoutConstraint.priority = self.strengthView.isHidden ? .defaultLow : .defaultHigh
             self.pswAdviseLabelTopToConfirmPSWLayoutConstraint.priority = self.strengthView.isHidden ? .defaultHigh : .defaultLow
-            
+
             if textField == self.pswTF {
                 self.strengthView.updateFor(password: self.pswTF.text ?? "")
             }
-            
+
         }
 
         return true
     }
-    
-    
+
     func textFieldDidEndEditing(_ textField: UITextField) {
-        
+
         if textField == nameTF {
-            let _ = checkNameTF(showErrorMsg: true)
-        }else if textField == pswTF {
-            let _ = checkPswTF(showErrorMsg: true,isConfirmPsw: confirmPswTF.text!.length > 0)
-        }else if textField == confirmPswTF {
-            let _ = checkPswTF(showErrorMsg: true,isConfirmPsw: true)
+            _ = checkNameTF(showErrorMsg: true)
+        } else if textField == pswTF {
+            _ = checkPswTF(showErrorMsg: true,isConfirmPsw: confirmPswTF.text!.length > 0)
+        } else if textField == confirmPswTF {
+            _ = checkPswTF(showErrorMsg: true,isConfirmPsw: true)
         }
-        
+
         strengthView.isHidden = !(pswTF.text?.count ?? 0 > 0)
         pswAdviseLabelTopToStrengthLayoutConstraint.priority = strengthView.isHidden ? .defaultLow : .defaultHigh
         pswAdviseLabelTopToConfirmPSWLayoutConstraint.priority = strengthView.isHidden ? .defaultHigh : .defaultLow
     }
-    
+
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        
+
         if textField == nameTF {
             pswTF.becomeFirstResponder()
-        }else if textField == pswTF {
+        } else if textField == pswTF {
             confirmPswTF.becomeFirstResponder()
-        }else if textField == confirmPswTF {
+        } else if textField == confirmPswTF {
             confirmPswTF.resignFirstResponder()
         }
-        
+
         return true
     }
-    
+
 }

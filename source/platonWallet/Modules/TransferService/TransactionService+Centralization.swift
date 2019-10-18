@@ -13,7 +13,7 @@ import Localize_Swift
 public let requestTimeout = TimeInterval(30.0)
 
 extension TransactionService {
-    
+
     public func getBatchTransaction(
         addresses: [String],
         beginSequence: Int64,
@@ -22,20 +22,20 @@ extension TransactionService {
         completion: PlatonCommonCompletion?) {
         var completion = completion
         var parameters : Dictionary<String,Any> = [:]
-        
+
         parameters["walletAddrs"] = addresses
         parameters["beginSequence"] = beginSequence
         parameters["listSize"] = listSize
         parameters["direction"] = direction
-        
+
         let url = SettingService.getCentralizationURL() + "/transaction/list"
-        
+
         var request = URLRequest(url: try! url.asURL())
         request.httpBody = try! JSONSerialization.data(withJSONObject: parameters)
         request.httpMethod = "POST"
         request.timeoutInterval = requestTimeout
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
+
         Alamofire.request(request).responseData { response in
             switch response.result {
             case .success(let data):
@@ -49,11 +49,11 @@ extension TransactionService {
                 }
             case .failure(let error):
                 self.failCompletionOnMainThread(code: -1, errorMsg: error.localizedDescription, completion: &completion)
-                break;
+                break
             }
         }
     }
-    
+
     public func getDelegateRecord(
         addresses: [String],
         beginSequence: String,
@@ -63,21 +63,21 @@ extension TransactionService {
         completion: PlatonCommonCompletion?) {
         var completion = completion
         var parameters : Dictionary<String,Any> = [:]
-        
+
         parameters["walletAddrs"] = addresses
         parameters["beginSequence"] = beginSequence
         parameters["listSize"] = listSize
         parameters["direction"] = direction
         parameters["type"] = type
-        
+
         let url = SettingService.getCentralizationURL() + "/transaction/delegateRecord"
-        
+
         var request = URLRequest(url: try! url.asURL())
         request.httpBody = try! JSONSerialization.data(withJSONObject: parameters)
         request.httpMethod = "POST"
         request.timeoutInterval = requestTimeout
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
+
         Alamofire.request(request).responseData { response in
             switch response.result {
             case .success(let data):
@@ -90,7 +90,7 @@ extension TransactionService {
                 }
             case .failure(let error):
                 self.failCompletionOnMainThread(code: -1, errorMsg: error.localizedDescription, completion: &completion)
-                break;
+                break
             }
         }
     }

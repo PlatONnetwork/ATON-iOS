@@ -10,7 +10,7 @@ import UIKit
 import Localize_Swift
 
 class PersonalViewController: BaseViewController,UITableViewDelegate,UITableViewDataSource {
-  
+
     let tableView = UITableView()
 
     override func viewDidLoad() {
@@ -18,8 +18,7 @@ class PersonalViewController: BaseViewController,UITableViewDelegate,UITableView
         initSubViews()
         initNavigationItems()
     }
-    
-    
+
     func initSubViews() {
         self.statusBarNeedTruncate = true
         view.backgroundColor = UIViewController_backround
@@ -31,11 +30,11 @@ class PersonalViewController: BaseViewController,UITableViewDelegate,UITableView
         tableView.snp.makeConstraints { (make) in
             make.edges.equalTo(self.view)
         }
-        
+
         tableView.registerCell(cellTypes: [SettingTableViewCell.self])
-        
+
     }
-    
+
     func tableviewHeader() -> UIView {
         let container = UIView(frame: CGRect(x: 0, y: 0, width: kUIScreenWidth, height: 24))
         let label = UILabel(frame: .zero)
@@ -47,52 +46,52 @@ class PersonalViewController: BaseViewController,UITableViewDelegate,UITableView
             make.leading.equalToSuperview().offset(16)
             make.trailing.bottom.top.equalToSuperview()
         }
-        
+
         return container
     }
-    
+
     override func viewDidLayoutSubviews() {
         super.viewWillLayoutSubviews()
         let header = tableviewHeader()
-        
+
         var height = header.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize).height
         var newFrame = header.frame
-        if height == 0.0{
+        if height == 0.0 {
             height = 24
         }
-        newFrame.size.height = height;
+        newFrame.size.height = height
         header.frame = newFrame
         tableView.tableHeaderView = header
     }
-    
-    func initNavigationItems(){
+
+    func initNavigationItems() {
         //super.leftNavigationTitle = "PersonalVC_nav_title"
         //self.navigationController?.isNavigationBarHidden = true
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: SettingTableViewCell.self)) as! SettingTableViewCell
         cell.setCellWithIndexPath(indexPath: indexPath)
-        
+
         return cell
     }
-    
+
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 7
     }
-    
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 68
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+
         var targetVC: UIViewController?
-        
+
         switch indexPath.row {
         case 0:
             do {
@@ -121,20 +120,19 @@ class PersonalViewController: BaseViewController,UITableViewDelegate,UITableView
                 targetVC = CommunityViewController()
             }
         case 6:
-            do{
+            do {
                 targetVC = AboutViewController()
             }
         default:
             break
         }
-        
+
         guard targetVC != nil else {
             return
         }
         targetVC!.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(targetVC!, animated: true)
     }
-    
 
     /*
     // MARK: - Navigation

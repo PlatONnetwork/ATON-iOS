@@ -12,65 +12,61 @@ import Localize_Swift
 let sectionHeight : CGFloat = 52.0
 let maskHeight : CGFloat = 36.0
 
-
-
 class AssetSectionViewV060: UIView {
-    
+
     var restrictedIconTapHandler: (() -> Void)?
-    
+
     var walelt: AnyObject?
 
     @IBOutlet weak var walletAvatar: UIButton!
-    
+
     @IBOutlet weak var walletName: UILabel!
-    
+
     @IBOutlet weak var balanceLabel: UILabel!
-    
+
     @IBOutlet weak var lockedBalanceLabel: UILabel!
-    
+
     @IBOutlet weak var forgroundView: UIView!
-    
+
     @IBOutlet weak var transactionLabel: UILabel!
-    
+
     @IBOutlet weak var txIcon: UIImageView!
-    
+
     @IBOutlet weak var sendIcon: UIImageView!
-    
+
     @IBOutlet weak var receiveIcon: UIImageView!
-    
-    
+
     @IBOutlet weak var sendLabel: UILabel!
-    
+
     @IBOutlet weak var recvLabel: UILabel!
-    
+
     @IBOutlet weak var backUpbtn: UIButton!
-    
+
     @IBOutlet weak var bottomSepline: UIView!
-    
+
     @IBOutlet weak var backupContainer: UIView!
-    
-    
+
     var bottomSelectIndicator : UIView = UIView(frame: .zero)
-    
+
     var maskOffset : CGFloat = 0
-    
+
     var selectedIndex = 0
-    
+
     var tmpBlock : Bool = false
-    
+
     var isDraging : Bool = false
-    
+
     var onSelectItem: ((Int) -> Bool)?
-    
+
 //    var onSelectItem : ((_ index: Int) -> Void)?
-    
+
     var onWalletAvatarTapAction: (() -> Void)?
-    
+
     var onLockedBalanceTapAction: (() -> Void)?
-    
+
     @IBOutlet weak var grayoutBackground: UIView!
-    
-    var maskLayer : CALayer{
+
+    var maskLayer : CALayer {
         let w = bounds.width * 0.3
         let maskLayer = CALayer()
         maskLayer.frame = CGRect(x: 0, y: 0, width: w, height: maskHeight)
@@ -79,160 +75,157 @@ class AssetSectionViewV060: UIView {
         maskLayer.cornerRadius = maskHeight * 0.5
         return maskLayer
     }
-    
+
     override func awakeFromNib() {
         //self.forgroundOffset.constant = -sectionHeight
         //self.forgroundView.layer.mask = maskLayer
-        
-        updateWaleltInfo() 
+
+        updateWaleltInfo()
         AssetVCSharedData.sharedData.registerHandler(object: self) {[weak self] in
             self?.updateWaleltInfo()
             self?.updateSendTabUIStatus()
         }
-        
+
         grayoutBackground.addSubview(bottomSelectIndicator)
         bottomSelectIndicator.backgroundColor = UIColor(rgb: 0x105CFE)
         updateBottonIndicator(index: 0)
-        
+
         walletAvatar.addTarget(self, action: #selector(walletAvatarTapAction), for: .touchUpInside)
-        
+
         NotificationCenter.default.addObserver(self, selector: #selector(didUpdateAllAsset), name: Notification.Name.ATON.DidUpdateAllAsset, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didUpdateAllAsset), name: Notification.Name.ATON.DidAssetBalanceVisiableChange, object: nil)
-        
+
         lockedBalanceLabel.adjustsFontSizeToFitWidth = true
         lockedBalanceLabel.isUserInteractionEnabled = true
         lockedBalanceLabel.textColor = common_lightLightGray_color
         lockedBalanceLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapGesture(_:))))
-        
+
         balanceLabel.adjustsFontSizeToFitWidth = true
         balanceLabel.textColor = .black
-        
+
         walletName.font = UIFont.boldSystemFont(ofSize: 16)
         balanceLabel.font = UIFont.boldSystemFont(ofSize: 13)
         lockedBalanceLabel.font = UIFont.boldSystemFont(ofSize: 12)
-        
+
     }
-    
+
     @objc func tapGesture(_ gesture: UITapGestureRecognizer) {
         restrictedIconTapHandler?()
     }
-    
-    
-    func newMaskLayer() -> CALayer{
+
+    func newMaskLayer() -> CALayer {
         let w = bounds.width * 0.3
         let maskLayer = CALayer()
-        
+
         maskLayer.frame = CGRect(x: 45, y: 0, width: w, height: bounds.height)
         maskLayer.backgroundColor = UIColor.red.cgColor
         maskLayer.cornerRadius = 52.0 * 0.5
         return maskLayer
     }
-    
+
     @objc private func walletAvatarTapAction() {
         onWalletAvatarTapAction?()
     }
-    
-    private func updateBottonIndicator(index: Int){
+
+    private func updateBottonIndicator(index: Int) {
         bottomSelectIndicator.snp.removeConstraints()
-        UIView.animate(withDuration: 0.2) { 
+        UIView.animate(withDuration: 0.2) {
             self.bottomSelectIndicator.snp.makeConstraints { (make) in
                 var alignView : UIView?
-                if index == 0{
+                if index == 0 {
                     alignView = self.transactionLabel
-                }else if index == 1{
+                } else if index == 1 {
                     alignView = self.sendLabel
-                }else if index == 2{
+                } else if index == 2 {
                     alignView = self.recvLabel
-                } 
+                }
                 let (_,width) = self.bottomIndicatorXPositionWithIndex(index: index)
                 make.centerX.equalTo(alignView!).offset(-10)
                 make.width.equalTo(width)
                 make.bottom.equalToSuperview()
                 make.height.equalTo(3)
-            }   
+            }
             self.layoutIfNeeded()
         }
-        
+
         let secColor = #colorLiteral(red: 0.06274509804, green: 0.3607843137, blue: 0.9960784314, alpha: 1)
-        if index == 0{
+        if index == 0 {
             self.txIcon.image = UIImage(named: "txSegmentBlue")
             self.sendIcon.image = UIImage(named: "sendSegmentBlack")
             self.receiveIcon.image = UIImage(named: "recvSegmentBlack")
-            
+
             self.transactionLabel.textColor = secColor
             self.sendLabel.textColor = .black
             self.recvLabel.textColor = .black
-            
-        }else if index == 1{
+
+        } else if index == 1 {
             self.txIcon.image = UIImage(named: "txSegmentBlack")
             self.sendIcon.image = UIImage(named: "sendSegmentBlue")
             self.receiveIcon.image = UIImage(named: "recvSegmentBlack")
-            
+
             self.transactionLabel.textColor = .black
             self.sendLabel.textColor = secColor
             self.recvLabel.textColor = .black
-        }else if index == 2{
+        } else if index == 2 {
             self.txIcon.image = UIImage(named: "txSegmentBlack")
             self.sendIcon.image = UIImage(named: "sendSegmentBlack")
             self.receiveIcon.image = UIImage(named: "recvSegmentBlue")
-            
+
             self.transactionLabel.textColor = .black
             self.sendLabel.textColor = .black
             self.recvLabel.textColor = secColor
         }
-        
-        
+
     }
-    
-    private func bottomIndicatorXPositionWithIndex(index: Int) -> (CGFloat,CGFloat){
+
+    private func bottomIndicatorXPositionWithIndex(index: Int) -> (CGFloat,CGFloat) {
         var label : UILabel?
-        if index == 0{
+        if index == 0 {
             label = transactionLabel
-        }else if index == 1{
+        } else if index == 1 {
             label = sendLabel
-        }else if index == 2{
+        } else if index == 2 {
             label = recvLabel
-        } 
+        }
         let wordWidth = label?.text!.boundingRect(with: CGSize(width: 300, height: 30), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 14)], context: nil).width
         let finnalWidth = CGFloat(wordWidth ?? 0.0) + 30
         let itemCenter = kUIScreenWidth * 0.333 * CGFloat(index) + 0.5 * (kUIScreenWidth * 0.333)
         let x = itemCenter - finnalWidth * 0.5 + 5 + maskOffset
         let frame = CGRect(x: x, y: (sectionHeight - maskHeight) * 0.5, width: finnalWidth, height: maskHeight)
-        
+
         return (frame.origin.x + frame.size.width * 0.5,finnalWidth)
     }
-    
-    func maskPositionWithIndex(index: Int) -> CGRect{
-        
+
+    func maskPositionWithIndex(index: Int) -> CGRect {
+
 //        return .zero
-        
+
         var label : UILabel?
-        if index == 0{
+        if index == 0 {
             label = transactionLabel
-        }else if index == 1{
+        } else if index == 1 {
             label = sendLabel
-        }else if index == 2{
+        } else if index == 2 {
             label = recvLabel
-        } 
+        }
         let wordWidth = label?.text!.boundingRect(with: CGSize(width: 300, height: 30), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 14)], context: nil).width
         let finnalWidth = CGFloat(wordWidth ?? 0.0) + 50.0
         let itemCenter = kUIScreenWidth * 0.333 * CGFloat(index) + 0.5 * (kUIScreenWidth * 0.333)
         let x = itemCenter - finnalWidth * 0.5 + 5 + maskOffset
         let frame = CGRect(x: x, y: (sectionHeight - maskHeight) * 0.5, width: finnalWidth, height: maskHeight)
-        
+
         return frame
     }
-    
-  
+
     //MAKR: - User Interaction
-       
+
     @IBAction func onTab(_ sender: Any) {
-        if let button = sender as? UIButton{
+        if let button = sender as? UIButton {
             self.setSectionSelectedIndex(index: button.tag)
         }
     }
-    
-    func setSectionSelectedIndex(index: Int){
+
+    func setSectionSelectedIndex(index: Int) {
         let result = onSelectItem?(index)
         if result == true {
             selectedIndex = index
@@ -241,8 +234,8 @@ class AssetSectionViewV060: UIView {
             self.setNeedsLayout()
         }
     }
-    
-    func updateWaleltInfo(){
+
+    func updateWaleltInfo() {
         guard AssetVCSharedData.sharedData.selectedWallet != nil else {
             self.walletName.text = "--"
             self.balanceLabel.text = "--"
@@ -250,41 +243,41 @@ class AssetSectionViewV060: UIView {
             self.backupContainer.isHidden = true
             return
         }
-        
-        if let cwallet = AssetVCSharedData.sharedData.selectedWallet as? Wallet{
+
+        if let cwallet = AssetVCSharedData.sharedData.selectedWallet as? Wallet {
             self.walletName.text = cwallet.name
             self.lockedBalanceLabel.attributedText = cwallet.lockedBalanceAttrForDisplayAsset()
-            
+
             self.balanceLabel.text = cwallet.balanceDescriptionForDisplayAsset()
             self.walletAvatar.setImage(cwallet.image(), for: .normal)
             self.backupContainer.isHidden = !cwallet.canBackupMnemonic
         }
     }
-    
+
     func changingOffset(offset: CGFloat, currentIndex:Int, draging: Bool = false) {
         print("page scrolling:\(offset) index:\(currentIndex) draging:\(draging)")
         self.isDraging = draging
-        if (offset < 0 && currentIndex == 0) || ( offset > 0 && currentIndex == 2){
+        if (offset < 0 && currentIndex == 0) || ( offset > 0 && currentIndex == 2) {
             maskOffset = 0
             return
         }
-        if !draging{
+        if !draging {
             maskOffset = 0
             return
         }
-        if tmpBlock{
+        if tmpBlock {
             maskOffset = 0
             return
         }
         let rectfrom = self.maskPositionWithIndex(index: currentIndex)
         let rectto = self.maskPositionWithIndex(index: currentIndex + 1)
-        
+
         maskOffset = offset*(rectto.origin.x - rectfrom.origin.x)/self.frame.size.width
         self.layoutIfNeeded()
         self.setNeedsLayout()
     }
-    
-    func didFinishAnimating(index: Int){
+
+    func didFinishAnimating(index: Int) {
         maskOffset = 0
         selectedIndex = index
         tmpBlock = true
@@ -295,13 +288,13 @@ class AssetSectionViewV060: UIView {
         self.layoutIfNeeded()
         self.setNeedsLayout()
     }
-    
+
     // MARK: - Notification
-    
-    @objc func didUpdateAllAsset(){
+
+    @objc func didUpdateAllAsset() {
         updateWaleltInfo()
     }
-    
+
     func updateSendTabUIStatus() {
         if NetworkManager.shared.reachabilityManager?.isReachable == false && (AssetVCSharedData.sharedData.selectedWallet as? Wallet)?.type == .cold {
             // offline
@@ -311,36 +304,36 @@ class AssetSectionViewV060: UIView {
             sendLabel.localizedText = "Asset_segment_Send"
         }
     }
-    
+
 }
 
 extension UITapGestureRecognizer {
-    
+
     func didTapAttributedTextInLabel(label: UILabel, inRange targetRange: NSRange) -> Bool {
         // Create instances of NSLayoutManager, NSTextContainer and NSTextStorage
         let layoutManager = NSLayoutManager()
         let textContainer = NSTextContainer(size: CGSize.zero)
         let textStorage = NSTextStorage(attributedString: label.attributedText!)
-        
+
         // Configure layoutManager and textStorage
         layoutManager.addTextContainer(textContainer)
         textStorage.addLayoutManager(layoutManager)
-        
+
         // Configure textContainer
         textContainer.lineFragmentPadding = 0.0
         textContainer.lineBreakMode = label.lineBreakMode
         textContainer.maximumNumberOfLines = label.numberOfLines
         let labelSize = label.bounds.size
         textContainer.size = labelSize
-        
+
         // Find the tapped character location and compare it to the specified range
         let locationOfTouchInLabel = self.location(in: label)
         let textBoundingBox = layoutManager.usedRect(for: textContainer)
         let textContainerOffset = CGPoint(x: (labelSize.width - textBoundingBox.size.width) * 0.5 - textBoundingBox.origin.x, y: (labelSize.height - textBoundingBox.size.height) * 0.5 - textBoundingBox.origin.y)
         let locationOfTouchInTextContainer = CGPoint(x: locationOfTouchInLabel.x - textContainerOffset.x, y: locationOfTouchInLabel.y - textContainerOffset.y)
         let indexOfCharacter = layoutManager.characterIndex(for: locationOfTouchInTextContainer, in: textContainer, fractionOfDistanceBetweenInsertionPoints: nil)
-        
+
         return NSLocationInRange(indexOfCharacter, targetRange)
     }
-    
+
 }

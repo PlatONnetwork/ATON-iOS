@@ -17,30 +17,29 @@ class AssetFeeViewV060: UIView {
         // Drawing code
     }
     */
-    
+
     @IBOutlet weak var feeTip: UILabel!
     @IBOutlet weak var fee: UILabel!
-    
+
     @IBOutlet weak var centerView: UIView!
-    
-    lazy var levelView = { () -> PLevelSlider in 
-        let levelView = PLevelSlider.create(levelChanged: { (level) in
-            
+
+    lazy var levelView = { () -> PLevelSlider in
+        let levelView = PLevelSlider.create(levelChanged: { (_) in
+
         })
         return levelView
     }()
-    
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         initSubviews()
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         initSubviews()
     }
-    
+
     func initSubviews() {
         let view = Bundle.main.loadNibNamed("AssetFeeViewV060", owner: self, options: nil)?.first as! UIView
         self.addSubview(view)

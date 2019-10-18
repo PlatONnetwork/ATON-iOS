@@ -12,14 +12,14 @@ import Localize_Swift
 class ExportToPlainTextViewController: BaseViewController {
 
     @IBOutlet weak var noteLabel: UILabel!
-    
+
     @IBOutlet weak var plainTextLabel: UILabel!
-    
+
     @IBOutlet weak var copyButton: PButton!
-    
+
     var note: String!
     var plainText: String!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -30,12 +30,12 @@ class ExportToPlainTextViewController: BaseViewController {
     }
 
     @IBAction func copyText(_ sender: Any) {
-        
+
         let pasteb = UIPasteboard.general
         pasteb.string = plainText
         showMessage(text: Localized("ExportVC_copy_success"))
     }
-    
+
     /*
     // MARK: - Navigation
 

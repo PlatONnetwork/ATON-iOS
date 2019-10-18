@@ -11,51 +11,50 @@ import UIKit
 import Localize_Swift
 
 enum QuickSaveStatus {
-    case QuickSaveEnable,QuickSaveDisable
+    case QuickSaveEnable, QuickSaveDisable
 }
 
 class QuickSaveAddressButton: UIButton {
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
     }
-     
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-    
-    func initViews(){
+
+    func initViews() {
         self.status = .QuickSaveDisable
     }
-     
-    
-    var status : QuickSaveStatus = .QuickSaveDisable{
-        didSet{
-            if status == .QuickSaveEnable{
+
+    var status: QuickSaveStatus = .QuickSaveDisable {
+        didSet {
+            if status == .QuickSaveEnable {
                 self.setTitleColor(UIColor(rgb: 0x105CFE), for: .normal)
-            }else{
+            } else {
                 self.setTitleColor(UIColor(rgb: 0xB6BBD0), for: .normal)
             }
         }
     }
-    
-    func checkAndUpdateStatus(address: String?, name: String?){
+
+    func checkAndUpdateStatus(address: String?, name: String?) {
         DispatchQueue.main.async {
             //exe in queue
-            guard address != nil,address!.is40ByteAddress(),name != nil, CommonService.isValidWalletName(name!).0 else {
+            guard address != nil, address!.is40ByteAddress(), name != nil, CommonService.isValidWalletName(name!).0 else {
                 self.status = .QuickSaveDisable
                 return
             }
-            if AddressBookService.service.getAll().contains(where: {($0.walletAddress?.ishexStringEqual(other: address!))!}){
+            if AddressBookService.service.getAll().contains(where: {($0.walletAddress?.ishexStringEqual(other: address!))!}) {
                 self.status = .QuickSaveDisable
-            }else{
+            } else {
                 self.status = .QuickSaveEnable
             }
         }
     }
-    
-    func quickSave(address: String?, name: String?){
-        guard address != nil, name != nil,CommonService.checkNewAddressName(name).0, address!.is40ByteAddress(),!AddressBookService.service.getAll().contains(where: {($0.walletAddress?.ishexStringEqual(other: address!))!}) else{
+
+    func quickSave(address: String?, name: String?) {
+        guard address != nil, name != nil, CommonService.checkNewAddressName(name).0, address!.is40ByteAddress(), !AddressBookService.service.getAll().contains(where: {($0.walletAddress?.ishexStringEqual(other: address!))!}) else {
             return
         }
         let addressInfo = AddressInfo()
@@ -65,5 +64,5 @@ class QuickSaveAddressButton: UIButton {
         AddressBookService.service.add(addressInfo: addressInfo)
         UIApplication.rootViewController().showMessage(text: Localized("SettingsVC_savesuccessfully"))
     }
-    
+
 }

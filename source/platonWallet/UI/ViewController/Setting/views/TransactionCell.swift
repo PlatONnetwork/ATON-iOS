@@ -10,13 +10,13 @@ import UIKit
 import Localize_Swift
 
 class TransactionCell: UITableViewCell {
-    
+
     @IBOutlet weak var typeLabel: UILabel!
-    
+
     @IBOutlet weak var timeLabel: UILabel!
-    
+
     @IBOutlet weak var amoutLabel: UILabel!
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         contentView.backgroundColor = normal_background_color
@@ -24,8 +24,7 @@ class TransactionCell: UITableViewCell {
         selectionStyle = .none
     }
 
-    
-    func updateCell(tx : Transaction){
+    func updateCell(tx : Transaction) {
         if tx.txType == .unknown || tx.txType == .transfer {
             if tx.direction == .unknown {
                 typeLabel.text = tx.txType?.localizeTitle
@@ -36,7 +35,7 @@ class TransactionCell: UITableViewCell {
             typeLabel.text = tx.txType?.localizeTitle
         }
         timeLabel.text = Date.toStanderTimeDescrition(millionSecondsTimeStamp: tx.confirmTimes)
-        
+
         amoutLabel.text = tx.amountTextString
         if let valueStr = tx.value, Int(valueStr) == 0 {
             amoutLabel.textColor = UIColor(rgb: 0xb6bbd0)
@@ -51,14 +50,11 @@ class TransactionCell: UITableViewCell {
             }
         }
     }
-    
+
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
     }
-    
-    
 
-    
 }

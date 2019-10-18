@@ -10,49 +10,49 @@ import UIKit
 import SnapKit
 
 class SingleButtonTableViewCell: UITableViewCell {
-    
+
     public let button = PButton()
     public let errorLabel = UILabel()
-    
+
     var canDelegation: CanDelegation? {
         didSet {
             if let canDel = canDelegation, canDel.canDelegation == true {
                 buttonToBottomConstaint?.update(priority: .high)
                 errorLabelToBottomConstaint?.update(priority: .medium)
-                
+
                 errorLabel.isHidden = true
                 unavaliableTapAction = true
-                
+
                 errorLabel.attributedText = nil
                 button.style = .blue
             } else {
                 buttonToBottomConstaint?.update(priority: .medium)
                 errorLabelToBottomConstaint?.update(priority: .high)
-                
+
                 errorLabel.isHidden = false
                 unavaliableTapAction = false
-                
+
                 if let localizedDesciption = canDelegation?.message?.localizedDesciption {
                     let attachment = NSTextAttachment()
                     attachment.bounds = CGRect(x: 0, y: 0, width: 10, height: 10)
                     attachment.image = UIImage(named: "3.icon_warning")
-                    
+
                     let attr = NSMutableAttributedString()
                     attr.append(NSAttributedString(attachment: attachment))
                     attr.append(NSAttributedString(string: " "))
                     attr.append(NSAttributedString(string: localizedDesciption))
-                    
+
                     errorLabel.attributedText = attr
                 }
-                
+
                 button.style = .disable
             }
         }
     }
-    
+
     var buttonToBottomConstaint: Constraint?
     var errorLabelToBottomConstaint: Constraint?
-    
+
     public var unavaliableTapAction: Bool = false {
         didSet {
             if unavaliableTapAction {
@@ -62,15 +62,14 @@ class SingleButtonTableViewCell: UITableViewCell {
             }
         }
     }
-    
+
     var cellDidTapHandle: (() -> Void)?
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
         backgroundColor = normal_background_color
-        
-        
+
         button.frame = CGRect(x: 16, y: 16, width: UIScreen.main.bounds.width - 32, height: 44)
         button.addTarget(self, action: #selector(tapAction), for: .touchUpInside)
         contentView.addSubview(button)
@@ -80,7 +79,7 @@ class SingleButtonTableViewCell: UITableViewCell {
             make.centerX.equalToSuperview()
             make.height.equalTo(44)
         }
-        
+
         errorLabel.font = .systemFont(ofSize: 14)
         errorLabel.textColor = UIColor(rgb: 0xff6b00)
         errorLabel.numberOfLines = 0
@@ -90,14 +89,14 @@ class SingleButtonTableViewCell: UITableViewCell {
             make.top.equalTo(button.snp.bottom).offset(15)
             errorLabelToBottomConstaint = make.bottom.equalToSuperview().offset(-15).priorityMedium().constraint
         }
-        
+
         button.style = .blue
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     @objc func tapAction() {
         cellDidTapHandle?()
     }

@@ -10,15 +10,15 @@ import UIKit
 import Localize_Swift
 
 class MyDelegateHeaderView: UIView {
-    
+
     var recordButtonHandler: (() -> Void)?
-    
+
     public let totalBalanceLabel = UILabel()
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .white
-        
+
         let delegateAvatarIV = UIImageView()
         delegateAvatarIV.addMaskView(corners: .allCorners, cornerRadiiV: 21)
         delegateAvatarIV.image = UIImage(named: "3.icon_verifier")
@@ -28,7 +28,7 @@ class MyDelegateHeaderView: UIView {
             make.leading.equalToSuperview().offset(13)
             make.width.height.equalTo(42)
         }
-        
+
         let delegateNameTipLabel = UILabel()
         delegateNameTipLabel.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.medium)
         delegateNameTipLabel.textColor = .black
@@ -39,7 +39,7 @@ class MyDelegateHeaderView: UIView {
             make.leading.equalTo(delegateAvatarIV.snp.trailing).offset(3)
             make.height.equalTo(19)
         }
-        
+
         totalBalanceLabel.font = UIFont.systemFont(ofSize: 14)
         totalBalanceLabel.textColor = common_darkGray_color
         totalBalanceLabel.text = "--"
@@ -49,7 +49,7 @@ class MyDelegateHeaderView: UIView {
             make.leading.equalTo(delegateNameTipLabel.snp.leading)
             make.trailing.equalTo(delegateNameTipLabel.snp.trailing)
         }
-        
+
         let recordButton = UIButton()
         recordButton.addTarget(self, action: #selector(recordTapAction), for: .touchUpInside)
         recordButton.localizedNormalTitle = "staking_main_delegate_record"
@@ -63,17 +63,17 @@ class MyDelegateHeaderView: UIView {
             make.leading.greaterThanOrEqualTo(delegateNameTipLabel.snp.trailing).offset(5)
             make.trailing.equalToSuperview().offset(-16)
         }
-        
+
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     @objc private func recordTapAction() {
         recordButtonHandler?()
     }
-    
+
     /*
     // Only override draw() if you perform custom drawing.
     // An empty implementation adversely affects performance during animation.

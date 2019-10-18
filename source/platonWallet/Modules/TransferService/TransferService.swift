@@ -10,16 +10,14 @@ import Foundation
 import BigInt
 import platonWeb3
 
-
-
-class TransferService : BaseService{
+class TransferService : BaseService {
 
     static let service = TransferService()
-    
-    var timer : Timer? = nil
-    
+
+    var timer : Timer?
+
     public var lastedBlockNumber : String?
-    
+
     public override init() {
         super.init()
         if enableBlockNumberQueryTimer {
@@ -27,27 +25,27 @@ class TransferService : BaseService{
             timer?.fire()
         }
     }
-    
+
     @objc func timerFirer() {
-        
+
         web3.eth.getBlockByNumber(block: .latest, fullTransactionObjects: true) { resp in
             //EthereumBlockObject
-            guard let blockObj = resp.result else{
+            guard let blockObj = resp.result else {
                 return
             }
             self.lastedBlockNumber = String((blockObj!.number?.quantity)!)
             //NSLog("lasted BlockNumber \(String((blockObj!.number?.quantity)!))")
         }
-        
+
         self.ATPTransactionsPool()
         self.SharedWalletTransactionsPool()
-        
+
     }
-    
-    func ATPTransactionsPool(){
+
+    func ATPTransactionsPool() {
         let txs = TransferPersistence.getUnConfirmedTransactions()
-        for item in txs{
-            guard (item.txhash != nil) else{
+        for item in txs {
+            guard (item.txhash != nil) else {
                 continue
             }
             let byteCode = try! EthereumData(ethereumValue: item.txhash!)
@@ -55,15 +53,15 @@ class TransferService : BaseService{
             web3.eth.getTransactionByHash(blockHash: data, response: { txResp in
                 DispatchQueue.main.async {
                     //update blockNumber if exist
-                    
-                    guard txResp.result??.blockNumber != nil, self.lastedBlockNumber != nil, !(RealmInstance?.isInWriteTransaction)! else{
+
+                    guard txResp.result??.blockNumber != nil, self.lastedBlockNumber != nil, !(RealmInstance?.isInWriteTransaction)! else {
                         return
                     }
-                    
+
                     var lastedN = BigUInt(self.lastedBlockNumber!)
                     let txblockN = (txResp.result??.blockNumber!.quantity)!
                     let overflow = lastedN?.subtractReportingOverflow(txblockN, shiftedBy: 0)
-                    if !overflow!{
+                    if !overflow! {
                         RealmInstance?.beginWrite()
                         item.blockNumber = String((txResp.result??.blockNumber!.quantity)!)
                         let confirms =  BigUInt(self.lastedBlockNumber!)?.subtracting(txblockN)
@@ -75,16 +73,15 @@ class TransferService : BaseService{
                         NotificationCenter.default.post(name: NSNotification.Name(DidUpdateTransactionByHashNotification), object: nil)
                     }
                 }
-                
+
             })
         }
     }
-    
-    
-    func SharedWalletTransactionsPool(){
+
+    func sharedWalletTransactionsPool() {
         let txs = STransferPersistence.getUnConfirmedTransactions()
-        for item in txs{
-            guard (item.txhash != nil) else{
+        for item in txs {
+            guard (item.txhash != nil) else {
                 continue
             }
             let byteCode = try! EthereumData(ethereumValue: item.txhash!)
@@ -92,15 +89,15 @@ class TransferService : BaseService{
             web3.eth.getTransactionByHash(blockHash: data, response: { txResp in
                 DispatchQueue.main.async {
                     //update blockNumber if exist
-                    
-                    guard txResp.result??.blockNumber != nil, self.lastedBlockNumber != nil, !(RealmInstance?.isInWriteTransaction)! else{
+
+                    guard txResp.result??.blockNumber != nil, self.lastedBlockNumber != nil, !(RealmInstance?.isInWriteTransaction)! else {
                         return
                     }
-                    
+
                     var lastedN = BigUInt(self.lastedBlockNumber!)
                     let txblockN = (txResp.result??.blockNumber!.quantity)!
                     let overflow = lastedN?.subtractReportingOverflow(txblockN, shiftedBy: 0)
-                    if !overflow!{
+                    if !overflow! {
                         RealmInstance?.beginWrite()
                         item.blockNumber = String((txResp.result??.blockNumber!.quantity)!)
                         let confirms =  BigUInt(self.lastedBlockNumber!)?.subtracting(txblockN)
@@ -109,70 +106,67 @@ class TransferService : BaseService{
                         NotificationCenter.default.post(name: NSNotification.Name(DidUpdateTransactionByHashNotification), object: nil)
                     }
                 }
-                
+
             })
         }
     }
-    
-   
-    
+
     func sendAPTTransfer(from : String,to : String, amount : String, InputGasPrice : BigUInt, estimatedGas : String, memo : String, pri : String,completion : PlatonCommonCompletion?) -> Transaction {
-        
+
         var completion = completion
-        
+
         let ptx = Transaction()
         var walletAddr : EthereumAddress?
         var toAddr : EthereumAddress?
         var fromAddr : EthereumAddress?
         var pk : EthereumPrivateKey?
-        
+
         let gasPrice = EthereumQuantity(quantity: InputGasPrice)
-        
+
         let txgas = EthereumQuantity(quantity: BigUInt(estimatedGas)!)
-        
+
         let amountOfwei = BigUInt.mutiply(a: amount, by: ETHToWeiMultiplier)
         let value = EthereumQuantity(quantity: amountOfwei!)
-        
+
         var data = EthereumData(bytes: [])
-        if memo.length > 0{
+        if memo.length > 0 {
             let dataContent = Data((memo).utf8)
             let array = [UInt8](dataContent)
             data = EthereumData(bytes: array)
         }
-        
+
         try? walletAddr = EthereumAddress(hex: from, eip55: false)
         try? toAddr = EthereumAddress(hex: to, eip55: false)
         try? fromAddr = EthereumAddress(hex: from, eip55: false)
         try? pk = EthereumPrivateKey(hexPrivateKey: pri)
 
-        
         let semaphore = DispatchSemaphore(value: 0)
         let queue = DispatchQueue(label: "sendAPTTransfer")
         queue.async {
             var nonce : EthereumQuantity?
             web3.eth.getTransactionCount(address: walletAddr!, block: EthereumQuantityTag(tagType: .latest)) { resp in
-                
-                switch resp.status{
-                    
-                case .success(_):
+
+                switch resp.status {
+
+                case .success:
                     nonce = resp.result
                     semaphore.signal()
-                case .failure(_):
+                case .failure:
                     self.failCompletionOnMainThread(code: -1, errorMsg: resp.getErrorLocalizedDescription(), completion: &completion)
                     semaphore.signal()
                 }
             }
-            
-            if semaphore.wait(timeout: .now() + DefaultRPCTimeOut) == .timedOut{
+
+            if semaphore.wait(timeout: .now() + DefaultRPCTimeOut) == .timedOut {
                 self.timeOutCompletionOnMainThread(completion: &completion)
                 return
             }
-            
-            if nonce == nil{
+
+            if nonce == nil {
                 self.failWithEmptyResponseCompletionOnMainThread(completion: &completion)
                 return
             }
-            
+
             let tx = EthereumTransaction(
                 nonce: nonce,
                 gasPrice: gasPrice,
@@ -184,16 +178,15 @@ class TransferService : BaseService{
                 )
             ptx.to = toAddr?.hex(eip55: true)
             ptx.from = walletAddr?.hex(eip55: true)
-            
-            
+
             let chainID = EthereumQuantity(quantity: BigUInt(DefaultChainId)!)
             let signedTx = try? tx.sign(with: pk!, chainId: chainID) as EthereumSignedTransaction
-            
+
             web3.eth.sendRawTransaction(transaction: signedTx!, response: { (resp) in
-                
-                switch resp.status{
-                    
-                case .success(_):
+
+                switch resp.status {
+
+                case .success:
                     ptx.txhash = resp.result?.hex()
                     ptx.createTime = Date().millisecondsSince1970
                     ptx.value = String(value.quantity)
@@ -202,38 +195,34 @@ class TransferService : BaseService{
                     ptx.memo = memo
                     TransferPersistence.add(tx: ptx)
                     self.successCompletionOnMain(obj: nil, completion: &completion)
-                case .failure(_):
+                case .failure:
                     self.failCompletionOnMainThread(code: -1, errorMsg: resp.getErrorLocalizedDescription(), completion: &completion)
                 }
             })
         }
-        
-        return ptx;
+
+        return ptx
     }
-    
-    func getEstimateGas(memo : String?, completion : PlatonCommonCompletion?){
+
+    func getEstimateGas(memo : String?, completion : PlatonCommonCompletion?) {
         var completion = completion
         var toAddr : EthereumAddress?
         try? toAddr = EthereumAddress(hex: DefaultAddress, eip55: false)
         var data = EthereumData(bytes: [])
-        if memo!.length > 0{
+        if memo!.length > 0 {
             let dataContent = Data((memo)!.utf8)
             let array = [UInt8](dataContent)
             data = EthereumData(bytes: array)
         }
         let call = EthereumCall(from: nil, to: toAddr!, gas: nil, gasPrice: nil, value: nil, data: data)
         web3.eth.estimateGas(call: call) { (resp) in
-            switch resp.status{
-            case .success(_):
+            switch resp.status {
+            case .success:
                 self.successCompletionOnMain(obj: resp.result?.quantity.gasMutiply(4) as AnyObject, completion: &completion)
-            case .failure(_):
+            case .failure:
                 self.failCompletionOnMainThread(code: -1, errorMsg: resp.getErrorLocalizedDescription(), completion: &completion)
             }
         }
     }
 
-    
-    
-    
 }
-

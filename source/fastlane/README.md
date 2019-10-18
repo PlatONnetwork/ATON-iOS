@@ -21,11 +21,6 @@ or alternatively using `brew cask install fastlane`
 fastlane ios custom_lane
 ```
 Description of what the lane does
-### ios slatherTest
-```
-fastlane ios slatherTest
-```
-
 ### ios metrics
 ```
 fastlane ios metrics

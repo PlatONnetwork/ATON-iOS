@@ -10,8 +10,8 @@ import Foundation
 import UIKit
 
 public extension UIView {
-    func addMaskView(corners: UIRectCorner,cornerRadiiV : CGFloat){
-        
+    func addMaskView(corners: UIRectCorner,cornerRadiiV : CGFloat) {
+
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             let maskPath = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: cornerRadiiV, height: cornerRadiiV))
             let maskLayer = CAShapeLayer()
@@ -20,7 +20,7 @@ public extension UIView {
             self.layer.mask = maskLayer
         }
     }
-    
+
     func rotate() {
         if self.layer.animation(forKey: "rotationAnimation") == nil {
             let rotation: CABasicAnimation = CABasicAnimation(keyPath: "transform.rotation.z")
@@ -31,14 +31,14 @@ public extension UIView {
             self.layer.add(rotation, forKey: "rotationAnimation")
         }
     }
-    
+
     func stopRotate() {
         self.layer.removeAllAnimations()
     }
 }
 
 extension UIView {
-    
+
     // Using a function since `var image` might conflict with an existing variable
     // (like on `UIImageView`)
     func asImage() -> UIImage {
@@ -69,7 +69,7 @@ extension UIView {
             make.height.equalTo(1)
         }
     }
-    
+
     func addTopSepline(offset: CGFloat = 0) {
         let view = UIView()
         view.backgroundColor = UIColor(rgb: 0xEBEEF4)

@@ -13,13 +13,13 @@ class BackupMnemonicViewController: BaseViewController {
 
     @IBOutlet weak var shadowView: UIView!
     @IBOutlet weak var button: PButton!
-    
+
     var walletAddress : String?
-    
+
     var mnemonic: String!
-    
+
     var mnemonicGridView : MnemonicGridView? = UIView.viewFromXib(theClass: MnemonicGridView.self) as? MnemonicGridView
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
@@ -33,35 +33,35 @@ class BackupMnemonicViewController: BaseViewController {
         self.mnemonicGridView?.setDisableEditStyle()
         button.setHorizontalLinerTitleAndImage(image: UIImage(named: "nextBtnIcon")!)
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidLoad()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { 
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             self.showNotScreeshotAler()
         }
     }
-    
-    func showNotScreeshotAler(){
+
+    func showNotScreeshotAler() {
         let alertVC = AlertStylePopViewController.initFromNib()
         alertVC.style = PAlertStyle.AlertWithRedTitle(title: "alert_screenshot_ban_title", message: "alert_backupMnemonic_ban_msg")
         alertVC.confirmButton.localizedNormalTitle = "alert_screenshot_ban_confirmBtn_title"
-        alertVC.onAction(confirm: { (text, _) -> (Bool) in
+        alertVC.onAction(confirm: { (_, _) -> (Bool) in
             return true
         }) { (_, _) -> (Bool) in
             return true
         }
         alertVC.showInViewController(viewController: self)
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.rt_disableInteractivePop = true
         //self.rt_navigationController.rt_disableInteractivePop = true
         //addShadow()
-    } 
-    
+    }
+
     func addShadow() {
-        
+
         let shadowL = CALayer()
         shadowL.frame = shadowView.frame
         shadowL.backgroundColor = view.backgroundColor?.cgColor
@@ -70,33 +70,33 @@ class BackupMnemonicViewController: BaseViewController {
         shadowL.shadowOpacity = 0.2
         shadowL.shadowRadius = 3
         view.layer.insertSublayer(shadowL, below: shadowView.layer)
-               
+
     }
-    
+
     override func rt_customBackItem(withTarget target: Any!, action: Selector!) -> UIBarButtonItem! {
-        if self.useDefaultLeftBarButtonItem && super.leftNavigationTitle != nil && (super.leftNavigationTitle?.length)! > 0{
+        if self.useDefaultLeftBarButtonItem && super.leftNavigationTitle != nil && (super.leftNavigationTitle?.length)! > 0 {
             return self.getBasicLeftBarButtonItemWithBasicStyle(localizedText: super.leftNavigationTitle)
         }
         return UIBarButtonItem(image: UIImage(named: "nav_back"), style: .plain, target: self, action: #selector(back))
     }
 
     @IBAction func next(_ sender: Any) {
-        
+
         let vc = VerifyMnemonicViewController()
         vc.walletAddress = self.walletAddress
         //mnemonic = "abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon abandon about"
         vc.words_order = mnemonic.split(separator: " ").map({ return String($0) })
         rt_navigationController.pushViewController(vc, animated: true)
     }
-    
+
     override func back() {
         self.gotoMainTabController()
     }
-    
-    func showChoiceView(){
+
+    func showChoiceView() {
         let alertVC = AlertStylePopViewController.initFromNib()
         alertVC.style = PAlertStyle.ChoiceView(message: "backup_quit_tip")
-        alertVC.onAction(confirm: { (text, _) -> (Bool) in
+        alertVC.onAction(confirm: { (_, _) -> (Bool) in
             self.gotoMainTabController()
             return true
         }) { (_, _) -> (Bool) in
@@ -104,15 +104,15 @@ class BackupMnemonicViewController: BaseViewController {
         }
         alertVC.showInViewController(viewController: self)
     }
-    
-    func gotoMainTabController(){
+
+    func gotoMainTabController() {
         self.afterBackupRouter()
     }
-    
-    override func onCustomBack(){
+
+    override func onCustomBack() {
         self.showChoiceView()
     }
-    
+
     /*
     // MARK: - Navigation
 
