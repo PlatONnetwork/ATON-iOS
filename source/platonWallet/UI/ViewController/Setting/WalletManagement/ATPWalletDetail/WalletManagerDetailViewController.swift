@@ -128,10 +128,13 @@ class WalletManagerDetailViewController: BaseViewController {
                 alertVC.showInputErrorTip(string: valid.1)
                 return false
             }
-            self?.showLoadingHUD()
+            if alertVC.isInCustomLoading != nil && alertVC.isInCustomLoading == true{
+                return false
+            }
+            alertVC.showLoadingHUD()
             WalletService.sharedInstance.exportPrivateKey(wallet: (self?.wallet!)!, password: (alertVC.textFieldInput?.text)!, completion: { (pri, err) in
                 if (err == nil && (pri?.length)! > 0) {
-                    self?.hideLoadingHUD()
+                    alertVC.hideLoadingHUD()
                     switch type {
                     case .modifyWalletName:
                         self?.confirmToModifyWalletName(text!)
@@ -143,15 +146,18 @@ class WalletManagerDetailViewController: BaseViewController {
                         self?.confirmToExportKeystore(text!)
                     }
                     alertVC.dismissWithCompletion()
-                } else {
-                    self?.hideLoadingHUD()
-//                    alertVC.hideLoadingHUD()
+
+                }else{
+                    alertVC.hideLoadingHUD()
                     alertVC.showErrorMessage(text: Localized(err?.errorDescription ?? ""), delay: 2.0)
                 }
             })
             return false
 
         }) { (_, _) -> (Bool) in
+            if alertVC.isInCustomLoading != nil && alertVC.isInCustomLoading == true{
+                return false
+            }
             return true
         }
 

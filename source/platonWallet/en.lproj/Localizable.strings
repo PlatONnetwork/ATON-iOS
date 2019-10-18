@@ -259,7 +259,7 @@
 //PersonalViewController
 
 
-"PersonalVC_nav_title" = "Management";
+"PersonalVC_nav_title" = "Me";
 
 "PersonalVC_cell_wallet_manager" = "Wallet Management";
 //"PersonalVC_cell_wallet_Transactions" = "Transactions";
