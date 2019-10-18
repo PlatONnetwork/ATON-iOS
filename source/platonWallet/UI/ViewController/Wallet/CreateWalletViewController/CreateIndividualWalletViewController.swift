@@ -81,8 +81,11 @@ class CreateIndividualWalletViewController: BaseViewController,StartBackupMnemon
             return
         }
 
-        showLoadingHUD()
-
+        if self.isInCustomLoading != nil && self.isInCustomLoading!{
+            return
+        }
+        showLoadingHUD() 
+        
         WalletService.sharedInstance.createWallet(name: nameTF.text!, password: pswTF.text!) { [weak self](wallet, error) in
 
             AnalysisHelper.handleEvent(id: event_newWallet, operation: .end)
@@ -181,19 +184,26 @@ class CreateIndividualWalletViewController: BaseViewController,StartBackupMnemon
             if (self?.pswTF.text != text) {
                 alertVC.showInputErrorTip(string: Localized("alert_psw_input_error_title"))
                 return false
-
-            } else {
-
-                self?.showLoadingHUD()
+   
+            }else {
+                
+                if alertVC.isInCustomLoading != nil && alertVC.isInCustomLoading!{
+                    return false
+                }
+                
+                alertVC.showLoadingHUD()
                 WalletService.sharedInstance.exportMnemonic(wallet: self!.wallet, password: self!.pswTF.text!, completion: { (res, error) in
                     if (error == nil && (res!.length) > 0) {
-                        let vc = BackupMnemonicViewController()
-                        vc.walletAddress = self?.wallet.address
-                        vc.mnemonic = res
-                        self?.rt_navigationController.pushViewController(vc, animated: true)
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: {
+                            let vc = BackupMnemonicViewController()
+                            vc.walletAddress = self?.wallet.address
+                            vc.mnemonic = res 
+                            self?.rt_navigationController.pushViewController(vc, animated: true)
+                        })
+                        alertVC.hideLoadingHUD()
                         alertVC.dismissWithCompletion()
-                    } else {
-                        self?.hideLoadingHUD()
+                    }else{
+                        alertVC.hideLoadingHUD()
                         alertVC.showInputErrorTip(string: error?.errorDescription)
                     }
                 })
@@ -202,6 +212,9 @@ class CreateIndividualWalletViewController: BaseViewController,StartBackupMnemon
             }
 
         }) { (_, _) -> (Bool) in
+            if alertVC.isInCustomLoading != nil && alertVC.isInCustomLoading!{
+                return false
+            }
             return true
         }
         alertVC.style = style
