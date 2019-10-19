@@ -37,18 +37,7 @@ class TransactionCell: UITableViewCell {
         timeLabel.text = Date.toStanderTimeDescrition(millionSecondsTimeStamp: tx.confirmTimes)
 
         amoutLabel.text = tx.amountTextString
-        if let valueStr = tx.value, Int(valueStr) == 0 {
-            amoutLabel.textColor = UIColor(rgb: 0xb6bbd0)
-        } else {
-            switch tx.direction {
-            case .Sent:
-                amoutLabel.textColor = UIColor(rgb: 0xff3b3b)
-            case .Receive:
-                amoutLabel.textColor = UIColor(rgb: 0x19a20e)
-            default:
-                amoutLabel.textColor = UIColor(rgb: 0xff3b3b)
-            }
-        }
+        amoutLabel.textColor = tx.amountTextColor
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {

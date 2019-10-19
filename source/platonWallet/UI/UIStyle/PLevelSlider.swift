@@ -101,7 +101,6 @@ class PLevelSlider: UIView {
     }
 
     @IBAction func start(_ sender: UISlider) {
-        print("=====start==")
         guard let grs = gestureRecognizers else {
             return
         }
@@ -109,13 +108,10 @@ class PLevelSlider: UIView {
     }
 
     @IBAction func end(_ sender: UISlider) {
-        print("=====end==")
         guard let grs = gestureRecognizers else {
             return
         }
         _ = grs.map { $0.isEnabled = true }
-//        let s = sender as! UISlider
-        print(sender.value)
         updateSliderValue(value: sender.value)
     }
 
