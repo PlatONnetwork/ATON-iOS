@@ -21,9 +21,11 @@
                     <color key="minimumTrackTintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <color key="maximumTrackTintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <connections>
-                        <action selector="end:" destination="iN0-l3-epB" eventType="touchUpInside" id="Seb-sq-0ny"/>
-                        <action selector="end:" destination="iN0-l3-epB" eventType="touchUpOutside" id="p4S-Gt-vCG"/>
+                        <action selector="end:" destination="iN0-l3-epB" eventType="touchCancel" id="7BP-pU-WPJ"/>
+                        <action selector="end:" destination="iN0-l3-epB" eventType="touchUpInside" id="L70-Uc-iAI"/>
+                        <action selector="end:" destination="iN0-l3-epB" eventType="touchUpOutside" id="wIq-tU-o6G"/>
                         <action selector="sliderChange:" destination="iN0-l3-epB" eventType="valueChanged" id="TSA-wz-u0o"/>
+                        <action selector="start:" destination="iN0-l3-epB" eventType="touchDown" id="ANp-y9-26f"/>
                     </connections>
                 </slider>
             </subviews>

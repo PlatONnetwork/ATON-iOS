@@ -33,16 +33,16 @@ class OptionCollectionViewCell: UICollectionViewCell {
 
         self.layer.borderColor = UIColor(rgb: 0x316DEF).cgColor
         self.layer.borderWidth = 0.5
-        self.layer.cornerRadius = self.frame.size.height * 0.5
+//        self.layer.cornerRadius = self.frame.size.height * 0.5
 
         label = UILabel(frame: .zero)
-        label.font = UIFont.systemFont(ofSize: 13)
+        label.font = UIFont.systemFont(ofSize: 14)
         label.textColor = UIColor(rgb: 0x316DEF)
         label.textAlignment = .center
         addSubview(label)
         label.snp.makeConstraints { (maker) in
             maker.edges.equalToSuperview()
-            maker.height.equalTo(24)
+            maker.height.equalTo(34)
         }
     }
 
@@ -309,9 +309,9 @@ extension VerifyMnemonicViewController:UICollectionViewDelegate,UICollectionView
         var targetString = ""
         targetString = words_disorder[indexPath.row]
 
-        let wordWidth = (targetString as NSString).boundingRect(with: CGSize(width: 300, height: 30), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 13)], context: nil).width
+        let wordWidth = (targetString as NSString).boundingRect(with: CGSize(width: 300, height: 30), options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: [NSAttributedString.Key.font:UIFont.systemFont(ofSize: 14)], context: nil).width
 
-        return CGSize(width: wordWidth + 20 , height: 24)
+        return CGSize(width: wordWidth + 20 , height: 34)
     }
 
     ///UICollectionViewDelegate

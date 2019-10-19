@@ -140,6 +140,7 @@
 		81ACB9CC2301936D00BB460B /* WalletBaseInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81ACB9CB2301936D00BB460B /* WalletBaseInfoView.swift */; };
 		81ACB9CE2302A59300BB460B /* Transaction+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81ACB9CD2302A59300BB460B /* Transaction+Extension.swift */; };
 		81B5895F2356F79000816B4E /* UIButton+Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B5895E2356F79000816B4E /* UIButton+Event.swift */; };
+		81B58961235AE2CC00816B4E /* UIScrollView+GestureConflict.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B58960235AE2CC00816B4E /* UIScrollView+GestureConflict.swift */; };
 		81B5CE71224332C500ACFE96 /* UITextFieldWithSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B5CE70224332C500ACFE96 /* UITextFieldWithSearch.swift */; };
 		81C88E0521746B39005F17F7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C88E0421746B39005F17F7 /* AppDelegate.swift */; };
 		81C88E0721746B39005F17F7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C88E0621746B39005F17F7 /* ViewController.swift */; };
@@ -485,6 +486,7 @@
 		81ACB9CB2301936D00BB460B /* WalletBaseInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletBaseInfoView.swift; sourceTree = "<group>"; };
 		81ACB9CD2302A59300BB460B /* Transaction+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Transaction+Extension.swift"; sourceTree = "<group>"; };
 		81B5895E2356F79000816B4E /* UIButton+Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Event.swift"; sourceTree = "<group>"; };
+		81B58960235AE2CC00816B4E /* UIScrollView+GestureConflict.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+GestureConflict.swift"; sourceTree = "<group>"; };
 		81B5CE70224332C500ACFE96 /* UITextFieldWithSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldWithSearch.swift; sourceTree = "<group>"; };
 		81C1120D21AFBFDE00003E59 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		81C88E0121746B39005F17F7 /* platonWallet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = platonWallet.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1334,6 +1336,7 @@
 				813C3411223A327300DE92F1 /* DropDownVIew.swift */,
 				815968E322E5DABF0085195C /* MJExtensionLoadMoreFooterView.swift */,
 				8141E66F2339C80F001A9351 /* OfflineSignatureConfirmView.swift */,
+				81B58960235AE2CC00816B4E /* UIScrollView+GestureConflict.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -2250,6 +2253,7 @@
 				81EE9A0621773B7F008DF8CB /* BaseNavigationController.swift in Sources */,
 				812002B221A3EB390050E1B0 /* TransferConfirmView.swift in Sources */,
 				9AD11DDD21806C2D002CD905 /* CommonService.swift in Sources */,
+				81B58961235AE2CC00816B4E /* UIScrollView+GestureConflict.swift in Sources */,
 				81E2E84C2186A811008B7504 /* AddressBookTableViewCell.swift in Sources */,
 				81ACB9CA2301371900BB460B /* NodeModel+Extension.swift in Sources */,
 				9ADB60AA222E637C0044918D /* AssetHeaderViewV060.swift in Sources */,

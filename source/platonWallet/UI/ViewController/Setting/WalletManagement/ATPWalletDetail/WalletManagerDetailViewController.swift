@@ -120,48 +120,26 @@ class WalletManagerDetailViewController: BaseViewController {
             return
         }
 
-        let alertVC = AlertStylePopViewController.initFromNib()
-        alertVC.style = PAlertStyle.passwordInput(walletName: self.wallet.name)
-        alertVC.onAction(confirm: {[weak self] (text, _) -> (Bool)  in
-            let valid = CommonService.isValidWalletPassword(text ?? "")
-            if !valid.0 {
-                alertVC.showInputErrorTip(string: valid.1)
-                return false
-            }
-            if alertVC.isInCustomLoading != nil && alertVC.isInCustomLoading == true{
-                return false
-            }
-            alertVC.showLoadingHUD()
-            WalletService.sharedInstance.exportPrivateKey(wallet: (self?.wallet!)!, password: (alertVC.textFieldInput?.text)!, completion: { (pri, err) in
-                if (err == nil && (pri?.length)! > 0) {
-                    alertVC.hideLoadingHUD()
-                    switch type {
-                    case .modifyWalletName:
-                        self?.confirmToModifyWalletName(text!)
-                    case .deleteWallet:
-                        self?.confirmToDeleteWallet(text!)
-                    case .exportPrivateKey:
-                        self?.confirmToExportPrivateKey(text!)
-                    case .exportKeystore:
-                        self?.confirmToExportKeystore(text!)
-                    }
-                    alertVC.dismissWithCompletion()
-
-                }else{
-                    alertVC.hideLoadingHUD()
-                    alertVC.showErrorMessage(text: Localized(err?.errorDescription ?? ""), delay: 2.0)
+        showPasswordInputPswAlert(for: wallet) { [weak self] (_, password, error) in
+            guard let self = self else { return }
+            guard let pw = password else {
+                if let errorMsg = error?.localizedDescription {
+                    self.showErrorMessage(text: errorMsg, delay: 2.0)
                 }
-            })
-            return false
-
-        }) { (_, _) -> (Bool) in
-            if alertVC.isInCustomLoading != nil && alertVC.isInCustomLoading == true{
-                return false
+                return
             }
-            return true
-        }
 
-        alertVC.showInViewController(viewController: self)
+            switch type {
+            case .modifyWalletName:
+                self.confirmToModifyWalletName(pw)
+            case .deleteWallet:
+                self.confirmToDeleteWallet(pw)
+            case .exportPrivateKey:
+                self.confirmToExportPrivateKey(pw)
+            case .exportKeystore:
+                self.confirmToExportKeystore(pw)
+            }
+        }
     }
 
     func showErrorPswAlertFor(_ type: AlertActionType) {

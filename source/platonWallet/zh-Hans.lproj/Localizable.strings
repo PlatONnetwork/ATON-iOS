@@ -346,7 +346,7 @@
 "TransactionListVC_Received" = "接收";
 "TransactionListVC_Vote" = "投票";
 
-"TransactionStatus_sending_title" = "发送";
+"TransactionStatus_sending_title" = "发送LAT";
 "TransactionStatus_sendSucceed_title" = "发送";
 "TransactionStatus_sendFailed_title" = "发送";
 "TransactionStatus_receiving_title" = "接收";

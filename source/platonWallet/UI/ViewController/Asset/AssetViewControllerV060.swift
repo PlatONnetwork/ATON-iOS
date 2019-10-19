@@ -159,6 +159,12 @@ class AssetViewControllerV060: BaseViewController, PopupMenuTableDelegate {
             //self?.sectionView.changingOffset(offset: offset, currentIndex: (self?.pageViewCurrentIndex)!,draging: (self?.pageVC.pagesScrollview?.isDragging)!)
 
         }
+//        for view in pageVC.view.subviews {
+//            if let scrollView = view as? UIScrollView {
+//                scrollView.delaysContentTouches = false
+//            }
+//        }
+
         transactionVC.delegate = self
         sectionView.onSelectItem = { [weak self] (index) -> Bool in
             if index == 1 && NetworkManager.shared.reachabilityManager?.isReachable == false {
@@ -625,7 +631,7 @@ extension AssetViewControllerV060 {
                                 getInstance()?.doShowTransactionDetail(tx)
                             }
                         }
-                    case .failure(let error):
+                    case .failure(_):
                         break
                     }
                 }

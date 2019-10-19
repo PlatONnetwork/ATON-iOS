@@ -353,7 +353,7 @@
 "TransactionListVC_Received" = "Received";
 "TransactionListVC_Vote" = "Vote";
 
-"TransactionStatus_sending_title" = "Sending";
+"TransactionStatus_sending_title" = "Sending LAT";
 "TransactionStatus_sendSucceed_title" = "Sent";
 "TransactionStatus_sendFailed_title" = "Sent";
 "TransactionStatus_receiving_title" = "Receiving";

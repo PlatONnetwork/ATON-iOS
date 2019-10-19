@@ -136,9 +136,7 @@ extension UIViewController {
                 alertVC.showInputErrorTip(string: valid.1)
                 return false
             }
-            if alertVC.isInCustomLoading != nil && alertVC.isInCustomLoading!{
-                return false
-            }
+
             alertVC.showLoadingHUD()
             WalletService.sharedInstance.exportMnemonic(wallet: wallet, password: text!, completion: { (res, error) in
                 alertVC.hideLoadingHUD()
@@ -150,7 +148,7 @@ extension UIViewController {
                     vc.hidesBottomBarWhenPushed = true
                     self?.rt_navigationController!.pushViewController(vc, animated: true)
                     alertVC.dismissWithCompletion()
-                }else{
+                } else {
                     //alertVC.showInputErrorTip(string: error?.errorDescription)
                     alertVC.showErrorMessage(text: Localized(error?.errorDescription ?? ""), delay: 2.0)
                 }
@@ -247,16 +245,12 @@ extension UIViewController {
                 return false
             }
 
-            if alertVC.isInCustomLoading != nil && alertVC.isInCustomLoading!{
-                return false
-            }
             alertVC.showLoadingHUD()
             WalletService.sharedInstance.exportPrivateKey(
                 wallet: wallet,
                 password: (alertVC.textFieldInput?.text)!,
                 completion: { (pri, err) in
                     DispatchQueue.main.async {
-                        alertVC.hideLoadingHUD()
                         if (err == nil && (pri?.length)! > 0) {
                             alertVC.dismissWithCompletion()
                             completion?(pri, text, nil)
@@ -264,6 +258,7 @@ extension UIViewController {
                             alertVC.showInputErrorTip(string: (err?.errorDescription)!)
                             completion?(nil, text, err)
                         }
+                        alertVC.hideLoadingHUD()
                     }
             })
             return false

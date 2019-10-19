@@ -156,11 +156,9 @@ class NodeDetailViewController: BaseViewController {
                 make.bottom.equalTo(bottomLayoutGuide.snp.top).offset(-30)
             }
             view.layoutIfNeeded()
-            delegateButton.style = .blue
+            delegateButton.style = AssetVCSharedData.sharedData.walletList.count == 0 ? .disable : .blue
         }
         doubtLabel.isHidden = (nodeDetail?.node.isInit == false)
-
-        delegateButton.style = AssetVCSharedData.sharedData.walletList.count == 0 ? .disable : .blue
     }
 
     private func fetchData() {

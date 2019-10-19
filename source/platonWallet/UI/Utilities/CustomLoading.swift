@@ -45,6 +45,7 @@ class CustomLoading: NSObject {
     }
 
     func hdie(viewController: UIViewController) {
+        viewController.view.isUserInteractionEnabled = true
         if viewController.view.subviews.contains(container) {
             container.removeFromSuperview()
         }
@@ -57,6 +58,7 @@ class CustomLoading: NSObject {
             container.layer.cornerRadius = 5
             container.layer.masksToBounds = true
 
+            viewController.view.isUserInteractionEnabled = false
             viewController.view .addSubview(container)
             container.snp.makeConstraints { (make) in
                 make.center.equalToSuperview()
