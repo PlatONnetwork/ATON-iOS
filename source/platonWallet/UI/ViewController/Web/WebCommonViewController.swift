@@ -63,7 +63,7 @@ class WebCommonViewController: BaseViewController {
     }
 
     private func loadRequest() {
-        showLoadingHUD()
+//        showLoadingHUD()
         guard let urlString = requestUrl else {
             hideLoadingHUD()
             return
@@ -135,4 +135,7 @@ extension WebCommonViewController: WKNavigationDelegate {
         titleLabel?.localizedText = webView.title
     }
 
+    func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+        hideLoadingHUD()
+    }
 }

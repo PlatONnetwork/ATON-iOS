@@ -398,7 +398,7 @@ extension WithDrawViewController {
                         guard let nonce = blockNonce else { return }
                         let nonceString = nonce.quantity.description
 
-                        let transactionData = TransactionQrcode(amount: amount.description, chainId: web3.properties.chainId, from: walletObject.currentWallet.address, to: PlatonConfig.ContractAddress.stakingContractAddress, gasLimit: funcType.gas.description, gasPrice: gasPrice, nonce: nonceString, typ: nil, nodeId: nodeId, nodeName: self.currentNode?.name, sender: walletObject.currentWallet.address, stakingBlockNum: String(sBlockNum), functionType: funcType.typeValue)
+                        let transactionData = TransactionQrcode(amount: amount.description, chainId: web3.properties.chainId, from: walletObject.currentWallet.address, to: PlatonConfig.ContractAddress.stakingContractAddress, gasLimit: funcType.gas.description, gasPrice: gasPrice, nonce: nonceString, typ: nil, nodeId: nodeId, nodeName: self.currentNode?.name, stakingBlockNum: String(sBlockNum), functionType: funcType.typeValue)
                         qrcodeArr.append(transactionData)
                     case .fail:
                         break

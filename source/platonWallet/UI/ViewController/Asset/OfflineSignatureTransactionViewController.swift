@@ -162,9 +162,9 @@ class OfflineSignatureTransactionViewController: BaseViewController {
 
             guard
                 let code = codes.first,
-                let sender = code.sender,
+                let from = code.from,
                 let type = code.functionType else { return }
-            let qrcodeData = QrcodeData(qrCodeType: 1, qrCodeData: signedStrings, timestamp: self.qrcode?.timestamp, chainId: web3.chainId, functionType: type, from: sender)
+            let qrcodeData = QrcodeData(qrCodeType: 1, qrCodeData: signedStrings, timestamp: self.qrcode?.timestamp, chainId: web3.chainId, functionType: type, from: from)
             guard
                 let jsonData = try? JSONEncoder().encode(qrcodeData),
                 let jsonString = String(data: jsonData, encoding: .utf8) else { return }
@@ -198,7 +198,7 @@ class OfflineSignatureTransactionViewController: BaseViewController {
         guard
             let stakingBlockNum = UInt64(txQrcode.stakingBlockNum ?? "0"),
             let nodeId = txQrcode.nodeId,
-            let sender = txQrcode.sender,
+            let sender = txQrcode.from,
             let amount = BigUInt(txQrcode.amount ?? "0"),
             let nonceBigInt = BigUInt(txQrcode.nonce ?? "0") else { return nil }
         let nonce = EthereumQuantity(quantity: nonceBigInt)

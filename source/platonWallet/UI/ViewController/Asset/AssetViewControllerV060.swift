@@ -159,11 +159,6 @@ class AssetViewControllerV060: BaseViewController, PopupMenuTableDelegate {
             //self?.sectionView.changingOffset(offset: offset, currentIndex: (self?.pageViewCurrentIndex)!,draging: (self?.pageVC.pagesScrollview?.isDragging)!)
 
         }
-//        for view in pageVC.view.subviews {
-//            if let scrollView = view as? UIScrollView {
-//                scrollView.delaysContentTouches = false
-//            }
-//        }
 
         transactionVC.delegate = self
         sectionView.onSelectItem = { [weak self] (index) -> Bool in
@@ -515,7 +510,7 @@ extension AssetViewControllerV060: UIScrollViewDelegate, ChildScrollViewDidScrol
     }
 
     func doShowConfirmViewController(qrcode: QrcodeData<[TransactionQrcode]>) {
-        guard let codes = qrcode.qrCodeData, codes.count > 0, qrcode.chainId == web3.chainId else {
+        guard let codes = qrcode.qrCodeData, codes.count > 0, codes.first?.chainId == web3.chainId else {
             showErrorMessage(text: Localized("offline_signature_invalid"), delay: 2.0)
             return
         }

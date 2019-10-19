@@ -36,7 +36,6 @@ struct TransactionQrcode: Codable {
     var typ: UInt16?
     var nodeId: String?
     var nodeName: String?
-    var sender: String?
     var stakingBlockNum: String?
     var functionType: UInt16?
 }
