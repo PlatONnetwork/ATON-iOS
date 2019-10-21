@@ -212,7 +212,7 @@ class Transaction : Object, Decodable {
 
     @objc dynamic var extra: String?
 
-    @objc dynamic var nodeURLStr: String = ""
+    @objc dynamic var chainId: String = ""
 
     var sequence: Int64?
 

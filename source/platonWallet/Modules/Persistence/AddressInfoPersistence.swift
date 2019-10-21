@@ -13,8 +13,8 @@ class AddressInfoPersistence {
 
     public class func add(addrInfo : AddressInfo) {
         let addrInfo = addrInfo.detached()
-        if addrInfo.nodeURLStr.count == 0 {
-            addrInfo.nodeURLStr = SettingService.getCurrentNodeURLString()
+        if addrInfo.chainId.count == 0 {
+            addrInfo.chainId = SettingService.shareInstance.getCurrentChainId()
         }
 
         RealmWriteQueue.async {
@@ -28,8 +28,8 @@ class AddressInfoPersistence {
     }
 
     public class func replaceInto(addrInfo : AddressInfo, completion: (() -> Void)? = nil) {
-        if addrInfo.nodeURLStr.count == 0 {
-            addrInfo.nodeURLStr = SettingService.getCurrentNodeURLString()
+        if addrInfo.chainId.count == 0 {
+            addrInfo.chainId = SettingService.shareInstance.getCurrentChainId()
         }
         RealmWriteQueue.async {
             autoreleasepool(invoking: {
@@ -62,7 +62,7 @@ class AddressInfoPersistence {
 
     public class func delete(addrInfo: AddressInfo) {
 
-        let predicate = NSPredicate(format: "nodeURLStr == %@ && uuid == %@", SettingService.getCurrentNodeURLString(), addrInfo.uuid)
+        let predicate = NSPredicate(format: "chainId == %@ && uuid == %@", SettingService.shareInstance.getCurrentChainId(), addrInfo.uuid)
         RealmWriteQueue.async {
             autoreleasepool(invoking: {
                 let realm = try! Realm(configuration: RealmHelper.getConfig())

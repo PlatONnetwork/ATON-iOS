@@ -213,6 +213,7 @@ extension DelegateViewController: UITableViewDelegate, UITableViewDataSource {
             return cell
         case .inputAmount:
             let cell = tableView.dequeueReusableCell(withIdentifier: "SendInputTableViewCell") as! SendInputTableViewCell
+            cell.inputType = .delegate
             cell.amountView.titleLabel.text = Localized("ATextFieldView_delegate_title")
             cell.minAmountLimit = "10".LATToVon
             cell.maxAmountLimit = BigUInt(balanceStyle?.currentBalance.1 ?? "0")

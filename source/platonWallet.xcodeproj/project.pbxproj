@@ -141,6 +141,308 @@
 		81ACB9CE2302A59300BB460B /* Transaction+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81ACB9CD2302A59300BB460B /* Transaction+Extension.swift */; };
 		81B5895F2356F79000816B4E /* UIButton+Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B5895E2356F79000816B4E /* UIButton+Event.swift */; };
 		81B58961235AE2CC00816B4E /* UIScrollView+GestureConflict.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B58960235AE2CC00816B4E /* UIScrollView+GestureConflict.swift */; };
+		81B58964235D92FD00816B4E /* RealmHelper+Migration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B58963235D92FD00816B4E /* RealmHelper+Migration.swift */; };
+		81B58968235DA1FC00816B4E /* ExportToPlainTextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A25B9A821870FA700B9433A /* ExportToPlainTextViewController.swift */; };
+		81B58969235DA1FC00816B4E /* UITextField+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ADE4500217DDA27006F1C81 /* UITextField+Extensions.swift */; };
+		81B5896A235DA1FC00816B4E /* MnemonicTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81718D8A222F6F6500DB04F6 /* MnemonicTextField.swift */; };
+		81B5896B235DA1FC00816B4E /* PAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF9AC232182E19600E97F07 /* PAlertController.swift */; };
+		81B5896C235DA1FC00816B4E /* layout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812002A821A3EB390050E1B0 /* layout.swift */; };
+		81B5896D235DA1FC00816B4E /* ValidatorNodesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815968FE22E6F6F50085195C /* ValidatorNodesViewController.swift */; };
+		81B5896E235DA1FC00816B4E /* SharedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814980F32191393C009F99EE /* SharedView.swift */; };
+		81B5896F235DA1FC00816B4E /* DelegateModel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F5123C22FEE811005F3BDF /* DelegateModel+Extension.swift */; };
+		81B58970235DA1FC00816B4E /* HDPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A56557C2176CB05002A1F6C /* HDPath.swift */; };
+		81B58971235DA1FC00816B4E /* OfflineSignatureTransactionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8141E671233A15B2001A9351 /* OfflineSignatureTransactionViewController.swift */; };
+		81B58972235DA1FC00816B4E /* MyDelegateHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D7E26222E836E80069CDED /* MyDelegateHeaderView.swift */; };
+		81B58973235DA1FC00816B4E /* AssetPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819333FE223FD08600DCFD93 /* AssetPageViewController.swift */; };
+		81B58974235DA1FC00816B4E /* Wallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD67AAB2174865300A8432F /* Wallet.swift */; };
+		81B58975235DA1FC00816B4E /* UITextView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819A522A2190319A00E4C500 /* UITextView+Extensions.swift */; };
+		81B58976235DA1FC00816B4E /* MJRefreshAutoStateFooter+Localize.m in Sources */ = {isa = PBXBuildFile; fileRef = 81C98FCA22A529E7004B1668 /* MJRefreshAutoStateFooter+Localize.m */; };
+		81B58977235DA1FC00816B4E /* TransactionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FCCD0A2179E9F10052FC29 /* TransactionService.swift */; };
+		81B58978235DA1FC00816B4E /* AddAddressInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E2E8572186BA96008B7504 /* AddAddressInfoView.swift */; };
+		81B58979235DA1FC00816B4E /* CustomLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A2DA84822561AD200368212 /* CustomLoading.swift */; };
+		81B5897A235DA1FC00816B4E /* PTSIndicatorInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D7E24622E7F5F20069CDED /* PTSIndicatorInfo.swift */; };
+		81B5897B235DA1FC00816B4E /* PTextFieldWithPadding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EE99CC2175F4BC008DF8CB /* PTextFieldWithPadding.swift */; };
+		81B5897C235DA1FC00816B4E /* AddressBookService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E2E8512186B90C008B7504 /* AddressBookService.swift */; };
+		81B5897D235DA1FC00816B4E /* DelegateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811AB2B422EECC1100284F1A /* DelegateViewController.swift */; };
+		81B5897E235DA1FC00816B4E /* UITextFieldWithSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B5CE70224332C500ACFE96 /* UITextFieldWithSearch.swift */; };
+		81B5897F235DA1FC00816B4E /* SettingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE31425218C285900B5433F /* SettingService.swift */; };
+		81B58980235DA1FC00816B4E /* ImportKeystoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ADE451A217F24D5006F1C81 /* ImportKeystoreViewController.swift */; };
+		81B58981235DA1FC00816B4E /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814B8C2421775DED00C97E48 /* UIImage+Extensions.swift */; };
+		81B58982235DA1FC00816B4E /* InteractiveTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF9AC032182E04000E97F07 /* InteractiveTransition.swift */; };
+		81B58983235DA1FC00816B4E /* ImportObservedWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8141E6652338AE46001A9351 /* ImportObservedWalletViewController.swift */; };
+		81B58984235DA1FC00816B4E /* UIButton+Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B5895E2356F79000816B4E /* UIButton+Event.swift */; };
+		81B58985235DA1FC00816B4E /* TransferDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8120028D21A3EB390050E1B0 /* TransferDetailView.swift */; };
+		81B58986235DA1FC00816B4E /* NewAddressInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812D94B5218C5115002A48B0 /* NewAddressInfoViewController.swift */; };
+		81B58987235DA1FC00816B4E /* CreateIndividualWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817F88E62174724E0041B6A5 /* CreateIndividualWalletViewController.swift */; };
+		81B58988235DA1FC00816B4E /* NodeStoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9472F8221EB45300F8FEB9 /* NodeStoreService.swift */; };
+		81B58989235DA1FC00816B4E /* PresentationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF9AC112182E04000E97F07 /* PresentationManager.swift */; };
+		81B5898A235DA1FC00816B4E /* GuidanceViewMgr.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A6A7C04233F5A9F003DBEF1 /* GuidanceViewMgr.swift */; };
+		81B5898B235DA1FC00816B4E /* CommunityContentTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811AB2D622F1894B00284F1A /* CommunityContentTableViewCell.swift */; };
+		81B5898C235DA1FC00816B4E /* ValidatorNodeListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8101BDAE22ED6104004A009E /* ValidatorNodeListViewController.swift */; };
+		81B5898D235DA1FC00816B4E /* RealmHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FCCD152179EA0F0052FC29 /* RealmHelper.swift */; };
+		81B5898E235DA1FC00816B4E /* PTSButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D7E24022E7F5610069CDED /* PTSButtonCell.swift */; };
+		81B5898F235DA1FC00816B4E /* DelegateTableStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811AB2C522EEEC5A00284F1A /* DelegateTableStyle.swift */; };
+		81B58990235DA1FC00816B4E /* TransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8115BEAD218B2025009FFE3B /* TransactionCell.swift */; };
+		81B58991235DA1FC00816B4E /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817ABE2121B50C2A00E8030E /* UIApplication+Extensions.swift */; };
+		81B58992235DA1FC00816B4E /* AssetPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FCCD072179E9F10052FC29 /* AssetPersistence.swift */; };
+		81B58993235DA1FC00816B4E /* TransactionService+Centralization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CB8ADA228A9564009E8AA0 /* TransactionService+Centralization.swift */; };
+		81B58994235DA1FC00816B4E /* AssetTransactionViewControllerV060.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ADB60B1222E801C0044918D /* AssetTransactionViewControllerV060.swift */; };
+		81B58995235DA1FC00816B4E /* AppFramework.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FCCCDA2179B3F10052FC29 /* AppFramework.swift */; };
+		81B58996235DA1FC00816B4E /* LeftAlignLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A11FC472181E90C002D9A96 /* LeftAlignLayout.swift */; };
+		81B58997235DA1FC00816B4E /* RemoteVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81926A06231DFEC500CAF498 /* RemoteVersion.swift */; };
+		81B58998235DA1FC00816B4E /* AppDelegate+MonkeyTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81466834232F3B4E00A141D9 /* AppDelegate+MonkeyTest.swift */; };
+		81B58999235DA1FC00816B4E /* WalletManagerDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812A7ED1219EA6A800BE9C1C /* WalletManagerDetailViewController.swift */; };
+		81B5899A235DA1FC00816B4E /* StakingPageTabStripViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8159690222E6FF910085195C /* StakingPageTabStripViewController.swift */; };
+		81B5899B235DA1FC00816B4E /* TransactionDetailHashTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8141E6612338782D001A9351 /* TransactionDetailHashTableViewCell.swift */; };
+		81B5899C235DA1FC00816B4E /* ImportWalletHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ADE4518217F0ADB006F1C81 /* ImportWalletHeaderView.swift */; };
+		81B5899D235DA1FC00816B4E /* UITabBar+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817ABE7D21B776CC00E8030E /* UITabBar+Extensions.swift */; };
+		81B5899E235DA1FC00816B4E /* PropertyReflectable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8115BC4D2188615D009FFE3B /* PropertyReflectable.swift */; };
+		81B5899F235DA1FC00816B4E /* UILabel+Extenstions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819A52242190204500E4C500 /* UILabel+Extenstions.swift */; };
+		81B589A0235DA1FC00816B4E /* BaseImportWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A79A07421956493000EB4C5 /* BaseImportWalletViewController.swift */; };
+		81B589A1235DA1FC00816B4E /* PasswordAuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE3142D2191457300B5433F /* PasswordAuthViewController.swift */; };
+		81B589A2235DA1FC00816B4E /* MJExtensionLoadMoreFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815968E322E5DABF0085195C /* MJExtensionLoadMoreFooterView.swift */; };
+		81B589A3235DA1FC00816B4E /* WalletManagerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A25B99D2186DF9E00B9433A /* WalletManagerTableViewCell.swift */; };
+		81B589A4235DA1FC00816B4E /* PopupDialog+Keyboard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF9AC0D2182E04000E97F07 /* PopupDialog+Keyboard.swift */; };
+		81B589A5235DA1FC00816B4E /* UIViewController+Extenstions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ADE4504217EC8AC006F1C81 /* UIViewController+Extenstions.swift */; };
+		81B589A6235DA1FC00816B4E /* NodePersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E64A58230400F3000F2E7C /* NodePersistence.swift */; };
+		81B589A7235DA1FC00816B4E /* PTSButtonBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D7E24822E7F6270069CDED /* PTSButtonBarView.swift */; };
+		81B589A8235DA1FC00816B4E /* DelegateRecordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D7E26A22E85A370069CDED /* DelegateRecordViewController.swift */; };
+		81B589A9235DA1FC00816B4E /* PPasswordTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ADE4522218009DB006F1C81 /* PPasswordTextField.swift */; };
+		81B589AA235DA1FC00816B4E /* SendInputTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811AB2BC22EED6BB00284F1A /* SendInputTableViewCell.swift */; };
+		81B589AB235DA1FC00816B4E /* WebCommonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F1AFC522FADA2F00A74C00 /* WebCommonViewController.swift */; };
+		81B589AC235DA1FC00816B4E /* TransactionDetailHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818CFA5B22F984DA00565F2D /* TransactionDetailHeaderView.swift */; };
+		81B589AD235DA1FC00816B4E /* DelegatePersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E64A5A2304FA7A000F2E7C /* DelegatePersistence.swift */; };
+		81B589AE235DA1FC00816B4E /* UITextView+AspectsScaling.m in Sources */ = {isa = PBXBuildFile; fileRef = 81806F5B2269BB410072026A /* UITextView+AspectsScaling.m */; };
+		81B589AF235DA1FC00816B4E /* DelegateDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D7E27022E8690A0069CDED /* DelegateDetailViewController.swift */; };
+		81B589B0235DA1FC00816B4E /* SingleButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811AB2C022EEE1D200284F1A /* SingleButtonTableViewCell.swift */; };
+		81B589B1235DA1FC00816B4E /* LanguageSettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812D94BB218FCFF4002A48B0 /* LanguageSettingTableViewCell.swift */; };
+		81B589B2235DA1FC00816B4E /* WallletPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FCCD082179E9F10052FC29 /* WallletPersistence.swift */; };
+		81B589B3235DA1FC00816B4E /* ByteHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812002CF21A417120050E1B0 /* ByteHelper.swift */; };
+		81B589B4235DA1FC00816B4E /* Wallet+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813C340F223A03A800DE92F1 /* Wallet+extension.swift */; };
+		81B589B5235DA1FC00816B4E /* TSLViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813191472235FAC0002D4A72 /* TSLViewController.swift */; };
+		81B589B6235DA1FC00816B4E /* UIViewController+Visibility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF9AC0B2182E04000E97F07 /* UIViewController+Visibility.swift */; };
+		81B589B7235DA1FC00816B4E /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C88E0621746B39005F17F7 /* ViewController.swift */; };
+		81B589B8235DA1FC00816B4E /* QRScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D16B5921832AE200A283AF /* QRScannerViewController.swift */; };
+		81B589B9235DA1FC00816B4E /* OfflineSignatureConfirmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8141E66F2339C80F001A9351 /* OfflineSignatureConfirmView.swift */; };
+		81B589BA235DA1FC00816B4E /* BaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8148F01421BA0E1600045546 /* BaseService.swift */; };
+		81B589BB235DA1FC00816B4E /* WalletBaseInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81ACB9CB2301936D00BB460B /* WalletBaseInfoView.swift */; };
+		81B589BC235DA1FC00816B4E /* ExportToQRCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A25B9AC2187252300B9433A /* ExportToQRCodeViewController.swift */; };
+		81B589BD235DA1FC00816B4E /* VerifyMnemonicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD11DE32181BC6F002CD905 /* VerifyMnemonicViewController.swift */; };
+		81B589BE235DA1FC00816B4E /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EE99EC217709FA008DF8CB /* BaseViewController.swift */; };
+		81B589BF235DA1FC00816B4E /* SharedPresentedVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81515BCE21C774D600054197 /* SharedPresentedVC.swift */; };
+		81B589C0235DA1FC00816B4E /* PTSBaseButtonBarPagerTabStripViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D7E25622E7F7190069CDED /* PTSBaseButtonBarPagerTabStripViewController.swift */; };
+		81B589C1235DA1FC00816B4E /* AssetFeeViewV060.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ADB60C7223106710044918D /* AssetFeeViewV060.swift */; };
+		81B589C2235DA1FC00816B4E /* MJRefreshStateHeader+Localize.m in Sources */ = {isa = PBXBuildFile; fileRef = 81C98FC422A5224F004B1668 /* MJRefreshStateHeader+Localize.m */; };
+		81B589C3235DA1FC00816B4E /* PresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF9AC042182E04000E97F07 /* PresentationController.swift */; };
+		81B589C4235DA1FC00816B4E /* CopyButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8115BC4A2188444E009FFE3B /* CopyButton.swift */; };
+		81B589C5235DA1FC00816B4E /* TransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF9AC0C2182E04000E97F07 /* TransitionAnimator.swift */; };
+		81B589C6235DA1FC00816B4E /* PopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818D74F421845D2500EB1402 /* PopUpViewController.swift */; };
+		81B589C7235DA1FC00816B4E /* PopupDialogButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF9AC0A2182E04000E97F07 /* PopupDialogButton.swift */; };
+		81B589C8235DA1FC00816B4E /* DoubtTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811AB2C222EEE30600284F1A /* DoubtTableViewCell.swift */; };
+		81B589C9235DA1FC00816B4E /* AnalysisHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A76E5222307F37A00E0B79A /* AnalysisHelper.swift */; };
+		81B589CA235DA1FC00816B4E /* MyDelegatesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D7E25D22E802200069CDED /* MyDelegatesViewController.swift */; };
+		81B589CB235DA1FC00816B4E /* AssetSendViewControllerV060.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ADB60B5222E806B0044918D /* AssetSendViewControllerV060.swift */; };
+		81B589CC235DA1FC00816B4E /* UIView+Animations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF9AC062182E04000E97F07 /* UIView+Animations.swift */; };
+		81B589CD235DA1FC00816B4E /* AssetVCSharedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8193340022408DDC00DCFD93 /* AssetVCSharedData.swift */; };
+		81B589CE235DA1FC00816B4E /* AddressInfoPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E2E8532186B92E008B7504 /* AddressInfoPersistence.swift */; };
+		81B589CF235DA1FC00816B4E /* NodeInfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811AB2BA22EED5EA00284F1A /* NodeInfoTableViewCell.swift */; };
+		81B589D0235DA1FC00816B4E /* BiometricsAuthViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE3142921912BD300B5433F /* BiometricsAuthViewController.swift */; };
+		81B589D1235DA1FC00816B4E /* SharedWalletMemberCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812A7ED6219EA6A800BE9C1C /* SharedWalletMemberCell.swift */; };
+		81B589D2235DA1FC00816B4E /* SwitchWalletTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8120028F21A3EB390050E1B0 /* SwitchWalletTableViewCell.swift */; };
+		81B589D3235DA1FC00816B4E /* PersonalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FCCCEE2179B6710052FC29 /* PersonalViewController.swift */; };
+		81B589D4235DA1FC00816B4E /* PopupDialog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF9AC082182E04000E97F07 /* PopupDialog.swift */; };
+		81B589D5235DA1FC00816B4E /* MnemonicGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81718D8C22312F9C00DB04F6 /* MnemonicGridView.swift */; };
+		81B589D6235DA1FC00816B4E /* AssetNavigationBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FCCCE02179B6710052FC29 /* AssetNavigationBarView.swift */; };
+		81B589D7235DA1FC00816B4E /* TransactionListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8115BEAB218B1DDA009FFE3B /* TransactionListViewController.swift */; };
+		81B589D8235DA1FC00816B4E /* UIButton+AspectsScaling.m in Sources */ = {isa = PBXBuildFile; fileRef = 81806F522269B7A00072026A /* UIButton+AspectsScaling.m */; };
+		81B589D9235DA1FC00816B4E /* CreateWalletSuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ADE4506217ED02E006F1C81 /* CreateWalletSuccessViewController.swift */; };
+		81B589DA235DA1FC00816B4E /* TransferSwitchWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8120029221A3EB390050E1B0 /* TransferSwitchWallet.swift */; };
+		81B589DB235DA1FC00816B4E /* WalletEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A25B9B92189B09200B9433A /* WalletEmptyView.swift */; };
+		81B589DC235DA1FC00816B4E /* LaunchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819A522F2190623400E4C500 /* LaunchViewController.swift */; };
+		81B589DD235DA1FC00816B4E /* MyDelegateViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D7E26022E8040D0069CDED /* MyDelegateViewCell.swift */; };
+		81B589DE235DA1FC00816B4E /* AssetViewControllerV060.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ADB60A7222E62570044918D /* AssetViewControllerV060.swift */; };
+		81B589DF235DA1FC00816B4E /* Web3Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818A913A2181B7DF00D03D57 /* Web3Helper.swift */; };
+		81B589E0235DA1FC00816B4E /* WalletListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A831AE9224CAD1B00C91C72 /* WalletListViewController.swift */; };
+		81B589E1235DA1FC00816B4E /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8115BEA4218AC9A5009FFE3B /* Notifications.swift */; };
+		81B589E2235DA1FC00816B4E /* TableViewNoDataPlaceHolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812D94B1218C3221002A48B0 /* TableViewNoDataPlaceHolder.swift */; };
+		81B589E3235DA1FC00816B4E /* AssetReceiveViewControllerV060.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ADB60B9222E809F0044918D /* AssetReceiveViewControllerV060.swift */; };
+		81B589E4235DA1FC00816B4E /* AssetTableHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FCCCE12179B6710052FC29 /* AssetTableHeader.swift */; };
+		81B589E5235DA1FC00816B4E /* NodeDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811AB2AE22EE8CB100284F1A /* NodeDetailViewController.swift */; };
+		81B589E6235DA1FC00816B4E /* TransactionQrcode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8141E673233A1C7D001A9351 /* TransactionQrcode.swift */; };
+		81B589E7235DA1FC00816B4E /* StakingLabelViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8159690822E70A430085195C /* StakingLabelViewCell.swift */; };
+		81B589E8235DA1FC00816B4E /* CustomPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A79A08B219BCA74000EB4C5 /* CustomPickerView.swift */; };
+		81B589E9235DA1FC00816B4E /* PasswordStrengthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A25B9B0218805D800B9433A /* PasswordStrengthView.swift */; };
+		81B589EA235DA1FC00816B4E /* UITextField+AspectsScaling.m in Sources */ = {isa = PBXBuildFile; fileRef = 81806F582269BB2C0072026A /* UITextField+AspectsScaling.m */; };
+		81B589EB235DA1FC00816B4E /* MainTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FCCCF02179B6710052FC29 /* MainTabBarViewController.swift */; };
+		81B589EC235DA1FC00816B4E /* SettingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE31415218BEE1D00B5433F /* SettingTableViewController.swift */; };
+		81B589ED235DA1FC00816B4E /* WalletSelectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE3143621917C3600B5433F /* WalletSelectionTableViewCell.swift */; };
+		81B589EE235DA1FC00816B4E /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8141E66B2338EBE3001A9351 /* NetworkManager.swift */; };
+		81B589EF235DA1FC00816B4E /* QRCodeDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8141E677233CA673001A9351 /* QRCodeDecoder.swift */; };
+		81B589F0235DA1FC00816B4E /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C88E0421746B39005F17F7 /* AppDelegate.swift */; };
+		81B589F1235DA1FC00816B4E /* ATextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811AB2BE22EED79A00284F1A /* ATextFieldView.swift */; };
+		81B589F2235DA1FC00816B4E /* PTSPagerTabStripViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D7E25422E7F6E80069CDED /* PTSPagerTabStripViewController.swift */; };
+		81B589F3235DA1FC00816B4E /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E2E85D2186E2C5008B7504 /* String+Extensions.swift */; };
+		81B589F4235DA1FC00816B4E /* BigUInt+Extenstions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E2E86321870956008B7504 /* BigUInt+Extenstions.swift */; };
+		81B589F5235DA1FC00816B4E /* DelegateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81DA58DD22FD137D001734B7 /* DelegateModel.swift */; };
+		81B589F6235DA1FC00816B4E /* Array+sort.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812489E221BF4D2A000C2F03 /* Array+sort.swift */; };
+		81B589F7235DA1FC00816B4E /* NodeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8101BDB022EDE129004A009E /* NodeTableViewCell.swift */; };
+		81B589F8235DA1FC00816B4E /* MyDelegateNoDataView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D7E26822E856B90069CDED /* MyDelegateNoDataView.swift */; };
+		81B589F9235DA1FC00816B4E /* LocalizationProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819A5220218FF45400E4C500 /* LocalizationProtocol.swift */; };
+		81B589FA235DA1FC00816B4E /* CommonConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F0DC91234B162C00325858 /* CommonConfig.swift */; };
+		81B589FB235DA1FC00816B4E /* Keystore.Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A56557A217578EA002A1F6C /* Keystore.Crypto.swift */; };
+		81B589FC235DA1FC00816B4E /* WalletUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A56557E21772DE2002A1F6C /* WalletUtil.swift */; };
+		81B589FD235DA1FC00816B4E /* Balance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E64A6123055070000F2E7C /* Balance.swift */; };
+		81B589FE235DA1FC00816B4E /* AddressBookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E2E8482186A5EE008B7504 /* AddressBookViewController.swift */; };
+		81B589FF235DA1FC00816B4E /* Keystore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD67AAD21748B2900A8432F /* Keystore.swift */; };
+		81B58A00235DA1FC00816B4E /* ServiceAgreementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814CB817231118630029B2E4 /* ServiceAgreementViewController.swift */; };
+		81B58A01235DA1FC00816B4E /* NodeInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE31421218C218100B5433F /* NodeInfo.swift */; };
+		81B58A02235DA1FC00816B4E /* WalletService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD67AA92174811300A8432F /* WalletService.swift */; };
+		81B58A03235DA1FC00816B4E /* AssetService+Centralization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813D1FF72306A7AF00EFA397 /* AssetService+Centralization.swift */; };
+		81B58A04235DA1FC00816B4E /* ExportPrivateKeyOrKeystoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A25B9A62187090F00B9433A /* ExportPrivateKeyOrKeystoreViewController.swift */; };
+		81B58A05235DA1FC00816B4E /* UIDevice+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819A52312190661D00E4C500 /* UIDevice+Extensions.swift */; };
+		81B58A06235DA1FC00816B4E /* NodeSettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE3141C218BFAC600B5433F /* NodeSettingTableViewCell.swift */; };
+		81B58A07235DA1FC00816B4E /* MyDelegateFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D7E26622E840A30069CDED /* MyDelegateFooterView.swift */; };
+		81B58A08235DA1FC00816B4E /* DropdownListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811AB2DD22F1C5EE00284F1A /* DropdownListView.swift */; };
+		81B58A09235DA1FC00816B4E /* WalletCreateOrImportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ADE44E8217D78DD006F1C81 /* WalletCreateOrImportViewController.swift */; };
+		81B58A0A235DA1FC00816B4E /* ImportMnemonicOrPrivateKeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ADE451E2180074C006F1C81 /* ImportMnemonicOrPrivateKeyViewController.swift */; };
+		81B58A0B235DA1FC00816B4E /* WalletCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8141E6692338E607001A9351 /* WalletCollectionViewCell.swift */; };
+		81B58A0C235DA1FC00816B4E /* SharedQRView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81515BCA21C74E8400054197 /* SharedQRView.swift */; };
+		81B58A0D235DA1FC00816B4E /* Date+Extenstions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818A913E2181E6BA00D03D57 /* Date+Extenstions.swift */; };
+		81B58A0E235DA1FC00816B4E /* PTSBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D7E24A22E7F6430069CDED /* PTSBarView.swift */; };
+		81B58A0F235DA1FC00816B4E /* DelegateRecordMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D7E26C22E85B4C0069CDED /* DelegateRecordMainViewController.swift */; };
+		81B58A10235DA1FC00816B4E /* NodeSettingViewControllerV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1F87B822014FD70002BE67 /* NodeSettingViewControllerV2.swift */; };
+		81B58A11235DA1FC00816B4E /* AddWalletMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A25B9B4218850B600B9433A /* AddWalletMenuViewController.swift */; };
+		81B58A12235DA1FC00816B4E /* NSDecimal+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818A91402182C23300D03D57 /* NSDecimal+Swift.swift */; };
+		81B58A13235DA1FC00816B4E /* NodeInfoPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE31423218C27D400B5433F /* NodeInfoPersistence.swift */; };
+		81B58A14235DA1FC00816B4E /* TransactionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CB8ADC228EA99B009E8AA0 /* TransactionResponse.swift */; };
+		81B58A15235DA1FC00816B4E /* DropDownVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813C3411223A327300DE92F1 /* DropDownVIew.swift */; };
+		81B58A16235DA1FC00816B4E /* MainImportWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ADE4516217F0801006F1C81 /* MainImportWalletViewController.swift */; };
+		81B58A17235DA1FC00816B4E /* TransferPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FCCD062179E9F10052FC29 /* TransferPersistence.swift */; };
+		81B58A18235DA1FC00816B4E /* PopupDialogDefaultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF9AC072182E04000E97F07 /* PopupDialogDefaultView.swift */; };
+		81B58A19235DA1FC00816B4E /* CommunityCellStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811AB2DB22F18FB900284F1A /* CommunityCellStyle.swift */; };
+		81B58A1A235DA1FC00816B4E /* QuickSaveAddressButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E072B5223A5DD1003F6A28 /* QuickSaveAddressButton.swift */; };
+		81B58A1B235DA1FC00816B4E /* StakingService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81200D4A22FBF29D002E2944 /* StakingService.swift */; };
+		81B58A1C235DA1FC00816B4E /* UINavigationItem+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819A522C2190367300E4C500 /* UINavigationItem+Extensions.swift */; };
+		81B58A1D235DA1FC00816B4E /* AlertStylePopViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E072B7223A8359003F6A28 /* AlertStylePopViewController.swift */; };
+		81B58A1E235DA1FC00816B4E /* PopupDialogDefaultViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF9AC0E2182E04000E97F07 /* PopupDialogDefaultViewController.swift */; };
+		81B58A1F235DA1FC00816B4E /* TSLXIBViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8131914D2235FB48002D4A72 /* TSLXIBViewController.swift */; };
+		81B58A20235DA1FC00816B4E /* WalletBalanceTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811AB2B822EED04A00284F1A /* WalletBalanceTableViewCell.swift */; };
+		81B58A21235DA1FC00816B4E /* RealmHelper+Migration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B58963235D92FD00816B4E /* RealmHelper+Migration.swift */; };
+		81B58A22235DA1FC00816B4E /* SettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E2E84421869D1F008B7504 /* SettingTableViewCell.swift */; };
+		81B58A23235DA1FC00816B4E /* PlatonTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812D94AF218C3168002A48B0 /* PlatonTableView.swift */; };
+		81B58A24235DA1FC00816B4E /* PButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EE99CE2175F4E1008DF8CB /* PButton.swift */; };
+		81B58A25235DA1FC00816B4E /* PLevelSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ADB60C1222F95C40044918D /* PLevelSlider.swift */; };
+		81B58A26235DA1FC00816B4E /* CommunityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811AB2D822F18EAA00284F1A /* CommunityViewController.swift */; };
+		81B58A27235DA1FC00816B4E /* StakingMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 815968FC22E6F58F0085195C /* StakingMainViewController.swift */; };
+		81B58A28235DA1FC00816B4E /* UIStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EE99C52175E563008DF8CB /* UIStyle.swift */; };
+		81B58A29235DA1FC00816B4E /* PTSSwipeDirection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D7E24422E7F5D70069CDED /* PTSSwipeDirection.swift */; };
+		81B58A2A235DA1FC00816B4E /* SharedCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814980F721913AA7009F99EE /* SharedCollectionViewCell.swift */; };
+		81B58A2B235DA1FC00816B4E /* QRDisplayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818D74ED21843A8900EB1402 /* QRDisplayViewController.swift */; };
+		81B58A2C235DA1FC00816B4E /* WalletTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811AB2B622EECDEF00284F1A /* WalletTableViewCell.swift */; };
+		81B58A2D235DA1FC00816B4E /* UILabel+Aspects.m in Sources */ = {isa = PBXBuildFile; fileRef = 81806F552269B9830072026A /* UILabel+Aspects.m */; };
+		81B58A2E235DA1FC00816B4E /* PopupDialogContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF9AC122182E04000E97F07 /* PopupDialogContainerView.swift */; };
+		81B58A2F235DA1FC00816B4E /* PopupDialogOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF9AC092182E04000E97F07 /* PopupDialogOverlayView.swift */; };
+		81B58A30235DA1FC00816B4E /* SettingFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814980FB2191714D009F99EE /* SettingFooter.swift */; };
+		81B58A31235DA1FC00816B4E /* QRCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818D74E92184347D00EB1402 /* QRCodeView.swift */; };
+		81B58A32235DA1FC00816B4E /* UIView+Extenstions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FCCCD8217970580052FC29 /* UIView+Extenstions.swift */; };
+		81B58A33235DA1FC00816B4E /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EE9A0521773B7F008DF8CB /* BaseNavigationController.swift */; };
+		81B58A34235DA1FC00816B4E /* TransferConfirmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8120029521A3EB390050E1B0 /* TransferConfirmView.swift */; };
+		81B58A35235DA1FC00816B4E /* CommonService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD11DDC21806C2D002CD905 /* CommonService.swift */; };
+		81B58A36235DA1FC00816B4E /* UIScrollView+GestureConflict.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B58960235AE2CC00816B4E /* UIScrollView+GestureConflict.swift */; };
+		81B58A37235DA1FC00816B4E /* AddressBookTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E2E84A2186A811008B7504 /* AddressBookTableViewCell.swift */; };
+		81B58A38235DA1FC00816B4E /* NodeModel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81ACB9C92301371900BB460B /* NodeModel+Extension.swift */; };
+		81B58A39235DA1FC00816B4E /* AssetHeaderViewV060.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ADB60A9222E637C0044918D /* AssetHeaderViewV060.swift */; };
+		81B58A3A235DA1FC00816B4E /* PTSPagerTabStripError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D7E25022E7F6B10069CDED /* PTSPagerTabStripError.swift */; };
+		81B58A3B235DA1FC00816B4E /* NodeModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811AB2D222F16B9800284F1A /* NodeModel.swift */; };
+		81B58A3C235DA1FC00816B4E /* PTSButtonBarPagerTabStripViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D7E25822E7F7400069CDED /* PTSButtonBarPagerTabStripViewController.swift */; };
+		81B58A3D235DA1FC00816B4E /* UINavigationController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814CB8152310E0BF0029B2E4 /* UINavigationController+Extensions.swift */; };
+		81B58A3E235DA1FC00816B4E /* UIColor+Extenstions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EE99CA2175E6B8008DF8CB /* UIColor+Extenstions.swift */; };
+		81B58A3F235DA1FC00816B4E /* BackupMnemonicViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD11DDF218171CA002CD905 /* BackupMnemonicViewController.swift */; };
+		81B58A40235DA1FC00816B4E /* PTSBarPagerTabStripViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D7E25222E7F6CD0069CDED /* PTSBarPagerTabStripViewController.swift */; };
+		81B58A41235DA1FC00816B4E /* UIImageView+Calculations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF9AC052182E04000E97F07 /* UIImageView+Calculations.swift */; };
+		81B58A42235DA1FC00816B4E /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8156664521C1ECA3000E02D4 /* AboutViewController.swift */; };
+		81B58A43235DA1FC00816B4E /* TransactionDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818CFA5922F954B400565F2D /* TransactionDetailTableViewCell.swift */; };
+		81B58A44235DA1FC00816B4E /* NodeBaseInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811AB2B022EE9FAA00284F1A /* NodeBaseInfoView.swift */; };
+		81B58A45235DA1FC00816B4E /* NSBundle+Hook_MJ.m in Sources */ = {isa = PBXBuildFile; fileRef = 81C98FC722A5279E004B1668 /* NSBundle+Hook_MJ.m */; };
+		81B58A46235DA1FC00816B4E /* WithDrawViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811AB2B222EECBEC00284F1A /* WithDrawViewController.swift */; };
+		81B58A47235DA1FC00816B4E /* Transaction+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81ACB9CD2302A59300BB460B /* Transaction+Extension.swift */; };
+		81B58A48235DA1FC00816B4E /* UIButton+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ADE450B217ED3DC006F1C81 /* UIButton+Extensions.swift */; };
+		81B58A49235DA1FC00816B4E /* TransitionAnimations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF9AC0F2182E04000E97F07 /* TransitionAnimations.swift */; };
+		81B58A4A235DA1FC00816B4E /* PopupDialogDefaultButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF9AC102182E04000E97F07 /* PopupDialogDefaultButtons.swift */; };
+		81B58A4B235DA1FC00816B4E /* LanguageSettingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812D94B9218FCD67002A48B0 /* LanguageSettingVC.swift */; };
+		81B58A4C235DA1FC00816B4E /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FCCCFD2179C5FB0052FC29 /* Transaction.swift */; };
+		81B58A4D235DA1FC00816B4E /* DelegateRecordTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D7E26E22E861FF0069CDED /* DelegateRecordTableViewCell.swift */; };
+		81B58A4E235DA1FC00816B4E /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818A9135217F59E600D03D57 /* File.swift */; };
+		81B58A4F235DA1FC00816B4E /* AssetSectionViewV060.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ADB60AF222E723C0044918D /* AssetSectionViewV060.swift */; };
+		81B58A50235DA1FC00816B4E /* PTSPagerTabStripBehaviour.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D7E24C22E7F6750069CDED /* PTSPagerTabStripBehaviour.swift */; };
+		81B58A51235DA1FC00816B4E /* XibView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814B8C22217755DD00C97E48 /* XibView.swift */; };
+		81B58A52235DA1FC00816B4E /* CreateImportCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8141E66D2338F8F4001A9351 /* CreateImportCollectionViewCell.swift */; };
+		81B58A53235DA1FC00816B4E /* PTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ADB60BD222E87130044918D /* PTextFieldView.swift */; };
+		81B58A54235DA1FC00816B4E /* AssetService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FCCD0E2179E9F20052FC29 /* AssetService.swift */; };
+		81B58A55235DA1FC00816B4E /* CommunityNameTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811AB2D422F1892A00284F1A /* CommunityNameTableViewCell.swift */; };
+		81B58A56235DA1FC00816B4E /* WalletDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8120027721A3BD520050E1B0 /* WalletDetailCell.swift */; };
+		81B58A57235DA1FC00816B4E /* AddressInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E2E84E2186AEAF008B7504 /* AddressInfo.swift */; };
+		81B58A58235DA1FC00816B4E /* TransactionDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8120029121A3EB390050E1B0 /* TransactionDetailViewController.swift */; };
+		81B58A59235DA1FC00816B4E /* LicenseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF9AC2A2183252600E97F07 /* LicenseViewController.swift */; };
+		81B58A5A235DA1FC00816B4E /* CommonUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EE99C82175E665008DF8CB /* CommonUtilities.swift */; };
+		81B58A5B235DA1FC00816B4E /* NodeAboutDelegateTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D7E27222E869A90069CDED /* NodeAboutDelegateTableViewCell.swift */; };
+		81B58A5C235DA1FC00816B4E /* UIBarItem+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819A522821902E7E00E4C500 /* UIBarItem+Extensions.swift */; };
+		81B58A5E235DA1FC00816B4E /* Pods_platonWallet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D427B78BFE8D21222DD020CB /* Pods_platonWallet.framework */; };
+		81B58A60235DA1FC00816B4E /* TableViewNoDataPlaceHolder.xib in Resources */ = {isa = PBXBuildFile; fileRef = 812D94B3218C3229002A48B0 /* TableViewNoDataPlaceHolder.xib */; };
+		81B58A61235DA1FC00816B4E /* PasswordAuthViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AE3142E2191457300B5433F /* PasswordAuthViewController.xib */; };
+		81B58A62235DA1FC00816B4E /* AssetNavigationBarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 81FCCCE22179B6710052FC29 /* AssetNavigationBarView.xib */; };
+		81B58A63235DA1FC00816B4E /* PLevelSlider.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9ADB60C3222F99E40044918D /* PLevelSlider.xib */; };
+		81B58A64235DA1FC00816B4E /* ExportToPlainTextViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A25B9A921870FA700B9433A /* ExportToPlainTextViewController.xib */; };
+		81B58A65235DA1FC00816B4E /* TransferDetailView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8120029021A3EB390050E1B0 /* TransferDetailView.xib */; };
+		81B58A66235DA1FC00816B4E /* BiometricsAuthViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AE3142A21912BD300B5433F /* BiometricsAuthViewController.xib */; };
+		81B58A67235DA1FC00816B4E /* PlatON_network.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 81E64A5D230528F3000F2E7C /* PlatON_network.jpg */; };
+		81B58A68235DA1FC00816B4E /* AssetHeaderViewV060.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9ADB60AB222E63940044918D /* AssetHeaderViewV060.xib */; };
+		81B58A69235DA1FC00816B4E /* AddressBookTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 81E2E84B2186A811008B7504 /* AddressBookTableViewCell.xib */; };
+		81B58A6A235DA1FC00816B4E /* PlatON-Alita.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 81E64A5E230528F3000F2E7C /* PlatON-Alita.jpg */; };
+		81B58A6B235DA1FC00816B4E /* TransferSwitchWallet.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8120029421A3EB390050E1B0 /* TransferSwitchWallet.xib */; };
+		81B58A6C235DA1FC00816B4E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81C88E0D21746B3B005F17F7 /* LaunchScreen.storyboard */; };
+		81B58A6D235DA1FC00816B4E /* TransferConfirmView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8120029721A3EB390050E1B0 /* TransferConfirmView.xib */; };
+		81B58A6E235DA1FC00816B4E /* AddAddressInfoView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 81E2E8592186BAA0008B7504 /* AddAddressInfoView.xib */; };
+		81B58A6F235DA1FC00816B4E /* ImportKeystoreViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9ADE451B217F24D5006F1C81 /* ImportKeystoreViewController.xib */; };
+		81B58A70235DA1FC00816B4E /* QRCodeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 818D74EB2184349000EB1402 /* QRCodeView.xib */; };
+		81B58A71235DA1FC00816B4E /* CustomPickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A79A08D219BCA89000EB4C5 /* CustomPickerView.xib */; };
+		81B58A72235DA1FC00816B4E /* LanguageSettingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 812D94BC218FCFF4002A48B0 /* LanguageSettingTableViewCell.xib */; };
+		81B58A73235DA1FC00816B4E /* AssetSectionViewV060.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9ADB60AD222E72260044918D /* AssetSectionViewV060.xib */; };
+		81B58A74235DA1FC00816B4E /* PasswordStrengthView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A25B9B22188060E00B9433A /* PasswordStrengthView.xib */; };
+		81B58A75235DA1FC00816B4E /* SettingFooter.xib in Resources */ = {isa = PBXBuildFile; fileRef = 814980FD2191715A009F99EE /* SettingFooter.xib */; };
+		81B58A76235DA1FC00816B4E /* BackupMnemonicViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AD11DE0218171CA002CD905 /* BackupMnemonicViewController.xib */; };
+		81B58A77235DA1FC00816B4E /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 81EE99C021757E40008DF8CB /* Localizable.strings */; };
+		81B58A78235DA1FC00816B4E /* AssetSendViewControllerV060.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9ADB60B6222E806B0044918D /* AssetSendViewControllerV060.xib */; };
+		81B58A79235DA1FC00816B4E /* PTSButtonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 81D7E24122E7F5610069CDED /* PTSButtonCell.xib */; };
+		81B58A7A235DA1FC00816B4E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 81C88E0B21746B3B005F17F7 /* Assets.xcassets */; };
+		81B58A7B235DA1FC00816B4E /* WalletEmptyView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A25B9BB2189B0A200B9433A /* WalletEmptyView.xib */; };
+		81B58A7C235DA1FC00816B4E /* VerifyMnemonicViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AD11DE42181BC6F002CD905 /* VerifyMnemonicViewController.xib */; };
+		81B58A7D235DA1FC00816B4E /* PTextFieldView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9ADB60BF222E88630044918D /* PTextFieldView.xib */; };
+		81B58A7E235DA1FC00816B4E /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8156664621C1ECA3000E02D4 /* AboutViewController.xib */; };
+		81B58A7F235DA1FC00816B4E /* TSLXIBViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8131914E2235FB48002D4A72 /* TSLXIBViewController.xib */; };
+		81B58A80235DA1FC00816B4E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81C88E0821746B39005F17F7 /* Main.storyboard */; };
+		81B58A81235DA1FC00816B4E /* LicenseViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AF9AC2B2183252600E97F07 /* LicenseViewController.xib */; };
+		81B58A82235DA1FC00816B4E /* WalletDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8120027821A3BD520050E1B0 /* WalletDetailCell.xib */; };
+		81B58A83235DA1FC00816B4E /* SharedCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 814980F821913AA7009F99EE /* SharedCollectionViewCell.xib */; };
+		81B58A84235DA1FC00816B4E /* NodeSettingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AE3141D218BFAC600B5433F /* NodeSettingTableViewCell.xib */; };
+		81B58A85235DA1FC00816B4E /* SharedQRView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 81515BCC21C74E9000054197 /* SharedQRView.xib */; };
+		81B58A86235DA1FC00816B4E /* WalletManagerDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 812A7ED0219EA6A800BE9C1C /* WalletManagerDetailViewController.xib */; };
+		81B58A87235DA1FC00816B4E /* CreateWalletSuccessViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9ADE450D217EEB69006F1C81 /* CreateWalletSuccessViewController.xib */; };
+		81B58A88235DA1FC00816B4E /* WalletSelectionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AE3143721917C3600B5433F /* WalletSelectionTableViewCell.xib */; };
+		81B58A89235DA1FC00816B4E /* MnemonicGridView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 81718D8E22312FB100DB04F6 /* MnemonicGridView.xib */; };
+		81B58A8A235DA1FC00816B4E /* ExportToQRCodeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A25B9AD2187252300B9433A /* ExportToQRCodeViewController.xib */; };
+		81B58A8B235DA1FC00816B4E /* AlertStylePopViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 81E072B8223A8359003F6A28 /* AlertStylePopViewController.xib */; };
+		81B58A8C235DA1FC00816B4E /* WalletCreateOrImportViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9ADE44EA217D792A006F1C81 /* WalletCreateOrImportViewController.xib */; };
+		81B58A8D235DA1FC00816B4E /* ImportMnemonicOrPrivateKeyViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9ADE451F2180074C006F1C81 /* ImportMnemonicOrPrivateKeyViewController.xib */; };
+		81B58A8E235DA1FC00816B4E /* AssetReceiveViewControllerV060.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9ADB60BA222E809F0044918D /* AssetReceiveViewControllerV060.xib */; };
+		81B58A8F235DA1FC00816B4E /* AssetFeeViewV060.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9ADB60C5223103B10044918D /* AssetFeeViewV060.xib */; };
+		81B58A90235DA1FC00816B4E /* TransactionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8115BEAE218B2025009FFE3B /* TransactionCell.xib */; };
+		81B58A91235DA1FC00816B4E /* AssetTransactionViewControllerV060.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9ADB60B2222E801C0044918D /* AssetTransactionViewControllerV060.xib */; };
+		81B58A92235DA1FC00816B4E /* SettingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 81E2E84521869D1F008B7504 /* SettingTableViewCell.xib */; };
+		81B58A93235DA1FC00816B4E /* WalletManagerTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A25B99E2186DF9E00B9433A /* WalletManagerTableViewCell.xib */; };
+		81B58A94235DA1FC00816B4E /* SharedWalletMemberCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 812A7ED7219EA6A800BE9C1C /* SharedWalletMemberCell.xib */; };
+		81B58A95235DA1FC00816B4E /* SwitchWalletTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8120029621A3EB390050E1B0 /* SwitchWalletTableViewCell.xib */; };
+		81B58A96235DA1FC00816B4E /* CreateIndividualWalletViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9ADE44FE217DD591006F1C81 /* CreateIndividualWalletViewController.xib */; };
 		81B5CE71224332C500ACFE96 /* UITextFieldWithSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B5CE70224332C500ACFE96 /* UITextFieldWithSearch.swift */; };
 		81C88E0521746B39005F17F7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C88E0421746B39005F17F7 /* AppDelegate.swift */; };
 		81C88E0721746B39005F17F7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C88E0621746B39005F17F7 /* ViewController.swift */; };
@@ -415,6 +717,7 @@
 		8141E671233A15B2001A9351 /* OfflineSignatureTransactionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineSignatureTransactionViewController.swift; sourceTree = "<group>"; };
 		8141E673233A1C7D001A9351 /* TransactionQrcode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionQrcode.swift; sourceTree = "<group>"; };
 		8141E677233CA673001A9351 /* QRCodeDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeDecoder.swift; sourceTree = "<group>"; };
+		81437A43235DA5BD00499623 /* platonWallet copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "platonWallet copy-Info.plist"; path = "/Users/ned/Documents/yuham/ios/platon/ATON-iOS/source/platonWallet copy-Info.plist"; sourceTree = "<absolute>"; };
 		81466834232F3B4E00A141D9 /* AppDelegate+MonkeyTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+MonkeyTest.swift"; sourceTree = "<group>"; };
 		8146683A232F986C00A141D9 /* nodelist.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = nodelist.json; sourceTree = "<group>"; };
 		8146683C232FA94300A141D9 /* listDelegateGroupByAddr.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = listDelegateGroupByAddr.json; sourceTree = "<group>"; };
@@ -487,6 +790,9 @@
 		81ACB9CD2302A59300BB460B /* Transaction+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Transaction+Extension.swift"; sourceTree = "<group>"; };
 		81B5895E2356F79000816B4E /* UIButton+Event.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Event.swift"; sourceTree = "<group>"; };
 		81B58960235AE2CC00816B4E /* UIScrollView+GestureConflict.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+GestureConflict.swift"; sourceTree = "<group>"; };
+		81B58963235D92FD00816B4E /* RealmHelper+Migration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RealmHelper+Migration.swift"; sourceTree = "<group>"; };
+		81B58A9D235DA1FC00816B4E /* platonWalletUAT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = platonWalletUAT.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		81B58A9E235DA1FD00816B4E /* platonWalletUAT-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "platonWalletUAT-Info.plist"; path = "/Users/ned/Documents/yuham/ios/platon/ATON-iOS/source/platonWalletUAT-Info.plist"; sourceTree = "<absolute>"; };
 		81B5CE70224332C500ACFE96 /* UITextFieldWithSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldWithSearch.swift; sourceTree = "<group>"; };
 		81C1120D21AFBFDE00003E59 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		81C88E0121746B39005F17F7 /* platonWallet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = platonWallet.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -689,6 +995,14 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		81B58A5D235DA1FC00816B4E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				81B58A5E235DA1FC00816B4E /* Pods_platonWallet.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		81C88DFE21746B39005F17F7 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -985,6 +1299,14 @@
 			path = Launch;
 			sourceTree = "<group>";
 		};
+		81B58962235D92C800816B4E /* Migration */ = {
+			isa = PBXGroup;
+			children = (
+				81B58963235D92FD00816B4E /* RealmHelper+Migration.swift */,
+			);
+			path = Migration;
+			sourceTree = "<group>";
+		};
 		81C88DF821746B39005F17F7 = {
 			isa = PBXGroup;
 			children = (
@@ -994,6 +1316,8 @@
 				81C88E0221746B39005F17F7 /* Products */,
 				A0CD6C6641A0A126F2A0DAAC /* Pods */,
 				A14CE8F011E34CAD2F0E56F0 /* Frameworks */,
+				81B58A9E235DA1FD00816B4E /* platonWalletUAT-Info.plist */,
+				81437A43235DA5BD00499623 /* platonWallet copy-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1003,6 +1327,7 @@
 				81C88E0121746B39005F17F7 /* platonWallet.app */,
 				81C88E1521746B3B005F17F7 /* platonWalletUITests.xctest */,
 				9ADE44DC217B1C64006F1C81 /* platonWalletTests.xctest */,
+				81B58A9D235DA1FC00816B4E /* platonWalletUAT.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1395,6 +1720,7 @@
 		81FCCD052179E9F10052FC29 /* Persistence */ = {
 			isa = PBXGroup;
 			children = (
+				81B58962235D92C800816B4E /* Migration */,
 				81FCCD062179E9F10052FC29 /* TransferPersistence.swift */,
 				81FCCD072179E9F10052FC29 /* AssetPersistence.swift */,
 				81FCCD082179E9F10052FC29 /* WallletPersistence.swift */,
@@ -1674,6 +2000,27 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		81B58965235DA1FC00816B4E /* platonWalletUAT */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 81B58A9A235DA1FC00816B4E /* Build configuration list for PBXNativeTarget "platonWalletUAT" */;
+			buildPhases = (
+				81B58966235DA1FC00816B4E /* [CP] Check Pods Manifest.lock */,
+				81B58967235DA1FC00816B4E /* Sources */,
+				81B58A5D235DA1FC00816B4E /* Frameworks */,
+				81B58A5F235DA1FC00816B4E /* Resources */,
+				81B58A97235DA1FC00816B4E /* [CP] Embed Pods Frameworks */,
+				81B58A98235DA1FC00816B4E /* [CP] Copy Pods Resources */,
+				81B58A99235DA1FC00816B4E /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = platonWalletUAT;
+			productName = platonWallet;
+			productReference = 81B58A9D235DA1FC00816B4E /* platonWalletUAT.app */;
+			productType = "com.apple.product-type.application";
+		};
 		81C88E0021746B39005F17F7 /* platonWallet */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 81C88E1E21746B3B005F17F7 /* Build configuration list for PBXNativeTarget "platonWallet" */;
@@ -1775,11 +2122,74 @@
 				81C88E0021746B39005F17F7 /* platonWallet */,
 				81C88E1421746B3B005F17F7 /* platonWalletUITests */,
 				9ADE44DB217B1C64006F1C81 /* platonWalletTests */,
+				81B58965235DA1FC00816B4E /* platonWalletUAT */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		81B58A5F235DA1FC00816B4E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				81B58A60235DA1FC00816B4E /* TableViewNoDataPlaceHolder.xib in Resources */,
+				81B58A61235DA1FC00816B4E /* PasswordAuthViewController.xib in Resources */,
+				81B58A62235DA1FC00816B4E /* AssetNavigationBarView.xib in Resources */,
+				81B58A63235DA1FC00816B4E /* PLevelSlider.xib in Resources */,
+				81B58A64235DA1FC00816B4E /* ExportToPlainTextViewController.xib in Resources */,
+				81B58A65235DA1FC00816B4E /* TransferDetailView.xib in Resources */,
+				81B58A66235DA1FC00816B4E /* BiometricsAuthViewController.xib in Resources */,
+				81B58A67235DA1FC00816B4E /* PlatON_network.jpg in Resources */,
+				81B58A68235DA1FC00816B4E /* AssetHeaderViewV060.xib in Resources */,
+				81B58A69235DA1FC00816B4E /* AddressBookTableViewCell.xib in Resources */,
+				81B58A6A235DA1FC00816B4E /* PlatON-Alita.jpg in Resources */,
+				81B58A6B235DA1FC00816B4E /* TransferSwitchWallet.xib in Resources */,
+				81B58A6C235DA1FC00816B4E /* LaunchScreen.storyboard in Resources */,
+				81B58A6D235DA1FC00816B4E /* TransferConfirmView.xib in Resources */,
+				81B58A6E235DA1FC00816B4E /* AddAddressInfoView.xib in Resources */,
+				81B58A6F235DA1FC00816B4E /* ImportKeystoreViewController.xib in Resources */,
+				81B58A70235DA1FC00816B4E /* QRCodeView.xib in Resources */,
+				81B58A71235DA1FC00816B4E /* CustomPickerView.xib in Resources */,
+				81B58A72235DA1FC00816B4E /* LanguageSettingTableViewCell.xib in Resources */,
+				81B58A73235DA1FC00816B4E /* AssetSectionViewV060.xib in Resources */,
+				81B58A74235DA1FC00816B4E /* PasswordStrengthView.xib in Resources */,
+				81B58A75235DA1FC00816B4E /* SettingFooter.xib in Resources */,
+				81B58A76235DA1FC00816B4E /* BackupMnemonicViewController.xib in Resources */,
+				81B58A77235DA1FC00816B4E /* Localizable.strings in Resources */,
+				81B58A78235DA1FC00816B4E /* AssetSendViewControllerV060.xib in Resources */,
+				81B58A79235DA1FC00816B4E /* PTSButtonCell.xib in Resources */,
+				81B58A7A235DA1FC00816B4E /* Assets.xcassets in Resources */,
+				81B58A7B235DA1FC00816B4E /* WalletEmptyView.xib in Resources */,
+				81B58A7C235DA1FC00816B4E /* VerifyMnemonicViewController.xib in Resources */,
+				81B58A7D235DA1FC00816B4E /* PTextFieldView.xib in Resources */,
+				81B58A7E235DA1FC00816B4E /* AboutViewController.xib in Resources */,
+				81B58A7F235DA1FC00816B4E /* TSLXIBViewController.xib in Resources */,
+				81B58A80235DA1FC00816B4E /* Main.storyboard in Resources */,
+				81B58A81235DA1FC00816B4E /* LicenseViewController.xib in Resources */,
+				81B58A82235DA1FC00816B4E /* WalletDetailCell.xib in Resources */,
+				81B58A83235DA1FC00816B4E /* SharedCollectionViewCell.xib in Resources */,
+				81B58A84235DA1FC00816B4E /* NodeSettingTableViewCell.xib in Resources */,
+				81B58A85235DA1FC00816B4E /* SharedQRView.xib in Resources */,
+				81B58A86235DA1FC00816B4E /* WalletManagerDetailViewController.xib in Resources */,
+				81B58A87235DA1FC00816B4E /* CreateWalletSuccessViewController.xib in Resources */,
+				81B58A88235DA1FC00816B4E /* WalletSelectionTableViewCell.xib in Resources */,
+				81B58A89235DA1FC00816B4E /* MnemonicGridView.xib in Resources */,
+				81B58A8A235DA1FC00816B4E /* ExportToQRCodeViewController.xib in Resources */,
+				81B58A8B235DA1FC00816B4E /* AlertStylePopViewController.xib in Resources */,
+				81B58A8C235DA1FC00816B4E /* WalletCreateOrImportViewController.xib in Resources */,
+				81B58A8D235DA1FC00816B4E /* ImportMnemonicOrPrivateKeyViewController.xib in Resources */,
+				81B58A8E235DA1FC00816B4E /* AssetReceiveViewControllerV060.xib in Resources */,
+				81B58A8F235DA1FC00816B4E /* AssetFeeViewV060.xib in Resources */,
+				81B58A90235DA1FC00816B4E /* TransactionCell.xib in Resources */,
+				81B58A91235DA1FC00816B4E /* AssetTransactionViewControllerV060.xib in Resources */,
+				81B58A92235DA1FC00816B4E /* SettingTableViewCell.xib in Resources */,
+				81B58A93235DA1FC00816B4E /* WalletManagerTableViewCell.xib in Resources */,
+				81B58A94235DA1FC00816B4E /* SharedWalletMemberCell.xib in Resources */,
+				81B58A95235DA1FC00816B4E /* SwitchWalletTableViewCell.xib in Resources */,
+				81B58A96235DA1FC00816B4E /* CreateIndividualWalletViewController.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		81C88DFF21746B39005F17F7 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1948,6 +2358,121 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-platonWallet/Pods-platonWallet-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		81B58966235DA1FC00816B4E /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-platonWallet-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		81B58A97235DA1FC00816B4E /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-platonWallet/Pods-platonWallet-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/Aspects/Aspects.framework",
+				"${BUILT_PRODUCTS_DIR}/BigInt/BigInt.framework",
+				"${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/EmptyDataSet-Swift/EmptyDataSet_Swift.framework",
+				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
+				"${BUILT_PRODUCTS_DIR}/Localize-Swift/Localize_Swift.framework",
+				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
+				"${BUILT_PRODUCTS_DIR}/MJRefresh/MJRefresh.framework",
+				"${BUILT_PRODUCTS_DIR}/OHHTTPStubs/OHHTTPStubs.framework",
+				"${BUILT_PRODUCTS_DIR}/RTRootNavigationController/RTRootNavigationController.framework",
+				"${BUILT_PRODUCTS_DIR}/Realm/Realm.framework",
+				"${BUILT_PRODUCTS_DIR}/RealmSwift/RealmSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/ScryptSwift/ScryptSwift.framework",
+				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
+				"${BUILT_PRODUCTS_DIR}/Spring/Spring.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftMonkeyPaws/SwiftMonkeyPaws.framework",
+				"${BUILT_PRODUCTS_DIR}/SwiftReorder/SwiftReorder.framework",
+				"${BUILT_PRODUCTS_DIR}/SwipeCellKit/SwipeCellKit.framework",
+				"${BUILT_PRODUCTS_DIR}/TrezorCrypto/TrezorCrypto.framework",
+				"${BUILT_PRODUCTS_DIR}/UITextView+Placeholder/UITextView_Placeholder.framework",
+				"${BUILT_PRODUCTS_DIR}/platonWeb3/platonWeb3.framework",
+				"${BUILT_PRODUCTS_DIR}/secp256k1.swift/secp256k1.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Aspects.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BigInt.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CryptoSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/EmptyDataSet_Swift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Localize_Swift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MJRefresh.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OHHTTPStubs.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RTRootNavigationController.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Realm.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RealmSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ScryptSwift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Spring.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftMonkeyPaws.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftReorder.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwipeCellKit.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TrezorCrypto.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UITextView_Placeholder.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/platonWeb3.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/secp256k1.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-platonWallet/Pods-platonWallet-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		81B58A98235DA1FC00816B4E /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-platonWallet/Pods-platonWallet-resources.sh",
+				"${PODS_ROOT}/UMCCommonLog/UMCommonLog/UMCommonLog.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/UMCommonLog.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-platonWallet/Pods-platonWallet-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		81B58A99235DA1FC00816B4E /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
 		81F420FD2351CC540054628E /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2044,6 +2569,258 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		81B58967235DA1FC00816B4E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				81B58968235DA1FC00816B4E /* ExportToPlainTextViewController.swift in Sources */,
+				81B58969235DA1FC00816B4E /* UITextField+Extensions.swift in Sources */,
+				81B5896A235DA1FC00816B4E /* MnemonicTextField.swift in Sources */,
+				81B5896B235DA1FC00816B4E /* PAlertController.swift in Sources */,
+				81B5896C235DA1FC00816B4E /* layout.swift in Sources */,
+				81B5896D235DA1FC00816B4E /* ValidatorNodesViewController.swift in Sources */,
+				81B5896E235DA1FC00816B4E /* SharedView.swift in Sources */,
+				81B5896F235DA1FC00816B4E /* DelegateModel+Extension.swift in Sources */,
+				81B58970235DA1FC00816B4E /* HDPath.swift in Sources */,
+				81B58971235DA1FC00816B4E /* OfflineSignatureTransactionViewController.swift in Sources */,
+				81B58972235DA1FC00816B4E /* MyDelegateHeaderView.swift in Sources */,
+				81B58973235DA1FC00816B4E /* AssetPageViewController.swift in Sources */,
+				81B58974235DA1FC00816B4E /* Wallet.swift in Sources */,
+				81B58975235DA1FC00816B4E /* UITextView+Extensions.swift in Sources */,
+				81B58976235DA1FC00816B4E /* MJRefreshAutoStateFooter+Localize.m in Sources */,
+				81B58977235DA1FC00816B4E /* TransactionService.swift in Sources */,
+				81B58978235DA1FC00816B4E /* AddAddressInfoView.swift in Sources */,
+				81B58979235DA1FC00816B4E /* CustomLoading.swift in Sources */,
+				81B5897A235DA1FC00816B4E /* PTSIndicatorInfo.swift in Sources */,
+				81B5897B235DA1FC00816B4E /* PTextFieldWithPadding.swift in Sources */,
+				81B5897C235DA1FC00816B4E /* AddressBookService.swift in Sources */,
+				81B5897D235DA1FC00816B4E /* DelegateViewController.swift in Sources */,
+				81B5897E235DA1FC00816B4E /* UITextFieldWithSearch.swift in Sources */,
+				81B5897F235DA1FC00816B4E /* SettingService.swift in Sources */,
+				81B58980235DA1FC00816B4E /* ImportKeystoreViewController.swift in Sources */,
+				81B58981235DA1FC00816B4E /* UIImage+Extensions.swift in Sources */,
+				81B58982235DA1FC00816B4E /* InteractiveTransition.swift in Sources */,
+				81B58983235DA1FC00816B4E /* ImportObservedWalletViewController.swift in Sources */,
+				81B58984235DA1FC00816B4E /* UIButton+Event.swift in Sources */,
+				81B58985235DA1FC00816B4E /* TransferDetailView.swift in Sources */,
+				81B58986235DA1FC00816B4E /* NewAddressInfoViewController.swift in Sources */,
+				81B58987235DA1FC00816B4E /* CreateIndividualWalletViewController.swift in Sources */,
+				81B58988235DA1FC00816B4E /* NodeStoreService.swift in Sources */,
+				81B58989235DA1FC00816B4E /* PresentationManager.swift in Sources */,
+				81B5898A235DA1FC00816B4E /* GuidanceViewMgr.swift in Sources */,
+				81B5898B235DA1FC00816B4E /* CommunityContentTableViewCell.swift in Sources */,
+				81B5898C235DA1FC00816B4E /* ValidatorNodeListViewController.swift in Sources */,
+				81B5898D235DA1FC00816B4E /* RealmHelper.swift in Sources */,
+				81B5898E235DA1FC00816B4E /* PTSButtonCell.swift in Sources */,
+				81B5898F235DA1FC00816B4E /* DelegateTableStyle.swift in Sources */,
+				81B58990235DA1FC00816B4E /* TransactionCell.swift in Sources */,
+				81B58991235DA1FC00816B4E /* UIApplication+Extensions.swift in Sources */,
+				81B58992235DA1FC00816B4E /* AssetPersistence.swift in Sources */,
+				81B58993235DA1FC00816B4E /* TransactionService+Centralization.swift in Sources */,
+				81B58994235DA1FC00816B4E /* AssetTransactionViewControllerV060.swift in Sources */,
+				81B58995235DA1FC00816B4E /* AppFramework.swift in Sources */,
+				81B58996235DA1FC00816B4E /* LeftAlignLayout.swift in Sources */,
+				81B58997235DA1FC00816B4E /* RemoteVersion.swift in Sources */,
+				81B58998235DA1FC00816B4E /* AppDelegate+MonkeyTest.swift in Sources */,
+				81B58999235DA1FC00816B4E /* WalletManagerDetailViewController.swift in Sources */,
+				81B5899A235DA1FC00816B4E /* StakingPageTabStripViewController.swift in Sources */,
+				81B5899B235DA1FC00816B4E /* TransactionDetailHashTableViewCell.swift in Sources */,
+				81B5899C235DA1FC00816B4E /* ImportWalletHeaderView.swift in Sources */,
+				81B5899D235DA1FC00816B4E /* UITabBar+Extensions.swift in Sources */,
+				81B5899E235DA1FC00816B4E /* PropertyReflectable.swift in Sources */,
+				81B5899F235DA1FC00816B4E /* UILabel+Extenstions.swift in Sources */,
+				81B589A0235DA1FC00816B4E /* BaseImportWalletViewController.swift in Sources */,
+				81B589A1235DA1FC00816B4E /* PasswordAuthViewController.swift in Sources */,
+				81B589A2235DA1FC00816B4E /* MJExtensionLoadMoreFooterView.swift in Sources */,
+				81B589A3235DA1FC00816B4E /* WalletManagerTableViewCell.swift in Sources */,
+				81B589A4235DA1FC00816B4E /* PopupDialog+Keyboard.swift in Sources */,
+				81B589A5235DA1FC00816B4E /* UIViewController+Extenstions.swift in Sources */,
+				81B589A6235DA1FC00816B4E /* NodePersistence.swift in Sources */,
+				81B589A7235DA1FC00816B4E /* PTSButtonBarView.swift in Sources */,
+				81B589A8235DA1FC00816B4E /* DelegateRecordViewController.swift in Sources */,
+				81B589A9235DA1FC00816B4E /* PPasswordTextField.swift in Sources */,
+				81B589AA235DA1FC00816B4E /* SendInputTableViewCell.swift in Sources */,
+				81B589AB235DA1FC00816B4E /* WebCommonViewController.swift in Sources */,
+				81B589AC235DA1FC00816B4E /* TransactionDetailHeaderView.swift in Sources */,
+				81B589AD235DA1FC00816B4E /* DelegatePersistence.swift in Sources */,
+				81B589AE235DA1FC00816B4E /* UITextView+AspectsScaling.m in Sources */,
+				81B589AF235DA1FC00816B4E /* DelegateDetailViewController.swift in Sources */,
+				81B589B0235DA1FC00816B4E /* SingleButtonTableViewCell.swift in Sources */,
+				81B589B1235DA1FC00816B4E /* LanguageSettingTableViewCell.swift in Sources */,
+				81B589B2235DA1FC00816B4E /* WallletPersistence.swift in Sources */,
+				81B589B3235DA1FC00816B4E /* ByteHelper.swift in Sources */,
+				81B589B4235DA1FC00816B4E /* Wallet+extension.swift in Sources */,
+				81B589B5235DA1FC00816B4E /* TSLViewController.swift in Sources */,
+				81B589B6235DA1FC00816B4E /* UIViewController+Visibility.swift in Sources */,
+				81B589B7235DA1FC00816B4E /* ViewController.swift in Sources */,
+				81B589B8235DA1FC00816B4E /* QRScannerViewController.swift in Sources */,
+				81B589B9235DA1FC00816B4E /* OfflineSignatureConfirmView.swift in Sources */,
+				81B589BA235DA1FC00816B4E /* BaseService.swift in Sources */,
+				81B589BB235DA1FC00816B4E /* WalletBaseInfoView.swift in Sources */,
+				81B589BC235DA1FC00816B4E /* ExportToQRCodeViewController.swift in Sources */,
+				81B589BD235DA1FC00816B4E /* VerifyMnemonicViewController.swift in Sources */,
+				81B589BE235DA1FC00816B4E /* BaseViewController.swift in Sources */,
+				81B589BF235DA1FC00816B4E /* SharedPresentedVC.swift in Sources */,
+				81B589C0235DA1FC00816B4E /* PTSBaseButtonBarPagerTabStripViewController.swift in Sources */,
+				81B589C1235DA1FC00816B4E /* AssetFeeViewV060.swift in Sources */,
+				81B589C2235DA1FC00816B4E /* MJRefreshStateHeader+Localize.m in Sources */,
+				81B589C3235DA1FC00816B4E /* PresentationController.swift in Sources */,
+				81B589C4235DA1FC00816B4E /* CopyButton.swift in Sources */,
+				81B589C5235DA1FC00816B4E /* TransitionAnimator.swift in Sources */,
+				81B589C6235DA1FC00816B4E /* PopUpViewController.swift in Sources */,
+				81B589C7235DA1FC00816B4E /* PopupDialogButton.swift in Sources */,
+				81B589C8235DA1FC00816B4E /* DoubtTableViewCell.swift in Sources */,
+				81B589C9235DA1FC00816B4E /* AnalysisHelper.swift in Sources */,
+				81B589CA235DA1FC00816B4E /* MyDelegatesViewController.swift in Sources */,
+				81B589CB235DA1FC00816B4E /* AssetSendViewControllerV060.swift in Sources */,
+				81B589CC235DA1FC00816B4E /* UIView+Animations.swift in Sources */,
+				81B589CD235DA1FC00816B4E /* AssetVCSharedData.swift in Sources */,
+				81B589CE235DA1FC00816B4E /* AddressInfoPersistence.swift in Sources */,
+				81B589CF235DA1FC00816B4E /* NodeInfoTableViewCell.swift in Sources */,
+				81B589D0235DA1FC00816B4E /* BiometricsAuthViewController.swift in Sources */,
+				81B589D1235DA1FC00816B4E /* SharedWalletMemberCell.swift in Sources */,
+				81B589D2235DA1FC00816B4E /* SwitchWalletTableViewCell.swift in Sources */,
+				81B589D3235DA1FC00816B4E /* PersonalViewController.swift in Sources */,
+				81B589D4235DA1FC00816B4E /* PopupDialog.swift in Sources */,
+				81B589D5235DA1FC00816B4E /* MnemonicGridView.swift in Sources */,
+				81B589D6235DA1FC00816B4E /* AssetNavigationBarView.swift in Sources */,
+				81B589D7235DA1FC00816B4E /* TransactionListViewController.swift in Sources */,
+				81B589D8235DA1FC00816B4E /* UIButton+AspectsScaling.m in Sources */,
+				81B589D9235DA1FC00816B4E /* CreateWalletSuccessViewController.swift in Sources */,
+				81B589DA235DA1FC00816B4E /* TransferSwitchWallet.swift in Sources */,
+				81B589DB235DA1FC00816B4E /* WalletEmptyView.swift in Sources */,
+				81B589DC235DA1FC00816B4E /* LaunchViewController.swift in Sources */,
+				81B589DD235DA1FC00816B4E /* MyDelegateViewCell.swift in Sources */,
+				81B589DE235DA1FC00816B4E /* AssetViewControllerV060.swift in Sources */,
+				81B589DF235DA1FC00816B4E /* Web3Helper.swift in Sources */,
+				81B589E0235DA1FC00816B4E /* WalletListViewController.swift in Sources */,
+				81B589E1235DA1FC00816B4E /* Notifications.swift in Sources */,
+				81B589E2235DA1FC00816B4E /* TableViewNoDataPlaceHolder.swift in Sources */,
+				81B589E3235DA1FC00816B4E /* AssetReceiveViewControllerV060.swift in Sources */,
+				81B589E4235DA1FC00816B4E /* AssetTableHeader.swift in Sources */,
+				81B589E5235DA1FC00816B4E /* NodeDetailViewController.swift in Sources */,
+				81B589E6235DA1FC00816B4E /* TransactionQrcode.swift in Sources */,
+				81B589E7235DA1FC00816B4E /* StakingLabelViewCell.swift in Sources */,
+				81B589E8235DA1FC00816B4E /* CustomPickerView.swift in Sources */,
+				81B589E9235DA1FC00816B4E /* PasswordStrengthView.swift in Sources */,
+				81B589EA235DA1FC00816B4E /* UITextField+AspectsScaling.m in Sources */,
+				81B589EB235DA1FC00816B4E /* MainTabBarViewController.swift in Sources */,
+				81B589EC235DA1FC00816B4E /* SettingTableViewController.swift in Sources */,
+				81B589ED235DA1FC00816B4E /* WalletSelectionTableViewCell.swift in Sources */,
+				81B589EE235DA1FC00816B4E /* NetworkManager.swift in Sources */,
+				81B589EF235DA1FC00816B4E /* QRCodeDecoder.swift in Sources */,
+				81B589F0235DA1FC00816B4E /* AppDelegate.swift in Sources */,
+				81B589F1235DA1FC00816B4E /* ATextFieldView.swift in Sources */,
+				81B589F2235DA1FC00816B4E /* PTSPagerTabStripViewController.swift in Sources */,
+				81B589F3235DA1FC00816B4E /* String+Extensions.swift in Sources */,
+				81B589F4235DA1FC00816B4E /* BigUInt+Extenstions.swift in Sources */,
+				81B589F5235DA1FC00816B4E /* DelegateModel.swift in Sources */,
+				81B589F6235DA1FC00816B4E /* Array+sort.swift in Sources */,
+				81B589F7235DA1FC00816B4E /* NodeTableViewCell.swift in Sources */,
+				81B589F8235DA1FC00816B4E /* MyDelegateNoDataView.swift in Sources */,
+				81B589F9235DA1FC00816B4E /* LocalizationProtocol.swift in Sources */,
+				81B589FA235DA1FC00816B4E /* CommonConfig.swift in Sources */,
+				81B589FB235DA1FC00816B4E /* Keystore.Crypto.swift in Sources */,
+				81B589FC235DA1FC00816B4E /* WalletUtil.swift in Sources */,
+				81B589FD235DA1FC00816B4E /* Balance.swift in Sources */,
+				81B589FE235DA1FC00816B4E /* AddressBookViewController.swift in Sources */,
+				81B589FF235DA1FC00816B4E /* Keystore.swift in Sources */,
+				81B58A00235DA1FC00816B4E /* ServiceAgreementViewController.swift in Sources */,
+				81B58A01235DA1FC00816B4E /* NodeInfo.swift in Sources */,
+				81B58A02235DA1FC00816B4E /* WalletService.swift in Sources */,
+				81B58A03235DA1FC00816B4E /* AssetService+Centralization.swift in Sources */,
+				81B58A04235DA1FC00816B4E /* ExportPrivateKeyOrKeystoreViewController.swift in Sources */,
+				81B58A05235DA1FC00816B4E /* UIDevice+Extensions.swift in Sources */,
+				81B58A06235DA1FC00816B4E /* NodeSettingTableViewCell.swift in Sources */,
+				81B58A07235DA1FC00816B4E /* MyDelegateFooterView.swift in Sources */,
+				81B58A08235DA1FC00816B4E /* DropdownListView.swift in Sources */,
+				81B58A09235DA1FC00816B4E /* WalletCreateOrImportViewController.swift in Sources */,
+				81B58A0A235DA1FC00816B4E /* ImportMnemonicOrPrivateKeyViewController.swift in Sources */,
+				81B58A0B235DA1FC00816B4E /* WalletCollectionViewCell.swift in Sources */,
+				81B58A0C235DA1FC00816B4E /* SharedQRView.swift in Sources */,
+				81B58A0D235DA1FC00816B4E /* Date+Extenstions.swift in Sources */,
+				81B58A0E235DA1FC00816B4E /* PTSBarView.swift in Sources */,
+				81B58A0F235DA1FC00816B4E /* DelegateRecordMainViewController.swift in Sources */,
+				81B58A10235DA1FC00816B4E /* NodeSettingViewControllerV2.swift in Sources */,
+				81B58A11235DA1FC00816B4E /* AddWalletMenuViewController.swift in Sources */,
+				81B58A12235DA1FC00816B4E /* NSDecimal+Swift.swift in Sources */,
+				81B58A13235DA1FC00816B4E /* NodeInfoPersistence.swift in Sources */,
+				81B58A14235DA1FC00816B4E /* TransactionResponse.swift in Sources */,
+				81B58A15235DA1FC00816B4E /* DropDownVIew.swift in Sources */,
+				81B58A16235DA1FC00816B4E /* MainImportWalletViewController.swift in Sources */,
+				81B58A17235DA1FC00816B4E /* TransferPersistence.swift in Sources */,
+				81B58A18235DA1FC00816B4E /* PopupDialogDefaultView.swift in Sources */,
+				81B58A19235DA1FC00816B4E /* CommunityCellStyle.swift in Sources */,
+				81B58A1A235DA1FC00816B4E /* QuickSaveAddressButton.swift in Sources */,
+				81B58A1B235DA1FC00816B4E /* StakingService.swift in Sources */,
+				81B58A1C235DA1FC00816B4E /* UINavigationItem+Extensions.swift in Sources */,
+				81B58A1D235DA1FC00816B4E /* AlertStylePopViewController.swift in Sources */,
+				81B58A1E235DA1FC00816B4E /* PopupDialogDefaultViewController.swift in Sources */,
+				81B58A1F235DA1FC00816B4E /* TSLXIBViewController.swift in Sources */,
+				81B58A20235DA1FC00816B4E /* WalletBalanceTableViewCell.swift in Sources */,
+				81B58A21235DA1FC00816B4E /* RealmHelper+Migration.swift in Sources */,
+				81B58A22235DA1FC00816B4E /* SettingTableViewCell.swift in Sources */,
+				81B58A23235DA1FC00816B4E /* PlatonTableView.swift in Sources */,
+				81B58A24235DA1FC00816B4E /* PButton.swift in Sources */,
+				81B58A25235DA1FC00816B4E /* PLevelSlider.swift in Sources */,
+				81B58A26235DA1FC00816B4E /* CommunityViewController.swift in Sources */,
+				81B58A27235DA1FC00816B4E /* StakingMainViewController.swift in Sources */,
+				81B58A28235DA1FC00816B4E /* UIStyle.swift in Sources */,
+				81B58A29235DA1FC00816B4E /* PTSSwipeDirection.swift in Sources */,
+				81B58A2A235DA1FC00816B4E /* SharedCollectionViewCell.swift in Sources */,
+				81B58A2B235DA1FC00816B4E /* QRDisplayViewController.swift in Sources */,
+				81B58A2C235DA1FC00816B4E /* WalletTableViewCell.swift in Sources */,
+				81B58A2D235DA1FC00816B4E /* UILabel+Aspects.m in Sources */,
+				81B58A2E235DA1FC00816B4E /* PopupDialogContainerView.swift in Sources */,
+				81B58A2F235DA1FC00816B4E /* PopupDialogOverlayView.swift in Sources */,
+				81B58A30235DA1FC00816B4E /* SettingFooter.swift in Sources */,
+				81B58A31235DA1FC00816B4E /* QRCodeView.swift in Sources */,
+				81B58A32235DA1FC00816B4E /* UIView+Extenstions.swift in Sources */,
+				81B58A33235DA1FC00816B4E /* BaseNavigationController.swift in Sources */,
+				81B58A34235DA1FC00816B4E /* TransferConfirmView.swift in Sources */,
+				81B58A35235DA1FC00816B4E /* CommonService.swift in Sources */,
+				81B58A36235DA1FC00816B4E /* UIScrollView+GestureConflict.swift in Sources */,
+				81B58A37235DA1FC00816B4E /* AddressBookTableViewCell.swift in Sources */,
+				81B58A38235DA1FC00816B4E /* NodeModel+Extension.swift in Sources */,
+				81B58A39235DA1FC00816B4E /* AssetHeaderViewV060.swift in Sources */,
+				81B58A3A235DA1FC00816B4E /* PTSPagerTabStripError.swift in Sources */,
+				81B58A3B235DA1FC00816B4E /* NodeModel.swift in Sources */,
+				81B58A3C235DA1FC00816B4E /* PTSButtonBarPagerTabStripViewController.swift in Sources */,
+				81B58A3D235DA1FC00816B4E /* UINavigationController+Extensions.swift in Sources */,
+				81B58A3E235DA1FC00816B4E /* UIColor+Extenstions.swift in Sources */,
+				81B58A3F235DA1FC00816B4E /* BackupMnemonicViewController.swift in Sources */,
+				81B58A40235DA1FC00816B4E /* PTSBarPagerTabStripViewController.swift in Sources */,
+				81B58A41235DA1FC00816B4E /* UIImageView+Calculations.swift in Sources */,
+				81B58A42235DA1FC00816B4E /* AboutViewController.swift in Sources */,
+				81B58A43235DA1FC00816B4E /* TransactionDetailTableViewCell.swift in Sources */,
+				81B58A44235DA1FC00816B4E /* NodeBaseInfoView.swift in Sources */,
+				81B58A45235DA1FC00816B4E /* NSBundle+Hook_MJ.m in Sources */,
+				81B58A46235DA1FC00816B4E /* WithDrawViewController.swift in Sources */,
+				81B58A47235DA1FC00816B4E /* Transaction+Extension.swift in Sources */,
+				81B58A48235DA1FC00816B4E /* UIButton+Extensions.swift in Sources */,
+				81B58A49235DA1FC00816B4E /* TransitionAnimations.swift in Sources */,
+				81B58A4A235DA1FC00816B4E /* PopupDialogDefaultButtons.swift in Sources */,
+				81B58A4B235DA1FC00816B4E /* LanguageSettingVC.swift in Sources */,
+				81B58A4C235DA1FC00816B4E /* Transaction.swift in Sources */,
+				81B58A4D235DA1FC00816B4E /* DelegateRecordTableViewCell.swift in Sources */,
+				81B58A4E235DA1FC00816B4E /* File.swift in Sources */,
+				81B58A4F235DA1FC00816B4E /* AssetSectionViewV060.swift in Sources */,
+				81B58A50235DA1FC00816B4E /* PTSPagerTabStripBehaviour.swift in Sources */,
+				81B58A51235DA1FC00816B4E /* XibView.swift in Sources */,
+				81B58A52235DA1FC00816B4E /* CreateImportCollectionViewCell.swift in Sources */,
+				81B58A53235DA1FC00816B4E /* PTextFieldView.swift in Sources */,
+				81B58A54235DA1FC00816B4E /* AssetService.swift in Sources */,
+				81B58A55235DA1FC00816B4E /* CommunityNameTableViewCell.swift in Sources */,
+				81B58A56235DA1FC00816B4E /* WalletDetailCell.swift in Sources */,
+				81B58A57235DA1FC00816B4E /* AddressInfo.swift in Sources */,
+				81B58A58235DA1FC00816B4E /* TransactionDetailViewController.swift in Sources */,
+				81B58A59235DA1FC00816B4E /* LicenseViewController.swift in Sources */,
+				81B58A5A235DA1FC00816B4E /* CommonUtilities.swift in Sources */,
+				81B58A5B235DA1FC00816B4E /* NodeAboutDelegateTableViewCell.swift in Sources */,
+				81B58A5C235DA1FC00816B4E /* UIBarItem+Extensions.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		81C88DFD21746B39005F17F7 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -2233,6 +3010,7 @@
 				9AF9AC1E2182E04000E97F07 /* PopupDialogDefaultViewController.swift in Sources */,
 				8131914F2235FB48002D4A72 /* TSLXIBViewController.swift in Sources */,
 				811AB2B922EED04A00284F1A /* WalletBalanceTableViewCell.swift in Sources */,
+				81B58964235D92FD00816B4E /* RealmHelper+Migration.swift in Sources */,
 				81E2E84621869D1F008B7504 /* SettingTableViewCell.swift in Sources */,
 				812D94B0218C3169002A48B0 /* PlatonTableView.swift in Sources */,
 				81EE99CF2175F4E1008DF8CB /* PButton.swift in Sources */,
@@ -2359,6 +3137,68 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		81B58A9B235DA1FC00816B4E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F765BC907C2CF2197870E967 /* Pods-platonWallet.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = JL97B8WL3X;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+				);
+				INFOPLIST_FILE = "$(SRCROOT)/platonWalletUAT-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-DUAT\"";
+				PRODUCT_BUNDLE_IDENTIFIER = com.platon.aton;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = yujinghan_develpoment;
+				SWIFT_COMPILATION_MODE = singlefile;
+				SWIFT_OBJC_BRIDGING_HEADER = "platonWallet/UI/Utilities/platonWallet-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		81B58A9C235DA1FC00816B4E /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F8363501D61110CEE9C78F79 /* Pods-platonWallet.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = JL97B8WL3X;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+				);
+				INFOPLIST_FILE = "$(SRCROOT)/platonWalletUAT-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-DUAT\"";
+				PRODUCT_BUNDLE_IDENTIFIER = com.platon.aton;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "com.platon.aton distribution";
+				SWIFT_OBJC_BRIDGING_HEADER = "platonWallet/UI/Utilities/platonWallet-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
 		81C88E1C21746B3B005F17F7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2489,6 +3329,10 @@
 				CODE_SIGN_STYLE = Manual;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = JL97B8WL3X;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+				);
 				INFOPLIST_FILE = platonWallet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2516,12 +3360,17 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = JL97B8WL3X;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"COCOAPODS=1",
+				);
 				INFOPLIST_FILE = platonWallet/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.platon.aton;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "com.platon.aton distribution";
@@ -2621,6 +3470,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		81B58A9A235DA1FC00816B4E /* Build configuration list for PBXNativeTarget "platonWalletUAT" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				81B58A9B235DA1FC00816B4E /* Debug */,
+				81B58A9C235DA1FC00816B4E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		81C88DFC21746B39005F17F7 /* Build configuration list for PBXProject "platonWallet" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

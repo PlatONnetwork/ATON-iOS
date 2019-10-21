@@ -27,12 +27,25 @@ struct AppConfig {
         static let DefaultNodeURL_UAT = ServerURL.HOST.UATNET + "/rpc"
         static let DefaultNodeURL_PRODUCT = ServerURL.HOST.PRODUCTNET + "/rpc"
 
+        #if UAT
         static let defaultNodesURL = [
-            (nodeURL: AppConfig.NodeURL.DefaultNodeURL_Alpha_V071, desc: "SettingsVC_nodeSet_defaultTestNetwork_Amigo_des", isSelected: true),
-            (nodeURL: AppConfig.NodeURL.DefaultNodeURL_Alpha_V071_DEV, desc: "", isSelected: false)
-//            (nodeURL: DefaultNodeURL_UAT, desc: "SettingsVC_nodeSet_defaultTestNetwork_des", isSelected: true),
-//            (nodeURL: DefaultNodeURL_PRODUCT, desc: "SettingsVC_nodeSet_defaultProductNetwork_des", isSelected: false)
+            (nodeURL: AppConfig.NodeURL.DefaultNodeURL_Alpha_V071, desc: "SettingsVC_nodeSet_defaultTestNetwork_Amigo_des", chainId: AppConfig.ChainID.PRODUCT, isSelected: true),
+            (nodeURL: AppConfig.NodeURL.DefaultNodeURL_Alpha_V071_DEV, desc: "", chainId: AppConfig.ChainID.TEST, isSelected: false)
         ]
+        #else
+        static let defaultNodesURL = [
+            (nodeURL: DefaultNodeURL_PRODUCT, desc: "SettingsVC_nodeSet_defaultProductNetwork_des", chainId: AppConfig.ChainID.PRODUCT, isSelected: false),
+            (nodeURL: DefaultNodeURL_UAT, desc: "SettingsVC_nodeSet_defaultTestNetwork_des", chainId: AppConfig.ChainID.TEST, isSelected: true)
+        ]
+        #endif
+
+//        static let defaultNodesURL = [
+//
+//            (nodeURL: AppConfig.NodeURL.DefaultNodeURL_Alpha_V071, desc: "SettingsVC_nodeSet_defaultTestNetwork_Amigo_des", chainId: AppConfig.ChainID.PRODUCT, isSelected: true),
+//            (nodeURL: AppConfig.NodeURL.DefaultNodeURL_Alpha_V071_DEV, desc: "", chainId: AppConfig.ChainID.TEST, isSelected: false)
+////            (nodeURL: DefaultNodeURL_UAT, desc: "SettingsVC_nodeSet_defaultTestNetwork_des", chainId: AppConfig.ChainID.TEST, isSelected: true),
+////            (nodeURL: DefaultNodeURL_PRODUCT, desc: "SettingsVC_nodeSet_defaultProductNetwork_des", chainId: AppConfig.ChainID.PRODUCT, isSelected: false)
+//        ]
     }
 
     struct TimerSetting {

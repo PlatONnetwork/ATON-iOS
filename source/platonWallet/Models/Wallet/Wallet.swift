@@ -37,7 +37,7 @@ public final class Wallet: Object {
 
     @objc dynamic var avatar: String = ""
 
-    @objc dynamic var nodeURLStr: String = ""
+    @objc dynamic var chainId: String = ""
 
     @objc dynamic var userArrangementIndex = -1
 
@@ -74,7 +74,7 @@ public final class Wallet: Object {
 
     convenience init(name: String, address: String) {
         self.init()
-        primaryKeyIdentifier = address + SettingService.threadSafeGetCurrentNodeURLString()
+        primaryKeyIdentifier = address + SettingService.shareInstance.getCurrentChainId()
         self.uuid = address
         self.name = name
         self.avatar = address.walletAddressLastCharacterAvatar()
@@ -84,10 +84,10 @@ public final class Wallet: Object {
 
         self.init()
         uuid = keystoreObject.address
-        primaryKeyIdentifier = keystoreObject.address + SettingService.threadSafeGetCurrentNodeURLString()
+        primaryKeyIdentifier = keystoreObject.address + SettingService.shareInstance.getCurrentChainId()
         key = keystoreObject
         keystorePath = ""
-        nodeURLStr = SettingService.threadSafeGetCurrentNodeURLString()
+        chainId = SettingService.shareInstance.getCurrentChainId()
         self.name = name
         self.avatar = keystoreObject.address.walletAddressLastCharacterAvatar()
     }

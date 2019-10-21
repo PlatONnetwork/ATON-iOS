@@ -80,11 +80,11 @@ extension Array {
 
         return self.filter { item -> Bool in
             if let castItem = item as? Wallet {
-                return castItem.nodeURLStr == SettingService.getCurrentNodeURLString()
+                return castItem.chainId == SettingService.shareInstance.getCurrentChainId()
             }
 
             if let castItem = item as? Transaction {
-                return castItem.nodeURLStr == SettingService.getCurrentNodeURLString()
+                return castItem.chainId == SettingService.shareInstance.getCurrentChainId()
             }
 
             return true

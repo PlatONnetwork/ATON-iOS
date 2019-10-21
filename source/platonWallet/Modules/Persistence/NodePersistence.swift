@@ -13,7 +13,7 @@ class NodePersistence {
 
     public class func add(nodes: [Node], _ completion: (() -> Void)?) {
         let nodes = nodes.detached
-        _ = nodes.map { $0.chainUrl = SettingService.getCurrentNodeURLString() }
+        _ = nodes.map { $0.chainUrl = SettingService.shareInstance.getCurrentChainId() }
 
         RealmWriteQueue.async {
             autoreleasepool(invoking: {

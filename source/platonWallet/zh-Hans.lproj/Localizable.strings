@@ -876,6 +876,7 @@
 "staking_delegate_input_amount_minlimit_error" = "请输入委托的数量";
 "staking_withdraw_input_amount_minlimit_error" = "请输入赎回的数量";
 "staking_input_amount_minlimit_error" = "委托数量不能少于10LAT";
+"staking_withdraw_input_amount_minlimit_error" = "赎回数量不能少于10LAT";
 "staking_input_amount_maxlimit_error" = "余额不足，无法委托";
 
 "error_no_wallet" = "无可用钱包";
