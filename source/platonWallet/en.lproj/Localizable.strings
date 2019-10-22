@@ -738,7 +738,7 @@
 "staking_delegate_record_undelegate" = "Undelegate";
 
 "staking_delegate_locked" = "Delegated";
-"staking_delegate_release" = "Released delegate";
+"staking_delegate_release" = "Invalid delegations";
 
 "staking_delegate" = "Delegate";
 "staking_withdraw" = "Withdraw";
@@ -748,7 +748,7 @@
 "staking_alert_locked_delegate_detail" = "Only locked delegates are rewarded. Un-delegation (i.e. withdrawal) takes immediate effect.but,the delegated LAT takes 6.1 hours to unlock and return to the account.";
 "staking_alert_unlocked_delegate" = "Unlocked delegate";
 "staking_alert_unlocked_delegate_detail" = "Locked in about 6.1 hours, the unlocked delegate has no reward.Un-delegation (i.e. withdrawal) takes immediate effect.and,the delegated LAT immediately returns to the account.";
-"staking_alert_released_delegate" = "Released delegate";
+"staking_alert_released_delegate" = "Invalid delegations";
 "staking_alert_released_detail" = "Validator exits, the delegations is automatically released,and need user to withdraw the delegations";
 "staking_alert_annualized_rate" = "Expected annualized rate";
 "staking_alert_annualized_rate_detail" = "The expected annualized rate of the current validator, the Delegation rewards is distributed by the validator";
@@ -797,7 +797,7 @@
 "staking_balance_can_used" = "Balance";
 "staking_balance_locked_position" = "Restricted balance";
 "staking_balance_Delegated" = "Delegated";
-"staking_balance_release_Delegated" = "Released delegate";
+"staking_balance_release_Delegated" = "Invalid delegations";
 
 "input_amount_hundred" = "hundred";
 "input_amount_thousand" = "thousand";
@@ -877,7 +877,7 @@
 "about_version_update_alert_cancel" = "Not Now?";
 "about_version_update_alert_ok" = "Update";
 
-"delegate_detail_unable_alert" = "Please withdraw first \"Released delegate\"";
+"delegate_detail_unable_alert" = "Please withdraw first \"Invalid delegations\"";
 
 "import_observed_wallet_tip_1" = "Recommend observed wallet and cold wallet to jointly manage large amount of tokens.";
 "import_observed_wallet_tip_2" = "Need the cold wallet authorization for transferring tokens.";

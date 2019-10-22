@@ -201,17 +201,11 @@ extension DelegateDetailViewController {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.paragraphSpacing = 10
 
-        let lockedTitleAttr = NSAttributedString(string: Localized("staking_alert_locked_delegate") + "\n", attributes: [NSAttributedString.Key.foregroundColor: text_blue_color, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16, weight: .medium), NSAttributedString.Key.paragraphStyle: paragraphStyle])
-        let lockedDetailAttr = NSAttributedString(string: Localized("staking_alert_locked_delegate_detail") + "\n", attributes: [NSAttributedString.Key.foregroundColor: common_darkGray_color, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13), NSAttributedString.Key.paragraphStyle: paragraphStyle])
-
-        let unlockedTitleAttr = NSAttributedString(string: Localized("staking_alert_unlocked_delegate") + "\n", attributes: [NSAttributedString.Key.foregroundColor: text_blue_color, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16, weight: .medium), NSAttributedString.Key.paragraphStyle: paragraphStyle])
-        let unlockedDetailAttr = NSAttributedString(string: Localized("staking_alert_unlocked_delegate_detail") + "\n", attributes: [NSAttributedString.Key.foregroundColor: common_darkGray_color, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13), NSAttributedString.Key.paragraphStyle: paragraphStyle])
-
         let releaseTitleAttr = NSAttributedString(string: Localized("staking_alert_released_delegate") + "\n", attributes: [NSAttributedString.Key.foregroundColor: text_blue_color, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16, weight: .medium), NSAttributedString.Key.paragraphStyle: paragraphStyle])
         let releaseDetailAttr = NSAttributedString(string: Localized("staking_alert_released_detail") + "\n", attributes: [NSAttributedString.Key.foregroundColor: common_darkGray_color, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13), NSAttributedString.Key.paragraphStyle: paragraphStyle])
 
         let alertVC = AlertStylePopViewController.initFromNib()
-        let style = PAlertStyle.AlertWithText(attributedStrings: [lockedTitleAttr, lockedDetailAttr, unlockedTitleAttr, unlockedDetailAttr, releaseTitleAttr, releaseDetailAttr])
+        let style = PAlertStyle.AlertWithText(attributedStrings: [releaseTitleAttr, releaseDetailAttr])
         alertVC.onAction(confirm: { (_, _) -> (Bool) in
             return true
         }) { (_, _) -> (Bool) in
