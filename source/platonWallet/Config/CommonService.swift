@@ -150,7 +150,12 @@ struct CommonService {
         }
 
         if let maxLimitAmount = maxLimit, let inputVON = BigUInt.mutiply(a: text, by: ETHToWeiMultiplier), inputVON > maxLimitAmount {
-            msg = Localized("staking_input_amount_maxlimit_error")
+            if let inputType = type, inputType == .withdraw {
+                msg = Localized("staking_withdraw_input_amount_maxlimit_error")
+            } else {
+                msg = Localized("staking_input_amount_maxlimit_error")
+            }
+
             valid = false
         }
 

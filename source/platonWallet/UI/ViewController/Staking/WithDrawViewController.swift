@@ -291,7 +291,7 @@ extension WithDrawViewController {
         }
 
         guard currentAmount <= (BigUInt(balanceStyle?.currentBalance.1 ?? "0") ?? BigUInt.zero) else {
-            showMessage(text: Localized("staking_input_amount_maxlimit_error"))
+            showMessage(text: Localized("staking_withdraw_input_amount_maxlimit_error"))
             return
         }
 
