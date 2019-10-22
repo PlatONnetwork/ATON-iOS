@@ -53,6 +53,7 @@ class WalletBalanceTableViewCell: UITableViewCell {
         balanceTipLabel.font = .systemFont(ofSize: 15)
         balanceTipLabel.text = Localized("statking_validator_Balance")
         balanceTipLabel.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
+        balanceTipLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         containerView.addSubview(balanceTipLabel)
         balanceTipLabel.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
@@ -62,6 +63,8 @@ class WalletBalanceTableViewCell: UITableViewCell {
         balanceLabel.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.medium)
         balanceLabel.textColor = .black
         balanceLabel.textAlignment = .right
+        balanceLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+        balanceLabel.adjustsFontSizeToFitWidth = true
         balanceLabel.text = "0"
         containerView.addSubview(balanceLabel)
         balanceLabel.snp.makeConstraints { make in
