@@ -372,7 +372,6 @@
 "TransactionStatus_succeed_delegate" = "Success";
 "TransactionStatus_failed_undelegate" = "Failed";
 "TransactionStatus_succeed_undelegate" = "Success";
-"TransactionStatus_loading_undelegate" = "Undelegating";
 
 "TransactionStatus_transfer_title" = "transfer";
 "TransactionStatus_contractCreate_title" = "ContractCreation";
@@ -726,8 +725,8 @@
 "staking_main_mydelegate_text" = "My Delegations";
 "staking_main_validator_text" = "Validators";
 "staking_main_wallet_name" = "Wallet Name";
-"staking_main_delegate_text" = "Delegated";
-"staking_main_undelegating_text" = "Undelegating";
+"staking_main_delegate_text" = "Available balance";
+"staking_main_undelegating_text" = "Delegated";
 "staking_main_delegate_detail" = "Details";
 "staking_main_delegate_total" = "Total Delegated";
 "staking_main_delegate_record" = "Record";
@@ -738,10 +737,8 @@
 "staking_delegate_record_delegate" = "Delegate";
 "staking_delegate_record_undelegate" = "Undelegate";
 
-"staking_delegate_locked" = "Locked delegate";
-"staking_delegate_unlocked" = "Unlocked delegate";
+"staking_delegate_locked" = "Delegated";
 "staking_delegate_release" = "Released delegate";
-"staking_delegate_undelegating" = "Undelegating";
 
 "staking_delegate" = "Delegate";
 "staking_withdraw" = "Withdraw";
@@ -780,7 +777,7 @@
 
 "statking_validator_Balance" = "Balance";
 
-"staking_validator_isInit_doubt" = "PlatON blockchain initial built-in validator, does not accept Delegation";
+"staking_validator_isInit_doubt" = "Foundation-funded nodes do not accept delegations";
 
 "ATextFieldView_title" = "Amount:";
 "ATextFieldView_delegate_title" = "Amount:";
@@ -788,20 +785,19 @@
 "ATextFieldView_withdraw_placeholder" = "Input Amount (not less than 10 LAT)";
 
 "staking_doubt_delegate" = "Delegations";
-"staking_doubt_delegate_detail" = "Delegated LAT can be un-delegated (i.e withdrawal) at any time.Locked in about 6.1 hours.Only locked delegates are rewarded.Un-delegation takes immediate effect.but,the delegated LAT takes 6.1 hours to unlock and return to the account.";
+"staking_doubt_delegate_detail" = "The user keeps the delegate's Token ownership forever, and the user can withdraw the delegated token at any time.\nThe Validator's operator address and reward receiving address are not allowed for delegation";
 "staking_doubt_reward" = "Rewards";
 "staking_doubt_reward_detail" = "Delegation rewards come from validation block reward,staking reward and transaction fees.Reward assigned by validator.For details on how to assign, please see the official website description of each validator.";
 "staking_doubt_risk" = "Risk";
 "staking_doubt_risk_detail" = "Validators would be punished for double signing or low block rate. It would indirectly affect your reward. Please select qualified validators.";
 
 "staking_doubt_undelegate" = "Note";
-"staking_doubt_undelegate_detail" = "Un-delegation (i.e. withdrawal) LAT, the unlocked delegate LAT and released delegate LAT can immediately returns to the account. However,the locked delegate LAT takes 6.1 hours to unlock and return to the account.\nThe released delegate has to be withdrawal all at once;\nIf the remaining delegations has been less than 10LAT, it will be automatically returned all.";
+"staking_doubt_undelegate_detail" = "The transaction has been successfully submitted and the delegated LAT can return to your account immediately.\nThe released delegate has to be withdrawal all at once;\nIf the remaining delegations has been less than 10LAT, it will be automatically returned all.";
 
 "staking_balance_can_used" = "Balance";
 "staking_balance_locked_position" = "Restricted balance";
 "staking_balance_Delegated" = "Delegated";
-"staking_balance_unlocked_Delegated" = "Unlocked delegate";
-"staking_balance__release_Delegated" = "Released delegate";
+"staking_balance_release_Delegated" = "Released delegate";
 
 "input_amount_hundred" = "hundred";
 "input_amount_thousand" = "thousand";

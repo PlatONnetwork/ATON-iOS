@@ -99,15 +99,9 @@ class WithDrawViewController: BaseViewController {
     private func initBalanceStyle() {
         guard delegateValue.count > 0 else { return }
 
-        let totalLocked = delegateValue.reduce(BigUInt.zero) { (result, dValue) -> BigUInt in
-            return result + BigUInt(dValue.locked ?? "0")!
+        let totalDelegate = delegateValue.reduce(BigUInt.zero) { (result, dValue) -> BigUInt in
+            return result + BigUInt(dValue.delegated ?? "0")!
         }
-
-        let totalUnLocked = delegateValue.reduce(BigUInt.zero) { (result, dValue) -> BigUInt in
-            return result + BigUInt(dValue.unLocked ?? "0")!
-        }
-
-        let totalDelegate = totalLocked + totalUnLocked
 
         let totalReleased = delegateValue.reduce(BigUInt.zero) { (result, dValue) -> BigUInt in
             return result + BigUInt(dValue.released ?? "0")!
@@ -115,8 +109,7 @@ class WithDrawViewController: BaseViewController {
 
         let bStyle = BalancesCellStyle(balances: [
             (Localized("staking_balance_Delegated"), totalDelegate.description),
-            (Localized("staking_balance_unlocked_Delegated"), totalUnLocked.description),
-            (Localized("staking_balance__release_Delegated"), totalReleased.description)], selectedIndex: 0, isExpand: false)
+            (Localized("staking_balance_release_Delegated"), totalReleased.description)], selectedIndex: 0, isExpand: false)
         balanceStyle = bStyle
 
         initListData()

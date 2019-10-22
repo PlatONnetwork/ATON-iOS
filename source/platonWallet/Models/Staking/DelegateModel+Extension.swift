@@ -30,11 +30,7 @@ extension Delegate {
     }
 
     var delegateValue: String {
-        return delegate?.vonToLATString ?? "0"
-    }
-
-    var redeemValue: String {
-        return redeem?.vonToLATString ?? "0"
+        return delegated?.vonToLATString ?? "--"
     }
 }
 
@@ -53,18 +49,11 @@ extension DelegateDetail {
         }
     }
 
-    var lockedString: String {
-        if locked == "0" {
+    var delegatedString: String {
+        if delegated == "0" {
             return "--"
         }
-        return locked?.vonToLATString ?? "--"
-    }
-
-    var unlockedString: String {
-        if unLocked == "0" {
-            return "--"
-        }
-        return unLocked?.vonToLATString ?? "--"
+        return delegated?.vonToLATString ?? "--"
     }
 
     var releasedString: String {
@@ -74,29 +63,9 @@ extension DelegateDetail {
         return released?.vonToLATString ?? "--"
     }
 
-    var undelegateString: String {
-        if redeem == "0" {
-            return "--"
-        }
-        return redeem?.vonToLATString ?? "--"
-    }
-
-    func getDelegateButtonIsEnable(address: String) -> Bool {
+    func isExistWallet(address: String) -> Bool {
         let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.address.lowercased() == address.lowercased() }.first
         return localWallet != nil
-    }
-
-    // 第一个值为是否显示赎回
-    var rightButtonStatus: (Bool, Bool) {
-        if (locked == nil || locked == "0") && (unLocked == nil || unLocked == "0") && (released == nil || released == "0") && (redeem == nil || redeem == "0") {
-            return (false, true)
-        } else {
-            if (locked == nil || locked == "0") && (unLocked == nil || unLocked == "0") && (released == nil || released == "0") {
-                return (true, false)
-            } else {
-                return (true, true)
-            }
-        }
     }
 }
 
@@ -108,7 +77,7 @@ extension DelegateDetail {
 
 extension DelegationValue {
     var deposit: String {
-        let depositBigInt = BigUInt(locked ?? "0")! + BigUInt(unLocked ?? "0")!
+        let depositBigInt = BigUInt(delegated ?? "0")!
         return String(depositBigInt)
     }
 }

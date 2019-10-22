@@ -93,6 +93,12 @@ class WalletManagerDetailViewController: BaseViewController {
         }, checkDuplicate: true)
     }
 
+    @IBAction func copyWalletAddress(_ sender: Any) {
+        let pasteboard = UIPasteboard.general
+        pasteboard.string = wallet.address
+        UIApplication.shared.keyWindow?.rootViewController?.showMessage(text: Localized("ExportVC_copy_success"))
+    }
+
     func updateWalletName(_ name:String) {
 
         WalletService.sharedInstance.updateWalletName(wallet, name: name)

@@ -211,7 +211,6 @@
 		81B589AA235DA1FC00816B4E /* SendInputTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811AB2BC22EED6BB00284F1A /* SendInputTableViewCell.swift */; };
 		81B589AB235DA1FC00816B4E /* WebCommonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F1AFC522FADA2F00A74C00 /* WebCommonViewController.swift */; };
 		81B589AC235DA1FC00816B4E /* TransactionDetailHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818CFA5B22F984DA00565F2D /* TransactionDetailHeaderView.swift */; };
-		81B589AD235DA1FC00816B4E /* DelegatePersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E64A5A2304FA7A000F2E7C /* DelegatePersistence.swift */; };
 		81B589AE235DA1FC00816B4E /* UITextView+AspectsScaling.m in Sources */ = {isa = PBXBuildFile; fileRef = 81806F5B2269BB410072026A /* UITextView+AspectsScaling.m */; };
 		81B589AF235DA1FC00816B4E /* DelegateDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D7E27022E8690A0069CDED /* DelegateDetailViewController.swift */; };
 		81B589B0235DA1FC00816B4E /* SingleButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811AB2C022EEE1D200284F1A /* SingleButtonTableViewCell.swift */; };
@@ -495,7 +494,6 @@
 		81E2E85E2186E2C5008B7504 /* String+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E2E85D2186E2C5008B7504 /* String+Extensions.swift */; };
 		81E2E86421870956008B7504 /* BigUInt+Extenstions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E2E86321870956008B7504 /* BigUInt+Extenstions.swift */; };
 		81E64A59230400F3000F2E7C /* NodePersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E64A58230400F3000F2E7C /* NodePersistence.swift */; };
-		81E64A5B2304FA7A000F2E7C /* DelegatePersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E64A5A2304FA7A000F2E7C /* DelegatePersistence.swift */; };
 		81E64A5F230528F3000F2E7C /* PlatON_network.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 81E64A5D230528F3000F2E7C /* PlatON_network.jpg */; };
 		81E64A60230528F3000F2E7C /* PlatON-Alita.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 81E64A5E230528F3000F2E7C /* PlatON-Alita.jpg */; };
 		81E64A6223055070000F2E7C /* Balance.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E64A6123055070000F2E7C /* Balance.swift */; };
@@ -853,7 +851,6 @@
 		81E2E85D2186E2C5008B7504 /* String+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extensions.swift"; sourceTree = "<group>"; };
 		81E2E86321870956008B7504 /* BigUInt+Extenstions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BigUInt+Extenstions.swift"; sourceTree = "<group>"; };
 		81E64A58230400F3000F2E7C /* NodePersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodePersistence.swift; sourceTree = "<group>"; };
-		81E64A5A2304FA7A000F2E7C /* DelegatePersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelegatePersistence.swift; sourceTree = "<group>"; };
 		81E64A5D230528F3000F2E7C /* PlatON_network.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = PlatON_network.jpg; sourceTree = "<group>"; };
 		81E64A5E230528F3000F2E7C /* PlatON-Alita.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = "PlatON-Alita.jpg"; sourceTree = "<group>"; };
 		81E64A6123055070000F2E7C /* Balance.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Balance.swift; sourceTree = "<group>"; };
@@ -1728,7 +1725,6 @@
 				81E2E8532186B92E008B7504 /* AddressInfoPersistence.swift */,
 				9AE31423218C27D400B5433F /* NodeInfoPersistence.swift */,
 				81E64A58230400F3000F2E7C /* NodePersistence.swift */,
-				81E64A5A2304FA7A000F2E7C /* DelegatePersistence.swift */,
 			);
 			path = Persistence;
 			sourceTree = "<group>";
@@ -2642,7 +2638,6 @@
 				81B589AA235DA1FC00816B4E /* SendInputTableViewCell.swift in Sources */,
 				81B589AB235DA1FC00816B4E /* WebCommonViewController.swift in Sources */,
 				81B589AC235DA1FC00816B4E /* TransactionDetailHeaderView.swift in Sources */,
-				81B589AD235DA1FC00816B4E /* DelegatePersistence.swift in Sources */,
 				81B589AE235DA1FC00816B4E /* UITextView+AspectsScaling.m in Sources */,
 				81B589AF235DA1FC00816B4E /* DelegateDetailViewController.swift in Sources */,
 				81B589B0235DA1FC00816B4E /* SingleButtonTableViewCell.swift in Sources */,
@@ -2894,7 +2889,6 @@
 				811AB2BD22EED6BB00284F1A /* SendInputTableViewCell.swift in Sources */,
 				81F1AFC622FADA2F00A74C00 /* WebCommonViewController.swift in Sources */,
 				818CFA5C22F984DA00565F2D /* TransactionDetailHeaderView.swift in Sources */,
-				81E64A5B2304FA7A000F2E7C /* DelegatePersistence.swift in Sources */,
 				81806F5C2269BB410072026A /* UITextView+AspectsScaling.m in Sources */,
 				81D7E27122E8690A0069CDED /* DelegateDetailViewController.swift in Sources */,
 				811AB2C122EEE1D200284F1A /* SingleButtonTableViewCell.swift in Sources */,
@@ -3175,9 +3169,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = JL97B8WL3X;
+				DEVELOPMENT_TEAM = VQHC4XR7AG;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"COCOAPODS=1",
@@ -3191,7 +3185,7 @@
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-DUAT\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.platon.aton;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "com.platon.aton distribution";
+				PROVISIONING_PROFILE_SPECIFIER = yujinghan_dev;
 				SWIFT_OBJC_BRIDGING_HEADER = "platonWallet/UI/Utilities/platonWallet-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 4.2;

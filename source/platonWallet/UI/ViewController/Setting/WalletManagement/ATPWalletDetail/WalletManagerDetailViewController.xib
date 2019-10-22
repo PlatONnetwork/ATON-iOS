@@ -61,12 +61,24 @@
                                 <constraint firstAttribute="height" constant="1" id="msg-xO-fso"/>
                             </constraints>
                         </view>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w80-vC-2kz">
+                            <rect key="frame" x="343" y="18" width="16" height="16"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="16" id="cV7-Kh-ydm"/>
+                                <constraint firstAttribute="height" constant="16" id="xx8-Mt-ahB"/>
+                            </constraints>
+                            <state key="normal" image="copyIcon"/>
+                            <connections>
+                                <action selector="copyWalletAddress:" destination="-1" eventType="touchUpInside" id="l89-2H-Onq"/>
+                            </connections>
+                        </button>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="c1R-dk-8ZO" secondAttribute="bottom" id="1rp-RY-4bR"/>
                         <constraint firstItem="eNS-7Z-32A" firstAttribute="leading" secondItem="wD2-P5-xU5" secondAttribute="leading" constant="16" id="7p6-qk-9qM"/>
                         <constraint firstItem="szA-Er-tQX" firstAttribute="top" secondItem="eNS-7Z-32A" secondAttribute="bottom" constant="8" id="9DH-Qd-k6m"/>
+                        <constraint firstItem="w80-vC-2kz" firstAttribute="centerY" secondItem="eNS-7Z-32A" secondAttribute="centerY" id="NeJ-u3-qug"/>
                         <constraint firstAttribute="trailing" secondItem="MXu-kk-ouV" secondAttribute="trailing" id="PQg-Jw-pAP"/>
                         <constraint firstItem="eNS-7Z-32A" firstAttribute="top" secondItem="wD2-P5-xU5" secondAttribute="top" constant="16" id="Snz-fA-P2R"/>
                         <constraint firstItem="c1R-dk-8ZO" firstAttribute="leading" secondItem="wD2-P5-xU5" secondAttribute="leading" constant="16" id="To9-jU-dCf"/>
@@ -77,6 +89,7 @@
                         <constraint firstAttribute="bottom" secondItem="MXu-kk-ouV" secondAttribute="bottom" id="dwZ-UZ-TiS"/>
                         <constraint firstAttribute="trailing" secondItem="c1R-dk-8ZO" secondAttribute="trailing" constant="16" id="gXx-D5-G3k"/>
                         <constraint firstItem="MXu-kk-ouV" firstAttribute="top" secondItem="wD2-P5-xU5" secondAttribute="top" id="gar-Re-xP4"/>
+                        <constraint firstAttribute="trailing" secondItem="w80-vC-2kz" secondAttribute="trailing" constant="16" id="mrA-76-8aJ"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sbg-hK-o6n" userLabel="rename">
@@ -307,6 +320,7 @@
         </view>
     </objects>
     <resources>
+        <image name="copyIcon" width="16" height="16"/>
         <image name="icon_right_arrow" width="16" height="16"/>
     </resources>
 </document>

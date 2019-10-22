@@ -247,7 +247,6 @@ class Transaction : Object, Decodable {
     var voteProposalType: ProposalType?
     var vote: VoteResultType?
     var unDelegation: String?
-    var redeemStatus: RedeemStatus?
 
     override public static func ignoredProperties() -> [String] {
         return ["sharedWalletOwners",
@@ -264,8 +263,7 @@ class Transaction : Object, Decodable {
                 "proposalType",
                 "voteProposalType",
                 "vote",
-                "unDelegation",
-                "redeemStatus"
+                "unDelegation"
         ]
     }
 
@@ -290,7 +288,6 @@ class Transaction : Object, Decodable {
         case txReceiptStatus
         case extra = "txInfo"
         case unDelegation
-        case redeemStatus
         case nodeName
         case nodeId
         case toType
@@ -330,7 +327,6 @@ class Transaction : Object, Decodable {
         txReceiptStatus = (try? container.decode(Int.self, forKey: .txReceiptStatus)) ?? -1
         extra = try? container.decode(String.self, forKey: .extra)
         unDelegation = try? container.decode(String.self, forKey: .unDelegation)
-        redeemStatus = try? container.decode(RedeemStatus.self, forKey: .redeemStatus)
         nodeName = try? container.decode(String.self, forKey: .nodeName)
         nodeId = try? container.decode(String.self, forKey: .nodeId)
         toType = (try? container.decode(TransactionToType.self, forKey: .toType)) ?? .address
@@ -504,11 +500,6 @@ enum VoteResultType: String, Decodable {
             return Localized("TransactionDetailVC_proposal_voteabstain")
         }
     }
-}
-
-enum RedeemStatus: String, Decodable {
-    case redeeming = "1"
-    case redeemSuccess = "2"
 }
 
 enum TransactionToType: String, Decodable {

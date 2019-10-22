@@ -16,16 +16,18 @@ import platonWeb3
 class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
 
     var estimatedGas = BigUInt("21000")
-    var gasPriceLevel: Float = 0.00
+    var gasPriceLevel: Float?
 
     var gasPrice: BigUInt? {
         get {
             //gas prise: 1gwei ~ 10gwei
-            let platonGasPrice = TransactionService.service.ethGasPrice ?? BigUInt.zero
-            let minGasPrice = platonGasPrice
-            let maxGasPrice = platonGasPrice.multiplied(by: BigUInt(6))
+            let defaultGasPrice = TransactionService.service.defaultGasPrice
+            let minGasPrice = TransactionService.service.minGasPrice
+            let maxGasPrice = defaultGasPrice.multiplied(by: BigUInt(6))
 
-            let price = minGasPrice + (((maxGasPrice - minGasPrice) * BigUInt(Int(self.gasPriceLevel * 10000000)) / BigUInt(10000000)))
+            let priceLevel = gasPriceLevel ?? TransactionService.service.sliderDefaultValue
+
+            let price = minGasPrice + (((maxGasPrice - minGasPrice) * BigUInt(Int(priceLevel * 10000000)) / BigUInt(10000000)))
             return price
         }
     }
@@ -279,7 +281,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(onTap(gesture:)))
         self.view.addGestureRecognizer(tapGesture)
 
-        self.feeView.levelView.curLevel = gasPriceLevel
+        self.feeView.levelView.curLevel = gasPriceLevel ?? TransactionService.service.sliderDefaultValue
         self.feeView.levelView.levelChanged = { [weak self] level in
             self?.gasPriceLevel = level
             self?.DidNodeGasPriceUpdate()
@@ -580,6 +582,11 @@ extension AssetSendViewControllerV060 {
             let feeString = self.totalFee().divide(by: ETHToWeiMultiplier, round: 8)
             DispatchQueue.main.async {
                 self.feeView.fee.text = feeString.ATPSuffix()
+                if self.gasPriceLevel == nil {
+                    print("update")
+                    print(TransactionService.service.sliderDefaultValue)
+                    self.feeView.levelView.setSliderValue(value: TransactionService.service.sliderDefaultValue)
+                }
             }
         }
     }
