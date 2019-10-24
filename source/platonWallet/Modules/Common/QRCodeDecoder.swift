@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import platonWeb3
 
 enum QRCodeType {
     case transaction(data: QrcodeData<[TransactionQrcode]>)
@@ -36,3 +37,4 @@ open class QRCodeDecoder {
         }
     }
 }
+
