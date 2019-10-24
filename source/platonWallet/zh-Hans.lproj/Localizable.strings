@@ -81,6 +81,7 @@
 "transferVC_transfer_balance" = "余额：";
 "transferVC_transfer_SendAll" = "发送所有";
 "transferVC_Insufficient_balance" = "钱包余额不足";
+"transferVC_Insufficient_balance_for_gas" = "余额不足支付手续费，无法转账";
 "transferVC_Insufficient_network_error" = "网络连接失败";
 "transferVC_transfer_select_wallet" = "选择钱包";
 
@@ -365,7 +366,6 @@
 "TransactionStatus_succeed_delegate" = "委托成功";
 "TransactionStatus_failed_undelegate" = "赎回失败";
 "TransactionStatus_succeed_undelegate" = "赎回成功";
-"TransactionStatus_loading_undelegate" = "赎回中";
 
 "TransactionStatus_transfer_title" = "转账";
 "TransactionStatus_contractCreate_title" = "合约创建";
@@ -734,8 +734,8 @@
 "staking_main_mydelegate_text" = "我的委托";
 "staking_main_validator_text" = "验证节点";
 "staking_main_wallet_name" = "钱包名称";
-"staking_main_delegate_text" = "委托";
-"staking_main_undelegating_text" = "赎回中";
+"staking_main_delegate_text" = "可委托余额";
+"staking_main_undelegating_text" = "总委托";
 "staking_main_delegate_detail" = "详情";
 "staking_main_delegate_total" = "总计委托";
 "staking_main_delegate_record" = "委托记录";
@@ -746,10 +746,8 @@
 "staking_delegate_record_delegate" = "委托";
 "staking_delegate_record_undelegate" = "赎回委托";
 
-"staking_delegate_locked" = "已锁定委托";
-"staking_delegate_unlocked" = "未锁定委托";
-"staking_delegate_release" = "已解除委托";
-"staking_delegate_undelegating" = "赎回中委托";
+"staking_delegate_locked" = "已委托";
+"staking_delegate_release" = "待赎回委托";
 
 "staking_delegate" = "委托";
 "staking_withdraw" = "赎回委托";
@@ -788,7 +786,7 @@
 
 "statking_validator_Balance" = "可用余额";
 
-"staking_validator_isInit_doubt" = "PlatON初始内置验证节点，不接收委托";
+"staking_validator_isInit_doubt" = "基金会资助的节点不接受委托";
 
 "ATextFieldView_title" = "数量:";
 "ATextFieldView_delegate_title" = "委托数量:";
@@ -796,20 +794,19 @@
 "ATextFieldView_withdraw_placeholder" = "输入数量（不少于10LAT）";
 
 "staking_doubt_delegate" = "委托";
-"staking_doubt_delegate_detail" = "委托的Token可以随时赎回，委托后大约在6.1小时内完成锁定，锁定后可以参与节点收益分配，但是赎回锁定的委托大约等待6.1小时才能到账;";
+"staking_doubt_delegate_detail" = "委托的Token所有权永远归于委托人，用户可以随时赎回委托的Token。\n验证节点关联的操作地址和奖励接收地址不允许参与委托。";
 "staking_doubt_reward" = "收益";
 "staking_doubt_reward_detail" = "委托收益来自节点的收益分配，节点收益主要有出块奖励、质押奖励和区块手续费奖励。具体如何分配请查看各节点官网说明";
 "staking_doubt_risk" = "风险";
 "staking_doubt_risk_detail" = "节点双重签名、出块率低会被惩罚，从而间接影响您的收益。为规避风险，请认真选择合格的节点。";
 
 "staking_doubt_undelegate" = "说明";
-"staking_doubt_undelegate_detail" = "赎回委托的Token，未锁定的委托和已解除委托可立即到账，已锁定的委托大约等待6.1小时才能到账;\n已解除委托必须一次性全部赎回；\n赎回数量扣除后，已委托剩余数量少于10LAT时，自动赎回全部。";
+"staking_doubt_undelegate_detail" = "赎回交易提交成功，委托的Token可立即到账；\n待赎回委托必须一次性全部赎回；\n赎回数量扣除后，已委托剩余数量少于10LAT时，自动赎回全部。";
 
 "staking_balance_can_used" = "可用余额";
 "staking_balance_locked_position" = "锁仓余额";
 "staking_balance_Delegated" = "已委托";
-"staking_balance_unlocked_Delegated" = "未锁定委托";
-"staking_balance__release_Delegated" = "已解除委托";
+"staking_balance_release_Delegated" = "待赎回委托";
 
 "input_amount_hundred" = "百";
 "input_amount_thousand" = "千";
@@ -878,6 +875,8 @@
 "staking_input_amount_minlimit_error" = "委托数量不能少于10LAT";
 "staking_withdraw_input_amount_minlimit_error" = "赎回数量不能少于10LAT";
 "staking_input_amount_maxlimit_error" = "余额不足，无法委托";
+"staking_withdraw_input_amount_maxlimit_error" = "超出可赎回数量，无法提交";
+"staking_withdraw_balance_Insufficient_error" = "余额不足支付手续费，无法赎回委托";
 
 "error_no_wallet" = "无可用钱包";
 "error_wallet_no_balance" = "钱包余额不足";

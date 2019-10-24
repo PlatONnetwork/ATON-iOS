@@ -17,7 +17,23 @@ class TransactionService : BaseService {
     static let service = TransactionService()
     private var gasPriceTimer : Timer?
     private var pendingTransactionPollingTimer : Timer?
-    public var ethGasPrice : BigUInt?
+    public var defaultGasPrice: BigUInt = PlatonConfig.FuncGasPrice.minGasPrice
+    public var minGasPrice: BigUInt = PlatonConfig.FuncGasPrice.minGasPrice
+
+    public var sliderDefaultValue: Float {
+        if defaultGasPrice == minGasPrice {
+            return 0.00
+        } else {
+            let maxGasPrice = defaultGasPrice.multiplied(by: BigUInt(6))
+
+            let unit10 = BigUInt(10).power(minGasPrice.description.count - 3)
+            let tmpMaxGasPrice = Float((maxGasPrice/unit10).description) ?? 0.00
+            let tmpMinGasPrice = Float((minGasPrice/unit10).description) ?? 0.00
+            let tmpDefaultPrice = Float((defaultGasPrice/unit10).description) ?? 0.00
+
+            return (tmpDefaultPrice - tmpMinGasPrice)/(tmpMaxGasPrice - tmpMinGasPrice)
+        }
+    }
 
     func startTimerFire() {
         if AppConfig.TimerSetting.pendingTransactionPollingTimerEnable {
@@ -49,7 +65,14 @@ class TransactionService : BaseService {
             switch res.status {
             case .success:
                 DispatchQueue.main.async {
-                    self.ethGasPrice = res.result?.quantity
+                    if let gasPrice = res.result?.quantity, gasPrice > PlatonConfig.FuncGasPrice.minGasPrice {
+                        self.defaultGasPrice = gasPrice
+                    } else {
+                        self.defaultGasPrice = PlatonConfig.FuncGasPrice.minGasPrice
+                    }
+
+                    let defaultGasPricePercent50 = self.defaultGasPrice.multiplied(by: BigUInt(Int(0.5 * 10))) / BigUInt(10)
+                    self.minGasPrice = defaultGasPricePercent50 > PlatonConfig.FuncGasPrice.minGasPrice ? defaultGasPricePercent50 : PlatonConfig.FuncGasPrice.minGasPrice
                     NotificationCenter.default.post(name: Notification.Name.ATON.DidNodeGasPriceUpdate, object: nil)
                 }
             case .failure:

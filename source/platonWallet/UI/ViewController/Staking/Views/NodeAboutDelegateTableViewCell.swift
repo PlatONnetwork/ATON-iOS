@@ -18,17 +18,13 @@ class NodeAboutDelegateTableViewCell: UITableViewCell {
 
     public let lockedDelegateLabel = UILabel()
     public let unlockedDelegateLabel = UILabel()
-    public let releaseDelegateLabel = UILabel()
-    public let undelegatingLabel = UILabel()
 
     public let delegateButton = UIButton()
     public let withDrawButton = UIButton()
-    public let moveOutButton = UIButton()
 
     var didLinkHanlder: ((NodeAboutDelegateTableViewCell) -> Void)?
     var didDelegateHandler: ((NodeAboutDelegateTableViewCell) -> Void)?
     var didWithdrawHandler: ((NodeAboutDelegateTableViewCell) -> Void)?
-    var didMoveOutHandler: ((NodeAboutDelegateTableViewCell) -> Void)?
 
     var delegateDetail: DelegateDetail? {
         didSet {
@@ -37,10 +33,8 @@ class NodeAboutDelegateTableViewCell: UITableViewCell {
             nodeAddressLabel.text = delegateDetail?.nodeId.nodeIdForDisplay() ?? "--"
             nodeStatusLabel.text = delegateDetail?.status.0
             nodeStatusLabel.textColor = delegateDetail?.status.1
-            lockedDelegateLabel.text = delegateDetail?.lockedString ?? "--"
-            unlockedDelegateLabel.text = delegateDetail?.unlockedString ?? "--"
-            releaseDelegateLabel.text = delegateDetail?.releasedString ?? "--"
-            undelegatingLabel.text = delegateDetail?.undelegateString ?? "--"
+            lockedDelegateLabel.text = delegateDetail?.delegatedString ?? "--"
+            unlockedDelegateLabel.text = delegateDetail?.releasedString ?? "--"
         }
     }
 
@@ -56,7 +50,7 @@ class NodeAboutDelegateTableViewCell: UITableViewCell {
             make.leading.equalToSuperview().offset(10)
             make.trailing.equalToSuperview().offset(-10)
             make.top.equalToSuperview().offset(16)
-            make.height.equalTo(223)
+            make.height.equalTo(172)
             make.bottom.equalToSuperview()
         }
 
@@ -152,7 +146,7 @@ class NodeAboutDelegateTableViewCell: UITableViewCell {
         }
 
         let unlockedDelegatingTipLabel = UILabel()
-        unlockedDelegatingTipLabel.text = Localized("staking_delegate_unlocked")
+        unlockedDelegatingTipLabel.text = Localized("staking_delegate_release")
         unlockedDelegatingTipLabel.textColor = common_lightLightGray_color
         unlockedDelegatingTipLabel.font = UIFont.systemFont(ofSize: 12)
         delegateBackgroundView.addSubview(unlockedDelegatingTipLabel)
@@ -172,49 +166,6 @@ class NodeAboutDelegateTableViewCell: UITableViewCell {
             make.height.equalTo(14)
         }
 
-        let releaseDelegateTipLabel = UILabel()
-        releaseDelegateTipLabel.text = Localized("staking_delegate_release")
-        releaseDelegateTipLabel.textColor = common_lightLightGray_color
-        releaseDelegateTipLabel.font = UIFont.systemFont(ofSize: 12)
-        delegateBackgroundView.addSubview(releaseDelegateTipLabel)
-        releaseDelegateTipLabel.snp.makeConstraints { make in
-            make.leading.equalTo(lockedDelegateLabel)
-            make.top.equalTo(lockedDelegateLabel.snp.bottom).offset(15)
-            make.height.equalTo(14)
-            make.width.equalTo(lockDelegateTipLabel)
-        }
-
-        releaseDelegateLabel.textColor = .black
-        releaseDelegateLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium)
-        releaseDelegateLabel.text = "--"
-        delegateBackgroundView.addSubview(releaseDelegateLabel)
-        releaseDelegateLabel.snp.makeConstraints { make in
-            make.leading.equalTo(releaseDelegateTipLabel)
-            make.top.equalTo(releaseDelegateTipLabel.snp.bottom).offset(9)
-            make.height.equalTo(14)
-        }
-
-        let undelegatingTipLabel = UILabel()
-        undelegatingTipLabel.text = Localized("staking_delegate_undelegating")
-        undelegatingTipLabel.textColor = common_lightLightGray_color
-        undelegatingTipLabel.font = UIFont.systemFont(ofSize: 12)
-        delegateBackgroundView.addSubview(undelegatingTipLabel)
-        undelegatingTipLabel.snp.makeConstraints { make in
-            make.leading.equalTo(releaseDelegateTipLabel.snp.trailing)
-            make.top.equalTo(releaseDelegateTipLabel.snp.top)
-            make.width.equalTo(releaseDelegateTipLabel)
-        }
-
-        undelegatingLabel.textColor = .black
-        undelegatingLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium)
-        undelegatingLabel.text = "--"
-        delegateBackgroundView.addSubview(undelegatingLabel)
-        undelegatingLabel.snp.makeConstraints { make in
-            make.leading.equalTo(undelegatingTipLabel)
-            make.top.equalTo(undelegatingTipLabel.snp.bottom).offset(9)
-            make.height.equalTo(14)
-        }
-
         delegateButton.addTarget(self, action: #selector(delegateTapAction), for: .touchUpInside)
         delegateButton.setCellBottomStyle(UIImage(named: "3.icon_Delegate3"), UIImage(named: "3.icon_Delegate4"), "staking_delegate")
         delegateBackgroundView.addSubview(delegateButton)
@@ -229,16 +180,6 @@ class NodeAboutDelegateTableViewCell: UITableViewCell {
         withDrawButton.setCellBottomStyle(UIImage(named: "3.icon_Undelegate 3"), UIImage(named: "3.icon_Undelegate4"), "staking_withdraw")
         delegateBackgroundView.addSubview(withDrawButton)
         withDrawButton.snp.makeConstraints { make in
-            make.bottom.equalToSuperview()
-            make.width.equalToSuperview().dividedBy(2)
-            make.trailing.equalToSuperview()
-            make.height.equalTo(40)
-        }
-
-        moveOutButton.addTarget(self, action: #selector(moveoutTapAction), for: .touchUpInside)
-        moveOutButton.setCellBottomStyle(UIImage(named: "3.icon_More out"), UIImage(named: "3.icon_More out"), Localized("staking_moveout"))
-        delegateBackgroundView.addSubview(moveOutButton)
-        moveOutButton.snp.makeConstraints { make in
             make.bottom.equalToSuperview()
             make.width.equalToSuperview().dividedBy(2)
             make.trailing.equalToSuperview()
@@ -280,10 +221,6 @@ class NodeAboutDelegateTableViewCell: UITableViewCell {
 
     @objc private func withdrawTapAction() {
         didWithdrawHandler?(self)
-    }
-
-    @objc private func moveoutTapAction() {
-        didMoveOutHandler?(self)
     }
 
 }

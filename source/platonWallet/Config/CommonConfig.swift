@@ -101,6 +101,10 @@ struct AppConfig {
         }
         static let PATH = "/app/v0700"
     }
+
+    struct AppInfo {
+        static let appVersion = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String
+    }
 }
 
 extension String {

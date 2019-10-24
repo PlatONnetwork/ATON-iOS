@@ -147,4 +147,12 @@ class PLevelSlider: UIView {
             self.slider.setValue(value, animated: animated)
         }
     }
+
+    func setSliderValue(value: Float) {
+        guard curLevel != value else {
+            return
+        }
+
+        updateSliderValue(value: value, animated: false)
+    }
 }

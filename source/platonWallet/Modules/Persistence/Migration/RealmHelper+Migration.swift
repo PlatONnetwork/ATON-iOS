@@ -41,4 +41,10 @@ extension RealmHelper {
             newObject!["chainId"] = nodeURLStr.chainid
         }
     }
+
+    /// delete local table DelegateDetailDel
+    /// version 0.7.0 set for del delegateRecord to filter data
+    public static func migrationBelow0731(migration: Migration, schemaVersion: UInt64, oldSchemaVersion: UInt64) {
+        migration.deleteData(forType: "DelegateDetailDel")
+    }
 }

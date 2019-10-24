@@ -59,6 +59,8 @@ class WalletManagerDetailViewController: BaseViewController {
         deleteBtn.style = .delete
         walletName.text = wallet.name
         address.text = wallet.address
+        address.adjustsFontSizeToFitWidth = true
+        
         self.exportMnemonicContainer.isHidden = !self.wallet.canBackupMnemonic
 
         if self.wallet.type == .observed {
@@ -91,6 +93,12 @@ class WalletManagerDetailViewController: BaseViewController {
         self.showCommonRenameInput(completion: { [weak self] text in
             self?.updateWalletName(text!)
         }, checkDuplicate: true)
+    }
+
+    @IBAction func copyWalletAddress(_ sender: Any) {
+        let pasteboard = UIPasteboard.general
+        pasteboard.string = wallet.address
+        UIApplication.shared.keyWindow?.rootViewController?.showMessage(text: Localized("ExportVC_copy_success"))
     }
 
     func updateWalletName(_ name:String) {

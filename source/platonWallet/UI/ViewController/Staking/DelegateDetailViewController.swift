@@ -151,9 +151,7 @@ extension DelegateDetailViewController {
                 self?.listData.removeAll()
 
                 if let newData = data as? [DelegateDetail], newData.count > 0 {
-                    let filterData = newData.filter { return !DelegatePersistence.isDeleted(self?.delegate?.walletAddress ?? "", $0) }
-
-                    self?.listData.append(contentsOf: filterData)
+                    self?.listData.append(contentsOf: newData)
                 }
                 self?.tableView.reloadData()
             case .fail:
@@ -172,15 +170,11 @@ extension DelegateDetailViewController: UITableViewDelegate, UITableViewDataSour
         let cell = tableView.dequeueReusableCell(withIdentifier: "NodeAboutDelegateTableViewCell") as! NodeAboutDelegateTableViewCell
         let delegateDetail = self.listData[indexPath.row]
         cell.delegateDetail = delegateDetail
-        cell.delegateButton.isEnabled = delegateDetail.getDelegateButtonIsEnable(address: delegate!.walletAddress)
+        cell.delegateButton.isEnabled = delegateDetail.isExistWallet(address: delegate!.walletAddress)
         cell.delegateButton.isSelected = delegateDetail.isInit || (delegateDetail.nodeStatus == .Exiting || delegateDetail.nodeStatus == .Exited)
-        cell.delegateButton.backgroundColor = delegateDetail.getDelegateButtonIsEnable(address: delegate!.walletAddress) && !delegateDetail.isInit && (delegateDetail.nodeStatus == .Active || delegateDetail.nodeStatus == .Candidate) ? UIColor.white : UIColor(rgb: 0xDCDFE8, alpha: 0.4)
-        cell.withDrawButton.isHidden = !delegateDetail.rightButtonStatus.0
-        cell.moveOutButton.isHidden = delegateDetail.rightButtonStatus.0
-        cell.withDrawButton.isEnabled = delegateDetail.rightButtonStatus.1
-        cell.moveOutButton.isEnabled = delegateDetail.rightButtonStatus.1
-        cell.withDrawButton.backgroundColor = delegateDetail.rightButtonStatus.1 ? UIColor.white : UIColor(rgb: 0xDCDFE8, alpha: 0.4)
-        cell.moveOutButton.backgroundColor = delegateDetail.rightButtonStatus.1 ? UIColor.white : UIColor(rgb: 0xDCDFE8, alpha: 0.4)
+        cell.delegateButton.backgroundColor = delegateDetail.isExistWallet(address: delegate!.walletAddress) && !delegateDetail.isInit && (delegateDetail.nodeStatus == .Active || delegateDetail.nodeStatus == .Candidate) ? UIColor.white : UIColor(rgb: 0xDCDFE8, alpha: 0.4)
+        cell.withDrawButton.isEnabled = delegateDetail.isExistWallet(address: delegate!.walletAddress)
+        cell.withDrawButton.backgroundColor = delegateDetail.isExistWallet(address: delegate!.walletAddress) ? UIColor.white : UIColor(rgb: 0xDCDFE8, alpha: 0.4)
 
         cell.didLinkHanlder = { [weak self] _ in
             self?.openWebSiteController(delegateDetail.website)
@@ -198,19 +192,7 @@ extension DelegateDetailViewController: UITableViewDelegate, UITableViewDataSour
         cell.didWithdrawHandler = { [weak self] _ in
             self?.gotoWithdrawController(delegateDetail)
         }
-        cell.didMoveOutHandler = { [weak self] _ in
-            self?.removeDelegateDetailCell(indexPath)
-
-        }
         return cell
-    }
-
-    func removeDelegateDetailCell(_ indexPath: IndexPath) {
-        let delegateDetail = listData[indexPath.row]
-        let detailDel = DelegateDetailDel(walletAddress: delegate?.walletAddress ?? "", nodeId: delegateDetail.nodeId, delegationBlockNum: delegateDetail.delegationBlockNum)
-        DelegatePersistence.add(delegates: [detailDel])
-        listData.remove(at: indexPath.row)
-        tableView.deleteRows(at: [indexPath], with: .fade)
     }
 }
 
@@ -219,17 +201,11 @@ extension DelegateDetailViewController {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.paragraphSpacing = 10
 
-        let lockedTitleAttr = NSAttributedString(string: Localized("staking_alert_locked_delegate") + "\n", attributes: [NSAttributedString.Key.foregroundColor: text_blue_color, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16, weight: .medium), NSAttributedString.Key.paragraphStyle: paragraphStyle])
-        let lockedDetailAttr = NSAttributedString(string: Localized("staking_alert_locked_delegate_detail") + "\n", attributes: [NSAttributedString.Key.foregroundColor: common_darkGray_color, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13), NSAttributedString.Key.paragraphStyle: paragraphStyle])
-
-        let unlockedTitleAttr = NSAttributedString(string: Localized("staking_alert_unlocked_delegate") + "\n", attributes: [NSAttributedString.Key.foregroundColor: text_blue_color, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16, weight: .medium), NSAttributedString.Key.paragraphStyle: paragraphStyle])
-        let unlockedDetailAttr = NSAttributedString(string: Localized("staking_alert_unlocked_delegate_detail") + "\n", attributes: [NSAttributedString.Key.foregroundColor: common_darkGray_color, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13), NSAttributedString.Key.paragraphStyle: paragraphStyle])
-
         let releaseTitleAttr = NSAttributedString(string: Localized("staking_alert_released_delegate") + "\n", attributes: [NSAttributedString.Key.foregroundColor: text_blue_color, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16, weight: .medium), NSAttributedString.Key.paragraphStyle: paragraphStyle])
         let releaseDetailAttr = NSAttributedString(string: Localized("staking_alert_released_detail") + "\n", attributes: [NSAttributedString.Key.foregroundColor: common_darkGray_color, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13), NSAttributedString.Key.paragraphStyle: paragraphStyle])
 
         let alertVC = AlertStylePopViewController.initFromNib()
-        let style = PAlertStyle.AlertWithText(attributedStrings: [lockedTitleAttr, lockedDetailAttr, unlockedTitleAttr, unlockedDetailAttr, releaseTitleAttr, releaseDetailAttr])
+        let style = PAlertStyle.AlertWithText(attributedStrings: [releaseTitleAttr, releaseDetailAttr])
         alertVC.onAction(confirm: { (_, _) -> (Bool) in
             return true
         }) { (_, _) -> (Bool) in

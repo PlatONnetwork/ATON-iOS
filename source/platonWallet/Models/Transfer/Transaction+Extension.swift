@@ -101,6 +101,10 @@ extension Transaction {
             return valueDescription!
         }
 
+        if txReceiptStatus == TransactionReceiptStatus.businessCodeError.rawValue {
+            return valueDescription!
+        }
+
         switch direction {
         case .Sent:
             return "-" + valueDescription!
@@ -197,27 +201,40 @@ extension Transaction {
 
     var recordStatus: (String, UIColor) {
 
-        if let redeemSt = redeemStatus, redeemSt == .redeeming, txType! == .delegateWithdraw {
-            return (Localized("TransactionStatus_loading_undelegate"), status_blue_color)
-        } else if let redeemSt = redeemStatus, redeemSt == .redeemSuccess, txType! == .delegateWithdraw {
-            return (Localized("TransactionStatus_succeed_undelegate"), status_green_color)
-        } else {
-            if let type = txType, type == .delegateCreate {
-                if txReceiptStatus == 1 {
-                    return (Localized("TransactionStatus_succeed_delegate"), status_green_color)
-                } else if txReceiptStatus == 0 {
-                    return (Localized("TransactionStatus_failed_delegate"), status_red_color)
-                } else {
-                    return (Localized("TransactionStatus_pending_desc"), status_blue_color)
-                }
+        guard let type = txType else {
+            if txReceiptStatus == 1 {
+                return (Localized("TransactionStatus_succeed_desc"), status_green_color)
+            } else if txReceiptStatus == 0 {
+                return (Localized("TransactionStatus_failed_desc"), status_red_color)
             } else {
-                if txReceiptStatus == 1 {
-                    return (Localized("TransactionStatus_succeed_desc"), status_green_color)
-                } else if txReceiptStatus == 0 {
-                    return (Localized("TransactionStatus_failed_desc"), status_red_color)
-                } else {
-                    return (Localized("TransactionStatus_pending_desc"), status_blue_color)
-                }
+                return (Localized("TransactionStatus_pending_desc"), status_blue_color)
+            }
+        }
+
+        switch type {
+        case .delegateCreate:
+            if txReceiptStatus == 1 {
+                return (Localized("TransactionStatus_succeed_delegate"), status_green_color)
+            } else if txReceiptStatus == 0 {
+                return (Localized("TransactionStatus_failed_delegate"), status_red_color)
+            } else {
+                return (Localized("TransactionStatus_pending_desc"), status_blue_color)
+            }
+        case .delegateWithdraw:
+            if txReceiptStatus == 1 {
+                return (Localized("TransactionStatus_succeed_undelegate"), status_green_color)
+            } else if txReceiptStatus == 0 {
+                return (Localized("TransactionStatus_failed_undelegate"), status_red_color)
+            } else {
+                return (Localized("TransactionStatus_pending_desc"), status_blue_color)
+            }
+        default:
+            if txReceiptStatus == 1 {
+                return (Localized("TransactionStatus_succeed_desc"), status_green_color)
+            } else if txReceiptStatus == 0 {
+                return (Localized("TransactionStatus_failed_desc"), status_red_color)
+            } else {
+                return (Localized("TransactionStatus_pending_desc"), status_blue_color)
             }
         }
     }

@@ -32,6 +32,10 @@ enum GuidancePage {
         }
     }
 
+    func getStoredPlusVersionKey() -> String {
+        return getStoredKey() + AppConfig.AppInfo.appVersion
+    }
+
     func getImage() -> UIImage {
         let cnSuffix = "_cn"
         let enSuffix = "_en"
@@ -49,6 +53,11 @@ enum GuidancePage {
     func getConstraint() -> ((_ make: ConstraintMaker) -> Void) {
 
         let image = self.getImage()
+
+        return { (make: ConstraintMaker) -> Void in
+            make.center.equalToSuperview()
+
+        }
 
         switch self {
         case .MainImportWalletViewController:
@@ -180,15 +189,16 @@ class GuidanceVC: UIViewController {
         imageView.contentMode = .scaleToFill
         imageView.isUserInteractionEnabled = true
         self.view.addSubview(imageView)
-        self.view.backgroundColor = UIColor.init(rgb: 0x000000, alpha: 0.75)
+        self.view.backgroundColor = UIColor(rgb: 0x404040)
 
         imageView.addSubview(dismissButton)
         dismissButton.backgroundColor = .clear
         dismissButton.addTarget(self, action: #selector(onTap), for: .touchUpInside)
         dismissButton.snp.makeConstraints { (make) in
-            make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview()
-            make.size.equalTo(CGSize(width: 100, height: 40))
+            make.edges.equalTo(imageView.snp.edges)
+//            make.centerX.equalToSuperview()
+//            make.bottom.equalToSuperview()
+//            make.size.equalTo(CGSize(width: 100, height: 40))
         }
 
         imageView.snp.makeConstraints(pageType.getConstraint())
@@ -204,7 +214,7 @@ public class GuidanceViewMgr: NSObject {
     static let sharedInstance = GuidanceViewMgr()
 
     func checkGuidance(page: GuidancePage, presentedVC: UIViewController) {
-        let skey = page.getStoredKey()
+        let skey = page.getStoredPlusVersionKey()
         guard (UserDefaults.standard.object(forKey: skey) as? Bool) == nil  else {
             return
         }

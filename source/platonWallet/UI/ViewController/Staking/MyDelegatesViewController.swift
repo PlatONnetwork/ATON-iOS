@@ -132,7 +132,7 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
             return
         }
         let total = listData.reduce(BigUInt(0)) { (result, delegate) -> BigUInt in
-            return result + BigUInt(delegate.delegate ?? "0")!
+            return result + BigUInt(delegate.delegated ?? "0")!
         }
         headerView.totalBalanceLabel.text = (total.description.vonToLATString ?? "0").ATPSuffix()
     }

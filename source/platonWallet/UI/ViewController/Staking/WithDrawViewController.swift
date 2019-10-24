@@ -99,15 +99,9 @@ class WithDrawViewController: BaseViewController {
     private func initBalanceStyle() {
         guard delegateValue.count > 0 else { return }
 
-        let totalLocked = delegateValue.reduce(BigUInt.zero) { (result, dValue) -> BigUInt in
-            return result + BigUInt(dValue.locked ?? "0")!
+        let totalDelegate = delegateValue.reduce(BigUInt.zero) { (result, dValue) -> BigUInt in
+            return result + BigUInt(dValue.delegated ?? "0")!
         }
-
-        let totalUnLocked = delegateValue.reduce(BigUInt.zero) { (result, dValue) -> BigUInt in
-            return result + BigUInt(dValue.unLocked ?? "0")!
-        }
-
-        let totalDelegate = totalLocked + totalUnLocked
 
         let totalReleased = delegateValue.reduce(BigUInt.zero) { (result, dValue) -> BigUInt in
             return result + BigUInt(dValue.released ?? "0")!
@@ -115,8 +109,7 @@ class WithDrawViewController: BaseViewController {
 
         let bStyle = BalancesCellStyle(balances: [
             (Localized("staking_balance_Delegated"), totalDelegate.description),
-            (Localized("staking_balance_unlocked_Delegated"), totalUnLocked.description),
-            (Localized("staking_balance__release_Delegated"), totalReleased.description)], selectedIndex: 0, isExpand: false)
+            (Localized("staking_balance_release_Delegated"), totalReleased.description)], selectedIndex: 0, isExpand: false)
         balanceStyle = bStyle
 
         initListData()
@@ -298,8 +291,16 @@ extension WithDrawViewController {
         }
 
         guard currentAmount <= (BigUInt(balanceStyle?.currentBalance.1 ?? "0") ?? BigUInt.zero) else {
-            showMessage(text: Localized("staking_input_amount_maxlimit_error"))
+            showMessage(text: Localized("staking_withdraw_input_amount_maxlimit_error"))
             return
+        }
+
+        guard
+            let balance = AssetService.sharedInstace.balances.first(where: { $0.addr.lowercased() == walletStyle?.currentWallet.address.lowercased() }),
+            let freeBalance = BigUInt(balance.free ?? "0"),
+            let estimateGas = estimateUseGas, freeBalance >= estimateGas else {
+                showMessage(text: Localized("staking_withdraw_balance_Insufficient_error"))
+                return
         }
 
         guard
