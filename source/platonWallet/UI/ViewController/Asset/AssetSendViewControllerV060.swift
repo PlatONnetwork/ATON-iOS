@@ -612,7 +612,7 @@ extension AssetSendViewControllerV060 {
         if overflow {
             //amount < balance
             self.resportSufficiency(isSufficient: false)
-            return (false, Localized("transferVC_Insufficient_balance"))
+            return (false, Localized("transferVC_Insufficient_balance_for_gas"))
         } else {
             self.resportSufficiency(isSufficient: true)
             return (true, "")

@@ -101,6 +101,10 @@ extension Transaction {
             return valueDescription!
         }
 
+        if txReceiptStatus == TransactionReceiptStatus.businessCodeError.rawValue {
+            return valueDescription!
+        }
+
         switch direction {
         case .Sent:
             return "-" + valueDescription!

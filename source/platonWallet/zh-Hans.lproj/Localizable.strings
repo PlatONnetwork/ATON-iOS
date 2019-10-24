@@ -81,6 +81,7 @@
 "transferVC_transfer_balance" = "余额：";
 "transferVC_transfer_SendAll" = "发送所有";
 "transferVC_Insufficient_balance" = "钱包余额不足";
+"transferVC_Insufficient_balance_for_gas" = "余额不足支付手续费，无法转账";
 "transferVC_Insufficient_network_error" = "网络连接失败";
 "transferVC_transfer_select_wallet" = "选择钱包";
 
@@ -875,6 +876,7 @@
 "staking_withdraw_input_amount_minlimit_error" = "赎回数量不能少于10LAT";
 "staking_input_amount_maxlimit_error" = "余额不足，无法委托";
 "staking_withdraw_input_amount_maxlimit_error" = "超出可赎回数量，无法提交";
+"staking_withdraw_balance_Insufficient_error" = "余额不足支付手续费，无法赎回委托";
 
 "error_no_wallet" = "无可用钱包";
 "error_wallet_no_balance" = "钱包余额不足";

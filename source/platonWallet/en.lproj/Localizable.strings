@@ -84,6 +84,7 @@
 "transferVC_transfer_select_wallet" = "Select Wallet";
 
 "transferVC_Insufficient_balance" = "Insufficient wallet balance";
+"transferVC_Insufficient_balance_for_gas" = "Insufficient balance payment fee";
 "transferVC_Insufficient_network_error" = "Unable to connect to the network";
 
 //walletDetailVC
@@ -867,6 +868,7 @@
 "staking_withdraw_input_amount_minlimit_error" = "The Amount cannot be less than 10 LAT";
 "staking_input_amount_maxlimit_error" = "Insufficient balance, unable to delegate";
 "staking_withdraw_input_amount_maxlimit_error" = "Exceeded the available amount and cannot be submitted";
+"staking_withdraw_balance_Insufficient_error" = "Insufficient balance payment fee";
 
 "error_no_wallet" = "No wallet available";
 "error_wallet_no_balance" = "insufficient wallet balance";

@@ -59,6 +59,8 @@ class WalletManagerDetailViewController: BaseViewController {
         deleteBtn.style = .delete
         walletName.text = wallet.name
         address.text = wallet.address
+        address.adjustsFontSizeToFitWidth = true
+        
         self.exportMnemonicContainer.isHidden = !self.wallet.canBackupMnemonic
 
         if self.wallet.type == .observed {

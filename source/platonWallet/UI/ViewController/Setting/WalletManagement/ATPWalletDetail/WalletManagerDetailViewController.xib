@@ -41,7 +41,7 @@
                                 <userDefinedRuntimeAttribute type="string" keyPath="localizedText" value="addressbook_wallet_address_with_Colon"/>
                             </userDefinedRuntimeAttributes>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="szA-Er-tQX">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="clip" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="szA-Er-tQX">
                             <rect key="frame" x="16" y="44" width="343" height="20"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="20" id="m8t-UK-Jgt"/>
