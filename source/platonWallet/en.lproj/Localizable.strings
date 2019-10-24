@@ -353,7 +353,7 @@
 "TransactionListVC_Received" = "Received";
 "TransactionListVC_Vote" = "Vote";
 
-"TransactionStatus_sending_title" = "Sending";
+"TransactionStatus_sending_title" = "Sending LAT";
 "TransactionStatus_sendSucceed_title" = "Sent";
 "TransactionStatus_sendFailed_title" = "Sent";
 "TransactionStatus_receiving_title" = "Receiving";
@@ -868,6 +868,7 @@
 "staking_delegate_input_amount_minlimit_error" = "Please input amount";
 "staking_withdraw_input_amount_minlimit_error" = "Please input amount";
 "staking_input_amount_minlimit_error" = "The Amount cannot be less than 10 LAT";
+"staking_withdraw_input_amount_minlimit_error" = "The Amount cannot be less than 10 LAT";
 "staking_input_amount_maxlimit_error" = "Insufficient balance, unable to delegate";
 
 "error_no_wallet" = "No wallet available";

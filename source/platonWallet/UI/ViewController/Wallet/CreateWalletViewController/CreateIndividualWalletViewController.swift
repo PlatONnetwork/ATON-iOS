@@ -172,55 +172,7 @@ class CreateIndividualWalletViewController: BaseViewController,StartBackupMnemon
     }
 
     func showInputPswAlert() {
-
-        let alertVC = AlertStylePopViewController.initFromNib()
-        let style = PAlertStyle.passwordInput(walletName: self.nameTF.text)
-        alertVC.onAction(confirm: {[weak self] (text, _) -> (Bool)  in
-            let valid = CommonService.isValidWalletPassword(text ?? "")
-            if !valid.0 {
-                alertVC.showInputErrorTip(string: valid.1)
-                return false
-            }
-
-            if (self?.pswTF.text != text) {
-                alertVC.showInputErrorTip(string: Localized("alert_psw_input_error_title"))
-                return false
-   
-            }else {
-                
-                if alertVC.isInCustomLoading != nil && alertVC.isInCustomLoading!{
-                    return false
-                }
-                
-                alertVC.showLoadingHUD()
-                WalletService.sharedInstance.exportMnemonic(wallet: self!.wallet, password: self!.pswTF.text!, completion: { (res, error) in
-                    if (error == nil && (res!.length) > 0) {
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3, execute: {
-                            let vc = BackupMnemonicViewController()
-                            vc.walletAddress = self?.wallet.address
-                            vc.mnemonic = res 
-                            self?.rt_navigationController.pushViewController(vc, animated: true)
-                        })
-                        alertVC.hideLoadingHUD()
-                        alertVC.dismissWithCompletion()
-                    }else{
-                        alertVC.hideLoadingHUD()
-                        alertVC.showInputErrorTip(string: error?.errorDescription)
-                    }
-                })
-                return false
-
-            }
-
-        }) { (_, _) -> (Bool) in
-            if alertVC.isInCustomLoading != nil && alertVC.isInCustomLoading!{
-                return false
-            }
-            return true
-        }
-        alertVC.style = style
-        alertVC.showInViewController(viewController: self)
-        return
+        showWalletBackup(wallet: wallet)
     }
 
 }

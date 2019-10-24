@@ -192,7 +192,7 @@ class NodeSettingViewControllerV2: BaseViewController {
         }
 
 //#if DEBUG
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightBarButton)
+//        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightBarButton)
 //#endif
     }
 

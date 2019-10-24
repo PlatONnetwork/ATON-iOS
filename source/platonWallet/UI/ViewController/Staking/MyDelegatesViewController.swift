@@ -99,6 +99,7 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
     @objc func shouldUpdateDelegateData() {
         if AssetVCSharedData.sharedData.walletList.count == 0 {
             listData.removeAll()
+            updateDelagateHeader()
             tableView.reloadData()
             return
         }

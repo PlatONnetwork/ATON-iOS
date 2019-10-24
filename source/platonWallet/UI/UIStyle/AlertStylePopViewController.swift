@@ -123,6 +123,9 @@ class AlertStylePopViewController: UIViewController, UITextFieldDelegate {
         self.textFieldInput.tintColor = UIColor(rgb: 0x0077FF)
         self.errorLabel.text = ""
 
+        // 防止重复点击
+        self.confirmButton.eventInterval = 1.0
+
         self.textFieldInput.disableAutoFilled()
 
         switch style {
@@ -360,10 +363,16 @@ class AlertStylePopViewController: UIViewController, UITextFieldDelegate {
         }
     }
 
-    @IBAction func onConfirm(_ sender: Any) {
+    @IBAction func onConfirm(_ sender: UIButton) {
         guard self.confirmBlock != nil else {
             return
         }
+
+        defer {
+            sender.isEnabled = true
+        }
+        sender.isEnabled = false
+
         if self.confirmBlock!(self.textFieldInput.text, nil) {
             self.dismissWithCompletion()
         }

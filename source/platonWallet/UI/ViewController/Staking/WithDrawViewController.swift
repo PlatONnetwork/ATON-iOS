@@ -203,6 +203,7 @@ extension WithDrawViewController: UITableViewDelegate, UITableViewDataSource {
             return cell
         case .inputAmount:
             let cell = tableView.dequeueReusableCell(withIdentifier: "SendInputTableViewCell") as! SendInputTableViewCell
+            cell.inputType = .withdraw
             cell.amountView.titleLabel.text = Localized("ATextFieldView_withdraw_title")
             cell.minAmountLimit = "10".LATToVon
             cell.maxAmountLimit = BigUInt(balanceStyle?.currentBalance.1 ?? "0")
@@ -292,7 +293,7 @@ extension WithDrawViewController {
         }
 
         guard currentAmount >= BigUInt("10").multiplied(by: PlatonConfig.VON.LAT) else {
-            showMessage(text: Localized("staking_input_amount_minlimit_error"))
+            showMessage(text: Localized("staking_withdraw_input_amount_minlimit_error"))
             return
         }
 
@@ -313,7 +314,7 @@ extension WithDrawViewController {
         }
 
         var tempPrivateKey: String?
-        showPasswordInputPswAlert(for: walletObject.currentWallet) { [weak self] (privateKey, error) in
+        showPasswordInputPswAlert(for: walletObject.currentWallet) { [weak self] (privateKey, _, error) in
             guard let self = self else { return }
             guard let pri = privateKey else {
                 if let errorMsg = error?.localizedDescription {
@@ -398,7 +399,7 @@ extension WithDrawViewController {
                         guard let nonce = blockNonce else { return }
                         let nonceString = nonce.quantity.description
 
-                        let transactionData = TransactionQrcode(amount: amount.description, chainId: web3.properties.chainId, from: walletObject.currentWallet.address, to: PlatonConfig.ContractAddress.stakingContractAddress, gasLimit: funcType.gas.description, gasPrice: gasPrice, nonce: nonceString, typ: nil, nodeId: nodeId, nodeName: self.currentNode?.name, sender: walletObject.currentWallet.address, stakingBlockNum: String(sBlockNum), functionType: funcType.typeValue)
+                        let transactionData = TransactionQrcode(amount: amount.description, chainId: web3.properties.chainId, from: walletObject.currentWallet.address, to: PlatonConfig.ContractAddress.stakingContractAddress, gasLimit: funcType.gas.description, gasPrice: gasPrice, nonce: nonceString, typ: nil, nodeId: nodeId, nodeName: self.currentNode?.name, stakingBlockNum: String(sBlockNum), functionType: funcType.typeValue)
                         qrcodeArr.append(transactionData)
                     case .fail:
                         break

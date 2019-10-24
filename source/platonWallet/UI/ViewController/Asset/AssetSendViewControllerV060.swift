@@ -41,7 +41,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
         })
         amountView.checkInput(mode: .all, check: {[weak self] text -> (Bool, String) in
 
-            let inputformat = CommonService.checkTransferAmoutInput(text: text, checkBalance: false, fee: nil)
+            let inputformat = CommonService.checkTransferAmoutInput(text: text, checkBalance: false, fee: nil, type: .transfer)
             if !inputformat.0 {
                 return inputformat
             }
@@ -480,7 +480,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
                     guard let nonce = blockNonce else { return }
                     let nonceString = nonce.quantity.description
 
-                    let transactionData = TransactionQrcode(amount: amount, chainId: web3.properties.chainId, from: wallet.address, to: to, gasLimit: gasLimit, gasPrice: gasPrice, nonce: nonceString, typ: nil, nodeId: nil, nodeName: nil, sender: wallet.address, stakingBlockNum: nil, functionType: 0)
+                    let transactionData = TransactionQrcode(amount: amount, chainId: web3.properties.chainId, from: wallet.address, to: to, gasLimit: gasLimit, gasPrice: gasPrice, nonce: nonceString, typ: nil, nodeId: nil, nodeName: nil, stakingBlockNum: nil, functionType: 0)
                     let qrcodeData = QrcodeData(qrCodeType: 0, qrCodeData: [transactionData], timestamp: Int(Date().timeIntervalSince1970 * 1000), chainId: web3.chainId, functionType: nil, from: nil)
                     guard
                         let data = try? JSONEncoder().encode(qrcodeData),
@@ -494,7 +494,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
                 }
             }
         } else {
-            showPasswordInputPswAlert(for: wallet) { [weak self] (privateKey, error) in
+            showPasswordInputPswAlert(for: wallet) { [weak self] (privateKey, _, error) in
                 guard let self = self else { return }
                 guard let pri = privateKey else {
                     if let errorMsg = error?.localizedDescription {
@@ -657,7 +657,11 @@ extension AssetSendViewControllerV060 {
 
         let from = AssetVCSharedData.sharedData.cWallet?.address
         let to = self.walletAddressView.textField.text!
-        let amount = self.amountView.textField.text!
+        guard let amount = self.amountView.textField.text, amount.count > 0 else {
+            showErrorMessage(text: "amount value is nil")
+            return
+        }
+
         let memo = ""
 
         _ = TransactionService.service.sendAPTTransfer(from: from!, to: to, amount: amount, InputGasPrice: self.gasPrice!, estimatedGas: String(self.estimatedGas), memo: memo, pri: pri, completion: {[weak self] (result, _) in

@@ -100,9 +100,19 @@ class PLevelSlider: UIView {
         glayer.mask = lLayer
     }
 
-    @IBAction func end(_ sender: Any) {
-        let s = sender as! UISlider
-        updateSliderValue(value: s.value)
+    @IBAction func start(_ sender: UISlider) {
+        guard let grs = gestureRecognizers else {
+            return
+        }
+        _ = grs.map { $0.isEnabled = false }
+    }
+
+    @IBAction func end(_ sender: UISlider) {
+        guard let grs = gestureRecognizers else {
+            return
+        }
+        _ = grs.map { $0.isEnabled = true }
+        updateSliderValue(value: sender.value)
     }
 
     @IBAction func sliderChange(_ sender: Any) {
@@ -117,7 +127,7 @@ class PLevelSlider: UIView {
         let point = gesture.location(in: self)
         let realPoint = self.convert(point, to: slider)
         var value = Float(realPoint.x) / Float(slider.bounds.width)
-
+        print(value)
         if value > 1 {
             value = 1
         } else if value < 0 {

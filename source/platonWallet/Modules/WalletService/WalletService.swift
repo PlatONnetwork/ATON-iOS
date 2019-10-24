@@ -382,7 +382,7 @@ public final class WalletService {
         AssetService.sharedInstace.balances = AssetService.sharedInstace.balances.filter { $0.addr.lowercased() != wallet.address.lowercased() }
 //        AssetService.sharedInstace.assets.removeValue(forKey: (wallet.key?.address)!)
 
-        wallets.removeAll(where: { $0.uuid == wallet.uuid && $0.nodeURLStr == wallet.nodeURLStr })
+        wallets.removeAll(where: { $0.uuid == wallet.uuid && $0.chainId == wallet.chainId })
 
         AssetVCSharedData.sharedData.willDeleteWallet(object: wallet as AnyObject)
 
@@ -423,7 +423,7 @@ public final class WalletService {
 
     private func saveObservedWalletToDB(wallet: Wallet) throws {
         let sameUuidWallet = wallets.first { (item) -> Bool in
-            item.uuid == wallet.uuid && item.nodeURLStr == wallet.nodeURLStr
+            item.uuid == wallet.uuid && item.chainId == wallet.chainId
         }
 
         if sameUuidWallet != nil {
@@ -433,7 +433,7 @@ public final class WalletService {
         WallletPersistence.sharedInstance.save(wallet: wallet)
 
         wallets.removeAll { (item) -> Bool in
-            item.uuid == wallet.uuid && item.nodeURLStr == wallet.nodeURLStr
+            item.uuid == wallet.uuid && item.chainId == wallet.chainId
         }
 
         wallets.append(wallet)
@@ -446,7 +446,7 @@ public final class WalletService {
         }
 
         let sameUuidWallet = wallets.first { (item) -> Bool in
-            item.uuid == wallet.uuid && item.nodeURLStr == wallet.nodeURLStr
+            item.uuid == wallet.uuid && item.chainId == wallet.chainId
         }
 
         if sameUuidWallet != nil {
@@ -482,7 +482,7 @@ public final class WalletService {
         WallletPersistence.sharedInstance.save(wallet: wallet)
 
         wallets.removeAll { (item) -> Bool in
-            item.uuid == wallet.uuid && item.nodeURLStr == wallet.nodeURLStr
+            item.uuid == wallet.uuid && item.chainId == wallet.chainId
         }
 
         wallets.append(wallet)

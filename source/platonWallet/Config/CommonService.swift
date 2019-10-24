@@ -121,7 +121,7 @@ struct CommonService {
         return (valid,msg)
     }
 
-    static func checkTransferAmoutInput(text: String, checkBalance: Bool = false, minLimit: BigUInt? = nil, maxLimit: BigUInt? = nil, fee: BigUInt? = BigUInt("0")!) -> (Bool, String) {
+    static func checkTransferAmoutInput(text: String, checkBalance: Bool = false, minLimit: BigUInt? = nil, maxLimit: BigUInt? = nil, fee: BigUInt? = BigUInt("0")!, type: SendInputTableViewCellType?) -> (Bool, String) {
 
         if text.count == 0 {
             return (true, "")
@@ -140,7 +140,12 @@ struct CommonService {
         }
 
         if let minLimitAmount = minLimit, let inputVON = BigUInt.mutiply(a: text, by: ETHToWeiMultiplier), inputVON < minLimitAmount {
-            msg = Localized("staking_input_amount_minlimit_error")
+            if let inputType = type, inputType == .withdraw {
+                msg = Localized("staking_withdraw_input_amount_minlimit_error")
+            } else {
+                msg = Localized("staking_input_amount_minlimit_error")
+            }
+
             valid = false
         }
 

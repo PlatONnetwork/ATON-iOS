@@ -12,18 +12,19 @@ import Localize_Swift
 
 class SettingService {
 
-    var currentNodeURL : String?
+    var currentNodeChainId: String?
 
     var currentVersion: RemoteVersion?
 
     static let shareInstance = SettingService()
+
     private init() {
+        currentNodeChainId = getSelectedNodes()?.chainId
     }
 
     func getSelectedNodes() -> NodeInfo? {
 
         let list = getNodes()
-
         guard list.count > 0 else { return nil }
 
         guard let i = list.firstIndex(where: { (item) -> Bool in
@@ -35,35 +36,42 @@ class SettingService {
         return list[i]
     }
 
-    static func threadSafeGetCurrentNodeURLString() -> String {
+//    static func threadSafeGetCurrentNodeURLString() -> String {
+//
+//        if Thread.current == .main {
+//            return self.getCurrentNodeURLString()
+//        }
+//
+//        let semaphore = DispatchSemaphore(value: 0)
+//        var URLString : String = AppConfig.NodeURL.defaultNodesURL.first!.nodeURL
+//        DispatchQueue.main.async {
+//            URLString = self.getCurrentNodeURLString()
+//            semaphore.signal()
+//        }
+//        if semaphore.wait(timeout: .now() + 3) == DispatchTimeoutResult.timedOut {
+//            return URLString
+//        }
+//
+//        return URLString
+//    }
 
-        if Thread.current == .main {
-            return self.getCurrentNodeURLString()
+    func getCurrentChainId() -> String {
+        if let chainId = currentNodeChainId {
+            return chainId
         }
 
-        let semaphore = DispatchSemaphore(value: 0)
-        var URLString : String = AppConfig.NodeURL.defaultNodesURL.first!.nodeURL
-        DispatchQueue.main.async {
-            URLString = self.getCurrentNodeURLString()
-            semaphore.signal()
-        }
-        if semaphore.wait(timeout: .now() + 3) == DispatchTimeoutResult.timedOut {
-            return URLString
+        if let selectedNode = getSelectedNodes() {
+            currentNodeChainId = selectedNode.chainId
+            return selectedNode.chainId
         }
 
-        return URLString
-    }
-
-    static func getCurrentNodeURLString() -> String {
-
-        if SettingService.shareInstance.currentNodeURL == nil {
-            SettingService.shareInstance.currentNodeURL = SettingService.shareInstance.getSelectedNodes()?.nodeURLStr
+        if let defaultNode = AppConfig.NodeURL.defaultNodesURL.first(where: { $0.isSelected == true }) {
+            currentNodeChainId = defaultNode.chainId
+            return defaultNode.chainId
         }
 
-        guard let nodeURL = SettingService.shareInstance.currentNodeURL else {
-            return AppConfig.NodeURL.defaultNodesURL.first!.nodeURL
-        }
-        return nodeURL
+        currentNodeChainId = AppConfig.NodeURL.defaultNodesURL.first!.chainId
+        return currentNodeChainId!
     }
 
     static func getCentralizationURL() -> String {
@@ -72,16 +80,20 @@ class SettingService {
         let uatCentralizationURL =  AppConfig.ServerURL.HOST.UATNET + AppConfig.ServerURL.PATH
         let productCentralizationURL =  AppConfig.ServerURL.HOST.PRODUCTNET + AppConfig.ServerURL.PATH
 
-        let url = self.getCurrentNodeURLString()
-        if url == AppConfig.NodeURL.DefaultNodeURL_Alpha_V071 {
+        let chainId = SettingService.shareInstance.getCurrentChainId()
+        #if UAT
+        if chainId == AppConfig.ChainID.PRODUCT {
             return testCentralizationURL
-        } else if url == AppConfig.NodeURL.DefaultNodeURL_UAT {
-            return uatCentralizationURL
-        } else if url == AppConfig.NodeURL.DefaultNodeURL_PRODUCT {
-            return productCentralizationURL
         } else {
             return devCentralizationURL
         }
+        #else
+        if chainId == AppConfig.ChainID.PRODUCT {
+            return productCentralizationURL
+        } else {
+            return uatCentralizationURL
+        }
+        #endif
     }
 
     func getNodes() -> [NodeInfo] {
@@ -90,10 +102,6 @@ class SettingService {
 
     func addOrUpdateNode(_ node: NodeInfo) {
         NodeInfoPersistence.sharedInstance.add(node: node)
-    }
-
-    func deleteNodeList(_ list: [NodeInfo]) {
-        NodeInfoPersistence.sharedInstance.deleteList(list)
     }
 
     func updateSelectedNode(_ node: NodeInfo) {

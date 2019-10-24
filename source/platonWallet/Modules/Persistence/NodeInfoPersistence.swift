@@ -10,15 +10,6 @@ import Foundation
 import RealmSwift
 import Localize_Swift
 
-//private let defalutNodes = [
-//    (nodeURL: AppConfig.NodeURL.DefaultNodeURL_Alpha_V071, desc: "SettingsVC_nodeSet_defaultTestNetwork_Amigo_des", isSelected: true),
-//]
-//
-//private let defalutNodes = [
-//    (nodeURL: AppConfig.NodeURL.DefaultNodeURL_UAT, desc: "SettingsVC_nodeSet_defaultTestNetwork_des", isSelected: true),
-//    (nodeURL: AppConfig.NodeURL.DefaultNodeURL_PRODUCT, desc: "SettingsVC_nodeSet_defaultProductNetwork_des", isSelected: true)
-//]
-
 class NodeInfoPersistence {
 
     static let sharedInstance = NodeInfoPersistence()
@@ -29,14 +20,12 @@ class NodeInfoPersistence {
         let nodeIdentifiers = nodes.map({$0.nodeURLStr})
 
         var existSelected = false
-        for item in nodes {
-            if item.isSelected {
-                existSelected = true
-                break
-            }
+        for item in nodes where item.isSelected == true {
+            existSelected = true
+            break
         }
 
-        var newNodes: [(nodeURL: String, desc: String, isSelected: Bool)] = []
+        var newNodes: [(nodeURL: String, desc: String, chainId: String, isSelected: Bool)] = []
         for node in AppConfig.NodeURL.defaultNodesURL {
             guard !nodeIdentifiers.contains(node.nodeURL) else { continue }
             newNodes.append(node)
@@ -44,22 +33,23 @@ class NodeInfoPersistence {
 
         if existSelected {
             for node in newNodes {
-                add(nodeURLStr: node.nodeURL, desc: node.desc, isSelected: false, isDefault: true)
+                add(nodeURLStr: node.nodeURL, desc: node.desc, chainId: node.chainId, isSelected: false, isDefault: true)
             }
         } else {
             if newNodes.count > 0 {
                 for (index, node) in newNodes.enumerated() {
-                    add(nodeURLStr: node.nodeURL, desc: node.desc, isSelected: index == 0, isDefault: true)
-                }
-            } else {
-                for item in nodes {
-                    if item.nodeURLStr == AppConfig.NodeURL.defaultNodesURL.first!.nodeURL {
-                        update(node: item, isSelected: true)
-                        break
+                    add(nodeURLStr: node.nodeURL, desc: node.desc, chainId: node.chainId, isSelected: index == 0, isDefault: true)
+                    if index == 0 {
+                        SettingService.shareInstance.currentNodeChainId = node.chainId
                     }
                 }
+            } else {
+                for item in nodes where item.nodeURLStr == AppConfig.NodeURL.defaultNodesURL.first!.nodeURL {
+                    update(node: item, isSelected: true)
+                    SettingService.shareInstance.currentNodeChainId = item.chainId
+                    break
+                }
             }
-
         }
     }
 
@@ -74,28 +64,10 @@ class NodeInfoPersistence {
         }
     }
 
-    func deleteList(_ list:[NodeInfo]) {
-        let list = list.detached
-
+    func add(nodeURLStr: String, desc: String, chainId: String, isSelected: Bool, isDefault: Bool) {
         RealmWriteQueue.async {
             autoreleasepool(invoking: {
-                let realm = try! Realm(configuration: RealmHelper.getConfig())
-
-                try? realm.write {
-                    for n in list {
-                        let predicate = NSPredicate(format: "nodeURLStr == %@ && id == %@", SettingService.getCurrentNodeURLString(), n.id)
-                        realm.delete(realm.objects(NodeInfo.self).filter(predicate))
-                    }
-                }
-            })
-
-        }
-    }
-
-    func add(nodeURLStr: String, desc: String, isSelected: Bool, isDefault: Bool) {
-        RealmWriteQueue.async {
-            autoreleasepool(invoking: {
-                let node = NodeInfo(nodeURLStr: nodeURLStr, desc: desc, isSelected: isSelected, isDefault: isDefault)
+                let node = NodeInfo(nodeURLStr: nodeURLStr, desc: desc, chainId: chainId, isSelected: isSelected, isDefault: isDefault)
                 let realm = try! Realm(configuration: RealmHelper.getConfig())
 
                 try? realm.write {

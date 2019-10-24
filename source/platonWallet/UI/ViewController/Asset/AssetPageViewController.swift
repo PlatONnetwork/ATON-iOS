@@ -24,7 +24,7 @@ extension UIPageViewController {
 
 }
 
-class AssetPageViewController: UIPageViewController, UIScrollViewDelegate {
+class AssetPageViewController: UIPageViewController, UIScrollViewDelegate, UIGestureRecognizerDelegate {
 
     private var pagesScrollviewOffSetX: CGFloat = 0
     private var currentPage: Int = 0

@@ -89,7 +89,6 @@ class WalletDetailCell: UITableViewCell {
             var direction = TransactionDirection.unknown
             switch tx.txType! {
             case .transfer:
-                selectedAddress.ishexStringEqual(other: tx.from)
                 direction = (selectedAddress.lowercased() == tx.from?.lowercased() ? .Sent : selectedAddress.lowercased() == tx.to?.lowercased() ? .Receive : .unknown)
             case .delegateWithdraw,
                  .stakingWithdraw:

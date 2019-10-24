@@ -14,7 +14,7 @@ class TransferPersistence {
     public class func add(tx : Transaction) {
         let tx = tx.detached()
 
-        tx.nodeURLStr = SettingService.getCurrentNodeURLString()
+        tx.chainId = SettingService.shareInstance.getCurrentChainId()
         RealmWriteQueue.async {
             autoreleasepool(invoking: {
                 let realm = try! Realm(configuration: RealmHelper.getConfig())
@@ -35,7 +35,7 @@ class TransferPersistence {
             autoreleasepool(invoking: {
                 let realm = try! Realm(configuration: RealmHelper.getConfig())
 
-                let predicate = NSPredicate(format: "txhash == %@ AND nodeURLStr == %@", txhash, SettingService.getCurrentNodeURLString())
+                let predicate = NSPredicate(format: "txhash == %@ AND chainId == %@", txhash, SettingService.shareInstance.getCurrentChainId())
 
                 guard let transaction = realm.objects(Transaction.self).filter(predicate).first else {
                     completion?()
@@ -64,7 +64,7 @@ class TransferPersistence {
         let addresses = wallets.map { w -> String in
             return w.address.lowercased()
         }
-        let predicate = NSPredicate(format: "nodeURLStr == %@", SettingService.getCurrentNodeURLString())
+        let predicate = NSPredicate(format: "chainId == %@", SettingService.shareInstance.getCurrentChainId())
         let r = realm.objects(Transaction.self).filter(predicate).sorted(byKeyPath: "createTime", ascending: false)
         let array = Array(r)
         let result = array.filter { t -> Bool in
@@ -75,10 +75,10 @@ class TransferPersistence {
 
     public class func getTransactionsByAddress(from: String, status: TransactionReceiptStatus, detached: Bool = false) -> [Transaction] {
         let realm = try! Realm(configuration: RealmHelper.getConfig())
-        let predicate = NSPredicate(format: "(from contains[cd] %@ OR to contains[cd] %@) AND nodeURLStr == %@ AND blockNumber == %@ AND txhash != %@ AND txReceiptStatus = %d",
+        let predicate = NSPredicate(format: "(from contains[cd] %@ OR to contains[cd] %@) AND chainId == %@ AND blockNumber == %@ AND txhash != %@ AND txReceiptStatus = %d",
                                     from,
                                     from,
-                                    SettingService.getCurrentNodeURLString(),
+                                    SettingService.shareInstance.getCurrentChainId(),
                                     "",
                                     "",
                                     status.rawValue)
@@ -95,7 +95,7 @@ class TransferPersistence {
     public class func getUnConfirmedTransactions() -> [Transaction] {
         let realm = try! Realm(configuration: RealmHelper.getConfig())
 
-        let predicate = NSPredicate(format: "txhash != %@ AND blockNumber == %@ AND nodeURLStr == %@ AND txReceiptStatus == %d", "","",SettingService.getCurrentNodeURLString(), TransactionReceiptStatus.pending.rawValue)
+        let predicate = NSPredicate(format: "txhash != %@ AND blockNumber == %@ AND chainId == %@ AND txReceiptStatus == %d", "","",SettingService.shareInstance.getCurrentChainId(), TransactionReceiptStatus.pending.rawValue)
         let r = realm.objects(Transaction.self).filter(predicate).sorted(byKeyPath: "createTime")
         let array = Array(r)
         return array
@@ -104,7 +104,7 @@ class TransferPersistence {
     public class func getByTxhash(_ hash : String?) -> Transaction? {
         let realm = try! Realm(configuration: RealmHelper.getConfig())
 
-        let predicate = NSPredicate(format: "txhash == %@ AND nodeURLStr == %@", hash!,SettingService.getCurrentNodeURLString())
+        let predicate = NSPredicate(format: "txhash == %@ AND chainId == %@", hash!,SettingService.shareInstance.getCurrentChainId())
         let r = realm.objects(Transaction.self).filter(predicate).sorted(byKeyPath: "createTime")
         let array = Array(r)
 

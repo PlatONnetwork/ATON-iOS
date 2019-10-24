@@ -10,6 +10,12 @@ import UIKit
 import Localize_Swift
 import BigInt
 
+enum SendInputTableViewCellType {
+    case delegate
+    case withdraw
+    case transfer
+}
+
 class SendInputTableViewCell: UITableViewCell {
 
     var cellDidContentChangeHandler: (() -> Void)?
@@ -18,6 +24,7 @@ class SendInputTableViewCell: UITableViewCell {
     // 最少输入的数量
     var minAmountLimit: BigUInt?
     var maxAmountLimit: BigUInt?
+    var inputType: SendInputTableViewCellType?
 
     lazy var amountView = { () -> ATextFieldView in
         let amountView = ATextFieldView.create(title: "ATextFieldView_withdraw_title")
@@ -31,7 +38,7 @@ class SendInputTableViewCell: UITableViewCell {
             }
         })
         amountView.checkInput(mode: .all, check: { [weak self] text -> (Bool, String) in
-            let inputformat = CommonService.checkTransferAmoutInput(text: text, checkBalance: false, minLimit: self?.minAmountLimit, maxLimit: self?.maxAmountLimit, fee: nil)
+            let inputformat = CommonService.checkTransferAmoutInput(text: text, checkBalance: false, minLimit: self?.minAmountLimit, maxLimit: self?.maxAmountLimit, fee: nil, type: self?.inputType)
             if !inputformat.0 {
                 return inputformat
             }

@@ -116,6 +116,10 @@ extension Transaction {
             return UIColor(rgb: 0xb6bbd0)
         }
 
+        if txReceiptStatus == TransactionReceiptStatus.businessCodeError.rawValue {
+            return UIColor(rgb: 0xb6bbd0)
+        }
+
         switch direction {
         case .Receive:
             return UIColor(rgb: 0x19a20e)
