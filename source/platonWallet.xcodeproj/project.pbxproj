@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6B0C7BFA8457D2B3989CB127 /* Pods_platonWallet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D427B78BFE8D21222DD020CB /* Pods_platonWallet.framework */; };
 		71C9360501B0BB928FC84DCF /* Pods_platonWalletTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA889E430E082B94A0834EAA /* Pods_platonWalletTests.framework */; };
 		8101BDAF22ED6104004A009E /* ValidatorNodeListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8101BDAE22ED6104004A009E /* ValidatorNodeListViewController.swift */; };
 		8101BDB122EDE129004A009E /* NodeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8101BDB022EDE129004A009E /* NodeTableViewCell.swift */; };
@@ -386,7 +387,6 @@
 		81B58A5A235DA1FC00816B4E /* CommonUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EE99C82175E665008DF8CB /* CommonUtilities.swift */; };
 		81B58A5B235DA1FC00816B4E /* NodeAboutDelegateTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D7E27222E869A90069CDED /* NodeAboutDelegateTableViewCell.swift */; };
 		81B58A5C235DA1FC00816B4E /* UIBarItem+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819A522821902E7E00E4C500 /* UIBarItem+Extensions.swift */; };
-		81B58A5E235DA1FC00816B4E /* Pods_platonWallet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D427B78BFE8D21222DD020CB /* Pods_platonWallet.framework */; };
 		81B58A60235DA1FC00816B4E /* TableViewNoDataPlaceHolder.xib in Resources */ = {isa = PBXBuildFile; fileRef = 812D94B3218C3229002A48B0 /* TableViewNoDataPlaceHolder.xib */; };
 		81B58A61235DA1FC00816B4E /* PasswordAuthViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AE3142E2191457300B5433F /* PasswordAuthViewController.xib */; };
 		81B58A62235DA1FC00816B4E /* AssetNavigationBarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 81FCCCE22179B6710052FC29 /* AssetNavigationBarView.xib */; };
@@ -522,6 +522,7 @@
 		81FCCD122179E9F20052FC29 /* TransactionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FCCD0A2179E9F10052FC29 /* TransactionService.swift */; };
 		81FCCD142179E9F20052FC29 /* AssetService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FCCD0E2179E9F20052FC29 /* AssetService.swift */; };
 		81FCCD162179EA0F0052FC29 /* RealmHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FCCD152179EA0F0052FC29 /* RealmHelper.swift */; };
+		984B45A65A39894AE5B14720 /* Pods_platonWalletUAT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4BB6563189E24AE4F9CC0C4 /* Pods_platonWalletUAT.framework */; };
 		9A11FC482181E90C002D9A96 /* LeftAlignLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A11FC472181E90C002D9A96 /* LeftAlignLayout.swift */; };
 		9A1F87B922014FD70002BE67 /* NodeSettingViewControllerV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1F87B822014FD70002BE67 /* NodeSettingViewControllerV2.swift */; };
 		9A25B99F2186DF9E00B9433A /* WalletManagerTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A25B99D2186DF9E00B9433A /* WalletManagerTableViewCell.swift */; };
@@ -644,6 +645,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		066997A993A7BD843316E036 /* Pods-platonWallet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-platonWallet.debug.xcconfig"; path = "Pods/Target Support Files/Pods-platonWallet/Pods-platonWallet.debug.xcconfig"; sourceTree = "<group>"; };
 		28CA084ED4DDD3E2EE7BE5FE /* Pods-platonWalletUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-platonWalletUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-platonWalletUITests/Pods-platonWalletUITests.release.xcconfig"; sourceTree = "<group>"; };
 		2B921C95E2605F8C1B9AA186 /* Pods_platonWalletUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_platonWalletUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8101BDAE22ED6104004A009E /* ValidatorNodeListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidatorNodeListViewController.swift; sourceTree = "<group>"; };
@@ -982,13 +984,15 @@
 		9AF9AC232182E19600E97F07 /* PAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PAlertController.swift; sourceTree = "<group>"; };
 		9AF9AC2A2183252600E97F07 /* LicenseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LicenseViewController.swift; sourceTree = "<group>"; };
 		9AF9AC2B2183252600E97F07 /* LicenseViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LicenseViewController.xib; sourceTree = "<group>"; };
+		A4BB6563189E24AE4F9CC0C4 /* Pods_platonWalletUAT.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_platonWalletUAT.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA889E430E082B94A0834EAA /* Pods_platonWalletTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_platonWalletTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AEEA53535EEEF0A17C62F948 /* Pods-platonWalletTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-platonWalletTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-platonWalletTests/Pods-platonWalletTests.debug.xcconfig"; sourceTree = "<group>"; };
+		B6C6C66ABA19AFA1DEE6933E /* Pods-platonWallet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-platonWallet.release.xcconfig"; path = "Pods/Target Support Files/Pods-platonWallet/Pods-platonWallet.release.xcconfig"; sourceTree = "<group>"; };
+		CB097C4AA7803F3C53F65D31 /* Pods-platonWalletUAT.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-platonWalletUAT.release.xcconfig"; path = "Pods/Target Support Files/Pods-platonWalletUAT/Pods-platonWalletUAT.release.xcconfig"; sourceTree = "<group>"; };
 		D427B78BFE8D21222DD020CB /* Pods_platonWallet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_platonWallet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D820126F71DD314BE0646A42 /* Pods-platonWalletTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-platonWalletTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-platonWalletTests/Pods-platonWalletTests.release.xcconfig"; sourceTree = "<group>"; };
 		D9FE9219D5D4501081002D52 /* Pods-platonWalletUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-platonWalletUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-platonWalletUITests/Pods-platonWalletUITests.debug.xcconfig"; sourceTree = "<group>"; };
-		F765BC907C2CF2197870E967 /* Pods-platonWallet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-platonWallet.debug.xcconfig"; path = "Pods/Target Support Files/Pods-platonWallet/Pods-platonWallet.debug.xcconfig"; sourceTree = "<group>"; };
-		F8363501D61110CEE9C78F79 /* Pods-platonWallet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-platonWallet.release.xcconfig"; path = "Pods/Target Support Files/Pods-platonWallet/Pods-platonWallet.release.xcconfig"; sourceTree = "<group>"; };
+		F3E420324658259B1F6C6AC8 /* Pods-platonWalletUAT.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-platonWalletUAT.debug.xcconfig"; path = "Pods/Target Support Files/Pods-platonWalletUAT/Pods-platonWalletUAT.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -996,7 +1000,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				81B58A5E235DA1FC00816B4E /* Pods_platonWallet.framework in Frameworks */,
+				984B45A65A39894AE5B14720 /* Pods_platonWalletUAT.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1005,6 +1009,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B1DAED1D34810B2B9FF14A4A /* Pods_platonWallet.framework in Frameworks */,
+				6B0C7BFA8457D2B3989CB127 /* Pods_platonWallet.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1973,12 +1978,14 @@
 		A0CD6C6641A0A126F2A0DAAC /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				F765BC907C2CF2197870E967 /* Pods-platonWallet.debug.xcconfig */,
-				F8363501D61110CEE9C78F79 /* Pods-platonWallet.release.xcconfig */,
 				D9FE9219D5D4501081002D52 /* Pods-platonWalletUITests.debug.xcconfig */,
 				28CA084ED4DDD3E2EE7BE5FE /* Pods-platonWalletUITests.release.xcconfig */,
 				AEEA53535EEEF0A17C62F948 /* Pods-platonWalletTests.debug.xcconfig */,
 				D820126F71DD314BE0646A42 /* Pods-platonWalletTests.release.xcconfig */,
+				066997A993A7BD843316E036 /* Pods-platonWallet.debug.xcconfig */,
+				B6C6C66ABA19AFA1DEE6933E /* Pods-platonWallet.release.xcconfig */,
+				F3E420324658259B1F6C6AC8 /* Pods-platonWalletUAT.debug.xcconfig */,
+				CB097C4AA7803F3C53F65D31 /* Pods-platonWalletUAT.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -1989,6 +1996,7 @@
 				D427B78BFE8D21222DD020CB /* Pods_platonWallet.framework */,
 				2B921C95E2605F8C1B9AA186 /* Pods_platonWalletUITests.framework */,
 				AA889E430E082B94A0834EAA /* Pods_platonWalletTests.framework */,
+				A4BB6563189E24AE4F9CC0C4 /* Pods_platonWalletUAT.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -2000,13 +2008,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 81B58A9A235DA1FC00816B4E /* Build configuration list for PBXNativeTarget "platonWalletUAT" */;
 			buildPhases = (
-				81B58966235DA1FC00816B4E /* [CP] Check Pods Manifest.lock */,
+				26DA352B95EB1259C194F2C0 /* [CP] Check Pods Manifest.lock */,
 				81B58967235DA1FC00816B4E /* Sources */,
 				81B58A5D235DA1FC00816B4E /* Frameworks */,
 				81B58A5F235DA1FC00816B4E /* Resources */,
-				81B58A97235DA1FC00816B4E /* [CP] Embed Pods Frameworks */,
-				81B58A98235DA1FC00816B4E /* [CP] Copy Pods Resources */,
 				81B58A99235DA1FC00816B4E /* ShellScript */,
+				35FBAFB08F1575F7C3319B03 /* [CP] Embed Pods Frameworks */,
+				C6C37333E660557997861BE7 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2274,6 +2282,28 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		26DA352B95EB1259C194F2C0 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-platonWalletUAT-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 		349B196BEEC64C0A8876028D /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -2286,6 +2316,7 @@
 				"${BUILT_PRODUCTS_DIR}/BigInt/BigInt.framework",
 				"${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/EmptyDataSet-Swift/EmptyDataSet_Swift.framework",
+				"${BUILT_PRODUCTS_DIR}/GzipSwift/Gzip.framework",
 				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
 				"${BUILT_PRODUCTS_DIR}/Localize-Swift/Localize_Swift.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
@@ -2302,6 +2333,7 @@
 				"${BUILT_PRODUCTS_DIR}/SwipeCellKit/SwipeCellKit.framework",
 				"${BUILT_PRODUCTS_DIR}/TrezorCrypto/TrezorCrypto.framework",
 				"${BUILT_PRODUCTS_DIR}/UITextView+Placeholder/UITextView_Placeholder.framework",
+				"${BUILT_PRODUCTS_DIR}/ZXingObjC/ZXingObjC.framework",
 				"${BUILT_PRODUCTS_DIR}/platonWeb3/platonWeb3.framework",
 				"${BUILT_PRODUCTS_DIR}/secp256k1.swift/secp256k1.framework",
 			);
@@ -2312,6 +2344,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BigInt.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CryptoSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/EmptyDataSet_Swift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Gzip.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Localize_Swift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
@@ -2328,6 +2361,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwipeCellKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TrezorCrypto.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UITextView_Placeholder.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ZXingObjC.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/platonWeb3.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/secp256k1.framework",
 			);
@@ -2336,54 +2370,21 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-platonWallet/Pods-platonWallet-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		76E5E3065DA7F32FC368B7AC /* [CP] Copy Pods Resources */ = {
+		35FBAFB08F1575F7C3319B03 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-platonWallet/Pods-platonWallet-resources.sh",
-				"${PODS_ROOT}/UMCCommonLog/UMCommonLog/UMCommonLog.bundle",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/UMCommonLog.bundle",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-platonWallet/Pods-platonWallet-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		81B58966235DA1FC00816B4E /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
+			inputFileListPaths = (
 			);
 			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-platonWallet-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		81B58A97235DA1FC00816B4E /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-platonWallet/Pods-platonWallet-frameworks.sh",
+				"${SRCROOT}/Pods/Target Support Files/Pods-platonWalletUAT/Pods-platonWalletUAT-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/Aspects/Aspects.framework",
 				"${BUILT_PRODUCTS_DIR}/BigInt/BigInt.framework",
 				"${BUILT_PRODUCTS_DIR}/CryptoSwift/CryptoSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/EmptyDataSet-Swift/EmptyDataSet_Swift.framework",
+				"${BUILT_PRODUCTS_DIR}/GzipSwift/Gzip.framework",
 				"${BUILT_PRODUCTS_DIR}/Kingfisher/Kingfisher.framework",
 				"${BUILT_PRODUCTS_DIR}/Localize-Swift/Localize_Swift.framework",
 				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
@@ -2400,16 +2401,20 @@
 				"${BUILT_PRODUCTS_DIR}/SwipeCellKit/SwipeCellKit.framework",
 				"${BUILT_PRODUCTS_DIR}/TrezorCrypto/TrezorCrypto.framework",
 				"${BUILT_PRODUCTS_DIR}/UITextView+Placeholder/UITextView_Placeholder.framework",
+				"${BUILT_PRODUCTS_DIR}/ZXingObjC/ZXingObjC.framework",
 				"${BUILT_PRODUCTS_DIR}/platonWeb3/platonWeb3.framework",
 				"${BUILT_PRODUCTS_DIR}/secp256k1.swift/secp256k1.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+			);
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Aspects.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BigInt.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CryptoSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/EmptyDataSet_Swift.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Gzip.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Kingfisher.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Localize_Swift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
@@ -2426,15 +2431,16 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwipeCellKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TrezorCrypto.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UITextView_Placeholder.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ZXingObjC.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/platonWeb3.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/secp256k1.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-platonWallet/Pods-platonWallet-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-platonWalletUAT/Pods-platonWalletUAT-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		81B58A98235DA1FC00816B4E /* [CP] Copy Pods Resources */ = {
+		76E5E3065DA7F32FC368B7AC /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -2542,6 +2548,28 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C6C37333E660557997861BE7 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-platonWalletUAT/Pods-platonWalletUAT-resources.sh",
+				"${PODS_ROOT}/UMCCommonLog/UMCommonLog/UMCommonLog.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/UMCommonLog.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-platonWalletUAT/Pods-platonWalletUAT-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		D6C98B0A581158714ACAC66D /* [CP] Check Pods Manifest.lock */ = {
@@ -3133,7 +3161,7 @@
 /* Begin XCBuildConfiguration section */
 		81B58A9B235DA1FC00816B4E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F765BC907C2CF2197870E967 /* Pods-platonWallet.debug.xcconfig */;
+			baseConfigurationReference = F3E420324658259B1F6C6AC8 /* Pods-platonWalletUAT.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -3165,7 +3193,7 @@
 		};
 		81B58A9C235DA1FC00816B4E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F8363501D61110CEE9C78F79 /* Pods-platonWallet.release.xcconfig */;
+			baseConfigurationReference = CB097C4AA7803F3C53F65D31 /* Pods-platonWalletUAT.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -3315,7 +3343,7 @@
 		};
 		81C88E1F21746B3B005F17F7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F765BC907C2CF2197870E967 /* Pods-platonWallet.debug.xcconfig */;
+			baseConfigurationReference = 066997A993A7BD843316E036 /* Pods-platonWallet.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -3347,7 +3375,7 @@
 		};
 		81C88E2021746B3B005F17F7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F8363501D61110CEE9C78F79 /* Pods-platonWallet.release.xcconfig */;
+			baseConfigurationReference = B6C6C66ABA19AFA1DEE6933E /* Pods-platonWallet.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;

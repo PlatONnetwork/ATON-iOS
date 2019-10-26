@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import Gzip
 
 public extension UIImage {
     convenience init?(color: UIColor, size: CGSize = CGSize(width: 1, height: 1)) {
@@ -43,10 +44,21 @@ public extension UIImage {
 
     class func geneQRCodeImageFor(_ content: String, size: CGFloat) -> UIImage? {
 
+        let oriData = content.data(using: .utf8)!
+        let gzipData = try! oriData.gzipped()
+        print(oriData.count)
+        print(gzipData.count)
+
+        let isolatin1 = String(data: gzipData, encoding: .isoLatin1)
+
+        print(isolatin1)
+        print(isolatin1?.count)
+        let data = isolatin1?.data(using: .isoLatin1)
+        print(data?.count)
         let filter = CIFilter(name: "CIQRCodeGenerator")
         filter?.setDefaults()
 
-        filter?.setValue(content.data(using: .utf8), forKey: "inputMessage")
+        filter?.setValue(data, forKey: "inputMessage")
 
         guard let ciImage = filter?.outputImage else {
             return nil

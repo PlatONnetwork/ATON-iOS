@@ -488,6 +488,22 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
                         let data = try? JSONEncoder().encode(qrcodeData),
                         let content = String(data: data, encoding: .utf8) else { return }
                     self.generateQrCode = qrcodeData
+
+//                    guard
+//                        let rlp = self.generateQrCode?.rlp(),
+//                        let resultrlp = try? RLPEncoder().encode(rlp)
+//                    else { return }
+//                    let contentrlp = resultrlp.toHexString()
+//
+//
+//
+//
+//                    print(resultrlp)
+//                    print(contentrlp)
+//                    print(contentrlp.count)
+                    print("===========")
+                    print(content)
+                    print(content.count)
                     DispatchQueue.main.async {
                         self.showOfflineConfirmView(content: content)
                     }

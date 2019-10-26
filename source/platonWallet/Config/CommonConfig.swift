@@ -65,8 +65,8 @@ struct AppConfig {
         }
 
         struct FAQURL {
-            static let faq_en = "https://platon.zendesk.com/hc/en-us/categories/360002174434"
-            static let faq_cn = "https://platon.zendesk.com/hc/zh-cn/categories/360002174434"
+            static let faq_en = "https://platon.zendesk.com/hc/en-us/articles/360037373194-Common-questions-about-PlatON-Delegators"
+            static let faq_cn = "https://platon.zendesk.com/hc/zh-cn/articles/360037373194-%E5%A7%94%E6%89%98%E4%BA%BA%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"
 
             static var faqurl: String {
                 return Localize.currentLanguage() == "en" ? faq_en : faq_cn
