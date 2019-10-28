@@ -70,7 +70,7 @@ class TransferPersistence {
         let result = array.filter { t -> Bool in
             return addresses.contains(t.from?.lowercased() ?? "")
         }
-        return result
+        return result.detached
     }
 
     public class func getTransactionsByAddress(from: String, status: TransactionReceiptStatus, detached: Bool = false) -> [Transaction] {
@@ -87,7 +87,7 @@ class TransferPersistence {
         if detached {
             array = Array(r).detached
         } else {
-            array = Array(r)
+            array = Array(r).detached
         }
         return array
     }
@@ -97,7 +97,7 @@ class TransferPersistence {
 
         let predicate = NSPredicate(format: "txhash != %@ AND blockNumber == %@ AND chainId == %@ AND txReceiptStatus == %d", "","",SettingService.shareInstance.getCurrentChainId(), TransactionReceiptStatus.pending.rawValue)
         let r = realm.objects(Transaction.self).filter(predicate).sorted(byKeyPath: "createTime")
-        let array = Array(r)
+        let array = Array(r).detached
         return array
     }
 
@@ -109,9 +109,21 @@ class TransferPersistence {
         let array = Array(r)
 
         if array.count > 0 {
-            return array.first!
+            return array.first!.detached()
         } else {
             return nil
+        }
+    }
+
+    public class func delete(_ txhash: String) {
+        RealmWriteQueue.async {
+            autoreleasepool(invoking: {
+                let realm = try! Realm(configuration: RealmHelper.getConfig())
+                let predicate = NSPredicate(format: "txhash == %@", txhash)
+                try? realm.write {
+                    realm.delete(realm.objects(Transaction.self).filter(predicate))
+                }
+            })
         }
     }
 

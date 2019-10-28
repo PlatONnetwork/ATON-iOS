@@ -96,7 +96,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
     lazy var quickSaveAddrBtn = { () -> QuickSaveAddressButton in
         let button = QuickSaveAddressButton(type: .custom)
         button.localizedNormalTitle = "savetoaddressbook"
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 12)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 13)
         button.setTitleColor(UIColor(rgb: 0x105CFE ), for: .normal)
         return button
     }()
@@ -150,13 +150,16 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
         self.feeView.backgroundColor = commonbgcolor
         self.feeView.levelView.backgroundColor = commonbgcolor
 
+        NotificationCenter.default.addObserver(self, selector: #selector(DidNodeGasPriceUpdate), name: Notification.Name.ATON.DidNodeGasPriceUpdate, object: nil)
+        TransactionService.service.getGasPrice()
+
         AnalysisHelper.handleEvent(id: event_send, operation: .begin)
-        TransactionService.service.startGasTimer()
+
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        TransactionService.service.stopGasTimer()
+        NotificationCenter.default.removeObserver(self, name: Notification.Name.ATON.DidNodeGasPriceUpdate, object: nil)
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -184,7 +187,6 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
     }
 
     func refreshData() {
-        NotificationCenter.default.addObserver(self, selector: #selector(DidNodeGasPriceUpdate), name: Notification.Name.ATON.DidNodeGasPriceUpdate, object: nil)
         guard AssetVCSharedData.sharedData.selectedWallet != nil else {
             return
         }
@@ -583,8 +585,6 @@ extension AssetSendViewControllerV060 {
             DispatchQueue.main.async {
                 self.feeView.fee.text = feeString.ATPSuffix()
                 if self.gasPriceLevel == nil {
-                    print("update")
-                    print(TransactionService.service.sliderDefaultValue)
                     self.feeView.levelView.setSliderValue(value: TransactionService.service.sliderDefaultValue)
                 }
             }
@@ -602,21 +602,23 @@ extension AssetSendViewControllerV060 {
 
         let balance = getAvailbleBalance()
         var newBalance = BigUInt(String(balance))
-        overflow = (newBalance?.subtractReportingOverflow(self.totalFee(), shiftedBy: 0))!
-        if overflow {
-            //balance < fee
-            self.resportSufficiency(isSufficient: false)
-            return (false, Localized("transferVC_Insufficient_balance"))
-        }
         overflow = (newBalance?.subtractReportingOverflow(amountOfwei, shiftedBy: 0))!
         if overflow {
             //amount < balance
             self.resportSufficiency(isSufficient: false)
-            return (false, Localized("transferVC_Insufficient_balance_for_gas"))
-        } else {
-            self.resportSufficiency(isSufficient: true)
-            return (true, "")
+            return (false, Localized("transferVC_Insufficient_balance"))
         }
+
+        newBalance = BigUInt(String(balance))
+        overflow = (newBalance?.subtractReportingOverflow(self.totalFee() + amountOfwei, shiftedBy: 0))!
+        if overflow {
+            //balance < fee
+            self.resportSufficiency(isSufficient: false)
+            return (false, Localized("transferVC_Insufficient_balance_for_gas"))
+        }
+
+        self.resportSufficiency(isSufficient: true)
+        return (true, "")
     }
 
     func totalFee() -> BigUInt {

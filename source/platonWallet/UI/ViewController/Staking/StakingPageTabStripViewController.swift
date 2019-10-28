@@ -23,7 +23,7 @@ class StakingPageTabStripViewController: BaseButtonBarPagerTabStripViewControlle
         settings.style.buttonBarItemsShouldFillAvailableWidth = false
         settings.style.buttonBarLeftContentInset = 16
         settings.style.buttonBarRightContentInset = 16
-        settings.style.buttonBarItemFont = UIFont.systemFont(ofSize: 18)
+        settings.style.buttonBarItemFont = UIFont.systemFont(ofSize: 18, weight: .medium)
 
         buttonBarItemSpec = ButtonBarItemSpec.cellClass(width: { [weak self] (childItemInfo) -> CGFloat in
             let label = UILabel()
@@ -31,24 +31,25 @@ class StakingPageTabStripViewController: BaseButtonBarPagerTabStripViewControlle
             label.font = self?.settings.style.buttonBarItemFont ?? label.font
             label.localizedText = childItemInfo.title
             let labelSize = label.intrinsicContentSize
-            return labelSize.width + CGFloat(self?.settings.style.buttonBarItemLeftRightMargin ?? 8 * 2)
+            return labelSize.width
         })
 
         changeCurrentIndexProgressive = { (oldCell: StakingLabelViewCell?, newCell: StakingLabelViewCell?, progressPercentage: CGFloat, changeCurrentIndex: Bool, animated: Bool) -> Void in
 
             guard changeCurrentIndex == true else { return }
+            self.updateBarButtonView()
 
             oldCell?.label.textColor = UIColor(hex: "898c9e")
             newCell?.label.textColor = .black
 
             if animated {
                 UIView.animate(withDuration: 0.1, animations: { () -> Void in
-                    newCell?.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
-                    oldCell?.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
+                    newCell?.label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+                    oldCell?.label.font = UIFont.systemFont(ofSize: 14)
                 })
             } else {
-                newCell?.transform = CGAffineTransform(scaleX: 1.0, y: 1.0)
-                oldCell?.transform = CGAffineTransform(scaleX: 0.7, y: 0.7)
+                newCell?.label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+                oldCell?.label.font = UIFont.systemFont(ofSize: 14)
             }
         }
         super.viewDidLoad()
@@ -71,12 +72,12 @@ class StakingPageTabStripViewController: BaseButtonBarPagerTabStripViewControlle
     }
 
     override func configure(cell: StakingLabelViewCell, for indicatorInfo: IndicatorInfo) {
-//        cell.label.text = indicatorInfo.title
         cell.label.localizedText = indicatorInfo.title
     }
 
     override func updateIndicator(for viewController: PagerTabStripViewController, fromIndex: Int, toIndex: Int, withProgressPercentage progressPercentage: CGFloat, indexWasChanged: Bool) {
         super.updateIndicator(for: viewController, fromIndex: fromIndex, toIndex: toIndex, withProgressPercentage: progressPercentage, indexWasChanged: indexWasChanged)
+
         if indexWasChanged && toIndex > -1 && toIndex < viewControllers.count {
             let child = viewControllers[toIndex] as! IndicatorInfoProvider // swiftlint:disable:this force_cast
             UIView.performWithoutAnimation({ [weak self] () -> Void in

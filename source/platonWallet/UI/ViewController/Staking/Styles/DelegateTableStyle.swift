@@ -41,6 +41,11 @@ struct BalancesCellStyle {
             return balances[selectedIndex]
         }
     }
+
+    // 当前选中是否是锁仓余额
+    var isLock: Bool {
+        return selectedIndex != 0
+    }
 }
 
 // 可展开绑定的样式数据

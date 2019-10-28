@@ -22,6 +22,7 @@ class TransactionCell: UITableViewCell {
         contentView.backgroundColor = normal_background_color
         backgroundColor = normal_background_color
         selectionStyle = .none
+        typeLabel.font = UIFont.systemFont(ofSize: 15, weight: .medium)
     }
 
     func updateCell(tx : Transaction) {

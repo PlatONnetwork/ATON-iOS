@@ -78,7 +78,7 @@
 "transferVC_amout_empty_tip" = "发送数量为空";
 "transferVC_amout_amout_input_error" = "数额输入错误";
 "transferVC_transfer_success_tip" = "转账成功";
-"transferVC_transfer_balance" = "余额：";
+"transferVC_transfer_balance" = "当前余额：";
 "transferVC_transfer_SendAll" = "发送所有";
 "transferVC_Insufficient_balance" = "钱包余额不足";
 "transferVC_Insufficient_balance_for_gas" = "余额不足支付手续费，无法转账";
@@ -304,9 +304,9 @@
 //AddAddressInfoViewController
 
 "AddAddress_nav_title"= "添加新地址";
-"AddAddress_textFieldPlaceHolder_address_Name"= "地址名称";
-"AddAddress_textFieldPlaceHolder_Wallet_Address"= "地址";
-"AddAddressVC_tip" = "地址存在本地，删除APP前请先备份！";
+"AddAddress_textFieldPlaceHolder_address_Name"= "输入地址名称";
+"AddAddress_textFieldPlaceHolder_Wallet_Address"= "输入钱包地址";
+"AddAddressVC_tip" = "地址存在本地，删除APP前请先备份";
 "AddAddressVC_add_button_title" = "添加";
 
 "NewAddress_name_empty_tip" = "名称不能为空";
@@ -681,7 +681,7 @@
 
 
 //AssetViewController
-"Asset_segment_Transaction" = "交易";
+"Asset_segment_Transaction" = "交易记录";
 "Asset_segment_Send" = "发送";
 "Asset_segment_Send_offline" = "离线钱包";
 "Asset_segment_Receive" = "接收";
@@ -700,7 +700,7 @@
 
 "confirm_send_from" = "发送钱包：";
 
-"addressbook_wallet_name_with_Colon" = "钱包名称：";
+"addressbook_wallet_name_with_Colon" = "地址名称：";
 "addressbook_wallet_address_with_Colon" = "钱包地址：";
 
 "wallet_name_duplicate" = "钱包名称在本客户端已存在，不可重复";

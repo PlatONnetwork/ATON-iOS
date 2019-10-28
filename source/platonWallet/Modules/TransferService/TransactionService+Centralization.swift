@@ -49,7 +49,6 @@ extension TransactionService {
                 }
             case .failure(let error):
                 self.failCompletionOnMainThread(code: -1, errorMsg: error.localizedDescription, completion: &completion)
-                break
             }
         }
     }
@@ -90,7 +89,37 @@ extension TransactionService {
                 }
             case .failure(let error):
                 self.failCompletionOnMainThread(code: -1, errorMsg: error.localizedDescription, completion: &completion)
-                break
+            }
+        }
+    }
+
+    func getTransactionStatus(
+        hashes: [String],
+        completion: PlatonCommonCompletion?) {
+        var completion = completion
+        var parameters : Dictionary<String,Any> = [:]
+        parameters["hash"] = hashes
+
+        let url = SettingService.getCentralizationURL() + "/transaction/getTransactionsStatus"
+
+        var request = URLRequest(url: try! url.asURL())
+        request.httpBody = try! JSONSerialization.data(withJSONObject: parameters)
+        request.httpMethod = "POST"
+        request.timeoutInterval = requestTimeout
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        Alamofire.request(request).responseData { response in
+            switch response.result {
+            case .success(let data):
+                do {
+                    let decoder = JSONDecoder()
+                    let response = try decoder.decode(JSONResponse<[TransactionsStatusByHash]>.self, from: data)
+                    self.successCompletionOnMain(obj: response.data as AnyObject, completion: &completion)
+                } catch let err {
+                    self.failCompletionOnMainThread(code: -1, errorMsg: err.localizedDescription, completion: &completion)
+                }
+            case .failure(let error):
+                self.failCompletionOnMainThread(code: -1, errorMsg: error.localizedDescription, completion: &completion)
             }
         }
     }

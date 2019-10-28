@@ -43,13 +43,11 @@ class PersistenceTests: XCTestCase {
     func testAddressInfoPersistence(){
         let addr = AddressInfo()
         addr.walletAddress = self.generateRandomBytes()?.toHexString()
-        addr.nodeURLStr = "https:\\aton.main.platon.network"
+        addr.chainId = "https:\\aton.main.platon.network".chainid
         AddressInfoPersistence.add(addrInfo: addr)
         AddressInfoPersistence.getAll()
         AddressInfoPersistence.replaceInto(addrInfo: addr)
         AddressInfoPersistence.delete(addrInfo: addr)
-        
-
     }
     
     func testBalance(){
@@ -63,7 +61,7 @@ class PersistenceTests: XCTestCase {
         
         let addressInfo = AddressInfo()
         addressInfo.walletName = "testwalletName"
-        addressInfo.nodeURLStr = "https:\\aton.main.platon.network"
+        addressInfo.chainId = "https:\\aton.main.platon.network".chainid
         addressInfo.walletAddress = "0x5eBb663FD101b46dBBe6465E72Ed4b2918492061"
         AssetPersistence.add(addrInfo: addressInfo)
         

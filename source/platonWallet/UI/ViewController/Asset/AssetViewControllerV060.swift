@@ -77,9 +77,13 @@ class AssetViewControllerV060: BaseViewController, PopupMenuTableDelegate {
         transactionVC.parentController = self
         TransactionService.service.startTimerFire()
 
+        // 先获取一次gasprice
+        TransactionService.service.getGasPrice()
+
         initData()
         initUI()
         shouldUpdateWalletStatus()
+
 
         scrollView.mj_header = refreshHeader
         refreshHeader.beginRefreshing()

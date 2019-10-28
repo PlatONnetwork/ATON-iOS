@@ -65,13 +65,13 @@ extension TransactionQrcode {
         switch functionType! {
         case 0:
             guard let wallet = (AssetVCSharedData.sharedData.walletList as? [Wallet])?.first(where: { $0.address.lowercased() == to?.lowercased() }) else {
-                return to?.addressForDisplayShort() ?? "--"
+                return to ?? "--"
             }
-            return wallet.name + "（\(wallet.address.addressForDisplayShort())）"
+            return wallet.name + "（\(wallet.address)）"
         default:
             guard let nid = nodeId else { return "--" }
             guard let nName = nodeName else { return nid }
-            return nName + "\n（\(nid.nodeIdForDisplayShort())）"
+            return nName + "\n（\(nid)）"
         }
     }
 

@@ -214,6 +214,7 @@ extension DropdownListView: UITableViewDelegate, UITableViewDataSource {
         cell.toplineV.isHidden = indexPath.row != 0
         cell.bottomlineV.isHidden = (indexPath.row == walletsObject.cellCount - 1)
         cell.rightImageView.image = (indexPath.row == walletsObject.selectedIndex) ? UIImage(named: "iconApprove") : nil
+        cell.walletNameLabel.textColor = (indexPath.row == walletsObject.selectedIndex) ? .black : UIColor(rgb: 0x898c9e)
         return cell
     }
 

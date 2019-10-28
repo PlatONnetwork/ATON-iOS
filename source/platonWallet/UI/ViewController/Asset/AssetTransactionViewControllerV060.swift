@@ -87,6 +87,7 @@ class AssetTransactionViewControllerV060: BaseViewController, EmptyDataSetDelega
         NotificationCenter.default.addObserver(self, selector: #selector(updateWalletList), name: Notification.Name.ATON.updateWalletList, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(nodeDidSwitch), name: Notification.Name(NodeStoreService.didSwitchNodeNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(pollingWalletTransactions), name: Notification.Name.ATON.UpdateTransactionList, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didReceiveTransactionUpdate(_:)), name: Notification.Name.ATON.DidUpdateTransactionByHash, object: nil)
 
         refreshFooterView.loadMoreTapHandle = { [weak self] in
             self?.goTransactionList()
@@ -258,6 +259,16 @@ extension AssetTransactionViewControllerV060 {
         controller.selectedWallet = AssetVCSharedData.sharedData.selectedWallet as? Wallet
         controller.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(controller, animated: true)
+    }
+
+    @objc func didReceiveTransactionUpdate(_ notification: Notification) {
+        guard let txStatus = notification.object as? TransactionsStatusByHash, let status = txStatus.localStatus else { return }
+
+        let pendingTxs = getPendingTransation()
+
+        guard let tx = pendingTxs.first(where: { $0.txhash?.lowercased() == txStatus.hash?.lowercased() }) else { return }
+        tx.txReceiptStatus = status.rawValue
+        tableView.reloadData()
     }
 }
 

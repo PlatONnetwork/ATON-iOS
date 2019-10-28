@@ -45,7 +45,7 @@ final class StakingService: BaseService {
         }
     }
 
-    func updateNodeListData(completion: PlatonCommonCompletion?) {
+    func updateNodeListData(isRankingSorted: Bool = true, completion: PlatonCommonCompletion?) {
         let url = SettingService.getCentralizationURL() + "/node/nodelist"
 
         var request = URLRequest(url: try! url.asURL())
@@ -59,11 +59,17 @@ final class StakingService: BaseService {
                 do {
                     let decoder = JSONDecoder()
                     let response = try decoder.decode(JSONResponse<[Node]>.self, from: data)
-                    NodePersistence.add(nodes: response.data, {
-                        DispatchQueue.main.async {
-                            completion?(.success, nil)
-                        }
+                    let copyData = response.data.detached
+                    let sortData = copyData.sorted(by: { (lhs, rhs) -> Bool in
+                        return isRankingSorted ? (lhs.ratePA ?? "0") > (rhs.ratePA ?? "0") : lhs.ranking < rhs.ranking
+                    }).sorted(by: { (lhs, rhs) -> Bool in
+                        return isRankingSorted ? lhs.ranking < rhs.ranking : (lhs.ratePA ?? "0") > (rhs.ratePA ?? "0")
                     })
+
+                    DispatchQueue.main.async {
+                        completion?(.success, sortData as AnyObject)
+                    }
+                    NodePersistence.add(nodes: response.data, nil)
                 } catch let error {
                     completion?(.fail(-1, error.localizedDescription), nil)
                 }
@@ -77,17 +83,22 @@ final class StakingService: BaseService {
         controllerType: NodeControllerType,
         isRankingSorted: Bool,
         completion: PlatonCommonCompletion?) {
-        var completion = completion
 
         if controllerType == .active {
             let data = NodePersistence.getActiveNode(isRankingSorted: isRankingSorted).detached
-            self.successCompletionOnMain(obj: data as AnyObject, completion: &completion)
+            // 不延时回调的话，会发生下拉刷新顶部出现位移偏差
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                completion?(.success, data as AnyObject)
+            }
         } else if controllerType == .candidate {
             let data = NodePersistence.getCandiateNode(isRankingSorted: isRankingSorted).detached
-            self.successCompletionOnMain(obj: data as AnyObject, completion: &completion)
+            // 不延时回调的话，会发生下拉刷新顶部出现位移偏差
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                completion?(.success, data as AnyObject)
+            }
         } else {
-            let datas = NodePersistence.getAll(isRankingSorted: isRankingSorted).detached
-            self.successCompletionOnMain(obj: datas as AnyObject, completion: &completion)
+            // 这里本身访问网络请求，存在延时，并不需要设置延时回调
+            updateNodeListData(isRankingSorted: isRankingSorted, completion: completion)
         }
     }
 

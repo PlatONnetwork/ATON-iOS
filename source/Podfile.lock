@@ -7,6 +7,7 @@ PODS:
   - BuglyHotfix/Core (2.1.0)
   - CryptoSwift (0.10.0)
   - EmptyDataSet-Swift (4.2.0)
+  - GzipSwift (5.0.0)
   - Kingfisher (4.10.1)
   - Localize-Swift (2.0.0)
   - MBProgressHUD (1.1.0)
@@ -53,6 +54,9 @@ PODS:
     - UMCCommon
   - UMCCommon (2.0.1)
   - UMCCommonLog (1.0.0)
+  - ZXingObjC (3.6.5):
+    - ZXingObjC/All (= 3.6.5)
+  - ZXingObjC/All (3.6.5)
 
 DEPENDENCIES:
   - Alamofire (= 4.8.1)
@@ -61,6 +65,7 @@ DEPENDENCIES:
   - BuglyHotfix
   - CryptoSwift (~> 0.10.0)
   - EmptyDataSet-Swift (~> 4.2.0)
+  - GzipSwift
   - Kingfisher
   - Localize-Swift (~> 2.0)
   - MBProgressHUD (~> 1.1.0)
@@ -83,6 +88,7 @@ DEPENDENCIES:
   - UMCAnalytics
   - UMCCommon
   - UMCCommonLog
+  - ZXingObjC
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
@@ -92,6 +98,7 @@ SPEC REPOS:
     - BuglyHotfix
     - CryptoSwift
     - EmptyDataSet-Swift
+    - GzipSwift
     - Kingfisher
     - Localize-Swift
     - MBProgressHUD
@@ -113,6 +120,7 @@ SPEC REPOS:
     - UMCAnalytics
     - UMCCommon
     - UMCCommonLog
+    - ZXingObjC
 
 EXTERNAL SOURCES:
   platonWeb3:
@@ -132,6 +140,7 @@ SPEC CHECKSUMS:
   BuglyHotfix: 99a969c77da1baae823a7537acb16e4f1985a5f5
   CryptoSwift: 6c778d69282bed3b4e975ff97a79d074f20bb011
   EmptyDataSet-Swift: 1fa0b35f530a35f852ecb2b53564728b0c300aaf
+  GzipSwift: 5592f4d62b641e04d06443ba471f8ed76b1363e4
   Kingfisher: c148cd7b47ebde9989f6bc7c27dcaa79d81279a0
   Localize-Swift: c798ec9286494866f7068f85f7c71283ac5bdab4
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
@@ -155,7 +164,8 @@ SPEC CHECKSUMS:
   UMCAnalytics: ff58714ada407682c4a07548156f94bcec92f055
   UMCCommon: 0263a057a2e1ae1da4c8308541e56904a493ce13
   UMCCommonLog: 05a2d5de21858e3d870551562cff405c1366d244
+  ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: 033e8d502e32a3f792b372a37b74948c8aad6d8f
+PODFILE CHECKSUM: e73f6642173704a067468e167ea8f45c97cfa2ee
 
 COCOAPODS: 1.5.3

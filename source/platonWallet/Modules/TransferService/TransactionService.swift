@@ -15,7 +15,6 @@ public let DefaultAddress = "0x0000000000000000000000000000000000000000"
 
 class TransactionService : BaseService {
     static let service = TransactionService()
-    private var gasPriceTimer : Timer?
     private var pendingTransactionPollingTimer : Timer?
     public var defaultGasPrice: BigUInt = PlatonConfig.FuncGasPrice.minGasPrice
     public var minGasPrice: BigUInt = PlatonConfig.FuncGasPrice.minGasPrice
@@ -42,22 +41,12 @@ class TransactionService : BaseService {
         }
     }
 
-    func startGasTimer() {
-        gasPriceTimer = Timer.scheduledTimer(timeInterval: TimeInterval(AppConfig.TimerSetting.balancePollingTimerInterval), target: self, selector: #selector(onPendingTxGasPrice), userInfo: nil, repeats: true)
-        gasPriceTimer?.fire()
-    }
-
-    func stopGasTimer() {
-        gasPriceTimer?.invalidate()
-        gasPriceTimer = nil
-    }
-
-    @objc func onPendingTxGasPrice() {
+    func getGasPrice() {
         getEthGasPrice(completion: nil)
     }
 
     @objc func onPendingTxPolling() {
-        energonTransferPooling()
+        transactionStatusPooling()
     }
 
     func getEthGasPrice(completion: PlatonCommonCompletion?) {
@@ -81,89 +70,130 @@ class TransactionService : BaseService {
         }
     }
 
-    func energonTransferPooling() {
+    func transactionStatusPooling() {
         let txs = TransferPersistence.getUnConfirmedTransactions()
-        for item in txs {
-            guard (item.txhash != nil) else {
-                continue
-            }
+        guard txs.count > 0 else { return }
 
-            guard let txtype = item.txType else {
-                continue
-            }
+        let hashes = txs.filter { $0.txhash != nil }.map { $0.txhash!.lowercased() }
+        getTransactionStatus(hashes: hashes) { (result, data) in
+            switch result {
+            case .success:
+                guard let newData = data as? [TransactionsStatusByHash], newData.count > 0 else { return }
 
-            let byteCode = try! EthereumData(ethereumValue: item.txhash!)
-            let data = try! EthereumData(ethereumValue: byteCode)
-            let newItem = Transaction.init(value: item)
-            newItem.txhash = item.txhash
-            var getReceiptTimeout = false
+                for tx in newData {
+                    guard let localTx = txs.first(where: { $0.txhash?.lowercased() == tx.hash?.lowercased() }) else { break }
+                    guard let txhash = tx.hash, var status = tx.localStatus else { break }
 
-            let cdata = Date(milliseconds: UInt64(newItem.createTime))
+                    var getReceiptTimeout = false
+                    let cdata = Date(milliseconds: UInt64(localTx.createTime))
 
-            let expiredDate = Date(timeInterval: TimeInterval(24 * 3600), since: cdata)
-            let nowData = Date()
-
-            if nowData.compare(expiredDate) == .orderedDescending && newItem.createTime != 0 {
-                getReceiptTimeout = true
-            }
-
-            web3.platon.getTransactionReceipt(transactionHash: data) { (txResp) in
-                switch txResp.status {
-                case .success(let resp):
-                    if txtype == .transfer {
-                        guard let txhash = newItem.txhash else { return }
-                        let blockNumber = String(txResp.result??.blockNumber.quantity ?? BigUInt(0))
-                        let gasUsed = String(txResp.result??.gasUsed.quantity ?? BigUInt(0))
-                        let rcpStatus = TransactionReceiptStatus.sucess.rawValue
-                        TransferPersistence.update(txhash: txhash, status: rcpStatus, blockNumber: blockNumber, gasUsed: gasUsed, {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-                                NotificationCenter.default.post(name: Notification.Name.ATON.DidUpdateTransactionByHash, object: txhash)
-                            })
-                        })
-                    } else {
-                        guard let receipt = resp, receipt.logs.count > 0, receipt.logs[0].data.hex().count > 0 else {
-                            return
-                        }
-                        guard let rlpItem = try? RLPDecoder().decode(receipt.logs[0].data.bytes), let respBytes = rlpItem.array?[0].bytes else {
-                            return
-                        }
-                        guard let dic = try? JSONSerialization.jsonObject(with: Data(bytes: respBytes), options: .mutableContainers) as? [String:Any] else {
-                            return
-                        }
-                        DispatchQueue.main.async {
-                            guard let businessCode = dic?["Code"] as? Int else { return }
-                            guard let txhash = newItem.txhash else { return }
-                            let blockNumber = String(receipt.blockNumber.quantity)
-                            let gasUsed = String(receipt.gasUsed.quantity)
-                            let rcpSuccessStatus = TransactionReceiptStatus.sucess.rawValue
-                            let businessError = TransactionReceiptStatus.businessCodeError.rawValue
-                            TransferPersistence.update(txhash: txhash, status: businessCode == 0 ? rcpSuccessStatus : businessError, blockNumber: blockNumber, gasUsed: gasUsed, {
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-                                    NotificationCenter.default.post(name: Notification.Name.ATON.DidUpdateTransactionByHash, object: txhash)
-                                })
-                            })
-                        }
+                    let expiredDate = Date(timeInterval: TimeInterval(24 * 3600), since: cdata)
+                    if Date().compare(expiredDate) == .orderedDescending && localTx.createTime != 0 {
+                        getReceiptTimeout = true
                     }
 
-                case .failure(let err):
-                    if err.code == Web3Error.emptyResponse.code && getReceiptTimeout {
-                        //超过24小时后通过hash取回执返回空（非网络错误），就认为是超时
-                        DispatchQueue.main.async {
-                            let timeoutCode = TransactionReceiptStatus.timeout.rawValue
-                            guard let txhash = newItem.txhash else { return }
-                            TransferPersistence.update(txhash: txhash, status: timeoutCode, blockNumber: "", gasUsed: newItem.gasUsed ?? "", {
-                                DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
-                                    NotificationCenter.default.post(name: Notification.Name.ATON.DidUpdateTransactionByHash, object: txhash)
-                                })
-                            })
-                        }
-                    } else {
-                        //network error
+                    //超过24小时后通过hash取回执返回pending，就认为是超时
+                    if status == .pending && getReceiptTimeout {
+                        status = .timeout
+                    }
+
+                    if status != .pending {
+                        TransferPersistence.delete(txhash)
+                    }
+
+                    DispatchQueue.main.async {
+                        NotificationCenter.default.post(name: Notification.Name.ATON.DidUpdateTransactionByHash, object: tx)
                     }
                 }
+            case .fail(_, _):
+                break
             }
         }
     }
+
+//    func energonTransferPooling() {
+//        let txs = TransferPersistence.getUnConfirmedTransactions()
+//        for item in txs {
+//            guard (item.txhash != nil) else {
+//                continue
+//            }
+//
+//            guard let txtype = item.txType else {
+//                continue
+//            }
+//
+//            let byteCode = try! EthereumData(ethereumValue: item.txhash!)
+//            let data = try! EthereumData(ethereumValue: byteCode)
+//            let newItem = Transaction.init(value: item)
+//            newItem.txhash = item.txhash
+//            var getReceiptTimeout = false
+//
+//            let cdata = Date(milliseconds: UInt64(newItem.createTime))
+//
+//            let expiredDate = Date(timeInterval: TimeInterval(24 * 3600), since: cdata)
+//            let nowData = Date()
+//
+//            if nowData.compare(expiredDate) == .orderedDescending && newItem.createTime != 0 {
+//                getReceiptTimeout = true
+//            }
+//
+//            web3.platon.getTransactionReceipt(transactionHash: data) { (txResp) in
+//                switch txResp.status {
+//                case .success(let resp):
+//                    if txtype == .transfer {
+//                        guard let txhash = newItem.txhash else { return }
+//                        let blockNumber = String(txResp.result??.blockNumber.quantity ?? BigUInt(0))
+//                        let gasUsed = String(txResp.result??.gasUsed.quantity ?? BigUInt(0))
+//                        let rcpStatus = TransactionReceiptStatus.sucess.rawValue
+//                        TransferPersistence.update(txhash: txhash, status: rcpStatus, blockNumber: blockNumber, gasUsed: gasUsed, {
+//                            DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+//                                NotificationCenter.default.post(name: Notification.Name.ATON.DidUpdateTransactionByHash, object: txhash)
+//                            })
+//                        })
+//                    } else {
+//                        guard let receipt = resp, receipt.logs.count > 0, receipt.logs[0].data.hex().count > 0 else {
+//                            return
+//                        }
+//                        guard let rlpItem = try? RLPDecoder().decode(receipt.logs[0].data.bytes), let respBytes = rlpItem.array?[0].bytes else {
+//                            return
+//                        }
+//                        guard let dic = try? JSONSerialization.jsonObject(with: Data(bytes: respBytes), options: .mutableContainers) as? [String:Any] else {
+//                            return
+//                        }
+//                        DispatchQueue.main.async {
+//                            guard let businessCode = dic?["Code"] as? Int else { return }
+//                            guard let txhash = newItem.txhash else { return }
+//                            let blockNumber = String(receipt.blockNumber.quantity)
+//                            let gasUsed = String(receipt.gasUsed.quantity)
+//                            let rcpSuccessStatus = TransactionReceiptStatus.sucess.rawValue
+//                            let businessError = TransactionReceiptStatus.businessCodeError.rawValue
+//                            TransferPersistence.update(txhash: txhash, status: businessCode == 0 ? rcpSuccessStatus : businessError, blockNumber: blockNumber, gasUsed: gasUsed, {
+//                                DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+//                                    NotificationCenter.default.post(name: Notification.Name.ATON.DidUpdateTransactionByHash, object: txhash)
+//                                })
+//                            })
+//                        }
+//                    }
+//
+//                case .failure(let err):
+//                    if err.code == Web3Error.emptyResponse.code && getReceiptTimeout {
+//                        //超过24小时后通过hash取回执返回空（非网络错误），就认为是超时
+//                        DispatchQueue.main.async {
+//                            let timeoutCode = TransactionReceiptStatus.timeout.rawValue
+//                            guard let txhash = newItem.txhash else { return }
+//                            TransferPersistence.update(txhash: txhash, status: timeoutCode, blockNumber: "", gasUsed: newItem.gasUsed ?? "", {
+//                                DispatchQueue.main.asyncAfter(deadline: .now() + 2, execute: {
+//                                    NotificationCenter.default.post(name: Notification.Name.ATON.DidUpdateTransactionByHash, object: txhash)
+//                                })
+//                            })
+//                        }
+//                    } else {
+//                        //network error
+//                    }
+//                }
+//            }
+//        }
+//    }
 
     func sendAPTTransfer(from : String,to : String, amount : String, InputGasPrice : BigUInt, estimatedGas : String, memo : String, pri : String,completion : PlatonCommonCompletion?) -> Transaction {
         var completion = completion

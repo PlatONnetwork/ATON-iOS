@@ -41,11 +41,13 @@ class WalletListViewController: BaseViewController,TableViewReorderDelegate {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
         initData()
         updateUI()
     }
 
     func initData() {
+        WalletService.sharedInstance.refreshDB()
         dataSource.removeAll()
         dataSource.append(contentsOf: AssetVCSharedData.sharedData.walletList as [AnyObject])
     }
