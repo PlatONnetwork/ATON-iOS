@@ -130,6 +130,9 @@ class QRScannerViewController: BaseViewController, AVCaptureMetadataOutputObject
     func setupUITest() {
         capture = ZXCapture()
         guard let _capture = capture else { return }
+        let hint = ZXDecodeHints()
+        hint.encoding = 5
+        _capture.hints = hint
         _capture.camera = _capture.back()
         _capture.focusMode =  .continuousAutoFocus
         _capture.delegate = self
@@ -555,18 +558,21 @@ extension QRScannerViewController: ZXCaptureDelegate {
         print(dict)
         let data = Data(buffer: UnsafeBufferPointer(start: bytes.array, count: Int(bytes.length)))
 
-        let isostring = String(data: data, encoding: .isoLatin1)?.cString(using: .isoLatin1)
-        let result = String(data: data, encoding: .isoLatin1)
-        String(data: data, encoding: .)
-        isostring?.withUnsafeBufferPointer({ ptr in
-            let s = String(cString: ptr.baseAddress!)
-            print(s)
-        })
+        let isostring = String(data: data, encoding: .isoLatin1)
+        let utf8string = String(data: data, encoding: .utf8)
+
+        let isodata = isostring?.data(using: .isoLatin1)
+        let isodatafromutf = isostring?.data(using: .utf8)
+        let utf8data = utf8string?.data(using: .utf8)
+        let utf8datafromiso = utf8string?.data(using: .isoLatin1)
+
+
+
 //        let isostring = String(cString: result.rawBytes.array, encoding: .isoLatin1)!
         print(isostring)
 //        let isoData = isostring!.data(using: .isoLatin1)!
 //        print(isoData.count)
-        let ungzipData = try? data.gunzipped()
+        let ungzipData = try? utf8datafromiso!.gunzipped()
         print(ungzipData?.count)
 
         let utf8String = String(data: ungzipData!, encoding: .utf8)

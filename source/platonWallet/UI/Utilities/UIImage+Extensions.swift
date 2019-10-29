@@ -50,9 +50,6 @@ public extension UIImage {
         print(gzipData.count)
 
         let isolatin1 = String(data: gzipData, encoding: .isoLatin1)
-
-        print(isolatin1)
-        print(isolatin1?.count)
         let data = isolatin1?.data(using: .isoLatin1)
         print(data?.count)
         let filter = CIFilter(name: "CIQRCodeGenerator")
