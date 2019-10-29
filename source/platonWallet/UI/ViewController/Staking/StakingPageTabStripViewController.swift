@@ -37,20 +37,12 @@ class StakingPageTabStripViewController: BaseButtonBarPagerTabStripViewControlle
         changeCurrentIndexProgressive = { (oldCell: StakingLabelViewCell?, newCell: StakingLabelViewCell?, progressPercentage: CGFloat, changeCurrentIndex: Bool, animated: Bool) -> Void in
 
             guard changeCurrentIndex == true else { return }
-            self.updateBarButtonView()
 
             oldCell?.label.textColor = UIColor(hex: "898c9e")
             newCell?.label.textColor = .black
-
-            if animated {
-                UIView.animate(withDuration: 0.1, animations: { () -> Void in
-                    newCell?.label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
-                    oldCell?.label.font = UIFont.systemFont(ofSize: 14)
-                })
-            } else {
-                newCell?.label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
-                oldCell?.label.font = UIFont.systemFont(ofSize: 14)
-            }
+            newCell?.label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+            oldCell?.label.font = UIFont.systemFont(ofSize: 14)
+            self.updateBarButtonView()
         }
         super.viewDidLoad()
         buttonBarView.removeFromSuperview()

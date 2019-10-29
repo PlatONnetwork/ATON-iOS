@@ -70,7 +70,7 @@
 "transferVC_confirm_Fee" = "交易手续费：";
 "transferVC_send_Fee" = "交易费用";
 
-"transferVC_confirm_ATP_send" = "LAT 发送";
+"transferVC_confirm_ATP_send" = "发送 LAT";
 "transferVC_confirm_Submit" = "发送";
 
 "transferVC_address_Incorrect_tip" = "地址格式不正确 ";
@@ -758,7 +758,7 @@
 "staking_alert_unlocked_delegate" = "未锁定委托";
 "staking_alert_unlocked_delegate_detail" = "委托大约在6.1小时内完成锁定，未锁定的委托没有收益，赎回的委托立即到账";
 "staking_alert_released_delegate" = "已解除委托";
-"staking_alert_released_detail" = "验证节点退出，委托自动解除，需要主动赎回委托";
+"staking_alert_released_detail" = "一旦节点退出，原委托与节点解除关联，委托失效，需要主动赎回委托";
 "staking_alert_annualized_rate" = "预计年化率";
 "staking_alert_annualized_rate_detail" = "当前节点的预计年化率，具体委托收益由节点分配";
 

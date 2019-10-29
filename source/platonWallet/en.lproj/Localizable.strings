@@ -70,7 +70,7 @@
 "transferVC_confirm_Fee" = "Fee:";
 "transferVC_send_Fee" = "Fee:";
 
-"transferVC_confirm_ATP_send" = "LAT Send";
+"transferVC_confirm_ATP_send" = "Send LAT ";
 "transferVC_confirm_Submit" = "Send";
 
 "transferVC_address_Incorrect_tip" = "Address is incorrect ";

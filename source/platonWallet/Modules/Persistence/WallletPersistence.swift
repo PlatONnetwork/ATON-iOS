@@ -118,7 +118,7 @@ class WallletPersistence {
         } else {
             wallets = Array(res)
         }
-        wallets = wallets.filterArrayByCurrentNodeUrlString()
+        wallets = wallets.filterArrayByCurrentNodeUrlString().detached
 
         for item in wallets {
             item.key = try? Keystore(contentsOf: URL(fileURLWithPath: keystoreFolderPath + "/\(item.keystorePath)"))
