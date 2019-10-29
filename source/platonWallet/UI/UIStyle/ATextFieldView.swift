@@ -72,7 +72,7 @@ class ATextFieldView: UIView {
         }
 
         textField.textColor = .black
-        textField.font = .systemFont(ofSize: 13)
+        textField.font = .systemFont(ofSize: 14)
         textField.delegate = self
         textField.textAlignment = .left
         addSubview(textField)
@@ -133,7 +133,7 @@ class ATextFieldView: UIView {
         if title != nil {
             btn.localizedNormalTitle = title
             btn.setTitleColor(common_blue_color, for: .normal)
-            btn.titleLabel?.font = UIFont.systemFont(ofSize: 12)
+            btn.titleLabel?.font = UIFont.systemFont(ofSize: 14)
         }
         if icon != nil {
             btn.setImage(icon, for: .normal)

@@ -83,7 +83,7 @@
 "transferVC_transfer_SendAll" = "ALL";
 "transferVC_transfer_select_wallet" = "Select Wallet";
 
-"transferVC_Insufficient_balance" = "Insufficient wallet balance";
+"transferVC_Insufficient_balance" = "Insufficient balance";
 "transferVC_Insufficient_balance_for_gas" = "Insufficient balance payment fee";
 "transferVC_Insufficient_network_error" = "Unable to connect to the network";
 

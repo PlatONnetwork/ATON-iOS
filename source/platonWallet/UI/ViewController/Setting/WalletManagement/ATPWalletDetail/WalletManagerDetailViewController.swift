@@ -177,7 +177,6 @@ class WalletManagerDetailViewController: BaseViewController {
                 } else {
                     self!.showErrorNameAlert()
                 }
-
             }
             alertC.inputVerify = { input in
                 return CommonService.isValidWalletName(input).0

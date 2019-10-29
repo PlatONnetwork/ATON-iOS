@@ -104,7 +104,11 @@ extension DelegateRecordViewController {
     private func fetchData(sequence: String, direction: RefreshDirection) {
 
         let addresses = (AssetVCSharedData.sharedData.walletList as! [Wallet]).map { return $0.address }
-        guard addresses.count > 0 else { return }
+        guard addresses.count > 0 else {
+            self.tableView.mj_header.endRefreshing()
+            self.tableView.mj_footer.endRefreshing()
+            return
+        }
 
         TransactionService.service.getDelegateRecord(
             addresses: addresses,

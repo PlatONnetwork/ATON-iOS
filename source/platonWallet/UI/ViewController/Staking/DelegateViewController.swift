@@ -58,7 +58,6 @@ class DelegateViewController: BaseViewController {
         super.leftNavigationTitle = "delegate_delegate_title"
         // Do any additional setup after loading the view.
 
-
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
@@ -112,6 +111,10 @@ class DelegateViewController: BaseViewController {
         guard let node = currentNode else { return }
 
         let item1 = DelegateTableViewCellStyle.nodeInfo(node: node)
+        // 每次出现当前页面就会重新生成钱包列表和余额列表，当前选中的地址
+        if walletStyle != nil {
+            currentAddress = walletStyle?.currentWallet.address
+        }
 
         // 有已选中的钱包则默认选中
         var index: Int? = 0
@@ -232,7 +235,6 @@ extension DelegateViewController: UITableViewDelegate, UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: "SingleButtonTableViewCell") as! SingleButtonTableViewCell
             cell.button.setTitle(title, for: .normal)
             cell.canDelegation = canDelegation
-//            cell.unavaliableTapAction = (currentAmount <= BigUInt.zero || canDelegation == nil || canDelegation?.canDelegation == false)
             cell.cellDidTapHandle = { [weak self] in
                 guard let self = self else { return }
                 self.nextButtonCellDidHandle()
@@ -281,7 +283,7 @@ extension DelegateViewController {
             return
         }
 
-        if currentAmount == (BigUInt(balanceStyle?.currentBalance.1 ?? "0") ?? BigUInt.zero) {
+        if currentAmount == (BigUInt(balanceStyle?.currentBalance.1 ?? "0") ?? BigUInt.zero), balanceStyle?.isLock == false {
             currentAmount -= (estimateUseGas ?? BigUInt.zero)
         }
 
@@ -559,7 +561,7 @@ extension DelegateViewController {
 
         let typ = balanceObject.selectedIndex == 0 ? UInt16(0) : UInt16(1) // 0：自由金额 1：锁仓金额
 
-        if isDelegateAll {
+        if isDelegateAll, balanceStyle?.isLock == false {
             // 当全部委托的时候把0替换为1，防止出现0字节导致gas不足的情况
             let amountStr = amountVon.description.replacingOccurrences(of: "0", with: "1")
             needEstimateGas = BigUInt(amountStr) ?? BigUInt.zero
@@ -569,7 +571,9 @@ extension DelegateViewController {
             switch result {
             case .success:
                 self?.estimateUseGas = data
-                if let delegateAll = self?.isDelegateAll, delegateAll == true {
+
+                if
+                    let delegateAll = self?.isDelegateAll, delegateAll == true, self?.balanceStyle?.isLock == false {
                     if
                         let amount = self?.currentAmount,
                         let useGas = data,

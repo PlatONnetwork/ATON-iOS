@@ -24,6 +24,11 @@ class TransactionDetailViewController: BaseViewController {
         tbView.register(TransactionDetailHashTableViewCell.self, forCellReuseIdentifier: "TransactionDetailHashTableViewCell")
         tbView.separatorStyle = .none
         tbView.tableFooterView = UIView()
+        if #available(iOS 11, *) {
+            tbView.estimatedRowHeight = UITableView.automaticDimension
+        } else {
+            tbView.estimatedRowHeight = 40
+        }
         return tbView
     }()
 
@@ -46,38 +51,36 @@ class TransactionDetailViewController: BaseViewController {
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        NotificationCenter.default.removeObserver(self)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name.ATON.DidUpdateTransactionByHash, object: nil)
     }
 
     @objc func didReceiveTransactionUpdate(_ notification: Notification) {
-        guard let hash = notification.object as? String  else {
+        guard let txStatus = notification.object as? TransactionsStatusByHash else { return }
+        guard let currentTx = transaction else { return }
+        guard let txhash = txStatus.hash, txhash.ishexStringEqual(other: currentTx.txhash), let status = txStatus.localStatus else {
             return
         }
-        //yujinghan waiting fix
-        if hash.ishexStringEqual(other: transaction?.txhash) {
-            let tx = TransferPersistence.getByTxhash(transaction?.txhash)
-            guard let transaction = tx else { return }
-            DispatchQueue.main.async { [weak self] in
 
-                if let senderAddress = self?.txSendAddress {
-                    switch transaction.txType! {
-                    case .transfer:
-                        transaction.direction = (senderAddress.lowercased() == transaction.from?.lowercased() ? .Sent : senderAddress.lowercased() == transaction.to?.lowercased() ? .Receive : .unknown)
-                    case .delegateWithdraw,
-                         .stakingWithdraw:
-                        transaction.direction = .Receive
-                    default:
-                        transaction.direction = .Sent
-                    }
+        DispatchQueue.main.async { [weak self] in
+            if let senderAddress = self?.txSendAddress {
+                switch currentTx.txType! {
+                case .transfer:
+                    currentTx.direction = (senderAddress.lowercased() == currentTx.from?.lowercased() ? .Sent : senderAddress.lowercased() == currentTx.to?.lowercased() ? .Receive : .unknown)
+                case .delegateWithdraw,
+                     .stakingWithdraw:
+                    currentTx.direction = .Receive
+                default:
+                    currentTx.direction = .Sent
                 }
-
-                self?.transferDetailView.updateContent(tx: transaction)
-                self?.tableView.tableHeaderView = self?.transferDetailView
-                self?.transferDetailView.setNeedsLayout()
-                self?.transferDetailView.layoutIfNeeded()
-                self?.transferDetailView.frame.size = self?.transferDetailView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize) ?? CGSize(width: UIScreen.main.bounds.width, height: 250)
-                self?.tableView.tableHeaderView = self?.transferDetailView
             }
+
+            currentTx.txReceiptStatus = status.rawValue
+            self?.transferDetailView.updateContent(tx: currentTx)
+            self?.tableView.tableHeaderView = self?.transferDetailView
+            self?.transferDetailView.setNeedsLayout()
+            self?.transferDetailView.layoutIfNeeded()
+            self?.transferDetailView.frame.size = self?.transferDetailView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize) ?? CGSize(width: UIScreen.main.bounds.width, height: 250)
+            self?.tableView.tableHeaderView = self?.transferDetailView
         }
     }
 
