@@ -430,9 +430,12 @@ extension QRScannerViewController: UIImagePickerControllerDelegate, UINavigation
 
 extension QRScannerViewController: ZXCaptureDelegate {
     func captureResult(_ capture: ZXCapture!, result: ZXResult!) {
-        capture.stop()
+        capture.hard_stop()
         guard result.text.count > 0 else {
-            capture.start()
+            if capture.running == false {
+                capture.delegate = self
+                capture.start()
+            }
             return
         }
 
@@ -441,14 +444,12 @@ extension QRScannerViewController: ZXCaptureDelegate {
             let gunzipData = try? isolatin1Data.gunzipped(),
             let utf8String = String(data: gunzipData, encoding: .utf8)
         else {
-            if capture.running == false {
-                capture.start()
-            }
+            scanCompletion?(result.text)
+            navigationController?.popViewController(animated: true)
             return
         }
 
-        print("==========right ======")
-        print(utf8String)
         scanCompletion?(utf8String)
+        navigationController?.popViewController(animated: true)
     }
 }

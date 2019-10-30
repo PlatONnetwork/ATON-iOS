@@ -429,7 +429,7 @@ extension DelegateViewController {
         let controller = QRScannerViewController()
         controller.hidesBottomBarWhenPushed = true
         controller.scanCompletion = { result in
-            guard let qrcodeType = QRCodeDecoder().decode(result) else { return }
+            let qrcodeType = QRCodeDecoder().decode(result)
             switch qrcodeType {
             case .signedTransaction(let data):
                 completion?(data)
@@ -437,7 +437,6 @@ extension DelegateViewController {
                 AssetViewControllerV060.getInstance()?.showMessage(text: Localized("QRScan_failed_tips"))
                 completion?(nil)
             }
-            (UIApplication.shared.keyWindow?.rootViewController as? BaseNavigationController)?.popViewController(animated: true)
         }
 
         (UIApplication.shared.keyWindow?.rootViewController as? BaseNavigationController)?.pushViewController(controller, animated: true)

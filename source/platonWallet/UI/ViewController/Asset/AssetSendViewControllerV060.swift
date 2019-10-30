@@ -265,7 +265,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
             let scanner = QRScannerViewController()
             scanner.hidesBottomBarWhenPushed = true
             scanner.scanCompletion = { [weak self] result in
-                guard let qrcodeType = QRCodeDecoder().decode(result) else { return }
+                let qrcodeType = QRCodeDecoder().decode(result)
                 switch qrcodeType {
                 case .address(let data):
                     self?.walletAddressView.textField.text = data
@@ -274,7 +274,6 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
                 default:
                     AssetViewControllerV060.getInstance()?.showMessage(text: Localized("QRScan_failed_tips"))
                 }
-                AssetViewControllerV060.popViewController()
             }
             AssetViewControllerV060.pushViewController(viewController: scanner)
 
@@ -392,11 +391,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
         let controller = QRScannerViewController()
         controller.hidesBottomBarWhenPushed = true
         controller.scanCompletion = { result in
-            guard let qrcodeType = QRCodeDecoder().decode(result) else {
-                AssetViewControllerV060.getInstance()?.showMessage(text: Localized("QRScan_failed_tips"))
-                (UIApplication.shared.keyWindow?.rootViewController as? BaseNavigationController)?.popViewController(animated: true)
-                return
-            }
+            let qrcodeType = QRCodeDecoder().decode(result)
             switch qrcodeType {
             case .signedTransaction(let data):
                 completion?(data)
@@ -404,7 +399,6 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
                 AssetViewControllerV060.getInstance()?.showMessage(text: Localized("QRScan_failed_tips"))
                 completion?(nil)
             }
-            (UIApplication.shared.keyWindow?.rootViewController as? BaseNavigationController)?.popViewController(animated: true)
         }
 
         (UIApplication.shared.keyWindow?.rootViewController as? BaseNavigationController)?.pushViewController(controller, animated: true)

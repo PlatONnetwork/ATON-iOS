@@ -473,7 +473,6 @@ extension AssetViewControllerV060: UIScrollViewDelegate, ChildScrollViewDidScrol
     @objc func onScan() {
         let controller = QRScannerViewController()
         controller.scanCompletion = { [weak self] (res) in
-            (UIApplication.shared.keyWindow?.rootViewController as? BaseNavigationController)?.popViewController(animated: true)
             self?.handleScanResp(res)
         }
         controller.hidesBottomBarWhenPushed = true
@@ -490,12 +489,10 @@ extension AssetViewControllerV060: UIScrollViewDelegate, ChildScrollViewDidScrol
     // MARK: - Login
 
     func handleScanResp(_ res: String) {
-        guard let qrcodeType = QRCodeDecoder().decode(res) else { return }
+        let qrcodeType = QRCodeDecoder().decode(res)
         switch qrcodeType {
         case .transaction(let data):
             doShowConfirmViewController(qrcode: data)
-//        case .signedTransaction(let data):
-//             doShowQrcodeScan(qrcode: data)
         case .address(let data):
             sectionView.setSectionSelectedIndex(index: 1)
             sendVC.walletAddressView.textField.text = data
