@@ -757,7 +757,7 @@
 "staking_alert_locked_delegate_detail" = "锁定的委托才有收益，赎回锁定的委托大约在6.1小时内到账。";
 "staking_alert_unlocked_delegate" = "未锁定委托";
 "staking_alert_unlocked_delegate_detail" = "委托大约在6.1小时内完成锁定，未锁定的委托没有收益，赎回的委托立即到账";
-"staking_alert_released_delegate" = "已解除委托";
+"staking_alert_released_delegate" = "待赎回委托";
 "staking_alert_released_detail" = "一旦节点退出，原委托与节点解除关联，委托失效，需要主动赎回委托";
 "staking_alert_annualized_rate" = "预计年化率";
 "staking_alert_annualized_rate_detail" = "当前节点的预计年化率，具体委托收益由节点分配";

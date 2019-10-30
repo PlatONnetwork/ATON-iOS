@@ -22,9 +22,9 @@ extension Transaction {
             return UIImage(named: wallet.avatar)
         default:
             if toType == .contract {
-                return UIImage(named: "2.icon_Shared")
-            } else {
                 return UIImage(named: "2.icon_node")
+            } else {
+                return UIImage(named: "2.icon_Shared")
             }
         }
     }
