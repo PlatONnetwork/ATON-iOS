@@ -14,7 +14,8 @@ class SettingService {
 
     var currentNodeChainId: String?
 
-    var currentVersion: RemoteVersion?
+    var remoteVersion: RemoteVersion?
+    var remoteConfig: RemoteConfig?
 
     static let shareInstance = SettingService()
 
@@ -36,25 +37,6 @@ class SettingService {
         return list[i]
     }
 
-//    static func threadSafeGetCurrentNodeURLString() -> String {
-//
-//        if Thread.current == .main {
-//            return self.getCurrentNodeURLString()
-//        }
-//
-//        let semaphore = DispatchSemaphore(value: 0)
-//        var URLString : String = AppConfig.NodeURL.defaultNodesURL.first!.nodeURL
-//        DispatchQueue.main.async {
-//            URLString = self.getCurrentNodeURLString()
-//            semaphore.signal()
-//        }
-//        if semaphore.wait(timeout: .now() + 3) == DispatchTimeoutResult.timedOut {
-//            return URLString
-//        }
-//
-//        return URLString
-//    }
-
     func getCurrentChainId() -> String {
         if let chainId = currentNodeChainId {
             return chainId
@@ -74,26 +56,30 @@ class SettingService {
         return currentNodeChainId!
     }
 
-    static func getCentralizationURL() -> String {
-        let testCentralizationURL =  AppConfig.ServerURL.HOST.TESTNET + AppConfig.ServerURL.PATH
-        let devCentralizationURL = AppConfig.ServerURL.HOST.DEVNET + AppConfig.ServerURL.PATH
-        let uatCentralizationURL =  AppConfig.ServerURL.HOST.UATNET + AppConfig.ServerURL.PATH
-        let productCentralizationURL =  AppConfig.ServerURL.HOST.PRODUCTNET + AppConfig.ServerURL.PATH
+    func getCentralizationHost() -> String {
+        let testHost =  AppConfig.ServerURL.HOST.TESTNET
+        let devHost = AppConfig.ServerURL.HOST.DEVNET
+        let uatHost =  AppConfig.ServerURL.HOST.UATNET
+        let proHost =  AppConfig.ServerURL.HOST.PRODUCTNET
 
         let chainId = SettingService.shareInstance.getCurrentChainId()
         #if UAT
         if chainId == AppConfig.ChainID.PRODUCT {
-            return testCentralizationURL
+            return testHost
         } else {
-            return devCentralizationURL
+            return devHost
         }
         #else
         if chainId == AppConfig.ChainID.PRODUCT {
-            return productCentralizationURL
+            return proHost
         } else {
-            return uatCentralizationURL
+            return uatHost
         }
         #endif
+    }
+
+    static func getCentralizationURL() -> String {
+        return SettingService.shareInstance.getCentralizationHost() + AppConfig.ServerURL.PATH
     }
 
     func getNodes() -> [NodeInfo] {
@@ -117,30 +103,4 @@ class SettingService {
     func deleteNode(_ node: NodeInfo) {
         NodeInfoPersistence.sharedInstance.delete(node: node)
     }
-
-    public func getRemoteVersion(completion: PlatonCommonCompletion?) {
-        let url = AppConfig.ServerURL.HOST.TESTNET +  "/config/aton-update.json"
-
-        var request = URLRequest(url: try! url.asURL())
-        request.httpMethod = "GET"
-        request.timeoutInterval = requestTimeout
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-
-        Alamofire.request(request).responseData { [weak self] response in
-            switch response.result {
-            case .success(let data):
-                let decoder = JSONDecoder()
-                let response = try? decoder.decode(RemoteVersionResponse.self, from: data)
-                self?.currentVersion = response?.ios
-                DispatchQueue.main.async {
-                    completion?(.success, nil)
-                }
-            case .failure:
-                DispatchQueue.main.async {
-                    completion?(.fail(-1, nil), nil)
-                }
-            }
-        }
-    }
-
 }

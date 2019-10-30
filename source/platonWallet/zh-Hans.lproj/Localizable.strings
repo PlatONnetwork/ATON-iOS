@@ -721,7 +721,7 @@
 "send_address_placeholder" = "输入钱包地址";
 "send_amount_placeholder" = "输入发送数量";
 "vote_confirm_from" = "支付钱包：";
-"staking_amount_placeholder" = "输入数量（不少于10LAT）";
+"staking_amount_placeholder" = "输入数量（不少于%@LAT）";
 
 
 "createOrImport_guide_text" = "已有钱包？使用钱包文件(json)、助记词、私钥导入";
@@ -791,7 +791,6 @@
 "ATextFieldView_title" = "数量:";
 "ATextFieldView_delegate_title" = "委托数量:";
 "ATextFieldView_withdraw_title" = "赎回数量:";
-"ATextFieldView_withdraw_placeholder" = "输入数量（不少于10LAT）";
 
 "staking_doubt_delegate" = "委托";
 "staking_doubt_delegate_detail" = "委托的Token所有权永远归于委托人，用户可以随时赎回委托的Token。\n验证节点关联的操作地址和奖励接收地址不允许参与委托。";
@@ -801,7 +800,7 @@
 "staking_doubt_risk_detail" = "节点双重签名、出块率低会被惩罚，从而间接影响您的收益。为规避风险，请认真选择合格的节点。";
 
 "staking_doubt_undelegate" = "说明";
-"staking_doubt_undelegate_detail" = "赎回交易提交成功，委托的Token可立即到账；\n待赎回委托必须一次性全部赎回；\n赎回数量扣除后，已委托剩余数量少于10LAT时，自动赎回全部。";
+"staking_doubt_undelegate_detail" = "赎回交易提交成功，委托的Token可立即到账；\n待赎回委托必须一次性全部赎回；\n赎回数量扣除后，已委托剩余数量少于%@LAT时，自动赎回全部。";
 
 "staking_balance_can_used" = "可用余额";
 "staking_balance_locked_position" = "锁仓余额";
@@ -872,8 +871,8 @@
 
 "staking_delegate_input_amount_minlimit_error" = "请输入委托的数量";
 "staking_withdraw_input_amount_minlimit_error" = "请输入赎回的数量";
-"staking_input_amount_minlimit_error" = "委托数量不能少于10LAT";
-"staking_withdraw_input_amount_minlimit_error" = "赎回数量不能少于10LAT";
+"staking_input_amount_minlimit_error" = "委托数量不能少于%@LAT";
+"staking_withdraw_input_amount_minlimit_error" = "赎回数量不能少于%@LAT";
 "staking_input_amount_maxlimit_error" = "余额不足，无法委托";
 "staking_withdraw_input_amount_maxlimit_error" = "超出可赎回数量，无法提交";
 "staking_withdraw_balance_Insufficient_error" = "余额不足支付手续费，无法赎回委托";

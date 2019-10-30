@@ -713,7 +713,7 @@
 "send_address_placeholder" = "Input wallet address";
 "send_amount_placeholder" = "Input Amount";
 "vote_confirm_from" = "From:";
-"staking_amount_placeholder" = "Input Amount (not less than 10 LAT)";
+"staking_amount_placeholder" = "Input Amount (not less than %@ LAT)";
 
 
 "createOrImport_guide_text" = "Have a wallet? Import using keystore(json),mnemonic phrase, private key.";
@@ -783,7 +783,6 @@
 "ATextFieldView_title" = "Amount:";
 "ATextFieldView_delegate_title" = "Amount:";
 "ATextFieldView_withdraw_title" = "Amount:";
-"ATextFieldView_withdraw_placeholder" = "Input Amount (not less than 10 LAT)";
 
 "staking_doubt_delegate" = "Delegations";
 "staking_doubt_delegate_detail" = "The user keeps the delegate's Token ownership forever, and the user can withdraw the delegated token at any time.\nThe Validator's operator address and reward receiving address are not allowed for delegation";
@@ -793,7 +792,7 @@
 "staking_doubt_risk_detail" = "Validators would be punished for double signing or low block rate. It would indirectly affect your reward. Please select qualified validators.";
 
 "staking_doubt_undelegate" = "Note";
-"staking_doubt_undelegate_detail" = "The transaction has been successfully submitted and the delegated LAT can return to your account immediately.\nThe released delegate has to be withdrawal all at once;\nIf the remaining delegations has been less than 10LAT, it will be automatically returned all.";
+"staking_doubt_undelegate_detail" = "The transaction has been successfully submitted and the delegated LAT can return to your account immediately.\nThe released delegate has to be withdrawal all at once;\nIf the remaining delegations has been less than %@LAT, it will be automatically returned all.";
 
 "staking_balance_can_used" = "Balance";
 "staking_balance_locked_position" = "Restricted balance";
@@ -864,8 +863,8 @@
 
 "staking_delegate_input_amount_minlimit_error" = "Please input amount";
 "staking_withdraw_input_amount_minlimit_error" = "Please input amount";
-"staking_input_amount_minlimit_error" = "The Amount cannot be less than 10 LAT";
-"staking_withdraw_input_amount_minlimit_error" = "The Amount cannot be less than 10 LAT";
+"staking_input_amount_minlimit_error" = "The Amount cannot be less than %@ LAT";
+"staking_withdraw_input_amount_minlimit_error" = "The Amount cannot be less than %@ LAT";
 "staking_input_amount_maxlimit_error" = "Insufficient balance, unable to delegate";
 "staking_withdraw_input_amount_maxlimit_error" = "Exceeded the available amount and cannot be submitted";
 "staking_withdraw_balance_Insufficient_error" = "Insufficient balance payment fee";

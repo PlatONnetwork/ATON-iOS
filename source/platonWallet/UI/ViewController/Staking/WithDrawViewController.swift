@@ -130,7 +130,7 @@ class WithDrawViewController: BaseViewController {
         let item5 = DelegateTableViewCellStyle.singleButton(title: Localized("statking_validator_Withdraw"))
 
         let contents = [
-            (Localized("staking_doubt_undelegate"), Localized("staking_doubt_undelegate_detail"))
+            (Localized("staking_doubt_undelegate"), Localized("staking_doubt_undelegate_detail", arguments: SettingService.shareInstance.remoteConfig?.minDelegation?.vonToLAT.description ?? "10"))
         ]
         let item6 = DelegateTableViewCellStyle.doubt(contents: contents)
         listData = [item1, item2, item3, item4, item5, item6]
@@ -198,7 +198,7 @@ extension WithDrawViewController: UITableViewDelegate, UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: "SendInputTableViewCell") as! SendInputTableViewCell
             cell.inputType = .withdraw
             cell.amountView.titleLabel.text = Localized("ATextFieldView_withdraw_title")
-            cell.minAmountLimit = "10".LATToVon
+            cell.minAmountLimit = SettingService.shareInstance.remoteConfig?.minDelegationBInt ?? "10".LATToVon
             cell.maxAmountLimit = BigUInt(balanceStyle?.currentBalance.1 ?? "0")
             cell.cellDidContentChangeHandler = { [weak self] in
                 self?.updateHeightOfRow(cell)
@@ -206,9 +206,9 @@ extension WithDrawViewController: UITableViewDelegate, UITableViewDataSource {
             cell.cellDidContentEditingHandler = { [weak self] (amountVON, isRegular) in
                 var inputAmountVON = amountVON
 
-                let amount10 = BigUInt("10").multiplied(by: BigUInt(ETHToWeiMultiplier)!)
-                if let cAmount = BigUInt(self?.balanceStyle?.currentBalance.1 ?? "0"), cAmount >= amount10, inputAmountVON >= amount10, cAmount > inputAmountVON, isRegular == true {
-                    if cAmount - inputAmountVON < amount10 {
+                let minAmount = SettingService.shareInstance.remoteConfig?.minDelegationBInt ?? "10".LATToVon
+                if let cAmount = BigUInt(self?.balanceStyle?.currentBalance.1 ?? "0"), cAmount >= minAmount, inputAmountVON >= minAmount, cAmount > inputAmountVON, isRegular == true {
+                    if cAmount - inputAmountVON < minAmount {
                         inputAmountVON = cAmount
                         DispatchQueue.main.async {
                             cell.amountView.textField.text = inputAmountVON.divide(by: ETHToWeiMultiplier, round: 8)
@@ -281,12 +281,12 @@ extension WithDrawViewController {
         view.endEditing(true)
 
         guard currentAmount > BigUInt.zero else {
-            showMessage(text: Localized("staking_withdraw_input_amount_minlimit_error"))
+            showMessage(text: Localized("staking_withdraw_input_amount_minlimit_error", arguments: SettingService.shareInstance.remoteConfig?.minDelegation?.vonToLAT.description ?? "10"))
             return
         }
 
-        guard currentAmount >= BigUInt("10").multiplied(by: PlatonConfig.VON.LAT) else {
-            showMessage(text: Localized("staking_withdraw_input_amount_minlimit_error"))
+        guard currentAmount >= SettingService.shareInstance.remoteConfig?.minDelegationBInt ?? "10".LATToVon else {
+            showMessage(text: Localized("staking_withdraw_input_amount_minlimit_error", arguments: SettingService.shareInstance.remoteConfig?.minDelegation?.vonToLAT.description ?? "10"))
             return
         }
 

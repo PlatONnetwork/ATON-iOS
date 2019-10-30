@@ -84,7 +84,6 @@ class AssetViewControllerV060: BaseViewController, PopupMenuTableDelegate {
         initUI()
         shouldUpdateWalletStatus()
 
-
         scrollView.mj_header = refreshHeader
         refreshHeader.beginRefreshing()
 
