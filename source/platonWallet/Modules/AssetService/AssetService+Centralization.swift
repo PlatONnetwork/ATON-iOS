@@ -13,7 +13,7 @@ extension AssetService {
 
     public func getWalletBalances(addrs: [String], completion: PlatonCommonCompletion?) {
         var completion = completion
-        var parameters : Dictionary<String,Any> = [:]
+        var parameters : [String: Any] = [:]
 
         parameters["addrs"] = addrs
 
@@ -38,7 +38,6 @@ extension AssetService {
                 }
             case .failure(let error):
                 self.failCompletionOnMainThread(code: -1, errorMsg: error.localizedDescription, completion: &completion)
-                break
             }
         }
     }

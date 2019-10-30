@@ -218,7 +218,7 @@ extension DelegateViewController: UITableViewDelegate, UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: "SendInputTableViewCell") as! SendInputTableViewCell
             cell.inputType = .delegate
             cell.amountView.titleLabel.text = Localized("ATextFieldView_delegate_title")
-            cell.minAmountLimit = "10".LATToVon
+            cell.minAmountLimit = SettingService.shareInstance.remoteConfig?.minDelegationBInt ?? "10".LATToVon
             cell.maxAmountLimit = BigUInt(balanceStyle?.currentBalance.1 ?? "0")
             cell.amountView.isUserInteractionEnabled = (canDelegation?.canDelegation == true)
             cell.cellDidContentChangeHandler = { [weak self] in
@@ -273,8 +273,8 @@ extension DelegateViewController {
             return
         }
 
-        guard currentAmount >= BigUInt("10").multiplied(by: PlatonConfig.VON.LAT) else {
-            showMessage(text: Localized("staking_input_amount_minlimit_error"))
+        guard currentAmount >= SettingService.shareInstance.remoteConfig?.minDelegationBInt ?? "10".LATToVon else {
+            showMessage(text: Localized("staking_input_amount_minlimit_error", arguments: SettingService.shareInstance.remoteConfig?.minDelegation?.vonToLAT.description ?? "10"))
             return
         }
 

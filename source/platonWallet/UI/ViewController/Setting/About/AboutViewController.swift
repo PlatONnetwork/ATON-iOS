@@ -24,7 +24,7 @@ class AboutViewController: BaseViewController {
         versionIcon.layer.cornerRadius = 5.0
 
         let appBuild = Bundle.main.infoDictionary!["CFBundleVersion"] as? String ?? ""
-        let remoteVersion = SettingService.shareInstance.currentVersion?.version ?? ""
+        let remoteVersion = SettingService.shareInstance.remoteVersion?.version ?? ""
         if appBuild.compare(remoteVersion) == ComparisonResult.orderedAscending {
             versionIcon.isHidden = false
         } else {

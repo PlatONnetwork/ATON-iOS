@@ -198,9 +198,8 @@ open class BaseButtonBarPagerTabStripViewController<ButtonBarCellType: UICollect
 
     open func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard indexPath.item != currentIndex else { return }
-
         buttonBarView.moveTo(index: indexPath.item, animated: true, swipeDirection: .none, pagerScroll: .yes)
-        shouldUpdateButtonBarView = false
+        shouldUpdateButtonBarView = true
 
         let oldCell = buttonBarView.cellForItem(at: IndexPath(item: currentIndex, section: 0)) as? ButtonBarCellType
         let newCell = buttonBarView.cellForItem(at: IndexPath(item: indexPath.item, section: 0)) as? ButtonBarCellType
@@ -214,6 +213,7 @@ open class BaseButtonBarPagerTabStripViewController<ButtonBarCellType: UICollect
             }
         }
         moveToViewController(at: indexPath.item)
+
     }
 
     // MARK: - UICollectionViewDataSource
@@ -270,9 +270,11 @@ open class BaseButtonBarPagerTabStripViewController<ButtonBarCellType: UICollect
             switch buttonBarItemSpec! {
             case .cellClass(let widthCallback):
 
+                let cell = buttonBarView.cellForItem(at: IndexPath(item: index, section: 0)) as? StakingLabelViewCell
+
                 let label = UILabel()
                 label.translatesAutoresizingMaskIntoConstraints = false
-                label.font = index == currentIndex ? UIFont.systemFont(ofSize: 18, weight: .medium) : UIFont.systemFont(ofSize: 14)
+                label.font = cell?.label.font
                 label.localizedText = indicatorInfo.title
                 let labelSize = label.intrinsicContentSize
 

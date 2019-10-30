@@ -141,9 +141,9 @@ struct CommonService {
 
         if let minLimitAmount = minLimit, let inputVON = BigUInt.mutiply(a: text, by: ETHToWeiMultiplier), inputVON < minLimitAmount {
             if let inputType = type, inputType == .withdraw {
-                msg = Localized("staking_withdraw_input_amount_minlimit_error")
+                msg = Localized("staking_withdraw_input_amount_minlimit_error", arguments: SettingService.shareInstance.remoteConfig?.minDelegation?.vonToLAT.description ?? "10")
             } else {
-                msg = Localized("staking_input_amount_minlimit_error")
+                msg = Localized("staking_input_amount_minlimit_error", arguments: SettingService.shareInstance.remoteConfig?.minDelegation?.vonToLAT.description ?? "10")
             }
 
             valid = false

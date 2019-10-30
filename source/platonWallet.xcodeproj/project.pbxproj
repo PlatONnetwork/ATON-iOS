@@ -64,6 +64,10 @@
 		813191482235FAC1002D4A72 /* TSLViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813191472235FAC0002D4A72 /* TSLViewController.swift */; };
 		8131914F2235FB48002D4A72 /* TSLXIBViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8131914D2235FB48002D4A72 /* TSLXIBViewController.swift */; };
 		813191502235FB48002D4A72 /* TSLXIBViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8131914E2235FB48002D4A72 /* TSLXIBViewController.xib */; };
+		813A005A23692F33001CEE32 /* RemoteConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813A005923692F33001CEE32 /* RemoteConfig.swift */; };
+		813A005B23692F33001CEE32 /* RemoteConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813A005923692F33001CEE32 /* RemoteConfig.swift */; };
+		813A005D23692F76001CEE32 /* RemoteService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813A005C23692F76001CEE32 /* RemoteService.swift */; };
+		813A005E23692F76001CEE32 /* RemoteService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813A005C23692F76001CEE32 /* RemoteService.swift */; };
 		813C3410223A03A800DE92F1 /* Wallet+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813C340F223A03A800DE92F1 /* Wallet+extension.swift */; };
 		813C3412223A327300DE92F1 /* DropDownVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813C3411223A327300DE92F1 /* DropDownVIew.swift */; };
 		813D1FF82306A7AF00EFA397 /* AssetService+Centralization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813D1FF72306A7AF00EFA397 /* AssetService+Centralization.swift */; };
@@ -705,6 +709,8 @@
 		813191472235FAC0002D4A72 /* TSLViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TSLViewController.swift; sourceTree = "<group>"; };
 		8131914D2235FB48002D4A72 /* TSLXIBViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TSLXIBViewController.swift; sourceTree = "<group>"; };
 		8131914E2235FB48002D4A72 /* TSLXIBViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TSLXIBViewController.xib; sourceTree = "<group>"; };
+		813A005923692F33001CEE32 /* RemoteConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfig.swift; sourceTree = "<group>"; };
+		813A005C23692F76001CEE32 /* RemoteService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteService.swift; sourceTree = "<group>"; };
 		813C340F223A03A800DE92F1 /* Wallet+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Wallet+extension.swift"; sourceTree = "<group>"; };
 		813C3411223A327300DE92F1 /* DropDownVIew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownVIew.swift; sourceTree = "<group>"; };
 		813D1FF72306A7AF00EFA397 /* AssetService+Centralization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AssetService+Centralization.swift"; sourceTree = "<group>"; };
@@ -1190,6 +1196,8 @@
 			children = (
 				81F0DC91234B162C00325858 /* CommonConfig.swift */,
 				9AD11DDC21806C2D002CD905 /* CommonService.swift */,
+				813A005923692F33001CEE32 /* RemoteConfig.swift */,
+				813A005C23692F76001CEE32 /* RemoteService.swift */,
 			);
 			path = Config;
 			sourceTree = "<group>";
@@ -2778,6 +2786,7 @@
 				81B58A1B235DA1FC00816B4E /* StakingService.swift in Sources */,
 				81B58A1C235DA1FC00816B4E /* UINavigationItem+Extensions.swift in Sources */,
 				81B58A1D235DA1FC00816B4E /* AlertStylePopViewController.swift in Sources */,
+				813A005B23692F33001CEE32 /* RemoteConfig.swift in Sources */,
 				81B58A1E235DA1FC00816B4E /* PopupDialogDefaultViewController.swift in Sources */,
 				81B58A1F235DA1FC00816B4E /* TSLXIBViewController.swift in Sources */,
 				81B58A20235DA1FC00816B4E /* WalletBalanceTableViewCell.swift in Sources */,
@@ -2801,6 +2810,7 @@
 				81B58A32235DA1FC00816B4E /* UIView+Extenstions.swift in Sources */,
 				81B58A33235DA1FC00816B4E /* BaseNavigationController.swift in Sources */,
 				81B58A34235DA1FC00816B4E /* TransferConfirmView.swift in Sources */,
+				813A005E23692F76001CEE32 /* RemoteService.swift in Sources */,
 				81B58A35235DA1FC00816B4E /* CommonService.swift in Sources */,
 				81B58A36235DA1FC00816B4E /* UIScrollView+GestureConflict.swift in Sources */,
 				81B58A37235DA1FC00816B4E /* AddressBookTableViewCell.swift in Sources */,
@@ -3029,6 +3039,7 @@
 				81200D4B22FBF29D002E2944 /* StakingService.swift in Sources */,
 				819A522D2190367400E4C500 /* UINavigationItem+Extensions.swift in Sources */,
 				81E072B9223A8359003F6A28 /* AlertStylePopViewController.swift in Sources */,
+				813A005A23692F33001CEE32 /* RemoteConfig.swift in Sources */,
 				9AF9AC1E2182E04000E97F07 /* PopupDialogDefaultViewController.swift in Sources */,
 				8131914F2235FB48002D4A72 /* TSLXIBViewController.swift in Sources */,
 				811AB2B922EED04A00284F1A /* WalletBalanceTableViewCell.swift in Sources */,
@@ -3052,6 +3063,7 @@
 				81FCCCD9217970580052FC29 /* UIView+Extenstions.swift in Sources */,
 				81EE9A0621773B7F008DF8CB /* BaseNavigationController.swift in Sources */,
 				812002B221A3EB390050E1B0 /* TransferConfirmView.swift in Sources */,
+				813A005D23692F76001CEE32 /* RemoteService.swift in Sources */,
 				9AD11DDD21806C2D002CD905 /* CommonService.swift in Sources */,
 				81B58961235AE2CC00816B4E /* UIScrollView+GestureConflict.swift in Sources */,
 				81E2E84C2186A811008B7504 /* AddressBookTableViewCell.swift in Sources */,
@@ -3199,7 +3211,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = VQHC4XR7AG;
+				DEVELOPMENT_TEAM = JL97B8WL3X;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"COCOAPODS=1",
@@ -3213,7 +3225,7 @@
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-DUAT\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.platon.aton;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = yujinghan_dev;
+				PROVISIONING_PROFILE_SPECIFIER = yujinghan_develpoment;
 				SWIFT_OBJC_BRIDGING_HEADER = "platonWallet/UI/Utilities/platonWallet-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				SWIFT_VERSION = 4.2;
