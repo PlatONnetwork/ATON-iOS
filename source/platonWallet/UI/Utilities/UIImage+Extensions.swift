@@ -43,23 +43,19 @@ public extension UIImage {
     }
 
     class func geneQRCodeImageFor(_ content: String, size: CGFloat) -> UIImage? {
+        guard
+            let utf8Data = content.data(using: .utf8),
+            let gzipData = try? utf8Data.gzipped(),
+            let isolantin1String = String(data: gzipData, encoding: .isoLatin1),
+            let isolantin1Data = isolantin1String.data(using: .isoLatin1)
+        else { return nil }
 
-        let oriData = content.data(using: .utf8)!
-        let gzipData = try! oriData.gzipped()
-        print(oriData.count)
-        print(gzipData.count)
-
-        let isolatin1 = String(data: gzipData, encoding: .isoLatin1)
-        let data = isolatin1?.data(using: .isoLatin1)
-        print(data?.count)
         let filter = CIFilter(name: "CIQRCodeGenerator")
         filter?.setDefaults()
-
-        filter?.setValue(data, forKey: "inputMessage")
+        filter?.setValue(isolantin1Data, forKey: "inputMessage")
 
         guard let ciImage = filter?.outputImage else {
             return nil
-
         }
 
         let extent = ciImage.extent.integral

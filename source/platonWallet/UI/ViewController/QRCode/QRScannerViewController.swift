@@ -16,54 +16,18 @@ private let scanFrameSize: CGFloat = 257.0
 
 class QRScannerViewController: BaseViewController, AVCaptureMetadataOutputObjectsDelegate {
 
-    fileprivate var capture: ZXCapture?
     fileprivate var isFirstApplyOrientation: Bool?
     fileprivate var captureSizeTransform: CGAffineTransform?
 
-    lazy var captureSession: AVCaptureSession! = {
-
-        let session = AVCaptureSession()
-
-        guard let videoCaptureDevice = AVCaptureDevice.default(for: .video) else { return nil}
-        let videoInput: AVCaptureDeviceInput
-
-        do {
-            videoInput = try AVCaptureDeviceInput(device: videoCaptureDevice)
-        } catch {
-            return nil
-        }
-
-        if (session.canAddInput(videoInput)) {
-            session.addInput(videoInput)
-        } else {
-            failed()
-            return nil
-        }
-
-        let metadataOutput = AVCaptureMetadataOutput()
-
-        if (session.canAddOutput(metadataOutput)) {
-            session.addOutput(metadataOutput)
-
-            metadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
-            metadataOutput.metadataObjectTypes = [.qr]
-        } else {
-            failed()
-            return nil
-        }
-
-        return session
-
-    }()
-
-    lazy var previewLayer: AVCaptureVideoPreviewLayer! = {
-
-        let layer = AVCaptureVideoPreviewLayer(session: captureSession)
-        layer.frame = view.bounds
-        layer.backgroundColor = UIColor(rgb: 0x1B2137, alpha: 0.5).cgColor
-        layer.videoGravity = .resizeAspectFill
-        return layer
-
+    lazy var capture: ZXCapture = {
+        let cp = ZXCapture()
+        let hint = ZXDecodeHints()
+        hint.encoding = 5
+        cp.hints = hint
+        cp.camera = ZXCapture().back()
+        cp.focusMode =  .continuousAutoFocus
+        cp.delegate = self
+        return cp
     }()
 
     var scanCompletion: ((String) -> Void)?
@@ -78,67 +42,48 @@ class QRScannerViewController: BaseViewController, AVCaptureMetadataOutputObject
     }()
 
     convenience init(scanCompletion:@escaping (_ result: String) -> Void) {
-
         self.init()
         self.scanCompletion = scanCompletion
-
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-//        checkCamareAuthStatus()
-//        setupUI()
-
-        setupUITest()
+        checkCamareAuthStatus()
+        setupUI()
     }
 
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(animated)
-//
-//        navigationController?.setNavigationBarHidden(false, animated: false)
-//
-//        startScanLineAnimation()
-//        if (captureSession?.isRunning == false) {
-//            captureSession.startRunning()
-//        }
-//    }
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: false)
 
-//    override func viewWillDisappear(_ animated: Bool) {
-//        super.viewWillDisappear(animated)
-//
-//        navigationController?.setNavigationBarHidden(true, animated: false)
-//        stopScanLineAnimation()
-//        if (captureSession?.isRunning == true) {
-//            captureSession.stopRunning()
-//        }
-//    }
+        startScanLineAnimation()
+        if capture.running == false {
+            capture.start()
+        }
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        navigationController?.setNavigationBarHidden(true, animated: false)
+        stopScanLineAnimation()
+        if capture.running == true {
+            capture.stop()
+        }
+    }
 
     public func rescan() {
         startScanLineAnimation()
-        if (captureSession?.isRunning == false) {
-            captureSession.startRunning()
+        if capture.running == false {
+            capture.start()
         }
     }
 
     func setupUI() {
-        //super.leftNavigationTitle = "QRScanerVC_nav_title"
+        view.layer.addSublayer(capture.layer)
+        addAlbumButton()
         addScanLayer()
         perform(#selector(addTorchLayer), with: nil, afterDelay: 5.0)
-        addAlbumButton()
-    }
-
-    func setupUITest() {
-        capture = ZXCapture()
-        guard let _capture = capture else { return }
-        let hint = ZXDecodeHints()
-        hint.encoding = 5
-        _capture.hints = hint
-        _capture.camera = _capture.back()
-        _capture.focusMode =  .continuousAutoFocus
-        _capture.delegate = self
-
-        self.view.layer.addSublayer(_capture.layer)
-
     }
 
     override func viewDidLayoutSubviews() {
@@ -169,27 +114,18 @@ class QRScannerViewController: BaseViewController, AVCaptureMetadataOutputObject
         case .portrait:
             captureRotation = 0
             scanRectRotation = 90
-            break
-
         case .landscapeLeft:
             captureRotation = 90
             scanRectRotation = 180
-            break
-
         case .landscapeRight:
             captureRotation = 270
             scanRectRotation = 0
-            break
-
         case .portraitUpsideDown:
             captureRotation = 180
             scanRectRotation = 270
-            break
-
         default:
             captureRotation = 0
             scanRectRotation = 90
-            break
         }
 
         applyRectOfInterest(orientation: orientation)
@@ -197,15 +133,15 @@ class QRScannerViewController: BaseViewController, AVCaptureMetadataOutputObject
         let angleRadius = captureRotation / 180.0 * Double.pi
         let captureTranform = CGAffineTransform(rotationAngle: CGFloat(angleRadius))
 
-        capture?.transform = captureTranform
-        capture?.rotation = CGFloat(scanRectRotation)
-        capture?.layer.frame = view.frame
+        capture.transform = captureTranform
+        capture.rotation = CGFloat(scanRectRotation)
+        capture.layer.frame = view.frame
     }
 
     func applyRectOfInterest(orientation: UIInterfaceOrientation) {
         var transformedVideoRect = self.view.frame
         guard
-            let cameraSessionPreset = capture?.sessionPreset
+            let cameraSessionPreset = capture.sessionPreset
             else { return }
 
         var scaleVideoX, scaleVideoY: CGFloat
@@ -241,7 +177,7 @@ class QRScannerViewController: BaseViewController, AVCaptureMetadataOutputObject
         captureSizeTransform = CGAffineTransform(scaleX: 1.0/scaleVideoX, y: 1.0/scaleVideoY)
         guard let _captureSizeTransform = captureSizeTransform else { return }
         let transformRect = transformedVideoRect.applying(_captureSizeTransform)
-        capture?.scanRect = transformRect
+        capture.scanRect = transformRect
     }
 
     func barcodeFormatToString(format: ZXBarcodeFormat) -> String {
@@ -363,57 +299,39 @@ class QRScannerViewController: BaseViewController, AVCaptureMetadataOutputObject
     }
 
     func checkCamareAuthStatus() {
-
         func showAlert() {
-
             let alert = PAlertController(title: Localized("alert_cameraUsageDeny_title"), message: Localized("alert_cameraUsageDeny_msg"))
             alert.addAction(title: Localized("alert_cancelBtn_title")) {
                 self.navigationController?.popViewController(animated: true)
             }
-
             alert.addAction(title: Localized("alert_cameraUsageDeny_gotoSettings_title")) {
-
                 UIApplication.shared.openURL(URL(string: UIApplication.openSettingsURLString)!)
-
             }
-
             alert.show(inViewController: self)
         }
 
         let status = AVCaptureDevice.authorizationStatus(for: .video)
-
         switch status {
-
         case .authorized:
-
-            view.layer.insertSublayer(self.previewLayer, at: 0)
-
+            view.layer.insertSublayer(capture.layer, at: 0)
         case .denied:
-
             showAlert()
-
         case .notDetermined:
-
             AVCaptureDevice.requestAccess(for: .video) { (granted) in
-
                 DispatchQueue.main.async {
                     if granted {
-                        self.view.layer.insertSublayer(self.previewLayer, at: 0)
+                        self.view.layer.insertSublayer(self.capture.layer, at: 0)
                     } else {
                         showAlert()
                     }
                 }
-
             }
-
         default:
             break
         }
-
     }
 
     func startScanLineAnimation() {
-
         let animate = CABasicAnimation(keyPath: "position.y")
         animate.duration = 2
         animate.repeatCount = MAXFLOAT
@@ -431,35 +349,6 @@ class QRScannerViewController: BaseViewController, AVCaptureMetadataOutputObject
 
     @objc func onNavigationBack() {
         navigationController?.popViewController(animated: true)
-    }
-
-    func failed() {
-        let ac = UIAlertController(title: "Scanning not supported", message: "Your device does not support scanning a code from an item. Please use a device with a camera.", preferredStyle: .alert)
-        ac.addAction(UIAlertAction(title: "OK", style: .default))
-        present(ac, animated: true)
-        captureSession = nil
-    }
-
-    func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
-
-        captureSession.stopRunning()
-
-        if let metadataObject = metadataObjects.first {
-            guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject else { return }
-            guard let stringValue = readableObject.stringValue else {
-
-                if (captureSession?.isRunning == false) {
-                    captureSession.startRunning()
-                }
-                return
-
-            }
-            scanCompletion?(stringValue)
-            //AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
-//            found(code: stringValue)
-
-        }
-
     }
 
     override var prefersStatusBarHidden: Bool {
@@ -541,41 +430,25 @@ extension QRScannerViewController: UIImagePickerControllerDelegate, UINavigation
 
 extension QRScannerViewController: ZXCaptureDelegate {
     func captureResult(_ capture: ZXCapture!, result: ZXResult!) {
-        let format = barcodeFormatToString(format: result.barcodeFormat)
-        print(result.text)
-        print(result.rawBytes)
+        capture.stop()
+        guard result.text.count > 0 else {
+            capture.start()
+            return
+        }
 
-        let dict = result!.resultMetadata![kResultMetadataTypeByteSegments.rawValue] as? [Any]
+        guard
+            let isolatin1Data = result.text.data(using: .isoLatin1),
+            let gunzipData = try? isolatin1Data.gunzipped(),
+            let utf8String = String(data: gunzipData, encoding: .utf8)
+        else {
+            if capture.running == false {
+                capture.start()
+            }
+            return
+        }
 
-//        if (saResult.resultMetadata[@(kResultMetadataTypeByteSegments)]) {
-//            for (ZXByteArray *segment in saResult.resultMetadata[@(kResultMetadataTypeByteSegments)]) {
-//                memcpy(newByteSegment.array, segment.array, segment.length * sizeof(int8_t));
-//                byteSegmentIndex += segment.length;
-//            }
-//        }
-//        let uui = dict.allValues.last
-        let bytes = dict?.first as! ZXByteArray
-        print(dict)
-        let data = Data(buffer: UnsafeBufferPointer(start: bytes.array, count: Int(bytes.length)))
-
-        let isostring = String(data: data, encoding: .isoLatin1)
-        let utf8string = String(data: data, encoding: .utf8)
-
-        let isodata = isostring?.data(using: .isoLatin1)
-        let isodatafromutf = isostring?.data(using: .utf8)
-        let utf8data = utf8string?.data(using: .utf8)
-        let utf8datafromiso = utf8string?.data(using: .isoLatin1)
-
-
-
-//        let isostring = String(cString: result.rawBytes.array, encoding: .isoLatin1)!
-        print(isostring)
-//        let isoData = isostring!.data(using: .isoLatin1)!
-//        print(isoData.count)
-        let ungzipData = try? utf8datafromiso!.gunzipped()
-        print(ungzipData?.count)
-
-        let utf8String = String(data: ungzipData!, encoding: .utf8)
+        print("==========right ======")
         print(utf8String)
+        scanCompletion?(utf8String)
     }
 }

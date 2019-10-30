@@ -24,13 +24,15 @@ class AssetReceiveViewControllerV060: BaseViewController {
         qrCodeView.snp.makeConstraints { (make) in
             make.leading.trailing.top.bottom.equalTo(view)
         }
-        let qrImage = setupQRCodeImage(AssetVCSharedData.sharedData.selectedWalletAddress!, image: nil)
+        let qrImage = UIImage.geneQRCodeImageFor(AssetVCSharedData.sharedData.selectedWalletAddress!, size: 300.0)
+//        let qrImage = setupQRCodeImage(AssetVCSharedData.sharedData.selectedWalletAddress!, image: nil)
         qrCodeView.qrCodeImageView.image = qrImage
         qrCodeView.saveImgAndShreadBtn.addTarget(self, action: #selector(onSaveImgAndShared), for: .touchUpInside)
         qrCodeView.addressLabel.text = AssetVCSharedData.sharedData.selectedWalletAddress
 
         AssetVCSharedData.sharedData.registerHandler(object: self) {[weak self] in
-            let qrImage = self?.setupQRCodeImage(AssetVCSharedData.sharedData.selectedWalletAddress!, image: nil)
+            let qrImage = UIImage.geneQRCodeImageFor(AssetVCSharedData.sharedData.selectedWalletAddress!, size: 300.0)
+//            let qrImage = self?.setupQRCodeImage(AssetVCSharedData.sharedData.selectedWalletAddress!, image: nil)
             self?.qrCodeView.qrCodeImageView.image = qrImage
             self?.qrCodeView.addressLabel.text = AssetVCSharedData.sharedData.selectedWalletAddress
         }
@@ -101,7 +103,8 @@ class AssetReceiveViewControllerV060: BaseViewController {
         let string: String = AssetVCSharedData.sharedData.selectedWalletAddress!
         UIApplication.rootViewController().showLoadingHUD(text: Localized("SharedQRViewSaving"), animated: true)
         DispatchQueue.global().async {
-            let image = self.setupQRCodeImage(string, image: nil)
+            let image = UIImage.geneQRCodeImageFor(string, size: 300.0)
+//            let image = self.setupQRCodeImage(string, image: nil)
             DispatchQueue.main.async {
 
                 if let wallet = AssetVCSharedData.sharedData.selectedWallet as? Wallet {
