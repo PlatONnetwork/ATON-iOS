@@ -427,10 +427,9 @@
 
 //BiometricsAuthVC
 "BiometricsAuthVC_logo_title" = "PlatOn-Wallet";
-"BiometricsAuthVC_authFaceIDBtn_title" = "点击唤起人脸识别验证";
-"BiometricsAuthVC_authTouchIDBtn_title" = "点击唤起指纹验证";
-"BiometricsAuthVC_switchBtn_title" = "使用钱包密码登录解锁";
-"BiometricsAuthVC_initFailed_tips" = "多次验证不通过，请使用钱包密码登录解锁";
+"BiometricsAuthVC_authTouchIDBtn_title" = "点击唤起%@验证";
+"BiometricsAuthVC_switchBtn_title" = "钱包密码解锁";
+"BiometricsAuthVC_initFailed_tips" = "%@多次验证不通过，请使用钱包密码解锁";
 
 //PasswordAuthVC
 "PasswordAuthVC_title" = "钱包密码解锁";
@@ -766,7 +765,7 @@
 "staking_validator_node_active" = "活跃中";
 "staking_validator_node_candidate" = "候选中";
 "staking_validator_node_rank" = "排名";
-"staking_validator_node_yield" = "预计年化率";
+"staking_validator_node_yield" = "年化率";
 
 "staking_validator_delegate_total" = "总质押";
 "staking_validator_delegate_rate_about" = "预计年化率";
@@ -913,7 +912,7 @@
 
 "offline_signature_invalid" = "无效签名";
 "offline_signature_notmatch_wallet" = "钱包不匹配";
-"touchid_auth_text" = "请验证指纹";
+"touchid_auth_text" = "请验证%@";
 "touchid_verify_fail" = "指纹识别失败，请再试一次";
 
 "delete_observed_wallet_alert_title" = "删除观察钱包";

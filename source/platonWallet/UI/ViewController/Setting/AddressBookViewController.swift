@@ -20,6 +20,8 @@ class AddressBookViewController: BaseViewController {
 
     var tableView: UITableView!
 
+    var isHideAddButton: Bool = false
+
     override func viewDidLoad() {
         super.viewDidLoad()
         initSubViews()
@@ -62,6 +64,7 @@ class AddressBookViewController: BaseViewController {
     func initNavigationItem() {
 
         super.leftNavigationTitle = "AddressBookVC_nav_title"
+        guard isHideAddButton == false else { return }
 
         //let backgrouImage = UIImage(color: .white)
         //self.navigationController?.navigationBar.setBackgroundImage(backgrouImage, for: .default)

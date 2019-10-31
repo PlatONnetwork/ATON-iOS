@@ -433,17 +433,16 @@
 
 //BiometricsAuthVC
 "BiometricsAuthVC_logo_title" = "PlatOn-Wallet";
-"BiometricsAuthVC_authFaceIDBtn_title" = "Click to evoke Face Recognition Verification";
-"BiometricsAuthVC_authTouchIDBtn_title" = "Click to evoke Fingerprint Verification";
-"BiometricsAuthVC_switchBtn_title" = "Unlock with Wallet Password";
-"BiometricsAuthVC_initFailed_tips" = "Fingerprint suspended, Please Unlock with Wallet Password";
+"BiometricsAuthVC_authTouchIDBtn_title" = "Login with Apple %@";
+"BiometricsAuthVC_switchBtn_title" = "Login with Password";
+"BiometricsAuthVC_initFailed_tips" = "%@ suspended, Please Login with Password";
 
 //PasswordAuthVC
-"PasswordAuthVC_title" = "Unlock with Wallet Password";
-"PasswordAuthVC_tips" = "Use the selected wallet password to verify unlock";
+"PasswordAuthVC_title" = "Login with Password";
+"PasswordAuthVC_tips" = "Be sure to correspond password to wallet.";
 "PasswordAuthVC_walletName" = "Wallet";
 "PasswordAuthVC_walletPsw" = "Wallet Password";
-"PasswordAuthVC_unlockBtn_title" = "Unlock";
+"PasswordAuthVC_unlockBtn_title" = "Confirm";
 "PasswordAuthVC_unlocking_text" = "Unlocking...";
 "PasswordAuthVC_unlockSuccess_text" = "Unlock succeed";
 "PasswordAuthVC_unlockFail_text" = "Incorrect Password";
@@ -904,7 +903,7 @@
 
 "offline_signature_invalid" = "Invalid Signature";
 "offline_signature_notmatch_wallet" = "Wallet Mismatch";
-"touchid_auth_text" = "Please verify your fingerprint";
+"touchid_auth_text" = "Please verify your %@";
 "touchid_verify_fail" = "Fingerprint verification failed, please try again! !";
 
 "delete_observed_wallet_alert_title" = "Delete Wallet";

@@ -78,6 +78,8 @@ class SingleButtonTableViewCell: UITableViewCell {
             buttonToBottomConstaint = make.bottom.equalToSuperview().offset(-16).priorityHigh().constraint
             make.centerX.equalToSuperview()
             make.height.equalTo(44)
+            make.leading.equalToSuperview().offset(16)
+            make.trailing.equalToSuperview().offset(-16)
         }
 
         errorLabel.font = .systemFont(ofSize: 14)

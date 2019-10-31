@@ -396,31 +396,43 @@ extension QRScannerViewController: UIImagePickerControllerDelegate, UINavigation
                          CGSize(width: 1242, height: 2208),
                          CGSize(width: 750, height: 1334),
                          CGSize(width: 640, height: 1136)]
-        var featureQR: CIQRCodeFeature?
+        var qrCodeResult: String?
         for item in sizeArray {
             let newImage = image.resizeImage(image: image, newSize: CGSize(width: item.width, height: item.height))
-            let detector = CIDetector(ofType: CIDetectorTypeQRCode, context: nil, options: [CIDetectorAccuracy: CIDetectorAccuracyHigh])
-            let featureArr = detector?.features(in: CIImage(cgImage: newImage.cgImage!))
 
-            if let feature = featureArr?.first as? CIQRCodeFeature {
-                featureQR = feature
-                break
+            guard
+                let cgimage = newImage.cgImage,
+                let source = ZXCGImageLuminanceSource(cgImage: cgimage),
+                let binarizer = ZXHybridBinarizer(source: source),
+                let bitmap = ZXBinaryBitmap(binarizer: binarizer)
+            else {
+                return
             }
+
+            let hints = ZXDecodeHints()
+            hints.encoding = 5
+            let reader = ZXQRCodeReader()
+            let result = try? reader.decode(bitmap, hints: hints)
+            guard let res = result?.text, res.count > 0 else { continue }
+            qrCodeResult = res
+            break
         }
 
-        if let feature = featureQR {
-            let message = feature.messageString!
+        hideLoadingHUD()
+        dismiss(animated: true, completion: nil)
 
-            self.dismiss(animated: true) { [weak self] in
-                guard let self = self else { return }
-                self.hideLoadingHUD()
-                self.scanCompletion?(message)
-            }
-        } else {
-            self.hideLoadingHUD()
-            self.showMessage(text: Localized("scanviewcontroller_scan_result_notfound"), delay: 1.5)
-            self.dismiss(animated: true, completion: nil)
+        guard
+            let result = qrCodeResult,
+            let isolatin1Data = result.data(using: .isoLatin1),
+            let gunzipData = try? isolatin1Data.gunzipped(),
+            let utf8String = String(data: gunzipData, encoding: .utf8)
+            else {
+                scanCompletion?(qrCodeResult ?? "")
+                navigationController?.popViewController(animated: true)
+                return
         }
+        scanCompletion?(utf8String)
+        navigationController?.popViewController(animated: true)
     }
 
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {

@@ -249,6 +249,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
         walletAddressView.addAction(icon: UIImage(named: "textField_icon_addressBook"), action: {
 
             let addressBookVC = AddressBookViewController()
+            addressBookVC.isHideAddButton = true
             addressBookVC.selectionCompletion = { [weak self](_ addressInfo: AddressInfo?) -> Void in
                 if let weakSelf = self {
                     weakSelf.walletAddressView.textField.text = addressInfo!.walletAddress

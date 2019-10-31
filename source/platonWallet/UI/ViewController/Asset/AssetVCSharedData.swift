@@ -48,7 +48,6 @@ class AssetVCSharedData {
             var newSorted: [Any] = []
             newSorted.append(contentsOf: rangeWallets)
             newSorted.append(contentsOf: unrangeWallets)
-
             return newSorted
         }
     }
@@ -66,7 +65,7 @@ class AssetVCSharedData {
 
                 return
             }
-            for (_, v) in walletChangeHandlers.enumerated() {
+            for v in walletChangeHandlers {
                 v.value()
             }
         }
@@ -119,6 +118,15 @@ class AssetVCSharedData {
         } else {
             self.selectedWallet = nil
         }
+    }
+
+    func updateSelectedWallet() {
+        guard
+            let sw = selectedWallet as? Wallet,
+            let wl = walletList as? [Wallet]
+        else { return }
+        let currentSw = wl.first(where: { $0.address.lowercased() == sw.address.lowercased() })
+        selectedWallet = currentSw
     }
 }
 

@@ -134,8 +134,7 @@ class PopUpViewController: UIViewController {
     open func show(inViewController vc: UIViewController, animated: Bool = false) {
 
         modalPresentationStyle = .overCurrentContext
-        vc.tabBarController!.present(self, animated: animated) {
-
+        vc.parent?.present(self, animated: animated, completion: {
             UIView.animate(withDuration: 0.35,
                            delay: 0,
                            usingSpringWithDamping: CGFloat(0.75),
@@ -150,8 +149,7 @@ class PopUpViewController: UIViewController {
 
             },completion: { _ in()
             })
-
-        }
+        })
     }
 
     deinit {

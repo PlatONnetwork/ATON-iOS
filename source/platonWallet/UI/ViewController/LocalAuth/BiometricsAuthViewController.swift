@@ -47,10 +47,12 @@ class BiometricsAuthViewController: BaseViewController {
 
         if biometricsType == .touch {
             localAuthIconImgV.image = UIImage(named: "localAuth_icon_finger")
-            tipsBtn.localizedNormalTitle = "BiometricsAuthVC_authTouchIDBtn_title"
+            tipsBtn.localizedNormalTitle = Localized("BiometricsAuthVC_authTouchIDBtn_title", arguments: "TouchID")
+            tips.text = Localized("BiometricsAuthVC_initFailed_tips", arguments: "TouchID")
         } else {
             localAuthIconImgV.image = UIImage(named: "localAuth_icon_face")
-            tipsBtn.localizedNormalTitle = "BiometricsAuthVC_authFaceIDBtn_title"
+            tipsBtn.localizedNormalTitle = Localized("BiometricsAuthVC_authTouchIDBtn_title", arguments: "FaceID")
+            tips.text = Localized("BiometricsAuthVC_initFailed_tips", arguments: "FaceID")
         }
 
         showLocalAuth()
@@ -84,7 +86,15 @@ class BiometricsAuthViewController: BaseViewController {
             tips.isHidden = false
             return
         }
-        laCtx.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: Localized("touchid_auth_text")) { [weak self](success, error) in
+
+        var biometrics: String = "TouchID"
+        if #available(iOS 11.0, *) {
+            if laCtx.biometryType == .faceID {
+                biometrics = "FaceID"
+            }
+        }
+        
+        laCtx.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: Localized("touchid_auth_text", arguments: biometrics)) { [weak self](success, error) in
 
             DispatchQueue.main.async {
                 if success {
