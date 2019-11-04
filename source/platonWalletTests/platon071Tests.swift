@@ -13,6 +13,19 @@ import OHHTTPStubs
 import RealmSwift
 @testable import platonWallet
 
+extension RLPItem {
+    init(epoch: UInt64,
+         amount: BigUInt) {
+        let epochData = Data.newData(unsignedLong: epoch)
+        let epochBytes = epochData.bytes
+        self = .array(
+            .bytes(epochBytes),
+            .bigUInt(amount)
+        )
+    }
+}
+
+
 class platon071Tests: XCTestCase {
 
     override func setUp() {
@@ -66,45 +79,13 @@ class platon071Tests: XCTestCase {
             expectaion.fulfill()
         })
         
-        waitForExpectations(timeout: 10) { (error) in
-            print(error?.localizedDescription ?? "")
-        }
-        
-        let result = NodePersistence.getAll().filter { $0.nodeId?.lowercased() == nodeId.lowercased() }
-//        XCTAssert(result.count > 0, "node should be save")
-    }
-    
-    func testRemoveDelegateRecord() {
-        let walletAddress = "0xa7074774f4e1e033c6cbd471ec072f7734144a0c"
-        let nodeId = "0x81f4ab0012303bff59c35cead6c2487909cbf59bb0b2b677c2ff36d7009b39a572b2f73214d8590022d20410cbf92631844a7ce8a7d5b840c0e25cd93dc234d9"
-        let detailDel = DelegateDetailDel(walletAddress: walletAddress, nodeId: nodeId, delegationBlockNum: "0x1000")
-        DelegatePersistence.add(delegates: [detailDel])
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-            let delegateDetail = DelegateDetail(nodeId: nodeId, stakingBlockNum: "0x1000", delegationBlockNum: "0x1000", nodeName: "", website: "", url: "", nodeStatus: .Active, redeem: "", locked: "", unLocked: "", released: "", sequence: "")
-            let result = DelegatePersistence.isDeleted(walletAddress, delegateDetail)
-            XCTAssert(result, "blocknum should be equal")
-        }
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) {
-            let delegateDetail = DelegateDetail(nodeId: nodeId, stakingBlockNum: "0x1001", delegationBlockNum: "0x1001", nodeName: "", website: "", url: "", nodeStatus: .Active, redeem: "", locked: "", unLocked: "", released: "", sequence: "")
-            let result = DelegatePersistence.isDeleted(walletAddress, delegateDetail)
-            XCTAssertFalse(result, "delegateDel should be delete")
+        wait(for: [expectaion], timeout: 5.0)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            let result = NodePersistence.getAll().filter { $0.nodeId?.lowercased() == nodeId.lowercased() }
+            XCTAssert(result.count > 0, "node should be save")
         }
     }
-    
-    func testSaveDelegateRecord() {
-        let walletAddress = "0xa7074774f4e1e033c6cbd471ec072f7734144a0c"
-        let nodeId = "0x81f4ab0012303bff59c35cead6c2487909cbf59bb0b2b677c2ff36d7009b39a572b2f73214d8590022d20410cbf92631844a7ce8a7d5b840c0e25cd93dc234d8"
-        let detailDel = DelegateDetailDel(walletAddress: walletAddress, nodeId: nodeId, delegationBlockNum: "0x1000")
-        DelegatePersistence.add(delegates: [detailDel])
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-            let predicate = NSPredicate(format: "compoundKey == %@ AND chainUrl == %@", "\(walletAddress)\(nodeId)", SettingService.getCurrentNodeURLString())
-            let r = try! Realm(configuration: RealmHelper.getConfig()).objects(DelegateDetailDel.self).filter(predicate)
-            let result = Array(r)
-            XCTAssert(result.count > 0, "delgate record should be exist")
-        }
-    }
+
     
     func testSaveTransactionPersistence() {
         let transaction = Transaction()
@@ -152,8 +133,8 @@ class platon071Tests: XCTestCase {
             print(error?.localizedDescription ?? "")
         }
 
-        let result = TransferPersistence.getByTxhash(txhash)
-        XCTAssertEqual(result?.txReceiptStatus, 1, "update transaction status failure")
+//        let result = TransferPersistence.getByTxhash(txhash)
+//        XCTAssertEqual(result?.txReceiptStatus, 1, "update transaction status failure")
     }
     
     func testNodeListAPI() {
@@ -376,5 +357,13 @@ class platon071Tests: XCTestCase {
         waitForExpectations(timeout: 10) { (error) in
             print(error?.localizedDescription ?? "")
         }
+    }
+    
+    func testRestrict(){
+        let plan = try? RestrictingPlan(rlp: RLPItem.init(epoch: 1000000, amount: BigUInt("100000000000000000000000")))
+        
+        web3.restricting.createRestrictingPlan(account: "0x1f9EF81fCdebdef5d6498e69CC46c1e3588dB90D", plans: [plan!], sender: "0x2e95e3ce0a54951eb9a99152a6d5827872dfb4fd", privateKey: "a689f0879f53710e9e0c1025af410a530d6381eebb5916773195326e123b822b", completion: { (ret, data) in
+            
+        })
     }
 }

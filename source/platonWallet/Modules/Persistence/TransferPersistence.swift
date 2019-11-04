@@ -10,11 +10,11 @@ import Foundation
 import RealmSwift
 
 class TransferPersistence {
-    
-    public class func add(tx : Transaction){
+
+    public class func add(tx : Transaction) {
         let tx = tx.detached()
-        
-        tx.nodeURLStr = SettingService.getCurrentNodeURLString()
+
+        tx.chainId = SettingService.shareInstance.getCurrentChainId()
         RealmWriteQueue.async {
             autoreleasepool(invoking: {
                 let realm = try! Realm(configuration: RealmHelper.getConfig())
@@ -24,7 +24,7 @@ class TransferPersistence {
             })
         }
     }
-    
+
     public class func update(
         txhash: String,
         status: Int,
@@ -34,71 +34,99 @@ class TransferPersistence {
         RealmWriteQueue.async {
             autoreleasepool(invoking: {
                 let realm = try! Realm(configuration: RealmHelper.getConfig())
-                
-                let predicate = NSPredicate(format: "txhash == %@ AND nodeURLStr == %@", txhash, SettingService.getCurrentNodeURLString())
-                
+
+                let predicate = NSPredicate(format: "txhash == %@ AND chainId == %@", txhash, SettingService.shareInstance.getCurrentChainId())
+
                 guard let transaction = realm.objects(Transaction.self).filter(predicate).first else {
                     completion?()
                     return
                 }
-                
-                try? realm.write {
-                    transaction.txReceiptStatus = (status == 0) ? 1 : 0
-                    transaction.blockNumber = blockNumber
-                    transaction.gasUsed = gasUsed
-                    completion?()
+
+                do {
+                    try realm.write {
+                        transaction.txReceiptStatus = status
+                        transaction.blockNumber = blockNumber
+                        transaction.gasUsed = gasUsed
+                        completion?()
+                    }
+                } catch let e {
+                    print("fatal error:\(e)")
                 }
+
             })
         }
     }
-    
+
     public class func getAll() -> [Transaction] {
         let realm = try! Realm(configuration: RealmHelper.getConfig())
-        
+
         let wallets = AssetVCSharedData.sharedData.walletList.filterClassicWallet
         let addresses = wallets.map { w -> String in
-            return (w.key?.address)!.lowercased()
+            return w.address.lowercased()
         }
-        let predicate = NSPredicate(format: "nodeURLStr == %@", SettingService.getCurrentNodeURLString())
+        let predicate = NSPredicate(format: "chainId == %@", SettingService.shareInstance.getCurrentChainId())
         let r = realm.objects(Transaction.self).filter(predicate).sorted(byKeyPath: "createTime", ascending: false)
         let array = Array(r)
         let result = array.filter { t -> Bool in
             return addresses.contains(t.from?.lowercased() ?? "")
         }
-        return result
+        return result.detached
     }
-    
-    public class func getAllPendingTransactionsByAddress(from: String) -> [Transaction] {
+
+    public class func getTransactionsByAddress(from: String, status: TransactionReceiptStatus, detached: Bool = false) -> [Transaction] {
         let realm = try! Realm(configuration: RealmHelper.getConfig())
-        let predicate = NSPredicate(format: "(from contains[cd] %@ OR to contains[cd] %@) AND nodeURLStr == %@ AND blockNumber == %@ AND txhash != %@", from, from, SettingService.getCurrentNodeURLString(), "", "")
+        let predicate = NSPredicate(format: "(from contains[cd] %@ OR to contains[cd] %@) AND chainId == %@ AND blockNumber == %@ AND txhash != %@ AND txReceiptStatus = %d",
+                                    from,
+                                    from,
+                                    SettingService.shareInstance.getCurrentChainId(),
+                                    "",
+                                    "",
+                                    status.rawValue)
         let r = realm.objects(Transaction.self).filter(predicate).sorted(byKeyPath: "createTime", ascending: false)
-        let array = Array(r)
+        var array : [Transaction] = []
+        if detached {
+            array = Array(r).detached
+        } else {
+            array = Array(r).detached
+        }
         return array
     }
-    
+
     public class func getUnConfirmedTransactions() -> [Transaction] {
         let realm = try! Realm(configuration: RealmHelper.getConfig())
-        
-        let predicate = NSPredicate(format: "txhash != %@ AND blockNumber == %@ AND nodeURLStr == %@", "","",SettingService.getCurrentNodeURLString())
+
+        let predicate = NSPredicate(format: "txhash != %@ AND blockNumber == %@ AND chainId == %@ AND txReceiptStatus == %d", "","",SettingService.shareInstance.getCurrentChainId(), TransactionReceiptStatus.pending.rawValue)
         let r = realm.objects(Transaction.self).filter(predicate).sorted(byKeyPath: "createTime")
-        let array = Array(r)
+        let array = Array(r).detached
         return array
     }
-    
+
     public class func getByTxhash(_ hash : String?) -> Transaction? {
         let realm = try! Realm(configuration: RealmHelper.getConfig())
-        
-        let predicate = NSPredicate(format: "txhash == %@ AND nodeURLStr == %@", hash!,SettingService.getCurrentNodeURLString())
+
+        let predicate = NSPredicate(format: "txhash == %@ AND chainId == %@", hash!,SettingService.shareInstance.getCurrentChainId())
         let r = realm.objects(Transaction.self).filter(predicate).sorted(byKeyPath: "createTime")
         let array = Array(r)
 
-        if array.count > 0{
-            return array.first!
+        if array.count > 0 {
+            return array.first!.detached()
         } else {
             return nil
         }
     }
-    
+
+    public class func delete(_ txhash: String) {
+        RealmWriteQueue.async {
+            autoreleasepool(invoking: {
+                let realm = try! Realm(configuration: RealmHelper.getConfig())
+                let predicate = NSPredicate(format: "txhash == %@", txhash)
+                try? realm.write {
+                    realm.delete(realm.objects(Transaction.self).filter(predicate))
+                }
+            })
+        }
+    }
+
     public class func deleteConfirmedTransaction() {
         RealmWriteQueue.async {
             autoreleasepool(invoking: {

@@ -14,62 +14,50 @@ import BuglyHotfix
 import platonWeb3
 
 class AppFramework {
-    
+
     static let sharedInstance = AppFramework()
-    
+
     func initialize() -> Bool {
         initBugly()
+        initNetworkObserver()
+
         initUMeng()
         doSwizzle()
-        if !RealmConfiguration(){
+        if !RealmConfiguration() {
             return false
         }
         modulesConfigure()
+
+        UIButton.methodExchange()
         return true
     }
-    
-    func initweb3(){
+
+    func initweb3() {
         Debugger.enableDebug(true)
     }
-    
-    func initBugly(){
-        Bugly.start(withAppId: AppConfig.Keys.BuglyAppleID)
-        
-        JPEngine.handleException { (msg) in
-            let exception = NSException(name: NSExceptionName(rawValue: "Hotfix Exception"), reason: msg, userInfo: nil)
-            Bugly.report(exception)
-        }
-        
-        BuglyMender.shared().checkRemoteConfig { (event:BuglyHotfixEvent, info:[AnyHashable : Any]?) in
-            if (event == BuglyHotfixEvent.patchValid || event == BuglyHotfixEvent.newPatch) {
-                let patchDirectory = BuglyMender.shared().patchDirectory() as NSString
-                let patchFileName = "main.js"
-                let patchFilePath = patchDirectory.appendingPathComponent(patchFileName)
-                if (FileManager.default.fileExists(atPath: patchFilePath) && JPEngine.evaluateScript(withPath: patchFilePath) != nil) {
-                    BuglyLog.level(.info, logs: "evaluateScript success")
-                    BuglyMender.shared().report(.activeSucess)
-                }else {
-                    BuglyLog.level(.error, logs: "evaluateScript fail")
-                    BuglyMender.shared().report(.activeFail)
-                }
-            }
-        }
+
+    func initNetworkObserver() {
+        NetworkManager.shared.startNetworkReachabilityObserver()
     }
-    
+
+    func initBugly() {
+        Bugly.start(withAppId: AppConfig.Keys.BuglyAppleID)
+    }
+
     func initUMeng() {
         UMConfigure.initWithAppkey(AppConfig.Keys.Production_Umeng_key, channel: "App Store")
         MobClick.setAutoPageEnabled(true)
         UMConfigure.setLogEnabled(true)
     }
-    
-    func modulesConfigure(){
-        let _ = AssetService.sharedInstace
-        let _ = TransactionService.service
+
+    func modulesConfigure() {
+        _ = AssetService.sharedInstace
+        _ = TransactionService.service
     }
 
     func RealmConfiguration() -> Bool {
         do {
-            let _ = try Realm(configuration: RealmHelper.getConfig())
+            _ = try Realm(configuration: RealmHelper.getConfig())
             NodeInfoPersistence.sharedInstance.initConfig()
             // 删除缓存在本地且已经被链上确认删除的交易
             TransferPersistence.deleteConfirmedTransaction()
@@ -82,9 +70,9 @@ class AppFramework {
             return false
         }
     }
-    
-    func doSwizzle(){
-        
+
+    func doSwizzle() {
+
         //RTRootNavigationController.doBadSwizzleStuff()
         UIViewController.doBadSwizzleStuff()
     }

@@ -70,7 +70,7 @@
 "transferVC_confirm_Fee" = "交易手续费：";
 "transferVC_send_Fee" = "交易费用";
 
-"transferVC_confirm_ATP_send" = "LAT 发送";
+"transferVC_confirm_ATP_send" = "发送 LAT";
 "transferVC_confirm_Submit" = "发送";
 
 "transferVC_address_Incorrect_tip" = "地址格式不正确 ";
@@ -78,9 +78,10 @@
 "transferVC_amout_empty_tip" = "发送数量为空";
 "transferVC_amout_amout_input_error" = "数额输入错误";
 "transferVC_transfer_success_tip" = "转账成功";
-"transferVC_transfer_balance" = "余额：";
+"transferVC_transfer_balance" = "当前余额：";
 "transferVC_transfer_SendAll" = "发送所有";
 "transferVC_Insufficient_balance" = "钱包余额不足";
+"transferVC_Insufficient_balance_for_gas" = "余额不足支付手续费，无法转账";
 "transferVC_Insufficient_network_error" = "网络连接失败";
 "transferVC_transfer_select_wallet" = "选择钱包";
 
@@ -181,13 +182,18 @@
 "importKeystoreVC_keystoreInput_placeholder" = "请输入钱包文件（.json）内容";
 "importKeystoreVC_nameInput_placeholder" = "输入钱包名称";
 "importKeystoreVC_pswInput_placeholder" = "输入钱包密码";
+"importKeystoreVC_addressInput_placeholder" = "请输入离线冷钱包地址";
 "importKeystoreVC_keystore_empty_tips" = "钱包文件(.json)不能为空！";
+"importKeystoreVC_observed_empty_tips" = "钱包地址不能为空！";
+"importKeystoreVC_observed_invalid_tips" = "钱包地址无效";
+"importKeystoreVC_observed_existed_tips" = "钱包已存在";
 
 //importWalletVC
 "importWalletVC_title" = "导入钱包";
-"importWalletVC_tab_keystore" = "钱包文件（.json）";
+"importWalletVC_tab_keystore" = "钱包文件";
 "importWalletVC_tab_mnemonic" = "助记词";
 "importWalletVC_tab_privateKey" = "私钥";
+"importWalletVC_tab_observedWallet" = "观察钱包";
 "importWalletVC_mnemonic_tips" = "请将记下的助记词按顺序填入以下表格中，在每个助记词输入完成后按“空格”键可以跳转到下个单词，使用助记词导入的同时需要设定钱包密码，未来需要通过密码验证才能够进行能量发送、备份等操作。";
 "importWalletVC_mnemonic_textView_placeholder" = "请输入助记词，用空格分割";
 
@@ -198,6 +204,7 @@
 "importWalletVC_mnemonicInput_empty_tips" = "助记词不能为空";
 "importWalletVC_privateKeyInput_empty_tips" = "私钥不能为空";
 "importWalletVC_PasteButton" = "粘贴";
+"importWalletVC_import_observed_title" = "完成";
 
 //backupMnemonicVC
 "backupMnemonicVC_title" = "备份助记词";
@@ -266,6 +273,10 @@
 "WalletManagerDetailVC_deleteBtn_title" = "删除钱包";
 "WalletManager_backUp" = "备份";
 
+"Offline_Walle_Tag" = "冷钱包";
+"Observed_Wallet_Tag" = "观察钱包";
+
+
 //ExportPrivateKeyVC
 "ExportPrivateKeyVC_title" = "导出私钥";
 "ExportPrivateKeyVC_note" = "注意：不要截图，请检查周围，以防他人偷看或拍摄，请妥善保管私钥，切勿存储在网盘中";
@@ -293,9 +304,9 @@
 //AddAddressInfoViewController
 
 "AddAddress_nav_title"= "添加新地址";
-"AddAddress_textFieldPlaceHolder_address_Name"= "地址名称";
-"AddAddress_textFieldPlaceHolder_Wallet_Address"= "地址";
-"AddAddressVC_tip" = "地址存在本地，删除APP前请先备份！";
+"AddAddress_textFieldPlaceHolder_address_Name"= "输入地址名称";
+"AddAddress_textFieldPlaceHolder_Wallet_Address"= "输入钱包地址";
+"AddAddressVC_tip" = "地址存在本地，删除APP前请先备份";
 "AddAddressVC_add_button_title" = "添加";
 
 "NewAddress_name_empty_tip" = "名称不能为空";
@@ -317,6 +328,7 @@
 "Invalid mnemonic phrase" = "助记词无法识别";
 "Invalid keystore" = "钱包文件无法解析";
 "Wallet already exists" = "钱包已存在";
+"Invalid address" = "无效的地址";
 
 
 //Receive QR Code ViewController
@@ -335,7 +347,7 @@
 "TransactionListVC_Received" = "接收";
 "TransactionListVC_Vote" = "投票";
 
-"TransactionStatus_sending_title" = "发送";
+"TransactionStatus_sending_title" = "发送LAT";
 "TransactionStatus_sendSucceed_title" = "发送";
 "TransactionStatus_sendFailed_title" = "发送";
 "TransactionStatus_receiving_title" = "接收";
@@ -344,6 +356,7 @@
 "TransactionStatus_voting_title" = "投票";
 "TransactionStatus_voteSucceed_title" = "投票";
 "TransactionStatus_voteFailed_title" = "投票";
+"TransactionStatus_timeout_title" = "交易超时";
 
 "TransactionStatus_pending_desc" = "处理中";
 "TransactionStatus_succeed_desc" = "已完成";
@@ -353,7 +366,6 @@
 "TransactionStatus_succeed_delegate" = "委托成功";
 "TransactionStatus_failed_undelegate" = "赎回失败";
 "TransactionStatus_succeed_undelegate" = "赎回成功";
-"TransactionStatus_loading_undelegate" = "赎回中";
 
 "TransactionStatus_transfer_title" = "转账";
 "TransactionStatus_contractCreate_title" = "合约创建";
@@ -415,10 +427,9 @@
 
 //BiometricsAuthVC
 "BiometricsAuthVC_logo_title" = "PlatOn-Wallet";
-"BiometricsAuthVC_authFaceIDBtn_title" = "点击唤起人脸识别验证";
-"BiometricsAuthVC_authTouchIDBtn_title" = "点击唤起指纹验证";
-"BiometricsAuthVC_switchBtn_title" = "使用钱包密码登录解锁";
-"BiometricsAuthVC_initFailed_tips" = "多次验证不通过，请使用钱包密码登录解锁";
+"BiometricsAuthVC_authTouchIDBtn_title" = "点击唤起%@验证";
+"BiometricsAuthVC_switchBtn_title" = "钱包密码解锁";
+"BiometricsAuthVC_initFailed_tips" = "%@多次验证不通过，请使用钱包密码解锁";
 
 //PasswordAuthVC
 "PasswordAuthVC_title" = "钱包密码解锁";
@@ -669,8 +680,9 @@
 
 
 //AssetViewController
-"Asset_segment_Transaction" = "交易";
+"Asset_segment_Transaction" = "交易记录";
 "Asset_segment_Send" = "发送";
+"Asset_segment_Send_offline" = "离线钱包";
 "Asset_segment_Receive" = "接收";
 
 //common
@@ -687,7 +699,7 @@
 
 "confirm_send_from" = "发送钱包：";
 
-"addressbook_wallet_name_with_Colon" = "钱包名称：";
+"addressbook_wallet_name_with_Colon" = "地址名称：";
 "addressbook_wallet_address_with_Colon" = "钱包地址：";
 
 "wallet_name_duplicate" = "钱包名称在本客户端已存在，不可重复";
@@ -697,9 +709,6 @@
 "scanviewcontroller_nav_right_item" = "相册";
 "scanviewcontroller_scan_loading" = "扫描中";
 "scanviewcontroller_scan_result_notfound" = "未发现二维码";
-
-"watchJointWalletTip_Notice" = "提示";
-"watchJointWalletTip_message" = "关联的普通钱包已被删除，该钱包无法发起交易！";
 
 "data_parser_error" = "数据解析失败";
 "unknow_error" = "未知错误";
@@ -711,7 +720,7 @@
 "send_address_placeholder" = "输入钱包地址";
 "send_amount_placeholder" = "输入发送数量";
 "vote_confirm_from" = "支付钱包：";
-"staking_amount_placeholder" = "输入数量（不少于10LAT）";
+"staking_amount_placeholder" = "输入数量（不少于%@LAT）";
 
 
 "createOrImport_guide_text" = "已有钱包？使用钱包文件(json)、助记词、私钥导入";
@@ -724,8 +733,8 @@
 "staking_main_mydelegate_text" = "我的委托";
 "staking_main_validator_text" = "验证节点";
 "staking_main_wallet_name" = "钱包名称";
-"staking_main_delegate_text" = "委托";
-"staking_main_undelegating_text" = "赎回中";
+"staking_main_delegate_text" = "可委托余额";
+"staking_main_undelegating_text" = "总委托";
 "staking_main_delegate_detail" = "详情";
 "staking_main_delegate_total" = "总计委托";
 "staking_main_delegate_record" = "委托记录";
@@ -736,10 +745,8 @@
 "staking_delegate_record_delegate" = "委托";
 "staking_delegate_record_undelegate" = "赎回委托";
 
-"staking_delegate_locked" = "已锁定委托";
-"staking_delegate_unlocked" = "未锁定委托";
-"staking_delegate_release" = "已解除委托";
-"staking_delegate_undelegating" = "赎回中委托";
+"staking_delegate_locked" = "已委托";
+"staking_delegate_release" = "待赎回委托";
 
 "staking_delegate" = "委托";
 "staking_withdraw" = "赎回委托";
@@ -749,8 +756,8 @@
 "staking_alert_locked_delegate_detail" = "锁定的委托才有收益，赎回锁定的委托大约在6.1小时内到账。";
 "staking_alert_unlocked_delegate" = "未锁定委托";
 "staking_alert_unlocked_delegate_detail" = "委托大约在6.1小时内完成锁定，未锁定的委托没有收益，赎回的委托立即到账";
-"staking_alert_released_delegate" = "已解除委托";
-"staking_alert_released_detail" = "验证节点退出，委托自动解除，需要主动赎回委托";
+"staking_alert_released_delegate" = "待赎回委托";
+"staking_alert_released_detail" = "一旦节点退出，原委托与节点解除关联，委托失效，需要主动赎回委托";
 "staking_alert_annualized_rate" = "预计年化率";
 "staking_alert_annualized_rate_detail" = "当前节点的预计年化率，具体委托收益由节点分配";
 
@@ -758,7 +765,7 @@
 "staking_validator_node_active" = "活跃中";
 "staking_validator_node_candidate" = "候选中";
 "staking_validator_node_rank" = "排名";
-"staking_validator_node_yield" = "预计年化率";
+"staking_validator_node_yield" = "年化率";
 
 "staking_validator_delegate_total" = "总质押";
 "staking_validator_delegate_rate_about" = "预计年化率";
@@ -778,28 +785,26 @@
 
 "statking_validator_Balance" = "可用余额";
 
-"staking_validator_isInit_doubt" = "PlatON初始内置验证节点，不接收委托";
+"staking_validator_isInit_doubt" = "基金会资助的节点不接受委托";
 
 "ATextFieldView_title" = "数量:";
 "ATextFieldView_delegate_title" = "委托数量:";
 "ATextFieldView_withdraw_title" = "赎回数量:";
-"ATextFieldView_withdraw_placeholder" = "输入数量（不少于10LAT）";
 
 "staking_doubt_delegate" = "委托";
-"staking_doubt_delegate_detail" = "委托的Token可以随时赎回，委托后大约在6.1小时内完成锁定，锁定后可以参与节点收益分配，但是赎回锁定的委托大约等待6.1小时才能到账;";
+"staking_doubt_delegate_detail" = "委托的Token所有权永远归于委托人，用户可以随时赎回委托的Token。\n验证节点关联的操作地址和奖励接收地址不允许参与委托。";
 "staking_doubt_reward" = "收益";
 "staking_doubt_reward_detail" = "委托收益来自节点的收益分配，节点收益主要有出块奖励、质押奖励和区块手续费奖励。具体如何分配请查看各节点官网说明";
 "staking_doubt_risk" = "风险";
-"staking_doubt_risk_detail" = "委托没有任何风险。";
+"staking_doubt_risk_detail" = "节点双重签名、出块率低会被惩罚，从而间接影响您的收益。为规避风险，请认真选择合格的节点。";
 
 "staking_doubt_undelegate" = "说明";
-"staking_doubt_undelegate_detail" = "赎回委托的Token，未锁定的委托和已解除委托可立即到账，已锁定的委托大约等待6.1小时才能到账;\n已解除委托必须一次性全部赎回；\n赎回数量扣除后，已委托剩余数量少于10LAT时，自动赎回全部。";
+"staking_doubt_undelegate_detail" = "赎回交易提交成功，委托的Token可立即到账；\n待赎回委托必须一次性全部赎回；\n赎回数量扣除后，已委托剩余数量少于%@LAT时，自动赎回全部。";
 
 "staking_balance_can_used" = "可用余额";
 "staking_balance_locked_position" = "锁仓余额";
 "staking_balance_Delegated" = "已委托";
-"staking_balance_unlocked_Delegated" = "未锁定委托";
-"staking_balance__release_Delegated" = "已解除委托";
+"staking_balance_release_Delegated" = "待赎回委托";
 
 "input_amount_hundred" = "百";
 "input_amount_thousand" = "千";
@@ -847,7 +852,9 @@
 "node_quit_consensus_tip" = "节点已退出共识，投票失败！";
 
 "delegate_error_result_amountzero" = "解除委托金额大于0";
-"delegate_error_result_nodeexit" = "节点已退出或退出中";
+"delegate_error_result_nodeexit" = "委托节点已退出，无法委托";
+"delegate_error_result_associate" = "节点关联的钱包地址，不可参与委托";
+"delegate_error_result_balancezero" = "可用余额为0，无法委托";
 
 "empty_string_my_delegates_left" = "查看验证节点, ";
 "empty_string_my_delegates_right" = "参与委托";
@@ -863,8 +870,11 @@
 
 "staking_delegate_input_amount_minlimit_error" = "请输入委托的数量";
 "staking_withdraw_input_amount_minlimit_error" = "请输入赎回的数量";
-"staking_input_amount_minlimit_error" = "委托数量不能少于10LAT";
+"staking_input_amount_minlimit_error" = "委托数量不能少于%@LAT";
+"staking_withdraw_input_amount_minlimit_error" = "赎回数量不能少于%@LAT";
 "staking_input_amount_maxlimit_error" = "余额不足，无法委托";
+"staking_withdraw_input_amount_maxlimit_error" = "超出可赎回数量，无法提交";
+"staking_withdraw_balance_Insufficient_error" = "余额不足支付手续费，无法赎回委托";
 
 "error_no_wallet" = "无可用钱包";
 "error_wallet_no_balance" = "钱包余额不足";
@@ -877,3 +887,33 @@
 "about_version_update_alert_ok" = "立即更新";
 
 "delegate_detail_unable_alert" = "请先赎回 “已解除委托”";
+
+"import_observed_wallet_tip_1" = "存储大额资金建议使用观察钱包和冷钱包联动管理。";
+"import_observed_wallet_tip_2" = "交易时需要配合冷钱包进行操作。";
+"import_observed_wallet_tip_3" = "观察钱包不存有私钥。";
+"import_observed_wallet_tip_4" = "请勿将资产充值至不受控制的观察钱包。";
+
+"confirm_generate_qrcode_for_transaction" = "冷钱包确认";
+"confirm_generate_qrcode_for_transaction_tip" = "请使用冷钱包扫描下方二维码进行授权签名";
+"confirm_button_next" = "下一步";
+"confirm_scan_qrcode_for_read" = "读取签名数据";
+"confirm_scan_qrcode_for_read_tip" = "扫描冷钱包页面的授权二维码，获取签名数据。";
+"confirm_button_send" = "发送交易";
+"confirm_authorize_button_send" = "授权签名";
+"confirm_authorize_function_type" = "交易信息:";
+"confirm_authorize_from" = "发送钱包:";
+"confirm_authorize_to" = "接收地址:";
+"confirm_authorize_fee" = "交易手续费:";
+"confirm_generate_qrcode_for_signed_tx" = "授权签名";
+"confirm_generate_qrcode_for_signed_tx_tip" = "使用对应观察钱包扫描下方二维码，完成授权";
+"confirm_button_signed_tx" = "完成";
+
+"offline_signature_title" = "交易预览";
+
+"offline_signature_invalid" = "无效签名";
+"offline_signature_notmatch_wallet" = "钱包不匹配";
+"touchid_auth_text" = "请验证%@";
+"touchid_verify_fail" = "指纹识别失败，请再试一次";
+
+"delete_observed_wallet_alert_title" = "删除观察钱包";
+"delete_observed_wallet_alert_message" = "请确认是否删除此观察钱包？";

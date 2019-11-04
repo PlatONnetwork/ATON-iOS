@@ -11,28 +11,28 @@ import MJRefresh
 import Localize_Swift
 
 class DelegateRecordViewController: BaseViewController, IndicatorInfoProvider {
-    
+
     public enum RecordType: String {
         case all
         case redeem
         case delegate
     }
-    
+
     var recordType: RecordType = .all
     var listData: [Transaction] = [] {
         didSet {
             tableView.mj_footer.isHidden = listData.count == 0
         }
     }
-    
+
     let listSize: Int = 20
-    
+
     func indicatorInfo(for pagerTabStripController: PagerTabStripViewController) -> IndicatorInfo {
         return itemInfo
     }
-    
+
     var itemInfo: IndicatorInfo = "All"
-    
+
     lazy var tableView = { () -> UITableView in
         let tbView = UITableView(frame: .zero)
         tbView.delegate = self
@@ -48,26 +48,25 @@ class DelegateRecordViewController: BaseViewController, IndicatorInfoProvider {
         }
         return tbView
     }()
-    
+
     lazy var refreshHeader: MJRefreshHeader = {
         let header = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(fetchDataLastest))!
         return header
     }()
-    
+
     lazy var refreshFooter: MJRefreshFooter = {
         let footer = MJRefreshAutoFooter(refreshingTarget: self, refreshingAction: #selector(fetchDataMore))!
         return footer
     }()
-    
+
     init(itemInfo: String) {
         self.itemInfo = IndicatorInfo(title: itemInfo)
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -88,7 +87,6 @@ class DelegateRecordViewController: BaseViewController, IndicatorInfoProvider {
         tableView.mj_footer = refreshFooter
         tableView.mj_header.beginRefreshing()
     }
-    
 
     /*
     // MARK: - Navigation
@@ -104,10 +102,14 @@ class DelegateRecordViewController: BaseViewController, IndicatorInfoProvider {
 
 extension DelegateRecordViewController {
     private func fetchData(sequence: String, direction: RefreshDirection) {
-        
-        let addresses = (AssetVCSharedData.sharedData.walletList as! [Wallet]).map { return $0.key!.address }
-        guard addresses.count > 0 else { return }
-        
+
+        let addresses = (AssetVCSharedData.sharedData.walletList as! [Wallet]).map { return $0.address }
+        guard addresses.count > 0 else {
+            self.tableView.mj_header.endRefreshing()
+            self.tableView.mj_footer.endRefreshing()
+            return
+        }
+
         TransactionService.service.getDelegateRecord(
             addresses: addresses,
             beginSequence: sequence,
@@ -116,34 +118,33 @@ extension DelegateRecordViewController {
             type: recordType.rawValue) { [weak self] (result, data) in
                 self?.tableView.mj_header.endRefreshing()
                 self?.tableView.mj_footer.endRefreshing()
-                
+
                 switch result {
                 case .success:
                     if direction == .new {
                         self?.listData.removeAll()
                     }
-                    
+
                     if let newData = data as? [Transaction], newData.count > 0 {
                         self?.listData.append(contentsOf: newData)
                         self?.tableView.mj_footer.resetNoMoreData()
                     } else {
                         self?.tableView.mj_footer.endRefreshingWithNoMoreData()
                     }
-                    
+
                     self?.tableView.reloadData()
-                    
-                case .fail(_, _):
+
+                case .fail:
                     self?.tableView.mj_footer.isHidden = true
                     break
                 }
         }
     }
-    
-    
+
     @objc func fetchDataLastest() {
         fetchData(sequence: "0", direction: .new)
     }
-    
+
     @objc func fetchDataMore() {
         guard let sequence = listData.last?.sequence else {
             tableView.mj_footer.endRefreshingWithNoMoreData()
@@ -157,7 +158,7 @@ extension DelegateRecordViewController: UITableViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return listData.count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "DelegateRecordTableViewCell") as! DelegateRecordTableViewCell
         let transaction = listData[indexPath.row]

@@ -42,7 +42,7 @@ enum TxType: String, Decodable {
     case reportDuplicateSign = "3000"
     case createRestrictingPlan = "4000"
     case unknown = "-1"
-    
+
     var localizeTitle: String {
         switch self {
         case .transfer:
@@ -91,12 +91,11 @@ enum TxType: String, Decodable {
     }
 }
 
-
 enum TransanctionType: Int {
     case Send
     case Receive
     case Vote
-    
+
     public var localizedDesciption: String? {
         switch self {
         case .Send:
@@ -109,7 +108,7 @@ enum TransanctionType: Int {
     }
 }
 
-enum TransferStatus{
+enum TransferStatus {
     case pending
     case confiming
     case success
@@ -126,7 +125,7 @@ enum TransactionStatus {
     case voting
     case voteSucceed
     case voteFailed
-    
+
     var localizeTitle : String {
         switch self {
         case .sending:
@@ -149,17 +148,17 @@ enum TransactionStatus {
             return Localized("TransactionStatus_voteFailed_title")
         }
     }
-    
+
     var localizeDescAndColor : (String, UIColor) {
-        
+
         let succeedColor = cell_Transaction_success_color
         let pendingColor = cell_Transaction_pending_color
         let failedColor  = cell_Transaction_fail_color
-        
+
         let pendingDesc = Localized("TransactionStatus_pending_desc")
         let succeedDesc = Localized("TransactionStatus_succeed_desc")
         let failedDesc = Localized("TransactionStatus_failed_desc")
-        
+
         switch self {
         case .sending, .receiving, .voting:
             return (pendingDesc, pendingColor)
@@ -171,44 +170,52 @@ enum TransactionStatus {
     }
 }
 
+//-1为处理中，兼容本地缓存的数据，后台只返回1：成功 0：失败
+enum TransactionReceiptStatus: Int {
+    case timeout = -2           //超过24小时，仍然没有回执返回
+    case pending = -1           //处理中
+    case sucess = 1             //转账成功或合约业务成功
+    case businessCodeError = 0 //合约业务错误
+}
+
 class Transaction : Object, Decodable {
-    
+
     @objc dynamic var txhash : String? = ""
-    
+
     var nonce : CLongLong? = 0
-    
+
     @objc dynamic var blockHash : String?  = ""
-    
+
     @objc dynamic var blockNumber : String?  = ""
-    
+
     @objc dynamic var from : String? = ""
-    
+
     @objc dynamic var to : String?  = ""
-    
+
     @objc dynamic var value : String? = ""
-    
+
     @objc dynamic var gasPrice : String? = ""
-    
+
     @objc dynamic var gas : String? = ""
-    
+
     @objc dynamic var gasUsed : String? = ""
-    
+
     @objc dynamic var memo : String? = ""
-    
+
     @objc dynamic var input : String? = ""
-    
+
     @objc dynamic var confirmTimes = 0
 
     @objc dynamic var createTime = 0
-    
+
     @objc dynamic var transactionType = 0 //0.7版本之前的字段，延用。等txtype
-    
+
     @objc dynamic var extra: String?
-    
-    @objc dynamic var nodeURLStr: String = ""
-    
+
+    @objc dynamic var chainId: String = ""
+
     var sequence: Int64?
-    
+
     var txType: TxType? {
         get {
             return TxType(rawValue: String(transactionType))
@@ -217,19 +224,19 @@ class Transaction : Object, Decodable {
             transactionType = Int(newValue?.rawValue ?? "0") ?? 0
         }
     }
-    
+
     var actualTxCost: String? = ""
-    
+
     var transactionIndex: Int = 0
-    
-    @objc dynamic var txReceiptStatus: Int = -1 //-1为处理中，兼容本地缓存的数据，后台只返回1：成功 0：失败
-    
+
+    @objc dynamic var txReceiptStatus: Int = TransactionReceiptStatus.pending.rawValue
+
     //to confirm send or receive
     var senderAddress: String?
-    
+
     var toType: TransactionToType = .address
     var direction: TransactionDirection = .unknown
-    
+
     @objc dynamic var nodeName: String? = ""
     @objc dynamic var nodeId: String? = ""
     var lockAddress: String?
@@ -240,9 +247,8 @@ class Transaction : Object, Decodable {
     var voteProposalType: ProposalType?
     var vote: VoteResultType?
     var unDelegation: String?
-    var redeemStatus: RedeemStatus?
-    
-    override public static func ignoredProperties() ->[String] {
+
+    override public static func ignoredProperties() -> [String] {
         return ["sharedWalletOwners",
                 "sharedWalletConOwners",
                 "sharedWalletRejectOwners",
@@ -257,15 +263,14 @@ class Transaction : Object, Decodable {
                 "proposalType",
                 "voteProposalType",
                 "vote",
-                "unDelegation",
-                "redeemStatus"
+                "unDelegation"
         ]
     }
-    
+
     override public static func primaryKey() -> String? {
         return "txhash"
     }
-    
+
     enum CodingKeys: String, CodingKey {
         case actualTxCost
         case txhash = "hash"
@@ -283,7 +288,6 @@ class Transaction : Object, Decodable {
         case txReceiptStatus
         case extra = "txInfo"
         case unDelegation
-        case redeemStatus
         case nodeName
         case nodeId
         case toType
@@ -295,10 +299,10 @@ class Transaction : Object, Decodable {
         case version
         case reportType
     }
-    
+
     required convenience init(from decoder: Decoder) throws {
         self.init()
-        
+
         let container = try decoder.container(keyedBy: CodingKeys.self)
         blockNumber = try? container.decode(String.self, forKey: .blockNumber)
         txhash = try? container.decode(String.self, forKey: .txhash)
@@ -319,11 +323,10 @@ class Transaction : Object, Decodable {
         if let index = Int(indexString ?? "0") {
             transactionIndex = index
         }
-        
+
         txReceiptStatus = (try? container.decode(Int.self, forKey: .txReceiptStatus)) ?? -1
         extra = try? container.decode(String.self, forKey: .extra)
         unDelegation = try? container.decode(String.self, forKey: .unDelegation)
-        redeemStatus = try? container.decode(RedeemStatus.self, forKey: .redeemStatus)
         nodeName = try? container.decode(String.self, forKey: .nodeName)
         nodeId = try? container.decode(String.self, forKey: .nodeId)
         toType = (try? container.decode(TransactionToType.self, forKey: .toType)) ?? .address
@@ -338,43 +341,42 @@ class Transaction : Object, Decodable {
 }
 
 extension Transaction {
-    
-    
+
     var actualTxCostDescription: String? {
         get {
             guard let atcost = actualTxCost, atcost.count > 0 else {
                 return BigUInt.safeInit(str: gasUsed).divide(by: ETHToWeiMultiplier, round: 8)
             }
-            
+
             let cost = BigUInt.safeInit(str: atcost).divide(by: ETHToWeiMultiplier, round: 8)
             return cost
         }
     }
-    
-    var feeDescription : String?{
-        get{
+
+    var feeDescription : String? {
+        get {
             var feeB : BigUInt?
-            guard gasUsed != nil, gasUsed != "" ,gasPrice != nil, gasPrice != "" else{
+            guard gasUsed != nil, gasUsed != "" ,gasPrice != nil, gasPrice != "" else {
                 return "0.00"
             }
-            
+
             feeB = BigUInt(gasUsed!)?.multiplied(by: BigUInt(gasPrice!)!)
-            guard feeB != nil else{
+            guard feeB != nil else {
                 return "0.00"
             }
             return feeB!.divide(by: ETHToWeiMultiplier, round: 8)
         }
     }
-    
-    var valueDescription : String?{
-        get{
-            guard value != nil else{
+
+    var valueDescription : String? {
+        get {
+            guard value != nil else {
                 return "0.00"
             }
             return BigUInt(value!)?.divide(by: ETHToWeiMultiplier, round: 8).displayForMicrometerLevel(maxRound: 8)
         }
     }
-    
+
     var transactionStauts: TransactionStatus {
         get {
             switch transanctionTypeLazy {
@@ -405,9 +407,9 @@ extension Transaction {
             }
         }
     }
-    
+
     var transanctionTypeLazy : TransanctionType {
-        get{
+        get {
             switch txType! {
             case .transfer:
                 if senderAddress != nil && (senderAddress?.ishexStringEqual(other: from))! {
@@ -441,10 +443,10 @@ extension Transaction {
                 if type == .Send {
                     if senderAddress != nil && (senderAddress?.ishexStringEqual(other: from))! {
                         return .Send
-                    }else {
+                    } else {
                         return .Receive
                     }
-                }else {
+                } else {
                     return type
                 }
             }
@@ -457,7 +459,7 @@ enum ProposalType: Int, Decodable {
     case version = 2
     case parameter = 3
     case cancel = 4
-    
+
     public var localizedDesciption: String? {
         switch self {
         case .text:
@@ -474,7 +476,7 @@ enum ProposalType: Int, Decodable {
 
 enum ReportType: String, Decodable {
     case DoubleSign = "1"
-    
+
     public var localizedDesciption: String? {
         switch self {
         case .DoubleSign:
@@ -487,7 +489,7 @@ enum VoteResultType: String, Decodable {
     case VoteYes = "1"
     case VoteNo = "2"
     case VoteAbstain = "3"
-    
+
     public var localizedDesciption: String? {
         switch self {
         case .VoteYes:
@@ -500,11 +502,6 @@ enum VoteResultType: String, Decodable {
     }
 }
 
-enum RedeemStatus: String, Decodable {
-    case redeeming = "1"
-    case redeemSuccess = "2"
-}
-
 enum TransactionToType: String, Decodable {
     case contract
     case address
@@ -514,7 +511,7 @@ enum TransactionDirection: String, Decodable {
     case unknown
     case Sent
     case Receive
-    
+
     public var localizedDesciption: String? {
         switch self {
         case .Sent:
@@ -527,5 +524,23 @@ enum TransactionDirection: String, Decodable {
     }
 }
 
+struct TransactionsStatusByHash: Decodable {
+    var hash: String?
+    var status: Int?
+}
 
-
+extension TransactionsStatusByHash {
+    var localStatus: TransactionReceiptStatus? {
+        guard let st = status else { return nil }
+        switch st {
+        case 0:
+            return .businessCodeError
+        case 1:
+            return .sucess
+        case 2:
+            return .pending
+        default:
+            return nil
+        }
+    }
+}

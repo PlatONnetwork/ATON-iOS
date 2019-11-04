@@ -23,6 +23,7 @@ class NodeInfo: Object {
     @objc dynamic var isDefault: Bool = false
     @objc dynamic var isSelected: Bool = false
     @objc dynamic var desc: String = ""
+    @objc dynamic var chainId: String = ""
 
     var status: NodeActionStatus = .none
 
@@ -34,7 +35,7 @@ class NodeInfo: Object {
         return ["status"]
     }
 
-    convenience init(nodeURLStr: String = "", desc: String = "", isSelected: Bool = false, isDefault: Bool = false) {
+    convenience init(nodeURLStr: String = "", desc: String = "", chainId: String?, isSelected: Bool = false, isDefault: Bool = false) {
 
         self.init()
         self.id = UUID().uuidString
@@ -42,6 +43,7 @@ class NodeInfo: Object {
         self.desc = desc
         self.isSelected = isSelected
         self.isDefault = isDefault
+        self.chainId = chainId ?? nodeURLStr.chainid
     }
 
     override func copy() -> Any {
@@ -51,6 +53,7 @@ class NodeInfo: Object {
         newOne.desc = self.desc
         newOne.isDefault = self.isDefault
         newOne.isSelected = self.isSelected
+        newOne.chainId = self.chainId
 
         return newOne
     }
@@ -58,6 +61,6 @@ class NodeInfo: Object {
 
 extension Sequence where Iterator.Element: NodeInfo {
     var notDeleteArray: [Element] {
-        return self.filter { $0.status != .delete}
+        return self.filter { $0.status != .delete }
     }
 }

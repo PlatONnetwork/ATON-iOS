@@ -16,13 +16,13 @@ class DelegateRecordTableViewCell: UITableViewCell {
     public let nodeAddressLabel = UILabel()
     public let nodeBalanceLabel = UILabel()
     public let recordStatusLabel = UILabel()
-    
+
     public let timeLabel = UILabel()
     public let walletAvatarIV = UIImageView()
     public let walletAddressLabel = UILabel()
-    
+
     var cellDidHandler: ((DelegateRecordTableViewCell) -> Void)?
-    
+
     var transaction: Transaction? {
         didSet {
             nodeAvatarIV.image = transaction?.recordIconIV
@@ -35,18 +35,18 @@ class DelegateRecordTableViewCell: UITableViewCell {
             nodeBalanceLabel.text = transaction?.recordAmountForDisplay ?? "--"
             recordStatusLabel.text = transaction?.recordStatus.0
             recordStatusLabel.textColor = transaction?.recordStatus.1
-            
+
             timeLabel.text = transaction?.recordTime ?? "--"
             walletAvatarIV.image = transaction?.fromAvatarImage
             walletAddressLabel.text = transaction?.recordWalletName ?? "--"
         }
     }
-    
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
         backgroundColor = normal_background_color
-        
+
         let containerView = UIButton()
         containerView.addTarget(self, action: #selector(cellTapAction), for: .touchUpInside)
         containerView.backgroundColor = .white
@@ -58,7 +58,7 @@ class DelegateRecordTableViewCell: UITableViewCell {
             make.height.equalTo(128)
             make.bottom.equalToSuperview()
         }
-        
+
         let walletBackgroundView = UIImageView()
 //        walletBackgroundView.isUserInteractionEnabled = true
         walletBackgroundView.image = UIImage(named: "bg_staking_wallet_img")?.resizableImage(withCapInsets: UIEdgeInsets(top: 3, left: 3, bottom: 3, right: 3))
@@ -67,7 +67,7 @@ class DelegateRecordTableViewCell: UITableViewCell {
             make.leading.trailing.top.equalToSuperview()
             make.height.equalTo(60)
         }
-        
+
         nodeAvatarIV.addMaskView(corners: .allCorners, cornerRadiiV: 21)
         nodeAvatarIV.image = UIImage(named: "walletAvatar_1")
         walletBackgroundView.addSubview(nodeAvatarIV)
@@ -76,7 +76,7 @@ class DelegateRecordTableViewCell: UITableViewCell {
             make.leading.equalToSuperview().offset(5)
             make.width.height.equalTo(42)
         }
-        
+
         nodeNameLabel.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.medium)
         nodeNameLabel.textColor = .black
         nodeNameLabel.text = Localized("staking_main_wallet_name")
@@ -87,7 +87,7 @@ class DelegateRecordTableViewCell: UITableViewCell {
             make.leading.equalTo(nodeAvatarIV.snp.trailing).offset(5)
             make.height.equalTo(18)
         }
-        
+
         nodeAddressLabel.font = UIFont.systemFont(ofSize: 13)
         nodeAddressLabel.textColor = common_darkGray_color
         nodeAddressLabel.text = "--"
@@ -96,7 +96,7 @@ class DelegateRecordTableViewCell: UITableViewCell {
             make.top.equalTo(nodeNameLabel.snp.bottom).offset(3)
             make.leading.equalTo(nodeNameLabel.snp.leading)
         }
-        
+
         nodeBalanceLabel.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.medium)
         nodeBalanceLabel.textColor = .black
         nodeBalanceLabel.text = "0.00"
@@ -109,7 +109,7 @@ class DelegateRecordTableViewCell: UITableViewCell {
             make.leading.equalTo(nodeNameLabel.snp.trailing).offset(5)
             make.trailing.equalToSuperview().offset(-10)
         }
-        
+
         recordStatusLabel.font = .systemFont(ofSize: 11)
         recordStatusLabel.textColor = .black
         recordStatusLabel.text = "--"
@@ -120,7 +120,7 @@ class DelegateRecordTableViewCell: UITableViewCell {
             make.trailing.equalTo(nodeBalanceLabel)
             make.leading.equalTo(nodeAddressLabel.snp.trailing).offset(5)
         }
-        
+
         let delegateBackgroundView = UIView()
         delegateBackgroundView.isUserInteractionEnabled = false
         delegateBackgroundView.backgroundColor = .white
@@ -130,7 +130,7 @@ class DelegateRecordTableViewCell: UITableViewCell {
             make.leading.trailing.equalTo(walletBackgroundView)
             make.bottom.equalToSuperview()
         }
-        
+
         timeLabel.text = "#"
         timeLabel.textColor = common_lightLightGray_color
         timeLabel.font = .systemFont(ofSize: 15)
@@ -141,7 +141,7 @@ class DelegateRecordTableViewCell: UITableViewCell {
             make.height.equalTo(15)
             make.width.equalToSuperview().offset(-10).dividedBy(2)
         }
-        
+
         walletAvatarIV.image = UIImage(named: "walletAvatar_1_s")
         delegateBackgroundView.addSubview(walletAvatarIV)
         walletAvatarIV.snp.makeConstraints { make in
@@ -149,7 +149,7 @@ class DelegateRecordTableViewCell: UITableViewCell {
 //            make.leading.equalTo(timeLabel.snp.trailing).offset(10)
             make.height.width.equalTo(20)
         }
-        
+
         walletAddressLabel.textColor = common_lightLightGray_color
         walletAddressLabel.font = .systemFont(ofSize: 15)
         delegateBackgroundView.addSubview(walletAddressLabel)
@@ -158,13 +158,13 @@ class DelegateRecordTableViewCell: UITableViewCell {
             make.centerY.equalToSuperview()
             make.leading.equalTo(walletAvatarIV.snp.trailing).offset(2)
         }
-        
+
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     @objc private func cellTapAction() {
         cellDidHandler?(self)
     }

@@ -91,7 +91,7 @@ class NodeStoreService {
             }
 
             if item.status == .create {
-                NodeInfoPersistence.sharedInstance.add(nodeURLStr: item.nodeURLStr, desc: "", isSelected: false, isDefault: false)
+                NodeInfoPersistence.sharedInstance.add(nodeURLStr: item.nodeURLStr, desc: "", chainId: item.chainId, isSelected: false, isDefault: false)
                 continue
             }
 
@@ -150,7 +150,8 @@ class NodeStoreService {
             NodeInfoPersistence.sharedInstance.add(node: node)
         }
 
-        SettingService.shareInstance.currentNodeURL = node.nodeURLStr
+        SettingService.shareInstance.currentNodeChainId = node.chainId
+//        SettingService.shareInstance.currentNodeURL = node.nodeURLStr
 
         nodeWillSuccessSwitch()
 

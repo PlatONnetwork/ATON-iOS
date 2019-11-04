@@ -191,15 +191,15 @@ class NodeSettingViewControllerV2: BaseViewController {
             maker.edges.equalToSuperview()
         }
 
-        #if DEBUG
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightBarButton)
-        #endif
+//#if DEBUG
+//        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: rightBarButton)
+//#endif
     }
 
     @objc func onRigthItemClick(_ sender: UIBarButtonItem) {
         view.endEditing(true)
 
-        //        view.becomeFirstResponder()
+//        view.becomeFirstResponder()
         if NodeStoreService.share.isEdit { //save
             do {
                 try NodeStoreService.share.save()

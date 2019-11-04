@@ -10,13 +10,13 @@ import UIKit
 import Localize_Swift
 
 class QRCodeView: UIView {
-    
+
     @IBOutlet weak var qrCodeImageView: UIImageView!
-    
+
     @IBOutlet weak var saveImgAndShreadBtn: PButton!
-    
+
     @IBOutlet weak var addressLabel: UILabel!
-    
+
     override func awakeFromNib() {
         saveImgAndShreadBtn.style = .blue
         let tap = UITapGestureRecognizer(target: self, action: #selector(onTap))
@@ -24,16 +24,13 @@ class QRCodeView: UIView {
         addressLabel.isUserInteractionEnabled = true
         addressLabel.addGestureRecognizer(tap)
     }
-    
-    @objc func onTap(){
+
+    @objc func onTap() {
         if (addressLabel.text?.length)! > 0 {
             let pasteboard = UIPasteboard.general
             pasteboard.string = addressLabel.text
             UIApplication.shared.keyWindow?.rootViewController?.showMessage(text: Localized("ExportVC_copy_success"))
         }
     }
-    
-    
-    
 
 }

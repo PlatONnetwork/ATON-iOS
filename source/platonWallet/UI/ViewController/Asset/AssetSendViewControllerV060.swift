@@ -9,43 +9,31 @@
 import UIKit
 import Localize_Swift
 import BigInt
+import platonWeb3
 
+// MARK: - UI
 
-//MARK: - UI
+class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
 
-class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
-    
-    var confirmPopUpView : PopUpViewController?
-    
-    var estimatedGas = BigUInt("210000")
-    var gasPriceLevel: Float = 1/6.5
-    
-    var gasPrice : BigUInt?{
-        get{  
+    var estimatedGas = BigUInt("21000")
+    var gasPriceLevel: Float?
+
+    var gasPrice: BigUInt? {
+        get {
             //gas prise: 1gwei ~ 10gwei
-            let platonGasPrice = TransactionService.service.ethGasPrice ?? BigUInt.zero
-            let minGasPrice = platonGasPrice.multiplied(by: BigUInt(Int(0.5 * 10))) / BigUInt(10)
-            let maxGasPrice = platonGasPrice.multiplied(by: BigUInt(6))
-            
-            let price = minGasPrice + (((maxGasPrice - minGasPrice) * BigUInt(Int(self.gasPriceLevel * 10000000)) / BigUInt(10000000)))
+            let defaultGasPrice = TransactionService.service.defaultGasPrice
+            let minGasPrice = TransactionService.service.minGasPrice
+            let maxGasPrice = defaultGasPrice.multiplied(by: BigUInt(6))
+
+            let priceLevel = gasPriceLevel ?? TransactionService.service.sliderDefaultValue
+
+            let price = minGasPrice + (((maxGasPrice - minGasPrice) * BigUInt(Int(priceLevel * 10000000)) / BigUInt(10000000)))
             return price
         }
     }
-    
-    //Joint wallet property
-    var submitGas : BigUInt?
-    
-    var confirmGas : BigUInt?
 
-    var walletType : WalletType{
-        get{
-            if let _ = AssetVCSharedData.sharedData.selectedWallet as? Wallet{
-                return WalletType.ClassicWallet
-            }
-            return WalletType.JointWallet
-        }
-    }
-    
+    var generateQrCode: QrcodeData<[TransactionQrcode]>?
+
     lazy var amountView = { () -> ATextFieldView in
         let amountView = ATextFieldView.create(title: "send_amout_colon")
         amountView.textField.LocalizePlaceholder = "send_amount_placeholder"
@@ -54,38 +42,36 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
             self?.onSendAll()
         })
         amountView.checkInput(mode: .all, check: {[weak self] text -> (Bool, String) in
-            
-            let inputformat = CommonService.checkTransferAmoutInput(text: text, checkBalance: false, fee: nil)
-            if !inputformat.0{
+
+            let inputformat = CommonService.checkTransferAmoutInput(text: text, checkBalance: false, fee: nil, type: .transfer)
+            if !inputformat.0 {
                 return inputformat
             }
             return (self?.checkSufficient(text: text))!
-            
+
             }, heightChange: { [weak self](view) in
                 self?.textFieldViewUpdateHeight(atextFieldView: view)
         })
-        
-        amountView.shouldChangeCharactersCompletion = { [weak self] (concatenated,replacement) in
+
+        amountView.shouldChangeCharactersCompletion = { (concatenated, replacement) in
             if replacement == ""{
                 return true
             }
-            if !replacement.validFloatNumber(){
+            if !replacement.validFloatNumber() {
                 return false
             }
             return concatenated.trimNumberLeadingZero().isValidInputAmoutWith8DecimalPlace()
         }
-        
+
         amountView.endEditCompletion = { [weak self] text in
-            let _ = self?.checkConfirmButtonAvailable()
-            let _ = amountView.checkInvalidNow(showErrorMsg: false)
+            _ = self?.checkConfirmButtonAvailable()
+            _ = amountView.checkInvalidNow(showErrorMsg: false)
         }
-        
+
         return amountView
     }()
-    
-    
-        
-    lazy var walletAddressView = { () -> PTextFieldView in 
+
+    lazy var walletAddressView = { () -> PTextFieldView in
         let walletView = PTextFieldView.create(title: "send_wallet_colon")
         walletView.textField.LocalizePlaceholder = "send_address_placeholder"
         walletView.checkInput(mode: .endEdit, check: {[weak self] (text) -> (Bool, String) in
@@ -95,27 +81,27 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
             self?.textFieldViewUpdateHeight(view: view)
         })
         //walletView.textField.textAlignment = .center
-        
-        walletView.shouldChangeCharactersCompletion = {[weak self] (concatenated,replacement) in
+
+        walletView.shouldChangeCharactersCompletion = { (concatenated, replacement) in
             return true
         }
         walletView.endEditCompletion = {[weak self] text in
-            let _ = self?.checkConfirmButtonAvailable()
-            let _ = self?.amountView.checkInvalidNow(showErrorMsg: false)
+            _ = self?.checkConfirmButtonAvailable()
+            _ = self?.amountView.checkInvalidNow(showErrorMsg: false)
         }
-        return walletView 
-        
+        return walletView
+
     }()
-    
+
     lazy var quickSaveAddrBtn = { () -> QuickSaveAddressButton in
         let button = QuickSaveAddressButton(type: .custom)
         button.localizedNormalTitle = "savetoaddressbook"
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 12)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 13)
         button.setTitleColor(UIColor(rgb: 0x105CFE ), for: .normal)
         return button
     }()
-    
-    lazy var balanceLabel = { () -> UILabel in 
+
+    lazy var balanceLabel = { () -> UILabel in
         let label = UILabel(frame: .zero)
         label.font = UIFont.systemFont(ofSize: 11)
         label.textColor = common_lightGray_color
@@ -123,21 +109,22 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
         label.text = Localized("transferVC_transfer_balance") + "- LAT"
         return label
     }()
-    
-    lazy var feeView = { () -> AssetFeeViewV060 in 
-        let view = AssetFeeViewV060(frame:.zero)
+
+    lazy var feeView = { () -> AssetFeeViewV060 in
+        let view = AssetFeeViewV060(frame: .zero)
         return view
     }()
-    
-    lazy var sendBtn = { () -> PButton in 
+
+    lazy var sendBtn = { () -> PButton in
         let btn = PButton(frame: .zero)
         btn.localizedNormalTitle = "walletDetailVC_send_button"
         btn.style = .plain
         btn.addTarget(self, action: #selector(onSendButton(_:)), for: .touchUpInside)
         return btn
     }()
- 
-    
+
+    var popController: PopUpViewController?
+
     override func viewDidLoad() {
         super.viewDidLoad()
         NotificationCenter.default.addObserver(self, selector: #selector(DidUpdateAllAsset), name: Notification.Name.ATON.DidUpdateAllAsset, object: nil)
@@ -147,13 +134,13 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        if sendBtn.style == .plain && !sendBtn.frame.equalTo(.zero){
-            let _ = self.checkConfirmButtonAvailable()
+        if sendBtn.style == .plain && !sendBtn.frame.equalTo(.zero) {
+            _ = self.checkConfirmButtonAvailable()
         }
     }
-    
-    //MARK: - Data init
-    
+
+    // MARK: - Data init
+
     override func viewWillAppear(_ animated: Bool) {
         self.refreshData()
         let commonbgcolor = UIColor(red: 247, green: 250, blue: 255, alpha: 1)
@@ -162,51 +149,59 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
         self.walletAddressView.backgroundColor = commonbgcolor
         self.feeView.backgroundColor = commonbgcolor
         self.feeView.levelView.backgroundColor = commonbgcolor
-        
+
+        NotificationCenter.default.addObserver(self, selector: #selector(DidNodeGasPriceUpdate), name: Notification.Name.ATON.DidNodeGasPriceUpdate, object: nil)
+        TransactionService.service.getGasPrice()
+
         AnalysisHelper.handleEvent(id: event_send, operation: .begin)
+
     }
-    
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name.ATON.DidNodeGasPriceUpdate, object: nil)
+    }
+
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         self.cleanInputEmptyErrorState()
-        
+
         AnalysisHelper.handleEvent(id: event_send, operation: .cancel)
     }
-    
-    func cleanInputEmptyErrorState(){
-        if self.amountView.textField.text?.length == 0{
+
+    func cleanInputEmptyErrorState() {
+        if self.amountView.textField.text?.length == 0 {
             self.amountView.cleanErrorState()
         }
-        if self.walletAddressView.textField.text?.length == 0{
+        if self.walletAddressView.textField.text?.length == 0 {
             self.walletAddressView.cleanErrorState()
         }
     }
-    
-    func initdata(){
+
+    func initdata() {
         self.refreshData()
-        AssetVCSharedData.sharedData.registerHandler(object: self) { 
+        AssetVCSharedData.sharedData.registerHandler(object: self) {
             self.refreshData()
-            let _ = self.checkConfirmButtonAvailable()
+            _ = self.checkConfirmButtonAvailable()
         }
     }
-       
-    func refreshData(){
-        NotificationCenter.default.addObserver(self, selector: #selector(DidNodeGasPriceUpdate), name: Notification.Name.ATON.DidNodeGasPriceUpdate, object: nil)
+
+    func refreshData() {
         guard AssetVCSharedData.sharedData.selectedWallet != nil else {
             return
         }
-        
-        if let obj = AssetVCSharedData.sharedData.selectedWallet as? Wallet{
+
+        if let obj = AssetVCSharedData.sharedData.selectedWallet as? Wallet {
             self.balanceLabel.text = Localized("transferVC_transfer_balance") + obj.balanceDescription()
         }
     }
-    
-    //MARK: - Notification
-    
-    @objc func DidUpdateAllAsset(){
+
+    // MARK: - Notification
+
+    @objc func DidUpdateAllAsset() {
         self.refreshData()
     }
-    
+
     func initSubViews() {
         view.addSubview(walletAddressView)
         walletAddressView.snp.makeConstraints { (make) in
@@ -214,14 +209,14 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
             make.top.equalTo(20)
             make.height.equalTo(walletAddressView.internalHeight)
         }
-        
+
         walletAddressView.addSubview(quickSaveAddrBtn)
         quickSaveAddrBtn.snp.makeConstraints { (make) in
             make.right.equalToSuperview().offset(-16)
             make.top.equalTo(0)
         }
         quickSaveAddrBtn.addTarget(self, action: #selector(onQuickAddAddress), for: .touchUpInside)
-        
+
         view.addSubview(amountView)
         amountView.snp.makeConstraints { (make) in
             make.leading.equalToSuperview().offset(16)
@@ -229,73 +224,75 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
             make.top.equalTo(walletAddressView.snp.bottom).offset(20)
 //            make.height.equalTo(amountView.internalHeight)
         }
-        
+
         view.addSubview(balanceLabel)
         balanceLabel.snp.makeConstraints { (make) in
             make.top.equalTo(amountView.snp.bottom).offset(8)
             make.right.equalToSuperview().offset(-16)
         }
-        
+
         view.addSubview(feeView)
         feeView.snp.makeConstraints { (make) in
             make.top.equalTo(balanceLabel.snp.bottom).offset(16)
             make.left.right.equalToSuperview()
             make.height.equalTo(72)
         }
-        
+
         view.addSubview(sendBtn)
         sendBtn.snp.makeConstraints { (make) in
             make.top.equalTo(feeView.snp.bottom).offset(32)
             make.left.equalToSuperview().offset(16)
             make.right.equalToSuperview().offset(-16)
             make.height.equalTo(44)
-        } 
-        
+        }
+
         walletAddressView.addAction(icon: UIImage(named: "textField_icon_addressBook"), action: {
-            
+
             let addressBookVC = AddressBookViewController()
-            addressBookVC.selectionCompletion = { [weak self](_ addressInfo : AddressInfo?) -> () in
-                if let weakSelf = self{
+            addressBookVC.isHideAddButton = true
+            addressBookVC.selectionCompletion = { [weak self](_ addressInfo: AddressInfo?) -> Void in
+                if let weakSelf = self {
                     weakSelf.walletAddressView.textField.text = addressInfo!.walletAddress
                     weakSelf.walletAddressView.cleanErrorState()
-                    let _ = weakSelf.checkConfirmButtonAvailable()
+                    _ = weakSelf.checkConfirmButtonAvailable()
                 }
-                
+
             }
             AssetViewControllerV060.pushViewController(viewController: addressBookVC)
-            
+
         })
         walletAddressView.addAction(icon: UIImage(named: "textField_icon_scan"), action: {
-            
+
             let scanner = QRScannerViewController()
             scanner.hidesBottomBarWhenPushed = true
-            scanner.scanCompletion = {[weak self] result in
-                if result.is40ByteAddress(){
-                    self?.walletAddressView.textField.text = result
+            scanner.scanCompletion = { [weak self] result in
+                let qrcodeType = QRCodeDecoder().decode(result)
+                switch qrcodeType {
+                case .address(let data):
+                    self?.walletAddressView.textField.text = data
                     self?.walletAddressView.cleanErrorState()
-                    let _ = self?.checkConfirmButtonAvailable()
-                }else{
+                    _ = self?.checkConfirmButtonAvailable()
+                default:
                     AssetViewControllerV060.getInstance()?.showMessage(text: Localized("QRScan_failed_tips"))
                 }
-                AssetViewControllerV060.popViewController()
             }
             AssetViewControllerV060.pushViewController(viewController: scanner)
-            
+
         })
-        
+
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(onTap(gesture:)))
         self.view.addGestureRecognizer(tapGesture)
-        
-        self.feeView.levelView.curLevel = gasPriceLevel
+
+        self.feeView.levelView.curLevel = gasPriceLevel ?? TransactionService.service.sliderDefaultValue
         self.feeView.levelView.levelChanged = { [weak self] level in
             self?.gasPriceLevel = level
             self?.DidNodeGasPriceUpdate()
-            let _ = self?.amountView.checkInvalidNow(showErrorMsg: true)
-            let _ = self?.checkConfirmButtonAvailable()
+            _ = self?.amountView.checkInvalidNow(showErrorMsg: true)
+            _ = self?.checkConfirmButtonAvailable()
         }
         self.DidNodeGasPriceUpdate()
         self.checkQuickAddAddress()
-        
+
         walletAddressView.textFieldShouldReturnCompletion = {[weak self] textField in
             self?.amountView.textField.becomeFirstResponder()
             return true
@@ -304,31 +301,30 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
             self?.amountView.textField.resignFirstResponder()
             return true
         }
-        
+
     }
-    
-    //MARK: - User Interaction
+
+    // MARK: - User Interaction
     private func saveToAddressBook(addressText: String?, name: String?) {
         quickSaveAddrBtn.quickSave(address: addressText, name: name)
-        quickSaveAddrBtn.checkAndUpdateStatus(address: addressText,name: name)
+        quickSaveAddrBtn.checkAndUpdateStatus(address: addressText, name: name)
     }
-    
-    @objc func onQuickAddAddress(){
-        guard let addressText = walletAddressView.textField.text,addressText.is40ByteAddress() else{
+
+    @objc func onQuickAddAddress() {
+        guard let addressText = walletAddressView.textField.text, addressText.is40ByteAddress() else {
             return
         }
-        if self.quickSaveAddrBtn.status == QuickSaveStatus.QuickSaveDisable{
+        if self.quickSaveAddrBtn.status == QuickSaveStatus.QuickSaveDisable {
             return
         }
-        
+
         // 改地址已存在客户端，则直接写入
-        if let wallet = AssetVCSharedData.sharedData.walletList.filter({ ($0 as! Wallet).key!.address.ishexStringEqual(other: addressText)
+        if let wallet = AssetVCSharedData.sharedData.walletList.filter({ ($0 as! Wallet).address.ishexStringEqual(other: addressText)
         }).first {
             saveToAddressBook(addressText: addressText, name: (wallet as! Wallet).name)
             return
         }
-        
-        
+
         let alertVC = AlertStylePopViewController.initFromNib()
         let style = PAlertStyle.commonInputWithItemDes(itemDes: Localized("addressbook_wallet_address_with_Colon"),
                                            itemContent: addressText.addressForDisplay(),
@@ -337,17 +333,17 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
                                            preInputText: "")
         alertVC.textFieldInput.checkInput(mode: CheckMode.textChange, check: { (input) -> (Bool, String) in
             let ret = CommonService.isValidWalletName(input)
-            return (ret.0,ret.1 ?? "")
-        }) { textField in
-            
+            return (ret.0, ret.1 ?? "")
+        }) { _ in
+
         }
         alertVC.onAction(confirm: {[weak self] (text, _) -> (Bool) in
-            
+
             let ret = CommonService.isValidWalletName(text)
-            if !ret.0{
+            if !ret.0 {
                 alertVC.showInputErrorTip(string: ret.1)
                 return false
-            }else{
+            } else {
                 self?.saveToAddressBook(addressText: addressText, name: text)
                 return true
             }
@@ -357,232 +353,293 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate{
         alertVC.style = style
         alertVC.showInViewController(viewController: self)
     }
-    
+
     @objc func onSendButton(_ sender: UIButton) {
-        
-        if !self.checkConfirmButtonAvailable(){
+
+        if !self.checkConfirmButtonAvailable() {
             return
         }
         let toAddress = self.walletAddressView.textField.text ?? ""
-        if let wallet = AssetVCSharedData.sharedData.selectedWallet as? Wallet{
-            if toAddress.ishexStringEqual(other: wallet.key?.address){
+        if let wallet = AssetVCSharedData.sharedData.selectedWallet as? Wallet {
+            if toAddress.ishexStringEqual(other: wallet.address) {
                 AssetViewControllerV060.getInstance()?.showMessage(text: Localized("cannot_send_itself"))
                 return
             }
         }
-        
-        confirmPopUpView = PopUpViewController()
-        let confirmView = UIView.viewFromXib(theClass: TransferConfirmView.self) as! TransferConfirmView
-        confirmView.submitBtn.addTarget(self, action: #selector(onConfirmButton), for: .touchUpInside)
-        confirmPopUpView?.setCloseEvent(button: confirmView.closeButton)
-        
-        confirmPopUpView?.dismissCompletion = {
-            
-        }
-        
-        if let wallet = AssetVCSharedData.sharedData.selectedWallet as? Wallet{
-            confirmPopUpView!.setUpConfirmView(view: confirmView, width: PopUpContentWidth)
-            confirmView.hideExecutor()
-            
-            let unionAttr = NSAttributedString(string: " LAT", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16)])
-            let amountAttr = NSMutableAttributedString(string: amountView.textField.text!.displayForMicrometerLevel(maxRound: 8))
-            amountAttr.append(unionAttr)
-            confirmView.totalLabel.attributedText = amountAttr
-            confirmView.toAddressLabel.text = walletAddressView.textField.text!.addressDisplayInLocal() ?? "--"
-            confirmView.walletName.text = wallet.key?.address.addressDisplayInLocal() ?? "--"
-            let feeString = self.totalFee().divide(by: ETHToWeiMultiplier
-                , round: 8)
-            confirmView.feeLabel.text = feeString.ATPSuffix()
 
+        guard let wallet = AssetVCSharedData.sharedData.selectedWallet as? Wallet else { return }
+
+        let controller = PopUpViewController()
+        let confirmView = UIView.viewFromXib(theClass: TransferConfirmView.self) as! TransferConfirmView
+        confirmView.hideExecutor()
+        let unionAttr = NSAttributedString(string: " LAT", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16)])
+        let amountAttr = NSMutableAttributedString(string: amountView.textField.text!.displayForMicrometerLevel(maxRound: 8))
+        amountAttr.append(unionAttr)
+        confirmView.totalLabel.attributedText = amountAttr
+        confirmView.toAddressLabel.text = walletAddressView.textField.text!.addressDisplayInLocal() ?? "--"
+        confirmView.walletName.text = wallet.address.addressDisplayInLocal() ?? "--"
+        let feeString = self.totalFee().divide(by: ETHToWeiMultiplier, round: 8)
+        confirmView.feeLabel.text = feeString.ATPSuffix()
+
+        controller.onCompletion = { [weak self] in
+            self?.doInitTransferData()
         }
-            
-        confirmPopUpView!.show(inViewController: self)
-        
+        controller.setUpConfirmView(view: confirmView, width: PopUpContentWidth)
+        controller.show(inViewController: self)
     }
-    
-    @objc func onConfirmButton(){
-        //confirmPopUpView?.onDismissViewController(animated: false)
-        confirmPopUpView?.onDismissViewController(animated: true, completion: { 
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                self.showPasswordInputPswAlert()
+
+    func doShowScanController(completion: ((QrcodeData<[String]>?) -> Void)?) {
+        let controller = QRScannerViewController()
+        controller.hidesBottomBarWhenPushed = true
+        controller.scanCompletion = { result in
+            let qrcodeType = QRCodeDecoder().decode(result)
+            switch qrcodeType {
+            case .signedTransaction(let data):
+                completion?(data)
+            default:
+                AssetViewControllerV060.getInstance()?.showMessage(text: Localized("QRScan_failed_tips"))
+                completion?(nil)
             }
-        })
-        //delay show pass input
-        
-    } 
-    
-    //MARK: - Check method
-    
-    func checkConfirmButtonAvailable() -> Bool{
+        }
+
+        (UIApplication.shared.keyWindow?.rootViewController as? BaseNavigationController)?.pushViewController(controller, animated: true)
+    }
+
+    func showOfflineConfirmView(content: String) {
+        let qrcodeView = OfflineSignatureQRCodeView()
+        let qrcodeWidth = PopUpContentWidth - 32
+        let qrcodeImage = UIImage.geneQRCodeImageFor(content, size: qrcodeWidth)
+        qrcodeView.imageView.image = qrcodeImage
+
+        let type = ConfirmViewType.qrcodeGenerate(contentView: qrcodeView)
+        let offlineConfirmView = OfflineSignatureConfirmView(confirmType: type)
+        offlineConfirmView.titleLabel.localizedText = "confirm_generate_qrcode_for_transaction"
+        offlineConfirmView.descriptionLabel.localizedText = "confirm_generate_qrcode_for_transaction_tip"
+        offlineConfirmView.submitBtn.localizedNormalTitle = "confirm_button_next"
+
+        let controller = PopUpViewController()
+        controller.onCompletion = { [weak self] in
+            self?.showQrcodeScan()
+        }
+        controller.setUpConfirmView(view: offlineConfirmView, width: PopUpContentWidth)
+        controller.show(inViewController: self)
+    }
+
+    @objc func showQrcodeScan() {
+        var qrcodeData: QrcodeData<[String]>?
+        let scanView = OfflineSignatureScanView()
+        scanView.scanCompletion = { [weak self] in
+            self?.doShowScanController(completion: { (data) in
+                guard
+                    let qrcode = data,
+                    let signedDatas = qrcode.qrCodeData, qrcode.chainId == web3.chainId else { return }
+                if qrcode.timestamp != self?.generateQrCode?.timestamp {
+                    self?.showErrorMessage(text: Localized("offline_signature_invalid"), delay: 2.0)
+                    return
+                }
+                DispatchQueue.main.async {
+                    scanView.textView.text = signedDatas.joined(separator: ";")
+                }
+                qrcodeData = qrcode
+            })
+        }
+        let type = ConfirmViewType.qrcodeScan(contentView: scanView)
+        let offlineConfirmView = OfflineSignatureConfirmView(confirmType: type)
+        offlineConfirmView.titleLabel.localizedText = "confirm_scan_qrcode_for_read"
+        offlineConfirmView.descriptionLabel.localizedText = "confirm_scan_qrcode_for_read_tip"
+        offlineConfirmView.submitBtn.localizedNormalTitle = "confirm_button_send"
+
+        let controller = PopUpViewController()
+        controller.onCompletion = {
+            guard let qrcode = qrcodeData else { return }
+            AssetViewControllerV060.sendSignatureTransaction(qrcode: qrcode)
+        }
+        controller.setUpConfirmView(view: offlineConfirmView, width: PopUpContentWidth)
+        controller.show(inViewController: self)
+    }
+
+    func doInitTransferData() {
+        guard
+            let wallet = AssetVCSharedData.sharedData.selectedWallet as? Wallet else { return }
+
+        if wallet.type == .observed {
+            guard
+                let to = walletAddressView.textField.text, to.count > 0,
+                let amountLATString = amountView.textField.text,
+                let inputGasPrice = gasPrice
+                else { return }
+            let gasPrice = inputGasPrice.description
+            let gasLimit = estimatedGas.description
+            let amount = (BigUInt.mutiply(a: amountLATString, by: ETHToWeiMultiplier) ?? BigUInt.zero).description
+
+            web3.platon.platonGetNonce(sender: wallet.address) { [weak self] (result, blockNonce) in
+                guard let self = self else { return }
+                switch result {
+                case .success:
+                    guard let nonce = blockNonce else { return }
+                    let nonceString = nonce.quantity.description
+
+                    let transactionData = TransactionQrcode(amount: amount, chainId: web3.properties.chainId, from: wallet.address, to: to, gasLimit: gasLimit, gasPrice: gasPrice, nonce: nonceString, typ: nil, nodeId: nil, nodeName: nil, stakingBlockNum: nil, functionType: 0)
+                    let qrcodeData = QrcodeData(qrCodeType: 0, qrCodeData: [transactionData], timestamp: Int(Date().timeIntervalSince1970 * 1000), chainId: web3.chainId, functionType: nil, from: nil)
+                    guard
+                        let data = try? JSONEncoder().encode(qrcodeData),
+                        let content = String(data: data, encoding: .utf8) else { return }
+                    self.generateQrCode = qrcodeData
+
+//                    guard
+//                        let rlp = self.generateQrCode?.rlp(),
+//                        let resultrlp = try? RLPEncoder().encode(rlp)
+//                    else { return }
+//                    let contentrlp = resultrlp.toHexString()
+//
+//
+//
+//
+//                    print(resultrlp)
+//                    print(contentrlp)
+//                    print(contentrlp.count)
+                    print("===========")
+                    print(content)
+                    print(content.count)
+                    DispatchQueue.main.async {
+                        self.showOfflineConfirmView(content: content)
+                    }
+                case .fail:
+                    break
+                }
+            }
+        } else {
+            showPasswordInputPswAlert(for: wallet) { [weak self] (privateKey, _, error) in
+                guard let self = self else { return }
+                guard let pri = privateKey else {
+                    if let errorMsg = error?.localizedDescription {
+                        self.showErrorMessage(text: errorMsg, delay: 2.0)
+                    }
+                    return
+                }
+                self.doClassicTransfer(pri: pri, data: nil)
+            }
+        }
+    }
+
+    // MARK: - Check method
+
+    func checkConfirmButtonAvailable() -> Bool {
         self.checkQuickAddAddress()
-        
+
         if self.amountView.textField.text?.count == 0 {
             self.sendBtn.style = .disable
             return false
         }
-        
-        if self.amountView.checkInvalidNow(showErrorMsg: false)!.0 && self.walletAddressView.checkInvalidNow(showErrorMsg: false)!.0{
+
+        if self.amountView.checkInvalidNow(showErrorMsg: false)!.0 && self.walletAddressView.checkInvalidNow(showErrorMsg: false)!.0 {
             self.sendBtn.style = .blue
             return true
         }
         self.sendBtn.style = .disable
         return false
     }
-    
-    @objc func onTap(gesture: UITapGestureRecognizer){
-        if self.amountView.textField.isFirstResponder{
+
+    @objc func onTap(gesture: UITapGestureRecognizer) {
+        if self.amountView.textField.isFirstResponder {
             self.amountView.textField.resignFirstResponder()
         }
-        if self.walletAddressView.textField.isFirstResponder{
+        if self.walletAddressView.textField.isFirstResponder {
             self.walletAddressView.textField.resignFirstResponder()
         }
     }
-    
-    func checkQuickAddAddress(){
+
+    func checkQuickAddAddress() {
        self.quickSaveAddrBtn.checkAndUpdateStatus(address: walletAddressView.textField.text, name: "nametoinput")
     }
-    
+
     func textFieldViewUpdateHeight(view: PTextFieldView) {
         view.snp.updateConstraints { (make) in
             make.height.equalTo(view.internalHeight)
         }
     }
-    
+
     func textFieldViewUpdateHeight(atextFieldView: ATextFieldView) {
 //        view.snp.updateConstraints { (make) in
 //            make.height.equalTo(atextFieldView.internalHeight)
 //        }
 //        view.layoutIfNeeded()
     }
-    
-    
-    // MARK: - PopUp
-    
-    func showPasswordInputPswAlert() { 
-        
-        guard
-            let amount = self.amountView.textField.text,
-            let amountVON = BigUInt.mutiply(a: amount, by: ETHToWeiMultiplier), amountVON > BigUInt.zero else {
-                AssetViewControllerV060.getInstance()?.showMessage(text: "amount must be > 0", delay: 2.0)
-                return
-        }
-        
-        var executorWallet : Wallet? 
-        if let w = AssetVCSharedData.sharedData.selectedWallet as? Wallet{
-            executorWallet = w
-        }
-            
-        let alertVC = AlertStylePopViewController.initFromNib()
-        let style = PAlertStyle.passwordInput(walletName: AssetVCSharedData.sharedData.selectedWalletName)
-        alertVC.onAction(confirm: {[weak self] (text, _) -> (Bool)  in
-            let valid = CommonService.isValidWalletPassword(text ?? "")
-            if !valid.0{
-                alertVC.showInputErrorTip(string: valid.1)
-                return false
-            }
-              
-            alertVC.showLoadingHUD()
-            WalletService.sharedInstance.exportPrivateKey(wallet: executorWallet!, password: (alertVC.textFieldInput?.text)!, completion: { (pri, err) in
-                
-                if (err == nil && (pri?.length)! > 0) {
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: { 
-                        AssetViewControllerV060.getInstance()?.showLoadingHUD()
-                    })
-                    if self?.walletType == WalletType.ClassicWallet{
-                        self?.doClassicTransfer(pri: pri!, data: nil)
-                    }
-                    alertVC.dismissWithCompletion()
-                }else{
-                    if let notnilAlertVC = self?.passwordInputAlert{
-                        notnilAlertVC.hideLoadingHUD()
-                    }
-                    alertVC.showInputErrorTip(string: (err?.errorDescription)!)
-                    alertVC.hideLoadingHUD()
-                }
-            })
-            return false
-            
-        }) { (_, _) -> (Bool) in
-            return true
-        }
-        alertVC.style = style
-        alertVC.showInViewController(viewController: self)
-        
-        return
-    }
-    
-    func updateBalance(balance: BigUInt){
+
+    func updateBalance(balance: BigUInt) {
         let ret = balance.divide(by: ETHToWeiMultiplier, round: 8)
         self.balanceLabel.text = ret.balanceFixToDisplay(maxRound: 8).ATPSuffix()
     }
-    
-    func resportSufficiency(isSufficient: Bool){
-        
-    }
-    
 
-    func didTransferSuccess(){
+    func resportSufficiency(isSufficient: Bool) {
+
+    }
+
+    func didTransferSuccess() {
         self.walletAddressView.textField.text = ""
         self.amountView.textField.text = ""
         AssetViewControllerV060.setPageViewController(index: 0)
         AssetViewControllerV060.reloadTransactionList()
     }
-    
-    
+
 }
 
-//MARK: - Classic transfer Logic
+// MARK: - Classic transfer Logic
 
-extension AssetSendViewControllerV060{
-    
-    //MARK : - Notification
-    
-    @objc func DidNodeGasPriceUpdate(){
+extension AssetSendViewControllerV060 {
+
+    // MARK: - Notification
+
+    @objc func DidNodeGasPriceUpdate() {
         DispatchQueue.global().async {
-            let feeString = self.totalFee().divide(by: ETHToWeiMultiplier
-                , round: 8)
+            let feeString = self.totalFee().divide(by: ETHToWeiMultiplier, round: 8)
             DispatchQueue.main.async {
                 self.feeView.fee.text = feeString.ATPSuffix()
+                if self.gasPriceLevel == nil {
+                    self.feeView.levelView.setSliderValue(value: TransactionService.service.sliderDefaultValue)
+                }
             }
         }
     }
-    
-    func checkSufficient(text: String?) -> (Bool, String){
-        if text == nil{
-            return (true,"")
+
+    func checkSufficient(text: String?) -> (Bool, String) {
+        if text == nil {
+            return (true, "")
         }
         guard let amountOfwei = BigUInt.mutiply(a: text!, by: ETHToWeiMultiplier) else {
             return (true, "")
         }
         var overflow = false
-        
+
         let balance = getAvailbleBalance()
         var newBalance = BigUInt(String(balance))
-        overflow = (newBalance?.subtractReportingOverflow(self.totalFee(), shiftedBy: 0))!
-        if overflow{
-            //balance < fee
-            self.resportSufficiency(isSufficient: false)
-            return (false,Localized("transferVC_Insufficient_balance"))
-        }
         overflow = (newBalance?.subtractReportingOverflow(amountOfwei, shiftedBy: 0))!
-        if overflow{
+        if overflow {
             //amount < balance
             self.resportSufficiency(isSufficient: false)
-            return (false,Localized("transferVC_Insufficient_balance"))
-        }else{
-            self.resportSufficiency(isSufficient: true)
-            return (true,"")
+            return (false, Localized("transferVC_Insufficient_balance"))
         }
-    }
-    
-    func totalFee() -> BigUInt{
-        if let _ = AssetVCSharedData.sharedData.selectedWallet as? Wallet{
-            return (self.gasPrice?.multiplied(by: self.estimatedGas))!
+
+        newBalance = BigUInt(String(balance))
+        overflow = (newBalance?.subtractReportingOverflow(self.totalFee() + amountOfwei, shiftedBy: 0))!
+        if overflow {
+            //balance < fee
+            self.resportSufficiency(isSufficient: false)
+            return (false, Localized("transferVC_Insufficient_balance_for_gas"))
         }
-        return BigUInt("0")!
+
+        self.resportSufficiency(isSufficient: true)
+        return (true, "")
     }
-    
-    func onSendAll(){
+
+    func totalFee() -> BigUInt {
+        guard (AssetVCSharedData.sharedData.selectedWallet as? Wallet) != nil else {
+            return BigUInt("0")!
+        }
+        return (self.gasPrice?.multiplied(by: self.estimatedGas))!
+    }
+
+    func onSendAll() {
         let balance = getAvailbleBalance()
         if String((balance)) == "0"{
             amountView.textField.text = "0"
@@ -596,36 +653,40 @@ extension AssetSendViewControllerV060{
             self.resportSufficiency(isSufficient: false)
             return
         }
-        
+
         self.resportSufficiency(isSufficient: true)
         amountView.textField.text = maxSendAmout?.divide(by: ETHToWeiMultiplier, round: 8)
-        let _ = amountView.checkInvalidNow(showErrorMsg: true)
-        let _ = self.checkConfirmButtonAvailable()
+        _ = amountView.checkInvalidNow(showErrorMsg: true)
+        _ = self.checkConfirmButtonAvailable()
     }
-    
+
     func getAvailbleBalance() -> BigUInt {
         guard
             let balance = AssetService.sharedInstace.balances.first(where: { $0.addr.lowercased() == AssetVCSharedData.sharedData.selectedWalletAddress?.lowercased() }),
             let freeString = balance.free,
             let freeBalanceValue = BigUInt(freeString) else { return BigUInt.zero }
-        
+
         return freeBalanceValue.floorToDecimal(round: (18 - 8))
     }
-    
-    //MARK: - Transfer
-    
-    func doClassicTransfer(pri: String, data: AnyObject?){
-        
+
+    // MARK: - Transfer
+
+    func doClassicTransfer(pri: String, data: AnyObject?) {
+
         AnalysisHelper.handleEvent(id: event_send, operation: .end)
-        
-        let from = AssetVCSharedData.sharedData.cWallet?.key?.address
+
+        let from = AssetVCSharedData.sharedData.cWallet?.address
         let to = self.walletAddressView.textField.text!
-        let amount = self.amountView.textField.text!
+        guard let amount = self.amountView.textField.text, amount.count > 0 else {
+            showErrorMessage(text: "amount value is nil")
+            return
+        }
+
         let memo = ""
-        
-        let _ = TransactionService.service.sendAPTTransfer(from: from!, to: to, amount: amount, InputGasPrice: self.gasPrice!, estimatedGas: String(self.estimatedGas), memo: memo, pri: pri, completion: {[weak self] (result, txHash) in
+
+        _ = TransactionService.service.sendAPTTransfer(from: from!, to: to, amount: amount, InputGasPrice: self.gasPrice!, estimatedGas: String(self.estimatedGas), memo: memo, pri: pri, completion: {[weak self] (result, _) in
             AssetViewControllerV060.getInstance()?.hideLoadingHUD(delay: 0.2)
-            switch result{
+            switch result {
             case .success:
                 self?.didTransferSuccess()
                 UIApplication.rootViewController().showMessage(text: Localized("transferVC_transfer_success_tip"))
@@ -633,9 +694,7 @@ extension AssetSendViewControllerV060{
             case .fail(let code, let des):
                 self?.showMessageWithCodeAndMsg(code: code!, text: des!)
             }
-            
-        }) 
+
+        })
     }
 }
-
-

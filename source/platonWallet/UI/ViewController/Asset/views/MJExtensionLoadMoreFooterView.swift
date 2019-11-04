@@ -11,14 +11,14 @@ import MJRefresh
 import Localize_Swift
 
 class MJExtensionLoadMoreFooterView: MJRefreshAutoFooter {
-    
+
     var loadMoreTapHandle: (() -> Void)?
-    
+
     override func prepare() {
         super.prepare()
-        
-        self.mj_h = 69;
-        
+
+        self.mj_h = 69
+
         let moreButton = UIButton()
         moreButton.titleLabel?.font = UIFont.systemFont(ofSize: 14)
         moreButton.setTitleColor(UIColor(hex: "105cfe"), for: .normal)
@@ -30,10 +30,8 @@ class MJExtensionLoadMoreFooterView: MJRefreshAutoFooter {
             make.centerY.equalToSuperview()
         }
     }
-    
+
     @objc private func loadMoreTapAction() {
         loadMoreTapHandle?()
     }
 }
-
-

@@ -27,12 +27,17 @@ struct AppConfig {
         static let DefaultNodeURL_UAT = ServerURL.HOST.UATNET + "/rpc"
         static let DefaultNodeURL_PRODUCT = ServerURL.HOST.PRODUCTNET + "/rpc"
 
+        #if UAT
         static let defaultNodesURL = [
-//            (nodeURL: AppConfig.NodeURL.DefaultNodeURL_Alpha_V071, desc: "SettingsVC_nodeSet_defaultTestNetwork_Amigo_des", isSelected: true),
-//            (nodeURL: AppConfig.NodeURL.DefaultNodeURL_Alpha_V071_DEV, desc: "", isSelected: false)
-            (nodeURL: DefaultNodeURL_PRODUCT, desc: "SettingsVC_nodeSet_defaultProductNetwork_des", isSelected: false),
-            (nodeURL: DefaultNodeURL_UAT, desc: "SettingsVC_nodeSet_defaultTestNetwork_des", isSelected: true)
+            (nodeURL: AppConfig.NodeURL.DefaultNodeURL_Alpha_V071, desc: "SettingsVC_nodeSet_defaultTestNetwork_Amigo_des", chainId: AppConfig.ChainID.PRODUCT, isSelected: true),
+            (nodeURL: AppConfig.NodeURL.DefaultNodeURL_Alpha_V071_DEV, desc: "", chainId: AppConfig.ChainID.TEST, isSelected: false)
         ]
+        #else
+        static let defaultNodesURL = [
+            (nodeURL: DefaultNodeURL_PRODUCT, desc: "SettingsVC_nodeSet_defaultProductNetwork_des", chainId: AppConfig.ChainID.PRODUCT, isSelected: false),
+            (nodeURL: DefaultNodeURL_UAT, desc: "SettingsVC_nodeSet_defaultTestNetwork_des", chainId: AppConfig.ChainID.TEST, isSelected: true)
+        ]
+        #endif
     }
 
     struct TimerSetting {
@@ -52,8 +57,8 @@ struct AppConfig {
         }
 
         struct FAQURL {
-            static let faq_en = "https://platon.zendesk.com/hc/en-us/categories/360002174434"
-            static let faq_cn = "https://platon.zendesk.com/hc/zh-cn/categories/360002174434"
+            static let faq_en = "https://platon.zendesk.com/hc/en-us/articles/360037373194-Common-questions-about-PlatON-Delegators"
+            static let faq_cn = "https://platon.zendesk.com/hc/zh-cn/articles/360037373194-%E5%A7%94%E6%89%98%E4%BA%BA%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"
 
             static var faqurl: String {
                 return Localize.currentLanguage() == "en" ? faq_en : faq_cn
@@ -87,6 +92,10 @@ struct AppConfig {
             static let DEVNET = "http://192.168.9.190:443"
         }
         static let PATH = "/app/v0700"
+    }
+
+    struct AppInfo {
+        static let appVersion = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String
     }
 }
 

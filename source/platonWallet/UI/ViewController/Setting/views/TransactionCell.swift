@@ -10,22 +10,22 @@ import UIKit
 import Localize_Swift
 
 class TransactionCell: UITableViewCell {
-    
+
     @IBOutlet weak var typeLabel: UILabel!
-    
+
     @IBOutlet weak var timeLabel: UILabel!
-    
+
     @IBOutlet weak var amoutLabel: UILabel!
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         contentView.backgroundColor = normal_background_color
         backgroundColor = normal_background_color
         selectionStyle = .none
+        typeLabel.font = UIFont.systemFont(ofSize: 15, weight: .medium)
     }
 
-    
-    func updateCell(tx : Transaction){
+    func updateCell(tx : Transaction) {
         if tx.txType == .unknown || tx.txType == .transfer {
             if tx.direction == .unknown {
                 typeLabel.text = tx.txType?.localizeTitle
@@ -36,29 +36,15 @@ class TransactionCell: UITableViewCell {
             typeLabel.text = tx.txType?.localizeTitle
         }
         timeLabel.text = Date.toStanderTimeDescrition(millionSecondsTimeStamp: tx.confirmTimes)
-        
+
         amoutLabel.text = tx.amountTextString
-        if let valueStr = tx.value, Int(valueStr) == 0 {
-            amoutLabel.textColor = UIColor(rgb: 0xb6bbd0)
-        } else {
-            switch tx.direction {
-            case .Sent:
-                amoutLabel.textColor = UIColor(rgb: 0xff3b3b)
-            case .Receive:
-                amoutLabel.textColor = UIColor(rgb: 0x19a20e)
-            default:
-                amoutLabel.textColor = UIColor(rgb: 0xff3b3b)
-            }
-        }
+        amoutLabel.textColor = tx.amountTextColor
     }
-    
+
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state
     }
-    
-    
 
-    
 }

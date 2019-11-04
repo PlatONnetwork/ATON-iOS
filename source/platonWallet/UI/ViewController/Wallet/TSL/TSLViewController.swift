@@ -14,7 +14,7 @@ class TSLViewController: BaseViewController {
         super.viewDidLoad()
         self.view.backgroundColor = .gray
         self.navigationController?.isNavigationBarHidden = true
-        
+
         let button = UIButton(type: .custom)
         self.view.addSubview(button)
         button.snp.makeConstraints { make in
@@ -22,8 +22,8 @@ class TSLViewController: BaseViewController {
         }
         button.addTarget(self, action: #selector(onNext), for: .touchUpInside)
     }
-    
-    @objc func onNext(){
+
+    @objc func onNext() {
         self.navigationController?.pushViewController(TSLViewControllerTwo(), animated: false)
     }
 

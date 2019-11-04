@@ -13,20 +13,20 @@ class NodeInfoTableViewCell: UITableViewCell {
     public let avatarIV = UIImageView()
     public let nameLabel = UILabel()
     public let addressLabel = UILabel()
-    
+
     public var node: Node? {
         didSet {
             nameLabel.text = node?.name
             addressLabel.text = node?.nodeId?.nodeIdForDisplay()
         }
     }
-    
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
-        
+
         contentView.backgroundColor = normal_background_color
-        
+
         let containerView = UIButton()
         containerView.backgroundColor = .white
         contentView.addSubview(containerView)
@@ -37,7 +37,7 @@ class NodeInfoTableViewCell: UITableViewCell {
             make.bottom.equalToSuperview()
             make.height.equalTo(72)
         }
-        
+
         avatarIV.addMaskView(corners: .allCorners, cornerRadiiV: 21)
         avatarIV.image = UIImage(named: "3.icon_default")
         containerView.addSubview(avatarIV)
@@ -46,7 +46,7 @@ class NodeInfoTableViewCell: UITableViewCell {
             make.leading.equalToSuperview().offset(13)
             make.width.height.equalTo(42)
         }
-        
+
         nameLabel.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.medium)
         nameLabel.textColor = .black
         nameLabel.text = "--"
@@ -57,7 +57,7 @@ class NodeInfoTableViewCell: UITableViewCell {
             make.trailing.equalToSuperview().offset(-16)
             make.height.equalTo(18)
         }
-        
+
         addressLabel.font = UIFont.systemFont(ofSize: 13)
         addressLabel.textColor = common_darkGray_color
         addressLabel.text = "--"
@@ -68,7 +68,7 @@ class NodeInfoTableViewCell: UITableViewCell {
             make.trailing.equalTo(nameLabel.snp.trailing)
         }
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

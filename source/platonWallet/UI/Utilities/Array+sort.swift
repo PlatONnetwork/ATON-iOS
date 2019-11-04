@@ -9,42 +9,51 @@
 import Foundation
 import BigInt
 
-extension Array{
-    mutating func txSort(){
+extension Array {
+    mutating func txSort() {
         self.sort(by: { (obj1, obj2) -> Bool in
-            if let obj1 = obj1 as? Transaction, let obj2 = obj2 as? Transaction{
+            if let obj1 = obj1 as? Transaction, let obj2 = obj2 as? Transaction {
                 return obj1.createTime > obj2.createTime
             }
             return false
         })
     }
-    
-    mutating func walletCreateTimeSort(){
+
+    mutating func sortByConfirmTimes() {
         self.sort(by: { (obj1, obj2) -> Bool in
-            if let obj1 = obj1 as? Wallet, let obj2 = obj2 as? Wallet{
+            if let obj1 = obj1 as? Transaction, let obj2 = obj2 as? Transaction {
+                return obj1.confirmTimes > obj2.confirmTimes
+            }
+            return false
+        })
+    }
+
+    mutating func walletCreateTimeSort() {
+        self.sort(by: { (obj1, obj2) -> Bool in
+            if let obj1 = obj1 as? Wallet, let obj2 = obj2 as? Wallet {
                 return obj1.createTime < obj2.createTime
             }
             return false
         })
     }
-    
-    mutating func userArrangementSort(){
+
+    mutating func userArrangementSort() {
         self.sort(by: { (obj1, obj2) -> Bool in
-            if let obj1 = obj1 as? Wallet, let obj2 = obj2 as? Wallet{
+            if let obj1 = obj1 as? Wallet, let obj2 = obj2 as? Wallet {
                 return obj1.userArrangementIndex < obj2.userArrangementIndex
             }
             return false
         })
-        
+
     }
 }
 
 extension Array where Element == Any {
-    
-    var filterClassicWallet : [Wallet]{
-        get{
+
+    var filterClassicWallet : [Wallet] {
+        get {
             return filter({ (element) -> Bool in
-                if let _ = element as? Wallet{
+                if let _ = element as? Wallet {
                     return true
                 }
                 return false
@@ -56,7 +65,7 @@ extension Array where Element == Any {
 extension Array {
 
     func removeDuplicate<E : Equatable>(_ filter: (Element) -> E) -> [Element] {
-        
+
         var newArr:[Element] = []
         forEach { (item) in
             let e = filter(item)
@@ -66,28 +75,27 @@ extension Array {
         }
         return newArr
     }
-    
-    func filterArrayByCurrentNodeUrlString() -> [Element]{
-        
+
+    func filterArrayByCurrentNodeUrlString() -> [Element] {
+
         return self.filter { item -> Bool in
             if let castItem = item as? Wallet {
-                return castItem.nodeURLStr == SettingService.getCurrentNodeURLString()
+                return castItem.chainId == SettingService.shareInstance.getCurrentChainId()
             }
-            
-            if let castItem = item as? Transaction{
-                return castItem.nodeURLStr == SettingService.getCurrentNodeURLString()
+
+            if let castItem = item as? Transaction {
+                return castItem.chainId == SettingService.shareInstance.getCurrentChainId()
             }
 
             return true
         }
-       
+
     }
-    
-   
+
 }
 
 extension Array {
-    
+
     func filterDuplicates<E: Equatable>(_ filter: (Element) -> E) -> [Element] {
         var result = [Element]()
         for value in self {
@@ -105,11 +113,9 @@ extension Array where Element == Transaction {
     @discardableResult
     func removingDuplicates() -> [Transaction] {
         let confirmTxHashes = filter { $0.sequence != nil }.map { $0.txhash! }
-        
+
         return filter {
             confirmTxHashes.contains($0.txhash!)
         }
     }
 }
-
-

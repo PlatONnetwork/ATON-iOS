@@ -15,7 +15,7 @@ class StakingMainViewController: StakingPageTabStripViewController {
 
         // Do any additional setup after loading the view.
 //        navigationController?.navigationBar.isHidden = true
-        
+
 //        settings.style.buttonBarBackgroundColor = .white
 //        settings.style.buttonBarItemBackgroundColor = .white
 //        settings.style.selectedBarBackgroundColor = .white
@@ -50,12 +50,12 @@ class StakingMainViewController: StakingPageTabStripViewController {
             automaticallyAdjustsScrollViewInsets = false
         }
     }
-    
+
     func moveToValidatorListController() {
         guard let viewController = viewControllers.last else { return }
         moveTo(viewController: viewController)
     }
-    
+
 //    override func viewControllers(for pagerTabStripController: PagerTabStripViewController) -> [UIViewController] {
 //        let controller1 = ValidatorNodesViewController()
 //        let controller2 = ValidatorNodesViewController()
@@ -63,7 +63,6 @@ class StakingMainViewController: StakingPageTabStripViewController {
 //        return [controller1, controller2]
 //
 //    }
-    
 
     /*
     // MARK: - Navigation

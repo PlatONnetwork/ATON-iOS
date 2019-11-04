@@ -1,0 +1,43 @@
+disabled_rules: # 禁用指定的规则
+  - colon
+  - comma
+  - control_statement
+  - force_cast
+  - force_try
+  - line_length
+  - empty_count
+  - variable_name
+  - type_body_length
+  - function_body_length
+  - function_parameter_count
+  - file_length
+  - cyclomatic_complexity
+opt_in_rules: # 启用指定的规则
+  - empty_count
+  # - missing_docs
+  # 可以通过执行如下指令来查找所有可用的规则:
+  # swiftlint rules
+included: # 执行 linting 时包含的路径。如果出现这个 `--path` 会被忽略。
+  - platonWallet
+excluded: # 执行 linting 时忽略的路径。 优先级比 `included` 更高。
+  - Carthage
+  - Pods
+  - platonWallet/ExcludedFolder
+  - platonWallet/ExcludedFile.swift
+
+# line_length:
+#   warning: 120
+#   ignores_function_declarations: true
+#   ignores_comments: true
+#   ignores_interpolated_strings: true
+#   ignores_urls: true
+
+type_name:
+  min_length: 1 # 只是警告
+  max_length: # 警告和错误
+    warning: 40
+    error: 50
+  excluded: iPhone # 排除某个名字
+identifier_name:
+  min_length: 1 # 只有最小长度
+  validates_start_with_lowercase: false

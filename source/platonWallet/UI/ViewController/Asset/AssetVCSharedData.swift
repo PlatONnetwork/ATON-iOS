@@ -8,147 +8,154 @@
 
 import Foundation
 
-typealias DidSwithWalletHandler = () ->Void
-
+typealias DidSwithWalletHandler = () -> Void
 
 enum WalletSortType {
-    case createTime,userArrangement
+    case createTime, userArrangement
 }
 
-class AssetVCSharedData{
-    
+class AssetVCSharedData {
+
     static let sharedData = AssetVCSharedData()
-    
-    var walletChangeHandlers: Dictionary<String,DidSwithWalletHandler> = [:]
-    
+
+    var walletChangeHandlers: Dictionary<String, DidSwithWalletHandler> = [:]
+
     init() {
         NotificationCenter.default.addObserver(self, selector: #selector(didSwithNode), name: NSNotification.Name(NodeStoreService.didSwitchNodeNotification), object: nil)
     }
-     
-    var walletList: [Any]{
-        get{
-            var tmp : [Any] = []
+
+    var walletList: [Any] {
+        get {
+            var tmp: [Any] = []
             tmp.append(contentsOf: WalletService.sharedInstance.wallets)
-            
+
             var rangeWallets = tmp.filter { obj -> Bool in
-                if let cwallet = obj as? Wallet{
-                    return cwallet.userArrangementIndex != -1 
+                if let cwallet = obj as? Wallet {
+                    return cwallet.userArrangementIndex != -1
                 }
                 return false
             }
             rangeWallets.userArrangementSort()
-            
+
             var unrangeWallets = tmp.filter { obj -> Bool in
-                if let cwallet = obj as? Wallet{
-                    return cwallet.userArrangementIndex == -1 
+                if let cwallet = obj as? Wallet {
+                    return cwallet.userArrangementIndex == -1
                 }
                 return false
             }
             unrangeWallets.walletCreateTimeSort()
-            
-            var newSorted : [Any] = []
+
+            var newSorted: [Any] = []
             newSorted.append(contentsOf: rangeWallets)
             newSorted.append(contentsOf: unrangeWallets)
-            
             return newSorted
         }
     }
-    
-    var selectedWallet : AnyObject?{
-        didSet{
-            guard selectedWallet != nil else{
-                
-                if walletList.count > 0{
+
+    var selectedWallet: AnyObject? {
+        didSet {
+            guard selectedWallet != nil else {
+
+                if walletList.count > 0 {
                     //if delete selected wallet，set the first wallet
                     selectedWallet = walletList.first as AnyObject
-                }else{
-                    
+                } else {
+
                 }
-                
+
                 return
             }
-            for (_,v) in walletChangeHandlers.enumerated(){
+            for v in walletChangeHandlers {
                 v.value()
             }
         }
     }
-    var cWallet: Wallet?{
+    var cWallet: Wallet? {
         guard let wallet = selectedWallet as? Wallet  else {
             return nil
         }
         return wallet
     }
-    
-    var selectedWalletName: String?{
-        if cWallet != nil{
+
+    var selectedWalletName: String? {
+        if cWallet != nil {
             return cWallet?.name
         }
         return ""
     }
-    var selectedWalletAddress: String?{
-        if cWallet != nil{
-            return cWallet?.key?.address
+    var selectedWalletAddress: String? {
+        if cWallet != nil {
+            return cWallet?.address
         }
         return ""
     }
-    
-    //MARK: - Notification
-    
-    @objc func didSwithNode(){
+
+    // MARK: - Notification
+
+    @objc func didSwithNode() {
         self.reloadWallets()
         NotificationCenter.default.post(name: Notification.Name.ATON.updateWalletList, object: nil)
     }
-    
-    public func willDeleteWallet(object: AnyObject){
+
+    public func willDeleteWallet(object: AnyObject) {
         //issue mutiply thread access wallet object?
-        if let wallet = object as? Wallet{
-            if let selectedWallet = AssetVCSharedData.sharedData.selectedWallet as? Wallet{
-                if (selectedWallet.key?.address.ishexStringEqual(other: wallet.key?.address))!{
+        if let wallet = object as? Wallet {
+            if let selectedWallet = AssetVCSharedData.sharedData.selectedWallet as? Wallet {
+                if selectedWallet.address.ishexStringEqual(other: wallet.address) {
                     AssetVCSharedData.sharedData.selectedWallet = nil
                 }
             }
         }
-        
+
         self.reloadWallets()
         NotificationCenter.default.post(name: Notification.Name.ATON.updateWalletList, object: nil)
     }
-    
-    public func reloadWallets(){
+
+    public func reloadWallets() {
         let newList = self.walletList
-        if newList.count > 0{
+        if newList.count > 0 {
             self.selectedWallet = newList.first as AnyObject
-        }else{
+        } else {
             self.selectedWallet = nil
         }
+    }
+
+    func updateSelectedWallet() {
+        guard
+            let sw = selectedWallet as? Wallet,
+            let wl = walletList as? [Wallet]
+        else { return }
+        let currentSw = wl.first(where: { $0.address.lowercased() == sw.address.lowercased() })
+        selectedWallet = currentSw
     }
 }
 
 extension AssetVCSharedData {
     // 通过地址查询本地的账号名称
     func getWalletName(for address: String) -> String? {
-        let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.key?.address.lowercased() == address.lowercased() }.first
+        let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.address.lowercased() == address.lowercased() }.first
         return localWallet?.name
     }
 }
 
-extension AssetVCSharedData{
-    
-    func registerHandler(object: AnyObject?, handle: DidSwithWalletHandler?){
-        guard object != nil,handle != nil else {
+extension AssetVCSharedData {
+
+    func registerHandler(object: AnyObject?, handle: DidSwithWalletHandler?) {
+        guard object != nil, handle != nil else {
             return
         }
         let address = String(format: "%d", (object?.hash)!)
-        guard address.length > 0 else{
+        guard address.length > 0 else {
             return
         }
         walletChangeHandlers[address] = handle
     }
-    
-    func removeHandler(object: AnyObject?){
+
+    func removeHandler(object: AnyObject?) {
         var tmp = object
         withUnsafePointer(to: &tmp) {
             let address = String(format: "%p", $0)
-            guard address.length > 0 else{
+            guard address.length > 0 else {
                 return
             }
             walletChangeHandlers.removeValue(forKey: address)

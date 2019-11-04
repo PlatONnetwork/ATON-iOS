@@ -11,7 +11,7 @@ import Localize_Swift
 import MJRefresh
 
 class TransactionListViewController: BaseViewController,UITableViewDelegate,UITableViewDataSource {
-    
+
     let listSize = 20
 
     lazy var txnTableView = { () -> UITableView in
@@ -25,46 +25,46 @@ class TransactionListViewController: BaseViewController,UITableViewDelegate,UITa
         tbView.rowHeight = 69.0
         return tbView
     }()
-    
+
     lazy var dropdownListView = { () -> DropdownListView in
         let view = DropdownListView(for: selectedWallet)
         return view
     }()
-    
+
     var dataSource : [Transaction] = []
-    
+
     var selectedWallet: Wallet?
-    
+
     lazy var refreshHeader: MJRefreshHeader = {
         let header = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(fetchTransactionLastest))!
         return header
     }()
-    
+
     lazy var refreshFooter: MJRefreshFooter = {
         let footer = MJRefreshAutoFooter(refreshingTarget: self, refreshingAction: #selector(fetchTransactionMore))!
         return footer
     }()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        
+
         initSubView()
         txnTableView.mj_header.beginRefreshing()
     }
-    
+
     @objc func fetchTransactionLastest() {
         var addressStrs: [String] = []
-        
+
         if let wallet = selectedWallet {
-            addressStrs.append(wallet.key!.address)
+            addressStrs.append(wallet.address)
         } else {
             let allLocalAddresses = AssetVCSharedData.sharedData.walletList.filterClassicWallet.map { cwallet in
-                return cwallet.key!.address
+                return cwallet.address
             }
             addressStrs.append(contentsOf: allLocalAddresses)
         }
-        
+
         guard addressStrs.count > 0 else {
             self.txnTableView.mj_header.endRefreshing()
             self.txnTableView.mj_footer.endRefreshing()
@@ -72,53 +72,53 @@ class TransactionListViewController: BaseViewController,UITableViewDelegate,UITa
         }
         fetchTransaction(addressStrs: addressStrs, beginSequence: -1, direction: "new")
     }
-    
+
     @objc func fetchTransactionMore() {
         var addressStrs: [String] = []
-        
+
         if let wallet = selectedWallet {
-            addressStrs.append(wallet.key!.address)
+            addressStrs.append(wallet.address)
         } else {
             let allLocalAddresses = AssetVCSharedData.sharedData.walletList.filterClassicWallet.map { cwallet in
-                return cwallet.key!.address
+                return cwallet.address
             }
             addressStrs.append(contentsOf: allLocalAddresses)
         }
-        
+
         guard addressStrs.count > 0 else {
             self.txnTableView.mj_header.endRefreshing()
             self.txnTableView.mj_footer.endRefreshing()
             return
         }
-        
+
         guard let lastTransaction = dataSource.last else {
             return
         }
-        
+
         guard let sequence = lastTransaction.sequence else { return }
         fetchTransaction(addressStrs: addressStrs, beginSequence: sequence, direction: "old")
     }
-    
+
     func fetchTransaction(addressStrs: [String], beginSequence: Int64, direction: String) {
         TransactionService.service.getBatchTransaction(addresses: addressStrs, beginSequence: beginSequence, listSize: listSize, direction: direction) { (result, response) in
-            
+
             self.txnTableView.mj_header.endRefreshing()
             self.txnTableView.mj_footer.endRefreshing()
-            
+
             switch result {
             case .success:
                 if beginSequence == -1 {
                     self.dataSource.removeAll()
                     self.txnTableView.reloadData()
                 }
-                
+
                 guard let transactions = response as? [Transaction], transactions.count > 0 else {
                     self.txnTableView.mj_footer.isHidden = self.dataSource.count == 0
                     return
                 }
-                
-                if let currentAddress = self.selectedWallet?.key?.address {
-                    let _ = transactions.map({ (tx) -> Transaction in
+
+                if let currentAddress = self.selectedWallet?.address {
+                    _ = transactions.map({ (tx) -> Transaction in
                         switch tx.txType! {
                         case .transfer:
                             tx.direction = (currentAddress.lowercased() == tx.from?.lowercased() ? .Sent : currentAddress.lowercased() == tx.to?.lowercased() ? .Receive : .unknown)
@@ -133,8 +133,8 @@ class TransactionListViewController: BaseViewController,UITableViewDelegate,UITa
                         }
                     })
                 } else {
-                    let addresses = (AssetVCSharedData.sharedData.walletList as! [Wallet]).map { return $0.key!.address.lowercased() }
-                    let _ = transactions.map({ (tx) -> Transaction in
+                    let addresses = (AssetVCSharedData.sharedData.walletList as! [Wallet]).map { return $0.address.lowercased() }
+                    _ = transactions.map({ (tx) -> Transaction in
                         switch tx.txType! {
                         case .transfer:
                             if
@@ -160,24 +160,24 @@ class TransactionListViewController: BaseViewController,UITableViewDelegate,UITa
                         }
                     })
                 }
-                
+
                 if transactions.count >= self.listSize {
                     self.txnTableView.mj_footer.resetNoMoreData()
                 } else {
                     self.txnTableView.mj_footer.endRefreshingWithNoMoreData()
                 }
-                
+
                 self.dataSource.append(contentsOf: transactions)
                 self.txnTableView.reloadData()
                 self.txnTableView.mj_footer.isHidden = self.dataSource.count == 0
-            case .fail(_, _):
+            case .fail:
                 break
             }
         }
     }
 
-    func initSubView(){
-        
+    func initSubView() {
+
         navigationController?.view.addSubview(dropdownListView)
         dropdownListView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(UIApplication.shared.statusBarFrame.height + (navigationController?.navigationBar.frame.size.height ?? 44) + 7).priorityHigh()
@@ -190,8 +190,7 @@ class TransactionListViewController: BaseViewController,UITableViewDelegate,UITa
             self.selectedWallet = wallet
             self.txnTableView.mj_header.beginRefreshing()
         }
-        
-        
+
         view.addSubview(txnTableView)
         txnTableView.snp.makeConstraints { (make) in
             make.top.equalToSuperview().offset(50 + 7)
@@ -199,7 +198,7 @@ class TransactionListViewController: BaseViewController,UITableViewDelegate,UITa
             make.left.equalToSuperview().offset(0)
             make.right.equalToSuperview().offset(0)
         }
-        
+
         super.leftNavigationTitle = "TransactionListVC_nav_title"
         txnTableView.emptyDataSetView { [weak self] view in
             let emptyView = self.self?.emptyViewForTableView(forEmptyDataSet: (self?.txnTableView)!, Localized("walletDetailVC_no_transactions_text"),"empty_no_data_img")
@@ -208,7 +207,7 @@ class TransactionListViewController: BaseViewController,UITableViewDelegate,UITa
             view.backgroundColor = normal_background_color
             view.isScrollAllowed(true)
         }
-        
+
         txnTableView.mj_header = refreshHeader
         txnTableView.mj_footer = refreshFooter
         txnTableView.mj_footer.isHidden = true
@@ -222,12 +221,11 @@ extension TransactionListViewController {
         cell.updateCell(tx: tx)
         return cell
     }
-    
-    
+
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return dataSource.count
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let transferVC = TransactionDetailViewController()
         transferVC.transaction = dataSource[indexPath.row]

@@ -10,41 +10,40 @@ import UIKit
 import Localize_Swift
 import RTRootNavigationController
 
-
 extension UITabBarController {
-    
+
     private struct AssociatedKeys {
         // Declare a global var to produce a unique address as the assoc object handle
         static var orgFrameView:     UInt8 = 0
         static var movedFrameView:   UInt8 = 1
     }
-     
+
     var orgFrameView:CGRect? {
         get { return objc_getAssociatedObject(self, &AssociatedKeys.orgFrameView) as? CGRect }
         set { objc_setAssociatedObject(self, &AssociatedKeys.orgFrameView, newValue, .OBJC_ASSOCIATION_COPY) }
     }
-    
+
     var movedFrameView:CGRect? {
         get { return objc_getAssociatedObject(self, &AssociatedKeys.movedFrameView) as? CGRect }
         set { objc_setAssociatedObject(self, &AssociatedKeys.movedFrameView, newValue, .OBJC_ASSOCIATION_COPY) }
     }
-    
+
     override open func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         if let movedFrameView = movedFrameView {
             view.frame = movedFrameView
         }
-        
+
         //self.tabBar.shadowImage = UIImage(named: "imgFacebook")
 
     }
-    
+
     func setTabBarVisible(visible:Bool, animated:Bool) {
         //since iOS11 we have to set the background colour to the bar color it seams the navbar seams to get smaller during animation; this visually hides the top empty space...
         view.backgroundColor =  self.tabBar.barTintColor
         // bail if the current state matches the desired state
         if (tabBarIsVisible() == visible) { return }
-        
+
         //we should show it
         if visible {
             tabBar.isHidden = false
@@ -75,8 +74,8 @@ extension UITabBarController {
             }
         }
     }
-    
-    func tabBarIsVisible() ->Bool {
+
+    func tabBarIsVisible() -> Bool {
         return orgFrameView == nil
     }
 }
@@ -106,64 +105,67 @@ extension UITabBarController {
 //}
 
 class MainTabBarViewController: UITabBarController {
-    
+
     var lastDate: Date = Date(timeIntervalSince1970: 0)
-    
-    public static func newTabBar() -> UIViewController{
-        
+
+    public static func newTabBar() -> BaseNavigationController {
+
         let tabBarViewController = MainTabBarViewController()
-        
+
         let assetVC = AssetViewControllerV060()
         let assetNav = BaseNavigationController(rootViewController: assetVC)
 
         let stakingVC = StakingMainViewController()
         let candidateListNav = BaseNavigationController(rootViewController: stakingVC)
-        
+
         let personalVC = PersonalViewController()
         let personalNav = BaseNavigationController(rootViewController: personalVC)
-        
+
         assetNav.tabBarItem.image = UIImage(named: "tabbar_asset_unselected")
         assetNav.tabBarItem.selectedImage = UIImage(named: "tabbar_asset_selected")
         assetNav.tabBarItem.localizedText = "tabbar_asset_title"
-        
+
         candidateListNav.tabBarItem.image = UIImage(named: "tabbar_delegate_unselected")
         candidateListNav.tabBarItem.selectedImage = UIImage(named: "tabbar_delegate_selected")
         candidateListNav.tabBarItem.localizedText  = "tabbar_delegate_title"
-     
+
         personalNav.tabBarItem.image = UIImage(named: "tabbar_personal_unselected")
         personalNav.tabBarItem.selectedImage = UIImage(named: "tabbar_personal_selected")
         personalNav.tabBarItem.localizedText  = "tabbar_personal_title"
-        
+
         configureTabbarStyle()
         configureNavigationBarStyle()
-        
+
         tabBarViewController.viewControllers = [assetNav,candidateListNav,personalNav]
-        
+
         tabBarViewController.tabBar.layer.borderWidth = 1
         tabBarViewController.tabBar.layer.borderColor = UIColor.clear.cgColor
         tabBarViewController.tabBar.clipsToBounds = true
-        
-        return tabBarViewController
+
+        let navController = BaseNavigationController(rootViewControllerNoWrapping: tabBarViewController)
+//        navController.navigationBar.backgroundColor = .red
+//        navController.setNavigationBarHidden(true, animated: false)
+
+        return navController!
     }
-    
-    static func configureTabbarStyle(){
+
+    static func configureTabbarStyle() {
         UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor(rgb: 0xBBBBBB)], for: .normal)
         UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.foregroundColor: UIColor(rgb: 0x000000)], for: .selected)
         UITabBar.appearance().barTintColor = UIColor(rgb: 0xffffff)
         //UITabBar.appearance().tintColor = UIColor(rgb: 0x105CFE)
     }
-    
-    static func configureNavigationBarStyle(){
-        
+
+    static func configureNavigationBarStyle() {
+
     }
-    
-    
+
     let sepline = UIView(frame: .zero)
-    
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
-        if sepline.superview == nil{
+
+        if sepline.superview == nil {
             self.tabBar.addSubview(sepline)
             sepline.backgroundColor = UIColor(rgb: 0xF2F5FA)
             sepline.snp.makeConstraints { (make) in
@@ -172,17 +174,14 @@ class MainTabBarViewController: UITabBarController {
             }
         }
         //self.tabBar.bringSubviewToFront(sepline)
-        
     }
 
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         delegate = self
         self.tabBar.isTranslucent = false
-        self.navigationController?.setNavigationBarHidden(true, animated: false)
     }
-    
+
     /*
     // MARK: - Navigation
 
@@ -196,7 +195,7 @@ class MainTabBarViewController: UITabBarController {
 }
 
 extension MainTabBarViewController: UITabBarControllerDelegate {
-    
+
     func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
         print(viewController)
         guard
@@ -207,14 +206,14 @@ extension MainTabBarViewController: UITabBarControllerDelegate {
         NotificationCenter.default.post(name: Notification.Name.ATON.DidTabBarDoubleClick, object: nil)
         return true
     }
-    
+
     func doubleClick() -> Bool {
         let date = Date()
         if date.timeIntervalSince1970 - self.lastDate.timeIntervalSince1970 < 0.3 {
             self.lastDate = Date(timeIntervalSince1970: 0)
             return true
         }
-        
+
         self.lastDate = date
         return false
     }

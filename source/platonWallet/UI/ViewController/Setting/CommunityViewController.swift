@@ -10,7 +10,7 @@ import UIKit
 import Localize_Swift
 
 class CommunityViewController: BaseViewController {
-    
+
     lazy var tableView = { () -> UITableView in
         let tbView = UITableView(frame: .zero)
         tbView.delegate = self
@@ -27,7 +27,7 @@ class CommunityViewController: BaseViewController {
         }
         return tbView
     }()
-    
+
     var listData: [CommunityCellStyle] = []
 
     override func viewDidLoad() {
@@ -36,7 +36,7 @@ class CommunityViewController: BaseViewController {
 
         // Do any additional setup after loading the view.
         view.backgroundColor = normal_background_color
-        
+
         let item1 = CommunityCellStyle(avatar: "4.icon-WeChat", name: Localized("community_contact_wechat"), contacts:
             [
             CommunityContactStyle(contact: Localized("community_contact_wechat_group") + "PlatON-Alita", qrcodeImage: UIImage(named: "PlatON-Alita.jpg"), action: .scan, isSelected: false),
@@ -69,16 +69,15 @@ class CommunityViewController: BaseViewController {
         let item10 = CommunityCellStyle(avatar: "4.icon-babbitt", name: Localized("community_contact_babite"), contacts: [
             CommunityContactStyle(contact: "https://www.chainnode.com/forum/267", qrcodeImage: nil, action: .link, isSelected: false)]
         )
-        
+
         listData.append(contentsOf: [item1, item2, item3, item4, item5, item6, item7, item8, item9, item10])
-        
+
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        
+
     }
-    
 
     /*
     // MARK: - Navigation
@@ -96,11 +95,9 @@ extension CommunityViewController: UITableViewDelegate, UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return listData.count
     }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return listData[section].contacts.count + 1
     }
-    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let style = listData[indexPath.section]
         if indexPath.row == 0 {
@@ -109,16 +106,16 @@ extension CommunityViewController: UITableViewDelegate, UITableViewDataSource {
             cell.nameLabel.text = style.name
             return cell
         } else {
-            var contact = style.contacts[indexPath.row - 1]
+            let contact = style.contacts[indexPath.row - 1]
             let cell = tableView.dequeueReusableCell(withIdentifier: "CommunityContentTableViewCell") as! CommunityContentTableViewCell
             cell.contact = contact
-            
+
             if indexPath.row == style.contacts.count {
                 cell.lineLeadingConstraint?.deactivate()
             } else {
                 cell.lineLeadingConstraint?.activate()
             }
-            
+
             if contact.isSelected {
                 cell.qrcodeBottomConstraint?.activate()
                 cell.qrcodeHeightConstraint?.activate()
@@ -126,7 +123,7 @@ extension CommunityViewController: UITableViewDelegate, UITableViewDataSource {
                 cell.qrcodeBottomConstraint?.deactivate()
                 cell.qrcodeHeightConstraint?.deactivate()
             }
-            
+
             cell.cellDidCopyHandle = { content in
                 if content?.count ?? 0 > 0 {
                     let pasteboard = UIPasteboard.general

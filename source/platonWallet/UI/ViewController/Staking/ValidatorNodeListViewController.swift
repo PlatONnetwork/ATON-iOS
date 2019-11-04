@@ -17,15 +17,15 @@ public enum NodeControllerType {
 }
 
 class ValidatorNodeListViewController: BaseViewController, IndicatorInfoProvider {
-    
+
     func indicatorInfo(for pagerTabStripController: PagerTabStripViewController) -> IndicatorInfo {
         return itemInfo
     }
-    
+
     var itemInfo: IndicatorInfo = "All"
     var controllerType: NodeControllerType = .all
     var isRankingSorted: Bool = true
-    
+
     lazy var tableView = { () -> UITableView in
         let tbView = UITableView(frame: .zero)
         tbView.delegate = self
@@ -41,40 +41,40 @@ class ValidatorNodeListViewController: BaseViewController, IndicatorInfoProvider
         }
         return tbView
     }()
-    
+
     lazy var refreshHeader: MJRefreshHeader = {
         let header = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(fetchDataLastest))!
         return header
     }()
-    
+
     lazy var refreshFooter: MJRefreshFooter = {
         let footer = MJRefreshAutoFooter(refreshingTarget: self, refreshingAction: #selector(fetchDataMore))!
         return footer
     }()
-    
+
     var listData: [Node] = [] {
         didSet {
             tableView.mj_footer.isHidden = listData.count == 0
         }
     }
-    
+
     init(itemInfo: String) {
         self.itemInfo = IndicatorInfo(title: itemInfo)
         super.init(nibName: nil, bundle: nil)
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        
+
         tableView.emptyDataSetView { [weak self] view in
             let holder = self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, nil,"empty_no_data_img") as? TableViewNoDataPlaceHolder
             holder?.descriptionLabel.text = Localized("empty_string_validator")
@@ -84,21 +84,21 @@ class ValidatorNodeListViewController: BaseViewController, IndicatorInfoProvider
         tableView.mj_header = refreshHeader
         tableView.mj_footer = refreshFooter
         tableView.mj_header.beginRefreshing()
-        
+
         NotificationCenter.default.addObserver(self, selector: #selector(scrollToTop), name: Notification.Name.ATON.DidTabBarDoubleClick, object: nil)
     }
-    
+
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if isViewLoaded {
-            updateData()
+            fetchData(nil)
         }
     }
-    
+
     @objc func scrollToTop() {
         if isViewLoaded {
             tableView.setContentOffset(CGPoint.zero, animated: true)
@@ -118,23 +118,14 @@ class ValidatorNodeListViewController: BaseViewController, IndicatorInfoProvider
 }
 
 extension ValidatorNodeListViewController {
-    private func updateData() {
-        StakingService.sharedInstance.updateNodeListData { [weak self] (result, data) in
-            switch result {
-            case .success:
-                self?.fetchData(nil)
-            case .fail(_, _):
-                self?.fetchData(nil)
-            }
-        }
-    }
-    
+
     private func fetchData(_ nodeId: String?) {
         if nodeId == nil {
             listData.removeAll()
         }
-        
+
         StakingService.sharedInstance.getNodeList(controllerType: controllerType, isRankingSorted: isRankingSorted) { [weak self] (result, data) in
+            
             self?.tableView.mj_header.endRefreshing()
             self?.tableView.mj_footer.endRefreshing()
             switch result {
@@ -146,27 +137,23 @@ extension ValidatorNodeListViewController {
                     self?.tableView.mj_footer.endRefreshingWithNoMoreData()
                 }
                 self?.tableView.reloadData()
-            case .fail(_, _):
+            case .fail:
                 self?.tableView.mj_footer.isHidden = true
             }
         }
     }
-    
+
     public func pullDownForRefreshData(isRankSelected: Bool) {
         isRankingSorted = isRankSelected
         if tableView.mj_header != nil {
             tableView.mj_header.beginRefreshing()
         }
     }
-    
+
     @objc func fetchDataLastest() {
-        if controllerType == .all {
-            updateData()
-        } else {
-            fetchData(nil)
-        }
+        fetchData(nil)
     }
-    
+
     @objc func fetchDataMore() {
 //        guard let nodeId = listData.last?.nodeId else {
             tableView.mj_footer.endRefreshingWithNoMoreData()
@@ -180,7 +167,7 @@ extension ValidatorNodeListViewController: UITableViewDelegate, UITableViewDataS
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return listData.count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "NodeTableViewCell") as! NodeTableViewCell
         cell.node = listData[indexPath.row]
@@ -190,7 +177,7 @@ extension ValidatorNodeListViewController: UITableViewDelegate, UITableViewDataS
         }
         return cell
     }
-    
+
     func doShowNodeDetailController(indexPath: IndexPath) {
         let controller = NodeDetailViewController()
         controller.nodeId = listData[indexPath.row].nodeId

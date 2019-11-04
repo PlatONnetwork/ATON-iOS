@@ -70,7 +70,7 @@
 "transferVC_confirm_Fee" = "Fee:";
 "transferVC_send_Fee" = "Fee:";
 
-"transferVC_confirm_ATP_send" = "LAT Send";
+"transferVC_confirm_ATP_send" = "Send LAT ";
 "transferVC_confirm_Submit" = "Send";
 
 "transferVC_address_Incorrect_tip" = "Address is incorrect ";
@@ -83,7 +83,8 @@
 "transferVC_transfer_SendAll" = "ALL";
 "transferVC_transfer_select_wallet" = "Select Wallet";
 
-"transferVC_Insufficient_balance" = "Insufficient wallet balance";
+"transferVC_Insufficient_balance" = "Insufficient balance";
+"transferVC_Insufficient_balance_for_gas" = "Insufficient balance payment fee";
 "transferVC_Insufficient_network_error" = "Unable to connect to the network";
 
 //walletDetailVC
@@ -185,14 +186,18 @@
 "importKeystoreVC_keystoreInput_placeholder" = "Keystore content";
 "importKeystoreVC_nameInput_placeholder" = "Name of wallet";
 "importKeystoreVC_pswInput_placeholder" = "Wallet password";
-
+"importKeystoreVC_addressInput_placeholder" = "Wallet Address";
 "importKeystoreVC_keystore_empty_tips" = "Keystore can't be empty !";
+"importKeystoreVC_observed_empty_tips" = "Address can't be empty !";
+"importKeystoreVC_observed_invalid_tips" = "Invalid  Address";
+"importKeystoreVC_observed_existed_tips" = "Existed Address";
 
 //importWalletVC
 "importWalletVC_title" = "Import Wallet";
 "importWalletVC_tab_keystore" = "Keystore";
-"importWalletVC_tab_mnemonic" = "Mnemonic phrase";
+"importWalletVC_tab_mnemonic" = "Mnemonic";
 "importWalletVC_tab_privateKey" = "Private Key";
+"importWalletVC_tab_observedWallet" = "Observed";
 "importWalletVC_mnemonic_tips" = "Input the Mnemonic phrase. Please pay attention to case sensitivity and sequence.";
 "importWalletVC_mnemonic_textView_placeholder" = "Please separate each Mnemonic Phrase with a space";
 
@@ -203,6 +208,7 @@
 "importWalletVC_mnemonicInput_empty_tips" = "Mnemonic can't be empty !";
 "importWalletVC_privateKeyInput_empty_tips" = "PrivateKey can't be empty !";
 "importWalletVC_PasteButton" = "Paste";
+"importWalletVC_import_observed_title" = "Finish";
 
 //backupMnemonicVC
 "backupMnemonicVC_title" = "Backup Wallet";
@@ -256,7 +262,7 @@
 
 "PersonalVC_nav_title" = "Me";
 
-"PersonalVC_cell_wallet_manager" = "Wallet Manage";
+"PersonalVC_cell_wallet_manager" = "Wallet Management";
 //"PersonalVC_cell_wallet_Transactions" = "Transactions";
 "PersonalVC_cell_wallet_Transactions" = "Transactions";
 "PersonalVC_cell_wallet_address_book" = "Address Book";
@@ -265,8 +271,6 @@
 "PersonalVC_cell_wallet_About" = "About";
 "PersonalVC_cell_wallet_community" = "Official Community";
 "PersonalVC_cell_wallet_feedback" = "Support and feedback";
-
-
 
 
 //WalletManagerDetailViewController
@@ -279,7 +283,8 @@
 "WalletManagerDetailVC_Mnemonicsbackup" = "Mnemonics backup";
 "WalletManagerDetailVC_deleteBtn_title" = "Delete";
 "WalletManager_backUp" = "Backup";
-
+"Offline_Walle_Tag" = "Cold";
+"Observed_Wallet_Tag" = "Observed";
 
 //ExportPrivateKeyVC
 "ExportPrivateKeyVC_title" = "Export Private Key";
@@ -328,6 +333,7 @@
 "Invalid mnemonic phrase" = "Invalid mnemonic phrase";
 "Invalid keystore" = "keystore cannot be parsed";
 "Wallet already exists" = "Wallet already exists";
+"Invalid address" = "Invalid address";
 
 //Receive QR Code ViewController
 "ReceiveVC_nav_title" = "Receive";
@@ -348,7 +354,7 @@
 "TransactionListVC_Received" = "Received";
 "TransactionListVC_Vote" = "Vote";
 
-"TransactionStatus_sending_title" = "Sending";
+"TransactionStatus_sending_title" = "Sending LAT";
 "TransactionStatus_sendSucceed_title" = "Sent";
 "TransactionStatus_sendFailed_title" = "Sent";
 "TransactionStatus_receiving_title" = "Receiving";
@@ -357,6 +363,7 @@
 "TransactionStatus_voting_title" = "Voting";
 "TransactionStatus_voteSucceed_title" = "Voted";
 "TransactionStatus_voteFailed_title" = "Voted";
+"TransactionStatus_timeout_title" = "Timeout";
 
 "TransactionStatus_pending_desc" = "Pending";
 "TransactionStatus_succeed_desc" = "Success";
@@ -366,7 +373,6 @@
 "TransactionStatus_succeed_delegate" = "Success";
 "TransactionStatus_failed_undelegate" = "Failed";
 "TransactionStatus_succeed_undelegate" = "Success";
-"TransactionStatus_loading_undelegate" = "Undelegating";
 
 "TransactionStatus_transfer_title" = "transfer";
 "TransactionStatus_contractCreate_title" = "ContractCreation";
@@ -427,17 +433,16 @@
 
 //BiometricsAuthVC
 "BiometricsAuthVC_logo_title" = "PlatOn-Wallet";
-"BiometricsAuthVC_authFaceIDBtn_title" = "Click to evoke Face Recognition Verification";
-"BiometricsAuthVC_authTouchIDBtn_title" = "Click to evoke Fingerprint Verification";
-"BiometricsAuthVC_switchBtn_title" = "Unlock with Wallet Password";
-"BiometricsAuthVC_initFailed_tips" = "Fingerprint suspended, Please Unlock with Wallet Password";
+"BiometricsAuthVC_authTouchIDBtn_title" = "Login with Apple %@";
+"BiometricsAuthVC_switchBtn_title" = "Login with Password";
+"BiometricsAuthVC_initFailed_tips" = "%@ suspended, Please Login with Password";
 
 //PasswordAuthVC
-"PasswordAuthVC_title" = "Unlock with Wallet Password";
-"PasswordAuthVC_tips" = "Use the selected wallet password to verify unlock";
+"PasswordAuthVC_title" = "Login with Password";
+"PasswordAuthVC_tips" = "Be sure to correspond password to wallet.";
 "PasswordAuthVC_walletName" = "Wallet";
 "PasswordAuthVC_walletPsw" = "Wallet Password";
-"PasswordAuthVC_unlockBtn_title" = "Unlock";
+"PasswordAuthVC_unlockBtn_title" = "Confirm";
 "PasswordAuthVC_unlocking_text" = "Unlocking...";
 "PasswordAuthVC_unlockSuccess_text" = "Unlock succeed";
 "PasswordAuthVC_unlockFail_text" = "Incorrect Password";
@@ -666,7 +671,9 @@
 //AssetViewController
 "Asset_segment_Transaction" = "Txn";
 "Asset_segment_Send" = "Send";
+"Asset_segment_Send_offline" = "Offline Signature";
 "Asset_segment_Receive" = "Receive";
+
 
 //common
 "savetoaddressbook" = "Save to Address Book";
@@ -695,10 +702,6 @@
 "scanviewcontroller_scan_loading" = "scaning";
 "scanviewcontroller_scan_result_notfound" = "No QR code found";
 
-
-"watchJointWalletTip_Notice" = "Transaction initiation failed";
-"watchJointWalletTip_message" = "The associated Classic Wallet has been removed.";
-
 "data_parser_error" = "Data parsing error.";
 "unknow_error" = "Unknow error.";
 
@@ -709,7 +712,7 @@
 "send_address_placeholder" = "Input wallet address";
 "send_amount_placeholder" = "Input Amount";
 "vote_confirm_from" = "From:";
-"staking_amount_placeholder" = "Input Amount (not less than 10 LAT)";
+"staking_amount_placeholder" = "Input Amount (not less than %@ LAT)";
 
 
 "createOrImport_guide_text" = "Have a wallet? Import using keystore(json),mnemonic phrase, private key.";
@@ -722,8 +725,8 @@
 "staking_main_mydelegate_text" = "My Delegations";
 "staking_main_validator_text" = "Validators";
 "staking_main_wallet_name" = "Wallet Name";
-"staking_main_delegate_text" = "Delegated";
-"staking_main_undelegating_text" = "Undelegating";
+"staking_main_delegate_text" = "Available balance";
+"staking_main_undelegating_text" = "Delegated";
 "staking_main_delegate_detail" = "Details";
 "staking_main_delegate_total" = "Total Delegated";
 "staking_main_delegate_record" = "Record";
@@ -734,10 +737,8 @@
 "staking_delegate_record_delegate" = "Delegate";
 "staking_delegate_record_undelegate" = "Undelegate";
 
-"staking_delegate_locked" = "Locked delegate";
-"staking_delegate_unlocked" = "Unlocked delegate";
-"staking_delegate_release" = "Released delegate";
-"staking_delegate_undelegating" = "Undelegating";
+"staking_delegate_locked" = "Delegated";
+"staking_delegate_release" = "Invalid delegations";
 
 "staking_delegate" = "Delegate";
 "staking_withdraw" = "Withdraw";
@@ -747,7 +748,7 @@
 "staking_alert_locked_delegate_detail" = "Only locked delegates are rewarded. Un-delegation (i.e. withdrawal) takes immediate effect.but,the delegated LAT takes 6.1 hours to unlock and return to the account.";
 "staking_alert_unlocked_delegate" = "Unlocked delegate";
 "staking_alert_unlocked_delegate_detail" = "Locked in about 6.1 hours, the unlocked delegate has no reward.Un-delegation (i.e. withdrawal) takes immediate effect.and,the delegated LAT immediately returns to the account.";
-"staking_alert_released_delegate" = "Released delegate";
+"staking_alert_released_delegate" = "Invalid delegations";
 "staking_alert_released_detail" = "Validator exits, the delegations is automatically released,and need user to withdraw the delegations";
 "staking_alert_annualized_rate" = "Expected annualized rate";
 "staking_alert_annualized_rate_detail" = "The expected annualized rate of the current validator, the Delegation rewards is distributed by the validator";
@@ -776,28 +777,26 @@
 
 "statking_validator_Balance" = "Balance";
 
-"staking_validator_isInit_doubt" = "PlatON blockchain initial built-in validator, does not accept Delegation";
+"staking_validator_isInit_doubt" = "Foundation-funded nodes do not accept delegations";
 
 "ATextFieldView_title" = "Amount:";
 "ATextFieldView_delegate_title" = "Amount:";
 "ATextFieldView_withdraw_title" = "Amount:";
-"ATextFieldView_withdraw_placeholder" = "Input Amount (not less than 10 LAT)";
 
 "staking_doubt_delegate" = "Delegations";
-"staking_doubt_delegate_detail" = "Delegated LAT can be un-delegated (i.e withdrawal) at any time.Locked in about 6.1 hours.Only locked delegates are rewarded.Un-delegation takes immediate effect.but,the delegated LAT takes 6.1 hours to unlock and return to the account.";
+"staking_doubt_delegate_detail" = "The user keeps the delegate's Token ownership forever, and the user can withdraw the delegated token at any time.\nThe Validator's operator address and reward receiving address are not allowed for delegation";
 "staking_doubt_reward" = "Rewards";
 "staking_doubt_reward_detail" = "Delegation rewards come from validation block reward,staking reward and transaction fees.Reward assigned by validator.For details on how to assign, please see the official website description of each validator.";
 "staking_doubt_risk" = "Risk";
-"staking_doubt_risk_detail" = "No risk.";
+"staking_doubt_risk_detail" = "Validators would be punished for double signing or low block rate. It would indirectly affect your reward. Please select qualified validators.";
 
 "staking_doubt_undelegate" = "Note";
-"staking_doubt_undelegate_detail" = "Un-delegation (i.e. withdrawal) LAT, the unlocked delegate LAT and released delegate LAT can immediately returns to the account. However,the locked delegate LAT takes 6.1 hours to unlock and return to the account.\nThe released delegate has to be withdrawal all at once;\nIf the remaining delegations has been less than 10LAT, it will be automatically returned all.";
+"staking_doubt_undelegate_detail" = "The transaction has been successfully submitted and the delegated LAT can return to your account immediately.\nThe released delegate has to be withdrawal all at once;\nIf the remaining delegations has been less than %@LAT, it will be automatically returned all.";
 
 "staking_balance_can_used" = "Balance";
 "staking_balance_locked_position" = "Restricted balance";
 "staking_balance_Delegated" = "Delegated";
-"staking_balance_unlocked_Delegated" = "Unlocked delegate";
-"staking_balance__release_Delegated" = "Released delegate";
+"staking_balance_release_Delegated" = "Invalid delegations";
 
 "input_amount_hundred" = "hundred";
 "input_amount_thousand" = "thousand";
@@ -844,8 +843,10 @@
 
 "node_quit_consensus_tip" = "Node has exited consensus,voting failed";
 
-"delegate_error_result_amountzero" = "amount must greater 0";
-"delegate_error_result_nodeexit" = "Please withdraw first \"Released delegate\"";
+"delegate_error_result_amountzero" = "amount must greater 0.";
+"delegate_error_result_nodeexit" = "The Validator has Exited and cannot be delegated.";
+"delegate_error_result_associate" = "The wallet associated with the validator is not allowed for delegation.";
+"delegate_error_result_balancezero" = "Wallet balance is 0, unable to delegate.";
 
 "empty_string_my_delegates_left" = "View all validators, ";
 "empty_string_my_delegates_right" = "Delegate";
@@ -861,8 +862,11 @@
 
 "staking_delegate_input_amount_minlimit_error" = "Please input amount";
 "staking_withdraw_input_amount_minlimit_error" = "Please input amount";
-"staking_input_amount_minlimit_error" = "The Amount cannot be less than 10 LAT";
+"staking_input_amount_minlimit_error" = "The Amount cannot be less than %@ LAT";
+"staking_withdraw_input_amount_minlimit_error" = "The Amount cannot be less than %@ LAT";
 "staking_input_amount_maxlimit_error" = "Insufficient balance, unable to delegate";
+"staking_withdraw_input_amount_maxlimit_error" = "Exceeded the available amount and cannot be submitted";
+"staking_withdraw_balance_Insufficient_error" = "Insufficient balance payment fee";
 
 "error_no_wallet" = "No wallet available";
 "error_wallet_no_balance" = "insufficient wallet balance";
@@ -874,5 +878,33 @@
 "about_version_update_alert_cancel" = "Not Now?";
 "about_version_update_alert_ok" = "Update";
 
-"delegate_detail_unable_alert" = "Please withdraw first \"Released delegate\"";
+"delegate_detail_unable_alert" = "Please withdraw first \"Invalid delegations\"";
 
+"import_observed_wallet_tip_1" = "Recommend observed wallet and cold wallet to jointly manage large amount of tokens.";
+"import_observed_wallet_tip_2" = "Need the cold wallet authorization for transferring tokens.";
+"import_observed_wallet_tip_3" = "Observed wallet do not hold the private key.";
+"import_observed_wallet_tip_4" = "Do not deposit tokens to the wallet that you can not control.";
+
+"confirm_generate_qrcode_for_transaction" = "Transaction Authorization";
+"confirm_generate_qrcode_for_transaction_tip" = "Please scan below QR code using the cold wallet that holds the private key.";
+"confirm_button_next" = "Next";
+"confirm_scan_qrcode_for_read" = "Transaction Signature";
+"confirm_scan_qrcode_for_read_tip" = "Scan the OR code displayed on the cold wallet to get the transaction signature.";
+"confirm_button_send" = "Finish";
+"confirm_authorize_button_send" = "Next";
+"confirm_authorize_function_type" = "Txn info:";
+"confirm_authorize_from" = "Sender:";
+"confirm_authorize_to" = "Recipient:";
+"confirm_authorize_fee" = "Fee:";
+"confirm_generate_qrcode_for_signed_tx" = "Authorization Signature";
+"confirm_generate_qrcode_for_signed_tx_tip" = "Scan the OR code to finish your authorization for the observed wallet.";
+"confirm_button_signed_tx" = "Finish";
+"offline_signature_title" = "Details";
+
+"offline_signature_invalid" = "Invalid Signature";
+"offline_signature_notmatch_wallet" = "Wallet Mismatch";
+"touchid_auth_text" = "Please verify your %@";
+"touchid_verify_fail" = "Fingerprint verification failed, please try again! !";
+
+"delete_observed_wallet_alert_title" = "Delete Wallet";
+"delete_observed_wallet_alert_message" = "Are you sure want to delete observed wallet?";

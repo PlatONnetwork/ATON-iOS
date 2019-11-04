@@ -15,11 +15,11 @@ extension Notification.Name {
         public static let WillUpdateUnreadDot = Notification.Name("WillUpdateUnreadDot_Notification")
         public static let DidUpdateAllAsset = Notification.Name("DidUpdateAllAssetNotification")
         public static let DidNodeGasPriceUpdate = Notification.Name("DidNodeGasPriceUpdateNotification")
-        public static let DidJointWalletUpdateProgress = Notification.Name("DidJointWalletUpdateProgress_Notification")
         public static let WillDeleateWallet = Notification.Name("WillDeleateWallet_Notification")
         public static let updateWalletList = Notification.Name("updateWalletList_Notification")
         public static let BackupMnemonicFinish = Notification.Name("BackupMnemonicFinishNotification")
         public static let UpdateTransactionList = Notification.Name("UpdateTransactionList_Notification")
+        public static let DidNetworkStatusChange = Notification.Name("DidNetworkStatusChange")
+        public static let DidAssetBalanceVisiableChange = Notification.Name("DidAssetBalanceVisiableChange")
     }
 }
-

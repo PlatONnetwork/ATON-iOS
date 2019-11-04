@@ -12,6 +12,7 @@
 		"redeem": "0",
 		"locked": "0",
 		"unLocked": "0",
-		"released": "11000000000000000000"
+		"released": "11000000000000000000",
+        "isInit": false
 	}]
 }

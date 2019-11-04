@@ -8,10 +8,9 @@
 
 import Foundation
 
-
 protocol LocalizationProtocol {
-    
-    var localizedKey : String?{ get set}
-    var localizedKey_placeHolder : String?{ get set}
-    
+
+    var localizedKey: String? { get set}
+    var localizedKey_placeHolder: String? { get set}
+
 }

@@ -11,7 +11,7 @@ import UIKit
 class LanguageSettingTableViewCell: UITableViewCell {
 
     @IBOutlet weak var detailLabel: UILabel!
-    
+
     @IBOutlet weak var selectedIcon: UIImageView!
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -24,5 +24,5 @@ class LanguageSettingTableViewCell: UITableViewCell {
 
         // Configure the view for the selected state
     }
-    
+
 }

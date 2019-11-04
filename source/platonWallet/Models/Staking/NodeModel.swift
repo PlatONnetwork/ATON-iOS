@@ -16,7 +16,7 @@ enum NodeStatus: String, Decodable {
     case Candidate
     case Exiting
     case Exited
-    
+
     var description: String {
         switch self {
         case .Active:
@@ -42,23 +42,23 @@ class Node: Object, Decodable {
     @objc dynamic var isInit: Bool = false
     // 不同的链
     @objc dynamic var chainUrl: String? = ""
-    
+
     required init() {
         super.init()
     }
-    
+
     required init(value: Any, schema: RLMSchema) {
         super.init(value: value, schema: schema)
     }
-    
+
     required init(realm: RLMRealm, schema: RLMObjectSchema) {
         super.init(realm: realm, schema: schema)
     }
-    
+
     override static func primaryKey() -> String? {
         return "nodeId"
     }
-    
+
     convenience init(
         nodeId: String?,
         ranking: Int?,
@@ -90,7 +90,7 @@ struct NodeDetail: Decodable {
     var delegate: String?
     var blockOutNumber: Int?
     var blockRate: String?
-    
+
     enum NodeCodingKeys: String, CodingKey {
         case nodeId
         case ranking
@@ -101,7 +101,7 @@ struct NodeDetail: Decodable {
         case nodeStatus
         case isInit
     }
-    
+
     enum CodingKeys: String, CodingKey {
         case website
         case intro
@@ -111,10 +111,10 @@ struct NodeDetail: Decodable {
         case blockOutNumber
         case blockRate
     }
-    
+
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        
+
         let nodeContainer = try decoder.container(keyedBy: NodeCodingKeys.self)
         let nodeId = try nodeContainer.decode(String.self, forKey: .nodeId)
         let ranking = try nodeContainer.decodeIfPresent(Int.self, forKey: .ranking)
@@ -124,7 +124,7 @@ struct NodeDetail: Decodable {
         let ratePA = try nodeContainer.decodeIfPresent(String.self, forKey: .ratePA)
         let nodeStatus = try nodeContainer.decode(NodeStatus.self, forKey: .nodeStatus)
         let isInit = try nodeContainer.decode(Bool.self, forKey: .isInit)
-        
+
         website = try container.decodeIfPresent(String.self, forKey: .website)
         intro = try container.decodeIfPresent(String.self, forKey: .intro)
         punishNumber = try container.decodeIfPresent(Int.self, forKey: .punishNumber)
@@ -132,7 +132,7 @@ struct NodeDetail: Decodable {
         delegate = try container.decodeIfPresent(String.self, forKey: .delegate)
         blockOutNumber = try container.decodeIfPresent(Int.self, forKey: .blockOutNumber)
         blockRate = try container.decodeIfPresent(String.self, forKey: .blockRate)
-        
+
         node = Node(nodeId: nodeId, ranking: ranking, name: name, deposit: deposit, url: url, ratePA: ratePA, nStatus: nodeStatus, isInit: isInit)
     }
 }

@@ -11,17 +11,17 @@ import SnapKit
 import Localize_Swift
 
 class TransactionDetailHeaderView: UIView {
-    
+
     public let statusIconImageVIew = UIImageView()
     public let pendingLoadingImage = UIImageView()
-    
+
     public let statusLabel = UILabel()
     public let fromLabel = UILabel()
     public let toLabel = UILabel()
-    
+
     public let copyFromAddrBtn = CopyButton()
     public let copyToAddrBtn = CopyButton()
-    
+
     public let detailContainer = UIView()
     public let fromAvatarIV = UIImageView()
     public let fromNameLabel = UILabel()
@@ -29,13 +29,13 @@ class TransactionDetailHeaderView: UIView {
     public let toNameLabel = UILabel()
     public let topValueLabel = UILabel()
     public let toIconIV = UIImageView()
-    
+
     var baseInfoTopConstraint: Constraint?
     var toLabelLeadingConstraint: Constraint?
-    
+
     init() {
         super.init(frame: .zero)
-        
+
         addSubview(statusIconImageVIew)
         statusIconImageVIew.snp.makeConstraints { make in
             make.width.equalTo(160)
@@ -43,7 +43,7 @@ class TransactionDetailHeaderView: UIView {
             make.centerX.equalToSuperview()
             make.top.equalToSuperview().offset(45)
         }
-        
+
         pendingLoadingImage.image = UIImage(named: "transactionDetailloading")
         addSubview(pendingLoadingImage)
         pendingLoadingImage.snp.makeConstraints { make in
@@ -51,7 +51,7 @@ class TransactionDetailHeaderView: UIView {
             make.centerX.equalTo(statusIconImageVIew.snp.centerX).offset(-5)
             make.centerY.equalTo(statusIconImageVIew.snp.centerY).offset(3)
         }
-        
+
         statusLabel.textColor = .black
         statusLabel.textAlignment = .center
         statusLabel.font = .systemFont(ofSize: 20)
@@ -79,34 +79,46 @@ class TransactionDetailHeaderView: UIView {
             make.height.greaterThanOrEqualTo(24)
         }
 
-        let arrowIV = UIImageView()
-        arrowIV.image = UIImage(named: "2.icon_right")
-        baseInfoView.addSubview(arrowIV)
-        arrowIV.snp.makeConstraints { make in
+        let fromToContainerView = UIView()
+        baseInfoView.addSubview(fromToContainerView)
+        fromToContainerView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.width.height.equalTo(16)
-            baseInfoTopConstraint = make.top.equalTo(topValueLabel.snp.bottom).offset(22).constraint
+            baseInfoTopConstraint = make.top.equalTo(topValueLabel.snp.bottom).offset(22).priorityLow().constraint
             make.top.equalToSuperview().offset(22).priorityMedium()
             make.bottom.equalToSuperview().offset(-22)
+        }
+
+        fromToContainerView.addSubview(fromAvatarIV)
+        fromAvatarIV.snp.makeConstraints { make in
+            make.width.height.equalTo(30)
+            make.leading.equalToSuperview()
+            make.top.bottom.equalToSuperview()
         }
 
         fromNameLabel.textColor = .black
         fromNameLabel.font = .systemFont(ofSize: 15)
         fromNameLabel.textAlignment = .right
-        baseInfoView.addSubview(fromNameLabel)
+        fromToContainerView.addSubview(fromNameLabel)
         fromNameLabel.snp.makeConstraints { make in
-            make.trailing.equalTo(arrowIV.snp.leading).offset(-10)
-            make.centerY.equalTo(arrowIV.snp.centerY)
+            make.leading.equalTo(fromAvatarIV.snp.trailing).offset(4)
+            make.centerY.equalToSuperview()
         }
 
-        baseInfoView.addSubview(fromAvatarIV)
-        fromAvatarIV.snp.makeConstraints { make in
-            make.width.height.equalTo(30)
-            make.centerY.equalTo(arrowIV.snp.centerY)
-            make.trailing.equalTo(fromNameLabel.snp.leading).offset(-4)
+        let arrowIV = UIImageView()
+        arrowIV.image = UIImage(named: "2.icon_right")
+        fromToContainerView.addSubview(arrowIV)
+        arrowIV.snp.makeConstraints { make in
+            make.leading.equalTo(fromNameLabel.snp.trailing).offset(10)
+            make.centerY.equalToSuperview()
+            make.width.height.equalTo(16)
+//            make.centerX.equalToSuperview()
+//            make.width.height.equalTo(16)
+//            baseInfoTopConstraint = make.top.equalTo(topValueLabel.snp.bottom).offset(22).priorityLow().constraint
+//            make.top.equalToSuperview().offset(22).priorityMedium()
+//            make.bottom.equalToSuperview().offset(-22)
         }
 
-        baseInfoView.addSubview(toAvatarIV)
+        fromToContainerView.addSubview(toAvatarIV)
         toAvatarIV.snp.makeConstraints { make in
             make.leading.equalTo(arrowIV.snp.trailing).offset(6)
             make.width.height.equalTo(30)
@@ -115,12 +127,12 @@ class TransactionDetailHeaderView: UIView {
 
         toNameLabel.textColor = .black
         toNameLabel.font = .systemFont(ofSize: 15)
-        baseInfoView.addSubview(toNameLabel)
+        fromToContainerView.addSubview(toNameLabel)
         toNameLabel.snp.makeConstraints { make in
-            make.leading.equalTo(toAvatarIV.snp.trailing).offset(5)
+            make.leading.equalTo(toAvatarIV.snp.trailing).offset(4)
             make.centerY.equalTo(arrowIV.snp.centerY)
+            make.trailing.equalToSuperview()
         }
-
 
         let baseInfoLineV = UIView()
         baseInfoLineV.backgroundColor = common_line_color
@@ -226,45 +238,47 @@ class TransactionDetailHeaderView: UIView {
             make.top.equalTo(toContainerView.snp.bottom).offset(16)
             make.bottom.equalToSuperview().offset(-16)
         }
-        
+
         copyFromAddrBtn.attachTextView = fromLabel
         copyToAddrBtn.attachTextView = toLabel
         pendingLoadingImage.isHidden = true
+        baseInfoTopConstraint?.update(priority: .low)
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     func updateContent(tx: Transaction) {
         updateStatus(tx: tx)
-        
+
         if let fromString = tx.from, fromString.count > 0 {
             fromLabel.text = tx.from
         } else {
             fromLabel.text = "--"
         }
-        
+
         if let toString = tx.to, toString.count > 0 {
             toLabel.text = tx.to
         } else {
             toLabel.text = "--"
         }
-        
+
         toNameLabel.text = tx.toNameString
         fromNameLabel.text = tx.fromNameString
         toAvatarIV.image = tx.toAvatarImage
         fromAvatarIV.image = tx.fromAvatarImage
-        
+
         if let valueString = tx.valueString.0, let color = tx.valueString.1 {
             topValueLabel.text = valueString
             topValueLabel.textColor = color
-            baseInfoTopConstraint?.activate()
+            baseInfoTopConstraint?.update(priority: .high)
         } else {
             topValueLabel.text = nil
-            baseInfoTopConstraint?.deactivate()
+            //临时改为activate，否则label高度会有异常
+            baseInfoTopConstraint?.update(priority: .low)
         }
-        
+
         toIconIV.image = tx.toIconImage
         if tx.toType == .contract {
             toLabelLeadingConstraint?.update(offset: 16)
@@ -272,9 +286,9 @@ class TransactionDetailHeaderView: UIView {
             toLabelLeadingConstraint?.update(offset: 8)
         }
     }
-    
-    func updateStatus(tx : Transaction){
-        
+
+    func updateStatus(tx: Transaction) {
+
         statusLabel.text = tx.transactionStauts.localizeDescAndColor.0
         statusLabel.textColor = .black
         switch tx.transactionStauts {
@@ -288,6 +302,12 @@ class TransactionDetailHeaderView: UIView {
         case .sendFailed, .receiveFailed, .voteFailed:
             self.pendingLoadingImage.isHidden = true
             statusIconImageVIew.image = UIImage(named: "statusFail")
+        }
+        //最后判断超时
+        if tx.txReceiptStatus == TransactionReceiptStatus.timeout.rawValue {
+            statusIconImageVIew.image = UIImage(named: "txTimeout")
+            self.pendingLoadingImage.isHidden = true
+            statusLabel.text = Localized("TransactionStatus_timeout_title")
         }
     }
 }

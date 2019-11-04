@@ -10,12 +10,12 @@ import UIKit
 import Localize_Swift
 
 class TransactionDetailViewController: BaseViewController {
-    
-    public var transaction : Transaction?
+
+    public var transaction: Transaction?
     var txSendAddress: String?
-    
+
     var listData: [(title: String, value: String, copy: Bool)] = []
-    
+
     lazy var tableView = { () -> UITableView in
         let tbView = UITableView(frame: .zero)
         tbView.delegate = self
@@ -24,69 +24,77 @@ class TransactionDetailViewController: BaseViewController {
         tbView.register(TransactionDetailHashTableViewCell.self, forCellReuseIdentifier: "TransactionDetailHashTableViewCell")
         tbView.separatorStyle = .none
         tbView.tableFooterView = UIView()
+        if #available(iOS 11, *) {
+            tbView.estimatedRowHeight = UITableView.automaticDimension
+        } else {
+            tbView.estimatedRowHeight = 40
+        }
         return tbView
     }()
-    
+
     lazy var transferDetailView = { () -> TransactionDetailHeaderView in
         let view = TransactionDetailHeaderView()
         return view
     }()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         super.leftNavigationTitle = "TransactionDetailVC_nav_title"
         initData()
         initSubViews()
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        NotificationCenter.default.addObserver(self, selector: #selector(didReceiveTransactionUpdate(_:)), name:Notification.Name.ATON.DidUpdateTransactionByHash, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(didReceiveTransactionUpdate(_:)), name: Notification.Name.ATON.DidUpdateTransactionByHash, object: nil)
     }
-    
+
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        NotificationCenter.default.removeObserver(self)
+        NotificationCenter.default.removeObserver(self, name: Notification.Name.ATON.DidUpdateTransactionByHash, object: nil)
     }
-    
-    @objc func didReceiveTransactionUpdate(_ notification: Notification){
-        guard let hash = notification.object as? String  else {
+
+    @objc func didReceiveTransactionUpdate(_ notification: Notification) {
+        guard let txStatus = notification.object as? TransactionsStatusByHash else { return }
+        guard let currentTx = transaction else { return }
+        guard let txhash = txStatus.hash, txhash.ishexStringEqual(other: currentTx.txhash), let status = txStatus.localStatus else {
             return
         }
-        //yujinghan waiting fix
-        if hash.ishexStringEqual(other: transaction?.txhash){
-            let tx = TransferPersistence.getByTxhash(transaction?.txhash)
-            guard let transaction = tx else { return }
-            DispatchQueue.main.async { [weak self] in
-                
-                if let senderAddress = self?.txSendAddress {
-                    switch transaction.txType! {
-                    case .transfer:
-                        transaction.direction = (senderAddress.lowercased() == transaction.from?.lowercased() ? .Sent : senderAddress.lowercased() == transaction.to?.lowercased() ? .Receive : .unknown)
-                    case .delegateWithdraw,
-                         .stakingWithdraw:
-                        transaction.direction = .Receive
-                    default:
-                        transaction.direction = .Sent
-                    }
+
+        DispatchQueue.main.async { [weak self] in
+            if let senderAddress = self?.txSendAddress {
+                switch currentTx.txType! {
+                case .transfer:
+                    currentTx.direction = (senderAddress.lowercased() == currentTx.from?.lowercased() ? .Sent : senderAddress.lowercased() == currentTx.to?.lowercased() ? .Receive : .unknown)
+                case .delegateWithdraw,
+                     .stakingWithdraw:
+                    currentTx.direction = .Receive
+                default:
+                    currentTx.direction = .Sent
                 }
-                
-                self?.transferDetailView.updateContent(tx: transaction)
             }
+
+            currentTx.txReceiptStatus = status.rawValue
+            self?.transferDetailView.updateContent(tx: currentTx)
+            self?.tableView.tableHeaderView = self?.transferDetailView
+            self?.transferDetailView.setNeedsLayout()
+            self?.transferDetailView.layoutIfNeeded()
+            self?.transferDetailView.frame.size = self?.transferDetailView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize) ?? CGSize(width: UIScreen.main.bounds.width, height: 250)
+            self?.tableView.tableHeaderView = self?.transferDetailView
         }
     }
-    
+
     func initData() {
         guard let tx = transaction, let txType = tx.txType else { return }
-        
+
         if tx.txType == .unknown || tx.txType == .transfer {
             listData.append((title: Localized("TransactionDetailVC_type"), value: tx.transactionStauts.localizeTitle, copy: false))
         } else {
             listData.append((title: Localized("TransactionDetailVC_type"), value: txType.localizeTitle, copy: false))
         }
-        
+
         listData.append((title: Localized("TransactionDetailVC_time"), value: tx.timeString, copy: false))
-        
+
         if txType == .transfer ||
            txType == .MPCtransaction ||
            txType == .contractCreate ||
@@ -94,7 +102,7 @@ class TransactionDetailViewController: BaseViewController {
            txType == .otherSend ||
            txType == .otherReceive ||
            txType == .createRestrictingPlan {
-            
+
             if txType == .createRestrictingPlan {
                 listData.append((title: Localized("TransactionDetailVC_restricted_acount"), value: tx.lockAddress ?? "--", copy: false))
                 listData.append((title: Localized("TransactionDetailVC_restricted_amount"), value: tx.valueDescription?.displayForMicrometerLevel(maxRound: 8).ATPSuffix() ?? "0", copy: false))
@@ -116,20 +124,20 @@ class TransactionDetailViewController: BaseViewController {
                   txType == .stakingWithdraw ||
                   txType == .reportDuplicateSign ||
                   txType == .declareVersion {
-            
+
             if txType == .reportDuplicateSign {
                 listData.append((title: Localized("TransactionDetailVC_reported"), value: tx.nodeName ?? "--", copy: false))
             } else {
                 listData.append((title: Localized("TransactionDetailVC_voteFor"), value: tx.nodeName ?? "--", copy: false))
             }
-            
+
             listData.append((title: Localized("TransactionDetailVC_nodeId"), value: tx.nodeId ?? "--", copy: false))
-            
+
             if txType == .stakingCreate ||
                txType == .declareVersion {
                 listData.append((title: Localized("TransactionDetailVC_version"), value: tx.versionDisplayString, copy: false))
             }
-            
+
             if txType != .declareVersion {
                 if txType == .reportDuplicateSign {
                     listData.append((title: Localized("TransactionDetailVC_report_type"), value: tx.reportType?.localizedDesciption ?? "--", copy: false))
@@ -152,7 +160,7 @@ class TransactionDetailViewController: BaseViewController {
             listData.append((title: Localized("TransactionDetailVC_nodeId"), value: tx.nodeId ?? "--", copy: false))
             listData.append((title: Localized("TransactionDetailVC_proposal_id"), value: tx.txhash ?? "--", copy: false))
             listData.append((title: Localized("TransactionDetailVC_proposal_pip"), value: tx.pipString, copy: false))
-            
+
             if txType == .voteForProposal {
                 listData.append((title: Localized("TransactionDetailVC_proposal_type"), value: tx.voteProposalType?.localizedDesciption ?? "--", copy: false))
                 listData.append((title: Localized("TransactionDetailVC_proposal_vote"), value: tx.vote?.localizedDesciption ?? "--", copy: false))
@@ -163,14 +171,14 @@ class TransactionDetailViewController: BaseViewController {
         listData.append((title: Localized("TransactionDetailVC_energon_price"), value: tx.actualTxCostDescription?.displayForMicrometerLevel(maxRound: 8).ATPSuffix() ?? "0", copy: false))
         listData.append((title: Localized("TransactionDetailVC_transaction_hash"), value: tx.txhash ?? "--", copy: true))
     }
-    
+
     func initSubViews() {
-        
+
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        
+
         transferDetailView.updateContent(tx: transaction!)
         tableView.tableHeaderView = transferDetailView
         transferDetailView.setNeedsLayout()
@@ -184,7 +192,7 @@ extension TransactionDetailViewController: UITableViewDelegate, UITableViewDataS
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return listData.count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if listData[indexPath.row].copy {
             let cell = tableView.dequeueReusableCell(withIdentifier: "TransactionDetailHashTableViewCell") as! TransactionDetailHashTableViewCell
@@ -200,7 +208,7 @@ extension TransactionDetailViewController: UITableViewDelegate, UITableViewDataS
             return cell
         }
     }
-    
+
 }
 
 extension Transaction {

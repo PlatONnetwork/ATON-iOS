@@ -9,9 +9,8 @@
 import Foundation
 import UIKit
 
-
-extension UIApplication{
-    class func rootViewController() -> UIViewController{
+extension UIApplication {
+    class func rootViewController() -> UIViewController {
         return (UIApplication.shared.keyWindow?.rootViewController!)!
     }
 }

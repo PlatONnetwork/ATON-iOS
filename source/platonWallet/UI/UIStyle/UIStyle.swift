@@ -38,17 +38,14 @@ let transfer_placeholder_color = UIColor(rgb: 0xB6BBD0)
 
 let transfer_input_color = UIColor(rgb: 0xffffff)
 
-
 let common_darkGray_color = UIColor(rgb: 0x61646E)
 let common_lightGray_color = UIColor(rgb: 0xB6BBD0)
 let common_blue_color = UIColor(rgb: 0x105CFE)
 let common_lightLightGray_color = UIColor(rgb: 0x898C9E)
 
-
 let cell_Transaction_success_color = UIColor(red: 48, green: 159, blue: 36, alpha: 1)
 let cell_Transaction_fail_color = UIColor(red: 240, green: 45, blue: 54, alpha: 1)
 let cell_Transaction_pending_color = UIColor(red: 33, green: 83, blue: 254, alpha: 1)
-
 
 let ScreenDesignRatio = UIScreen.main.bounds.size.width / CGFloat(375)
 
@@ -61,3 +58,6 @@ let status_green_color = UIColor(rgb: 0x19A20E)
 let status_red_color = UIColor(rgb: 0xF5302C)
 let status_darkgray_color = UIColor(rgb: 0x525768)
 let status_lightgray_color = UIColor(rgb: 0x9EABBE)
+
+let wallet_orange_color = UIColor(rgb: 0xF5A623)
+let wallet_gray_color = UIColor(rgb: 0x61646E)
