@@ -27,8 +27,14 @@ class NodeInfoPersistence {
 
         var newNodes: [(nodeURL: String, desc: String, chainId: String, isSelected: Bool)] = []
         for node in AppConfig.NodeURL.defaultNodesURL {
-            guard !nodeIdentifiers.contains(node.nodeURL) else { continue }
-            newNodes.append(node)
+            if nodeIdentifiers.contains(node.nodeURL) {
+                // 如果lchainId 发生变化，则需更新
+                guard
+                    let localNode = nodes.first(where: { $0.nodeURLStr == node.nodeURL }), localNode.chainId != node.chainId else { continue }
+                update(nodeURLStr: node.nodeURL, chainId: node.chainId)
+            } else {
+                newNodes.append(node)
+            }
         }
 
         if existSelected {
@@ -100,6 +106,22 @@ class NodeInfoPersistence {
                 try? realm.write {
                     for n in r {
                         n.isSelected = isSelected
+                    }
+                }
+            })
+        }
+    }
+
+    func update(nodeURLStr: String, chainId: String) {
+        let predicate = NSPredicate(format: "nodeURLStr == %@", nodeURLStr)
+        RealmWriteQueue.async {
+            autoreleasepool(invoking: {
+                let realm = try! Realm(configuration: RealmHelper.getConfig())
+
+                let r = realm.objects(NodeInfo.self).filter(predicate)
+                try? realm.write {
+                    for n in r {
+                        n.chainId = chainId
                     }
                 }
             })

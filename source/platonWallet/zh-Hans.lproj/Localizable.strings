@@ -682,7 +682,7 @@
 //AssetViewController
 "Asset_segment_Transaction" = "交易记录";
 "Asset_segment_Send" = "发送";
-"Asset_segment_Send_offline" = "离线钱包";
+"Asset_segment_Send_offline" = "离线签名";
 "Asset_segment_Receive" = "接收";
 
 //common
