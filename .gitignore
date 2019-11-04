@@ -69,8 +69,8 @@ source/fastlane/report.xml
 source/fastlane/Preview.html
 source/fastlane/screenshots/**/*.png
 source/fastlane/test_output
-source/reports
-source/UnitTest-Report
+source/reports/
+source/UnitTest-Report/
 
 # Code Injection
 #
