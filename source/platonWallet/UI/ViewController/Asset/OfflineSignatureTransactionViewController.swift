@@ -23,6 +23,7 @@ class OfflineSignatureTransactionViewController: BaseViewController {
         tbView.register(TransactionDetailTableViewCell.self, forCellReuseIdentifier: "TransactionDetailTableViewCell")
         tbView.separatorStyle = .none
         tbView.tableFooterView = UIView()
+        tbView.estimatedRowHeight = 50.0
         return tbView
     }()
 
