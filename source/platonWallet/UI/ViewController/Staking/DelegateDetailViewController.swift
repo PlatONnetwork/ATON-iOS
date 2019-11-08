@@ -68,7 +68,8 @@ class DelegateDetailViewController: BaseViewController {
             make.leading.trailing.bottom.equalToSuperview()
         }
         tableView.emptyDataSetView { [weak self] view in
-            let holder = self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, nil,"empty_no_data_img") as? TableViewNoDataPlaceHolder
+            let holder = self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, nil,"3.img-No trust") as? TableViewNoDataPlaceHolder
+            holder?.descriptionLabel.text = Localized("delegate_node_details_nodata")
             view.customView(holder)
             view.isScrollAllowed(true)
             if let contentInset = self?.tableView.contentInset {

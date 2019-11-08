@@ -917,3 +917,5 @@
 
 "delete_observed_wallet_alert_title" = "删除观察钱包";
 "delete_observed_wallet_alert_message" = "请确认是否删除此观察钱包？";
+
+"delegate_node_details_nodata" = "暂无委托信息";

@@ -80,7 +80,7 @@ class ValidatorNodesViewController: ButtonBarPagerTabStripViewController, Indica
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        GuidanceViewMgr.sharedInstance.checkGuidance(page: .ValidatorNodesViewController, presentedVC: self)
+        GuidanceViewMgr.sharedInstance.checkGuidance(page: .ValidatorNodesViewController, presentedVC: UIApplication.shared.keyWindow?.rootViewController ?? self)
     }
 
     override func viewControllers(for pagerTabStripController: PagerTabStripViewController) -> [UIViewController] {

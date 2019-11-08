@@ -125,7 +125,7 @@
                     </userDefinedRuntimeAttributes>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3BT-8o-lKq">
-                    <rect key="frame" x="16" y="291.5" width="343" height="39.5"/>
+                    <rect key="frame" x="16" y="348.5" width="343" height="39.5"/>
                     <string key="text">Note: Be sure to keep your wallet password in mind, the server will not store your password, you will not be able to retrieve the password if forgetting or losing!</string>
                     <fontDescription key="fontDescription" type="system" pointSize="11"/>
                     <color key="textColor" red="1" green="0.41960784313725491" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -135,7 +135,7 @@
                     </userDefinedRuntimeAttributes>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="805-MY-ESh" customClass="PButton" customModule="platonWallet" customModuleProvider="target">
-                    <rect key="frame" x="16" y="351" width="343" height="44"/>
+                    <rect key="frame" x="16" y="294.5" width="343" height="44"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="44" id="aFs-Lf-YUb"/>
                     </constraints>
@@ -185,11 +185,10 @@
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="n12-PM-7lv" secondAttribute="trailing" constant="16" id="ZTf-S0-fXO"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="805-MY-ESh" secondAttribute="trailing" constant="16" id="aea-lf-RgZ"/>
                 <constraint firstItem="uO9-nk-pyE" firstAttribute="top" secondItem="HDM-m9-rOk" secondAttribute="bottom" constant="1" id="cg2-n4-6lZ"/>
-                <constraint firstItem="805-MY-ESh" firstAttribute="top" secondItem="3BT-8o-lKq" secondAttribute="bottom" constant="20" id="cuY-nS-EGP"/>
+                <constraint firstItem="805-MY-ESh" firstAttribute="top" secondItem="n12-PM-7lv" secondAttribute="bottom" constant="25" id="cuY-nS-EGP"/>
                 <constraint firstItem="0sN-DN-xSW" firstAttribute="top" secondItem="6LF-6r-hlC" secondAttribute="bottom" priority="500" constant="16" id="e2K-Cf-rqc"/>
-                <constraint firstItem="3BT-8o-lKq" firstAttribute="top" secondItem="EIO-Se-rsq" secondAttribute="bottom" priority="500" constant="10" id="eRt-LQ-JDz"/>
                 <constraint firstItem="f5T-n5-Mbl" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="g0A-mZ-Avo"/>
-                <constraint firstItem="3BT-8o-lKq" firstAttribute="top" secondItem="n12-PM-7lv" secondAttribute="bottom" priority="250" constant="10" id="hUb-8s-fJv"/>
+                <constraint firstItem="3BT-8o-lKq" firstAttribute="top" secondItem="805-MY-ESh" secondAttribute="bottom" priority="250" constant="10" id="hUb-8s-fJv"/>
                 <constraint firstItem="3BT-8o-lKq" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="16" id="i06-6O-jFq"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="HDM-m9-rOk" secondAttribute="trailing" constant="16" id="i2c-un-Plt"/>
                 <constraint firstItem="fPn-mR-zU4" firstAttribute="top" secondItem="uO9-nk-pyE" secondAttribute="bottom" constant="1" id="lKr-yx-Yvy"/>

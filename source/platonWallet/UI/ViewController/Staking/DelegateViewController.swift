@@ -375,7 +375,7 @@ extension DelegateViewController {
     func showOfflineConfirmView(content: String) {
         let qrcodeView = OfflineSignatureQRCodeView()
         let qrcodeWidth = PopUpContentWidth - 32
-        let qrcodeImage = UIImage.geneQRCodeImageFor(content, size: qrcodeWidth)
+        let qrcodeImage = UIImage.geneQRCodeImageFor(content, size: qrcodeWidth, isGzip: true)
         qrcodeView.imageView.image = qrcodeImage
 
         let type = ConfirmViewType.qrcodeGenerate(contentView: qrcodeView)

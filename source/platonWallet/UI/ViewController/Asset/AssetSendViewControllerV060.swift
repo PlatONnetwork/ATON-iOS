@@ -127,6 +127,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         NotificationCenter.default.addObserver(self, selector: #selector(DidUpdateAllAsset), name: Notification.Name.ATON.DidUpdateAllAsset, object: nil)
         initSubViews()
         initdata()
@@ -152,6 +153,8 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
 
         NotificationCenter.default.addObserver(self, selector: #selector(DidNodeGasPriceUpdate), name: Notification.Name.ATON.DidNodeGasPriceUpdate, object: nil)
         TransactionService.service.getGasPrice()
+
+        _ = self.checkConfirmButtonAvailable()
 
         AnalysisHelper.handleEvent(id: event_send, operation: .begin)
 
@@ -380,6 +383,9 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
         confirmView.walletName.text = wallet.address.addressDisplayInLocal() ?? "--"
         let feeString = self.totalFee().divide(by: ETHToWeiMultiplier, round: 8)
         confirmView.feeLabel.text = feeString.ATPSuffix()
+        if wallet.type == .observed {
+            confirmView.submitBtn.localizedNormalTitle =  "confirm_button_next"
+        }
 
         controller.onCompletion = { [weak self] in
             self?.doInitTransferData()
@@ -408,7 +414,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
     func showOfflineConfirmView(content: String) {
         let qrcodeView = OfflineSignatureQRCodeView()
         let qrcodeWidth = PopUpContentWidth - 32
-        let qrcodeImage = UIImage.geneQRCodeImageFor(content, size: qrcodeWidth)
+        let qrcodeImage = UIImage.geneQRCodeImageFor(content, size: qrcodeWidth, isGzip: true)
         qrcodeView.imageView.image = qrcodeImage
 
         let type = ConfirmViewType.qrcodeGenerate(contentView: qrcodeView)
@@ -485,22 +491,6 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
                         let data = try? JSONEncoder().encode(qrcodeData),
                         let content = String(data: data, encoding: .utf8) else { return }
                     self.generateQrCode = qrcodeData
-
-//                    guard
-//                        let rlp = self.generateQrCode?.rlp(),
-//                        let resultrlp = try? RLPEncoder().encode(rlp)
-//                    else { return }
-//                    let contentrlp = resultrlp.toHexString()
-//
-//
-//
-//
-//                    print(resultrlp)
-//                    print(contentrlp)
-//                    print(contentrlp.count)
-                    print("===========")
-                    print(content)
-                    print(content.count)
                     DispatchQueue.main.async {
                         self.showOfflineConfirmView(content: content)
                     }

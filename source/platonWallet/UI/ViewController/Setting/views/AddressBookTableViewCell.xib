@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -23,7 +23,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="68"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GxP-Lw-nEQ" userLabel="sepline">
-                                <rect key="frame" x="16" y="67" width="288" height="1"/>
+                                <rect key="frame" x="16" y="67" width="304" height="1"/>
                                 <color key="backgroundColor" red="0.92156862745098034" green="0.93333333333333335" blue="0.95686274509803915" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="qsK-pZ-KJ1"/>
@@ -58,7 +58,7 @@
                             <constraint firstAttribute="bottom" secondItem="GxP-Lw-nEQ" secondAttribute="bottom" id="OAv-zD-pUn"/>
                             <constraint firstAttribute="trailing" secondItem="tqy-m3-tKx" secondAttribute="trailing" constant="12" id="hBo-jv-GcM"/>
                             <constraint firstItem="tqy-m3-tKx" firstAttribute="top" secondItem="R8W-AE-Z1z" secondAttribute="top" constant="16" id="nFi-Go-Kgv"/>
-                            <constraint firstAttribute="trailing" secondItem="GxP-Lw-nEQ" secondAttribute="trailing" constant="16" id="qGC-db-ufu"/>
+                            <constraint firstAttribute="trailing" secondItem="GxP-Lw-nEQ" secondAttribute="trailing" id="qGC-db-ufu"/>
                             <constraint firstItem="Hb8-EA-uTW" firstAttribute="leading" secondItem="R8W-AE-Z1z" secondAttribute="leading" constant="16" id="smb-eJ-gWa"/>
                             <constraint firstItem="Hb8-EA-uTW" firstAttribute="centerY" secondItem="R8W-AE-Z1z" secondAttribute="centerY" id="xFG-w7-oKY"/>
                         </constraints>
@@ -77,6 +77,7 @@
             <connections>
                 <outlet property="containerView" destination="R8W-AE-Z1z" id="e8W-tt-os1"/>
                 <outlet property="icon" destination="Hb8-EA-uTW" id="pEo-P7-SgB"/>
+                <outlet property="lineIV" destination="GxP-Lw-nEQ" id="jHa-2b-Frp"/>
                 <outlet property="walletAddress" destination="txj-9p-vO6" id="ybB-1N-PhV"/>
                 <outlet property="walletName" destination="tqy-m3-tKx" id="REX-te-dcm"/>
             </connections>

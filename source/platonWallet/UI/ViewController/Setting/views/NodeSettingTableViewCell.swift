@@ -9,11 +9,6 @@
 import UIKit
 import Localize_Swift
 
-protocol NodeSettingTableViewCellDelegate: AnyObject {
-    func deleteNode(_ cell:NodeSettingTableViewCell)
-    func editNode(_ cell:NodeSettingTableViewCell)
-}
-
 class NodeSettingTableViewCell: UITableViewCell, UITextFieldDelegate {
 
     @IBOutlet weak var nodeTF: UITextField!
@@ -27,8 +22,6 @@ class NodeSettingTableViewCell: UITableViewCell, UITextFieldDelegate {
     @IBOutlet weak var hideDeleteBtnConstraint: NSLayoutConstraint!
 
     @IBOutlet weak var textFieldWidth: NSLayoutConstraint!
-
-    weak var delegate: NodeSettingTableViewCellDelegate?
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -89,17 +82,6 @@ class NodeSettingTableViewCell: UITableViewCell, UITextFieldDelegate {
             self.layoutIfNeeded()
         }
 
-    }
-
-    @IBAction func deleteNode(_ sender: Any) {
-        delegate?.deleteNode(self)
-    }
-
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.1) {
-            self.delegate?.editNode(self)
-        }
-        return true
     }
 
 }

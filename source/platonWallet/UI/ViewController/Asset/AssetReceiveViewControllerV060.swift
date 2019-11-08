@@ -104,7 +104,6 @@ class AssetReceiveViewControllerV060: BaseViewController {
         UIApplication.rootViewController().showLoadingHUD(text: Localized("SharedQRViewSaving"), animated: true)
         DispatchQueue.global().async {
             let image = UIImage.geneQRCodeImageFor(string, size: 300.0)
-//            let image = self.setupQRCodeImage(string, image: nil)
             DispatchQueue.main.async {
 
                 if let wallet = AssetVCSharedData.sharedData.selectedWallet as? Wallet {

@@ -95,6 +95,7 @@ extension AddressBookViewController: UITableViewDataSource, UITableViewDelegate,
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: AddressBookTableViewCell.self)) as! AddressBookTableViewCell
         cell.delegate = self
         cell.setUpdCell(addressInfo: dataSource![indexPath.row], isForSelectMode: selectionCompletion != nil)
+        cell.lineIV.isHidden = (indexPath.row == (dataSource?.count ?? 1) - 1)
         return cell
     }
 

@@ -184,6 +184,7 @@ class TransactionService : BaseService {
                         ptx.gas = String(txgas.quantity)
                         ptx.memo = memo
                         ptx.transactionType = 0
+                        ptx.direction = .Sent
                         TransferPersistence.add(tx: ptx)
                     }
                     self.successCompletionOnMain(obj: nil, completion: &completion)

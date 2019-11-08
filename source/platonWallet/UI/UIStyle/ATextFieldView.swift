@@ -38,9 +38,6 @@ class ATextFieldView: UIView {
 
     private var heightChange: ((ATextFieldView) -> Void)?
 
-    private var textFieldToTitleConstraint: Constraint?
-    private var feeLabelToTextFieldConstaint: Constraint?
-
     override init(frame: CGRect) {
         super.init(frame: frame)
 
@@ -52,25 +49,6 @@ class ATextFieldView: UIView {
             make.leading.top.equalToSuperview()
         }
 
-        magnitudeLabel.textColor = .black
-        magnitudeLabel.font = .systemFont(ofSize: 12)
-        magnitudeLabel.text = ""
-        addSubview(magnitudeLabel)
-        magnitudeLabel.snp.makeConstraints { make in
-            make.top.equalTo(titleLabel.snp.bottom).offset(7)
-            make.leading.equalToSuperview().offset(4)
-        }
-
-        tipLabelLeadingV.backgroundColor = UIColor(rgb: 0x1B60F3)
-        tipLabelLeadingV.isHidden = true
-        addSubview(tipLabelLeadingV)
-        tipLabelLeadingV.snp.makeConstraints { make in
-            make.leading.equalToSuperview()
-            make.width.equalTo(1)
-            make.height.equalTo(7)
-            make.centerY.equalTo(magnitudeLabel)
-        }
-
         textField.textColor = .black
         textField.font = .systemFont(ofSize: 14)
         textField.delegate = self
@@ -78,10 +56,28 @@ class ATextFieldView: UIView {
         addSubview(textField)
         textField.snp.makeConstraints { make in
             make.leading.equalToSuperview()
-            textFieldToTitleConstraint = make.top.equalTo(titleLabel.snp.bottom).offset(7).priorityHigh().constraint
-            make.top.equalTo(magnitudeLabel.snp.bottom).offset(7)
+            make.top.equalTo(titleLabel.snp.bottom).offset(7)
             make.trailing.equalToSuperview()
             make.height.equalTo(40)
+        }
+
+        magnitudeLabel.textColor = UIColor(rgb: 0x8c8c8c)
+        magnitudeLabel.font = .systemFont(ofSize: 12)
+        magnitudeLabel.text = ""
+        addSubview(magnitudeLabel)
+        magnitudeLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(12)
+            make.bottom.equalTo(textField.snp.top).offset(8)
+        }
+
+        tipLabelLeadingV.backgroundColor = UIColor(rgb: 0x1B60F3)
+        tipLabelLeadingV.isHidden = true
+        addSubview(tipLabelLeadingV)
+        tipLabelLeadingV.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(8)
+            make.width.equalTo(1)
+            make.height.equalTo(7)
+            make.centerY.equalTo(magnitudeLabel)
         }
 
         lineView.backgroundColor = UIColor(rgb: 0xd5d8df)
@@ -106,13 +102,10 @@ class ATextFieldView: UIView {
         addSubview(feeLabel)
         feeLabel.snp.makeConstraints { make in
             make.trailing.equalToSuperview()
-            feeLabelToTextFieldConstaint = make.top.equalTo(textField.snp.bottom).offset(8).priorityHigh().constraint
-            make.top.equalTo(tipsLabel.snp.bottom).offset(8).priorityLow()
+            make.top.equalTo(textField.snp.bottom).offset(8)
             make.bottom.equalToSuperview()
         }
 
-        textFieldToTitleConstraint?.uninstall()
-        feeLabelToTextFieldConstaint?.install()
         NotificationCenter.default.addObserver(self, selector: #selector(textDidBeginEditing(_:)), name: UITextField.textDidBeginEditingNotification, object: nil)
 
     }
@@ -163,8 +156,7 @@ class ATextFieldView: UIView {
         lastButton = viewWithTag(100 + actions.count - 1)
         textField.snp.remakeConstraints { make in
             make.leading.equalToSuperview()
-            textFieldToTitleConstraint = make.top.equalTo(titleLabel.snp.bottom).offset(7).priorityHigh().constraint
-            make.top.equalTo(magnitudeLabel.snp.bottom).offset(7)
+            make.top.equalTo(titleLabel.snp.bottom).offset(7)
             if let view = lastButton {
                 make.trailing.equalTo(view.snp.leading).offset(-12)
             } else {
@@ -208,20 +200,10 @@ class ATextFieldView: UIView {
 
         let magnitude = text.inputAmountForMagnitude()
         magnitudeLabel.text = magnitude
-        if magnitude == nil {
-            textFieldToTitleConstraint?.install()
-        } else {
-            textFieldToTitleConstraint?.uninstall()
-        }
         tipLabelLeadingV.isHidden = magnitude == nil
 
         //let curState = internalHeight == 65.0 ? true:false
         let res = check!(text)
-        if res.correct {
-            feeLabelToTextFieldConstaint?.install()
-        } else {
-            feeLabelToTextFieldConstaint?.uninstall()
-        }
 
         if !showErrorMsg {
             return res

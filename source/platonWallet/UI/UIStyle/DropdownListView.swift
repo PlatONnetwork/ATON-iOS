@@ -125,8 +125,8 @@ class DropdownListView: UIView {
         super.init(frame: frame)
 
         layer.shadowColor = UIColor(rgb: 0x9ca7c2).cgColor
-        layer.shadowRadius = 4.0
-        layer.shadowOffset = CGSize(width: 2, height: 2)
+        layer.shadowRadius = 2.0
+        layer.shadowOffset = CGSize(width: 1, height: 1)
         layer.shadowOpacity = 0.2
 
         addSubview(walletButton)
@@ -211,8 +211,9 @@ extension DropdownListView: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "DropdownTableViewCell") as! DropdownTableViewCell
         cell.setupCellData(for: walletsObject.getWallet(for: indexPath.row))
-        cell.toplineV.isHidden = indexPath.row != 0
-        cell.bottomlineV.isHidden = (indexPath.row == walletsObject.cellCount - 1)
+        cell.toplineV.isHidden = true
+        cell.bottomlineV.isHidden = true
+//        cell.bottomlineV.isHidden = (indexPath.row == walletsObject.cellCount - 1)
         cell.rightImageView.image = (indexPath.row == walletsObject.selectedIndex) ? UIImage(named: "iconApprove") : nil
         cell.walletNameLabel.textColor = (indexPath.row == walletsObject.selectedIndex) ? .black : UIColor(rgb: 0x898c9e)
         return cell

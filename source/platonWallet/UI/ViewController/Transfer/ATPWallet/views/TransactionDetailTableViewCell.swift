@@ -16,6 +16,7 @@ class TransactionDetailTableViewCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
 
+        titleLabel.lineBreakMode = .byCharWrapping
         titleLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
         contentView.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
@@ -23,6 +24,7 @@ class TransactionDetailTableViewCell: UITableViewCell {
             make.top.equalToSuperview()
         }
 
+        valueLabel.lineBreakMode = .byCharWrapping
         contentView.addSubview(valueLabel)
         valueLabel.snp.makeConstraints { make in
             make.trailing.equalToSuperview().offset(-16)

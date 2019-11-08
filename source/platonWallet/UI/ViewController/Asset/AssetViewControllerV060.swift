@@ -105,6 +105,7 @@ class AssetViewControllerV060: BaseViewController, PopupMenuTableDelegate {
         view.addSubview(scrollView)
         scrollView.canCancelContentTouches = true
         scrollView.delaysContentTouches = true
+        scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 300, right: 0)
 
         if #available(iOS 11.0, *) {
             scrollView.contentInsetAdjustmentBehavior = .always
@@ -199,6 +200,7 @@ class AssetViewControllerV060: BaseViewController, PopupMenuTableDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(OnBeginEditing(_:)), name: UITextField.textDidBeginEditingNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(updateWalletList), name: Notification.Name.ATON.updateWalletList, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(shouldUpdateWalletStatus), name: Notification.Name.ATON.DidNetworkStatusChange, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame(_:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
     }
 
     // MARK: - Constraint
@@ -381,50 +383,6 @@ extension AssetViewControllerV060: UIPageViewControllerDelegate, UIPageViewContr
 // MARK: - UIScrollViewDelegate
 
 extension AssetViewControllerV060: UIScrollViewDelegate, ChildScrollViewDidScrollDelegate {
-
-//    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-//        let actualPosition = scrollView.panGestureRecognizer.translation(in: scrollView.superview)
-//        if scrollView == self.scrollView{
-//
-//            if (actualPosition.y >= 0.0){
-//                print("self.scrollView Dragging down")
-//
-//            }else{
-//                print("self.scrollView Dragging up")
-////                scrollView.isScrollEnabled = true
-////                if (self.assetHeaderStyle?.0)!{
-////                    self.scrollView.isScrollEnabled = false
-////                    self.transactionVC.tableView.isScrollEnabled = true
-////                }
-//
-//            }
-//        }
-//    }
-//
-//    func scrollViewWillBeginDecelerating(_ scrollView: UIScrollView) {
-//        if scrollView.isDragging && scrollView.isDecelerating{
-//            if scrollView.contentOffset.y > CGFloat(AssetHeaderViewH) * 0.5{
-//                self.assetHeaderStyle = (true,true)
-//            }else{
-//                self.assetHeaderStyle = (false,true)
-//            }
-//        }
-//    }
-//
-//    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
-//
-//        if scrollView.panGestureRecognizer.translation(in: scrollView.superview).y > 0{
-//            if (self.assetHeaderStyle?.hide)!{
-//                self.assetHeaderStyle = (false,true)
-//            }
-//
-//        }else{
-//            if !(self.assetHeaderStyle?.hide)!{
-//                self.assetHeaderStyle = (true,true)
-//            }
-//        }
-//        return
-//    }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         //print("scrollview Didcroll:\(scrollView.contentOffset.y)")
@@ -619,6 +577,7 @@ extension AssetViewControllerV060 {
                         tx.value = amount
                         tx.transactionType = Int(type)
                         tx.toType = (type != 0) ? .contract : .address
+                        tx.direction = .Sent
                         TransferPersistence.add(tx: tx)
 
                         if index == signatureArr.count - 1 {
@@ -725,7 +684,7 @@ extension AssetViewControllerV060 {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        GuidanceViewMgr.sharedInstance.checkGuidance(page: GuidancePage.AssetViewControllerV060, presentedVC: self)
+        GuidanceViewMgr.sharedInstance.checkGuidance(page: GuidancePage.AssetViewControllerV060, presentedVC: UIApplication.shared.keyWindow?.rootViewController ?? self)
     }
 }
 
@@ -744,6 +703,22 @@ extension AssetViewControllerV060 {
         }
     }
 
+    ///keyboard notification
+    @objc func keyboardWillChangeFrame(_ notify:Notification) {
+
+        guard
+            let responderView = scrollView.firstResponder,
+            let rect = responderView.superview?.convert(responderView.frame, to: view)
+        else { return }
+
+        let endFrame = notify.userInfo!["UIKeyboardFrameEndUserInfoKey"] as! CGRect
+        if rect.maxY > endFrame.origin.y {
+            view.transform = CGAffineTransform(translationX: 0, y: -(rect.maxY - endFrame.origin.y + rect.height))
+        } else {
+            view.transform = .identity
+        }
+    }
+
     @objc func updateWalletList() {
         headerView.shouldUpdateWalletList()
 
@@ -753,4 +728,18 @@ extension AssetViewControllerV060 {
         self.checkAndSetNoWalletViewStyle()
     }
 
+}
+
+extension UIView {
+    var firstResponder: UIView? {
+        guard !isFirstResponder else { return self }
+
+        for subview in subviews {
+            if let firstResponder = subview.firstResponder {
+                return firstResponder
+            }
+        }
+
+        return nil
+    }
 }

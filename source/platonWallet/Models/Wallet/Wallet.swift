@@ -74,7 +74,7 @@ public final class Wallet: Object {
 
     convenience init(name: String, address: String) {
         self.init()
-        primaryKeyIdentifier = address + SettingService.shareInstance.getCurrentChainId()
+        primaryKeyIdentifier = address + SettingService.shareInstance.currentNodeChainId
         self.uuid = address
         self.name = name
         self.avatar = address.walletAddressLastCharacterAvatar()
@@ -84,10 +84,10 @@ public final class Wallet: Object {
 
         self.init()
         uuid = keystoreObject.address
-        primaryKeyIdentifier = keystoreObject.address + SettingService.shareInstance.getCurrentChainId()
+        primaryKeyIdentifier = keystoreObject.address + SettingService.shareInstance.currentNodeChainId
         key = keystoreObject
         keystorePath = ""
-        chainId = SettingService.shareInstance.getCurrentChainId()
+        chainId = SettingService.shareInstance.currentNodeChainId
         self.name = name
         self.avatar = keystoreObject.address.walletAddressLastCharacterAvatar()
     }

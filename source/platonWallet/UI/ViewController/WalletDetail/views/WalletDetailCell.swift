@@ -55,6 +55,8 @@ class WalletDetailCell: UITableViewCell {
         unreadTag.isHidden = true
 
         txIcon.layer.addSublayer(pendingLayer)
+        txTypeLabel.font = .systemFont(ofSize: 13.0, weight: .medium)
+        transferAmoutLabel.font = .systemFont(ofSize: 14.0, weight: .medium)
     }
 
     func updateTransferCell(transaction: Transaction?, wallet: Wallet?) {

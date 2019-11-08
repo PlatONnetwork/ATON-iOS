@@ -707,7 +707,7 @@
 
 "send_wallet_colon" = "Recipient:";
 "send_amout_colon" = "Amout:";
-"send_sendAll" = "Send all";
+"send_sendAll" = "All";
 
 "send_address_placeholder" = "Input wallet address";
 "send_amount_placeholder" = "Input Amount";
@@ -750,7 +750,7 @@
 "staking_alert_unlocked_delegate_detail" = "Locked in about 6.1 hours, the unlocked delegate has no reward.Un-delegation (i.e. withdrawal) takes immediate effect.and,the delegated LAT immediately returns to the account.";
 "staking_alert_released_delegate" = "Invalid delegations";
 "staking_alert_released_detail" = "Validator exits, the delegations is automatically released,and need user to withdraw the delegations";
-"staking_alert_annualized_rate" = "Expected annualized rate";
+"staking_alert_annualized_rate" = "Yield";
 "staking_alert_annualized_rate_detail" = "The expected annualized rate of the current validator, the Delegation rewards is distributed by the validator";
 
 "staking_validator_node_all" = "All";
@@ -784,14 +784,14 @@
 "ATextFieldView_withdraw_title" = "Amount:";
 
 "staking_doubt_delegate" = "Delegations";
-"staking_doubt_delegate_detail" = "The user keeps the delegate's Token ownership forever, and the user can withdraw the delegated token at any time.\nThe Validator's operator address and reward receiving address are not allowed for delegation";
+"staking_doubt_delegate_detail" = "The user keeps the delegate's Token ownership forever, and the user can withdraw the delegated token at any time.\nThe Validator's operator address and reward receiving address are not allowed for delegation.";
 "staking_doubt_reward" = "Rewards";
-"staking_doubt_reward_detail" = "Delegation rewards come from validation block reward,staking reward and transaction fees.Reward assigned by validator.For details on how to assign, please see the official website description of each validator.";
+"staking_doubt_reward_detail" = "Delegation rewards come from validation block reward, staking reward and transaction fees. Reward assigned by validator. For details on how to assign, please see the official website description of each validator.";
 "staking_doubt_risk" = "Risk";
 "staking_doubt_risk_detail" = "Validators would be punished for double signing or low block rate. It would indirectly affect your reward. Please select qualified validators.";
 
 "staking_doubt_undelegate" = "Note";
-"staking_doubt_undelegate_detail" = "The transaction has been successfully submitted and the delegated LAT can return to your account immediately.\nThe released delegate has to be withdrawal all at once;\nIf the remaining delegations has been less than %@LAT, it will be automatically returned all.";
+"staking_doubt_undelegate_detail" = "The transaction has been successfully submitted and the delegated LAT can return to your account immediately.\nThe Invalid delegations has to be withdrawal all at once;\nIf the remaining delegations has been less than %@LAT, it will be automatically returned all.";
 
 "staking_balance_can_used" = "Balance";
 "staking_balance_locked_position" = "Restricted balance";
@@ -908,3 +908,5 @@
 
 "delete_observed_wallet_alert_title" = "Delete Wallet";
 "delete_observed_wallet_alert_message" = "Are you sure want to delete observed wallet?";
+
+"delegate_node_details_nodata" = "No delegation information";

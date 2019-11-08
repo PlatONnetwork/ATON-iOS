@@ -18,10 +18,13 @@ class AddressBookTableViewCell: SwipeTableViewCell {
 
     @IBOutlet weak var icon: UIImageView!
 
+    @IBOutlet weak var lineIV: UIView!
+
     override func awakeFromNib() {
         super.awakeFromNib()
         self.selectionStyle = .none
         containerView.layer.masksToBounds = true
+
     }
 
     func setUpdCell(addressInfo : AddressInfo, isForSelectMode: Bool) {

@@ -120,16 +120,16 @@ class ValidatorNodeListViewController: BaseViewController, IndicatorInfoProvider
 extension ValidatorNodeListViewController {
 
     private func fetchData(_ nodeId: String?) {
-        if nodeId == nil {
-            listData.removeAll()
-        }
-
         StakingService.sharedInstance.getNodeList(controllerType: controllerType, isRankingSorted: isRankingSorted) { [weak self] (result, data) in
             
             self?.tableView.mj_header.endRefreshing()
             self?.tableView.mj_footer.endRefreshing()
             switch result {
             case .success:
+                if nodeId == nil {
+                    self?.listData.removeAll()
+                }
+
                 if let newData = data as? [Node], newData.count > 0 {
                     self?.tableView.mj_footer.resetNoMoreData()
                     self?.listData.append(contentsOf: newData)

@@ -93,7 +93,7 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         shouldUpdateDelegateData()
-        GuidanceViewMgr.sharedInstance.checkGuidance(page: GuidancePage.MyDelegatesViewController, presentedVC: self)
+        GuidanceViewMgr.sharedInstance.checkGuidance(page: GuidancePage.MyDelegatesViewController, presentedVC: UIApplication.shared.keyWindow?.rootViewController ?? self)
     }
 
     @objc func shouldUpdateDelegateData() {

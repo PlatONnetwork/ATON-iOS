@@ -18,7 +18,7 @@ struct AppConfig {
 
     struct ChainID {
         static let TEST = "103"
-        static let PRODUCT = "100"
+        static let PRODUCT = "101"
     }
 
     struct NodeURL {
@@ -96,6 +96,10 @@ struct AppConfig {
 
     struct AppInfo {
         static let appVersion = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String
+    }
+
+    struct LocalKeys {
+        static let SelectedChainIdKey = "SelectedChainIdKey"
     }
 }
 

@@ -109,7 +109,7 @@ class OfflineSignatureTransactionViewController: BaseViewController {
 
     func generateQrcodeForSignedTx(content: String) {
         let qrcodeWidth = PopUpContentWidth - 32
-        let qrcodeImage = UIImage.geneQRCodeImageFor(content, size: qrcodeWidth)
+        let qrcodeImage = UIImage.geneQRCodeImageFor(content, size: qrcodeWidth, isGzip: true)
 
         let qrcodeView = OfflineSignatureQRCodeView()
         qrcodeView.imageView.image = qrcodeImage
@@ -171,20 +171,6 @@ class OfflineSignatureTransactionViewController: BaseViewController {
             guard
                 let jsonData = try? JSONEncoder().encode(qrcodeData),
                 let jsonString = String(data: jsonData, encoding: .utf8) else { return }
-
-//            let rlp = qrcodeData.rlp()
-//            guard
-//                let resultrlp = try? RLPEncoder().encode(rlp)
-//                else { return }
-//            let contentrlp = resultrlp.toHexString()
-//
-//            print(resultrlp)
-//            print(contentrlp)
-//            print(contentrlp.count)
-            print("===========")
-            print(jsonString)
-            print(jsonString.count)
-
             self.generateQrcodeForSignedTx(content: jsonString)
         }
     }

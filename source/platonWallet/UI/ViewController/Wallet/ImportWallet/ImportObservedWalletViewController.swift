@@ -132,11 +132,6 @@ class ImportObservedWalletViewController: BaseImportWalletViewController {
 
         submitButton.style = .disable
         submitButtonTopConstaint?.deactivate()
-
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -191,7 +186,9 @@ class ImportObservedWalletViewController: BaseImportWalletViewController {
     }
 
     func checkObservedWalletTV(showError: Bool = true) -> Bool {
-        if addresstextView.text!.isEmpty {
+        guard showError else { return true }
+
+        if addresstextView.text!.isEmpty && showError {
             textViewTipLabel.text = Localized("importKeystoreVC_observed_empty_tips")
             submitButtonTopConstaint?.activate()
             textViewTipLabel.isHidden = false

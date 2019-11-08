@@ -42,17 +42,24 @@ public extension UIImage {
         return image
     }
 
-    class func geneQRCodeImageFor(_ content: String, size: CGFloat) -> UIImage? {
-        guard
-            let utf8Data = content.data(using: .utf8),
-            let gzipData = try? utf8Data.gzipped(),
-            let isolantin1String = String(data: gzipData, encoding: .isoLatin1),
-            let isolantin1Data = isolantin1String.data(using: .isoLatin1)
-        else { return nil }
+    class func geneQRCodeImageFor(_ content: String, size: CGFloat, isGzip: Bool = false) -> UIImage? {
+        guard let utf8Data = content.data(using: .utf8) else { return nil }
 
+        var qrcodeData: Data?
+        if !isGzip {
+            qrcodeData = utf8Data
+        } else {
+            guard
+                let gzipData = try? utf8Data.gzipped(),
+                let isolantin1String = String(data: gzipData, encoding: .isoLatin1),
+                let isolantin1Data = isolantin1String.data(using: .isoLatin1) else { return nil }
+            qrcodeData = isolantin1Data
+        }
+
+        guard let data = qrcodeData else { return nil }
         let filter = CIFilter(name: "CIQRCodeGenerator")
         filter?.setDefaults()
-        filter?.setValue(isolantin1Data, forKey: "inputMessage")
+        filter?.setValue(data, forKey: "inputMessage")
 
         guard let ciImage = filter?.outputImage else {
             return nil

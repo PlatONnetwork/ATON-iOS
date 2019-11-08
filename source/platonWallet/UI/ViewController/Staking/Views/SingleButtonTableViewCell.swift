@@ -84,6 +84,7 @@ class SingleButtonTableViewCell: UITableViewCell {
 
         errorLabel.font = .systemFont(ofSize: 14)
         errorLabel.textColor = UIColor(rgb: 0xff6b00)
+        errorLabel.textAlignment = .center
         errorLabel.numberOfLines = 0
         contentView.addSubview(errorLabel)
         errorLabel.snp.makeConstraints { make in

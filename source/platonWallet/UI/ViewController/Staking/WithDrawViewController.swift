@@ -183,6 +183,7 @@ extension WithDrawViewController: UITableViewDelegate, UITableViewDataSource {
             return cell
         case .walletBalances(let balanceStyle):
             let cell = tableView.dequeueReusableCell(withIdentifier: "WalletBalanceTableViewCell") as! WalletBalanceTableViewCell
+            cell.shadowView.isHidden = indexPath.row != 0
             cell.setupBalanceData(balanceStyle.balance(for: indexPath.row))
             cell.bottomlineV.isHidden = (indexPath.row == 0 || indexPath.row == balanceStyle.cellCount - 1)
             cell.rightImageView.image = indexPath.row == 0 ? UIImage(named: "3.icon_ drop-down") : indexPath.row == balanceStyle.selectedIndex + 1 ? UIImage(named: "iconApprove") : nil
@@ -422,7 +423,7 @@ extension WithDrawViewController {
     func showOfflineConfirmView(content: String) {
         let qrcodeView = OfflineSignatureQRCodeView()
         let qrcodeWidth = PopUpContentWidth - 32
-        let qrcodeImage = UIImage.geneQRCodeImageFor(content, size: qrcodeWidth)
+        let qrcodeImage = UIImage.geneQRCodeImageFor(content, size: qrcodeWidth, isGzip: true)
         qrcodeView.imageView.image = qrcodeImage
 
         let type = ConfirmViewType.qrcodeGenerate(contentView: qrcodeView)

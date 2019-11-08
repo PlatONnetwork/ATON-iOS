@@ -321,6 +321,9 @@ extension AssetTransactionViewControllerV060: UITableViewDelegate, UITableViewDa
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return }
         let tx = dataSource[selectedAddress]?[indexPath.row]
+        if tx?.txReceiptStatus == TransactionReceiptStatus.pending.rawValue {
+            tx?.direction = .Sent
+        }
         let transferVC = TransactionDetailViewController()
         transferVC.transaction = tx
         AssetViewControllerV060.pushViewController(viewController: transferVC)

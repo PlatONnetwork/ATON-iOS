@@ -19,5 +19,7 @@ class SharedQRView: UIView {
     @IBOutlet weak var qrImageView: UIImageView!
 
     override func awakeFromNib() {
+        super.awakeFromNib()
+        walletAddress.numberOfLines = 0
     }
 }
