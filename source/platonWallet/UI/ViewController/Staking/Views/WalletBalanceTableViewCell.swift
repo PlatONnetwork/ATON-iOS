@@ -34,6 +34,15 @@ class WalletBalanceTableViewCell: UITableViewCell {
         }
     }
 
+    var isSelectedCell: Bool = false {
+        didSet {
+            balanceLabel.snp.updateConstraints { make in
+                make.trailing.equalToSuperview().offset(isSelectedCell ? -44 : -16)
+            }
+        }
+    }
+
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none

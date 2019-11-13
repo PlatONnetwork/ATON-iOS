@@ -123,7 +123,7 @@ class SettingTableViewController: BaseViewController, UITableViewDelegate, UITab
                 lanL.text = "简体中文"
             }
             lanL.textColor = UIColor(rgb: 0x000000)
-            lanL.font = UIFont.systemFont(ofSize: 12)
+            lanL.font = UIFont.systemFont(ofSize: 15)
             cell.contentView.addSubview(lanL)
             lanL.snp.makeConstraints { (maker) in
                 maker.right.equalTo(rigthArrowImgV.snp.left).offset(-4)

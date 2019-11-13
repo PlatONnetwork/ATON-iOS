@@ -18,7 +18,7 @@ struct AppConfig {
 
     struct ChainID {
         static let TEST = "103"
-        static let PRODUCT = "101"
+        static let PRODUCT = "99"
     }
 
     struct NodeURL {
@@ -34,7 +34,7 @@ struct AppConfig {
         ]
         #else
         static let defaultNodesURL = [
-            (nodeURL: DefaultNodeURL_PRODUCT, desc: "SettingsVC_nodeSet_defaultProductNetwork_des", chainId: AppConfig.ChainID.PRODUCT, isSelected: false),
+            (nodeURL: DefaultNodeURL_PRODUCT, desc: "SettingsVC_nodeSet_NewBaleyworld_des", chainId: AppConfig.ChainID.PRODUCT, isSelected: false),
 //            (nodeURL: DefaultNodeURL_UAT, desc: "SettingsVC_nodeSet_defaultTestNetwork_des", chainId: AppConfig.ChainID.TEST, isSelected: true)
         ]
         #endif

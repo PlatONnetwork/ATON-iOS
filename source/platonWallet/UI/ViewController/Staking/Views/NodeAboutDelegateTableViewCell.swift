@@ -43,6 +43,10 @@ class NodeAboutDelegateTableViewCell: UITableViewCell {
         selectionStyle = .none
         backgroundColor = normal_background_color
 
+        let shadowView = UIView()
+        shadowView.backgroundColor = .white
+        contentView.addSubview(shadowView)
+
         let containerView = UIButton()
         containerView.backgroundColor = .white
         contentView.addSubview(containerView)
@@ -53,6 +57,14 @@ class NodeAboutDelegateTableViewCell: UITableViewCell {
             make.height.equalTo(172)
             make.bottom.equalToSuperview()
         }
+
+        shadowView.snp.makeConstraints { make in
+            make.edges.equalTo(containerView)
+        }
+        shadowView.layer.shadowColor = UIColor(rgb: 0x9ca7c2).cgColor
+        shadowView.layer.shadowRadius = 4.0
+        shadowView.layer.shadowOffset = CGSize(width: 2, height: 2)
+        shadowView.layer.shadowOpacity = 0.2
 
         let walletBackgroundView = UIImageView()
         walletBackgroundView.isUserInteractionEnabled = true

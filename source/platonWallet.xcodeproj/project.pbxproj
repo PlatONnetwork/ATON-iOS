@@ -61,6 +61,16 @@
 		812D94BA218FCD67002A48B0 /* LanguageSettingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812D94B9218FCD67002A48B0 /* LanguageSettingVC.swift */; };
 		812D94BD218FCFF4002A48B0 /* LanguageSettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812D94BB218FCFF4002A48B0 /* LanguageSettingTableViewCell.swift */; };
 		812D94BE218FCFF4002A48B0 /* LanguageSettingTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 812D94BC218FCFF4002A48B0 /* LanguageSettingTableViewCell.xib */; };
+		81313F4423793C0D00B7AEA9 /* UIFont+FontSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81313F4323793C0D00B7AEA9 /* UIFont+FontSize.swift */; };
+		81313F4523793C0D00B7AEA9 /* UIFont+FontSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81313F4323793C0D00B7AEA9 /* UIFont+FontSize.swift */; };
+		81313F4723795E5700B7AEA9 /* UITextField+FontSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81313F4623795E5700B7AEA9 /* UITextField+FontSize.swift */; };
+		81313F4823795E5700B7AEA9 /* UITextField+FontSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81313F4623795E5700B7AEA9 /* UITextField+FontSize.swift */; };
+		81313F4A23796DD000B7AEA9 /* UILabel+FontSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81313F4923796DD000B7AEA9 /* UILabel+FontSize.swift */; };
+		81313F4B23796DD000B7AEA9 /* UILabel+FontSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81313F4923796DD000B7AEA9 /* UILabel+FontSize.swift */; };
+		81313F4D23796F8800B7AEA9 /* UITextView+FontSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81313F4C23796F8800B7AEA9 /* UITextView+FontSize.swift */; };
+		81313F4E23796F8800B7AEA9 /* UITextView+FontSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81313F4C23796F8800B7AEA9 /* UITextView+FontSize.swift */; };
+		81313F5023797EBC00B7AEA9 /* UIButton+FontSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81313F4F23797EBC00B7AEA9 /* UIButton+FontSize.swift */; };
+		81313F5123797EBC00B7AEA9 /* UIButton+FontSize.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81313F4F23797EBC00B7AEA9 /* UIButton+FontSize.swift */; };
 		813191482235FAC1002D4A72 /* TSLViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813191472235FAC0002D4A72 /* TSLViewController.swift */; };
 		8131914F2235FB48002D4A72 /* TSLXIBViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8131914D2235FB48002D4A72 /* TSLXIBViewController.swift */; };
 		813191502235FB48002D4A72 /* TSLXIBViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8131914E2235FB48002D4A72 /* TSLXIBViewController.xib */; };
@@ -118,10 +128,6 @@
 		817ABE2221B50C2A00E8030E /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817ABE2121B50C2A00E8030E /* UIApplication+Extensions.swift */; };
 		817ABE7E21B776CC00E8030E /* UITabBar+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817ABE7D21B776CC00E8030E /* UITabBar+Extensions.swift */; };
 		817F88E72174724E0041B6A5 /* CreateIndividualWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 817F88E62174724E0041B6A5 /* CreateIndividualWalletViewController.swift */; };
-		81806F532269B7A00072026A /* UIButton+AspectsScaling.m in Sources */ = {isa = PBXBuildFile; fileRef = 81806F522269B7A00072026A /* UIButton+AspectsScaling.m */; };
-		81806F562269B9830072026A /* UILabel+Aspects.m in Sources */ = {isa = PBXBuildFile; fileRef = 81806F552269B9830072026A /* UILabel+Aspects.m */; };
-		81806F592269BB2C0072026A /* UITextField+AspectsScaling.m in Sources */ = {isa = PBXBuildFile; fileRef = 81806F582269BB2C0072026A /* UITextField+AspectsScaling.m */; };
-		81806F5C2269BB410072026A /* UITextView+AspectsScaling.m in Sources */ = {isa = PBXBuildFile; fileRef = 81806F5B2269BB410072026A /* UITextView+AspectsScaling.m */; };
 		8184BB5F2325EDD000B5D3E1 /* platon071Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8184BB5E2325EDD000B5D3E1 /* platon071Tests.swift */; };
 		818A9136217F59E600D03D57 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818A9135217F59E600D03D57 /* File.swift */; };
 		818A913B2181B7DF00D03D57 /* Web3Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818A913A2181B7DF00D03D57 /* Web3Helper.swift */; };
@@ -218,7 +224,6 @@
 		81B589AA235DA1FC00816B4E /* SendInputTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811AB2BC22EED6BB00284F1A /* SendInputTableViewCell.swift */; };
 		81B589AB235DA1FC00816B4E /* WebCommonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F1AFC522FADA2F00A74C00 /* WebCommonViewController.swift */; };
 		81B589AC235DA1FC00816B4E /* TransactionDetailHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818CFA5B22F984DA00565F2D /* TransactionDetailHeaderView.swift */; };
-		81B589AE235DA1FC00816B4E /* UITextView+AspectsScaling.m in Sources */ = {isa = PBXBuildFile; fileRef = 81806F5B2269BB410072026A /* UITextView+AspectsScaling.m */; };
 		81B589AF235DA1FC00816B4E /* DelegateDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D7E27022E8690A0069CDED /* DelegateDetailViewController.swift */; };
 		81B589B0235DA1FC00816B4E /* SingleButtonTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811AB2C022EEE1D200284F1A /* SingleButtonTableViewCell.swift */; };
 		81B589B1235DA1FC00816B4E /* LanguageSettingTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812D94BB218FCFF4002A48B0 /* LanguageSettingTableViewCell.swift */; };
@@ -260,7 +265,6 @@
 		81B589D5235DA1FC00816B4E /* MnemonicGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81718D8C22312F9C00DB04F6 /* MnemonicGridView.swift */; };
 		81B589D6235DA1FC00816B4E /* AssetNavigationBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FCCCE02179B6710052FC29 /* AssetNavigationBarView.swift */; };
 		81B589D7235DA1FC00816B4E /* TransactionListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8115BEAB218B1DDA009FFE3B /* TransactionListViewController.swift */; };
-		81B589D8235DA1FC00816B4E /* UIButton+AspectsScaling.m in Sources */ = {isa = PBXBuildFile; fileRef = 81806F522269B7A00072026A /* UIButton+AspectsScaling.m */; };
 		81B589D9235DA1FC00816B4E /* CreateWalletSuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ADE4506217ED02E006F1C81 /* CreateWalletSuccessViewController.swift */; };
 		81B589DA235DA1FC00816B4E /* TransferSwitchWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8120029221A3EB390050E1B0 /* TransferSwitchWallet.swift */; };
 		81B589DB235DA1FC00816B4E /* WalletEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A25B9B92189B09200B9433A /* WalletEmptyView.swift */; };
@@ -278,7 +282,6 @@
 		81B589E7235DA1FC00816B4E /* StakingLabelViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8159690822E70A430085195C /* StakingLabelViewCell.swift */; };
 		81B589E8235DA1FC00816B4E /* CustomPickerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A79A08B219BCA74000EB4C5 /* CustomPickerView.swift */; };
 		81B589E9235DA1FC00816B4E /* PasswordStrengthView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A25B9B0218805D800B9433A /* PasswordStrengthView.swift */; };
-		81B589EA235DA1FC00816B4E /* UITextField+AspectsScaling.m in Sources */ = {isa = PBXBuildFile; fileRef = 81806F582269BB2C0072026A /* UITextField+AspectsScaling.m */; };
 		81B589EB235DA1FC00816B4E /* MainTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FCCCF02179B6710052FC29 /* MainTabBarViewController.swift */; };
 		81B589EC235DA1FC00816B4E /* SettingTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE31415218BEE1D00B5433F /* SettingTableViewController.swift */; };
 		81B589ED235DA1FC00816B4E /* WalletSelectionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE3143621917C3600B5433F /* WalletSelectionTableViewCell.swift */; };
@@ -344,7 +347,6 @@
 		81B58A2A235DA1FC00816B4E /* SharedCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814980F721913AA7009F99EE /* SharedCollectionViewCell.swift */; };
 		81B58A2B235DA1FC00816B4E /* QRDisplayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818D74ED21843A8900EB1402 /* QRDisplayViewController.swift */; };
 		81B58A2C235DA1FC00816B4E /* WalletTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811AB2B622EECDEF00284F1A /* WalletTableViewCell.swift */; };
-		81B58A2D235DA1FC00816B4E /* UILabel+Aspects.m in Sources */ = {isa = PBXBuildFile; fileRef = 81806F552269B9830072026A /* UILabel+Aspects.m */; };
 		81B58A2E235DA1FC00816B4E /* PopupDialogContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF9AC122182E04000E97F07 /* PopupDialogContainerView.swift */; };
 		81B58A2F235DA1FC00816B4E /* PopupDialogOverlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF9AC092182E04000E97F07 /* PopupDialogOverlayView.swift */; };
 		81B58A30235DA1FC00816B4E /* SettingFooter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 814980FB2191714D009F99EE /* SettingFooter.swift */; };
@@ -706,6 +708,11 @@
 		812D94B9218FCD67002A48B0 /* LanguageSettingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageSettingVC.swift; sourceTree = "<group>"; };
 		812D94BB218FCFF4002A48B0 /* LanguageSettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LanguageSettingTableViewCell.swift; sourceTree = "<group>"; };
 		812D94BC218FCFF4002A48B0 /* LanguageSettingTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LanguageSettingTableViewCell.xib; sourceTree = "<group>"; };
+		81313F4323793C0D00B7AEA9 /* UIFont+FontSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+FontSize.swift"; sourceTree = "<group>"; };
+		81313F4623795E5700B7AEA9 /* UITextField+FontSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+FontSize.swift"; sourceTree = "<group>"; };
+		81313F4923796DD000B7AEA9 /* UILabel+FontSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+FontSize.swift"; sourceTree = "<group>"; };
+		81313F4C23796F8800B7AEA9 /* UITextView+FontSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextView+FontSize.swift"; sourceTree = "<group>"; };
+		81313F4F23797EBC00B7AEA9 /* UIButton+FontSize.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+FontSize.swift"; sourceTree = "<group>"; };
 		813191472235FAC0002D4A72 /* TSLViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TSLViewController.swift; sourceTree = "<group>"; };
 		8131914D2235FB48002D4A72 /* TSLXIBViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TSLXIBViewController.swift; sourceTree = "<group>"; };
 		8131914E2235FB48002D4A72 /* TSLXIBViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TSLXIBViewController.xib; sourceTree = "<group>"; };
@@ -763,14 +770,6 @@
 		817ABE2121B50C2A00E8030E /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
 		817ABE7D21B776CC00E8030E /* UITabBar+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITabBar+Extensions.swift"; sourceTree = "<group>"; };
 		817F88E62174724E0041B6A5 /* CreateIndividualWalletViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateIndividualWalletViewController.swift; sourceTree = "<group>"; };
-		81806F512269B7A00072026A /* UIButton+AspectsScaling.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIButton+AspectsScaling.h"; sourceTree = "<group>"; };
-		81806F522269B7A00072026A /* UIButton+AspectsScaling.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIButton+AspectsScaling.m"; sourceTree = "<group>"; };
-		81806F542269B9830072026A /* UILabel+Aspects.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UILabel+Aspects.h"; sourceTree = "<group>"; };
-		81806F552269B9830072026A /* UILabel+Aspects.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UILabel+Aspects.m"; sourceTree = "<group>"; };
-		81806F572269BB2C0072026A /* UITextField+AspectsScaling.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UITextField+AspectsScaling.h"; sourceTree = "<group>"; };
-		81806F582269BB2C0072026A /* UITextField+AspectsScaling.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UITextField+AspectsScaling.m"; sourceTree = "<group>"; };
-		81806F5A2269BB410072026A /* UITextView+AspectsScaling.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UITextView+AspectsScaling.h"; sourceTree = "<group>"; };
-		81806F5B2269BB410072026A /* UITextView+AspectsScaling.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UITextView+AspectsScaling.m"; sourceTree = "<group>"; };
 		8184BB5E2325EDD000B5D3E1 /* platon071Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = platon071Tests.swift; sourceTree = "<group>"; };
 		818A9135217F59E600D03D57 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		818A913A2181B7DF00D03D57 /* Web3Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Web3Helper.swift; sourceTree = "<group>"; };
@@ -801,7 +800,6 @@
 		81B58A9D235DA1FC00816B4E /* platonWalletUAT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = platonWalletUAT.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		81B58A9E235DA1FD00816B4E /* platonWalletUAT-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "platonWalletUAT-Info.plist"; path = "/Users/ned/Documents/yuham/ios/platon/ATON-iOS/source/platonWalletUAT-Info.plist"; sourceTree = "<absolute>"; };
 		81B5CE70224332C500ACFE96 /* UITextFieldWithSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldWithSearch.swift; sourceTree = "<group>"; };
-		81C1120D21AFBFDE00003E59 /* Router.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Router.swift; sourceTree = "<group>"; };
 		81C88E0121746B39005F17F7 /* platonWallet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = platonWallet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		81C88E0421746B39005F17F7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		81C88E0621746B39005F17F7 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -1530,25 +1528,21 @@
 				818D74F321845CC800EB1402 /* PopupView */,
 				812D94AE218C3168002A48B0 /* TableViewEmptyView */,
 				819A52312190661D00E4C500 /* UIDevice+Extensions.swift */,
-				81C1120D21AFBFDE00003E59 /* Router.swift */,
 				817ABE2121B50C2A00E8030E /* UIApplication+Extensions.swift */,
 				817ABE7D21B776CC00E8030E /* UITabBar+Extensions.swift */,
 				812489E221BF4D2A000C2F03 /* Array+sort.swift */,
 				9A2DA84822561AD200368212 /* CustomLoading.swift */,
-				81806F542269B9830072026A /* UILabel+Aspects.h */,
-				81806F552269B9830072026A /* UILabel+Aspects.m */,
-				81806F512269B7A00072026A /* UIButton+AspectsScaling.h */,
-				81806F522269B7A00072026A /* UIButton+AspectsScaling.m */,
-				81806F572269BB2C0072026A /* UITextField+AspectsScaling.h */,
-				81806F582269BB2C0072026A /* UITextField+AspectsScaling.m */,
-				81806F5A2269BB410072026A /* UITextView+AspectsScaling.h */,
-				81806F5B2269BB410072026A /* UITextView+AspectsScaling.m */,
 				81C98FC322A5224F004B1668 /* MJRefreshStateHeader+Localize.h */,
 				81C98FC422A5224F004B1668 /* MJRefreshStateHeader+Localize.m */,
 				81C98FC922A529E7004B1668 /* MJRefreshAutoStateFooter+Localize.h */,
 				81C98FCA22A529E7004B1668 /* MJRefreshAutoStateFooter+Localize.m */,
 				81C98FC622A5279E004B1668 /* NSBundle+Hook_MJ.h */,
 				81C98FC722A5279E004B1668 /* NSBundle+Hook_MJ.m */,
+				81313F4323793C0D00B7AEA9 /* UIFont+FontSize.swift */,
+				81313F4623795E5700B7AEA9 /* UITextField+FontSize.swift */,
+				81313F4923796DD000B7AEA9 /* UILabel+FontSize.swift */,
+				81313F4C23796F8800B7AEA9 /* UITextView+FontSize.swift */,
+				81313F4F23797EBC00B7AEA9 /* UIButton+FontSize.swift */,
 				8162F7AD22670F4B001726C1 /* platonWallet-Bridging-Header.h */,
 			);
 			path = Utilities;
@@ -2609,11 +2603,13 @@
 				81B58969235DA1FC00816B4E /* UITextField+Extensions.swift in Sources */,
 				81B5896A235DA1FC00816B4E /* MnemonicTextField.swift in Sources */,
 				81B5896B235DA1FC00816B4E /* PAlertController.swift in Sources */,
+				81313F5123797EBC00B7AEA9 /* UIButton+FontSize.swift in Sources */,
 				81B5896C235DA1FC00816B4E /* layout.swift in Sources */,
 				81B5896D235DA1FC00816B4E /* ValidatorNodesViewController.swift in Sources */,
 				81B5896E235DA1FC00816B4E /* SharedView.swift in Sources */,
 				81B5896F235DA1FC00816B4E /* DelegateModel+Extension.swift in Sources */,
 				81B58970235DA1FC00816B4E /* HDPath.swift in Sources */,
+				81313F4823795E5700B7AEA9 /* UITextField+FontSize.swift in Sources */,
 				81B58971235DA1FC00816B4E /* OfflineSignatureTransactionViewController.swift in Sources */,
 				81B58972235DA1FC00816B4E /* MyDelegateHeaderView.swift in Sources */,
 				81B58973235DA1FC00816B4E /* AssetPageViewController.swift in Sources */,
@@ -2675,7 +2671,6 @@
 				81B589AA235DA1FC00816B4E /* SendInputTableViewCell.swift in Sources */,
 				81B589AB235DA1FC00816B4E /* WebCommonViewController.swift in Sources */,
 				81B589AC235DA1FC00816B4E /* TransactionDetailHeaderView.swift in Sources */,
-				81B589AE235DA1FC00816B4E /* UITextView+AspectsScaling.m in Sources */,
 				81B589AF235DA1FC00816B4E /* DelegateDetailViewController.swift in Sources */,
 				81B589B0235DA1FC00816B4E /* SingleButtonTableViewCell.swift in Sources */,
 				81B589B1235DA1FC00816B4E /* LanguageSettingTableViewCell.swift in Sources */,
@@ -2717,7 +2712,6 @@
 				81B589D5235DA1FC00816B4E /* MnemonicGridView.swift in Sources */,
 				81B589D6235DA1FC00816B4E /* AssetNavigationBarView.swift in Sources */,
 				81B589D7235DA1FC00816B4E /* TransactionListViewController.swift in Sources */,
-				81B589D8235DA1FC00816B4E /* UIButton+AspectsScaling.m in Sources */,
 				81B589D9235DA1FC00816B4E /* CreateWalletSuccessViewController.swift in Sources */,
 				81B589DA235DA1FC00816B4E /* TransferSwitchWallet.swift in Sources */,
 				81B589DB235DA1FC00816B4E /* WalletEmptyView.swift in Sources */,
@@ -2735,7 +2729,6 @@
 				81B589E7235DA1FC00816B4E /* StakingLabelViewCell.swift in Sources */,
 				81B589E8235DA1FC00816B4E /* CustomPickerView.swift in Sources */,
 				81B589E9235DA1FC00816B4E /* PasswordStrengthView.swift in Sources */,
-				81B589EA235DA1FC00816B4E /* UITextField+AspectsScaling.m in Sources */,
 				81B589EB235DA1FC00816B4E /* MainTabBarViewController.swift in Sources */,
 				81B589EC235DA1FC00816B4E /* SettingTableViewController.swift in Sources */,
 				81B589ED235DA1FC00816B4E /* WalletSelectionTableViewCell.swift in Sources */,
@@ -2795,14 +2788,15 @@
 				81B58A23235DA1FC00816B4E /* PlatonTableView.swift in Sources */,
 				81B58A24235DA1FC00816B4E /* PButton.swift in Sources */,
 				81B58A25235DA1FC00816B4E /* PLevelSlider.swift in Sources */,
+				81313F4E23796F8800B7AEA9 /* UITextView+FontSize.swift in Sources */,
 				81B58A26235DA1FC00816B4E /* CommunityViewController.swift in Sources */,
 				81B58A27235DA1FC00816B4E /* StakingMainViewController.swift in Sources */,
+				81313F4B23796DD000B7AEA9 /* UILabel+FontSize.swift in Sources */,
 				81B58A28235DA1FC00816B4E /* UIStyle.swift in Sources */,
 				81B58A29235DA1FC00816B4E /* PTSSwipeDirection.swift in Sources */,
 				81B58A2A235DA1FC00816B4E /* SharedCollectionViewCell.swift in Sources */,
 				81B58A2B235DA1FC00816B4E /* QRDisplayViewController.swift in Sources */,
 				81B58A2C235DA1FC00816B4E /* WalletTableViewCell.swift in Sources */,
-				81B58A2D235DA1FC00816B4E /* UILabel+Aspects.m in Sources */,
 				81B58A2E235DA1FC00816B4E /* PopupDialogContainerView.swift in Sources */,
 				81B58A2F235DA1FC00816B4E /* PopupDialogOverlayView.swift in Sources */,
 				81B58A30235DA1FC00816B4E /* SettingFooter.swift in Sources */,
@@ -2814,6 +2808,7 @@
 				81B58A35235DA1FC00816B4E /* CommonService.swift in Sources */,
 				81B58A36235DA1FC00816B4E /* UIScrollView+GestureConflict.swift in Sources */,
 				81B58A37235DA1FC00816B4E /* AddressBookTableViewCell.swift in Sources */,
+				81313F4523793C0D00B7AEA9 /* UIFont+FontSize.swift in Sources */,
 				81B58A38235DA1FC00816B4E /* NodeModel+Extension.swift in Sources */,
 				81B58A39235DA1FC00816B4E /* AssetHeaderViewV060.swift in Sources */,
 				81B58A3A235DA1FC00816B4E /* PTSPagerTabStripError.swift in Sources */,
@@ -2862,11 +2857,13 @@
 				9ADE4501217DDA27006F1C81 /* UITextField+Extensions.swift in Sources */,
 				81718D8B222F6F6500DB04F6 /* MnemonicTextField.swift in Sources */,
 				9AF9AC242182E19600E97F07 /* PAlertController.swift in Sources */,
+				81313F5023797EBC00B7AEA9 /* UIButton+FontSize.swift in Sources */,
 				812002C221A3EB390050E1B0 /* layout.swift in Sources */,
 				815968FF22E6F6F50085195C /* ValidatorNodesViewController.swift in Sources */,
 				814980F42191393C009F99EE /* SharedView.swift in Sources */,
 				81F5123D22FEE812005F3BDF /* DelegateModel+Extension.swift in Sources */,
 				9A56557D2176CB05002A1F6C /* HDPath.swift in Sources */,
+				81313F4723795E5700B7AEA9 /* UITextField+FontSize.swift in Sources */,
 				8141E672233A15B2001A9351 /* OfflineSignatureTransactionViewController.swift in Sources */,
 				81D7E26322E836E80069CDED /* MyDelegateHeaderView.swift in Sources */,
 				819333FF223FD08600DCFD93 /* AssetPageViewController.swift in Sources */,
@@ -2928,7 +2925,6 @@
 				811AB2BD22EED6BB00284F1A /* SendInputTableViewCell.swift in Sources */,
 				81F1AFC622FADA2F00A74C00 /* WebCommonViewController.swift in Sources */,
 				818CFA5C22F984DA00565F2D /* TransactionDetailHeaderView.swift in Sources */,
-				81806F5C2269BB410072026A /* UITextView+AspectsScaling.m in Sources */,
 				81D7E27122E8690A0069CDED /* DelegateDetailViewController.swift in Sources */,
 				811AB2C122EEE1D200284F1A /* SingleButtonTableViewCell.swift in Sources */,
 				812D94BD218FCFF4002A48B0 /* LanguageSettingTableViewCell.swift in Sources */,
@@ -2970,7 +2966,6 @@
 				81718D8D22312F9C00DB04F6 /* MnemonicGridView.swift in Sources */,
 				81FCCCF22179B6710052FC29 /* AssetNavigationBarView.swift in Sources */,
 				8115BEAC218B1DDA009FFE3B /* TransactionListViewController.swift in Sources */,
-				81806F532269B7A00072026A /* UIButton+AspectsScaling.m in Sources */,
 				9ADE4507217ED02E006F1C81 /* CreateWalletSuccessViewController.swift in Sources */,
 				812002AF21A3EB390050E1B0 /* TransferSwitchWallet.swift in Sources */,
 				9A25B9BA2189B09200B9433A /* WalletEmptyView.swift in Sources */,
@@ -2988,7 +2983,6 @@
 				8159690922E70A430085195C /* StakingLabelViewCell.swift in Sources */,
 				9A79A08C219BCA74000EB4C5 /* CustomPickerView.swift in Sources */,
 				9A25B9B1218805D800B9433A /* PasswordStrengthView.swift in Sources */,
-				81806F592269BB2C0072026A /* UITextField+AspectsScaling.m in Sources */,
 				81FCCCFC2179B6710052FC29 /* MainTabBarViewController.swift in Sources */,
 				9AE31417218BEE1D00B5433F /* SettingTableViewController.swift in Sources */,
 				9AE3143821917C3600B5433F /* WalletSelectionTableViewCell.swift in Sources */,
@@ -3048,14 +3042,15 @@
 				812D94B0218C3169002A48B0 /* PlatonTableView.swift in Sources */,
 				81EE99CF2175F4E1008DF8CB /* PButton.swift in Sources */,
 				9ADB60C2222F95C40044918D /* PLevelSlider.swift in Sources */,
+				81313F4D23796F8800B7AEA9 /* UITextView+FontSize.swift in Sources */,
 				811AB2D922F18EAA00284F1A /* CommunityViewController.swift in Sources */,
 				815968FD22E6F58F0085195C /* StakingMainViewController.swift in Sources */,
+				81313F4A23796DD000B7AEA9 /* UILabel+FontSize.swift in Sources */,
 				81EE99C62175E563008DF8CB /* UIStyle.swift in Sources */,
 				81D7E24522E7F5D70069CDED /* PTSSwipeDirection.swift in Sources */,
 				814980F921913AA7009F99EE /* SharedCollectionViewCell.swift in Sources */,
 				818D74EE21843A8900EB1402 /* QRDisplayViewController.swift in Sources */,
 				811AB2B722EECDEF00284F1A /* WalletTableViewCell.swift in Sources */,
-				81806F562269B9830072026A /* UILabel+Aspects.m in Sources */,
 				9AF9AC222182E04000E97F07 /* PopupDialogContainerView.swift in Sources */,
 				9AF9AC192182E04000E97F07 /* PopupDialogOverlayView.swift in Sources */,
 				814980FC2191714D009F99EE /* SettingFooter.swift in Sources */,
@@ -3067,6 +3062,7 @@
 				9AD11DDD21806C2D002CD905 /* CommonService.swift in Sources */,
 				81B58961235AE2CC00816B4E /* UIScrollView+GestureConflict.swift in Sources */,
 				81E2E84C2186A811008B7504 /* AddressBookTableViewCell.swift in Sources */,
+				81313F4423793C0D00B7AEA9 /* UIFont+FontSize.swift in Sources */,
 				81ACB9CA2301371900BB460B /* NodeModel+Extension.swift in Sources */,
 				9ADB60AA222E637C0044918D /* AssetHeaderViewV060.swift in Sources */,
 				81D7E25122E7F6B10069CDED /* PTSPagerTabStripError.swift in Sources */,

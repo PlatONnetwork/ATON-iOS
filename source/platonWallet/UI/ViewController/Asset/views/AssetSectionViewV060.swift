@@ -238,7 +238,7 @@ class AssetSectionViewV060: UIView {
     func updateWaleltInfo() {
         guard AssetVCSharedData.sharedData.selectedWallet != nil else {
             self.walletName.text = "--"
-            self.balanceLabel.text = "--"
+            self.balanceLabel.text = "***"
             self.walletAvatar.setImage(UIImage(), for: .normal)
             self.backupContainer.isHidden = true
             return

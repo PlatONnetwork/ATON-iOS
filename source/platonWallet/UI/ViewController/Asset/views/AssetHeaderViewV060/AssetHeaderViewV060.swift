@@ -61,7 +61,7 @@ class AssetHeaderViewV060: UIView {
         }
         if isHide {
             hideAssetButton.setImage(UIImage(named: "pwdInvisable"), for: .normal)
-            assetLabel.text = "--"
+            assetLabel.text = "***"
             didUpdateAllAsset()
         } else {
             hideAssetButton.setImage(UIImage(named: "pwdvisable"), for: .normal)
@@ -143,7 +143,7 @@ extension AssetHeaderViewV060: UICollectionViewDelegate, UICollectionViewDataSou
 
         if let assetIsHide = UserDefaults.standard.object(forKey: AssetHidingStatus) as? Bool {
             if assetIsHide {
-                assetLabel.text = "--"
+                assetLabel.text = "***"
                 return
             }
         }

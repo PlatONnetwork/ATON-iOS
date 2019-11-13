@@ -29,6 +29,7 @@ class AppFramework {
         modulesConfigure()
 
         UIButton.methodExchange()
+        UIFont.methodExchange()
         return true
     }
 

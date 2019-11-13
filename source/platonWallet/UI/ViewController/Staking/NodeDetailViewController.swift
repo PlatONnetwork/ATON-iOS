@@ -44,6 +44,11 @@ class NodeDetailViewController: BaseViewController {
             make.height.equalTo(236)
         }
 
+        nodeInfoView.layer.shadowColor = UIColor(rgb: 0x9ca7c2).cgColor
+        nodeInfoView.layer.shadowRadius = 4.0
+        nodeInfoView.layer.shadowOffset = CGSize(width: 2, height: 2)
+        nodeInfoView.layer.shadowOpacity = 0.2
+
         let institutionalTipLabel = UILabel()
         institutionalTipLabel.text = Localized("statking_validator_Institutional")
         institutionalTipLabel.textColor = common_darkGray_color

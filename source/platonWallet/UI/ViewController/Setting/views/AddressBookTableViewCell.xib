@@ -23,7 +23,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="68"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GxP-Lw-nEQ" userLabel="sepline">
-                                <rect key="frame" x="16" y="67" width="304" height="1"/>
+                                <rect key="frame" x="50" y="67" width="270" height="1"/>
                                 <color key="backgroundColor" red="0.92156862745098034" green="0.93333333333333335" blue="0.95686274509803915" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="1" id="qsK-pZ-KJ1"/>
@@ -51,7 +51,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="tqy-m3-tKx" firstAttribute="leading" secondItem="Hb8-EA-uTW" secondAttribute="trailing" constant="10" id="3Jr-SR-eqB"/>
-                            <constraint firstItem="GxP-Lw-nEQ" firstAttribute="leading" secondItem="R8W-AE-Z1z" secondAttribute="leading" constant="16" id="6G8-YK-PgG"/>
+                            <constraint firstItem="GxP-Lw-nEQ" firstAttribute="leading" secondItem="tqy-m3-tKx" secondAttribute="leading" id="6G8-YK-PgG"/>
                             <constraint firstAttribute="trailing" secondItem="txj-9p-vO6" secondAttribute="trailing" constant="12" id="Apl-LU-sG3"/>
                             <constraint firstItem="txj-9p-vO6" firstAttribute="top" secondItem="tqy-m3-tKx" secondAttribute="bottom" constant="5" id="E5Z-QK-9t8"/>
                             <constraint firstItem="txj-9p-vO6" firstAttribute="leading" secondItem="Hb8-EA-uTW" secondAttribute="trailing" constant="10" id="HL7-bl-Hp7"/>

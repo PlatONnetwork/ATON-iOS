@@ -205,6 +205,7 @@ extension DelegateViewController: UITableViewDelegate, UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: "WalletBalanceTableViewCell") as! WalletBalanceTableViewCell
             cell.setupBalanceData(balanceStyle.balance(for: indexPath.row))
             cell.bottomlineV.isHidden = (indexPath.row == 0 || indexPath.row == balanceStyle.cellCount - 1)
+            cell.isSelectedCell = (balanceStyle.balances.count <= 1) ? false : indexPath.row == 0 ? true : indexPath.row == balanceStyle.selectedIndex + 1 ? true : false
             cell.rightImageView.image = (balanceStyle.balances.count <= 1) ? nil :
                 indexPath.row == 0 ? UIImage(named: "3.icon_ drop-down") : indexPath.row == balanceStyle.selectedIndex + 1 ? UIImage(named: "iconApprove") : nil
             cell.isTopCell = indexPath.row == 0

@@ -186,30 +186,35 @@ class ImportObservedWalletViewController: BaseImportWalletViewController {
     }
 
     func checkObservedWalletTV(showError: Bool = true) -> Bool {
-        guard showError else { return true }
 
-        if addresstextView.text!.isEmpty && showError {
-            textViewTipLabel.text = Localized("importKeystoreVC_observed_empty_tips")
-            submitButtonTopConstaint?.activate()
-            textViewTipLabel.isHidden = false
-            self.view.layoutIfNeeded()
+        if addresstextView.text!.isEmpty {
+            if showError {
+                textViewTipLabel.text = Localized("importKeystoreVC_observed_empty_tips")
+                submitButtonTopConstaint?.activate()
+                textViewTipLabel.isHidden = false
+                self.view.layoutIfNeeded()
+            }
             return false
         }
 
         if !addresstextView.text!.is40ByteAddress() {
-            textViewTipLabel.text = Localized("importKeystoreVC_observed_invalid_tips")
-            submitButtonTopConstaint?.activate()
-            textViewTipLabel.isHidden = false
-            self.view.layoutIfNeeded()
+            if showError {
+                textViewTipLabel.text = Localized("importKeystoreVC_observed_invalid_tips")
+                submitButtonTopConstaint?.activate()
+                textViewTipLabel.isHidden = false
+                self.view.layoutIfNeeded()
+            }
             return false
         }
 
         let addresses = (AssetVCSharedData.sharedData.walletList as! [Wallet]).map { $0.address.add0x().lowercased() }
         if addresses.contains(addresstextView.text!.add0x().lowercased()) {
-            textViewTipLabel.text = Localized("importKeystoreVC_observed_existed_tips")
-            submitButtonTopConstaint?.activate()
-            textViewTipLabel.isHidden = false
-            self.view.layoutIfNeeded()
+            if showError {
+                textViewTipLabel.text = Localized("importKeystoreVC_observed_existed_tips")
+                submitButtonTopConstaint?.activate()
+                textViewTipLabel.isHidden = false
+                self.view.layoutIfNeeded()
+            }
             return false
         }
 

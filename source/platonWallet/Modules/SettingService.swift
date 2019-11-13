@@ -14,7 +14,9 @@ class SettingService {
 
     var currentNodeChainId: String {
         let standard = UserDefaults.standard
-        guard let chainId = standard.string(forKey: AppConfig.LocalKeys.SelectedChainIdKey) else {
+        let defaultChainIds = AppConfig.NodeURL.defaultNodesURL.map { $0.chainId }
+        guard
+            let chainId = standard.string(forKey: AppConfig.LocalKeys.SelectedChainIdKey), defaultChainIds.contains(chainId) else {
             if let defaultNode = AppConfig.NodeURL.defaultNodesURL.first(where: { $0.isSelected == true }) {
                 standard.set(defaultNode.chainId, forKey: AppConfig.LocalKeys.SelectedChainIdKey)
                 standard.synchronize()

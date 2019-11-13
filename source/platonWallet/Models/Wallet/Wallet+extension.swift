@@ -49,7 +49,7 @@ extension Wallet {
 
     func balanceDescriptionForDisplayAsset() -> String {
         let balanceVisiable = UserDefaults.standard.object(forKey: AssetHidingStatus) as? Bool
-        return balanceVisiable == true ? "--" : balanceDescription()
+        return balanceVisiable == true ? "***" : balanceDescription()
     }
 
     func balanceDescription() -> String {

@@ -53,7 +53,7 @@ class DelegateRecordMainViewController: ButtonBarPagerTabStripViewController {
 
         let label = UILabel(frame: CGRect(x: 25, y: 0, width: 200, height: 44))
         label.textColor = .black
-        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         label.localizedText = localizedText
         label.tag = titleLabelTag
 

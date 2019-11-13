@@ -48,7 +48,7 @@
                             <rect key="frame" x="0.0" y="0.0" width="343" height="40"/>
                             <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
                             <textInputTraits key="textInputTraits"/>
                             <userDefinedRuntimeAttributes>
                                 <userDefinedRuntimeAttribute type="string" keyPath="LocalizePlaceholder" value="wallet_nameInput_placeholder"/>
@@ -83,7 +83,7 @@
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="ZIk-sY-ANP"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <textInputTraits key="textInputTraits"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="string" keyPath="LocalizePlaceholder" value="wallet_pswInput_placeholder"/>
@@ -99,7 +99,7 @@
                     <constraints>
                         <constraint firstAttribute="height" constant="43" id="L1i-Cx-1Es"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <textInputTraits key="textInputTraits"/>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="string" keyPath="LocalizePlaceholder" value="wallet_pswConfirmInput_placeholder"/>

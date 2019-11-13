@@ -36,6 +36,10 @@ class MyDelegateViewCell: UITableViewCell {
         selectionStyle = .none
         backgroundColor = normal_background_color
 
+        let shadowView = UIView()
+        shadowView.backgroundColor = .white
+        contentView.addSubview(shadowView)
+
         let containerView = UIButton()
         containerView.addTarget(self, action: #selector(containerTapAction), for: .touchUpInside)
         containerView.backgroundColor = .white
@@ -47,6 +51,14 @@ class MyDelegateViewCell: UITableViewCell {
             make.height.equalTo(128)
             make.bottom.equalToSuperview()
         }
+
+        shadowView.snp.makeConstraints { make in
+            make.edges.equalTo(containerView)
+        }
+        shadowView.layer.shadowColor = UIColor(rgb: 0x9ca7c2).cgColor
+        shadowView.layer.shadowRadius = 4.0
+        shadowView.layer.shadowOffset = CGSize(width: 2, height: 2)
+        shadowView.layer.shadowOpacity = 0.2
 
         let walletBackgroundView = UIImageView()
         walletBackgroundView.image = UIImage(named: "bg_staking_wallet_img")?.resizableImage(withCapInsets: UIEdgeInsets(top: 3, left: 3, bottom: 3, right: 3))

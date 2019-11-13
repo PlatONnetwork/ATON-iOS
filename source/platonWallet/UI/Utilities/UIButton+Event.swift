@@ -11,7 +11,7 @@ import UIKit
 
 extension UIButton {
     /// 对外交换方法的方法 AppDelegate Launch中使用
-    public  static func methodExchange() {
+    public static func methodExchange() {
         DispatchQueue.once(token: "UIButton") {
             let originalSelector = Selector.sysFunc
             let swizzledSelector = Selector.myFunc

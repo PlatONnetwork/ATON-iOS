@@ -73,19 +73,33 @@ class NewAddressInfoViewController: BaseViewController , UITextFieldDelegate {
     }
 
     @objc func onScanButton() {
-        let scanner = QRScannerViewController {[weak self] (res) in
 
-            if res.isValidAddress() {
+        let scanner = QRScannerViewController()
+        scanner.scanCompletion = { [weak self] result in
+            let qrcodeType = QRCodeDecoder().decode(result)
+            switch qrcodeType {
+            case .address(let data):
                 self?.showMessage(text: Localized("QRScan_success_tips"))
-                self?.contentView.addressField.text = res
+                self?.contentView.addressField.text = data
                 _ = self?.checkConfirmButtonEnable(showTip: false)
-            } else {
+            default:
                 self?.showMessage(text: Localized("QRScan_failed_tips"))
             }
-
-            self?.navigationController?.popViewController(animated: true)
-
         }
+
+//        let scanner = QRScannerViewController {[weak self] (res) in
+//
+//            if res.isValidAddress() {
+//                self?.showMessage(text: Localized("QRScan_success_tips"))
+//                self?.contentView.addressField.text = res
+//                _ = self?.checkConfirmButtonEnable(showTip: false)
+//            } else {
+//                self?.showMessage(text: Localized("QRScan_failed_tips"))
+//            }
+//
+////            self?.navigationController?.popViewController(animated: true)
+//
+//        }
         scanner.rescan()
         scanner.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(scanner, animated: true)
