@@ -64,9 +64,9 @@
                             </userDefinedRuntimeAttributes>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="0x----------------------------" textAlignment="right" lineBreakMode="characterWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Jc-L9-uAo">
-                            <rect key="frame" x="189" y="172" width="170" height="33.5"/>
+                            <rect key="frame" x="169" y="172" width="190" height="33.5"/>
                             <constraints>
-                                <constraint firstAttribute="width" constant="170" id="bA4-0N-mfH"/>
+                                <constraint firstAttribute="width" constant="190" id="bA4-0N-mfH"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                             <nil key="highlightedColor"/>

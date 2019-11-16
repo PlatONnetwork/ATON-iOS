@@ -86,7 +86,6 @@
 "transferVC_transfer_select_wallet" = "选择钱包";
 
 //walletDetailVC
-"walletDetailVC_tx_status_pending" = "处理中";
 "walletDetailVC_tx_status_confirming" = "确认中";
 "walletDetailVC_no_transactions_Signing" = "签名中";
 "walletDetailVC_tx_status_success" = "成功";
@@ -107,7 +106,7 @@
 
 "TransactionDetailVC_type" = "交易类别:";
 "TransactionDetailVC_time" = "交易时间:";
-"TransactionDetailVC_value" = "数量:";
+"TransactionDetailVC_value" = "交易数量:";
 "TransactionDetailVC_energon_price" = "交易手续费:";
 "TransactionDetailVC_Wallet" = "钱包:";
 "TransactionDetailVC_memo" = "备注:";
@@ -347,7 +346,7 @@
 "TransactionListVC_Received" = "接收";
 "TransactionListVC_Vote" = "投票";
 
-"TransactionStatus_sending_title" = "发送LAT";
+"TransactionStatus_sending_title" = "发送";
 "TransactionStatus_sendSucceed_title" = "发送";
 "TransactionStatus_sendFailed_title" = "发送";
 "TransactionStatus_receiving_title" = "接收";
@@ -358,7 +357,7 @@
 "TransactionStatus_voteFailed_title" = "投票";
 "TransactionStatus_timeout_title" = "交易超时";
 
-"TransactionStatus_pending_desc" = "处理中";
+"TransactionStatus_pending_desc" = "确认中";
 "TransactionStatus_succeed_desc" = "已完成";
 "TransactionStatus_failed_desc" = "失败";
 

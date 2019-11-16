@@ -47,7 +47,7 @@ extension Node {
             return "--"
         }
         guard let ratePAf = Float(ratePA ?? "0"), ratePAf > 0.0 else { return "0.00%" }
-        return String(format: "%.2f", (ratePAf / 100.0)) + "%"
+        return String(format: "%.2f", (ratePAf / 100.0)).balanceFixToDisplay(maxRound: 2) + "%"
     }
 
     var rank: (String, UIImage?) {

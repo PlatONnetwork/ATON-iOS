@@ -242,9 +242,11 @@ extension StakingService {
                        amount: BigUInt,
                        sender: String,
                        privateKey: String,
+                       gas: BigUInt?,
+                       gasPrice: BigUInt?,
                        _ completion: PlatonCommonCompletion?) {
 
-        web3.staking.createDelegate(typ: typ, nodeId: nodeId, amount: amount, sender: sender, privateKey: privateKey) { (result, data) in
+        web3.staking.createDelegate(typ: typ, nodeId: nodeId, amount: amount, sender: sender, privateKey: privateKey, gas: gas, gasPrice: gasPrice) { (result, data) in
             switch result {
             case .success:
                 if let hashData = data {
@@ -282,8 +284,10 @@ extension StakingService {
                           amount: BigUInt,
                           sender: String,
                           privateKey: String,
+                          gas: BigUInt?,
+                          gasPrice: BigUInt?,
                           _ completion: PlatonCommonCompletion?) {
-        web3.staking.withdrewDelegate(stakingBlockNum: stakingBlockNum, nodeId: nodeId, amount: amount, sender: sender, privateKey: privateKey) { (result, data) in
+        web3.staking.withdrewDelegate(stakingBlockNum: stakingBlockNum, nodeId: nodeId, amount: amount, sender: sender, privateKey: privateKey, gas: gas, gasPrice: gasPrice) { (result, data) in
             switch result {
             case .success:
                 if let hashData = data {

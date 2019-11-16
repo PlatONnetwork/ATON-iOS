@@ -79,10 +79,11 @@ class PButton: UIButton {
                 setTitleColor(UIColor(rgb: 0xF6F6F6 ), for: .normal)
                 setTitleColor(UIColor(rgb: 0xA2C1F2), for: .highlighted)
 
-                //background
-                self.setBackgroundImage(self.layerToImage(layer: self.gradientLayer(color: blueNormalGradient)), for: .normal)
-                self.setBackgroundImage(self.layerToImage(layer: self.gradientLayer(color: blueHighlightedGradient)), for: UIControl.State.highlighted)
-
+                DispatchQueue.main.async {
+                    //background
+                    self.setBackgroundImage(self.layerToImage(layer: self.gradientLayer(color: blueNormalGradient)), for: .normal)
+                    self.setBackgroundImage(self.layerToImage(layer: self.gradientLayer(color: blueHighlightedGradient)), for: UIControl.State.highlighted)
+                }
             case .gray:
                 //shadow
                 self.layer.shadowColor = UIColor(rgb: 0x969696).cgColor
@@ -93,10 +94,11 @@ class PButton: UIButton {
                 setTitleColor(UIColor(rgb: 0x000000), for: .normal)
                 setTitleColor(UIColor(rgb: 0x979797), for: .highlighted)
 
-                //background
-                self.setBackgroundImage(self.layerToImage(layer: self.gradientLayer(color: grayNormalGradient)), for: .normal)
-                self.setBackgroundImage(self.layerToImage(layer: self.gradientLayer(color: grayHighlightedGradient)), for: UIControl.State.highlighted)
-
+                DispatchQueue.main.async {
+                    //background
+                    self.setBackgroundImage(self.layerToImage(layer: self.gradientLayer(color: grayNormalGradient)), for: .normal)
+                    self.setBackgroundImage(self.layerToImage(layer: self.gradientLayer(color: grayHighlightedGradient)), for: UIControl.State.highlighted)
+                }
             case .delete:
                 self.layer.shadowColor = UIColor.clear.cgColor
                 setTitleColor(UIColor(rgb: 0xF5302C), for: .normal)
@@ -111,8 +113,10 @@ class PButton: UIButton {
                 setTitleColor(UIColor(rgb: 0xF5302C), for: .normal)
                 setTitleColor(UIColor(rgb: 0xDC5E5B), for: .highlighted)
 
-                setBackgroundImage(UIImage(color: UIColor(rgb: 0xDC5151)), for: .normal)
-                setBackgroundImage(UIImage(color: UIColor(rgb: 0xDC5151)), for: .highlighted)
+                DispatchQueue.main.async {
+                    self.setBackgroundImage(UIImage(color: UIColor(rgb: 0xDC5151)), for: .normal)
+                    self.setBackgroundImage(UIImage(color: UIColor(rgb: 0xDC5151)), for: .highlighted)
+                }
             case .disable:
 
                 self.layer.shadowColor = UIColor(rgb: 0x969696).cgColor
@@ -122,8 +126,10 @@ class PButton: UIButton {
                 setTitleColor(UIColor(rgb: 0xD8D8D8), for: .normal)
                 setTitleColor(UIColor(rgb: 0xD8D8D8), for: .highlighted)
 
-                self.setBackgroundImage(self.layerToImage(layer: self.gradientLayer(color: disableNormalGradient)), for: .normal)
-                self.setBackgroundImage(self.layerToImage(layer: self.gradientLayer(color: disableHighlightedGradient)), for: UIControl.State.highlighted)
+                DispatchQueue.main.async {
+                    self.setBackgroundImage(self.layerToImage(layer: self.gradientLayer(color: disableNormalGradient)), for: .normal)
+                    self.setBackgroundImage(self.layerToImage(layer: self.gradientLayer(color: disableHighlightedGradient)), for: UIControl.State.highlighted)
+                }
             }
         }
     }

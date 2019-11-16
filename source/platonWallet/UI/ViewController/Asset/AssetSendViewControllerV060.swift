@@ -25,7 +25,9 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
             let minGasPrice = TransactionService.service.minGasPrice
             let maxGasPrice = defaultGasPrice.multiplied(by: BigUInt(6))
 
-            let priceLevel = gasPriceLevel ?? TransactionService.service.sliderDefaultValue
+            guard let priceLevel = gasPriceLevel else {
+                return defaultGasPrice
+            }
 
             let price = minGasPrice + (((maxGasPrice - minGasPrice) * BigUInt(Int(priceLevel * 10000000)) / BigUInt(10000000)))
             return price
@@ -304,7 +306,6 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
             self?.amountView.textField.resignFirstResponder()
             return true
         }
-
     }
 
     // MARK: - User Interaction
@@ -566,10 +567,15 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
     }
 
     func didTransferSuccess() {
-        self.walletAddressView.textField.text = ""
-        self.amountView.textField.text = ""
+        resetTextFieldAndButton()
         AssetViewControllerV060.setPageViewController(index: 0)
         AssetViewControllerV060.reloadTransactionList()
+    }
+
+    func resetTextFieldAndButton() {
+        walletAddressView.textField.text = ""
+        amountView.textField.text = ""
+        _ = checkConfirmButtonAvailable()
     }
 
 }

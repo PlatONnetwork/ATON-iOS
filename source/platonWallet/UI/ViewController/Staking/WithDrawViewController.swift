@@ -262,7 +262,9 @@ extension WithDrawViewController {
         privateKey: String,
         _ completion: ((Transaction) -> Void)?) {
         showLoadingHUD()
-        StakingService.sharedInstance.withdrawDelegate(stakingBlockNum: stakingBlockNum, nodeId: nodeId, amount: amount, sender: sender, privateKey: privateKey) { [weak self] (result, data) in
+
+
+        StakingService.sharedInstance.withdrawDelegate(stakingBlockNum: stakingBlockNum, nodeId: nodeId, amount: amount, sender: sender, privateKey: privateKey, gas: nil, gasPrice: gasPrice) { [weak self] (result, data) in
             self?.hideLoadingHUD()
             switch result {
             case .success:
@@ -612,20 +614,13 @@ extension WithDrawViewController {
                     return
                 }
 
-                web3.staking.estimateWithdrawDelegate(stakingBlockNum: sBlockNum, nodeId: nodeId, amount: amount, gasPrice: gasPrice) { [weak self] (result, data) in
-                    guard let self = self else { return }
-                    switch result {
-                    case .success:
-                        if let estimateGas = data {
-                            estimateTotalGas += estimateGas
-                        }
-                        self.estimateUseGas = estimateTotalGas
-                        if index == self.delegateValue.count - 1 {
-                            cell.amountView.feeLabel.text = (estimateTotalGas.description.vonToLATString ?? "0.00").displayFeeString
-                        }
-                    case .fail:
-                        break
-                    }
+                let gasLimit = web3.staking.getGasWithdrawDelegate(stakingBlockNum: sBlockNum, nodeId: nodeId, amount: amount)
+                let estimateGas = gasLimit.multiplied(by: gasPrice ?? PlatonConfig.FuncGasPrice.defaultGasPrice)
+                estimateTotalGas += estimateGas
+                estimateUseGas = estimateTotalGas
+
+                if index == delegateValue.count - 1 {
+                    cell.amountView.feeLabel.text = (estimateTotalGas.description.vonToLATString ?? "0.00").displayFeeString
                 }
             }
         }

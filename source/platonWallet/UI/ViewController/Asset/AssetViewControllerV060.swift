@@ -509,6 +509,8 @@ extension AssetViewControllerV060: UIScrollViewDelegate, ChildScrollViewDidScrol
 //    }
 
     func doShowTransactionDetail(_ transaction: Transaction) {
+        // 重置输入框
+        sendVC.resetTextFieldAndButton()
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             let controller = TransactionDetailViewController()
@@ -568,8 +570,9 @@ extension AssetViewControllerV060 {
                         let gasUsed = gasPrice.multiplied(by: gasLimit).description
                         let amount = signedTransaction.value.quantity.description
                         let tx = Transaction()
-                        tx.from = from
-                        tx.to = to
+                        tx.senderAddress = from
+                        tx.from = from.add0x()
+                        tx.to = to.add0x()
                         tx.gasUsed = gasUsed
                         tx.createTime = Int(Date().timeIntervalSince1970 * 1000)
                         tx.txhash = result.bytes.toHexString().add0x()

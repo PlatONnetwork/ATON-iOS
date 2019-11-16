@@ -18,7 +18,11 @@ struct AppConfig {
 
     struct ChainID {
         static let TEST = "103"
+        #if UAT
+        static let PRODUCT = "101"
+        #else
         static let PRODUCT = "99"
+        #endif
     }
 
     struct NodeURL {

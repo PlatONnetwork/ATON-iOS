@@ -187,7 +187,7 @@ extension TransactionQrcode {
     var typeString: String {
         switch functionType! {
         case 0:
-            return Localized("TransactionStatus_sending_title")
+            return Localized("transferVC_confirm_ATP_send")
         case 1004:
             return Localized("TransactionStatus_delegateCreate_title")
         case 1005:

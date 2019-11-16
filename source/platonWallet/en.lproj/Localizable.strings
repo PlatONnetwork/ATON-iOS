@@ -88,7 +88,6 @@
 "transferVC_Insufficient_network_error" = "Unable to connect to the network";
 
 //walletDetailVC
-"walletDetailVC_tx_status_pending" = "Pending";
 "walletDetailVC_tx_status_confirming" = "Confirming";
 "walletDetailVC_tx_status_success" = "Success";
 "walletDetailVC_tx_status_fail" = "Fail";

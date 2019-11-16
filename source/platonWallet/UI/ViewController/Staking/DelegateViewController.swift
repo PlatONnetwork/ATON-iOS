@@ -21,6 +21,7 @@ class DelegateViewController: BaseViewController {
     var currentAmount: BigUInt = BigUInt.zero
     var canDelegation: CanDelegation?
     var gasPrice: BigUInt?
+    var gasLimit: BigUInt?
     var estimateUseGas: BigUInt?
     var isDelegateAll: Bool = false
     var generateQrCode: QrcodeData<[TransactionQrcode]>?
@@ -316,19 +317,6 @@ extension DelegateViewController {
                         let content = String(data: data, encoding: .utf8) else { return }
                     self.generateQrCode = qrcodeData
 
-//                    guard
-//                        let rlp = self.generateQrCode?.rlp(),
-//                        let resultrlp = try? RLPEncoder().encode(rlp)
-//                        else { return }
-//                    let contentrlp = resultrlp.toHexString()
-//
-//                    print(resultrlp)
-//                    print(contentrlp)
-//                    print(contentrlp.count)
-                    print("===========")
-                    print(content)
-                    print(content.count)
-
                     DispatchQueue.main.async {
                         self.showOfflineConfirmView(content: content)
                     }
@@ -349,7 +337,7 @@ extension DelegateViewController {
             }
             self.showLoadingHUD()
 
-            StakingService.sharedInstance.createDelgate(typ: typ, nodeId: nodeId, amount: self.currentAmount, sender: currentAddress, privateKey: pri, { [weak self] (result, data) in
+            StakingService.sharedInstance.createDelgate(typ: typ, nodeId: nodeId, amount: self.currentAmount, sender: currentAddress, privateKey: pri, gas: self.gasLimit, gasPrice: self.gasPrice, { [weak self] (result, data) in
                 guard let self = self else { return }
                 self.hideLoadingHUD()
 
@@ -567,29 +555,22 @@ extension DelegateViewController {
             needEstimateGas = BigUInt(amountStr) ?? BigUInt.zero
         }
 
-        web3.staking.estimateCreateDelegate(typ: typ, nodeId: nodeId, amount: needEstimateGas, gasPrice: gasPrice) { [weak self] (result, data) in
-            switch result {
-            case .success:
-                self?.estimateUseGas = data
+        let gasLimitValue = web3.staking.getGasCreateDelegate(typ: typ, nodeId: nodeId, amount: needEstimateGas)
+        gasLimit = gasLimitValue
 
-                if
-                    let delegateAll = self?.isDelegateAll, delegateAll == true, self?.balanceStyle?.isLock == false {
-                    if
-                        let amount = self?.currentAmount,
-                        let useGas = data,
-                        amount > useGas {
-                        cell.amountView.textField.text = (amount - useGas).divide(by: ETHToWeiMultiplier, round: 8)
-                    }
+        estimateUseGas = gasLimitValue.multiplied(by: gasPrice ?? PlatonConfig.FuncGasPrice.defaultGasPrice)
 
-                    self?.isDelegateAll = false
-                }
-
-                if let feeString = data?.description {
-                    cell.amountView.feeLabel.text = (feeString.vonToLATString ?? "0.00").displayFeeString
-                }
-            case .fail:
-                break
+        if isDelegateAll == true, balanceStyle?.isLock == false {
+            if
+                let useGas = estimateUseGas,
+                currentAmount > useGas {
+                cell.amountView.textField.text = (currentAmount - useGas).divide(by: ETHToWeiMultiplier, round: 8)
             }
+            isDelegateAll = false
+        }
+
+        if let feeString = estimateUseGas?.description {
+            cell.amountView.feeLabel.text = (feeString.vonToLATString ?? "0.00").displayFeeString
         }
     }
 

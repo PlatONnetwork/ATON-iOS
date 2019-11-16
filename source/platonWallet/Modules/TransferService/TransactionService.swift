@@ -122,12 +122,8 @@ class TransactionService : BaseService {
         let txgas = EthereumQuantity(quantity: BigUInt(estimatedGas)!)
         let amountOfwei = BigUInt.mutiply(a: amount, by: ETHToWeiMultiplier)
         let value = EthereumQuantity(quantity: amountOfwei!)
-//        let txTypePart = RLPItem(bytes: [])
-//        let rlp = RLPItem.array([txTypePart])
-//        let rawRlp = try? RLPEncoder().encode(rlp)
 
         let data = EthereumData(bytes: [])
-//        let data = EthereumData(bytes: Bytes())
         try? walletAddr = EthereumAddress(hex: from, eip55: false)
         try? toAddr = EthereumAddress(hex: to, eip55: false)
         try? fromAddr = EthereumAddress(hex: from, eip55: false)
@@ -180,7 +176,7 @@ class TransactionService : BaseService {
                         ptx.txhash = resp.result?.hex()
                         ptx.createTime = Date().millisecondsSince1970
                         ptx.value = String(value.quantity)
-                        ptx.gasPrice = String(gasPrice.quantity)
+                        ptx.gasUsed = (gasPrice.quantity * txgas.quantity).description
                         ptx.gas = String(txgas.quantity)
                         ptx.memo = memo
                         ptx.transactionType = 0
