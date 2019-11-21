@@ -29,6 +29,7 @@ class AppFramework {
         modulesConfigure()
 
         UIButton.methodExchange()
+        UIFont.methodExchange()
         return true
     }
 
@@ -58,7 +59,6 @@ class AppFramework {
     func RealmConfiguration() -> Bool {
         do {
             _ = try Realm(configuration: RealmHelper.getConfig())
-            NodeInfoPersistence.sharedInstance.initConfig()
             // 删除缓存在本地且已经被链上确认删除的交易
             TransferPersistence.deleteConfirmedTransaction()
             return true

@@ -22,9 +22,9 @@ extension Transaction {
             return UIImage(named: wallet.avatar)
         default:
             if toType == .contract {
-                return UIImage(named: "2.icon_Shared")
-            } else {
                 return UIImage(named: "2.icon_node")
+            } else {
+                return UIImage(named: "2.icon_Shared")
             }
         }
     }
@@ -43,7 +43,11 @@ extension Transaction {
              .unknown:
             let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.address.lowercased() == to?.lowercased() }.first
             guard let wallet = localWallet else {
-                return to?.addressForDisplayShort()
+                if let addressBookWallet = AddressBookService.service.getAll().first(where: { $0.walletAddress?.lowercased() == to?.lowercased() }) {
+                    return addressBookWallet.walletName
+                } else {
+                    return to?.addressForDisplayShort()
+                }
             }
             return wallet.name
         default:

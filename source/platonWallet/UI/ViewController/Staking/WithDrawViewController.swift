@@ -97,7 +97,11 @@ class WithDrawViewController: BaseViewController {
     }
 
     private func initBalanceStyle() {
-        guard delegateValue.count > 0 else { return }
+        guard delegateValue.count > 0 else {
+            navigationController?.popViewController(animated: true)
+            showMessage(text: Localized("delegate_no_withdraw_message"), delay: 2.0)
+            return
+        }
 
         let totalDelegate = delegateValue.reduce(BigUInt.zero) { (result, dValue) -> BigUInt in
             return result + BigUInt(dValue.delegated ?? "0")!
@@ -109,7 +113,7 @@ class WithDrawViewController: BaseViewController {
 
         let bStyle = BalancesCellStyle(balances: [
             (Localized("staking_balance_Delegated"), totalDelegate.description),
-            (Localized("staking_balance_release_Delegated"), totalReleased.description)], selectedIndex: 0, isExpand: false)
+            (Localized("staking_balance_release_Delegated"), totalReleased.description)], selectedIndex: totalReleased > BigUInt.zero ? 1 : 0, isExpand: false)
         balanceStyle = bStyle
 
         initListData()
@@ -130,7 +134,7 @@ class WithDrawViewController: BaseViewController {
         let item5 = DelegateTableViewCellStyle.singleButton(title: Localized("statking_validator_Withdraw"))
 
         let contents = [
-            (Localized("staking_doubt_undelegate"), Localized("staking_doubt_undelegate_detail"))
+            (Localized("staking_doubt_undelegate"), Localized("staking_doubt_undelegate_detail", arguments: SettingService.shareInstance.remoteConfig?.minDelegation?.vonToLAT.description ?? "10"))
         ]
         let item6 = DelegateTableViewCellStyle.doubt(contents: contents)
         listData = [item1, item2, item3, item4, item5, item6]
@@ -183,8 +187,10 @@ extension WithDrawViewController: UITableViewDelegate, UITableViewDataSource {
             return cell
         case .walletBalances(let balanceStyle):
             let cell = tableView.dequeueReusableCell(withIdentifier: "WalletBalanceTableViewCell") as! WalletBalanceTableViewCell
+            cell.shadowView.isHidden = indexPath.row != 0
             cell.setupBalanceData(balanceStyle.balance(for: indexPath.row))
             cell.bottomlineV.isHidden = (indexPath.row == 0 || indexPath.row == balanceStyle.cellCount - 1)
+            cell.isSelectedCell = indexPath.row == 0 ? true : indexPath.row == balanceStyle.selectedIndex + 1 ? true : false
             cell.rightImageView.image = indexPath.row == 0 ? UIImage(named: "3.icon_ drop-down") : indexPath.row == balanceStyle.selectedIndex + 1 ? UIImage(named: "iconApprove") : nil
             cell.isTopCell = indexPath.row == 0
 
@@ -198,7 +204,7 @@ extension WithDrawViewController: UITableViewDelegate, UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: "SendInputTableViewCell") as! SendInputTableViewCell
             cell.inputType = .withdraw
             cell.amountView.titleLabel.text = Localized("ATextFieldView_withdraw_title")
-            cell.minAmountLimit = "10".LATToVon
+            cell.minAmountLimit = SettingService.shareInstance.remoteConfig?.minDelegationBInt ?? "10".LATToVon
             cell.maxAmountLimit = BigUInt(balanceStyle?.currentBalance.1 ?? "0")
             cell.cellDidContentChangeHandler = { [weak self] in
                 self?.updateHeightOfRow(cell)
@@ -206,9 +212,9 @@ extension WithDrawViewController: UITableViewDelegate, UITableViewDataSource {
             cell.cellDidContentEditingHandler = { [weak self] (amountVON, isRegular) in
                 var inputAmountVON = amountVON
 
-                let amount10 = BigUInt("10").multiplied(by: BigUInt(ETHToWeiMultiplier)!)
-                if let cAmount = BigUInt(self?.balanceStyle?.currentBalance.1 ?? "0"), cAmount >= amount10, inputAmountVON >= amount10, cAmount > inputAmountVON, isRegular == true {
-                    if cAmount - inputAmountVON < amount10 {
+                let minAmount = SettingService.shareInstance.remoteConfig?.minDelegationBInt ?? "10".LATToVon
+                if let cAmount = BigUInt(self?.balanceStyle?.currentBalance.1 ?? "0"), cAmount >= minAmount, inputAmountVON >= minAmount, cAmount > inputAmountVON, isRegular == true {
+                    if cAmount - inputAmountVON < minAmount {
                         inputAmountVON = cAmount
                         DispatchQueue.main.async {
                             cell.amountView.textField.text = inputAmountVON.divide(by: ETHToWeiMultiplier, round: 8)
@@ -219,13 +225,13 @@ extension WithDrawViewController: UITableViewDelegate, UITableViewDataSource {
                 self?.currentAmount = inputAmountVON
                 self?.tableView.reloadSections(IndexSet([indexPath.section + 1]), with: .none)
             }
-            if let bStyle = balanceStyle, bStyle.selectedIndex == 2 {
-                cell.amountView.textField.isUserInteractionEnabled = false
+            if let bStyle = balanceStyle, bStyle.selectedIndex == 1 {
+                cell.amountView.textField.isEnabled = false
                 self.currentAmount = BigUInt(bStyle.currentBalance.1) ?? BigUInt.zero
                 cell.amountView.textField.text = BigUInt(bStyle.currentBalance.1)?.divide(by: ETHToWeiMultiplier, round: 8)
                 self.estimateGas(self.currentAmount, cell)
             } else {
-                cell.amountView.textField.isUserInteractionEnabled = true
+                cell.amountView.textField.isEnabled = true
                 cell.amountView.textField.text = self.currentAmount > BigUInt.zero ?  self.currentAmount.divide(by: ETHToWeiMultiplier, round: 8) : ""
             }
             return cell
@@ -260,7 +266,8 @@ extension WithDrawViewController {
         privateKey: String,
         _ completion: ((Transaction) -> Void)?) {
         showLoadingHUD()
-        StakingService.sharedInstance.withdrawDelegate(stakingBlockNum: stakingBlockNum, nodeId: nodeId, amount: amount, sender: sender, privateKey: privateKey) { [weak self] (result, data) in
+
+        StakingService.sharedInstance.withdrawDelegate(stakingBlockNum: stakingBlockNum, nodeId: nodeId, amount: amount, sender: sender, privateKey: privateKey, gas: nil, gasPrice: gasPrice) { [weak self] (result, data) in
             self?.hideLoadingHUD()
             switch result {
             case .success:
@@ -281,12 +288,12 @@ extension WithDrawViewController {
         view.endEditing(true)
 
         guard currentAmount > BigUInt.zero else {
-            showMessage(text: Localized("staking_withdraw_input_amount_minlimit_error"))
+            showMessage(text: Localized("staking_withdraw_input_amount_minlimit_error", arguments: SettingService.shareInstance.remoteConfig?.minDelegation?.vonToLAT.description ?? "10"))
             return
         }
 
-        guard currentAmount >= BigUInt("10").multiplied(by: PlatonConfig.VON.LAT) else {
-            showMessage(text: Localized("staking_withdraw_input_amount_minlimit_error"))
+        guard currentAmount >= SettingService.shareInstance.remoteConfig?.minDelegationBInt ?? "10".LATToVon else {
+            showMessage(text: Localized("staking_withdraw_input_amount_minlimit_error", arguments: SettingService.shareInstance.remoteConfig?.minDelegation?.vonToLAT.description ?? "10"))
             return
         }
 
@@ -422,7 +429,7 @@ extension WithDrawViewController {
     func showOfflineConfirmView(content: String) {
         let qrcodeView = OfflineSignatureQRCodeView()
         let qrcodeWidth = PopUpContentWidth - 32
-        let qrcodeImage = UIImage.geneQRCodeImageFor(content, size: qrcodeWidth)
+        let qrcodeImage = UIImage.geneQRCodeImageFor(content, size: qrcodeWidth, isGzip: true)
         qrcodeView.imageView.image = qrcodeImage
 
         let type = ConfirmViewType.qrcodeGenerate(contentView: qrcodeView)
@@ -476,7 +483,7 @@ extension WithDrawViewController {
         let controller = QRScannerViewController()
         controller.hidesBottomBarWhenPushed = true
         controller.scanCompletion = { result in
-            guard let qrcodeType = QRCodeDecoder().decode(result) else { return }
+            let qrcodeType = QRCodeDecoder().decode(result)
             switch qrcodeType {
             case .signedTransaction(let data):
                 completion?(data)
@@ -484,7 +491,6 @@ extension WithDrawViewController {
                 AssetViewControllerV060.getInstance()?.showMessage(text: Localized("QRScan_failed_tips"))
                 completion?(nil)
             }
-            (UIApplication.shared.keyWindow?.rootViewController as? BaseNavigationController)?.popViewController(animated: true)
         }
 
         (UIApplication.shared.keyWindow?.rootViewController as? BaseNavigationController)?.pushViewController(controller, animated: true)
@@ -507,7 +513,7 @@ extension WithDrawViewController {
                     switch response.status {
                     case .success(let result):
                         guard
-                            let to = signedTransaction.to?.rawAddress.toHexString() else { return }
+                            let to = signedTransaction.to?.rawAddress.toHexString().add0x() else { return }
                         let gasPrice = signedTransaction.gasPrice.quantity
                         let gasLimit = signedTransaction.gasLimit.quantity
                         let gasUsed = gasPrice.multiplied(by: gasLimit).description
@@ -611,20 +617,13 @@ extension WithDrawViewController {
                     return
                 }
 
-                web3.staking.estimateWithdrawDelegate(stakingBlockNum: sBlockNum, nodeId: nodeId, amount: amount, gasPrice: gasPrice) { [weak self] (result, data) in
-                    guard let self = self else { return }
-                    switch result {
-                    case .success:
-                        if let estimateGas = data {
-                            estimateTotalGas += estimateGas
-                        }
-                        self.estimateUseGas = estimateTotalGas
-                        if index == self.delegateValue.count - 1 {
-                            cell.amountView.feeLabel.text = (estimateTotalGas.description.vonToLATString ?? "0.00").displayFeeString
-                        }
-                    case .fail:
-                        break
-                    }
+                let gasLimit = web3.staking.getGasWithdrawDelegate(stakingBlockNum: sBlockNum, nodeId: nodeId, amount: amount)
+                let estimateGas = gasLimit.multiplied(by: gasPrice ?? PlatonConfig.FuncGasPrice.defaultGasPrice)
+                estimateTotalGas += estimateGas
+                estimateUseGas = estimateTotalGas
+
+                if index == delegateValue.count - 1 {
+                    cell.amountView.feeLabel.text = (estimateTotalGas.description.vonToLATString ?? "0.00").displayFeeString
                 }
             }
         }

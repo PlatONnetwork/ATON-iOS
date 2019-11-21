@@ -56,7 +56,7 @@ class LanguageSettingVC: BaseViewController, UITableViewDelegate, UITableViewDat
         rightMenuButton.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
         rightMenuButton.localizedNormalTitle = "SettingsVC_nodeSet_saveBtn_title"
         rightMenuButton.setTitleColor(UIColor(rgb: 0x105CFE), for: .normal)
-        rightMenuButton.titleLabel?.font = UIFont.systemFont(ofSize: 13)
+        rightMenuButton.titleLabel?.font = UIFont.systemFont(ofSize: 15)
         rightMenuButton.addTarget(self, action: #selector(onNavRight), for: .touchUpInside)
         let rightBarButtonItem = UIBarButtonItem(customView: rightMenuButton)
         navigationItem.rightBarButtonItem = rightBarButtonItem

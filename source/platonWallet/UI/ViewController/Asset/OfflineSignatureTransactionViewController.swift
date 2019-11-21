@@ -23,6 +23,7 @@ class OfflineSignatureTransactionViewController: BaseViewController {
         tbView.register(TransactionDetailTableViewCell.self, forCellReuseIdentifier: "TransactionDetailTableViewCell")
         tbView.separatorStyle = .none
         tbView.tableFooterView = UIView()
+        tbView.estimatedRowHeight = 50.0
         return tbView
     }()
 
@@ -94,7 +95,13 @@ class OfflineSignatureTransactionViewController: BaseViewController {
 
         listData.append((title: Localized("confirm_authorize_function_type"), value: codes.first?.typeString ?? "--"))
         listData.append((title: Localized("confirm_authorize_from"), value:  codes.first?.fromName ?? "--"))
-        listData.append((title: Localized("confirm_authorize_to"), value: codes.first?.toName ?? "--"))
+        if codes.first?.functionType == 1004 {
+            listData.append((title: Localized("confirm_authorize_delegate_to"), value:  codes.first?.toName ?? "--"))
+        } else if codes.first?.functionType == 1005 {
+            listData.append((title: Localized("confirm_authorize_undelegate_to"), value:  codes.first?.toName ?? "--"))
+        } else {
+            listData.append((title: Localized("confirm_authorize_to"), value: codes.first?.toName ?? "--"))
+        }
 
         let totalGas = codes.reduce(BigUInt.zero) { (result, txCode) -> BigUInt in
             let gasPrice = BigUInt(txCode.gasPrice ?? "0") ?? BigUInt.zero
@@ -108,7 +115,7 @@ class OfflineSignatureTransactionViewController: BaseViewController {
 
     func generateQrcodeForSignedTx(content: String) {
         let qrcodeWidth = PopUpContentWidth - 32
-        let qrcodeImage = UIImage.geneQRCodeImageFor(content, size: qrcodeWidth)
+        let qrcodeImage = UIImage.geneQRCodeImageFor(content, size: qrcodeWidth, isGzip: true)
 
         let qrcodeView = OfflineSignatureQRCodeView()
         qrcodeView.imageView.image = qrcodeImage
@@ -165,6 +172,8 @@ class OfflineSignatureTransactionViewController: BaseViewController {
                 let from = code.from,
                 let type = code.functionType else { return }
             let qrcodeData = QrcodeData(qrCodeType: 1, qrCodeData: signedStrings, timestamp: self.qrcode?.timestamp, chainId: web3.chainId, functionType: type, from: from)
+
+
             guard
                 let jsonData = try? JSONEncoder().encode(qrcodeData),
                 let jsonString = String(data: jsonData, encoding: .utf8) else { return }

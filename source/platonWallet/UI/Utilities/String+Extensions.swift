@@ -149,7 +149,6 @@ extension String {
     }
 
     func isValidKeystore() -> Bool {
-
         do {
             _ = try JSONDecoder().decode(Keystore.self, from: data(using: .utf8)!)
             return true

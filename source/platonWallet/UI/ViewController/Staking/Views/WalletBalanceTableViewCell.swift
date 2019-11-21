@@ -17,6 +17,7 @@ class WalletBalanceTableViewCell: UITableViewCell {
     public let rightImageView = UIImageView()
     public let bottomlineV = UIView()
     public let containerView = UIButton()
+    public let shadowView = UIView()
 
     var cellDidHandle: ((_ cell: WalletBalanceTableViewCell) -> Void)?
 
@@ -33,20 +34,40 @@ class WalletBalanceTableViewCell: UITableViewCell {
         }
     }
 
+    var isSelectedCell: Bool = false {
+        didSet {
+            balanceLabel.snp.updateConstraints { make in
+                make.trailing.equalToSuperview().offset(isSelectedCell ? -44 : -16)
+            }
+        }
+    }
+
+
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         selectionStyle = .none
         contentView.backgroundColor = normal_background_color
 
+        contentView.addSubview(shadowView)
+        contentView.addSubview(containerView)
+
         containerView.addTarget(self, action: #selector(containerTapAction), for: .touchUpInside)
         containerView.backgroundColor = .white
-        contentView.addSubview(containerView)
         containerView.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(10)
             make.trailing.equalToSuperview().offset(-10)
             make.top.equalToSuperview().offset(14)
             make.height.equalTo(50)
             make.bottom.equalToSuperview()
+        }
+
+        shadowView.isUserInteractionEnabled = true
+        shadowView.layer.shadowColor = UIColor(rgb: 0x9ca7c2).cgColor
+        shadowView.layer.shadowRadius = 14.0
+        shadowView.layer.shadowOffset = CGSize(width: 5, height: 5)
+        shadowView.layer.shadowOpacity = 0.2
+        shadowView.snp.makeConstraints { make in
+            make.edges.equalTo(containerView)
         }
 
         balanceTipLabel.textColor = .black

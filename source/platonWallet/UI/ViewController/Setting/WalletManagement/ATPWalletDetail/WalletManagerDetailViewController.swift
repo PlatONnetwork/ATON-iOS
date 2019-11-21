@@ -102,12 +102,12 @@ class WalletManagerDetailViewController: BaseViewController {
     }
 
     func updateWalletName(_ name:String) {
-
         WalletService.sharedInstance.updateWalletName(wallet, name: name)
         walletName.text = name
         if let titleLabel = super.titleLabel {
             titleLabel.text = name
         }
+        (AssetVCSharedData.sharedData.selectedWallet as? Wallet)?.name = name
     }
 
     func showErrorNameAlert() {
@@ -177,7 +177,6 @@ class WalletManagerDetailViewController: BaseViewController {
                 } else {
                     self!.showErrorNameAlert()
                 }
-
             }
             alertC.inputVerify = { input in
                 return CommonService.isValidWalletName(input).0

@@ -112,15 +112,9 @@ class MainImportWalletViewController: BaseViewController,UIScrollViewDelegate,Im
     @objc func onNavRightBtnClick() {
 
         let scanVC = QRScannerViewController { [weak self] (res) in
-
-            self?.navigationController?.popViewController(animated: true)
-
             self?.handleScanResp(res)
-
         }
-
         navigationController?.pushViewController(scanVC, animated: true)
-
     }
 
     func handleScanResp(_ resp: String) {

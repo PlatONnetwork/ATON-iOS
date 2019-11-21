@@ -33,9 +33,9 @@ class PButton: UIButton {
 
     func gradientLayer(color: [CGColor], _ direction: GradientDirection = .vertical) -> CAGradientLayer {
         let gradientLayer = CAGradientLayer()
-        gradientLayer.frame = CGRect(x: 0, y: 0, width: self.bounds.size.width, height: self.bounds.size.height)
+        gradientLayer.frame = CGRect(x: 0, y: 0, width: 10, height: 10)
         gradientLayer.colors = color
-        gradientLayer.cornerRadius = self.bounds.size.height * 0.5
+//        gradientLayer.cornerRadius = self.bounds.size.height * 0.5
 
         if direction == .horizontal {
             gradientLayer.startPoint = CGPoint(x: 0.0, y: 0.0)
@@ -79,24 +79,20 @@ class PButton: UIButton {
                 setTitleColor(UIColor(rgb: 0xF6F6F6 ), for: .normal)
                 setTitleColor(UIColor(rgb: 0xA2C1F2), for: .highlighted)
 
-                //background
-                self.setBackgroundImage(self.layerToImage(layer: self.gradientLayer(color: blueNormalGradient)), for: .normal)
-                self.setBackgroundImage(self.layerToImage(layer: self.gradientLayer(color: blueHighlightedGradient)), for: UIControl.State.highlighted)
-
+                setBackgroundImage(layerToImage(layer: gradientLayer(color: blueNormalGradient))?.resizableImage(withCapInsets: UIEdgeInsets(top: 3, left: 3, bottom: 3, right: 3), resizingMode: .stretch), for: .normal)
+                setBackgroundImage(layerToImage(layer: gradientLayer(color: blueHighlightedGradient))?.resizableImage(withCapInsets: UIEdgeInsets(top: 3, left: 3, bottom: 3, right: 3), resizingMode: .stretch), for: .highlighted)
             case .gray:
                 //shadow
-                self.layer.shadowColor = UIColor(rgb: 0x969696).cgColor
-                self.layer.shadowOpacity = 0.4
-                self.layer.shadowOffset = CGSize(width: 0, height: 0)
+                layer.shadowColor = UIColor(rgb: 0x969696).cgColor
+                layer.shadowOpacity = 0.4
+                layer.shadowOffset = CGSize(width: 0, height: 0)
 
                 //title
                 setTitleColor(UIColor(rgb: 0x000000), for: .normal)
                 setTitleColor(UIColor(rgb: 0x979797), for: .highlighted)
 
-                //background
-                self.setBackgroundImage(self.layerToImage(layer: self.gradientLayer(color: grayNormalGradient)), for: .normal)
-                self.setBackgroundImage(self.layerToImage(layer: self.gradientLayer(color: grayHighlightedGradient)), for: UIControl.State.highlighted)
-
+                setBackgroundImage(layerToImage(layer: gradientLayer(color: grayNormalGradient))?.resizableImage(withCapInsets: UIEdgeInsets(top: 3, left: 3, bottom: 3, right: 3), resizingMode: .stretch), for: .normal)
+                setBackgroundImage(layerToImage(layer: gradientLayer(color: grayHighlightedGradient))?.resizableImage(withCapInsets: UIEdgeInsets(top: 3, left: 3, bottom: 3, right: 3), resizingMode: .stretch), for: .highlighted)
             case .delete:
                 self.layer.shadowColor = UIColor.clear.cgColor
                 setTitleColor(UIColor(rgb: 0xF5302C), for: .normal)
@@ -104,9 +100,6 @@ class PButton: UIButton {
                 self.layer.borderColor = UIColor(rgb: 0xF5302C).cgColor
                 self.layer.borderWidth = 1
                 self.layer.cornerRadius = 22
-//                self.setBackgroundImage(self.layerToImage(layer: self.gradientLayer(color:deleteNormalGradient)), for: .normal)
-//                self.setBackgroundImage(self.layerToImage(layer: self.gradientLayer(color: deleteHighlightedGradient)), for: UIControl.State.highlighted)
-
             case .alert:
                 setTitleColor(UIColor(rgb: 0xF5302C), for: .normal)
                 setTitleColor(UIColor(rgb: 0xDC5E5B), for: .highlighted)
@@ -115,15 +108,15 @@ class PButton: UIButton {
                 setBackgroundImage(UIImage(color: UIColor(rgb: 0xDC5151)), for: .highlighted)
             case .disable:
 
-                self.layer.shadowColor = UIColor(rgb: 0x969696).cgColor
-                self.layer.shadowOpacity = 0.4
-                self.layer.shadowOffset = CGSize(width: 0, height: 0)
+                layer.shadowColor = UIColor(rgb: 0x969696).cgColor
+                layer.shadowOpacity = 0.4
+                layer.shadowOffset = CGSize(width: 0, height: 0)
 
                 setTitleColor(UIColor(rgb: 0xD8D8D8), for: .normal)
                 setTitleColor(UIColor(rgb: 0xD8D8D8), for: .highlighted)
 
-                self.setBackgroundImage(self.layerToImage(layer: self.gradientLayer(color: disableNormalGradient)), for: .normal)
-                self.setBackgroundImage(self.layerToImage(layer: self.gradientLayer(color: disableHighlightedGradient)), for: UIControl.State.highlighted)
+                setBackgroundImage(layerToImage(layer: gradientLayer(color: disableNormalGradient))?.resizableImage(withCapInsets: UIEdgeInsets(top: 3, left: 3, bottom: 3, right: 3), resizingMode: .stretch), for: .normal)
+                setBackgroundImage(layerToImage(layer: gradientLayer(color: disableHighlightedGradient))?.resizableImage(withCapInsets: UIEdgeInsets(top: 3, left: 3, bottom: 3, right: 3), resizingMode: .stretch), for: .highlighted)
             }
         }
     }
@@ -146,6 +139,12 @@ class PButton: UIButton {
     convenience init(style: PButtonStyle) {
         self.init()
         self.style = style
+    }
+
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        layer.cornerRadius = bounds.size.height * 0.5
+        layer.masksToBounds = true
     }
 
     /*

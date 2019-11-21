@@ -19,7 +19,7 @@ class WallletPersistence {
         RealmWriteQueue.async {
             autoreleasepool(invoking: {
                 let realm = try! Realm(configuration: RealmHelper.getConfig())
-                wallet.chainId = SettingService.shareInstance.getCurrentChainId()
+                wallet.chainId = SettingService.shareInstance.currentNodeChainId
                 try? realm.write {
                     realm.add(wallet, update: true)
                 }
@@ -29,7 +29,7 @@ class WallletPersistence {
 
     func delete(wallet: Wallet) {
 
-        let predicate = NSPredicate(format: "chainId == %@ && primaryKeyIdentifier == %@", SettingService.shareInstance.getCurrentChainId(), wallet.primaryKeyIdentifier)
+        let predicate = NSPredicate(format: "chainId == %@ && primaryKeyIdentifier == %@", SettingService.shareInstance.currentNodeChainId, wallet.primaryKeyIdentifier)
         RealmWriteQueue.async {
             autoreleasepool(invoking: {
                 let realm = try! Realm(configuration: RealmHelper.getConfig())
@@ -42,7 +42,7 @@ class WallletPersistence {
 
     func updateWalletName(wallet: Wallet, name: String) {
 
-        let predicate = NSPredicate(format: "chainId == %@ && primaryKeyIdentifier == %@", SettingService.shareInstance.getCurrentChainId(), wallet.primaryKeyIdentifier)
+        let predicate = NSPredicate(format: "chainId == %@ && primaryKeyIdentifier == %@", SettingService.shareInstance.currentNodeChainId, wallet.primaryKeyIdentifier)
         RealmWriteQueue.async {
             autoreleasepool(invoking: {
                 let realm = try! Realm(configuration: RealmHelper.getConfig())
@@ -58,7 +58,7 @@ class WallletPersistence {
 
     func updateWalletUserArrangementIndex(wallet: Wallet, userArrangementIndex: Int) {
 
-        let predicate = NSPredicate(format: "chainId == %@ && primaryKeyIdentifier == %@", SettingService.shareInstance.getCurrentChainId(), wallet.primaryKeyIdentifier)
+        let predicate = NSPredicate(format: "chainId == %@ && primaryKeyIdentifier == %@", SettingService.shareInstance.currentNodeChainId, wallet.primaryKeyIdentifier)
         RealmWriteQueue.async {
             autoreleasepool(invoking: {
                 let realm = try! Realm(configuration: RealmHelper.getConfig())
@@ -74,7 +74,7 @@ class WallletPersistence {
 
     // 0.6.2更新 增加余额缓存
     func updateWalletBalance(wallet: Wallet, balance: String) {
-        let predicate = NSPredicate(format: "chainId == %@ && primaryKeyIdentifier == %@", SettingService.shareInstance.getCurrentChainId(), wallet.primaryKeyIdentifier)
+        let predicate = NSPredicate(format: "chainId == %@ && primaryKeyIdentifier == %@", SettingService.shareInstance.currentNodeChainId, wallet.primaryKeyIdentifier)
         RealmWriteQueue.async {
             autoreleasepool(invoking: {
                 let realm = try! Realm(configuration: RealmHelper.getConfig())
@@ -90,7 +90,7 @@ class WallletPersistence {
 
     // 0.7.0版本更新 增加锁仓余额缓存
     func updateWalletLockedBalance(wallet: Wallet, value: String) {
-        let predicate = NSPredicate(format: "chainId == %@ && primaryKeyIdentifier == %@", SettingService.shareInstance.getCurrentChainId(), wallet.primaryKeyIdentifier)
+        let predicate = NSPredicate(format: "chainId == %@ && primaryKeyIdentifier == %@", SettingService.shareInstance.currentNodeChainId, wallet.primaryKeyIdentifier)
 
         RealmWriteQueue.async {
             autoreleasepool(invoking: {
@@ -118,7 +118,7 @@ class WallletPersistence {
         } else {
             wallets = Array(res)
         }
-        wallets = wallets.filterArrayByCurrentNodeUrlString()
+        wallets = wallets.filterArrayByCurrentNodeUrlString().detached
 
         for item in wallets {
             item.key = try? Keystore(contentsOf: URL(fileURLWithPath: keystoreFolderPath + "/\(item.keystorePath)"))

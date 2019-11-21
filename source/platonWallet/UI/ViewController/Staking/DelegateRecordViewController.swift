@@ -104,7 +104,11 @@ extension DelegateRecordViewController {
     private func fetchData(sequence: String, direction: RefreshDirection) {
 
         let addresses = (AssetVCSharedData.sharedData.walletList as! [Wallet]).map { return $0.address }
-        guard addresses.count > 0 else { return }
+        guard addresses.count > 0 else {
+            self.tableView.mj_header.endRefreshing()
+            self.tableView.mj_footer.endRefreshing()
+            return
+        }
 
         TransactionService.service.getDelegateRecord(
             addresses: addresses,
@@ -122,6 +126,19 @@ extension DelegateRecordViewController {
                     }
 
                     if let newData = data as? [Transaction], newData.count > 0 {
+                        
+                        _ = newData.map({ (tx) -> Transaction in
+                            switch tx.txType! {
+                            case .delegateWithdraw,
+                                 .stakingWithdraw:
+                                tx.direction = .Receive
+                                return tx
+                            default:
+                                tx.direction = .Sent
+                                return tx
+                            }
+                        })
+
                         self?.listData.append(contentsOf: newData)
                         self?.tableView.mj_footer.resetNoMoreData()
                     } else {

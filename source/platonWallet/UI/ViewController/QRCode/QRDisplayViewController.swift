@@ -27,7 +27,8 @@ class QRDisplayViewController: BaseViewController {
         }
 
         if let wallet = walletInstance as? Wallet {
-            let qrImage = setupQRCodeImage(wallet.address, image: nil)
+            let qrImage = UIImage.geneQRCodeImageFor(wallet.address, size: 300.0)
+//            let qrImage = setupQRCodeImage(wallet.address, image: nil)
             qrCodeView.qrCodeImageView.image = qrImage
             qrCodeView.addressLabel.text = wallet.address
 //            qrCodeView.publicKeyLabel.text = wallet.key?.publicKey
@@ -129,7 +130,8 @@ class QRDisplayViewController: BaseViewController {
 
         UIApplication.rootViewController().showLoadingHUD(text: Localized("SharedQRViewSaving"), animated: true)
         DispatchQueue.global().async {
-            let image = self.setupQRCodeImage(string!, image: nil)
+            let image = UIImage.geneQRCodeImageFor(string!, size: 300.0)
+//            let image = self.setupQRCodeImage(string!, image: nil)
             DispatchQueue.main.async {
 
                 if let wallet = self.walletInstance as? Wallet {

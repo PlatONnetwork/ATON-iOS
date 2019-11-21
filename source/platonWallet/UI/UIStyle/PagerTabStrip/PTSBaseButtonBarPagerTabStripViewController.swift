@@ -139,6 +139,11 @@ open class BaseButtonBarPagerTabStripViewController<ButtonBarCellType: UICollect
         buttonBarView.moveTo(index: currentIndex, animated: false, swipeDirection: .none, pagerScroll: .yes)
     }
 
+    func updateBarButtonView() {
+        cachedCellWidths = calculateWidths()
+        buttonBarView.collectionViewLayout.invalidateLayout()
+    }
+
     open func calculateStretchedCellWidths(_ minimumCellWidths: [CGFloat], suggestedStretchedCellWidth: CGFloat, previousNumberOfLargeCells: Int) -> CGFloat {
         var numberOfLargeCells = 0
         var totalWidthOfLargeCells: CGFloat = 0
@@ -193,9 +198,8 @@ open class BaseButtonBarPagerTabStripViewController<ButtonBarCellType: UICollect
 
     open func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard indexPath.item != currentIndex else { return }
-
         buttonBarView.moveTo(index: indexPath.item, animated: true, swipeDirection: .none, pagerScroll: .yes)
-        shouldUpdateButtonBarView = false
+        shouldUpdateButtonBarView = true
 
         let oldCell = buttonBarView.cellForItem(at: IndexPath(item: currentIndex, section: 0)) as? ButtonBarCellType
         let newCell = buttonBarView.cellForItem(at: IndexPath(item: indexPath.item, section: 0)) as? ButtonBarCellType
@@ -209,6 +213,7 @@ open class BaseButtonBarPagerTabStripViewController<ButtonBarCellType: UICollect
             }
         }
         moveToViewController(at: indexPath.item)
+
     }
 
     // MARK: - UICollectionViewDataSource
@@ -259,12 +264,21 @@ open class BaseButtonBarPagerTabStripViewController<ButtonBarCellType: UICollect
         var minimumCellWidths = [CGFloat]()
         var collectionViewContentWidth: CGFloat = 0
 
-        for viewController in viewControllers {
+        for (index, viewController) in viewControllers.enumerated() {
             let childController = viewController as! IndicatorInfoProvider // swiftlint:disable:this force_cast
             let indicatorInfo = childController.indicatorInfo(for: self)
             switch buttonBarItemSpec! {
             case .cellClass(let widthCallback):
-                let width = widthCallback(indicatorInfo)
+
+                let cell = buttonBarView.cellForItem(at: IndexPath(item: index, section: 0)) as? StakingLabelViewCell
+
+                let label = UILabel()
+                label.translatesAutoresizingMaskIntoConstraints = false
+                label.font = cell?.label.font
+                label.localizedText = indicatorInfo.title
+                let labelSize = label.intrinsicContentSize
+
+                let width = labelSize.width
                 minimumCellWidths.append(width)
                 collectionViewContentWidth += width
             case .nibFile(_, _, let widthCallback):
@@ -322,7 +336,6 @@ class ExampleBaseButtonBarPagerTabStripViewController: BaseButtonBarPagerTabStri
             let label = UILabel()
             label.translatesAutoresizingMaskIntoConstraints = false
             label.font = self?.settings.style.buttonBarItemFont ?? label.font
-//            label.text = childItemInfo.title
             label.localizedText = childItemInfo.title
             let labelSize = label.intrinsicContentSize
             return labelSize.width + CGFloat(self?.settings.style.buttonBarItemLeftRightMargin ?? 8 * 2)

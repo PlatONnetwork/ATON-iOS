@@ -70,7 +70,7 @@
 "transferVC_confirm_Fee" = "交易手续费：";
 "transferVC_send_Fee" = "交易费用";
 
-"transferVC_confirm_ATP_send" = "LAT 发送";
+"transferVC_confirm_ATP_send" = "发送 LAT";
 "transferVC_confirm_Submit" = "发送";
 
 "transferVC_address_Incorrect_tip" = "地址格式不正确 ";
@@ -78,7 +78,7 @@
 "transferVC_amout_empty_tip" = "发送数量为空";
 "transferVC_amout_amout_input_error" = "数额输入错误";
 "transferVC_transfer_success_tip" = "转账成功";
-"transferVC_transfer_balance" = "余额：";
+"transferVC_transfer_balance" = "当前余额：";
 "transferVC_transfer_SendAll" = "发送所有";
 "transferVC_Insufficient_balance" = "钱包余额不足";
 "transferVC_Insufficient_balance_for_gas" = "余额不足支付手续费，无法转账";
@@ -86,7 +86,6 @@
 "transferVC_transfer_select_wallet" = "选择钱包";
 
 //walletDetailVC
-"walletDetailVC_tx_status_pending" = "处理中";
 "walletDetailVC_tx_status_confirming" = "确认中";
 "walletDetailVC_no_transactions_Signing" = "签名中";
 "walletDetailVC_tx_status_success" = "成功";
@@ -107,7 +106,7 @@
 
 "TransactionDetailVC_type" = "交易类别:";
 "TransactionDetailVC_time" = "交易时间:";
-"TransactionDetailVC_value" = "数量:";
+"TransactionDetailVC_value" = "交易数量:";
 "TransactionDetailVC_energon_price" = "交易手续费:";
 "TransactionDetailVC_Wallet" = "钱包:";
 "TransactionDetailVC_memo" = "备注:";
@@ -120,6 +119,7 @@
 "TransactionDetailVC_voteStaked" = "投票质押:";
 "TransactionDetailVC_reported" = "被举报人:";
 "TransactionDetailVC_delegated_to" = "委托给:";
+"TransactionDetailVC_withdraw_to" = "赎回From:";
 "TransactionDetailVC_delegated_amount" = "委托数量:";
 "TransactionDetailVC_withdrawal_amount" = "赎回数量:";
 "TransactionDetailVC_version" = "版本:";
@@ -304,9 +304,9 @@
 //AddAddressInfoViewController
 
 "AddAddress_nav_title"= "添加新地址";
-"AddAddress_textFieldPlaceHolder_address_Name"= "地址名称";
-"AddAddress_textFieldPlaceHolder_Wallet_Address"= "地址";
-"AddAddressVC_tip" = "地址存在本地，删除APP前请先备份！";
+"AddAddress_textFieldPlaceHolder_address_Name"= "输入地址名称";
+"AddAddress_textFieldPlaceHolder_Wallet_Address"= "输入钱包地址";
+"AddAddressVC_tip" = "地址存在本地，删除APP前请先备份";
 "AddAddressVC_add_button_title" = "添加";
 
 "NewAddress_name_empty_tip" = "名称不能为空";
@@ -347,7 +347,7 @@
 "TransactionListVC_Received" = "接收";
 "TransactionListVC_Vote" = "投票";
 
-"TransactionStatus_sending_title" = "发送LAT";
+"TransactionStatus_sending_title" = "发送";
 "TransactionStatus_sendSucceed_title" = "发送";
 "TransactionStatus_sendFailed_title" = "发送";
 "TransactionStatus_receiving_title" = "接收";
@@ -358,7 +358,7 @@
 "TransactionStatus_voteFailed_title" = "投票";
 "TransactionStatus_timeout_title" = "交易超时";
 
-"TransactionStatus_pending_desc" = "处理中";
+"TransactionStatus_pending_desc" = "确认中";
 "TransactionStatus_succeed_desc" = "已完成";
 "TransactionStatus_failed_desc" = "失败";
 
@@ -410,6 +410,7 @@
 "SettingsVC_nodeSet_defaultTestNetwork_Amigo_des" = "(Amigo测试网)";
 "SettingsVC_nodeSet_defaultTestNetwork_des" = "(aton测试网)";
 "SettingsVC_nodeSet_defaultProductNetwork_des" = "(aton主网)";
+"SettingsVC_nodeSet_NewBaleyworld_des" = "(新贝莱世界)";
 "SettingsVC_nodeSet_switchSuccess_tips" = "节点切换成功";
 "SettingsVC_nodeSet_switchFail_tips" = "节点切换失败";
 "SettingsVC_nodeSet_recovery_tips" = "节点连接失败，已还原修改";
@@ -427,10 +428,9 @@
 
 //BiometricsAuthVC
 "BiometricsAuthVC_logo_title" = "PlatOn-Wallet";
-"BiometricsAuthVC_authFaceIDBtn_title" = "点击唤起人脸识别验证";
-"BiometricsAuthVC_authTouchIDBtn_title" = "点击唤起指纹验证";
-"BiometricsAuthVC_switchBtn_title" = "使用钱包密码登录解锁";
-"BiometricsAuthVC_initFailed_tips" = "多次验证不通过，请使用钱包密码登录解锁";
+"BiometricsAuthVC_authTouchIDBtn_title" = "点击唤起%@验证";
+"BiometricsAuthVC_switchBtn_title" = "钱包密码解锁";
+"BiometricsAuthVC_initFailed_tips" = "%@多次验证不通过，请使用钱包密码解锁";
 
 //PasswordAuthVC
 "PasswordAuthVC_title" = "钱包密码解锁";
@@ -595,6 +595,7 @@
 //About
 
 "AboutVC_nav_title" = "关于";
+"AboutVC_Policy" = "隐私政策";
 "AboutVC_AboutUs" = "关于我们";
 "AboutVC_update" = "版本更新";
 
@@ -681,9 +682,9 @@
 
 
 //AssetViewController
-"Asset_segment_Transaction" = "交易";
+"Asset_segment_Transaction" = "交易记录";
 "Asset_segment_Send" = "发送";
-"Asset_segment_Send_offline" = "离线钱包";
+"Asset_segment_Send_offline" = "离线签名";
 "Asset_segment_Receive" = "接收";
 
 //common
@@ -700,7 +701,7 @@
 
 "confirm_send_from" = "发送钱包：";
 
-"addressbook_wallet_name_with_Colon" = "钱包名称：";
+"addressbook_wallet_name_with_Colon" = "地址名称：";
 "addressbook_wallet_address_with_Colon" = "钱包地址：";
 
 "wallet_name_duplicate" = "钱包名称在本客户端已存在，不可重复";
@@ -721,7 +722,7 @@
 "send_address_placeholder" = "输入钱包地址";
 "send_amount_placeholder" = "输入发送数量";
 "vote_confirm_from" = "支付钱包：";
-"staking_amount_placeholder" = "输入数量（不少于10LAT）";
+"staking_amount_placeholder" = "输入数量（不少于%@LAT）";
 
 
 "createOrImport_guide_text" = "已有钱包？使用钱包文件(json)、助记词、私钥导入";
@@ -757,8 +758,8 @@
 "staking_alert_locked_delegate_detail" = "锁定的委托才有收益，赎回锁定的委托大约在6.1小时内到账。";
 "staking_alert_unlocked_delegate" = "未锁定委托";
 "staking_alert_unlocked_delegate_detail" = "委托大约在6.1小时内完成锁定，未锁定的委托没有收益，赎回的委托立即到账";
-"staking_alert_released_delegate" = "已解除委托";
-"staking_alert_released_detail" = "验证节点退出，委托自动解除，需要主动赎回委托";
+"staking_alert_released_delegate" = "待赎回委托";
+"staking_alert_released_detail" = "一旦节点退出，原委托与节点解除关联，委托失效，需要主动赎回委托";
 "staking_alert_annualized_rate" = "预计年化率";
 "staking_alert_annualized_rate_detail" = "当前节点的预计年化率，具体委托收益由节点分配";
 
@@ -766,7 +767,7 @@
 "staking_validator_node_active" = "活跃中";
 "staking_validator_node_candidate" = "候选中";
 "staking_validator_node_rank" = "排名";
-"staking_validator_node_yield" = "预计年化率";
+"staking_validator_node_yield" = "年化率";
 
 "staking_validator_delegate_total" = "总质押";
 "staking_validator_delegate_rate_about" = "预计年化率";
@@ -791,7 +792,6 @@
 "ATextFieldView_title" = "数量:";
 "ATextFieldView_delegate_title" = "委托数量:";
 "ATextFieldView_withdraw_title" = "赎回数量:";
-"ATextFieldView_withdraw_placeholder" = "输入数量（不少于10LAT）";
 
 "staking_doubt_delegate" = "委托";
 "staking_doubt_delegate_detail" = "委托的Token所有权永远归于委托人，用户可以随时赎回委托的Token。\n验证节点关联的操作地址和奖励接收地址不允许参与委托。";
@@ -801,7 +801,7 @@
 "staking_doubt_risk_detail" = "节点双重签名、出块率低会被惩罚，从而间接影响您的收益。为规避风险，请认真选择合格的节点。";
 
 "staking_doubt_undelegate" = "说明";
-"staking_doubt_undelegate_detail" = "赎回交易提交成功，委托的Token可立即到账；\n待赎回委托必须一次性全部赎回；\n赎回数量扣除后，已委托剩余数量少于10LAT时，自动赎回全部。";
+"staking_doubt_undelegate_detail" = "赎回交易提交成功，委托的Token可立即到账；\n待赎回委托必须一次性全部赎回；\n赎回数量扣除后，已委托剩余数量少于%@LAT时，自动赎回全部。";
 
 "staking_balance_can_used" = "可用余额";
 "staking_balance_locked_position" = "锁仓余额";
@@ -862,7 +862,7 @@
 "empty_string_my_delegates_right" = "参与委托";
 
 "empty_string_validator" = "没有验证节点";
-"empty_string_delegation_record" = "没有委托记录";
+"empty_string_delegation_record" = "暂无记录";
 
 "service_agreement_title" = "服务协议";
 "service_agreement_selected_text" = "我已阅读并同意上述条款";
@@ -872,8 +872,8 @@
 
 "staking_delegate_input_amount_minlimit_error" = "请输入委托的数量";
 "staking_withdraw_input_amount_minlimit_error" = "请输入赎回的数量";
-"staking_input_amount_minlimit_error" = "委托数量不能少于10LAT";
-"staking_withdraw_input_amount_minlimit_error" = "赎回数量不能少于10LAT";
+"staking_input_amount_minlimit_error" = "委托数量不能少于%@LAT";
+"staking_withdraw_input_amount_minlimit_error" = "赎回数量不能少于%@LAT";
 "staking_input_amount_maxlimit_error" = "余额不足，无法委托";
 "staking_withdraw_input_amount_maxlimit_error" = "超出可赎回数量，无法提交";
 "staking_withdraw_balance_Insufficient_error" = "余额不足支付手续费，无法赎回委托";
@@ -903,8 +903,10 @@
 "confirm_button_send" = "发送交易";
 "confirm_authorize_button_send" = "授权签名";
 "confirm_authorize_function_type" = "交易信息:";
-"confirm_authorize_from" = "发送钱包:";
+"confirm_authorize_from" = "操作钱包:";
+"confirm_authorize_delegate_to" = "委托给:";
 "confirm_authorize_to" = "接收地址:";
+"confirm_authorize_undelegate_to" = "赎回From:";
 "confirm_authorize_fee" = "交易手续费:";
 "confirm_generate_qrcode_for_signed_tx" = "授权签名";
 "confirm_generate_qrcode_for_signed_tx_tip" = "使用对应观察钱包扫描下方二维码，完成授权";
@@ -914,8 +916,17 @@
 
 "offline_signature_invalid" = "无效签名";
 "offline_signature_notmatch_wallet" = "钱包不匹配";
-"touchid_auth_text" = "请验证指纹";
+"touchid_auth_text" = "请验证%@";
 "touchid_verify_fail" = "指纹识别失败，请再试一次";
 
 "delete_observed_wallet_alert_title" = "删除观察钱包";
 "delete_observed_wallet_alert_message" = "请确认是否删除此观察钱包？";
+
+"delegate_node_details_nodata" = "暂无委托信息";
+
+"scan_error_no_scan_message" = "请对准二维码，耐心等待";
+"delegate_no_withdraw_message" = "没有可赎回的委托";
+
+"empty_view_no_network_title" = "网络加载失败";
+"empty_view_no_network_message" = "请您重新刷新或者检查网络";
+"empty_view_refresh_title" = "刷新";

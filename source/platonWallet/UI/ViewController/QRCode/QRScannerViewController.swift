@@ -9,55 +9,25 @@
 import UIKit
 import AVFoundation
 import Localize_Swift
+import ZXingObjC
+import platonWeb3
 
 private let scanFrameSize: CGFloat = 257.0
 
 class QRScannerViewController: BaseViewController, AVCaptureMetadataOutputObjectsDelegate {
 
-    lazy var captureSession: AVCaptureSession! = {
+    fileprivate var isFirstApplyOrientation: Bool?
+    fileprivate var captureSizeTransform: CGAffineTransform?
 
-        let session = AVCaptureSession()
-
-        guard let videoCaptureDevice = AVCaptureDevice.default(for: .video) else { return nil}
-        let videoInput: AVCaptureDeviceInput
-
-        do {
-            videoInput = try AVCaptureDeviceInput(device: videoCaptureDevice)
-        } catch {
-            return nil
-        }
-
-        if (session.canAddInput(videoInput)) {
-            session.addInput(videoInput)
-        } else {
-            failed()
-            return nil
-        }
-
-        let metadataOutput = AVCaptureMetadataOutput()
-
-        if (session.canAddOutput(metadataOutput)) {
-            session.addOutput(metadataOutput)
-
-            metadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
-            metadataOutput.metadataObjectTypes = [.qr]
-        } else {
-            failed()
-            return nil
-        }
-
-        return session
-
-    }()
-
-    lazy var previewLayer: AVCaptureVideoPreviewLayer! = {
-
-        let layer = AVCaptureVideoPreviewLayer(session: captureSession)
-        layer.frame = view.bounds
-        layer.backgroundColor = UIColor(rgb: 0x1B2137, alpha: 0.5).cgColor
-        layer.videoGravity = .resizeAspectFill
-        return layer
-
+    lazy var capture: ZXCapture = {
+        let cp = ZXCapture()
+        let hint = ZXDecodeHints()
+        hint.encoding = 5
+        cp.hints = hint
+        cp.camera = ZXCapture().back()
+        cp.focusMode =  .continuousAutoFocus
+        cp.delegate = self
+        return cp
     }()
 
     var scanCompletion: ((String) -> Void)?
@@ -71,11 +41,14 @@ class QRScannerViewController: BaseViewController, AVCaptureMetadataOutputObject
 
     }()
 
-    convenience init(scanCompletion:@escaping (_ result: String) -> Void) {
+    lazy var pollTimer: Timer = {
+        let timer = Timer(timeInterval: TimeInterval(15), target: self, selector: #selector(alertNoQrCodeView), userInfo: nil, repeats: true)
+        return timer
+    }()
 
+    convenience init(scanCompletion:@escaping (_ result: String) -> Void) {
         self.init()
         self.scanCompletion = scanCompletion
-
     }
 
     override func viewDidLoad() {
@@ -86,37 +59,194 @@ class QRScannerViewController: BaseViewController, AVCaptureMetadataOutputObject
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
         navigationController?.setNavigationBarHidden(false, animated: false)
 
+        RunLoop.main.add(pollTimer, forMode: .common)
+
         startScanLineAnimation()
-        if (captureSession?.isRunning == false) {
-            captureSession.startRunning()
+        if capture.running == false {
+            capture.start()
         }
+    }
+
+    deinit {
+        print("dealloc!!!!")
     }
 
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
         navigationController?.setNavigationBarHidden(true, animated: false)
+
+        pollTimer.invalidate()
+
         stopScanLineAnimation()
-        if (captureSession?.isRunning == true) {
-            captureSession.stopRunning()
+        if capture.running == true {
+            capture.stop()
         }
     }
 
     public func rescan() {
         startScanLineAnimation()
-        if (captureSession?.isRunning == false) {
-            captureSession.startRunning()
+        if capture.running == false {
+            capture.start()
         }
     }
 
     func setupUI() {
-        //super.leftNavigationTitle = "QRScanerVC_nav_title"
+        view.layer.addSublayer(capture.layer)
+        addAlbumButton()
         addScanLayer()
         perform(#selector(addTorchLayer), with: nil, afterDelay: 5.0)
-        addAlbumButton()
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+
+        if isFirstApplyOrientation == true { return }
+        isFirstApplyOrientation = true
+        applyOrientation()
+    }
+
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+
+        coordinator.animate(alongsideTransition: { (context) in
+            // do nothing
+        }) { [weak self] (context) in
+            guard let weakSelf = self else { return }
+            weakSelf.applyOrientation()
+        }
+    }
+
+    func applyOrientation() {
+        let orientation = UIApplication.shared.statusBarOrientation
+        var captureRotation: Double
+        var scanRectRotation: Double
+
+        switch orientation {
+        case .portrait:
+            captureRotation = 0
+            scanRectRotation = 90
+        case .landscapeLeft:
+            captureRotation = 90
+            scanRectRotation = 180
+        case .landscapeRight:
+            captureRotation = 270
+            scanRectRotation = 0
+        case .portraitUpsideDown:
+            captureRotation = 180
+            scanRectRotation = 270
+        default:
+            captureRotation = 0
+            scanRectRotation = 90
+        }
+
+        applyRectOfInterest(orientation: orientation)
+
+        let angleRadius = captureRotation / 180.0 * Double.pi
+        let captureTranform = CGAffineTransform(rotationAngle: CGFloat(angleRadius))
+
+        capture.transform = captureTranform
+        capture.rotation = CGFloat(scanRectRotation)
+        capture.layer.frame = view.frame
+    }
+
+    func applyRectOfInterest(orientation: UIInterfaceOrientation) {
+        var transformedVideoRect = self.view.frame
+        guard
+            let cameraSessionPreset = capture.sessionPreset
+            else { return }
+
+        var scaleVideoX, scaleVideoY: CGFloat
+        var videoHeight, videoWidth: CGFloat
+
+        // Currently support only for 1920x1080 || 1280x720
+        if cameraSessionPreset == AVCaptureSession.Preset.hd1920x1080.rawValue {
+            videoHeight = 1080.0
+            videoWidth = 1920.0
+        } else {
+            videoHeight = 720.0
+            videoWidth = 1280.0
+        }
+
+        if orientation == UIInterfaceOrientation.portrait {
+            scaleVideoX = self.view.frame.width / videoHeight
+            scaleVideoY = self.view.frame.height / videoWidth
+
+            // Convert CGPoint under portrait mode to map with orientation of image
+            // because the image will be cropped before rotate
+            // reference: https://github.com/TheLevelUp/ZXingObjC/issues/222
+            let realX = transformedVideoRect.origin.y;
+            let realY = self.view.frame.size.width - transformedVideoRect.size.width - transformedVideoRect.origin.x;
+            let realWidth = transformedVideoRect.size.height;
+            let realHeight = transformedVideoRect.size.width;
+            transformedVideoRect = CGRect(x: realX, y: realY, width: realWidth, height: realHeight);
+
+        } else {
+            scaleVideoX = self.view.frame.width / videoWidth
+            scaleVideoY = self.view.frame.height / videoHeight
+        }
+
+        captureSizeTransform = CGAffineTransform(scaleX: 1.0/scaleVideoX, y: 1.0/scaleVideoY)
+        guard let _captureSizeTransform = captureSizeTransform else { return }
+        let transformRect = transformedVideoRect.applying(_captureSizeTransform)
+        capture.scanRect = transformRect
+    }
+
+    func barcodeFormatToString(format: ZXBarcodeFormat) -> String {
+        switch (format) {
+        case kBarcodeFormatAztec:
+            return "Aztec"
+
+        case kBarcodeFormatCodabar:
+            return "CODABAR"
+
+        case kBarcodeFormatCode39:
+            return "Code 39"
+
+        case kBarcodeFormatCode93:
+            return "Code 93"
+
+        case kBarcodeFormatCode128:
+            return "Code 128"
+
+        case kBarcodeFormatDataMatrix:
+            return "Data Matrix"
+
+        case kBarcodeFormatEan8:
+            return "EAN-8"
+
+        case kBarcodeFormatEan13:
+            return "EAN-13"
+
+        case kBarcodeFormatITF:
+            return "ITF"
+
+        case kBarcodeFormatPDF417:
+            return "PDF417"
+
+        case kBarcodeFormatQRCode:
+            return "QR Code"
+
+        case kBarcodeFormatRSS14:
+            return "RSS 14"
+
+        case kBarcodeFormatRSSExpanded:
+            return "RSS Expanded"
+
+        case kBarcodeFormatUPCA:
+            return "UPCA"
+
+        case kBarcodeFormatUPCE:
+            return "UPCE"
+
+        case kBarcodeFormatUPCEANExtension:
+            return "UPC/EAN extension"
+
+        default:
+            return "Unknown"
+        }
     }
 
     private func addAlbumButton() {
@@ -176,6 +306,10 @@ class QRScannerViewController: BaseViewController, AVCaptureMetadataOutputObject
         view.addSubview(torchLabel)
     }
 
+    @objc func alertNoQrCodeView() {
+        showMessage(text: Localized("scan_error_no_scan_message"), delay: 2.0)
+    }
+
     override func rt_customBackItem(withTarget target: Any!, action: Selector!) -> UIBarButtonItem! {
         let barButtonItem = UIBarButtonItem(image: UIImage(named: "nav_back"), style: .plain, target: self, action: #selector(onNavigationBack))
         barButtonItem.tintColor = .white
@@ -183,57 +317,39 @@ class QRScannerViewController: BaseViewController, AVCaptureMetadataOutputObject
     }
 
     func checkCamareAuthStatus() {
-
         func showAlert() {
-
             let alert = PAlertController(title: Localized("alert_cameraUsageDeny_title"), message: Localized("alert_cameraUsageDeny_msg"))
             alert.addAction(title: Localized("alert_cancelBtn_title")) {
                 self.navigationController?.popViewController(animated: true)
             }
-
             alert.addAction(title: Localized("alert_cameraUsageDeny_gotoSettings_title")) {
-
                 UIApplication.shared.openURL(URL(string: UIApplication.openSettingsURLString)!)
-
             }
-
             alert.show(inViewController: self)
         }
 
         let status = AVCaptureDevice.authorizationStatus(for: .video)
-
         switch status {
-
         case .authorized:
-
-            view.layer.insertSublayer(self.previewLayer, at: 0)
-
+            view.layer.insertSublayer(capture.layer, at: 0)
         case .denied:
-
             showAlert()
-
         case .notDetermined:
-
             AVCaptureDevice.requestAccess(for: .video) { (granted) in
-
                 DispatchQueue.main.async {
                     if granted {
-                        self.view.layer.insertSublayer(self.previewLayer, at: 0)
+                        self.view.layer.insertSublayer(self.capture.layer, at: 0)
                     } else {
                         showAlert()
                     }
                 }
-
             }
-
         default:
             break
         }
-
     }
 
     func startScanLineAnimation() {
-
         let animate = CABasicAnimation(keyPath: "position.y")
         animate.duration = 2
         animate.repeatCount = MAXFLOAT
@@ -251,35 +367,6 @@ class QRScannerViewController: BaseViewController, AVCaptureMetadataOutputObject
 
     @objc func onNavigationBack() {
         navigationController?.popViewController(animated: true)
-    }
-
-    func failed() {
-        let ac = UIAlertController(title: "Scanning not supported", message: "Your device does not support scanning a code from an item. Please use a device with a camera.", preferredStyle: .alert)
-        ac.addAction(UIAlertAction(title: "OK", style: .default))
-        present(ac, animated: true)
-        captureSession = nil
-    }
-
-    func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
-
-        captureSession.stopRunning()
-
-        if let metadataObject = metadataObjects.first {
-            guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject else { return }
-            guard let stringValue = readableObject.stringValue else {
-
-                if (captureSession?.isRunning == false) {
-                    captureSession.startRunning()
-                }
-                return
-
-            }
-            scanCompletion?(stringValue)
-            //AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
-//            found(code: stringValue)
-
-        }
-
     }
 
     override var prefersStatusBarHidden: Bool {
@@ -327,34 +414,72 @@ extension QRScannerViewController: UIImagePickerControllerDelegate, UINavigation
                          CGSize(width: 1242, height: 2208),
                          CGSize(width: 750, height: 1334),
                          CGSize(width: 640, height: 1136)]
-        var featureQR: CIQRCodeFeature?
+        var qrCodeResult: String?
         for item in sizeArray {
             let newImage = image.resizeImage(image: image, newSize: CGSize(width: item.width, height: item.height))
-            let detector = CIDetector(ofType: CIDetectorTypeQRCode, context: nil, options: [CIDetectorAccuracy: CIDetectorAccuracyHigh])
-            let featureArr = detector?.features(in: CIImage(cgImage: newImage.cgImage!))
 
-            if let feature = featureArr?.first as? CIQRCodeFeature {
-                featureQR = feature
-                break
+            guard
+                let cgimage = newImage.cgImage,
+                let source = ZXCGImageLuminanceSource(cgImage: cgimage),
+                let binarizer = ZXHybridBinarizer(source: source),
+                let bitmap = ZXBinaryBitmap(binarizer: binarizer)
+            else {
+                return
             }
+
+            let hints = ZXDecodeHints()
+            hints.encoding = 5
+            let reader = ZXQRCodeReader()
+            let result = try? reader.decode(bitmap, hints: hints)
+            guard let res = result?.text, res.count > 0 else { continue }
+            qrCodeResult = res
+            break
         }
 
-        if let feature = featureQR {
-            let message = feature.messageString!
+        hideLoadingHUD()
+        dismiss(animated: true, completion: nil)
 
-            self.dismiss(animated: true) { [weak self] in
-                guard let self = self else { return }
-                self.hideLoadingHUD()
-                self.scanCompletion?(message)
-            }
-        } else {
-            self.hideLoadingHUD()
-            self.showMessage(text: Localized("scanviewcontroller_scan_result_notfound"), delay: 1.5)
-            self.dismiss(animated: true, completion: nil)
+        guard
+            let result = qrCodeResult,
+            let isolatin1Data = result.data(using: .isoLatin1),
+            let gunzipData = try? isolatin1Data.gunzipped(),
+            let utf8String = String(data: gunzipData, encoding: .utf8)
+            else {
+                scanCompletion?(qrCodeResult ?? "")
+                navigationController?.popViewController(animated: true)
+                return
         }
+        scanCompletion?(utf8String)
+        navigationController?.popViewController(animated: true)
     }
 
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         self.dismiss(animated: true, completion: nil)
+    }
+}
+
+extension QRScannerViewController: ZXCaptureDelegate {
+    func captureResult(_ capture: ZXCapture!, result: ZXResult!) {
+        capture.hard_stop()
+        guard result.text.count > 0 else {
+            if capture.running == false {
+                capture.delegate = self
+                capture.start()
+            }
+            return
+        }
+
+        guard
+            let isolatin1Data = result.text.data(using: .isoLatin1),
+            let gunzipData = try? isolatin1Data.gunzipped(),
+            let utf8String = String(data: gunzipData, encoding: .utf8)
+        else {
+            scanCompletion?(result.text)
+            navigationController?.popViewController(animated: true)
+            return
+        }
+
+        scanCompletion?(utf8String)
+        navigationController?.popViewController(animated: true)
     }
 }

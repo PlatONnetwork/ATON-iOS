@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -26,8 +26,8 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nRn-af-QjT">
-                        <rect key="frame" x="0.0" y="111" width="114" height="12"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                        <rect key="frame" x="0.0" y="109" width="114" height="17"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <color key="textColor" red="0.16078431372549018" green="0.16078431372549018" blue="0.16078431372549018" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -38,7 +38,7 @@
                 <constraint firstItem="xXk-sS-Lzq" firstAttribute="centerX" secondItem="ZTg-uK-7eu" secondAttribute="centerX" id="C91-L6-f0r"/>
                 <constraint firstItem="nRn-af-QjT" firstAttribute="leading" secondItem="ZTg-uK-7eu" secondAttribute="leading" id="DVL-MW-bch"/>
                 <constraint firstItem="ZTg-uK-7eu" firstAttribute="trailing" secondItem="nRn-af-QjT" secondAttribute="trailing" id="GD5-pG-eYC"/>
-                <constraint firstItem="nRn-af-QjT" firstAttribute="top" secondItem="xXk-sS-Lzq" secondAttribute="bottom" constant="10" id="nN7-ST-4gn"/>
+                <constraint firstItem="nRn-af-QjT" firstAttribute="top" secondItem="xXk-sS-Lzq" secondAttribute="bottom" constant="8" id="nN7-ST-4gn"/>
                 <constraint firstItem="ZTg-uK-7eu" firstAttribute="top" secondItem="xXk-sS-Lzq" secondAttribute="top" constant="-10" id="tj3-Qn-DfX"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>

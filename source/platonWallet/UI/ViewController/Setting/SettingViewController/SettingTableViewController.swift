@@ -61,21 +61,25 @@ class SettingTableViewController: BaseViewController, UITableViewDelegate, UITab
         let laCtx = LAContext()
         laCtx.localizedFallbackTitle = ""
         var error: NSError?
-        if laCtx.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
 
-            laCtx.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: Localized("touchid_auth_text")) { (success, _) in
+        var biometrics: String = "TouchID"
+        if #available(iOS 11.0, *) {
+            if laCtx.biometryType == .faceID {
+                biometrics = "FaceID"
+            }
+        }
+
+        if laCtx.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
+            laCtx.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: Localized("touchid_auth_text", arguments: biometrics)) { (success, _) in
 
                 DispatchQueue.main.async {
-
                     if success {
-
                         (UIApplication.shared.delegate as! AppDelegate).localAuthStateSwitch(sender.isOn)
 
                     } else {
                         sender.isOn = !sender.isOn
                     }
                 }
-
             }
 
         } else {
@@ -119,7 +123,7 @@ class SettingTableViewController: BaseViewController, UITableViewDelegate, UITab
                 lanL.text = "简体中文"
             }
             lanL.textColor = UIColor(rgb: 0x000000)
-            lanL.font = UIFont.systemFont(ofSize: 12)
+            lanL.font = UIFont.systemFont(ofSize: 15)
             cell.contentView.addSubview(lanL)
             lanL.snp.makeConstraints { (maker) in
                 maker.right.equalTo(rigthArrowImgV.snp.left).offset(-4)

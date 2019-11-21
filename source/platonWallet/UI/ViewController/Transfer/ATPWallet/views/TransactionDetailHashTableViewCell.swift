@@ -26,7 +26,6 @@ class TransactionDetailHashTableViewCell: UITableViewCell {
 
         contentView.addSubview(valueLabel)
         valueLabel.snp.makeConstraints { make in
-//            make.trailing.equalToSuperview().offset(-16)
             make.top.equalTo(titleLabel)
             make.bottom.equalToSuperview().offset(-16)
             make.leading.equalTo(titleLabel.snp.trailing).offset(5)

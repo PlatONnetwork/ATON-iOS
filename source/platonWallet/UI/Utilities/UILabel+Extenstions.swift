@@ -49,7 +49,11 @@ extension UILabel {
 
         // 增加富文本国际化语言
         if let attributedTexts = localizedAttributedTexts, attributedTexts.count > 0 {
-            let newAttributedText = attributedTexts.map { return NSAttributedString(string: Localized($0.string), attributes: $0.attributes(at: 0, effectiveRange: nil)) }
+            let newAttributedText = attributedTexts.map { (oriAttributedString) -> NSAttributedString in
+                let newAttributedText = NSMutableAttributedString(attributedString: oriAttributedString)
+                newAttributedText.mutableString.setString(Localized(oriAttributedString.string))
+                return newAttributedText
+            }
 
             let localizeAttributedText = newAttributedText.reduce(NSMutableAttributedString()) { (r, e) -> NSMutableAttributedString in
                 r.append(e)

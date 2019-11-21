@@ -3,8 +3,8 @@
 # gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
 
 ## Build generated
-build/
-DerivedData/
+source/build/
+source/DerivedData/
 
 ## Various settings
 *.pbxuser
@@ -65,10 +65,12 @@ Carthage/Build
 # For more information about the recommended setup visit:
 # https://docs.fastlane.tools/best-practices/source-control/#source-control
 
-fastlane/report.xml
-fastlane/Preview.html
-fastlane/screenshots/**/*.png
-fastlane/test_output
+source/fastlane/report.xml
+source/fastlane/Preview.html
+source/fastlane/screenshots/**/*.png
+source/fastlane/test_output
+source/reports/
+source/UnitTest-Report/
 
 # Code Injection
 #

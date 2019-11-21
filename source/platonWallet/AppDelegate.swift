@@ -118,6 +118,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LicenseVCDelegate {
         if WalletService.sharedInstance.wallets.count > 0 {
             gotoMainTab()
             getRemoteVersion()
+            getRemoteConfig()
         } else {
             gotoWalletCreateVC()
         }
@@ -162,7 +163,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LicenseVCDelegate {
         UserDefaults.standard.set(false, forKey: userDefault_key_isFirst)
         UserDefaults.standard.synchronize()
         gotoNextVC()
-
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -191,13 +191,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LicenseVCDelegate {
 }
 
 extension AppDelegate {
-    func getRemoteVersion() {
-        guard let _ = UIApplication.shared.keyWindow?.rootViewController as? MainTabBarViewController else { return }
-        SettingService.shareInstance.getRemoteVersion { [weak self] (result, _) in
+    func getRemoteConfig() {
+        RemoteService.sharedInstance.getConfig { (result, data) in
             switch result {
             case .success:
+                if let remoteConfig = data as? RemoteConfig {
+                    SettingService.shareInstance.remoteConfig = remoteConfig
+                }
+            case .fail(_, _):
+                break
+            }
+        }
+    }
+
+    func getRemoteVersion() {
+        RemoteService.sharedInstance.getRemoteVersion { [weak self] (result, data) in
+            switch result {
+            case .success:
+                if let remoteVersion = data as? RemoteVersion {
+                    SettingService.shareInstance.remoteVersion = remoteVersion
+                }
+
                 let appBuild = Bundle.main.infoDictionary!["CFBundleVersion"] as? String ?? ""
-                let remoteBuild = SettingService.shareInstance.currentVersion?.build ?? ""
+                let remoteBuild = SettingService.shareInstance.remoteVersion?.build ?? ""
                 if Int(appBuild) ?? 0 < Int(remoteBuild) ?? 0 {
                     guard
                         let localDate = UserDefaults.standard.object(forKey: "UpdateVersionAlertDate") as? Date,
@@ -207,7 +223,7 @@ extension AppDelegate {
                             return
                     }
 
-                    if SettingService.shareInstance.currentVersion?.isForce == true {
+                    if SettingService.shareInstance.remoteVersion?.isForce == true {
                         self?.showShouldUpdateVersionAlert()
                     }
                     UserDefaults.standard.set(Date(), forKey: "UpdateVersionAlertDate")
@@ -219,12 +235,12 @@ extension AppDelegate {
     }
 
     func showShouldUpdateVersionAlert() {
-        let controller = UIAlertController(title: Localized("about_version_update_alert_title"), message: Localized("about_version_update_alert_message_1") + (SettingService.shareInstance.currentVersion?.version ?? "") + Localized("about_version_update_alert_message_2"), preferredStyle: .alert)
+        let controller = UIAlertController(title: Localized("about_version_update_alert_title"), message: Localized("about_version_update_alert_message_1") + (SettingService.shareInstance.remoteVersion?.version ?? "") + Localized("about_version_update_alert_message_2"), preferredStyle: .alert)
         let cancelAction = UIAlertAction(title: Localized("about_version_update_alert_cancel"), style: .cancel, handler: nil)
         let okAction = UIAlertAction(title: Localized("about_version_update_alert_ok"), style: .default) { (_) in
-            UIApplication.shared.openURL(URL(string: SettingService.shareInstance.currentVersion?.appStoreId ?? "https://developer.platon.network/mobile/index.html")!)
+            UIApplication.shared.openURL(URL(string: SettingService.shareInstance.remoteVersion?.appStoreId ?? "https://developer.platon.network/mobile/index.html")!)
         }
-        if SettingService.shareInstance.currentVersion?.isForce == false {
+        if SettingService.shareInstance.remoteVersion?.isForce == false {
             controller.addAction(cancelAction)
         }
         controller.addAction(okAction)

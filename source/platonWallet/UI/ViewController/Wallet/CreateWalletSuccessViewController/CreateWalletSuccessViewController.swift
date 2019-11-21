@@ -29,7 +29,7 @@ class CreateWalletSuccessViewController: BaseViewController {
 
         let label = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 44))
         label.textColor = UIColor.black
-        label.font = UIFont.systemFont(ofSize: 18)
+        label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         label.localizedText = "createWalletSuccessVC_title"
         let leftBarButtonItem = UIBarButtonItem(customView: label)
         return leftBarButtonItem

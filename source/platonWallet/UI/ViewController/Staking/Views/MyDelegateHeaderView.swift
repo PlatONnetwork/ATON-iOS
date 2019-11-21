@@ -30,7 +30,7 @@ class MyDelegateHeaderView: UIView {
         }
 
         let delegateNameTipLabel = UILabel()
-        delegateNameTipLabel.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.medium)
+        delegateNameTipLabel.font = UIFont.systemFont(ofSize: 16)
         delegateNameTipLabel.textColor = .black
         delegateNameTipLabel.localizedText = "staking_main_delegate_total"
         addSubview(delegateNameTipLabel)

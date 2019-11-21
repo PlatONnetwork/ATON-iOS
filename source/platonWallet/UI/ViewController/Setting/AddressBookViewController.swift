@@ -20,6 +20,8 @@ class AddressBookViewController: BaseViewController {
 
     var tableView: UITableView!
 
+    var isHideAddButton: Bool = false
+
     override func viewDidLoad() {
         super.viewDidLoad()
         initSubViews()
@@ -62,6 +64,7 @@ class AddressBookViewController: BaseViewController {
     func initNavigationItem() {
 
         super.leftNavigationTitle = "AddressBookVC_nav_title"
+        guard isHideAddButton == false else { return }
 
         //let backgrouImage = UIImage(color: .white)
         //self.navigationController?.navigationBar.setBackgroundImage(backgrouImage, for: .default)
@@ -92,6 +95,7 @@ extension AddressBookViewController: UITableViewDataSource, UITableViewDelegate,
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: AddressBookTableViewCell.self)) as! AddressBookTableViewCell
         cell.delegate = self
         cell.setUpdCell(addressInfo: dataSource![indexPath.row], isForSelectMode: selectionCompletion != nil)
+        cell.lineIV.isHidden = (indexPath.row == (dataSource?.count ?? 1) - 1)
         return cell
     }
 

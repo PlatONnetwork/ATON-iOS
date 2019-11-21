@@ -194,16 +194,7 @@ class platonWalletTests: XCTestCase {
         let stringvalue = value.description
         
     }
-    
-    func testSettingNodes() {
-        let nodes = SettingService.shareInstance.getNodes()
-        XCTAssert(nodes.count > 0, "nodes shoule have nodes")
-    }
-    
-    func testGetSelectedNode() {
-        let node = SettingService.shareInstance.getSelectedNodes()
-//        XCTAssertNotNil(node, "selected node should be not nil")
-    }
+
     
     func testAddressBook() {
         let addressInfo = AddressInfo()

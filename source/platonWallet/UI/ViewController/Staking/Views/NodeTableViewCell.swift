@@ -137,6 +137,7 @@ class NodeTableViewCell: UITableViewCell {
         rateLabel.font = UIFont.systemFont(ofSize: 17, weight: UIFont.Weight.medium)
         rateLabel.textColor = common_blue_color
         rateLabel.text = "0.00%"
+        rateLabel.adjustsFontSizeToFitWidth = true
         rateLabel.textAlignment = .center
         rateView.addSubview(rateLabel)
         rateLabel.snp.makeConstraints { make in

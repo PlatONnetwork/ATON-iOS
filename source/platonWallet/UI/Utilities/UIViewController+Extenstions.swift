@@ -89,6 +89,18 @@ extension UIViewController {
         }
     }
 
+    func showMessage(text: String, delay: TimeInterval = 0.8, completion: (() -> Void)?) {
+        let view = UIApplication.shared.keyWindow?.rootViewController?.view
+        DispatchQueue.main.async {
+            let hud = MBProgressHUD.showAdded(to: view!, animated: true)
+            hud.mode = .text
+            //hud.label.text = text
+            hud.detailsLabel.text = text
+            hud.hide(animated: true, afterDelay: delay)
+            hud.completionBlock = completion
+        }
+    }
+
     func showErrorMessage(text: String, delay: TimeInterval = 0.8) {
         DispatchQueue.main.async {
             let hud = MBProgressHUD.showAdded(to: UIApplication.shared.keyWindow!, animated: true)

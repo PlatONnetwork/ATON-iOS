@@ -205,7 +205,7 @@ class BaseViewController: UIViewController {
     func getBasicLeftBarButtonItemWithBasicStyle(localizedText: String?) -> UIBarButtonItem {
         let label = UILabel(frame: CGRect(x: 25, y: 0, width: 200, height: 44))
         label.textColor = UIColor.black
-        label.font = UIFont.boldSystemFont(ofSize: 16)
+        label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         label.localizedText = localizedText
         label.tag = titleLabelTag
 
@@ -266,6 +266,17 @@ class BaseViewController: UIViewController {
         navigationController?.popToViewController(controller, animated: true)
     }
 
+    func emptyViewForView(forEmptyDataSet scrollView: UIView, _ description: String?, _ imageName: String?) -> UIView? {
+        let holder = self.tableNodataHolderView
+        if description != nil && description!.length > 0 {
+            holder.descriptionLabel.text = description
+        }
+        if let imageName = imageName, imageName.count > 0 {
+            holder.imageView.image = UIImage(named: imageName)
+        }
+        return holder
+    }
+
     func emptyViewForTableView(forEmptyDataSet scrollView: UIScrollView, _ description: String?, _ imageName: String?) -> UIView? {
         let holder = self.tableNodataHolderView
         if description != nil && description!.length > 0 {
@@ -281,6 +292,13 @@ class BaseViewController: UIViewController {
     func emptyViewForTableview(forEmptyDataSet scrollView: UIScrollView, _ attributedText: NSAttributedString, _ imageName: String) -> UIView? {
         let holderView = self.tableNodataHolderView
         holderView.descriptionLabel.attributedText = attributedText
+        holderView.imageView.image = UIImage(named: imageName)
+        return holderView
+    }
+
+    func emptyViewForTableview(forEmptyDataSet scrollView: UIScrollView, _ attributedTexts: [NSAttributedString], _ imageName: String) -> UIView? {
+        let holderView = self.tableNodataHolderView
+        holderView.descriptionLabel.localizedAttributedTexts = attributedTexts
         holderView.imageView.image = UIImage(named: imageName)
         return holderView
     }

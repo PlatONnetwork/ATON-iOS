@@ -18,7 +18,11 @@ struct AppConfig {
 
     struct ChainID {
         static let TEST = "103"
+        #if UAT
         static let PRODUCT = "101"
+        #else
+        static let PRODUCT = "99"
+        #endif
     }
 
     struct NodeURL {
@@ -34,18 +38,10 @@ struct AppConfig {
         ]
         #else
         static let defaultNodesURL = [
-            (nodeURL: DefaultNodeURL_PRODUCT, desc: "SettingsVC_nodeSet_defaultProductNetwork_des", chainId: AppConfig.ChainID.PRODUCT, isSelected: false),
-            (nodeURL: DefaultNodeURL_UAT, desc: "SettingsVC_nodeSet_defaultTestNetwork_des", chainId: AppConfig.ChainID.TEST, isSelected: true)
+            (nodeURL: DefaultNodeURL_PRODUCT, desc: "SettingsVC_nodeSet_NewBaleyworld_des", chainId: AppConfig.ChainID.PRODUCT, isSelected: false),
+//            (nodeURL: DefaultNodeURL_UAT, desc: "SettingsVC_nodeSet_defaultTestNetwork_des", chainId: AppConfig.ChainID.TEST, isSelected: true)
         ]
         #endif
-
-//        static let defaultNodesURL = [
-//
-//            (nodeURL: AppConfig.NodeURL.DefaultNodeURL_Alpha_V071, desc: "SettingsVC_nodeSet_defaultTestNetwork_Amigo_des", chainId: AppConfig.ChainID.PRODUCT, isSelected: true),
-//            (nodeURL: AppConfig.NodeURL.DefaultNodeURL_Alpha_V071_DEV, desc: "", chainId: AppConfig.ChainID.TEST, isSelected: false)
-////            (nodeURL: DefaultNodeURL_UAT, desc: "SettingsVC_nodeSet_defaultTestNetwork_des", chainId: AppConfig.ChainID.TEST, isSelected: true),
-////            (nodeURL: DefaultNodeURL_PRODUCT, desc: "SettingsVC_nodeSet_defaultProductNetwork_des", chainId: AppConfig.ChainID.PRODUCT, isSelected: false)
-//        ]
     }
 
     struct TimerSetting {
@@ -56,8 +52,8 @@ struct AppConfig {
 
     struct H5URL {
         struct LisenceURL {
-            static let serviceurl_en = "http://192.168.9.190:1000/aton-agreement/en-us/agreement.html"
-            static let serviceurl_cn = "http://192.168.9.190:1000/aton-agreement/zh-cn/agreement.html"
+            static let serviceurl_en = SettingService.shareInstance.getCentralizationHost() + "/aton-agreement/en-us/agreement.html"
+            static let serviceurl_cn = SettingService.shareInstance.getCentralizationHost() + "/aton-agreement/zh-cn/agreement.html"
 
             static var serviceurl: String {
                 return Localize.currentLanguage() == "en" ? serviceurl_en : serviceurl_cn
@@ -65,8 +61,8 @@ struct AppConfig {
         }
 
         struct FAQURL {
-            static let faq_en = "https://platon.zendesk.com/hc/en-us/categories/360002174434"
-            static let faq_cn = "https://platon.zendesk.com/hc/zh-cn/categories/360002174434"
+            static let faq_en = "https://platon.zendesk.com/hc/en-us/articles/360037373194-Common-questions-about-PlatON-Delegators"
+            static let faq_cn = "https://platon.zendesk.com/hc/zh-cn/articles/360037373194-%E5%A7%94%E6%89%98%E4%BA%BA%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"
 
             static var faqurl: String {
                 return Localize.currentLanguage() == "en" ? faq_en : faq_cn
@@ -90,6 +86,15 @@ struct AppConfig {
                 return Localize.currentLanguage() == "en" ? feedback_en : feedback_cn
             }
         }
+
+        struct PrivacyPolicyURL {
+            static let policy_en = SettingService.shareInstance.getCentralizationHost() +  "/aton-agreement/en-us/privacyAgreement.html"
+            static let policy_cn = SettingService.shareInstance.getCentralizationHost() + "/aton-agreement/zh-cn/privacyAgreement.html"
+
+            static var policyurl: String {
+                return Localize.currentLanguage() == "en" ? policy_en : policy_cn
+            }
+        }
     }
 
     struct ServerURL {
@@ -104,6 +109,10 @@ struct AppConfig {
 
     struct AppInfo {
         static let appVersion = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String
+    }
+
+    struct LocalKeys {
+        static let SelectedChainIdKey = "SelectedChainIdKey"
     }
 }
 

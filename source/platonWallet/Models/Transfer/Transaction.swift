@@ -523,3 +523,24 @@ enum TransactionDirection: String, Decodable {
         }
     }
 }
+
+struct TransactionsStatusByHash: Decodable {
+    var hash: String?
+    var status: Int?
+}
+
+extension TransactionsStatusByHash {
+    var localStatus: TransactionReceiptStatus? {
+        guard let st = status else { return nil }
+        switch st {
+        case 0:
+            return .businessCodeError
+        case 1:
+            return .sucess
+        case 2:
+            return .pending
+        default:
+            return nil
+        }
+    }
+}

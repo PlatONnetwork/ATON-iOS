@@ -24,6 +24,21 @@ class NodeDetailViewController: BaseViewController {
         return button
     }()
 
+    lazy var noNetworkEmptyView = { () -> UIView in
+        let contentView = UIView()
+        contentView.backgroundColor = normal_background_color
+        let emptyView = NoNetWorkView()
+        emptyView.refreshHandler = { [weak self] in
+            self?.refreshData()
+        }
+        contentView.addSubview(emptyView)
+        emptyView.snp.makeConstraints({ make in
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview().offset(-80)
+        })
+        return contentView
+    }()
+
     var nodeId: String?
 
     var nodeDetail: NodeDetail?
@@ -34,6 +49,17 @@ class NodeDetailViewController: BaseViewController {
         view.backgroundColor = normal_background_color
 
         // Do any additional setup after loading the view.
+        setupView()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if isViewLoaded {
+            fetchData()
+        }
+    }
+
+    func setupView() {
         nodeInfoView.nodeNameButton.addTarget(self, action: #selector(openWebSiteController), for: .touchUpInside)
 
         view.addSubview(nodeInfoView)
@@ -43,6 +69,11 @@ class NodeDetailViewController: BaseViewController {
             make.top.equalToSuperview().offset(16)
             make.height.equalTo(236)
         }
+
+        nodeInfoView.layer.shadowColor = UIColor(rgb: 0x9ca7c2).cgColor
+        nodeInfoView.layer.shadowRadius = 4.0
+        nodeInfoView.layer.shadowOffset = CGSize(width: 2, height: 2)
+        nodeInfoView.layer.shadowOpacity = 0.2
 
         let institutionalTipLabel = UILabel()
         institutionalTipLabel.text = Localized("statking_validator_Institutional")
@@ -107,16 +138,14 @@ class NodeDetailViewController: BaseViewController {
             make.top.equalTo(delegateButton.snp.bottom).offset(15)
         }
 
+        view.addSubview(noNetworkEmptyView)
+        noNetworkEmptyView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+
         let doubtButtonItem = UIBarButtonItem(image: UIImage(named: "3.icon_doubt"), style: .done, target: self, action: #selector(doubtTapAction))
         doubtButtonItem.tintColor = .black
         navigationItem.rightBarButtonItem = doubtButtonItem
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        if isViewLoaded {
-            fetchData()
-        }
     }
 
     private func setupData() {
@@ -161,6 +190,10 @@ class NodeDetailViewController: BaseViewController {
         doubtLabel.isHidden = (nodeDetail?.node.isInit == false)
     }
 
+    func refreshData() {
+        fetchData()
+    }
+
     private func fetchData() {
         guard let nId = nodeId else { return }
         showLoadingHUD()
@@ -171,9 +204,10 @@ class NodeDetailViewController: BaseViewController {
                 if let newData = data as? NodeDetail {
                     self?.nodeDetail = newData
                     self?.setupData()
+                    self?.noNetworkEmptyView.isHidden = true
                 }
             case .fail:
-                break
+                self?.noNetworkEmptyView.isHidden = false
             }
         }
     }
@@ -235,5 +269,66 @@ class NodeDetailViewController: BaseViewController {
         // Pass the selected object to the new view controller.
     }
     */
+}
 
+class NoNetWorkView: UIView {
+    var refreshHandler: (() -> Void)?
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupView()
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    func setupView() {
+        let imageView = UIImageView(image: UIImage(named: "img-No network"))
+        addSubview(imageView)
+        imageView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.width.equalTo(201)
+            make.height.equalTo(139)
+            make.top.equalToSuperview()
+        }
+
+        let titleLabel = UILabel()
+        titleLabel.text = Localized("empty_view_no_network_title")
+        titleLabel.font = .systemFont(ofSize: 16)
+        titleLabel.textColor = UIColor(rgb: 0x61646e)
+        titleLabel.textAlignment = .center
+        addSubview(titleLabel)
+        titleLabel.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(imageView.snp.bottom).offset(24)
+        }
+
+        let subTitleLabel = UILabel()
+        subTitleLabel.text = Localized("empty_view_no_network_message")
+        subTitleLabel.font = .systemFont(ofSize: 13)
+        subTitleLabel.textColor = UIColor(rgb: 0x61646e)
+        subTitleLabel.textAlignment = .center
+        addSubview(subTitleLabel)
+        subTitleLabel.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(titleLabel.snp.bottom).offset(15)
+        }
+
+        let button = UIButton()
+        button.setTitle(Localized("empty_view_refresh_title"), for: .normal)
+        button.setTitleColor(UIColor(rgb: 0x105cfe), for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 16)
+        button.addTarget(self, action: #selector(refreshAction), for: .touchUpInside)
+        addSubview(button)
+        button.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalTo(subTitleLabel.snp.bottom).offset(30)
+            make.bottom.equalToSuperview()
+        }
+    }
+
+    @objc func refreshAction() {
+        refreshHandler?()
+    }
 }

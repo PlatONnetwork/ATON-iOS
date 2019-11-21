@@ -17,7 +17,7 @@ class StakingLabelViewCell: UICollectionViewCell {
         super.init(frame: frame)
 
         label.textColor = .black
-        label.font = UIFont.systemFont(ofSize: 18)
+        label.font = UIFont.systemFont(ofSize: 18, weight: .medium)
         label.textAlignment = .left
         label.setContentHuggingPriority(.defaultHigh, for: .horizontal)
         label.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
