@@ -32,7 +32,7 @@ class NodeBaseInfoView: UIView {
         backgroundColor = .white
 
         let nodeBackgroundView = UIImageView()
-        nodeBackgroundView.image = UIImage(named: "bg_staking_wallet_img")?.resizableImage(withCapInsets: UIEdgeInsets(top: 3, left: 345, bottom: 3, right: 3))
+        nodeBackgroundView.image = UIImage(named: "bg_staking_wallet_img")?.resizableImage(withCapInsets: UIEdgeInsets(top: 3, left: 345, bottom: 3, right: 3), resizingMode: .stretch)
         addSubview(nodeBackgroundView)
         nodeBackgroundView.snp.makeConstraints { make in
             make.leading.trailing.top.equalToSuperview()

@@ -68,7 +68,7 @@ class NodeAboutDelegateTableViewCell: UITableViewCell {
 
         let walletBackgroundView = UIImageView()
         walletBackgroundView.isUserInteractionEnabled = true
-        walletBackgroundView.image = UIImage(named: "bg_staking_wallet_img")?.resizableImage(withCapInsets: UIEdgeInsets(top: 3, left: 3, bottom: 3, right: 3))
+        walletBackgroundView.image = UIImage(named: "bg_staking_wallet_img")?.resizableImage(withCapInsets: UIEdgeInsets(top: 3, left: 3, bottom: 3, right: 3), resizingMode: .stretch)
         containerView.addSubview(walletBackgroundView)
         walletBackgroundView.snp.makeConstraints { make in
             make.leading.trailing.top.equalToSuperview()

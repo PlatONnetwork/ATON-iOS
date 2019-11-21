@@ -72,8 +72,8 @@ class NodeTableViewCell: UITableViewCell {
         containerView.addSubview(avatarIV)
         avatarIV.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
-            make.leading.equalToSuperview().offset(5)
-            make.width.height.equalTo(42)
+            make.leading.equalToSuperview().offset(10)
+            make.width.height.equalTo(32)
         }
 
         nameLabel.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.medium)
@@ -83,7 +83,7 @@ class NodeTableViewCell: UITableViewCell {
         containerView.addSubview(nameLabel)
         nameLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(19)
-            make.leading.equalTo(avatarIV.snp.trailing).offset(5)
+            make.leading.equalTo(avatarIV.snp.trailing).offset(10)
             make.height.equalTo(18)
         }
 

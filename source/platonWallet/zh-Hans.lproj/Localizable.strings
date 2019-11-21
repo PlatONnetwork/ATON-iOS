@@ -98,7 +98,7 @@
 "walletDetailVC_send_button" = "下一步";
 "walletDetailVC_receive_button" = "接收";
 "walletDetailVC_vote_button" = "投票";
-"walletDetailVC_no_transactions_text" = "暂无交易";
+"walletDetailVC_no_transactions_text" = "暂无交易记录";
 
 
 //Transaction Detail
