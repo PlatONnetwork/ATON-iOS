@@ -46,8 +46,17 @@ extension Node {
         if isInit {
             return "--"
         }
-        guard let ratePAf = Float(ratePA ?? "0"), ratePAf > 0.0 else { return "0.00%" }
-        return String(format: "%.2f", (ratePAf / 100.0)).balanceFixToDisplay(maxRound: 2) + "%"
+        guard
+            let ratePAN = Decimal(string: ratePA ?? "0") else { return "0.00%" }
+        let ratePANDvi10 = ratePAN/Decimal(floatLiteral: 100.0)
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.minimumFractionDigits = 2
+        formatter.usesGroupingSeparator = true
+        formatter.groupingSeparator = ","
+        formatter.groupingSize = 3
+        let result = formatter.string(from: ratePANDvi10 as NSDecimalNumber)
+        return (result ?? "0.00") + "%"
     }
 
     var rank: (String, UIImage?) {

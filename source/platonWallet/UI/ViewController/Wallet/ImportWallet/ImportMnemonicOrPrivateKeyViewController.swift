@@ -285,6 +285,7 @@ extension ImportMnemonicOrPrivateKeyViewController :UITextFieldDelegate, UITextV
             if textField == self.pswTF {
                 self.passwordStrengthView.updateFor( password: self.pswTF.text ?? "")
             }
+            self.checkCanEableButton()
         }
 
         return true

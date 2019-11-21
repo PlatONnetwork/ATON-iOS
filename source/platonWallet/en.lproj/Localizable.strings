@@ -126,6 +126,7 @@
 "TransactionDetailVC_voteStaked" = "Vote Staked:";
 "TransactionDetailVC_reported" = "Reported:";
 "TransactionDetailVC_delegated_to" = "Delegated to:";
+"TransactionDetailVC_withdraw_to" = "Undelegated From:";
 "TransactionDetailVC_delegated_amount" = "Delegation Amount:";
 "TransactionDetailVC_withdrawal_amount" = "Withdrawal Amount:";
 "TransactionDetailVC_version" = "Version:";
@@ -273,7 +274,7 @@
 
 
 //WalletManagerDetailViewController
-"WalletManagerDetailVC_title" = "Manage";
+"WalletManagerDetailVC_title" = "Wallet Management";
 
 "WalletManagerDetailVC_WalletAddress"="Wallet Address:";
 "WalletManagerDetailVC_Rename"="Rename";
@@ -585,6 +586,7 @@
 
 //About
 "AboutVC_nav_title" = "About";
+"AboutVC_Policy" = "Privacy Policy";
 "AboutVC_AboutUs" = "About us";
 "AboutVC_update" = "APP Update";
 
@@ -893,8 +895,10 @@
 "confirm_button_send" = "Finish";
 "confirm_authorize_button_send" = "Next";
 "confirm_authorize_function_type" = "Txn info:";
-"confirm_authorize_from" = "Sender:";
+"confirm_authorize_from" = "Operator_Address:";
+"confirm_authorize_delegate_to" = "Delegated to:";
 "confirm_authorize_to" = "Recipient:";
+"confirm_authorize_undelegate_to" = "Undelegated from:";
 "confirm_authorize_fee" = "Fee:";
 "confirm_generate_qrcode_for_signed_tx" = "Authorization Signature";
 "confirm_generate_qrcode_for_signed_tx_tip" = "Scan the OR code to finish your authorization for the observed wallet.";
@@ -910,3 +914,10 @@
 "delete_observed_wallet_alert_message" = "Are you sure want to delete observed wallet?";
 
 "delegate_node_details_nodata" = "No delegation information";
+
+"scan_error_no_scan_message" = "Please aim at the QR code and wait patiently";
+"delegate_no_withdraw_message" = "No delegation LAT available for withdrawal";
+
+"empty_view_no_network_title" = "Network loading failed";
+"empty_view_no_network_message" = "please try again to refresh or check the network";
+"empty_view_refresh_title" = "Refresh";

@@ -41,6 +41,11 @@ class QRScannerViewController: BaseViewController, AVCaptureMetadataOutputObject
 
     }()
 
+    lazy var pollTimer: Timer = {
+        let timer = Timer(timeInterval: TimeInterval(15), target: self, selector: #selector(alertNoQrCodeView), userInfo: nil, repeats: true)
+        return timer
+    }()
+
     convenience init(scanCompletion:@escaping (_ result: String) -> Void) {
         self.init()
         self.scanCompletion = scanCompletion
@@ -56,16 +61,25 @@ class QRScannerViewController: BaseViewController, AVCaptureMetadataOutputObject
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: false)
 
+        RunLoop.main.add(pollTimer, forMode: .common)
+
         startScanLineAnimation()
         if capture.running == false {
             capture.start()
         }
     }
 
+    deinit {
+        print("dealloc!!!!")
+    }
+
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
         navigationController?.setNavigationBarHidden(true, animated: false)
+
+        pollTimer.invalidate()
+
         stopScanLineAnimation()
         if capture.running == true {
             capture.stop()
@@ -290,6 +304,10 @@ class QRScannerViewController: BaseViewController, AVCaptureMetadataOutputObject
         torchLabel.localizedText = "scanviewcontroller_torch"
         torchLabel.textAlignment = .center
         view.addSubview(torchLabel)
+    }
+
+    @objc func alertNoQrCodeView() {
+        showMessage(text: Localized("scan_error_no_scan_message"), delay: 2.0)
     }
 
     override func rt_customBackItem(withTarget target: Any!, action: Selector!) -> UIBarButtonItem! {

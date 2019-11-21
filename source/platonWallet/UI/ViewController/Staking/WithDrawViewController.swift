@@ -97,7 +97,11 @@ class WithDrawViewController: BaseViewController {
     }
 
     private func initBalanceStyle() {
-        guard delegateValue.count > 0 else { return }
+        guard delegateValue.count > 0 else {
+            navigationController?.popViewController(animated: true)
+            showMessage(text: Localized("delegate_no_withdraw_message"), delay: 2.0)
+            return
+        }
 
         let totalDelegate = delegateValue.reduce(BigUInt.zero) { (result, dValue) -> BigUInt in
             return result + BigUInt(dValue.delegated ?? "0")!
@@ -109,7 +113,7 @@ class WithDrawViewController: BaseViewController {
 
         let bStyle = BalancesCellStyle(balances: [
             (Localized("staking_balance_Delegated"), totalDelegate.description),
-            (Localized("staking_balance_release_Delegated"), totalReleased.description)], selectedIndex: 0, isExpand: false)
+            (Localized("staking_balance_release_Delegated"), totalReleased.description)], selectedIndex: totalReleased > BigUInt.zero ? 1 : 0, isExpand: false)
         balanceStyle = bStyle
 
         initListData()
@@ -221,13 +225,13 @@ extension WithDrawViewController: UITableViewDelegate, UITableViewDataSource {
                 self?.currentAmount = inputAmountVON
                 self?.tableView.reloadSections(IndexSet([indexPath.section + 1]), with: .none)
             }
-            if let bStyle = balanceStyle, bStyle.selectedIndex == 2 {
-                cell.amountView.textField.isUserInteractionEnabled = false
+            if let bStyle = balanceStyle, bStyle.selectedIndex == 1 {
+                cell.amountView.textField.isEnabled = false
                 self.currentAmount = BigUInt(bStyle.currentBalance.1) ?? BigUInt.zero
                 cell.amountView.textField.text = BigUInt(bStyle.currentBalance.1)?.divide(by: ETHToWeiMultiplier, round: 8)
                 self.estimateGas(self.currentAmount, cell)
             } else {
-                cell.amountView.textField.isUserInteractionEnabled = true
+                cell.amountView.textField.isEnabled = true
                 cell.amountView.textField.text = self.currentAmount > BigUInt.zero ?  self.currentAmount.divide(by: ETHToWeiMultiplier, round: 8) : ""
             }
             return cell
@@ -262,7 +266,6 @@ extension WithDrawViewController {
         privateKey: String,
         _ completion: ((Transaction) -> Void)?) {
         showLoadingHUD()
-
 
         StakingService.sharedInstance.withdrawDelegate(stakingBlockNum: stakingBlockNum, nodeId: nodeId, amount: amount, sender: sender, privateKey: privateKey, gas: nil, gasPrice: gasPrice) { [weak self] (result, data) in
             self?.hideLoadingHUD()
@@ -510,7 +513,7 @@ extension WithDrawViewController {
                     switch response.status {
                     case .success(let result):
                         guard
-                            let to = signedTransaction.to?.rawAddress.toHexString() else { return }
+                            let to = signedTransaction.to?.rawAddress.toHexString().add0x() else { return }
                         let gasPrice = signedTransaction.gasPrice.quantity
                         let gasLimit = signedTransaction.gasLimit.quantity
                         let gasUsed = gasPrice.multiplied(by: gasLimit).description

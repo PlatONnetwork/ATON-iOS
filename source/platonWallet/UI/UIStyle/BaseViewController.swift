@@ -266,6 +266,17 @@ class BaseViewController: UIViewController {
         navigationController?.popToViewController(controller, animated: true)
     }
 
+    func emptyViewForView(forEmptyDataSet scrollView: UIView, _ description: String?, _ imageName: String?) -> UIView? {
+        let holder = self.tableNodataHolderView
+        if description != nil && description!.length > 0 {
+            holder.descriptionLabel.text = description
+        }
+        if let imageName = imageName, imageName.count > 0 {
+            holder.imageView.image = UIImage(named: imageName)
+        }
+        return holder
+    }
+
     func emptyViewForTableView(forEmptyDataSet scrollView: UIScrollView, _ description: String?, _ imageName: String?) -> UIView? {
         let holder = self.tableNodataHolderView
         if description != nil && description!.length > 0 {
@@ -281,6 +292,13 @@ class BaseViewController: UIViewController {
     func emptyViewForTableview(forEmptyDataSet scrollView: UIScrollView, _ attributedText: NSAttributedString, _ imageName: String) -> UIView? {
         let holderView = self.tableNodataHolderView
         holderView.descriptionLabel.attributedText = attributedText
+        holderView.imageView.image = UIImage(named: imageName)
+        return holderView
+    }
+
+    func emptyViewForTableview(forEmptyDataSet scrollView: UIScrollView, _ attributedTexts: [NSAttributedString], _ imageName: String) -> UIView? {
+        let holderView = self.tableNodataHolderView
+        holderView.descriptionLabel.localizedAttributedTexts = attributedTexts
         holderView.imageView.image = UIImage(named: imageName)
         return holderView
     }

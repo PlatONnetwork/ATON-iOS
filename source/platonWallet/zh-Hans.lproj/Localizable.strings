@@ -119,6 +119,7 @@
 "TransactionDetailVC_voteStaked" = "投票质押:";
 "TransactionDetailVC_reported" = "被举报人:";
 "TransactionDetailVC_delegated_to" = "委托给:";
+"TransactionDetailVC_withdraw_to" = "赎回From:";
 "TransactionDetailVC_delegated_amount" = "委托数量:";
 "TransactionDetailVC_withdrawal_amount" = "赎回数量:";
 "TransactionDetailVC_version" = "版本:";
@@ -594,6 +595,7 @@
 //About
 
 "AboutVC_nav_title" = "关于";
+"AboutVC_Policy" = "隐私政策";
 "AboutVC_AboutUs" = "关于我们";
 "AboutVC_update" = "版本更新";
 
@@ -860,7 +862,7 @@
 "empty_string_my_delegates_right" = "参与委托";
 
 "empty_string_validator" = "没有验证节点";
-"empty_string_delegation_record" = "没有委托记录";
+"empty_string_delegation_record" = "暂无记录";
 
 "service_agreement_title" = "服务协议";
 "service_agreement_selected_text" = "我已阅读并同意上述条款";
@@ -901,8 +903,10 @@
 "confirm_button_send" = "发送交易";
 "confirm_authorize_button_send" = "授权签名";
 "confirm_authorize_function_type" = "交易信息:";
-"confirm_authorize_from" = "发送钱包:";
+"confirm_authorize_from" = "操作钱包:";
+"confirm_authorize_delegate_to" = "委托给:";
 "confirm_authorize_to" = "接收地址:";
+"confirm_authorize_undelegate_to" = "赎回From:";
 "confirm_authorize_fee" = "交易手续费:";
 "confirm_generate_qrcode_for_signed_tx" = "授权签名";
 "confirm_generate_qrcode_for_signed_tx_tip" = "使用对应观察钱包扫描下方二维码，完成授权";
@@ -919,3 +923,10 @@
 "delete_observed_wallet_alert_message" = "请确认是否删除此观察钱包？";
 
 "delegate_node_details_nodata" = "暂无委托信息";
+
+"scan_error_no_scan_message" = "请对准二维码，耐心等待";
+"delegate_no_withdraw_message" = "没有可赎回的委托";
+
+"empty_view_no_network_title" = "网络加载失败";
+"empty_view_no_network_message" = "请您重新刷新或者检查网络";
+"empty_view_refresh_title" = "刷新";

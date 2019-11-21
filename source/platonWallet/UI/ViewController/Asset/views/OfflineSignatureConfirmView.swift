@@ -65,6 +65,7 @@ class OfflineSignatureScanView: UIView {
         textView.textColor = .black
         textView.contentInset = UIEdgeInsets(top: 3, left: 3, bottom: 3, right: 3)
         textView.font = UIFont.systemFont(ofSize: 14)
+        textView.isEditable = false
         addSubview(textView)
         textView.snp.makeConstraints { make in
             make.top.equalTo(scanButton.snp.bottom).offset(14)
@@ -108,6 +109,7 @@ class OfflineSignatureConfirmView: UIView {
 
     var type: ConfirmViewType!
     var onCompletion: (() -> Void)?
+    var observer: NSKeyValueObservation?
 
     convenience init(confirmType: ConfirmViewType) {
         self.init(frame: .zero)
@@ -174,14 +176,17 @@ class OfflineSignatureConfirmView: UIView {
             make.top.equalTo(contentView.snp.bottom).offset(16)
             make.bottom.equalToSuperview().offset(-16)
         }
+
+        submitBtn.style = .blue
+
+        if contentView is OfflineSignatureScanView {
+            observer = (contentView as? OfflineSignatureScanView)?.textView.observe(\.text, options: [.new, .initial], changeHandler: { (textView, _) in
+                self.submitBtn.style = textView.text.count > 0 ? .blue : .disable
+            })
+        }
     }
 
     @objc func submitAction() {
         onCompletion?()
-    }
-
-    override func layoutSubviews() {
-        super.layoutSubviews()
-        submitBtn.style = .blue
     }
 }

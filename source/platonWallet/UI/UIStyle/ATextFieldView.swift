@@ -90,6 +90,7 @@ class ATextFieldView: UIView {
 
         tipsLabel.textColor = UIColor(rgb: 0xf5302c)
         tipsLabel.font = .systemFont(ofSize: 11)
+        tipsLabel.numberOfLines = 2
         addSubview(tipsLabel)
         tipsLabel.snp.makeConstraints { make in
             make.top.equalTo(textField.snp.bottom).offset(8)
@@ -99,11 +100,13 @@ class ATextFieldView: UIView {
         feeLabel.textColor = common_darkGray_color
         feeLabel.font = .systemFont(ofSize: 13)
         feeLabel.textAlignment = .right
+        feeLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
         addSubview(feeLabel)
         feeLabel.snp.makeConstraints { make in
             make.trailing.equalToSuperview()
             make.top.equalTo(textField.snp.bottom).offset(8)
             make.bottom.equalToSuperview()
+            make.leading.equalTo(tipsLabel.snp.trailing).offset(5)
         }
 
         NotificationCenter.default.addObserver(self, selector: #selector(textDidBeginEditing(_:)), name: UITextField.textDidBeginEditingNotification, object: nil)

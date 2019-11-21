@@ -37,7 +37,16 @@ class AboutViewController: BaseViewController {
     }
 
     @IBAction func softwareUpdate(_ sender: Any) {
-        UIApplication.shared.openURL(URL(string: "https://developer.platon.network/mobile/index.html")!)
+        UIApplication.shared.openURL(URL(string: "https://itunes.apple.com/cn/app/id1473112418?mt=8")!)
         //UIApplication.shared.openURL(URL(string: "https://github.com/PlatONnetwork")!)
+    }
+
+    @IBAction func privacyPolicy(_ sender: Any) {
+        let controller = WebCommonViewController()
+//        controller.navigationTitle = Localized("delegate_faq_title")
+        controller.requestUrl = AppConfig.H5URL.PrivacyPolicyURL.policyurl
+        controller.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(controller, animated: true)
+//        UIApplication.shared.openURL(URL(string: "https://www.platon.network")!)
     }
 }

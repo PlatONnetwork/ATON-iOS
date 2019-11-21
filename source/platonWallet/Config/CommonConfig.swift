@@ -52,8 +52,8 @@ struct AppConfig {
 
     struct H5URL {
         struct LisenceURL {
-            static let serviceurl_en = "http://192.168.9.190:1000/aton-agreement/en-us/agreement.html"
-            static let serviceurl_cn = "http://192.168.9.190:1000/aton-agreement/zh-cn/agreement.html"
+            static let serviceurl_en = SettingService.shareInstance.getCentralizationHost() + "/aton-agreement/en-us/agreement.html"
+            static let serviceurl_cn = SettingService.shareInstance.getCentralizationHost() + "/aton-agreement/zh-cn/agreement.html"
 
             static var serviceurl: String {
                 return Localize.currentLanguage() == "en" ? serviceurl_en : serviceurl_cn
@@ -84,6 +84,15 @@ struct AppConfig {
 
             static var feedbackurl: String {
                 return Localize.currentLanguage() == "en" ? feedback_en : feedback_cn
+            }
+        }
+
+        struct PrivacyPolicyURL {
+            static let policy_en = SettingService.shareInstance.getCentralizationHost() +  "/aton-agreement/en-us/privacyAgreement.html"
+            static let policy_cn = SettingService.shareInstance.getCentralizationHost() + "/aton-agreement/zh-cn/privacyAgreement.html"
+
+            static var policyurl: String {
+                return Localize.currentLanguage() == "en" ? policy_en : policy_cn
             }
         }
     }

@@ -448,7 +448,7 @@ extension DelegateViewController {
                     switch response.status {
                     case .success(let result):
                         guard
-                            let to = signedTransaction.to?.rawAddress.toHexString() else { return }
+                            let to = signedTransaction.to?.rawAddress.toHexString().add0x() else { return }
                         let gasPrice = signedTransaction.gasPrice.quantity
                         let gasLimit = signedTransaction.gasLimit.quantity
                         let gasUsed = gasPrice.multiplied(by: gasLimit).description

@@ -96,7 +96,7 @@ class NodeBaseInfoView: UIView {
         addSubview(rateView)
         rateView.snp.makeConstraints { make in
             make.top.equalTo(nodeNameLabel)
-            make.leading.greaterThanOrEqualTo(statusButton.snp.trailing).offset(5)
+            make.leading.greaterThanOrEqualTo(nodeNameButton.snp.trailing).offset(5)
             make.trailing.equalToSuperview().offset(-10)
         }
 
@@ -104,6 +104,7 @@ class NodeBaseInfoView: UIView {
         rateLabel.font = UIFont.systemFont(ofSize: 17, weight: UIFont.Weight.medium)
         rateLabel.textColor = common_blue_color
         rateLabel.text = "0.00%"
+        rateLabel.adjustsFontSizeToFitWidth = true
 //        rateLabel.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .horizontal)
         rateView.addSubview(rateLabel)
         rateLabel.snp.makeConstraints { make in

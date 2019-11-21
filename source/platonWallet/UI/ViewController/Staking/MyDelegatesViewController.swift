@@ -70,11 +70,10 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
             make.bottom.leading.trailing.equalToSuperview()
         }
 
-        let attributed = NSMutableAttributedString(string: Localized("empty_string_my_delegates_left"))
-        let actionAttributed = NSAttributedString(string: Localized("empty_string_my_delegates_right"), attributes: [NSAttributedString.Key.foregroundColor: common_blue_color])
-        attributed.append(actionAttributed)
+        let attributed = NSAttributedString(string: "empty_string_my_delegates_left")
+        let actionAttributed = NSAttributedString(string: "empty_string_my_delegates_right", attributes: [NSAttributedString.Key.foregroundColor: common_blue_color])
         tableView.emptyDataSetView { [weak self] view in
-            let holder = self?.emptyViewForTableview(forEmptyDataSet: (self?.tableView)!, attributed, "3.img-No trust") as? TableViewNoDataPlaceHolder
+            let holder = self?.emptyViewForTableview(forEmptyDataSet: (self?.tableView)!, [attributed, actionAttributed], "3.img-No trust") as? TableViewNoDataPlaceHolder
             holder?.textTapHandler = { [weak self] in
                 self?.doShowValidatorListController()
             }

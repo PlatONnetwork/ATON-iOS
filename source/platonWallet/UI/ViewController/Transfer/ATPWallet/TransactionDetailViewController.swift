@@ -111,13 +111,9 @@ class TransactionDetailViewController: BaseViewController {
             }
         } else if txType == .delegateCreate ||
                   txType == .delegateWithdraw {
-            listData.append((title: Localized("TransactionDetailVC_delegated_to"), value: tx.toNameString ?? "--", copy: false))
+            listData.append((title:  txType == .delegateCreate ? Localized("TransactionDetailVC_delegated_to") : Localized("TransactionDetailVC_withdraw_to"), value: tx.toNameString ?? "--", copy: false))
             listData.append((title: Localized("TransactionDetailVC_nodeId"), value: tx.nodeId ?? "--", copy: false))
-            if txType == .delegateCreate {
-                listData.append((title: Localized("TransactionDetailVC_delegated_amount"), value: tx.valueDescription?.displayForMicrometerLevel(maxRound: 8).ATPSuffix() ?? "--", copy: false))
-            } else {
-                listData.append((title: Localized("TransactionDetailVC_withdrawal_amount"), value: tx.valueDescription?.displayForMicrometerLevel(maxRound: 8).ATPSuffix() ?? "--", copy: false))
-            }
+            listData.append((title: txType == .delegateCreate ? Localized("TransactionDetailVC_delegated_amount") : Localized("TransactionDetailVC_withdrawal_amount"), value: tx.valueDescription?.displayForMicrometerLevel(maxRound: 8).ATPSuffix() ?? "--", copy: false))
         } else if txType == .stakingCreate ||
                   txType == .stakingAdd ||
                   txType == .stakingEdit ||
