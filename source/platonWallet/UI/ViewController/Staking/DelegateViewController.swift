@@ -228,7 +228,11 @@ extension DelegateViewController: UITableViewDelegate, UITableViewDataSource {
             cell.inputType = .delegate
             cell.amountView.titleLabel.text = Localized("ATextFieldView_delegate_title")
             cell.minAmountLimit = SettingService.shareInstance.remoteConfig?.minDelegationBInt ?? "10".LATToVon
-            cell.maxAmountLimit = BigUInt(balanceStyle?.currentBalance.1 ?? "0")
+            if balanceStyle?.isLock == true {
+                cell.maxAmountLimit = BigUInt(balanceStyle?.currentBalance.1 ?? "0")
+            } else {
+                cell.maxAmountLimit = (BigUInt(balanceStyle?.currentBalance.1 ?? "0") ?? BigUInt.zero) - (estimateUseGas ?? BigUInt.zero)
+            }
             cell.amountView.isUserInteractionEnabled = (canDelegation?.canDelegation == true)
             cell.cellDidContentChangeHandler = { [weak self] in
                 self?.updateHeightOfRow(cell)
