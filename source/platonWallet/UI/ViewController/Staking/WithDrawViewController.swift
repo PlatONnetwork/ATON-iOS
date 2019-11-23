@@ -237,7 +237,7 @@ extension WithDrawViewController: UITableViewDelegate, UITableViewDataSource {
             return cell
         case .singleButton(let title):
             let cell = tableView.dequeueReusableCell(withIdentifier: "SingleButtonTableViewCell") as! SingleButtonTableViewCell
-            cell.unavaliableTapAction = (currentAmount <= BigUInt.zero)
+            cell.disableTapAction = (currentAmount <= BigUInt.zero)
             cell.button.setTitle(title, for: .normal)
             cell.cellDidTapHandle = { [weak self] in
                 guard let self = self else { return }

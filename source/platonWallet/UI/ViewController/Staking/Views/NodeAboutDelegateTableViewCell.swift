@@ -15,6 +15,7 @@ class NodeAboutDelegateTableViewCell: UITableViewCell {
     public let nodeNameLabel = UILabel()
     public let nodeAddressLabel = UILabel()
     public let nodeStatusLabel = UILabel()
+    public let nodeNameButton = UIButton()
 
     public let lockedDelegateLabel = UILabel()
     public let unlockedDelegateLabel = UILabel()
@@ -35,6 +36,7 @@ class NodeAboutDelegateTableViewCell: UITableViewCell {
             nodeStatusLabel.textColor = delegateDetail?.status.1
             lockedDelegateLabel.text = delegateDetail?.delegatedString ?? "--"
             unlockedDelegateLabel.text = delegateDetail?.releasedString ?? "--"
+            nodeNameButton.isHidden = delegateDetail?.website?.count == 0
         }
     }
 
@@ -95,7 +97,7 @@ class NodeAboutDelegateTableViewCell: UITableViewCell {
             make.height.equalTo(18)
         }
 
-        let nodeNameButton = UIButton()
+
         nodeNameButton.addTarget(self, action: #selector(linkTapAction), for: .touchUpInside)
         nodeNameButton.setImage(UIImage(named: "3.icon_link"), for: .normal)
         walletBackgroundView.addSubview(nodeNameButton)

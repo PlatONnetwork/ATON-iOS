@@ -244,7 +244,7 @@ class Transaction : Object, Decodable {
     var version: String?
     var piDID: String?
     var proposalType: ProposalType?
-    var voteProposalType: ProposalType?
+    var proposalId: String?
     var vote: VoteResultType?
     var unDelegation: String?
 
@@ -261,7 +261,7 @@ class Transaction : Object, Decodable {
                 "version",
                 "piDID",
                 "proposalType",
-                "voteProposalType",
+                "proposalId",
                 "vote",
                 "unDelegation"
         ]
@@ -293,7 +293,7 @@ class Transaction : Object, Decodable {
         case toType
         case lockAddress
         case proposalType
-        case voteProposalType
+        case proposalId
         case piDID
         case vote
         case version
@@ -334,7 +334,7 @@ class Transaction : Object, Decodable {
         proposalType = try? container.decode(ProposalType.self, forKey: .proposalType)
         piDID = try? container.decode(String.self, forKey: .piDID)
         vote = try? container.decode(VoteResultType.self, forKey: .vote)
-        voteProposalType = try? container.decode(ProposalType.self, forKey: .voteProposalType)
+        proposalId = try? container.decode(String.self, forKey: .proposalId)
         version = try? container.decode(String.self, forKey: .version)
         reportType = try? container.decode(ReportType.self, forKey: .reportType)
     }

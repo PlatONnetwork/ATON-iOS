@@ -61,9 +61,9 @@ final class StakingService: BaseService {
                     let response = try decoder.decode(JSONResponse<[Node]>.self, from: data)
                     let copyData = response.data.detached
                     let sortData = copyData.sorted(by: { (lhs, rhs) -> Bool in
-                        return isRankingSorted ? (lhs.ratePA ?? "0") > (rhs.ratePA ?? "0") : lhs.ranking < rhs.ranking
+                        return isRankingSorted ? Int(lhs.ratePA ?? "0") ?? 0 > Int(rhs.ratePA ?? "0") ?? 0 : lhs.ranking < rhs.ranking
                     }).sorted(by: { (lhs, rhs) -> Bool in
-                        return isRankingSorted ? lhs.ranking < rhs.ranking : (lhs.ratePA ?? "0") > (rhs.ratePA ?? "0")
+                        return isRankingSorted ? lhs.ranking < rhs.ranking : Int(lhs.ratePA ?? "0") ?? 0 > Int(rhs.ratePA ?? "0") ?? 0
                     })
 
                     DispatchQueue.main.async {
