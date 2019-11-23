@@ -243,7 +243,11 @@ extension DelegateViewController: UITableViewDelegate, UITableViewDataSource {
         case .singleButton(let title):
             let cell = tableView.dequeueReusableCell(withIdentifier: "SingleButtonTableViewCell") as! SingleButtonTableViewCell
             cell.button.setTitle(title, for: .normal)
-            cell.disableTapAction = (currentAmount < SettingService.shareInstance.remoteConfig?.minDelegationBInt ?? "10".LATToVon) || currentAmount >= BigUInt(balanceStyle?.currentBalance.1 ?? "0") ?? BigUInt.zero
+            if balanceStyle?.isLock == true {
+                cell.disableTapAction = (currentAmount < SettingService.shareInstance.remoteConfig?.minDelegationBInt ?? "10".LATToVon) || currentAmount > BigUInt(balanceStyle?.currentBalance.1 ?? "0") ?? BigUInt.zero || (estimateUseGas ?? BigUInt.zero) > BigUInt(canDelegation?.free ?? "0") ?? BigUInt.zero
+            } else {
+                cell.disableTapAction = (currentAmount < SettingService.shareInstance.remoteConfig?.minDelegationBInt ?? "10".LATToVon) || currentAmount + (estimateUseGas ?? BigUInt.zero) > BigUInt(balanceStyle?.currentBalance.1 ?? "0") ?? BigUInt.zero
+            }
             cell.canDelegation = canDelegation
             cell.cellDidTapHandle = { [weak self] in
                 guard let self = self else { return }
@@ -555,7 +559,6 @@ extension DelegateViewController {
             let nodeId = currentNode?.nodeId else { return }
 
         let typ = balanceObject.selectedIndex == 0 ? UInt16(0) : UInt16(1) // 0：自由金额 1：锁仓金额
-
         if isDelegateAll, balanceStyle?.isLock == false {
             // 当全部委托的时候把0替换为1，防止出现0字节导致gas不足的情况
             let amountStr = amountVon.description.replacingOccurrences(of: "0", with: "1")
@@ -564,7 +567,6 @@ extension DelegateViewController {
 
         let gasLimitValue = web3.staking.getGasCreateDelegate(typ: typ, nodeId: nodeId, amount: needEstimateGas)
         gasLimit = gasLimitValue
-
         estimateUseGas = gasLimitValue.multiplied(by: gasPrice ?? PlatonConfig.FuncGasPrice.defaultGasPrice)
 
         if isDelegateAll == true, balanceStyle?.isLock == false {
@@ -573,7 +575,6 @@ extension DelegateViewController {
                 currentAmount > useGas {
                 // 非锁仓余额才可以相减
                 currentAmount -= useGas
-
                 cell.amountView.textField.text = currentAmount.divide(by: ETHToWeiMultiplier, round: 8)
             }
             isDelegateAll = false
@@ -582,6 +583,7 @@ extension DelegateViewController {
         if let feeString = estimateUseGas?.description {
             cell.amountView.feeLabel.text = (feeString.vonToLATString ?? "0.00").displayFeeString
         }
+        cell.amountView.checkInvalidNow(showErrorMsg: true)
     }
 
     func doShowTransactionDetail(_ transaction: Transaction) {
