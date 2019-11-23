@@ -220,7 +220,6 @@ class NodeDetailViewController: BaseViewController {
 
     @objc private func delegateTapAction() {
         guard (AssetVCSharedData.sharedData.walletList as! [Wallet]).count > 0 else {
-            showMessage(text: Localized("error_no_wallet"))
             return
         }
 

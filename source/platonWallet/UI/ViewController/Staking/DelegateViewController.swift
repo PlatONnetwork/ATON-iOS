@@ -247,7 +247,9 @@ extension DelegateViewController: UITableViewDelegate, UITableViewDataSource {
             cell.canDelegation = canDelegation
             cell.cellDidTapHandle = { [weak self] in
                 guard let self = self else { return }
-                self.nextButtonCellDidHandle()
+                if cell.button.style != .disable {
+                    self.nextButtonCellDidHandle()
+                }
             }
             return cell
         case .doubt(let contents):
