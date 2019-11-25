@@ -11,18 +11,19 @@ import Realm
 import RealmSwift
 import Localize_Swift
 import BigInt
+import platonWeb3
 
-public struct JSONResponse<T: Decodable>: Decodable {
+struct JSONResponse<T: Decodable>: Decodable {
     var data: T
 }
 
-public struct Delegate: Decodable {
+struct Delegate: Decodable {
     var walletAddress: String
     var delegated: String?
     var availableDelegationBalance: String?
 }
 
-public struct DelegateDetail: Decodable {
+struct DelegateDetail: Decodable {
     var nodeId: String
     var nodeName: String
     var website: String?
@@ -34,7 +35,19 @@ public struct DelegateDetail: Decodable {
     var isInit: Bool = false
 }
 
-public struct DelegationValue: Decodable {
+struct Delegation: Decodable {
+    var minDelegation: String?
+    var deleList: [DelegationValue]
+}
+
+extension Delegation {
+    var minDelegationBInt: BigUInt {
+        guard let minDelegationString = minDelegation else { return BigUInt(10).multiplied(by: PlatonConfig.VON.LAT) }
+        return BigUInt(minDelegationString) ?? BigUInt(10).multiplied(by: PlatonConfig.VON.LAT)
+    }
+}
+
+struct DelegationValue: Decodable {
     var stakingBlockNum: String?
     var delegated: String?
     var released: String?
@@ -59,6 +72,7 @@ public struct CanDelegation: Decodable {
     var lock: String?
     var canDelegation: Bool = true
     var message: Message?
+    var minDelegation: String?
 
     public enum Message: String, Decodable {
         case amountGreaterZero = "1"
@@ -78,6 +92,18 @@ public struct CanDelegation: Decodable {
                 return Localized("delegate_error_result_balancezero")
             }
         }
+    }
+}
+
+extension CanDelegation {
+    var minDelegationBInt: BigUInt {
+        guard let minDelegationString = minDelegation else { return BigUInt(10).multiplied(by: PlatonConfig.VON.LAT) }
+        return BigUInt(minDelegationString) ?? BigUInt(10).multiplied(by: PlatonConfig.VON.LAT)
+    }
+
+    var freeBigUInt: BigUInt {
+        guard let freeString = free else { return BigUInt.zero }
+        return BigUInt(freeString) ?? BigUInt.zero
     }
 }
 

@@ -48,6 +48,12 @@ struct BalancesCellStyle {
     }
 }
 
+extension BalancesCellStyle {
+    var currentBalanceBInt: BigUInt {
+        return BigUInt(currentBalance.1) ?? BigUInt.zero
+    }
+}
+
 // 可展开绑定的样式数据
 struct WalletsCellStyle {
     var wallets: [Wallet]
