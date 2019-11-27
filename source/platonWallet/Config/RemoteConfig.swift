@@ -11,7 +11,6 @@ import BigInt
 
 struct RemoteConfig: Decodable {
     var minGasPrice: String? // default gasPrice
-    var minDelegation: String? // min delegate amount
     var timeout: String? // transaction timeout value
 }
 
@@ -21,13 +20,6 @@ extension RemoteConfig {
             return nil
         }
         return BigUInt(gasPrice)
-    }
-
-    var minDelegationBInt: BigUInt? {
-        guard let minDlg = minDelegation else {
-            return nil
-        }
-        return BigUInt(minDlg)
     }
 
     var timeoutSecond: TimeInterval {

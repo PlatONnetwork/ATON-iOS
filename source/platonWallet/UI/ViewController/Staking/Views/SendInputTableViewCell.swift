@@ -24,21 +24,26 @@ class SendInputTableViewCell: UITableViewCell {
     // 最少输入的数量
     var minAmountLimit: BigUInt?
     var maxAmountLimit: BigUInt?
+    var estimateUseGas: BigUInt?
+    var balance: BigUInt?
+    var isLockAmount: Bool? = false
     var inputType: SendInputTableViewCellType?
 
     lazy var amountView = { () -> ATextFieldView in
         let amountView = ATextFieldView.create(title: "ATextFieldView_withdraw_title")
-        amountView.textField.LocalizePlaceholder = Localized("staking_amount_placeholder", arguments: SettingService.shareInstance.remoteConfig?.minDelegation?.vonToLAT.description ?? "10")
+        amountView.textField.LocalizePlaceholder = Localized("staking_amount_placeholder", arguments: minAmountLimit?.description ?? "10")
         amountView.feeLabel.text = "0.00".displayFeeString
         amountView.textField.keyboardType = .decimalPad
         amountView.addAction(title: "send_sendAll", action: { [weak self] in
             if let maxAmount = self?.maxAmountLimit {
                 amountView.textField.text = maxAmount.divide(by: ETHToWeiMultiplier, round: 8)
                 self?.cellDidContentEditingHandler?(maxAmount, true)
+                amountView.checkInvalidNow(showErrorMsg: true)
             }
         })
         amountView.checkInput(mode: .all, check: { [weak self] text -> (Bool, String) in
-            let inputformat = CommonService.checkTransferAmoutInput(text: text, checkBalance: false, minLimit: self?.minAmountLimit, maxLimit: self?.maxAmountLimit, fee: nil, type: self?.inputType)
+            let inputformat = CommonService.checkTransferAmoutInput(text: text, balance: self?.balance ?? BigUInt.zero, minLimit: self?.minAmountLimit, maxLimit: self?.maxAmountLimit, fee: self?.estimateUseGas, type: self?.inputType, isLockAmount: self?.isLockAmount)
+//            let inputformat = CommonService.checkTransferAmoutInput(text: text, minLimit: self?.minAmountLimit, maxLimit: self?.maxAmountLimit, fee: self?.estimateUseGas, type: self?.inputType)
             if !inputformat.0 {
                 return inputformat
             }

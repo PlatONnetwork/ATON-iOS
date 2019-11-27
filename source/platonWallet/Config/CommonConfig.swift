@@ -33,8 +33,8 @@ struct AppConfig {
 
         #if UAT
         static let defaultNodesURL = [
-            (nodeURL: AppConfig.NodeURL.DefaultNodeURL_Alpha_V071, desc: "SettingsVC_nodeSet_defaultTestNetwork_Amigo_des", chainId: AppConfig.ChainID.PRODUCT, isSelected: true),
-            (nodeURL: AppConfig.NodeURL.DefaultNodeURL_Alpha_V071_DEV, desc: "", chainId: AppConfig.ChainID.TEST, isSelected: false)
+            (nodeURL: AppConfig.NodeURL.DefaultNodeURL_Alpha_V071, desc: "SettingsVC_nodeSet_defaultTestNetwork_test_des", chainId: AppConfig.ChainID.PRODUCT, isSelected: true),
+            (nodeURL: AppConfig.NodeURL.DefaultNodeURL_Alpha_V071_DEV, desc: "SettingsVC_nodeSet_defaultTestNetwork_develop_des", chainId: AppConfig.ChainID.TEST, isSelected: false)
         ]
         #else
         static let defaultNodesURL = [

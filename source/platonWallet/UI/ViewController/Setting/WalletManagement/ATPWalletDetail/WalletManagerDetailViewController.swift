@@ -130,13 +130,11 @@ class WalletManagerDetailViewController: BaseViewController {
 
         showPasswordInputPswAlert(for: wallet) { [weak self] (_, password, error) in
             guard let self = self else { return }
-            guard let pw = password else {
-                if let errorMsg = error?.localizedDescription {
-                    self.showErrorMessage(text: errorMsg, delay: 2.0)
-                }
+            if let errMessage = error?.localizedDescription {
+                self.showErrorMessage(text: errMessage, delay: 2.0)
                 return
             }
-
+            guard let pw = password else { return }
             switch type {
             case .modifyWalletName:
                 self.confirmToModifyWalletName(pw)

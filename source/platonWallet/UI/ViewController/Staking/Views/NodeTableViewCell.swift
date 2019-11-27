@@ -18,7 +18,9 @@ class NodeTableViewCell: UITableViewCell {
     public let delegateAmountLabel = UILabel()
     public let rateLabel = UILabel()
     public let statusButton = UIButton()
-    public let rankingButton = UIButton()
+
+    public let rankingIV = UIImageView()
+    public let rankingLabel = UILabel()
 
     var cellDidSelectedHandle: (() -> Void)?
 
@@ -31,8 +33,8 @@ class NodeTableViewCell: UITableViewCell {
             statusButton.setTitleColor(node?.status.1 ?? status_blue_color, for: .normal)
             statusButton.layer.borderColor = (node?.status.1 ?? status_blue_color).cgColor
             rateLabel.text = node?.rate ?? "--"
-            rankingButton.setTitle(node?.rank.0 ?? "--", for: .normal)
-            rankingButton.setBackgroundImage(node?.rank.1, for: .normal)
+            rankingLabel.text = node?.rank.0 ?? "--"
+            rankingIV.image = node?.rank.1
         }
     }
 
@@ -72,8 +74,8 @@ class NodeTableViewCell: UITableViewCell {
         containerView.addSubview(avatarIV)
         avatarIV.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
-            make.leading.equalToSuperview().offset(5)
-            make.width.height.equalTo(42)
+            make.leading.equalToSuperview().offset(10)
+            make.width.height.equalTo(32)
         }
 
         nameLabel.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.medium)
@@ -83,7 +85,7 @@ class NodeTableViewCell: UITableViewCell {
         containerView.addSubview(nameLabel)
         nameLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(19)
-            make.leading.equalTo(avatarIV.snp.trailing).offset(5)
+            make.leading.equalTo(avatarIV.snp.trailing).offset(10)
             make.height.equalTo(18)
         }
 
@@ -157,17 +159,23 @@ class NodeTableViewCell: UITableViewCell {
             make.leading.trailing.equalToSuperview()
         }
 
-        rankingButton.setTitle("--", for: .normal)
-        rankingButton.setBackgroundImage(UIImage(named: "3.img_mark1"), for: .normal)
-        rankingButton.imageEdgeInsets = .zero
-        rankingButton.setTitleColor(.white, for: .normal)
-        rankingButton.titleLabel?.font = UIFont.systemFont(ofSize: 11)
-        rankingButton.titleEdgeInsets = UIEdgeInsets(top: -3, left: 3, bottom: 0, right: 0)
-        containerView.addSubview(rankingButton)
-        rankingButton.snp.makeConstraints { make in
-            make.top.equalToSuperview()
-            make.trailing.equalToSuperview()
+        rankingIV.image = UIImage(named: "3.img_mark1")
+        containerView.addSubview(rankingIV)
+        rankingIV.snp.makeConstraints { make in
             make.height.width.equalTo(20)
+            make.trailing.equalToSuperview()
+            make.top.equalToSuperview()
+        }
+        rankingLabel.text = "--"
+        rankingLabel.textColor = .white
+        rankingLabel.font = .systemFont(ofSize: 11)
+        rankingLabel.adjustsFontSizeToFitWidth = true
+        rankingLabel.textAlignment = .center
+        rankingIV.addSubview(rankingLabel)
+        rankingLabel.snp.makeConstraints { make in
+            make.centerX.equalToSuperview().offset(2)
+            make.centerY.equalToSuperview().offset(-1)
+            make.width.equalTo(17)
         }
     }
 

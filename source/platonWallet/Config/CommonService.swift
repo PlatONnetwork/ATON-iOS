@@ -9,6 +9,7 @@
 import Foundation
 import Localize_Swift
 import BigInt
+import platonWeb3
 
 struct CommonService {
 
@@ -121,53 +122,91 @@ struct CommonService {
         return (valid,msg)
     }
 
-    static func checkTransferAmoutInput(text: String, checkBalance: Bool = false, minLimit: BigUInt? = nil, maxLimit: BigUInt? = nil, fee: BigUInt? = BigUInt("0")!, type: SendInputTableViewCellType?) -> (Bool, String) {
+    static func checkAmountLimit(
+        balance: BigUInt, // 可用余额
+        amount: BigUInt, // 交易金额
+        minLimit: BigUInt?, // 最小可交易金额
+        maxLimit: BigUInt?, // 最大可交易金额
+        fee: BigUInt?, // 手续费
+        type: SendInputTableViewCellType,
+        isLockAmount: Bool? = false) -> (Bool, String?) {
 
-        if text.count == 0 {
+        var valid = true
+        var message: String?
+
+        let feeBInt: BigUInt = fee ?? BigUInt.zero
+
+        if
+            let minLimitBInt = minLimit,
+            amount < minLimitBInt {
+            valid = false
+            if type == .withdraw {
+                message = Localized("staking_withdraw_input_amount_minlimit_error", arguments: (minLimitBInt/PlatonConfig.VON.LAT).description)
+            } else if type == .delegate {
+                message = Localized("staking_input_amount_minlimit_error", arguments: (minLimitBInt/PlatonConfig.VON.LAT).description)
+            }
+        }
+
+        if
+            let maxLimitBInt = maxLimit,
+            amount > maxLimitBInt {
+            valid = false
+            if type == .withdraw {
+                message = Localized("staking_withdraw_input_amount_maxlimit_error")
+            } else if type == .delegate {
+                message = Localized("staking_input_amount_maxlimit_error")
+            } else {
+                message = Localized("transferVC_Insufficient_balance")
+            }
+        }
+
+        if type == .withdraw {
+            if balance < feeBInt {
+                valid = false
+                message = Localized("staking_withdraw_balance_Insufficient_error")
+            }
+        } else if type == .delegate {
+            if isLockAmount == false {
+                if balance < amount + feeBInt {
+                    valid = false
+                    message = Localized("staking_delegate_balance_Insufficient_error")
+                }
+            } else {
+                if balance < feeBInt {
+                    valid = false
+                    message = Localized("staking_delegate_balance_Insufficient_error")
+                }
+            }
+        } else {
+            if balance < feeBInt {
+                valid = false
+                message = Localized("transferVC_Insufficient_balance_for_gas")
+            }
+        }
+
+        return (valid, message)
+    }
+
+    static func checkTransferAmoutInput(text: String, balance: BigUInt, minLimit: BigUInt? = nil, maxLimit: BigUInt? = nil, fee: BigUInt? = BigUInt("0")!, type: SendInputTableViewCellType?, isLockAmount: Bool? = false) -> (Bool, String) {
+
+        // if input empty, not regular
+        guard text.count > 0 else {
             return (true, "")
         }
 
-        var valid = true
-        var msg = ""
-//        if text.length == 0 {
-//            msg = Localized("transferVC_amout_empty_tip")
-//            valid = false
-//        }
-
-        if (!(text.isValidInputAmoutWith8DecimalPlaceAndNonZero())) {
-            msg = Localized("transferVC_amout_amout_input_error")
-            valid = false
+        guard text.isValidInputAmoutWith8DecimalPlaceAndNonZero() else {
+            return (false, Localized("transferVC_amout_amout_input_error"))
         }
 
-        if let minLimitAmount = minLimit, let inputVON = BigUInt.mutiply(a: text, by: ETHToWeiMultiplier), inputVON < minLimitAmount {
-            if let inputType = type, inputType == .withdraw {
-                msg = Localized("staking_withdraw_input_amount_minlimit_error", arguments: SettingService.shareInstance.remoteConfig?.minDelegation?.vonToLAT.description ?? "10")
-            } else {
-                msg = Localized("staking_input_amount_minlimit_error", arguments: SettingService.shareInstance.remoteConfig?.minDelegation?.vonToLAT.description ?? "10")
-            }
-
-            valid = false
+        guard let inputVON = BigUInt.mutiply(a: text, by: PlatonConfig.VON.LAT.description) else {
+            return (false, Localized("transferVC_amout_amout_input_error"))
         }
 
-        if let maxLimitAmount = maxLimit, let inputVON = BigUInt.mutiply(a: text, by: ETHToWeiMultiplier), inputVON > maxLimitAmount {
-            if let inputType = type, inputType == .withdraw {
-                msg = Localized("staking_withdraw_input_amount_maxlimit_error")
-            } else {
-                msg = Localized("staking_input_amount_maxlimit_error")
-            }
-
-            valid = false
+        let (valid, message) = checkAmountLimit(balance: balance, amount: inputVON, minLimit: minLimit ?? .zero, maxLimit: maxLimit, fee: fee, type: type ?? .transfer)
+        guard valid == true else {
+            return (valid, message ?? "")
         }
 
-        if checkBalance {
-            let balance = AssetService.sharedInstace.balances.first(where: { $0.addr.lowercased() == text.lowercased() })
-            if balance == nil {
-                //balance not exist return true
-                return (true, "")
-            }
-        }
-
-        return (valid, msg)
-
+        return (true, "")
     }
 }

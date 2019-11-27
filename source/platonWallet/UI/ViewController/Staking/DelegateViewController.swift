@@ -22,7 +22,7 @@ class DelegateViewController: BaseViewController {
     var canDelegation: CanDelegation?
     var gasPrice: BigUInt?
     var gasLimit: BigUInt?
-    var estimateUseGas: BigUInt?
+    var estimateUseGas: BigUInt = BigUInt.zero
     var isDelegateAll: Bool = false
     var generateQrCode: QrcodeData<[TransactionQrcode]>?
 
@@ -31,6 +31,16 @@ class DelegateViewController: BaseViewController {
             let wallets = (AssetVCSharedData.sharedData.walletList as! [Wallet]).sorted(by: <)
             return wallets
         }
+    }
+
+    // min delgate amount
+    var minDelegateAmountLimit: BigUInt {
+        return canDelegation?.minDelegationBInt ?? BigUInt(10).multiplied(by: PlatonConfig.VON.LAT)
+    }
+
+    // current account balance amount
+    var currentBalanceBInt: BigUInt {
+        return balanceStyle?.currentBalanceBInt ?? BigUInt.zero
     }
 
     lazy var tableView = { () -> UITableView in
@@ -99,6 +109,13 @@ class DelegateViewController: BaseViewController {
                         walletBalance?.lock = newData.lock
 
                         self?.canDelegation = newData
+
+                        if self?.currentAmount == .zero {
+                            let cell = self?.tableView.cellForRow(at: IndexPath(row: 0, section: 3)) as? SendInputTableViewCell
+                            cell?.amountView.textField.text = nil
+                            cell?.amountView.cleanErrorState()
+                        }
+
                         self?.tableView.reloadData()
                     }
                     completion?()
@@ -220,26 +237,36 @@ extension DelegateViewController: UITableViewDelegate, UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: "SendInputTableViewCell") as! SendInputTableViewCell
             cell.inputType = .delegate
             cell.amountView.titleLabel.text = Localized("ATextFieldView_delegate_title")
-            cell.minAmountLimit = SettingService.shareInstance.remoteConfig?.minDelegationBInt ?? "10".LATToVon
-            cell.maxAmountLimit = BigUInt(balanceStyle?.currentBalance.1 ?? "0")
+            cell.minAmountLimit = minDelegateAmountLimit
+            cell.estimateUseGas = estimateUseGas
+            cell.maxAmountLimit = currentBalanceBInt
+            cell.balance = currentBalanceBInt
+            cell.isLockAmount = balanceStyle?.isLock
             cell.amountView.isUserInteractionEnabled = (canDelegation?.canDelegation == true)
             cell.cellDidContentChangeHandler = { [weak self] in
                 self?.updateHeightOfRow(cell)
             }
             cell.cellDidContentEditingHandler = { [weak self] (amountVON, _) in
                 self?.isDelegateAll = (amountVON == cell.maxAmountLimit)
-                self?.estimateGas(amountVON, cell)
                 self?.currentAmount = amountVON
-                self?.tableView.reloadSections(IndexSet([indexPath.section + 1]), with: .none)
+                self?.estimateGas(amountVON, cell)
+                self?.tableView.reloadSections(IndexSet([indexPath.section+1]), with: .none)
             }
             return cell
         case .singleButton(let title):
             let cell = tableView.dequeueReusableCell(withIdentifier: "SingleButtonTableViewCell") as! SingleButtonTableViewCell
             cell.button.setTitle(title, for: .normal)
+            if balanceStyle?.isLock == true {
+                cell.disableTapAction = (currentAmount < minDelegateAmountLimit) || currentAmount > currentBalanceBInt || estimateUseGas > canDelegation?.freeBigUInt ?? BigUInt.zero
+            } else {
+                cell.disableTapAction = (currentAmount < minDelegateAmountLimit) || currentAmount + estimateUseGas > currentBalanceBInt
+            }
             cell.canDelegation = canDelegation
             cell.cellDidTapHandle = { [weak self] in
                 guard let self = self else { return }
-                self.nextButtonCellDidHandle()
+                if cell.button.style != .disable {
+                    self.nextButtonCellDidHandle()
+                }
             }
             return cell
         case .doubt(let contents):
@@ -270,24 +297,19 @@ extension DelegateViewController {
             return
         }
 
-        guard currentAmount > BigUInt.zero else {
-            showMessage(text: Localized("staking_delegate_input_amount_minlimit_error"))
+        guard currentAmount >= minDelegateAmountLimit else {
+            showMessage(text: Localized("staking_input_amount_minlimit_error", arguments: minDelegateAmountLimit.description))
             return
         }
 
-        guard currentAmount >= SettingService.shareInstance.remoteConfig?.minDelegationBInt ?? "10".LATToVon else {
-            showMessage(text: Localized("staking_input_amount_minlimit_error", arguments: SettingService.shareInstance.remoteConfig?.minDelegation?.vonToLAT.description ?? "10"))
-            return
-        }
-
-        guard currentAmount <= (BigUInt(balanceStyle?.currentBalance.1 ?? "0") ?? BigUInt.zero) else {
+        guard currentAmount <= currentBalanceBInt else {
             showMessage(text: Localized("staking_input_amount_maxlimit_error"))
             return
         }
 
-        if currentAmount == (BigUInt(balanceStyle?.currentBalance.1 ?? "0") ?? BigUInt.zero), balanceStyle?.isLock == false {
-            currentAmount -= (estimateUseGas ?? BigUInt.zero)
-        }
+//        if currentAmount == (BigUInt(balanceStyle?.currentBalance.1 ?? "0") ?? BigUInt.zero), balanceStyle?.isLock == false {
+//            currentAmount -= (estimateUseGas ?? BigUInt.zero)
+//        }
 
         guard
             let walletObject = walletStyle,
@@ -345,7 +367,7 @@ extension DelegateViewController {
                 case .success:
                     // realm 不能跨线程访问同个实例
                     if let transaction = data as? Transaction {
-                        transaction.gasUsed = self.estimateUseGas?.description
+                        transaction.gasUsed = self.estimateUseGas.description
                         transaction.nodeName = self.currentNode?.name
                         TransferPersistence.add(tx: transaction)
                         self.doShowTransactionDetail(transaction)
@@ -463,7 +485,7 @@ extension DelegateViewController {
                         tx.value = amount
                         tx.transactionType = Int(type)
                         tx.toType = .contract
-                        tx.gasUsed = self.estimateUseGas?.description
+                        tx.gasUsed = self.estimateUseGas.description
                         tx.nodeName = self.currentNode?.name
                         tx.txType = .delegateCreate
                         tx.direction = .Sent
@@ -490,6 +512,9 @@ extension DelegateViewController {
         guard let indexRow = indexPath?.row, let indexSection = indexPath?.section else { return }
         if indexRow != 0 {
             newWalletStyle.selectedIndex = indexRow - 1
+            if newWalletStyle.selectedIndex != walletStyle?.selectedIndex {
+                currentAmount = .zero
+            }
         }
         walletStyle = newWalletStyle
         listData[indexSection] = DelegateTableViewCellStyle.wallets(walletStyle: walletStyle!)
@@ -506,10 +531,9 @@ extension DelegateViewController {
         balanceStyle = BalancesCellStyle(balances: balances, selectedIndex: 0, isExpand: false)
 
         listData[indexSection + 1] = DelegateTableViewCellStyle.walletBalances(balanceStyle: balanceStyle!)
-
-        tableView.reloadSections(IndexSet([indexSection, indexSection+1, indexSection+2]), with: .fade)
-
+        tableView.reloadSections(IndexSet([indexSection, indexSection+1, indexSection+2, indexSection+3]), with: .fade)
         guard indexRow != 0 else { return }
+
         fetchCanDelegation()
     }
 
@@ -548,7 +572,6 @@ extension DelegateViewController {
             let nodeId = currentNode?.nodeId else { return }
 
         let typ = balanceObject.selectedIndex == 0 ? UInt16(0) : UInt16(1) // 0：自由金额 1：锁仓金额
-
         if isDelegateAll, balanceStyle?.isLock == false {
             // 当全部委托的时候把0替换为1，防止出现0字节导致gas不足的情况
             let amountStr = amountVon.description.replacingOccurrences(of: "0", with: "1")
@@ -557,21 +580,19 @@ extension DelegateViewController {
 
         let gasLimitValue = web3.staking.getGasCreateDelegate(typ: typ, nodeId: nodeId, amount: needEstimateGas)
         gasLimit = gasLimitValue
-
         estimateUseGas = gasLimitValue.multiplied(by: gasPrice ?? PlatonConfig.FuncGasPrice.defaultGasPrice)
 
         if isDelegateAll == true, balanceStyle?.isLock == false {
-            if
-                let useGas = estimateUseGas,
-                currentAmount > useGas {
-                cell.amountView.textField.text = (currentAmount - useGas).divide(by: ETHToWeiMultiplier, round: 8)
+            if currentAmount > estimateUseGas {
+                // 非锁仓余额才可以相减
+                currentAmount -= estimateUseGas
+                cell.amountView.textField.text = currentAmount.divide(by: ETHToWeiMultiplier, round: 8)
             }
             isDelegateAll = false
+            cell.amountView.checkInvalidNow(showErrorMsg: true)
         }
 
-        if let feeString = estimateUseGas?.description {
-            cell.amountView.feeLabel.text = (feeString.vonToLATString ?? "0.00").displayFeeString
-        }
+        cell.amountView.feeLabel.text = (estimateUseGas.description.vonToLATString ?? "0.00").displayFeeString
     }
 
     func doShowTransactionDetail(_ transaction: Transaction) {

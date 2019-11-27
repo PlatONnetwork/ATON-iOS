@@ -21,16 +21,13 @@ class SingleButtonTableViewCell: UITableViewCell {
                 errorLabelToBottomConstaint?.update(priority: .medium)
 
                 errorLabel.isHidden = true
-                unavaliableTapAction = true
-
                 errorLabel.attributedText = nil
-                button.style = .blue
+                button.style = disableTapAction == true ? .disable : .blue
             } else {
                 buttonToBottomConstaint?.update(priority: .medium)
                 errorLabelToBottomConstaint?.update(priority: .high)
 
                 errorLabel.isHidden = false
-                unavaliableTapAction = false
 
                 if let localizedDesciption = canDelegation?.message?.localizedDesciption {
                     let attachment = NSTextAttachment()
@@ -53,9 +50,9 @@ class SingleButtonTableViewCell: UITableViewCell {
     var buttonToBottomConstaint: Constraint?
     var errorLabelToBottomConstaint: Constraint?
 
-    public var unavaliableTapAction: Bool = false {
+    public var disableTapAction: Bool = false {
         didSet {
-            if unavaliableTapAction {
+            if disableTapAction {
                 button.style = .disable
             } else {
                 button.style = .blue

@@ -154,11 +154,11 @@ class TransactionDetailViewController: BaseViewController {
                   txType == .voteForProposal {
             listData.append((title: Localized("TransactionDetailVC_voteFor"), value: tx.nodeName ?? "--", copy: false))
             listData.append((title: Localized("TransactionDetailVC_nodeId"), value: tx.nodeId ?? "--", copy: false))
-            listData.append((title: Localized("TransactionDetailVC_proposal_id"), value: tx.txhash ?? "--", copy: false))
+            listData.append((title: Localized("TransactionDetailVC_proposal_id"), value: tx.proposalId ?? "--", copy: false))
             listData.append((title: Localized("TransactionDetailVC_proposal_pip"), value: tx.pipString, copy: false))
 
             if txType == .voteForProposal {
-                listData.append((title: Localized("TransactionDetailVC_proposal_type"), value: tx.voteProposalType?.localizedDesciption ?? "--", copy: false))
+                listData.append((title: Localized("TransactionDetailVC_proposal_type"), value: tx.proposalType?.localizedDesciption ?? "--", copy: false))
                 listData.append((title: Localized("TransactionDetailVC_proposal_vote"), value: tx.vote?.localizedDesciption ?? "--", copy: false))
             } else {
                 listData.append((title: Localized("TransactionDetailVC_proposal_type"), value: tx.proposalType?.localizedDesciption ?? "--", copy: false))

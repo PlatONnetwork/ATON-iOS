@@ -410,12 +410,9 @@
 "SettingsVC_nodeSet_cancelBtn_title" = "Cancel";
 "SettingsVC_nodeSet_edit_title" = "Edit Node";
 "SettingsVC_nodeSet_addBtn_title" = "Add";
-"SettingsVC_nodeSet_defaultMainNetwork_title" = "(Default main network)";
-"SettingsVC_nodeSet_defaultTestNetwork_title" = "(Default test network)";
-"SettingsVC_nodeSet_defaultTestNetwork_Amigo_des" = "(Amigo Testnet)";
-"SettingsVC_nodeSet_defaultTestNetwork_des" = "(aton Testnet)";
-"SettingsVC_nodeSet_defaultProductNetwork_des" = "(aton mainnet)";
-"SettingsVC_nodeSet_NewBaleyworld_des" = "(NewBaleyworld)";
+"SettingsVC_nodeSet_defaultTestNetwork_Amigo_des" = "Amigo Testnet";
+"SettingsVC_nodeSet_defaultTestNetwork_des" = "aton Testnet";
+"SettingsVC_nodeSet_NewBaleyworld_des" = "NewBaleyworld";
 "SettingsVC_nodeSet_switchSuccess_tips" = "Node switch Succeed";
 "SettingsVC_nodeSet_switchFail_tips" = "Node switch Failed";
 "SettingsVC_nodeSet_recovery_tips" = "Node connect failed";
@@ -523,7 +520,6 @@
 "MemberSignDetailVC_memo" = "Memo:";
 "MemberSignDetailVC_memo_none" = "None";
 "MemberSignDetailVC_hash" = "Hash:";
-"MemberSignDetailVC_YOU" = "You";
 
 
 "MemberSignDetailVC_fail_all_reject" = "Does not reach required approval";
@@ -869,6 +865,7 @@
 "staking_input_amount_maxlimit_error" = "Insufficient balance, unable to delegate";
 "staking_withdraw_input_amount_maxlimit_error" = "Exceeded the available amount and cannot be submitted";
 "staking_withdraw_balance_Insufficient_error" = "Insufficient balance payment fee";
+"staking_delegate_balance_Insufficient_error" = "Insufficient balance payment fee";
 
 "error_no_wallet" = "No wallet available";
 "error_wallet_no_balance" = "insufficient wallet balance";
