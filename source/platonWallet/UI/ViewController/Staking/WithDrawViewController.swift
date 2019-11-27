@@ -29,6 +29,13 @@ class WithDrawViewController: BaseViewController {
         return delegation?.minDelegationBInt ?? BigUInt(10).multiplied(by: PlatonConfig.VON.LAT)
     }
 
+    var amountBalance: BigUInt {
+        guard
+            let balance = AssetService.sharedInstace.balances.first(where: { $0.addr.lowercased() == walletStyle?.currentWallet.address.lowercased() }),
+            let freeBalance = BigUInt(balance.free ?? "0") else { return BigUInt.zero }
+        return freeBalance
+    }
+
     lazy var tableView = { () -> UITableView in
         let tbView = UITableView(frame: .zero)
         tbView.delegate = self
@@ -138,7 +145,7 @@ class WithDrawViewController: BaseViewController {
         let item5 = DelegateTableViewCellStyle.singleButton(title: Localized("statking_validator_Withdraw"))
 
         let contents = [
-            (Localized("staking_doubt_undelegate"), Localized("staking_doubt_undelegate_detail", arguments: minDelegateAmountLimit.description))
+            (Localized("staking_doubt_undelegate"), Localized("staking_doubt_undelegate_detail", arguments: (minDelegateAmountLimit/PlatonConfig.VON.LAT).description))
         ]
         let item6 = DelegateTableViewCellStyle.doubt(contents: contents)
         listData = [item1, item2, item3, item4, item5, item6]
@@ -210,6 +217,8 @@ extension WithDrawViewController: UITableViewDelegate, UITableViewDataSource {
             cell.amountView.titleLabel.text = Localized("ATextFieldView_withdraw_title")
             cell.minAmountLimit = minDelegateAmountLimit
             cell.maxAmountLimit = BigUInt(balanceStyle?.currentBalance.1 ?? "0")
+            cell.balance = amountBalance
+            cell.estimateUseGas = estimateUseGas
             cell.cellDidContentChangeHandler = { [weak self] in
                 self?.updateHeightOfRow(cell)
             }

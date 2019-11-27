@@ -238,11 +238,10 @@ extension DelegateViewController: UITableViewDelegate, UITableViewDataSource {
             cell.inputType = .delegate
             cell.amountView.titleLabel.text = Localized("ATextFieldView_delegate_title")
             cell.minAmountLimit = minDelegateAmountLimit
-            if balanceStyle?.isLock == true {
-                cell.maxAmountLimit = currentBalanceBInt
-            } else {
-                cell.maxAmountLimit = currentBalanceBInt - estimateUseGas
-            }
+            cell.estimateUseGas = estimateUseGas
+            cell.maxAmountLimit = currentBalanceBInt
+            cell.balance = currentBalanceBInt
+            cell.isLockAmount = balanceStyle?.isLock
             cell.amountView.isUserInteractionEnabled = (canDelegation?.canDelegation == true)
             cell.cellDidContentChangeHandler = { [weak self] in
                 self?.updateHeightOfRow(cell)
@@ -590,10 +589,10 @@ extension DelegateViewController {
                 cell.amountView.textField.text = currentAmount.divide(by: ETHToWeiMultiplier, round: 8)
             }
             isDelegateAll = false
+            cell.amountView.checkInvalidNow(showErrorMsg: true)
         }
 
         cell.amountView.feeLabel.text = (estimateUseGas.description.vonToLATString ?? "0.00").displayFeeString
-        cell.amountView.checkInvalidNow(showErrorMsg: true)
     }
 
     func doShowTransactionDetail(_ transaction: Transaction) {

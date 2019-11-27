@@ -44,8 +44,8 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
             self?.onSendAll()
         })
         amountView.checkInput(mode: .all, check: {[weak self] text -> (Bool, String) in
-
-            let inputformat = CommonService.checkTransferAmoutInput(text: text, checkBalance: false, fee: nil, type: .transfer)
+            let balance = self?.getAvailbleBalance()
+            let inputformat = CommonService.checkTransferAmoutInput(text: text, balance: balance ?? BigUInt.zero, type: .transfer)
             if !inputformat.0 {
                 return inputformat
             }

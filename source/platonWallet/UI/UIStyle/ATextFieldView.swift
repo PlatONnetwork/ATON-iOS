@@ -205,11 +205,12 @@ class ATextFieldView: UIView {
             return nil
         }
 
+        // 展示数量级
         let magnitude = text.inputAmountForMagnitude()
         magnitudeLabel.text = magnitude
         tipLabelLeadingV.isHidden = magnitude == nil
 
-        //let curState = internalHeight == 65.0 ? true:false
+        // 校验数量是否符合
         let res = check!(text)
 
         if !showErrorMsg {

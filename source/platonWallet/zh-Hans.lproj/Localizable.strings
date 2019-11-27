@@ -871,6 +871,7 @@
 "staking_input_amount_maxlimit_error" = "余额不足，无法委托";
 "staking_withdraw_input_amount_maxlimit_error" = "超出可赎回数量，无法提交";
 "staking_withdraw_balance_Insufficient_error" = "余额不足支付手续费，无法赎回委托";
+"staking_delegate_balance_Insufficient_error" = "余额不足支付手续费，无法委托";
 
 "error_no_wallet" = "无可用钱包";
 "error_wallet_no_balance" = "钱包余额不足";
