@@ -201,6 +201,10 @@ class ATextFieldView: UIView {
             return nil
         }
 
+        guard text.count > 0 else {
+            return nil
+        }
+
         let magnitude = text.inputAmountForMagnitude()
         magnitudeLabel.text = magnitude
         tipLabelLeadingV.isHidden = magnitude == nil

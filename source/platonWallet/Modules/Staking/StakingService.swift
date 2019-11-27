@@ -61,9 +61,9 @@ final class StakingService: BaseService {
                     let response = try decoder.decode(JSONResponse<[Node]>.self, from: data)
                     let copyData = response.data.detached
                     let sortData = copyData.sorted(by: { (lhs, rhs) -> Bool in
-                        return isRankingSorted ? (lhs.ratePA ?? "0") > (rhs.ratePA ?? "0") : lhs.ranking < rhs.ranking
+                        return isRankingSorted ? Int(lhs.ratePA ?? "0") ?? 0 > Int(rhs.ratePA ?? "0") ?? 0 : lhs.ranking < rhs.ranking
                     }).sorted(by: { (lhs, rhs) -> Bool in
-                        return isRankingSorted ? lhs.ranking < rhs.ranking : (lhs.ratePA ?? "0") > (rhs.ratePA ?? "0")
+                        return isRankingSorted ? lhs.ranking < rhs.ranking : Int(lhs.ratePA ?? "0") ?? 0 > Int(rhs.ratePA ?? "0") ?? 0
                     })
 
                     DispatchQueue.main.async {
@@ -85,16 +85,26 @@ final class StakingService: BaseService {
         completion: PlatonCommonCompletion?) {
 
         if controllerType == .active {
-            let data = NodePersistence.getActiveNode(isRankingSorted: isRankingSorted).detached
-            // 不延时回调的话，会发生下拉刷新顶部出现位移偏差
+            let copyData = NodePersistence.getActiveNode(isRankingSorted: isRankingSorted).detached
+            let sortData = copyData.sorted(by: { (lhs, rhs) -> Bool in
+                return isRankingSorted ? Int(lhs.ratePA ?? "0") ?? 0 > Int(rhs.ratePA ?? "0") ?? 0 : lhs.ranking < rhs.ranking
+            }).sorted(by: { (lhs, rhs) -> Bool in
+                return isRankingSorted ? lhs.ranking < rhs.ranking : Int(lhs.ratePA ?? "0") ?? 0 > Int(rhs.ratePA ?? "0") ?? 0
+            })
+
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                completion?(.success, data as AnyObject)
+                completion?(.success, sortData as AnyObject)
             }
         } else if controllerType == .candidate {
-            let data = NodePersistence.getCandiateNode(isRankingSorted: isRankingSorted).detached
+            let copyData = NodePersistence.getCandiateNode(isRankingSorted: isRankingSorted).detached
+            let sortData = copyData.sorted(by: { (lhs, rhs) -> Bool in
+                return isRankingSorted ? Int(lhs.ratePA ?? "0") ?? 0 > Int(rhs.ratePA ?? "0") ?? 0 : lhs.ranking < rhs.ranking
+            }).sorted(by: { (lhs, rhs) -> Bool in
+                return isRankingSorted ? lhs.ranking < rhs.ranking : Int(lhs.ratePA ?? "0") ?? 0 > Int(rhs.ratePA ?? "0") ?? 0
+            })
             // 不延时回调的话，会发生下拉刷新顶部出现位移偏差
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                completion?(.success, data as AnyObject)
+                completion?(.success, sortData as AnyObject)
             }
         } else {
             // 这里本身访问网络请求，存在延时，并不需要设置延时回调

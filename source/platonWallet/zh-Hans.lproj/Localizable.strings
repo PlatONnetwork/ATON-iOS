@@ -98,7 +98,7 @@
 "walletDetailVC_send_button" = "下一步";
 "walletDetailVC_receive_button" = "接收";
 "walletDetailVC_vote_button" = "投票";
-"walletDetailVC_no_transactions_text" = "暂无交易";
+"walletDetailVC_no_transactions_text" = "暂无交易记录";
 
 
 //Transaction Detail
@@ -209,7 +209,7 @@
 //backupMnemonicVC
 "backupMnemonicVC_title" = "备份助记词";
 "backupMnemonicVC_tips1" = "请抄写下方助记词，我们将在下一步进行验证";
-"backupMnemonicVC_tips2" = "助记词用于恢复钱包或重置钱包密码，请将它准确抄写在纸上并存放在只有你知道的安全地点。";
+"backupMnemonicVC_tips2" = "助记词用于恢复钱包或重置钱包密码，请将它准确抄写在纸上并存放在只有您知道的安全地点。";
 "backupMnemonicVC_nextBtn_title" = "下一步";
 
 //verifyMnemonicVC
@@ -230,9 +230,9 @@
 "alert_psw_input_error_backBtn_title" = "返回";
 "alert_screenshot_ban_title" = "请勿截图";
 
-"alert_screenshot_privateKey_ban_msg" = "如果有人获取了你的私钥，将可以直接获取你的资产！请确保私钥存放在安全的地方。";
-"alert_backupMnemonic_ban_msg" = "如果有人获取了你的助记词，将可以直接获取你的资产！请抄写下助记词并存放在安全的地方。";
-"alert_screenshot_keystore_ban_msg" = "如果有人获取了你的钱包文件(.json)，将可以直接获取你的资产！请确保钱包文件(.json)存放在安全的地方。";
+"alert_screenshot_privateKey_ban_msg" = "如果有人获取了您的私钥，将可以直接获取您的资产！请确保私钥存放在安全的地方。";
+"alert_backupMnemonic_ban_msg" = "如果有人获取了您的助记词，将可以直接获取您的资产！请抄写下助记词并存放在安全的地方。";
+"alert_screenshot_keystore_ban_msg" = "如果有人获取了您的钱包文件(.json)，将可以直接获取您的资产！请确保钱包文件(.json)存放在安全的地方。";
 "alert_screenshot_ban_confirmBtn_title" = "我知道了";
 "alert_backupFailed_title" = "验证失败";
 "alert_backupFailed_msg" = "请检查助记词顺序！";
@@ -248,7 +248,7 @@
 "alert_modifyWalletName_error_backBtn_title" = "我知道了";
 
 "alert_cameraUsageDeny_title" = "无法使用相机";
-"alert_cameraUsageDeny_msg" = "请在iPhone的“设置-隐私-相机”选项中，允许app访问你的相机";
+"alert_cameraUsageDeny_msg" = "请在iPhone的“设置-隐私-相机”选项中，允许app访问您的相机";
 "alert_cameraUsageDeny_gotoSettings_title" = "前往设置";
 
 //设置
@@ -501,7 +501,6 @@
 "AddSharedWalletVC_addr" = "钱包地址";
 
 "sharedWalletDefaltMemberName" = "用户";
-"MemberSignDetailVC_YOU" = "你";
 "sharedWallet_sharedWallet_no_existed" = "添加失败，地址不存在";
 
 //Member Sign Detail VC
@@ -523,8 +522,6 @@
 "MemberSignDetailVC_memo" = "备注:";
 "MemberSignDetailVC_memo_none" = "无";
 "MemberSignDetailVC_hash" = "交易Hash:";
-"MemberSignDetailVC_YOU" = "你";
-
 
 
 "MemberSignDetailVC_fail_all_reject" = "未达到指定签名数量";
@@ -717,7 +714,7 @@
 
 "send_wallet_colon" = "接收钱包地址：";
 "send_amout_colon" = "数量：";
-"send_sendAll" = "全部发送";
+"send_sendAll" = "全部";
 
 "send_address_placeholder" = "输入钱包地址";
 "send_amount_placeholder" = "输入发送数量";

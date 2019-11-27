@@ -220,18 +220,6 @@ class NodeDetailViewController: BaseViewController {
 
     @objc private func delegateTapAction() {
         guard (AssetVCSharedData.sharedData.walletList as! [Wallet]).count > 0 else {
-            showMessage(text: Localized("error_no_wallet"))
-            return
-        }
-
-        let hasBalance = AssetService.sharedInstace.balances.filter { (balance) -> Bool in
-            let free = BigUInt(balance.free ?? "0")
-            let lock = BigUInt(balance.lock ?? "0")
-            return free! + lock! > BigUInt.zero
-        }
-
-        if hasBalance.count == 0 {
-            showMessage(text: Localized("error_wallet_no_balance"))
             return
         }
 

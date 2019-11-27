@@ -523,7 +523,6 @@
 "MemberSignDetailVC_memo" = "Memo:";
 "MemberSignDetailVC_memo_none" = "None";
 "MemberSignDetailVC_hash" = "Hash:";
-"MemberSignDetailVC_YOU" = "You";
 
 
 "MemberSignDetailVC_fail_all_reject" = "Does not reach required approval";
