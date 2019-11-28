@@ -20,6 +20,22 @@ class WalletServiceTests: XCTestCase {
 
 
     }
+
+    func testCreateWallet() {
+//        let expectaion = self.expectation(description: "testCreateWallet")
+
+        var tempWallet: Wallet?
+        WalletService.sharedInstance.createWallet(name: "wallet-create-070", password: "123456", completion: { (wallet, error) in
+//            XCTAssertNotNil(wallet, "create wallet shoulde be not nil")
+//            tempWallet = wallet
+//            if let wallet = tempWallet {
+//                WalletService.sharedInstance.deleteWallet(wallet)
+//            }
+//            expectaion.fulfill()
+        })
+
+//        wait(for: [expectaion], timeout: 30.0)
+    }
     
 
     func testGenerateMnemonic() {
@@ -108,23 +124,6 @@ class WalletServiceTests: XCTestCase {
         let privateKeyData = try? keystore!.decrypt(password: "")
         let privateKey = privateKeyData?.toHexString()
         XCTAssertTrue(oriPrivatekey == privateKey, "privatekey value should be equal")
-    }
-    
-    
-    func testCreateWallet() {
-        let expectaion = self.expectation(description: "testCreateWallet")
-        
-        var tempWallet: Wallet?
-        WalletService.sharedInstance.createWallet(name: "wallet-create-070", password: "123456", completion: { (wallet, error) in
-            XCTAssertNotNil(wallet, "create wallet shoulde be not nil")
-            tempWallet = wallet
-            if let wallet = tempWallet {
-                WalletService.sharedInstance.deleteWallet(wallet)
-            }
-            expectaion.fulfill()
-        })
-        
-        wait(for: [expectaion], timeout: 15.0)
     }
     
     func testCreateObserveWallet() {
@@ -224,7 +223,7 @@ class WalletServiceTests: XCTestCase {
             }
             expectaion.fulfill()
         }
-        wait(for: [expectaion], timeout: 5.0)
+        wait(for: [expectaion], timeout: 15.0)
     }
     
     func testExportPrivateKey() {
@@ -265,7 +264,7 @@ class WalletServiceTests: XCTestCase {
             }
             expectaion.fulfill()
         }
-        wait(for: [expectaion], timeout: 5.0)
+        wait(for: [expectaion], timeout: 15.0)
     }
     
 }
