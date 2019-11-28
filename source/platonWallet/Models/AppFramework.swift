@@ -22,6 +22,7 @@ class AppFramework {
         initNetworkObserver()
 
         initUMeng()
+        initUShare()
         doSwizzle()
         if !RealmConfiguration() {
             return false
@@ -43,6 +44,12 @@ class AppFramework {
 
     func initBugly() {
         Bugly.start(withAppId: AppConfig.Keys.BuglyAppleID)
+    }
+
+    func initUShare() {
+        UMSocialManager.default()?.setPlaform(.facebook, appKey: "2374479646134721", appSecret: "ba15cb39bbed20f42af9861c411d4c64", redirectURL: "www.platon.network")
+//        UMSocialManager.default()?.setPlaform(.twitter, appKey: "", appSecret: "", redirectURL: "")
+        UMSocialManager.default()?.setPlaform(.sina, appKey: "3563537424", appSecret: "a0369254eaa7c9a95b403efbe5eecf9f", redirectURL: "www.platon.network")
     }
 
     func initUMeng() {

@@ -54,6 +54,18 @@ PODS:
     - UMCCommon
   - UMCCommon (2.0.1)
   - UMCCommonLog (1.0.0)
+  - UMCSecurityPlugins (1.0.6)
+  - UMCShare/Core (6.9.5):
+    - UMCCommon
+  - UMCShare/Social/Facebook (6.9.5):
+    - UMCCommon
+    - UMCShare/Core
+  - UMCShare/Social/ReducedSina (6.9.5):
+    - UMCCommon
+    - UMCShare/Core
+  - UMCShare/Social/Twitter (6.9.5):
+    - UMCCommon
+    - UMCShare/Core
   - ZXingObjC (3.6.5):
     - ZXingObjC/All (= 3.6.5)
   - ZXingObjC/All (3.6.5)
@@ -88,6 +100,10 @@ DEPENDENCIES:
   - UMCAnalytics
   - UMCCommon
   - UMCCommonLog
+  - UMCSecurityPlugins
+  - UMCShare/Social/Facebook
+  - UMCShare/Social/ReducedSina
+  - UMCShare/Social/Twitter
   - ZXingObjC
 
 SPEC REPOS:
@@ -120,6 +136,8 @@ SPEC REPOS:
     - UMCAnalytics
     - UMCCommon
     - UMCCommonLog
+    - UMCSecurityPlugins
+    - UMCShare
     - ZXingObjC
 
 EXTERNAL SOURCES:
@@ -164,8 +182,10 @@ SPEC CHECKSUMS:
   UMCAnalytics: ff58714ada407682c4a07548156f94bcec92f055
   UMCCommon: 0263a057a2e1ae1da4c8308541e56904a493ce13
   UMCCommonLog: 05a2d5de21858e3d870551562cff405c1366d244
+  UMCSecurityPlugins: 0831a08f3988f3cea9f1d3a7626cd9bee4fef150
+  UMCShare: 552b29753f1b4da87b51d96545ed19e6263df397
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: 3c2c844da6fbe788627ea6c1cf58ab6dfe595c77
+PODFILE CHECKSUM: 36e98b5ded62e8d397b9c88848890839db87284f
 
 COCOAPODS: 1.5.3

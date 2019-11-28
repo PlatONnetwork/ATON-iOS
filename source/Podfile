@@ -40,6 +40,11 @@ def target_pods
     pod 'UMCCommon'
     pod 'UMCAnalytics'
     pod 'UMCCommonLog'
+    pod 'UMCSecurityPlugins'
+    pod 'UMCShare/Social/ReducedSina'
+    pod 'UMCShare/Social/Facebook'
+    pod 'UMCShare/Social/Twitter'
+
     pod 'SwiftMonkeyPaws'
     pod 'OHHTTPStubs/Swift', :configurations => ['Debug']
     pod 'GzipSwift'

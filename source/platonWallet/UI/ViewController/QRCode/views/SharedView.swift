@@ -17,6 +17,14 @@ let itemratio = 1.5
 //let itemWidth = (kUIScreenWidth - CGFloat(containerEdge) * 2 - CGFloat((itemHorizontalSpacing * (itemHorizontalCount - 1))))/CGFloat(itemHorizontalCount)
 let itemWidth = CGFloat(54)
 
+struct UrlsSchemes {
+    static let weixin = "weixin://"
+    static let qq = "mqq://"
+    static let sina = "sinaweibo://"
+    static let facebook = "fb://"
+    static let twitter = "twitter://"
+}
+
 class SharedView: UIView ,UICollectionViewDelegate,UICollectionViewDataSource {
 
     let closeBtn = UIButton(type: .custom)
@@ -29,6 +37,7 @@ class SharedView: UIView ,UICollectionViewDelegate,UICollectionViewDataSource {
     var titles : [String] = []
     var imgs : [String] = []
     var urlschemes : [String] = []
+    var shareObject: UIImage?
 
     public class func getSharedViewHeight() -> CGFloat {
         return 51 + 51 + itemWidth * CGFloat(itemratio) * 2 + CGFloat(itemHorizontalSpacing * 2)
@@ -78,31 +87,31 @@ class SharedView: UIView ,UICollectionViewDelegate,UICollectionViewDataSource {
          imgs = ["imgwechat","imgmoment","imgQQ","imgBlog","imgFacebook","imgTwitter","imgmore"]
          */
 
-        if UIApplication.shared.canOpenURL(URL(string: "weixin://")!) {
-            urlschemes.append("weixin://")
+        if UIApplication.shared.canOpenURL(URL(string: UrlsSchemes.weixin)!) {
+            urlschemes.append(UrlsSchemes.weixin)
             titles.append("SharedWechatFriend")
             imgs.append("imgwechat")
         }
 
-        if UIApplication.shared.canOpenURL(URL(string: "mqq://")!) {
-            urlschemes.append("mqq://")
+        if UIApplication.shared.canOpenURL(URL(string: UrlsSchemes.qq)!) {
+            urlschemes.append(UrlsSchemes.qq)
             titles.append("SharedQQ")
             imgs.append("imgQQ")
         }
-        if UIApplication.shared.canOpenURL(URL(string: "sinaweibo://")!) {
-            urlschemes.append("sinaweibo://")
+        if UIApplication.shared.canOpenURL(URL(string: UrlsSchemes.sina)!) {
+            urlschemes.append(UrlsSchemes.sina)
             titles.append("SharedWeibo")
             imgs.append("imgBlog")
         }
 
-        if UIApplication.shared.canOpenURL(URL(string: "fb://")!) {
-            urlschemes.append("fb://")
+        if UIApplication.shared.canOpenURL(URL(string: UrlsSchemes.facebook)!) {
+            urlschemes.append(UrlsSchemes.facebook)
             titles.append("SharedFacebook")
             imgs.append("imgFacebook")
         }
 
-        if UIApplication.shared.canOpenURL(URL(string: "twitter://")!) {
-            urlschemes.append("twitter://")
+        if UIApplication.shared.canOpenURL(URL(string: UrlsSchemes.twitter)!) {
+            urlschemes.append(UrlsSchemes.twitter)
             titles.append("SharedTwitter")
             imgs.append("imgTwitter")
         }
@@ -164,18 +173,43 @@ class SharedView: UIView ,UICollectionViewDelegate,UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print(indexPath.row)
-
         let urlString = urlschemes[indexPath.row]
-        if let url = URL(string: urlString) {
-            //根据iOS系统版本，分别处理
-            if #available(iOS 10, *) {
-                UIApplication.shared.open(url, options: [:],
-                                          completionHandler: {
-                                            (_) in
-                })
-            } else {
-                UIApplication.shared.openURL(url)
+        guard
+            let shareImage = shareObject,
+            (urlString == UrlsSchemes.facebook || urlString == UrlsSchemes.twitter || urlString == UrlsSchemes.sina),
+            let controller = UIApplication.shared.keyWindow?.rootViewController
+        else {
+            if let url = URL(string: urlString) {
+                //根据iOS系统版本，分别处理
+                if #available(iOS 10, *) {
+                    UIApplication.shared.open(url, options: [:],
+                                              completionHandler: {
+                                                (_) in
+                    })
+                } else {
+                    UIApplication.shared.openURL(url)
+                }
             }
+            return
+        }
+
+        let shareObject = UMShareImageObject()
+        shareObject.shareImage = shareImage
+        let messageObject = UMSocialMessageObject()
+        messageObject.shareObject = shareObject
+
+        if urlString == UrlsSchemes.facebook {
+            UMSocialManager.default()?.share(to: .facebook, messageObject: messageObject, currentViewController: controller, completion: { (data, error) in
+
+            })
+        } else if urlString == UrlsSchemes.twitter {
+//            UMSocialManager.default()?.share(to: .twitter, messageObject: messageObject, currentViewController: self, completion: { (data, error) in
+//
+//            })
+        } else if urlString == UrlsSchemes.sina {
+            UMSocialManager.default()?.share(to: .sina, messageObject: messageObject, currentViewController: controller, completion: { (data, error) in
+
+            })
         }
     }
 
