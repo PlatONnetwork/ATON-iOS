@@ -237,6 +237,7 @@ extension DelegateViewController: UITableViewDelegate, UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: "SendInputTableViewCell") as! SendInputTableViewCell
             cell.inputType = .delegate
             cell.amountView.titleLabel.text = Localized("ATextFieldView_delegate_title")
+            cell.amountView.textField.LocalizePlaceholder = Localized("staking_amount_placeholder", arguments: (minDelegateAmountLimit/PlatonConfig.VON.LAT).description)
             cell.minAmountLimit = minDelegateAmountLimit
             cell.estimateUseGas = estimateUseGas
             cell.maxAmountLimit = currentBalanceBInt

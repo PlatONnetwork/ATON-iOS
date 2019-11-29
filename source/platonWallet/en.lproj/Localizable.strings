@@ -22,7 +22,7 @@
 ///wallet common input placeholder
 "wallet_nameInput_placeholder" = "Name of Wallet";
 "wallet_pswInput_placeholder" = "Set password";
-"wallet_pswConfirmInput_placeholder" = "Repeat password";
+"wallet_pswConfirmInput_placeholder" = "Confirm password";
 "wallet_psw_advise" = "*At least 6 characters,recommended to mix uppercase and lowercase alphabets,numbers and symbols";
 
 ///wallet common input illegal tips
@@ -99,10 +99,7 @@
 "walletDetailVC_send_button" = "NEXT";
 "walletDetailVC_receive_button" = "Receive";
 "walletDetailVC_vote_button" = "Vote";
-"walletDetailVC_no_transactions_text" = "No transactions";
-
-
-
+"walletDetailVC_no_transactions_text" = "No transaction yet.";
 
 
 "walletDetailVC_no_transactions_Signing" = "Signing";
@@ -410,8 +407,8 @@
 "SettingsVC_nodeSet_cancelBtn_title" = "Cancel";
 "SettingsVC_nodeSet_edit_title" = "Edit Node";
 "SettingsVC_nodeSet_addBtn_title" = "Add";
-"SettingsVC_nodeSet_defaultTestNetwork_Amigo_des" = "Amigo Testnet";
-"SettingsVC_nodeSet_defaultTestNetwork_des" = "aton Testnet";
+"SettingsVC_nodeSet_defaultTestNetwork_test_des" = "Test Network";
+"SettingsVC_nodeSet_defaultTestNetwork_develop_des" = "Develop Network";
 "SettingsVC_nodeSet_NewBaleyworld_des" = "NewBaleyworld";
 "SettingsVC_nodeSet_switchSuccess_tips" = "Node switch Succeed";
 "SettingsVC_nodeSet_switchFail_tips" = "Node switch Failed";
@@ -850,7 +847,7 @@
 "empty_string_my_delegates_right" = "Delegate";
 
 "empty_string_validator" = "No Validators";
-"empty_string_delegation_record" = "No Delegations";
+"empty_string_delegation_record" = "No record";
 
 "service_agreement_title" = "Service agreement";
 "service_agreement_selected_text" = "I have read and agree to the above agreement";

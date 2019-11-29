@@ -94,9 +94,9 @@ extension Transaction {
     var toIconImage: UIImage? {
         switch toType {
         case .contract:
-            return UIImage(named: "2.icon_Shared2")
+            return UIImage(named: "2.icon_node")
         default:
-            return nil
+            return UIImage(named: "2.icon_Shared2")
         }
     }
 

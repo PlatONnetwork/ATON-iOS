@@ -396,6 +396,7 @@ extension QRScannerViewController {
     @objc private func openAlbum() {
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
+        imagePicker.modalPresentationStyle = .overFullScreen
         present(imagePicker, animated: true, completion: nil)
     }
 }
@@ -403,6 +404,7 @@ extension QRScannerViewController {
 extension QRScannerViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
 
+        dismiss(animated: true, completion: nil)
         showLoadingHUD(text: Localized("scanviewcontroller_scan_loading"), animated: true)
 
         let image = info[.originalImage] as! UIImage
@@ -437,7 +439,6 @@ extension QRScannerViewController: UIImagePickerControllerDelegate, UINavigation
         }
 
         hideLoadingHUD()
-        dismiss(animated: true, completion: nil)
 
         guard
             let result = qrCodeResult,

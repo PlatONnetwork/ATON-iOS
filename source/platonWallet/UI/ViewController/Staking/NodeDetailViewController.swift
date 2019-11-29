@@ -167,7 +167,7 @@ class NodeDetailViewController: BaseViewController {
         institutionalLabel.text = nodeDetail?.institutionalForDisplay ?? "--"
         websiteLabel.text = nodeDetail?.websiteForDisplay ?? "--"
 
-        nodeInfoView.isHidden = (nodeDetail?.website == nil)
+        nodeInfoView.nodeNameButton.isHidden = (nodeDetail?.website == nil || nodeDetail?.website?.count == 0)
 
         if nodeDetail?.node.isInit == true {
             delegateButton.snp.makeConstraints { make in

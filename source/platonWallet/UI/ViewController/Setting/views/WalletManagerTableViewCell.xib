@@ -71,9 +71,6 @@
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9zZ-FX-h3M">
                                         <rect key="frame" x="0.0" y="0.0" width="158" height="21"/>
-                                        <connections>
-                                            <action selector="onBackup:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="Rfd-L8-C19"/>
-                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
