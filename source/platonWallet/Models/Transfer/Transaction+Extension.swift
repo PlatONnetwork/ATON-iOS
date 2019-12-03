@@ -100,6 +100,15 @@ extension Transaction {
         }
     }
 
+    var toAddressIconImage: UIImage? {
+        switch toType {
+        case .contract:
+            return UIImage(named: "2.icon_Shared2")
+        default:
+            return nil
+        }
+    }
+
     var amountTextString: String {
         if let valueStr = value, Int(valueStr) == 0 {
             return valueDescription!
@@ -256,6 +265,10 @@ extension Transaction {
 
     var recordWalletName: String? {
         let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.address.lowercased() == from?.lowercased() }.first
-        return (localWallet?.name ?? "--") + "(" + (from?.addressForDisplayShort() ?? "--") + ")"
+        return (localWallet?.name ?? "--")
+    }
+
+    var recordWalletAddress: String? {
+        return from != nil ? "(" + (from?.addressForDisplayShort() ?? "--") + ")" : ""
     }
 }

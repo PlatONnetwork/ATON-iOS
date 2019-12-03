@@ -88,7 +88,11 @@ class TransactionDetailViewController: BaseViewController {
         guard let tx = transaction, let txType = tx.txType else { return }
 
         if tx.txType == .unknown || tx.txType == .transfer {
-            listData.append((title: Localized("TransactionDetailVC_type"), value: tx.transactionStauts.localizeTitle, copy: false))
+            if tx.direction == .unknown {
+                listData.append((title: Localized("TransactionDetailVC_type"), value: txType.localizeTitle, copy: false))
+            } else {
+                listData.append((title: Localized("TransactionDetailVC_type"), value: tx.direction.localizedDesciption ?? txType.localizeTitle, copy: false))
+            }
         } else {
             listData.append((title: Localized("TransactionDetailVC_type"), value: txType.localizeTitle, copy: false))
         }

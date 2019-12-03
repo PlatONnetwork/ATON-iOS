@@ -213,6 +213,7 @@ class NodeDetailViewController: BaseViewController {
     }
 
     @objc private func openWebSiteController() {
+        guard let website = nodeDetail?.website, website.count > 0 else { return }
         let controller = WebCommonViewController()
         controller.requestUrl = nodeDetail?.website
         navigationController?.pushViewController(controller, animated: true)

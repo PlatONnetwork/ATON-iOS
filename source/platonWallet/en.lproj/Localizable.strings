@@ -165,9 +165,8 @@
 "QRViewSharedViewReceive" = "Receive LAT";
 
 "SharedWechatFriend" = "Wechat";
-"SharedWechatMoment" = "Moment";
 "SharedQQ" = "QQ";
-"SharedWeibo" = "Blog";
+"SharedWeibo" = "Weibo";
 "SharedFacebook" = "Facebook";
 "SharedTwitter" = "Twitter";
 "SharedMore" = "More";
@@ -915,3 +914,5 @@
 "empty_view_no_network_title" = "Network loading failed";
 "empty_view_no_network_message" = "please try again to refresh or check the network";
 "empty_view_refresh_title" = "Refresh";
+
+"social_share_error_uninstall_app" = "Not installed";

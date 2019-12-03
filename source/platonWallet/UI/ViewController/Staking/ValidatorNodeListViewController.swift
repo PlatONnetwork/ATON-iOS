@@ -101,7 +101,8 @@ class ValidatorNodeListViewController: BaseViewController, IndicatorInfoProvider
 
     @objc func scrollToTop() {
         if isViewLoaded {
-            tableView.setContentOffset(CGPoint.zero, animated: true)
+            tableView.mj_header.beginRefreshing()
+//            tableView.setContentOffset(CGPoint.zero, animated: true)
         }
     }
 

@@ -166,16 +166,9 @@ struct CommonService {
                 message = Localized("staking_withdraw_balance_Insufficient_error")
             }
         } else if type == .delegate {
-            if isLockAmount == false {
-                if balance < amount + feeBInt {
-                    valid = false
-                    message = Localized("staking_delegate_balance_Insufficient_error")
-                }
-            } else {
-                if balance < feeBInt {
-                    valid = false
-                    message = Localized("staking_delegate_balance_Insufficient_error")
-                }
+            if balance < feeBInt {
+                valid = false
+                message = Localized("staking_delegate_balance_Insufficient_error")
             }
         } else {
             if balance < feeBInt {

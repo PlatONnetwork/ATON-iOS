@@ -1,10 +1,6 @@
 PODS:
   - Alamofire (4.8.1)
-  - Aspects (1.4.1)
   - BigInt (4.0.0)
-  - BuglyHotfix (2.1.0):
-    - BuglyHotfix/Core (= 2.1.0)
-  - BuglyHotfix/Core (2.1.0)
   - CryptoSwift (0.10.0)
   - EmptyDataSet-Swift (4.2.0)
   - GzipSwift (5.0.0)
@@ -54,15 +50,25 @@ PODS:
     - UMCCommon
   - UMCCommon (2.0.1)
   - UMCCommonLog (1.0.0)
+  - UMCSecurityPlugins (1.0.6)
+  - UMCShare/Core (6.9.5):
+    - UMCCommon
+  - UMCShare/Social/Facebook (6.9.5):
+    - UMCCommon
+    - UMCShare/Core
+  - UMCShare/Social/ReducedSina (6.9.5):
+    - UMCCommon
+    - UMCShare/Core
+  - UMCShare/Social/Twitter (6.9.5):
+    - UMCCommon
+    - UMCShare/Core
   - ZXingObjC (3.6.5):
     - ZXingObjC/All (= 3.6.5)
   - ZXingObjC/All (3.6.5)
 
 DEPENDENCIES:
   - Alamofire (= 4.8.1)
-  - Aspects (= 1.4.1)
   - BigInt (= 4.0)
-  - BuglyHotfix
   - CryptoSwift (~> 0.10.0)
   - EmptyDataSet-Swift (~> 4.2.0)
   - GzipSwift
@@ -88,14 +94,16 @@ DEPENDENCIES:
   - UMCAnalytics
   - UMCCommon
   - UMCCommonLog
+  - UMCSecurityPlugins
+  - UMCShare/Social/Facebook
+  - UMCShare/Social/ReducedSina
+  - UMCShare/Social/Twitter
   - ZXingObjC
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
-    - Aspects
     - BigInt
-    - BuglyHotfix
     - CryptoSwift
     - EmptyDataSet-Swift
     - GzipSwift
@@ -120,6 +128,8 @@ SPEC REPOS:
     - UMCAnalytics
     - UMCCommon
     - UMCCommonLog
+    - UMCSecurityPlugins
+    - UMCShare
     - ZXingObjC
 
 EXTERNAL SOURCES:
@@ -135,9 +145,7 @@ CHECKOUT OPTIONS:
 
 SPEC CHECKSUMS:
   Alamofire: 16ce2c353fb72865124ddae8a57c5942388f4f11
-  Aspects: 7595ba96a6727a58ebcbfc954497fc5d2fdde546
   BigInt: 2aad1a9942dc932ec8b84290d2c564a3d76f97ab
-  BuglyHotfix: 99a969c77da1baae823a7537acb16e4f1985a5f5
   CryptoSwift: 6c778d69282bed3b4e975ff97a79d074f20bb011
   EmptyDataSet-Swift: 1fa0b35f530a35f852ecb2b53564728b0c300aaf
   GzipSwift: 5592f4d62b641e04d06443ba471f8ed76b1363e4
@@ -164,8 +172,10 @@ SPEC CHECKSUMS:
   UMCAnalytics: ff58714ada407682c4a07548156f94bcec92f055
   UMCCommon: 0263a057a2e1ae1da4c8308541e56904a493ce13
   UMCCommonLog: 05a2d5de21858e3d870551562cff405c1366d244
+  UMCSecurityPlugins: 0831a08f3988f3cea9f1d3a7626cd9bee4fef150
+  UMCShare: 552b29753f1b4da87b51d96545ed19e6263df397
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: 3c2c844da6fbe788627ea6c1cf58ab6dfe595c77
+PODFILE CHECKSUM: 391257285a4076fc501f3d50fad62e1dd11d07ec
 
 COCOAPODS: 1.5.3

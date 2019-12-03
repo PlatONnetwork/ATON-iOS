@@ -372,7 +372,6 @@ public final class WalletService {
             item.uuid == wallet.uuid
         }
         w?.key?.mnemonic = nil
-
     }
 
     public func deleteWallet(_ wallet:Wallet) {
