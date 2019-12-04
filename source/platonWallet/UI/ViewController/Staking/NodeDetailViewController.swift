@@ -138,6 +138,7 @@ class NodeDetailViewController: BaseViewController {
             make.top.equalTo(delegateButton.snp.bottom).offset(15)
         }
 
+        noNetworkEmptyView.isHidden = true
         view.addSubview(noNetworkEmptyView)
         noNetworkEmptyView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
