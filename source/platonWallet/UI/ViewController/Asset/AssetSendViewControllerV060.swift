@@ -371,6 +371,15 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
             }
         }
 
+        guard let amount = amountView.textField.text, let amountBInt = BigUInt.mutiply(a: amount, by: PlatonConfig.VON.LAT.description) else { return }
+        guard amountBInt <= SettingService.shareInstance.thresholdValue else {
+            showThresholdConfirmView()
+            return
+        }
+        sendTransfer()
+    }
+
+    func sendTransfer() {
         guard let wallet = AssetVCSharedData.sharedData.selectedWallet as? Wallet else { return }
 
         let controller = PopUpViewController()
@@ -511,6 +520,18 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
                 self.doClassicTransfer(pri: pri, data: nil)
             }
         }
+    }
+
+    func showThresholdConfirmView() {
+        let alertVC = AlertStylePopViewController.initFromNib()
+        alertVC.style = PAlertStyle.ChoiceView(message: Localized("threshold_confirm_value", arguments: (SettingService.shareInstance.thresholdValue/PlatonConfig.VON.LAT).description.ATPSuffix()))
+        alertVC.onAction(confirm: { (_, _) -> (Bool) in
+            self.sendTransfer()
+            return true
+        }) { (_, _) -> (Bool) in
+            return true
+        }
+        alertVC.showInViewController(viewController: self)
     }
 
     // MARK: - Check method

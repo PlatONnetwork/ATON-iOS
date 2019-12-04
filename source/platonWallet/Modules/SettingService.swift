@@ -9,6 +9,7 @@
 import Foundation
 import Alamofire
 import Localize_Swift
+import platonWeb3
 
 class SettingService {
 
@@ -72,5 +73,35 @@ class SettingService {
         }
         standard.set(nodeChain.chainId, forKey: AppConfig.LocalKeys.SelectedChainIdKey)
         standard.synchronize()
+    }
+
+    var thresholdValue: BigUInt {
+        get {
+            if let value = UserDefaults.standard.object(forKey: LocalKeys.ReminderThresholdValue) as? String {
+                return BigUInt(stringLiteral: value)
+            }
+            UserDefaults.standard.set((BigUInt(1000)*PlatonConfig.VON.LAT).description, forKey: LocalKeys.ReminderThresholdValue)
+            UserDefaults.standard.synchronize()
+            return BigUInt(1000)*PlatonConfig.VON.LAT
+        }
+        set {
+            UserDefaults.standard.set(newValue.description, forKey: LocalKeys.ReminderThresholdValue)
+            UserDefaults.standard.synchronize()
+        }
+    }
+
+    var isResendReminder: Bool {
+        get {
+            if let value = UserDefaults.standard.object(forKey: LocalKeys.isOpenResendReminder) as? Bool {
+                return value
+            }
+            UserDefaults.standard.set(true, forKey: LocalKeys.isOpenResendReminder)
+            UserDefaults.standard.synchronize()
+            return true
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: LocalKeys.isOpenResendReminder)
+            UserDefaults.standard.synchronize()
+        }
     }
 }

@@ -400,6 +400,8 @@
 "SettingsVC_faceId_title" = "Face/Touch ID";
 "SettingsVC_languages_title" = "Languages";
 "SettingsVC_faceId_openFailed_tips" = "Touch ID or Face ID was disallowed,please check system settings and try again";
+"SettingsVC_threshold_title" = "Reminder threshold";
+"SettingsVC_Resend_title" = "Resend reminder";
 
 "SettingsVC_nodeSet_editBtn_title" = "Edit";
 "SettingsVC_nodeSet_saveBtn_title" = "Save";
@@ -916,3 +918,5 @@
 "empty_view_refresh_title" = "Refresh";
 
 "social_share_error_uninstall_app" = "Not installed";
+"threshold_confirm_value" = "Send more than %@, Confirm sending?";
+"resend_transfer_confirm_value" = "Have the same send transaction within 2 hours, Confirm sending？";

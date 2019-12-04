@@ -544,6 +544,10 @@
 		81EE99CF2175F4E1008DF8CB /* PButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EE99CE2175F4E1008DF8CB /* PButton.swift */; };
 		81EE99ED217709FA008DF8CB /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EE99EC217709FA008DF8CB /* BaseViewController.swift */; };
 		81EE9A0621773B7F008DF8CB /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EE9A0521773B7F008DF8CB /* BaseNavigationController.swift */; };
+		81EEE6EC23978984001AE249 /* ThresholdValueSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EEE6EB23978984001AE249 /* ThresholdValueSelectView.swift */; };
+		81EEE6ED23978984001AE249 /* ThresholdValueSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EEE6EB23978984001AE249 /* ThresholdValueSelectView.swift */; };
+		81EEE6EF2397AB72001AE249 /* LocalKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EEE6EE2397AB72001AE249 /* LocalKeys.swift */; };
+		81EEE6F02397AB72001AE249 /* LocalKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EEE6EE2397AB72001AE249 /* LocalKeys.swift */; };
 		81F0DC92234B162D00325858 /* CommonConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F0DC91234B162C00325858 /* CommonConfig.swift */; };
 		81F1AFC622FADA2F00A74C00 /* WebCommonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F1AFC522FADA2F00A74C00 /* WebCommonViewController.swift */; };
 		81F5123D22FEE812005F3BDF /* DelegateModel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F5123C22FEE811005F3BDF /* DelegateModel+Extension.swift */; };
@@ -918,6 +922,8 @@
 		81EE99CE2175F4E1008DF8CB /* PButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PButton.swift; sourceTree = "<group>"; };
 		81EE99EC217709FA008DF8CB /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		81EE9A0521773B7F008DF8CB /* BaseNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseNavigationController.swift; sourceTree = "<group>"; };
+		81EEE6EB23978984001AE249 /* ThresholdValueSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThresholdValueSelectView.swift; sourceTree = "<group>"; };
+		81EEE6EE2397AB72001AE249 /* LocalKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalKeys.swift; sourceTree = "<group>"; };
 		81F0DC91234B162C00325858 /* CommonConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommonConfig.swift; sourceTree = "<group>"; };
 		81F1AFC522FADA2F00A74C00 /* WebCommonViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebCommonViewController.swift; sourceTree = "<group>"; };
 		81F5123C22FEE811005F3BDF /* DelegateModel+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DelegateModel+Extension.swift"; sourceTree = "<group>"; };
@@ -1007,7 +1013,6 @@
 		9ADE451F2180074C006F1C81 /* ImportMnemonicOrPrivateKeyViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ImportMnemonicOrPrivateKeyViewController.xib; sourceTree = "<group>"; };
 		9ADE4522218009DB006F1C81 /* PPasswordTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PPasswordTextField.swift; sourceTree = "<group>"; };
 		9AE31415218BEE1D00B5433F /* SettingTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingTableViewController.swift; sourceTree = "<group>"; };
-		9AE3141C218BFAC600B5433F /* NodeSettingTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeSettingTableViewCell.swift; sourceTree = "<group>"; };
 		9AE31421218C218100B5433F /* NodeInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NodeInfo.swift; path = platonWallet/Models/Setting/NodeInfo.swift; sourceTree = SOURCE_ROOT; };
 		9AE31425218C285900B5433F /* SettingService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingService.swift; sourceTree = "<group>"; };
 		9AE3142921912BD300B5433F /* BiometricsAuthViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BiometricsAuthViewController.swift; sourceTree = "<group>"; };
@@ -1087,6 +1092,7 @@
 			isa = PBXGroup;
 			children = (
 				8115BEA4218AC9A5009FFE3B /* Notifications.swift */,
+				81EEE6EE2397AB72001AE249 /* LocalKeys.swift */,
 				8115BC4D2188615D009FFE3B /* PropertyReflectable.swift */,
 				81926A06231DFEC500CAF498 /* RemoteVersion.swift */,
 				8141E66B2338EBE3001A9351 /* NetworkManager.swift */,
@@ -1505,8 +1511,8 @@
 				9A25B99E2186DF9E00B9433A /* WalletManagerTableViewCell.xib */,
 				81E2E8572186BA96008B7504 /* AddAddressInfoView.swift */,
 				81E2E8592186BAA0008B7504 /* AddAddressInfoView.xib */,
-				9AE3141C218BFAC600B5433F /* NodeSettingTableViewCell.swift */,
 				81DD58BC238B897D007844ED /* NodeSettingCell.swift */,
+				81EEE6EB23978984001AE249 /* ThresholdValueSelectView.swift */,
 				81DD58BE238BA24D007844ED /* views */,
 				8115BEAD218B2025009FFE3B /* TransactionCell.swift */,
 				8115BEAE218B2025009FFE3B /* TransactionCell.xib */,
@@ -2730,6 +2736,7 @@
 				81B5898B235DA1FC00816B4E /* CommunityContentTableViewCell.swift in Sources */,
 				81B5898C235DA1FC00816B4E /* ValidatorNodeListViewController.swift in Sources */,
 				81B5898D235DA1FC00816B4E /* RealmHelper.swift in Sources */,
+				81EEE6F02397AB72001AE249 /* LocalKeys.swift in Sources */,
 				81B5898E235DA1FC00816B4E /* PTSButtonCell.swift in Sources */,
 				81B5898F235DA1FC00816B4E /* DelegateTableStyle.swift in Sources */,
 				81B58990235DA1FC00816B4E /* TransactionCell.swift in Sources */,
@@ -2907,6 +2914,7 @@
 				81313F4523793C0D00B7AEA9 /* UIFont+FontSize.swift in Sources */,
 				81B58A38235DA1FC00816B4E /* NodeModel+Extension.swift in Sources */,
 				81B58A39235DA1FC00816B4E /* AssetHeaderViewV060.swift in Sources */,
+				81EEE6ED23978984001AE249 /* ThresholdValueSelectView.swift in Sources */,
 				81B58A3A235DA1FC00816B4E /* PTSPagerTabStripError.swift in Sources */,
 				81B58A3B235DA1FC00816B4E /* NodeModel.swift in Sources */,
 				81B58A3C235DA1FC00816B4E /* PTSButtonBarPagerTabStripViewController.swift in Sources */,
@@ -2993,6 +3001,7 @@
 				81FCCD162179EA0F0052FC29 /* RealmHelper.swift in Sources */,
 				81D7E24222E7F5610069CDED /* PTSButtonCell.swift in Sources */,
 				811AB2C622EEEC5A00284F1A /* DelegateTableStyle.swift in Sources */,
+				81EEE6EF2397AB72001AE249 /* LocalKeys.swift in Sources */,
 				8115BEAF218B2025009FFE3B /* TransactionCell.swift in Sources */,
 				817ABE2221B50C2A00E8030E /* UIApplication+Extensions.swift in Sources */,
 				8173218423744D94006077DB /* NodeChain.swift in Sources */,
@@ -3170,6 +3179,7 @@
 				9ADB60AA222E637C0044918D /* AssetHeaderViewV060.swift in Sources */,
 				81D7E25122E7F6B10069CDED /* PTSPagerTabStripError.swift in Sources */,
 				81DD58EA238BA24D007844ED /* AddAddressInfoView.swift in Sources */,
+				81EEE6EC23978984001AE249 /* ThresholdValueSelectView.swift in Sources */,
 				81DD58F0238BA24D007844ED /* CommunityNameTableViewCell.swift in Sources */,
 				811AB2D322F16B9900284F1A /* NodeModel.swift in Sources */,
 				81D7E25922E7F7400069CDED /* PTSButtonBarPagerTabStripViewController.swift in Sources */,
