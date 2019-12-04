@@ -107,7 +107,9 @@ class WalletManagerDetailViewController: BaseViewController {
         if let titleLabel = super.titleLabel {
             titleLabel.text = name
         }
-        (AssetVCSharedData.sharedData.selectedWallet as? Wallet)?.name = name
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            WalletService.sharedInstance.refreshDB()
+        }
     }
 
     func showErrorNameAlert() {

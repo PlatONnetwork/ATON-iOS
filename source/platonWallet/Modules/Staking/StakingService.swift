@@ -201,7 +201,7 @@ final class StakingService: BaseService {
             case .success(let data):
                 do {
                     let decoder = JSONDecoder()
-                    let response = try decoder.decode(JSONResponse<[DelegationValue]>.self, from: data)
+                    let response = try decoder.decode(JSONResponse<Delegation>.self, from: data)
                     self.successCompletionOnMain(obj: response.data as AnyObject, completion: &completion)
                 } catch let err {
                     self.failCompletionOnMainThread(code: -1, errorMsg: err.localizedDescription, completion: &completion)

@@ -243,7 +243,7 @@ class platon071Tests: XCTestCase {
         StakingService.sharedInstance.getDelegationValue(addr: walletAddress, nodeId: nid) { (result, data) in
             switch result {
             case .success:
-                XCTAssertTrue((data as? [DelegationValue]) != nil, "response should be decode DelegationValue Type")
+                XCTAssertTrue((data as? Delegation) != nil, "response should be decode DelegationValue Type")
                 expectaion.fulfill()
             case .fail(_, _):
                 XCTAssert(false, "get delegate detail failure")

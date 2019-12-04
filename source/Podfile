@@ -8,7 +8,7 @@ def target_pods
     pod 'BigInt', '4.0', inhibit_warnings: true
     pod 'CryptoSwift', '~> 0.10.0'
     pod 'TrezorCrypto', '0.0.9', inhibit_warnings: true
-    pod 'SwiftLint', '0.30.1'
+    pod 'SwiftLint', '0.30.1', :configurations => ['Debug']
     pod 'RTRootNavigationController', '0.7.1'
     pod 'SnapKit', '~> 4.0.0'
 
@@ -24,11 +24,7 @@ def target_pods
     #pod 'BigInt', '~> 3.1'
     #pod 'CryptoSwift', '~> 0.8'
     pod 'secp256k1.swift', '~> 0.1'
-    #  pod 'Bugly', '2.5.0'
-    pod 'BuglyHotfix'
-
     pod 'Alamofire', '4.8.1'
-    pod 'Aspects', '1.4.1'
 
     # Pods for platonWallet
 
@@ -40,6 +36,11 @@ def target_pods
     pod 'UMCCommon'
     pod 'UMCAnalytics'
     pod 'UMCCommonLog'
+    pod 'UMCSecurityPlugins'
+    pod 'UMCShare/Social/ReducedSina'
+    pod 'UMCShare/Social/Facebook'
+    pod 'UMCShare/Social/Twitter'
+
     pod 'SwiftMonkeyPaws'
     pod 'OHHTTPStubs/Swift', :configurations => ['Debug']
     pod 'GzipSwift'

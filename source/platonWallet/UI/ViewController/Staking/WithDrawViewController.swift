@@ -18,12 +18,23 @@ class WithDrawViewController: BaseViewController {
     var balanceStyle: BalancesCellStyle?
     var currentAddress: String?
     var currentAmount: BigUInt = BigUInt.zero
-    var delegateValue: [DelegationValue] = []
+    var delegation: Delegation?
 
     var listData: [DelegateTableViewCellStyle] = []
     var gasPrice: BigUInt?
     var estimateUseGas: BigUInt?
     var generateQrCode: QrcodeData<[TransactionQrcode]>?
+
+    var minDelegateAmountLimit: BigUInt {
+        return delegation?.minDelegationBInt ?? BigUInt(10).multiplied(by: PlatonConfig.VON.LAT)
+    }
+
+    var amountBalance: BigUInt {
+        guard
+            let balance = AssetService.sharedInstace.balances.first(where: { $0.addr.lowercased() == walletStyle?.currentWallet.address.lowercased() }),
+            let freeBalance = BigUInt(balance.free ?? "0") else { return BigUInt.zero }
+        return freeBalance
+    }
 
     lazy var tableView = { () -> UITableView in
         let tbView = UITableView(frame: .zero)
@@ -86,8 +97,8 @@ class WithDrawViewController: BaseViewController {
 
             switch result {
             case .success:
-                if let newData = data as? [DelegationValue] {
-                    self?.delegateValue = newData
+                if let newData = data as? Delegation {
+                    self?.delegation = newData
                     self?.initBalanceStyle()
                 }
             case .fail(_, let errMsg):
@@ -97,17 +108,17 @@ class WithDrawViewController: BaseViewController {
     }
 
     private func initBalanceStyle() {
-        guard delegateValue.count > 0 else {
+        guard let dele = delegation, dele.deleList.count > 0 else {
             navigationController?.popViewController(animated: true)
             showMessage(text: Localized("delegate_no_withdraw_message"), delay: 2.0)
             return
         }
 
-        let totalDelegate = delegateValue.reduce(BigUInt.zero) { (result, dValue) -> BigUInt in
+        let totalDelegate = dele.deleList.reduce(BigUInt.zero) { (result, dValue) -> BigUInt in
             return result + BigUInt(dValue.delegated ?? "0")!
         }
 
-        let totalReleased = delegateValue.reduce(BigUInt.zero) { (result, dValue) -> BigUInt in
+        let totalReleased = dele.deleList.reduce(BigUInt.zero) { (result, dValue) -> BigUInt in
             return result + BigUInt(dValue.released ?? "0")!
         }
 
@@ -134,7 +145,7 @@ class WithDrawViewController: BaseViewController {
         let item5 = DelegateTableViewCellStyle.singleButton(title: Localized("statking_validator_Withdraw"))
 
         let contents = [
-            (Localized("staking_doubt_undelegate"), Localized("staking_doubt_undelegate_detail", arguments: SettingService.shareInstance.remoteConfig?.minDelegation?.vonToLAT.description ?? "10"))
+            (Localized("staking_doubt_undelegate"), Localized("staking_doubt_undelegate_detail", arguments: (minDelegateAmountLimit/PlatonConfig.VON.LAT).description))
         ]
         let item6 = DelegateTableViewCellStyle.doubt(contents: contents)
         listData = [item1, item2, item3, item4, item5, item6]
@@ -204,17 +215,21 @@ extension WithDrawViewController: UITableViewDelegate, UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: "SendInputTableViewCell") as! SendInputTableViewCell
             cell.inputType = .withdraw
             cell.amountView.titleLabel.text = Localized("ATextFieldView_withdraw_title")
-            cell.minAmountLimit = SettingService.shareInstance.remoteConfig?.minDelegationBInt ?? "10".LATToVon
+            cell.amountView.textField.LocalizePlaceholder = Localized("staking_amount_placeholder", arguments: (minDelegateAmountLimit/PlatonConfig.VON.LAT).description)
+            cell.minAmountLimit = minDelegateAmountLimit
             cell.maxAmountLimit = BigUInt(balanceStyle?.currentBalance.1 ?? "0")
+            cell.balance = amountBalance
+            cell.estimateUseGas = estimateUseGas
             cell.cellDidContentChangeHandler = { [weak self] in
                 self?.updateHeightOfRow(cell)
             }
             cell.cellDidContentEditingHandler = { [weak self] (amountVON, isRegular) in
                 var inputAmountVON = amountVON
 
-                let minAmount = SettingService.shareInstance.remoteConfig?.minDelegationBInt ?? "10".LATToVon
-                if let cAmount = BigUInt(self?.balanceStyle?.currentBalance.1 ?? "0"), cAmount >= minAmount, inputAmountVON >= minAmount, cAmount > inputAmountVON, isRegular == true {
-                    if cAmount - inputAmountVON < minAmount {
+                let minAMountLimit = self?.minDelegateAmountLimit ?? BigUInt(10).multiplied(by: PlatonConfig.VON.LAT)
+
+                if let cAmount = BigUInt(self?.balanceStyle?.currentBalance.1 ?? "0"), cAmount >= minAMountLimit, inputAmountVON >= minAMountLimit, cAmount > inputAmountVON, isRegular == true {
+                    if cAmount - inputAmountVON < minAMountLimit {
                         inputAmountVON = cAmount
                         DispatchQueue.main.async {
                             cell.amountView.textField.text = inputAmountVON.divide(by: ETHToWeiMultiplier, round: 8)
@@ -288,12 +303,12 @@ extension WithDrawViewController {
         view.endEditing(true)
 
         guard currentAmount > BigUInt.zero else {
-            showMessage(text: Localized("staking_withdraw_input_amount_minlimit_error", arguments: SettingService.shareInstance.remoteConfig?.minDelegation?.vonToLAT.description ?? "10"))
+            showMessage(text: Localized("staking_withdraw_input_amount_minlimit_error", arguments: (minDelegateAmountLimit/PlatonConfig.VON.LAT).description))
             return
         }
 
-        guard currentAmount >= SettingService.shareInstance.remoteConfig?.minDelegationBInt ?? "10".LATToVon else {
-            showMessage(text: Localized("staking_withdraw_input_amount_minlimit_error", arguments: SettingService.shareInstance.remoteConfig?.minDelegation?.vonToLAT.description ?? "10"))
+        guard currentAmount >= minDelegateAmountLimit else {
+            showMessage(text: Localized("staking_withdraw_input_amount_minlimit_error", arguments: (minDelegateAmountLimit/PlatonConfig.VON.LAT).description))
             return
         }
 
@@ -334,7 +349,7 @@ extension WithDrawViewController {
             tempPrivateKey = pri
             var usedAmount = BigUInt.zero
 
-            for (index, dValue) in self.delegateValue.enumerated() {
+            for (index, dValue) in (self.delegation?.deleList ?? []).enumerated() {
                 if
                     let stakingBlockNum = dValue.stakingBlockNum,
                     let sBlockNum = UInt64(stakingBlockNum),
@@ -359,7 +374,7 @@ extension WithDrawViewController {
                         transaction.gasUsed = self.estimateUseGas?.description
                         transaction.nodeName = self.currentNode?.name
                         TransferPersistence.add(tx: transaction)
-                        if index == self.delegateValue.count - 1 {
+                        if index == (self.delegation?.deleList ?? []).count - 1 {
                             self.doShowTransactionDetail(transaction)
                         }
                     })
@@ -379,7 +394,7 @@ extension WithDrawViewController {
 
         var qrcodeArr: [TransactionQrcode] = []
 
-        for (_, dValue) in self.delegateValue.enumerated() {
+        for (_, dValue) in (self.delegation?.deleList ?? []).enumerated() {
             if
                 let stakingBlockNum = dValue.stakingBlockNum,
                 let sBlockNum = UInt64(stakingBlockNum),
@@ -598,7 +613,7 @@ extension WithDrawViewController {
         var estimateTotalGas: BigUInt = BigUInt.zero
 
         var usedAmount = BigUInt.zero
-        for (index, dValue) in self.delegateValue.enumerated() {
+        for (index, dValue) in (self.delegation?.deleList ?? []).enumerated() {
             if
                 let stakingBlockNum = dValue.stakingBlockNum,
                 let sBlockNum = UInt64(stakingBlockNum),
@@ -622,7 +637,7 @@ extension WithDrawViewController {
                 estimateTotalGas += estimateGas
                 estimateUseGas = estimateTotalGas
 
-                if index == delegateValue.count - 1 {
+                if index == (self.delegation?.deleList ?? []).count - 1 {
                     cell.amountView.feeLabel.text = (estimateTotalGas.description.vonToLATString ?? "0.00").displayFeeString
                 }
             }

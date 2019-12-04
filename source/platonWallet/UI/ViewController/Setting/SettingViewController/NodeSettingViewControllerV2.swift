@@ -17,7 +17,7 @@ class NodeSettingViewControllerV2: BaseViewController {
     lazy var tableView: UITableView = {
 
         let tableView = UITableView(frame: .zero, style: .plain)
-        tableView.register(UINib(nibName: "NodeSettingTableViewCell", bundle: nil), forCellReuseIdentifier: "NodeSettingTableViewCell")
+        tableView.register(NodeSettingCell.self, forCellReuseIdentifier: "NodeSettingCell")
         tableView.backgroundColor = UIViewController_backround
         tableView.separatorStyle = .none
         tableView.separatorInset = .zero
@@ -25,6 +25,7 @@ class NodeSettingViewControllerV2: BaseViewController {
         tableView.dataSource = self
         tableView.tableFooterView = UIView()
         tableView.keyboardDismissMode = .interactive
+        tableView.estimatedRowHeight = 70
         return tableView
     }()
 
@@ -79,16 +80,16 @@ extension NodeSettingViewControllerV2: UITableViewDelegate, UITableViewDataSourc
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 
-        let cell = tableView.dequeueReusableCell(withIdentifier: "NodeSettingTableViewCell", for: indexPath) as! NodeSettingTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "NodeSettingCell", for: indexPath) as! NodeSettingCell
         let nodeChain = NodeStoreService.share.nodeList[indexPath.row]
         let isSelected = nodeChain.chainId == SettingService.shareInstance.currentNodeChainId
-        cell.setup(node: nodeChain.nodeURLStr, isSelected: isSelected, isEdit: false, desc: nodeChain.desc)
+        cell.setup(nodeName: Localized(nodeChain.desc), nodeUrl: nodeChain.nodeURLStr, isSelected: isSelected, chainId: nodeChain.chainId)
         return cell
     }
 
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 68
-    }
+//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        return 68
+//    }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
 

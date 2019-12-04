@@ -21,7 +21,7 @@ struct AppConfig {
         #if UAT
         static let PRODUCT = "101"
         #else
-        static let PRODUCT = "99"
+        static let PRODUCT = "97"
         #endif
     }
 
@@ -33,8 +33,8 @@ struct AppConfig {
 
         #if UAT
         static let defaultNodesURL = [
-            (nodeURL: AppConfig.NodeURL.DefaultNodeURL_Alpha_V071, desc: "SettingsVC_nodeSet_defaultTestNetwork_Amigo_des", chainId: AppConfig.ChainID.PRODUCT, isSelected: true),
-            (nodeURL: AppConfig.NodeURL.DefaultNodeURL_Alpha_V071_DEV, desc: "", chainId: AppConfig.ChainID.TEST, isSelected: false)
+            (nodeURL: AppConfig.NodeURL.DefaultNodeURL_Alpha_V071, desc: "SettingsVC_nodeSet_defaultTestNetwork_test_des", chainId: AppConfig.ChainID.PRODUCT, isSelected: true),
+            (nodeURL: AppConfig.NodeURL.DefaultNodeURL_Alpha_V071_DEV, desc: "SettingsVC_nodeSet_defaultTestNetwork_develop_des", chainId: AppConfig.ChainID.TEST, isSelected: false)
         ]
         #else
         static let defaultNodesURL = [
@@ -102,6 +102,7 @@ struct AppConfig {
             static let UATNET = "https://aton.test.platon.network"
             static let PRODUCTNET = "https://aton.main.platon.network"
             static let TESTNET = "http://192.168.9.190:1000"
+//            static let TESTNET = "http://58.250.250.234:1000"
             static let DEVNET = "http://192.168.9.190:443"
         }
         static let PATH = "/app/v0700"

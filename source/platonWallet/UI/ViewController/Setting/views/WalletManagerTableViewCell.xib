@@ -51,17 +51,17 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jek-JH-Jpe" userLabel="backupContainer">
-                                <rect key="frame" x="205" y="9" width="158" height="21"/>
+                                <rect key="frame" x="196" y="-1.5" width="172" height="34.5"/>
                                 <subviews>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="backUpIcon" translatesAutoresizingMaskIntoConstraints="NO" id="VD2-tX-rov">
-                                        <rect key="frame" x="0.0" y="0.0" width="14" height="14"/>
+                                        <rect key="frame" x="10" y="10.5" width="14" height="14"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="14" id="5Z1-wt-fB4"/>
                                             <constraint firstAttribute="width" constant="14" id="pTY-jZ-9CR"/>
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="WalletManager_backUp" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="397-W0-exX">
-                                        <rect key="frame" x="19" y="0.0" width="133" height="14.5"/>
+                                        <rect key="frame" x="29" y="10" width="133" height="14.5"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <color key="textColor" red="0.062745098039215685" green="0.36078431372549019" blue="0.99607843137254903" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <nil key="highlightedColor"/>
@@ -70,10 +70,7 @@
                                         </userDefinedRuntimeAttributes>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9zZ-FX-h3M">
-                                        <rect key="frame" x="0.0" y="0.0" width="158" height="21"/>
-                                        <connections>
-                                            <action selector="onBackup:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="Rfd-L8-C19"/>
-                                        </connections>
+                                        <rect key="frame" x="0.0" y="0.0" width="172" height="34.5"/>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -82,13 +79,12 @@
                                     <constraint firstItem="9zZ-FX-h3M" firstAttribute="top" secondItem="jek-JH-Jpe" secondAttribute="top" id="78u-mA-q68"/>
                                     <constraint firstAttribute="bottom" secondItem="9zZ-FX-h3M" secondAttribute="bottom" id="Ibf-U8-uuN"/>
                                     <constraint firstAttribute="trailing" secondItem="9zZ-FX-h3M" secondAttribute="trailing" id="UcQ-RR-zzN"/>
-                                    <constraint firstAttribute="trailing" secondItem="397-W0-exX" secondAttribute="trailing" constant="6" id="Ulj-gM-8gp"/>
-                                    <constraint firstItem="VD2-tX-rov" firstAttribute="leading" secondItem="jek-JH-Jpe" secondAttribute="leading" id="hCR-Ut-jwL"/>
-                                    <constraint firstAttribute="bottom" secondItem="397-W0-exX" secondAttribute="bottom" constant="6.5" id="hxP-Sc-Ad3"/>
+                                    <constraint firstAttribute="trailing" secondItem="397-W0-exX" secondAttribute="trailing" constant="10" id="Ulj-gM-8gp"/>
+                                    <constraint firstItem="VD2-tX-rov" firstAttribute="leading" secondItem="jek-JH-Jpe" secondAttribute="leading" constant="10" id="hCR-Ut-jwL"/>
+                                    <constraint firstAttribute="bottom" secondItem="397-W0-exX" secondAttribute="bottom" constant="10" id="hxP-Sc-Ad3"/>
                                     <constraint firstItem="9zZ-FX-h3M" firstAttribute="leading" secondItem="jek-JH-Jpe" secondAttribute="leading" id="jMb-kQ-aGt"/>
-                                    <constraint firstAttribute="height" constant="21" id="jme-nd-yNX"/>
-                                    <constraint firstItem="VD2-tX-rov" firstAttribute="top" secondItem="jek-JH-Jpe" secondAttribute="top" id="mf2-ve-Ron"/>
-                                    <constraint firstItem="397-W0-exX" firstAttribute="top" secondItem="jek-JH-Jpe" secondAttribute="top" id="vYt-5F-rjr"/>
+                                    <constraint firstItem="VD2-tX-rov" firstAttribute="centerY" secondItem="397-W0-exX" secondAttribute="centerY" id="jwL-CP-0mh"/>
+                                    <constraint firstItem="397-W0-exX" firstAttribute="top" secondItem="jek-JH-Jpe" secondAttribute="top" constant="10" id="vYt-5F-rjr"/>
                                 </constraints>
                             </view>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="home_jointWallet_icon_normal" translatesAutoresizingMaskIntoConstraints="NO" id="Ged-ds-IcA">
@@ -123,7 +119,7 @@
                         <constraints>
                             <constraint firstItem="Ged-ds-IcA" firstAttribute="leading" secondItem="vAs-aI-b5L" secondAttribute="trailing" constant="-15" id="1kQ-y0-Vej"/>
                             <constraint firstItem="q4i-zI-gvR" firstAttribute="leading" secondItem="vAs-aI-b5L" secondAttribute="trailing" constant="10" id="7GY-2a-QDi"/>
-                            <constraint firstItem="Pq3-CV-SBD" firstAttribute="trailing" secondItem="jek-JH-Jpe" secondAttribute="trailing" constant="35" id="AlC-4K-CyD"/>
+                            <constraint firstItem="Pq3-CV-SBD" firstAttribute="trailing" secondItem="jek-JH-Jpe" secondAttribute="trailing" constant="30" id="AlC-4K-CyD"/>
                             <constraint firstItem="cS9-su-iJx" firstAttribute="centerY" secondItem="6Dg-7J-UHx" secondAttribute="centerY" id="TkS-xP-UIX"/>
                             <constraint firstAttribute="height" constant="60" id="ZJM-d0-d23"/>
                             <constraint firstItem="6Dg-7J-UHx" firstAttribute="top" secondItem="O6T-RQ-f5t" secondAttribute="top" constant="8" id="Zeq-KD-BHU"/>
@@ -151,7 +147,7 @@
                     <constraint firstItem="Mez-Q3-afW" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="16" id="CbS-ip-wYv"/>
                     <constraint firstAttribute="bottom" secondItem="O6T-RQ-f5t" secondAttribute="bottom" id="KLR-uD-pLa"/>
                     <constraint firstItem="O6T-RQ-f5t" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="hU8-gx-DvS"/>
-                    <constraint firstItem="jek-JH-Jpe" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="18.5" id="xC0-04-0FJ"/>
+                    <constraint firstItem="jek-JH-Jpe" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="xC0-04-0FJ"/>
                     <constraint firstAttribute="trailing" secondItem="Mez-Q3-afW" secondAttribute="trailing" constant="16" id="xCZ-Sa-oMu"/>
                 </constraints>
             </tableViewCellContentView>

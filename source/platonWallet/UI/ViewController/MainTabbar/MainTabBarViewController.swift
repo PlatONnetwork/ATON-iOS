@@ -106,7 +106,7 @@ extension UITabBarController {
 
 class MainTabBarViewController: UITabBarController {
 
-    var lastDate: Date = Date(timeIntervalSince1970: 0)
+    var lastTimeInterval: TimeInterval = 0.0
 
     public static func newTabBar() -> BaseNavigationController {
 
@@ -208,13 +208,14 @@ extension MainTabBarViewController: UITabBarControllerDelegate {
     }
 
     func doubleClick() -> Bool {
-        let date = Date()
-        if date.timeIntervalSince1970 - self.lastDate.timeIntervalSince1970 < 0.3 {
-            self.lastDate = Date(timeIntervalSince1970: 0)
+        let currentTimeInterval = Date().timeIntervalSince1970
+        print((currentTimeInterval - lastTimeInterval))
+        if (currentTimeInterval - lastTimeInterval) < 0.3 {
+            lastTimeInterval = 0.0
             return true
         }
 
-        self.lastDate = date
+        lastTimeInterval = currentTimeInterval
         return false
     }
 }

@@ -20,6 +20,7 @@ class DelegateRecordTableViewCell: UITableViewCell {
     public let timeLabel = UILabel()
     public let walletAvatarIV = UIImageView()
     public let walletAddressLabel = UILabel()
+    public let walletNameLabel = UILabel()
 
     var cellDidHandler: ((DelegateRecordTableViewCell) -> Void)?
 
@@ -38,7 +39,8 @@ class DelegateRecordTableViewCell: UITableViewCell {
 
             timeLabel.text = transaction?.recordTime ?? "--"
             walletAvatarIV.image = transaction?.fromAvatarImage
-            walletAddressLabel.text = transaction?.recordWalletName ?? "--"
+            walletAddressLabel.text = transaction?.recordWalletAddress ?? ""
+            walletNameLabel.text = transaction?.recordWalletName ?? "--"
         }
     }
 
@@ -146,30 +148,45 @@ class DelegateRecordTableViewCell: UITableViewCell {
         timeLabel.text = "#"
         timeLabel.textColor = common_lightLightGray_color
         timeLabel.font = .systemFont(ofSize: 15)
+        timeLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
         delegateBackgroundView.addSubview(timeLabel)
         timeLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(10)
             make.centerY.equalToSuperview()
             make.height.equalTo(15)
-            make.width.equalToSuperview().offset(-10).dividedBy(2)
+//            make.width.equalToSuperview().offset(-10).dividedBy(2)
+        }
+
+        walletAddressLabel.textColor = common_lightLightGray_color
+        walletAddressLabel.font = .systemFont(ofSize: 15)
+        walletAddressLabel.setContentHuggingPriority(.required, for: .horizontal)
+        walletAddressLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        delegateBackgroundView.addSubview(walletAddressLabel)
+        walletAddressLabel.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().offset(-10)
+            make.centerY.equalToSuperview()
+        }
+
+        walletNameLabel.textColor = common_lightLightGray_color
+        walletNameLabel.font = .systemFont(ofSize: 15)
+        delegateBackgroundView.addSubview(walletNameLabel)
+        walletNameLabel.snp.makeConstraints { make in
+            make.trailing.equalTo(walletAddressLabel.snp.leading)
+            make.centerY.equalToSuperview()
         }
 
         walletAvatarIV.image = UIImage(named: "walletAvatar_1_s")
         delegateBackgroundView.addSubview(walletAvatarIV)
         walletAvatarIV.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
-//            make.leading.equalTo(timeLabel.snp.trailing).offset(10)
+            make.trailing.equalTo(walletNameLabel.snp.leading).offset(-2)
+            make.leading.greaterThanOrEqualTo(timeLabel.snp.trailing).offset(10)
             make.height.width.equalTo(20)
         }
 
-        walletAddressLabel.textColor = common_lightLightGray_color
-        walletAddressLabel.font = .systemFont(ofSize: 15)
-        delegateBackgroundView.addSubview(walletAddressLabel)
-        walletAddressLabel.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().offset(-10)
-            make.centerY.equalToSuperview()
-            make.leading.equalTo(walletAvatarIV.snp.trailing).offset(2)
-        }
+
+
+
 
     }
 

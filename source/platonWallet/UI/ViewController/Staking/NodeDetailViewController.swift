@@ -138,6 +138,7 @@ class NodeDetailViewController: BaseViewController {
             make.top.equalTo(delegateButton.snp.bottom).offset(15)
         }
 
+        noNetworkEmptyView.isHidden = true
         view.addSubview(noNetworkEmptyView)
         noNetworkEmptyView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
@@ -167,7 +168,7 @@ class NodeDetailViewController: BaseViewController {
         institutionalLabel.text = nodeDetail?.institutionalForDisplay ?? "--"
         websiteLabel.text = nodeDetail?.websiteForDisplay ?? "--"
 
-        nodeInfoView.isHidden = (nodeDetail?.website == nil)
+        nodeInfoView.nodeNameButton.isHidden = (nodeDetail?.website == nil || nodeDetail?.website?.count == 0)
 
         if nodeDetail?.node.isInit == true {
             delegateButton.snp.makeConstraints { make in
@@ -213,6 +214,7 @@ class NodeDetailViewController: BaseViewController {
     }
 
     @objc private func openWebSiteController() {
+        guard let website = nodeDetail?.website, website.count > 0 else { return }
         let controller = WebCommonViewController()
         controller.requestUrl = nodeDetail?.website
         navigationController?.pushViewController(controller, animated: true)

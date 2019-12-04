@@ -15,6 +15,21 @@ class SharedCollectionViewCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        descptionLabel.font = .systemFont(ofSize: 12)
+        descptionLabel.textColor = UIColor(rgb: 0x61646e)
+        descptionLabel.adjustsFontSizeToFitWidth = true
+    }
+
+    override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
+
+        self.setNeedsLayout()
+        self.layoutIfNeeded()
+
+        let size = self.contentView.systemLayoutSizeFitting(layoutAttributes.size)
+        var cellFrame = layoutAttributes.frame
+        cellFrame.size.height = size.height
+        layoutAttributes.frame = cellFrame
+        return layoutAttributes
     }
 
 }
