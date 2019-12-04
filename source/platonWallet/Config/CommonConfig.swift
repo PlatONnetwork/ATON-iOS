@@ -115,6 +115,10 @@ struct AppConfig {
     struct LocalKeys {
         static let SelectedChainIdKey = "SelectedChainIdKey"
     }
+
+    struct OvertimeTranction {
+        static let overtime = 2*60*60*1000
+    }
 }
 
 extension String {

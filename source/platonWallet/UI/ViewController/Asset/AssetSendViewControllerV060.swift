@@ -363,12 +363,14 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
         if !self.checkConfirmButtonAvailable() {
             return
         }
-        let toAddress = self.walletAddressView.textField.text ?? ""
-        if let wallet = AssetVCSharedData.sharedData.selectedWallet as? Wallet {
-            if toAddress.ishexStringEqual(other: wallet.address) {
-                AssetViewControllerV060.getInstance()?.showMessage(text: Localized("cannot_send_itself"))
-                return
-            }
+
+        guard
+            let toAddress = walletAddressView.textField.text,
+            let wallet = AssetVCSharedData.sharedData.selectedWallet as? Wallet,
+            toAddress.ishexStringEqual(other: wallet.address) == false
+        else {
+            AssetViewControllerV060.getInstance()?.showMessage(text: Localized("cannot_send_itself"))
+            return
         }
 
         guard let amount = amountView.textField.text, let amountBInt = BigUInt.mutiply(a: amount, by: PlatonConfig.VON.LAT.description) else { return }
@@ -376,7 +378,28 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
             showThresholdConfirmView()
             return
         }
-        sendTransfer()
+
+        guard SettingService.shareInstance.isResendReminder else {
+            TwoHourTransactionPersistence.deleteOverTwoHourTransaction()
+            sendTransfer()
+            return
+        }
+
+        let twoHourTxs = TwoHourTransactionPersistence.getTwoHourTransactions(from: wallet.address, to: toAddress, value: amountBInt.description)
+        let currentTimeInterval =  Date().millisecondsSince1970
+        let twoHourTimeInterval = currentTimeInterval-AppConfig.OvertimeTranction.overtime
+
+        guard
+            let tx = twoHourTxs.first,
+            tx.createTime > twoHourTimeInterval && tx.createTime < currentTimeInterval
+        else {
+            TwoHourTransactionPersistence.deleteOverTwoHourTransaction()
+            sendTransfer()
+            return
+        }
+
+        showResendConfirmView()
+        TwoHourTransactionPersistence.deleteOverTwoHourTransaction()
     }
 
     func sendTransfer() {
@@ -525,6 +548,18 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
     func showThresholdConfirmView() {
         let alertVC = AlertStylePopViewController.initFromNib()
         alertVC.style = PAlertStyle.ChoiceView(message: Localized("threshold_confirm_value", arguments: (SettingService.shareInstance.thresholdValue/PlatonConfig.VON.LAT).description.ATPSuffix()))
+        alertVC.onAction(confirm: { (_, _) -> (Bool) in
+            self.sendTransfer()
+            return true
+        }) { (_, _) -> (Bool) in
+            return true
+        }
+        alertVC.showInViewController(viewController: self)
+    }
+
+    func showResendConfirmView() {
+        let alertVC = AlertStylePopViewController.initFromNib()
+        alertVC.style = PAlertStyle.ChoiceView(message: "resend_transfer_confirm_value")
         alertVC.onAction(confirm: { (_, _) -> (Bool) in
             self.sendTransfer()
             return true

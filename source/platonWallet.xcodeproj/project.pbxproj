@@ -548,6 +548,10 @@
 		81EEE6ED23978984001AE249 /* ThresholdValueSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EEE6EB23978984001AE249 /* ThresholdValueSelectView.swift */; };
 		81EEE6EF2397AB72001AE249 /* LocalKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EEE6EE2397AB72001AE249 /* LocalKeys.swift */; };
 		81EEE6F02397AB72001AE249 /* LocalKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EEE6EE2397AB72001AE249 /* LocalKeys.swift */; };
+		81EEE6F22397C14F001AE249 /* TwoHourTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EEE6F12397C14F001AE249 /* TwoHourTransaction.swift */; };
+		81EEE6F32397C14F001AE249 /* TwoHourTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EEE6F12397C14F001AE249 /* TwoHourTransaction.swift */; };
+		81EEE6F52397CD5E001AE249 /* TwoHourTransactionPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EEE6F42397CD5E001AE249 /* TwoHourTransactionPersistence.swift */; };
+		81EEE6F62397CD5E001AE249 /* TwoHourTransactionPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EEE6F42397CD5E001AE249 /* TwoHourTransactionPersistence.swift */; };
 		81F0DC92234B162D00325858 /* CommonConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F0DC91234B162C00325858 /* CommonConfig.swift */; };
 		81F1AFC622FADA2F00A74C00 /* WebCommonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F1AFC522FADA2F00A74C00 /* WebCommonViewController.swift */; };
 		81F5123D22FEE812005F3BDF /* DelegateModel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F5123C22FEE811005F3BDF /* DelegateModel+Extension.swift */; };
@@ -924,6 +928,8 @@
 		81EE9A0521773B7F008DF8CB /* BaseNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseNavigationController.swift; sourceTree = "<group>"; };
 		81EEE6EB23978984001AE249 /* ThresholdValueSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThresholdValueSelectView.swift; sourceTree = "<group>"; };
 		81EEE6EE2397AB72001AE249 /* LocalKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalKeys.swift; sourceTree = "<group>"; };
+		81EEE6F12397C14F001AE249 /* TwoHourTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoHourTransaction.swift; sourceTree = "<group>"; };
+		81EEE6F42397CD5E001AE249 /* TwoHourTransactionPersistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoHourTransactionPersistence.swift; sourceTree = "<group>"; };
 		81F0DC91234B162C00325858 /* CommonConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommonConfig.swift; sourceTree = "<group>"; };
 		81F1AFC522FADA2F00A74C00 /* WebCommonViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebCommonViewController.swift; sourceTree = "<group>"; };
 		81F5123C22FEE811005F3BDF /* DelegateModel+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DelegateModel+Extension.swift"; sourceTree = "<group>"; };
@@ -1660,6 +1666,7 @@
 			isa = PBXGroup;
 			children = (
 				81FCCCFD2179C5FB0052FC29 /* Transaction.swift */,
+				81EEE6F12397C14F001AE249 /* TwoHourTransaction.swift */,
 				81ACB9CD2302A59300BB460B /* Transaction+Extension.swift */,
 				81CB8ADC228EA99B009E8AA0 /* TransactionResponse.swift */,
 				8141E673233A1C7D001A9351 /* TransactionQrcode.swift */,
@@ -1804,6 +1811,7 @@
 			children = (
 				81B58962235D92C800816B4E /* Migration */,
 				81FCCD062179E9F10052FC29 /* TransferPersistence.swift */,
+				81EEE6F42397CD5E001AE249 /* TwoHourTransactionPersistence.swift */,
 				81FCCD072179E9F10052FC29 /* AssetPersistence.swift */,
 				81FCCD082179E9F10052FC29 /* WallletPersistence.swift */,
 				81FCCD152179EA0F0052FC29 /* RealmHelper.swift */,
@@ -2776,6 +2784,7 @@
 				81B589B3235DA1FC00816B4E /* ByteHelper.swift in Sources */,
 				81B589B4235DA1FC00816B4E /* Wallet+extension.swift in Sources */,
 				81B589B5235DA1FC00816B4E /* TSLViewController.swift in Sources */,
+				81EEE6F32397C14F001AE249 /* TwoHourTransaction.swift in Sources */,
 				81B589B6235DA1FC00816B4E /* UIViewController+Visibility.swift in Sources */,
 				81B589B7235DA1FC00816B4E /* ViewController.swift in Sources */,
 				81B589B8235DA1FC00816B4E /* QRScannerViewController.swift in Sources */,
@@ -2937,6 +2946,7 @@
 				81B58A4D235DA1FC00816B4E /* DelegateRecordTableViewCell.swift in Sources */,
 				81B58A4E235DA1FC00816B4E /* File.swift in Sources */,
 				81B58A4F235DA1FC00816B4E /* AssetSectionViewV060.swift in Sources */,
+				81EEE6F62397CD5E001AE249 /* TwoHourTransactionPersistence.swift in Sources */,
 				81B58A50235DA1FC00816B4E /* PTSPagerTabStripBehaviour.swift in Sources */,
 				81B58A51235DA1FC00816B4E /* XibView.swift in Sources */,
 				81B58A52235DA1FC00816B4E /* CreateImportCollectionViewCell.swift in Sources */,
@@ -3041,6 +3051,7 @@
 				813191482235FAC1002D4A72 /* TSLViewController.swift in Sources */,
 				9AF9AC1B2182E04000E97F07 /* UIViewController+Visibility.swift in Sources */,
 				81C88E0721746B39005F17F7 /* ViewController.swift in Sources */,
+				81EEE6F22397C14F001AE249 /* TwoHourTransaction.swift in Sources */,
 				81D16B5A21832AE200A283AF /* QRScannerViewController.swift in Sources */,
 				8141E6702339C80F001A9351 /* OfflineSignatureConfirmView.swift in Sources */,
 				8148F01521BA0E1600045546 /* BaseService.swift in Sources */,
@@ -3202,6 +3213,7 @@
 				81FCCCFE2179C5FB0052FC29 /* Transaction.swift in Sources */,
 				81D7E26F22E861FF0069CDED /* DelegateRecordTableViewCell.swift in Sources */,
 				818A9136217F59E600D03D57 /* File.swift in Sources */,
+				81EEE6F52397CD5E001AE249 /* TwoHourTransactionPersistence.swift in Sources */,
 				9ADB60B0222E723C0044918D /* AssetSectionViewV060.swift in Sources */,
 				81D7E24D22E7F6750069CDED /* PTSPagerTabStripBehaviour.swift in Sources */,
 				814B8C23217755DD00C97E48 /* XibView.swift in Sources */,

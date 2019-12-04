@@ -182,6 +182,13 @@ class TransactionService : BaseService {
                         ptx.transactionType = 0
                         ptx.direction = .Sent
                         TransferPersistence.add(tx: ptx)
+
+                        let thTx = TwoHourTransaction()
+                        thTx.createTime = Date().millisecondsSince1970
+                        thTx.to = toAddr?.hex(eip55: true).lowercased()
+                        thTx.from = walletAddr?.hex(eip55: true).lowercased()
+                        thTx.value = String(value.quantity)
+                        TwoHourTransactionPersistence.add(tx: thTx)
                     }
                     self.successCompletionOnMain(obj: nil, completion: &completion)
                 case .failure(let error):
