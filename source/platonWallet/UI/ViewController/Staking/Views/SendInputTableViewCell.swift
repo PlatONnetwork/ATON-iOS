@@ -31,7 +31,6 @@ class SendInputTableViewCell: UITableViewCell {
 
     lazy var amountView = { () -> ATextFieldView in
         let amountView = ATextFieldView.create(title: "ATextFieldView_withdraw_title")
-        amountView.textField.LocalizePlaceholder = Localized("staking_amount_placeholder", arguments: minAmountLimit?.description ?? "10")
         amountView.feeLabel.text = "0.00".displayFeeString
         amountView.textField.keyboardType = .decimalPad
         amountView.addAction(title: "send_sendAll", action: { [weak self] in

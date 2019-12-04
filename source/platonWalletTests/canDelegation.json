@@ -2,7 +2,10 @@
 	"errMsg": "�ɹ�",
 	"code": 0,
 	"data": {
-		"canDelegation": true,
-		"message": null
+        "free": "32004000000000",
+        "lock": "0",
+        "canDelegation": true,
+        "message": null,
+        "minDelegation": "10000000000000000000"
 	}
 }

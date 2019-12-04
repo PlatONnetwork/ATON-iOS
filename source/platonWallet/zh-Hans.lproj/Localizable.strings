@@ -26,7 +26,7 @@
 "wallet_psw_advise" = "*不少于6位字符，建议混合大小写、数字、特殊字符";
 
 ///wallet common input illegal tips
-"wallet_nameInput_empty_tips" = "名字不能为空！";
+"wallet_nameInput_empty_tips" = "钱包名称不能为空！";
 "wallet_nameInput_lengthIllegal_tips" = "请输入1~12位钱包名称！";
 "wallet_pswInput_empty_tips" = "密码不能为空！";
 "wallet_pswInput_lengthIllegal_tips" = "密码长度至少6个字符！";
@@ -161,8 +161,7 @@
 "QRViewSharedViewReceive" = "接收LAT";
 
 
-"SharedWechatFriend" = "微信";
-"SharedWechatMoment" = "微信朋友圈";
+"SharedWechatFriend" = "微信好友";
 "SharedQQ" = "QQ";
 "SharedWeibo" = "微博";
 "SharedFacebook" = "Facebook";
@@ -925,3 +924,5 @@
 "empty_view_no_network_title" = "网络加载失败";
 "empty_view_no_network_message" = "请您重新刷新或者检查网络";
 "empty_view_refresh_title" = "刷新";
+
+"social_share_error_uninstall_app" = "应用未安装";

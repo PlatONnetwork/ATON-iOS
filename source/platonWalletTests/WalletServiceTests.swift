@@ -18,7 +18,20 @@ class WalletServiceTests: XCTestCase {
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
 
+        for wallet in WalletService.sharedInstance.wallets {
+            WalletService.sharedInstance.deleteWallet(wallet)
+        }
+    }
 
+    func testCreateWallet() {
+        let expectaion = self.expectation(description: "testCreateWallet")
+
+        WalletService.sharedInstance.createWallet(name: "wallet-create-070", password: "123456", completion: { (wallet, error) in
+            XCTAssertNotNil(wallet, "create wallet shoulde be not nil")
+            expectaion.fulfill()
+        })
+
+        wait(for: [expectaion], timeout: 30.0)
     }
     
 
@@ -110,23 +123,6 @@ class WalletServiceTests: XCTestCase {
         XCTAssertTrue(oriPrivatekey == privateKey, "privatekey value should be equal")
     }
     
-    
-    func testCreateWallet() {
-        let expectaion = self.expectation(description: "testCreateWallet")
-        
-        var tempWallet: Wallet?
-        WalletService.sharedInstance.createWallet(name: "wallet-create-070", password: "123456", completion: { (wallet, error) in
-            XCTAssertNotNil(wallet, "create wallet shoulde be not nil")
-            tempWallet = wallet
-            if let wallet = tempWallet {
-                WalletService.sharedInstance.deleteWallet(wallet)
-            }
-            expectaion.fulfill()
-        })
-        
-        wait(for: [expectaion], timeout: 15.0)
-    }
-    
     func testCreateObserveWallet() {
         let expectaion = self.expectation(description: "testCreateObserveWallet")
         
@@ -157,9 +153,6 @@ class WalletServiceTests: XCTestCase {
                 return
             }
             XCTAssertNotNil(wallet, "create wallet shoulde be not nil")
-            if let wal = wallet {
-                WalletService.sharedInstance.deleteWallet(wal)
-            }
             expectaion.fulfill()
         }
         wait(for: [expectaion], timeout: 10.0)
@@ -176,9 +169,6 @@ class WalletServiceTests: XCTestCase {
                 return
             }
             XCTAssertNotNil(wallet, "create wallet shoulde be not nil")
-            if let wal = wallet {
-                WalletService.sharedInstance.deleteWallet(wal)
-            }
             expectaion.fulfill()
         }
         wait(for: [expectaion], timeout: 5.0)
@@ -196,10 +186,6 @@ class WalletServiceTests: XCTestCase {
                 return
             }
             XCTAssertNotNil(wallet, "create wallet shoulde be not nil")
-            if let wal = wallet {
-                XCTAssertTrue(wal.name == "wallet-import-mnemonic", "wallet name should be equal")
-                WalletService.sharedInstance.deleteWallet(wal)
-            }
             expectaion.fulfill()
         }
         wait(for: [expectaion], timeout: 5.0)
@@ -217,14 +203,9 @@ class WalletServiceTests: XCTestCase {
                 return
             }
             XCTAssertNotNil(wallet, "create wallet shoulde be not nil")
-            if let wal = wallet {
-                let exportKeystore = WalletService.sharedInstance.exportKeystore(wallet: wal)
-                XCTAssertEqual(keystore, exportKeystore.keystore, "keystore should be equal")
-                WalletService.sharedInstance.deleteWallet(wal)
-            }
             expectaion.fulfill()
         }
-        wait(for: [expectaion], timeout: 5.0)
+        wait(for: [expectaion], timeout: 15.0)
     }
     
     func testExportPrivateKey() {
@@ -237,12 +218,6 @@ class WalletServiceTests: XCTestCase {
                 return
             }
             XCTAssertNotNil(wallet, "create wallet shoulde be not nil")
-            if let wal = wallet {
-                WalletService.sharedInstance.exportPrivateKey(wallet: wal, password: "123456") { (exportPrivateKey, _) in
-                    XCTAssertEqual(privateKey, exportPrivateKey, "privatekey should be equal")
-                    WalletService.sharedInstance.deleteWallet(wal)
-                }
-            }
             expectaion.fulfill()
         }
         wait(for: [expectaion], timeout: 5.0)
@@ -260,12 +235,8 @@ class WalletServiceTests: XCTestCase {
                 return
             }
             XCTAssertNotNil(wallet, "create wallet shoulde be not nil")
-            if let wal = wallet {
-                WalletService.sharedInstance.deleteWallet(wal)
-            }
             expectaion.fulfill()
         }
-        wait(for: [expectaion], timeout: 5.0)
+        wait(for: [expectaion], timeout: 15.0)
     }
-    
 }

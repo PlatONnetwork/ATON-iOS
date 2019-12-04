@@ -1,11 +1,12 @@
 {
 	"errMsg": "�ɹ�",
 	"code": 0,
-	"data": [{
-		"stakingBlockNum": "1062",
-		"redeem": "0",
-		"locked": "0",
-		"unLocked": "0",
-		"released": "11000000000000000000"
-	}]
+	"data": {
+        "deleList": [{
+            "stakingBlockNum": "1451",
+            "delegated": "231926724428000000000",
+            "released": "0"
+        }],
+        "minDelegation": "10000000000000000000"
+    }
 }

@@ -86,37 +86,35 @@ class TransactionDetailHeaderView: UIView {
             baseInfoTopConstraint = make.top.equalTo(topValueLabel.snp.bottom).offset(22).priorityLow().constraint
             make.top.equalToSuperview().offset(22).priorityMedium()
             make.bottom.equalToSuperview().offset(-22)
-        }
-
-        fromToContainerView.addSubview(fromAvatarIV)
-        fromAvatarIV.snp.makeConstraints { make in
-            make.width.height.equalTo(30)
-            make.leading.equalToSuperview()
-            make.top.bottom.equalToSuperview()
-        }
-
-        fromNameLabel.textColor = .black
-        fromNameLabel.font = .systemFont(ofSize: 15)
-        fromNameLabel.textAlignment = .right
-        fromToContainerView.addSubview(fromNameLabel)
-        fromNameLabel.snp.makeConstraints { make in
-            make.leading.equalTo(fromAvatarIV.snp.trailing).offset(4)
-            make.centerY.equalToSuperview()
+            make.width.lessThanOrEqualToSuperview()
         }
 
         let arrowIV = UIImageView()
         arrowIV.image = UIImage(named: "2.icon_right")
         fromToContainerView.addSubview(arrowIV)
         arrowIV.snp.makeConstraints { make in
-            make.leading.equalTo(fromNameLabel.snp.trailing).offset(10)
             make.centerY.equalToSuperview()
+            make.centerX.equalToSuperview()
             make.width.height.equalTo(16)
-//            make.centerX.equalToSuperview()
-//            make.width.height.equalTo(16)
-//            baseInfoTopConstraint = make.top.equalTo(topValueLabel.snp.bottom).offset(22).priorityLow().constraint
-//            make.top.equalToSuperview().offset(22).priorityMedium()
-//            make.bottom.equalToSuperview().offset(-22)
         }
+
+        fromNameLabel.textColor = .black
+        fromNameLabel.font = .systemFont(ofSize: 15)
+        fromToContainerView.addSubview(fromNameLabel)
+        fromNameLabel.snp.makeConstraints { make in
+            make.trailing.equalTo(arrowIV.snp.leading).offset(-10)
+            make.centerY.equalToSuperview()
+        }
+
+        fromToContainerView.addSubview(fromAvatarIV)
+        fromAvatarIV.snp.makeConstraints { make in
+            make.width.height.equalTo(30)
+            make.trailing.equalTo(fromNameLabel.snp.leading).offset(-4)
+            make.top.bottom.equalToSuperview()
+            make.leading.greaterThanOrEqualToSuperview()
+        }
+
+
 
         fromToContainerView.addSubview(toAvatarIV)
         toAvatarIV.snp.makeConstraints { make in
@@ -279,7 +277,7 @@ class TransactionDetailHeaderView: UIView {
             baseInfoTopConstraint?.update(priority: .low)
         }
 
-        toIconIV.image = tx.toIconImage
+        toIconIV.image = tx.toAddressIconImage
         if tx.toType == .contract {
             toLabelLeadingConstraint?.update(offset: 16)
         } else {

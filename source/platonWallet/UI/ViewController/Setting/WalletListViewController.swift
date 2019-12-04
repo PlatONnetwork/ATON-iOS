@@ -35,7 +35,6 @@ class WalletListViewController: BaseViewController,TableViewReorderDelegate {
         super.viewDidLoad()
 
         NotificationCenter.default.addObserver(self, selector: #selector(shouldUpdateWalletStatus), name: Notification.Name.ATON.DidNetworkStatusChange, object: nil)
-
         initSubView()
     }
 
@@ -47,7 +46,6 @@ class WalletListViewController: BaseViewController,TableViewReorderDelegate {
     }
 
     func initData() {
-        WalletService.sharedInstance.refreshDB()
         dataSource.removeAll()
         dataSource.append(contentsOf: AssetVCSharedData.sharedData.walletList as [AnyObject])
     }

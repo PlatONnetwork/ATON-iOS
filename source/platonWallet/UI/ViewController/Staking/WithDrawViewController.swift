@@ -215,6 +215,7 @@ extension WithDrawViewController: UITableViewDelegate, UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: "SendInputTableViewCell") as! SendInputTableViewCell
             cell.inputType = .withdraw
             cell.amountView.titleLabel.text = Localized("ATextFieldView_withdraw_title")
+            cell.amountView.textField.LocalizePlaceholder = Localized("staking_amount_placeholder", arguments: (minDelegateAmountLimit/PlatonConfig.VON.LAT).description)
             cell.minAmountLimit = minDelegateAmountLimit
             cell.maxAmountLimit = BigUInt(balanceStyle?.currentBalance.1 ?? "0")
             cell.balance = amountBalance
@@ -302,12 +303,12 @@ extension WithDrawViewController {
         view.endEditing(true)
 
         guard currentAmount > BigUInt.zero else {
-            showMessage(text: Localized("staking_withdraw_input_amount_minlimit_error", arguments: minDelegateAmountLimit.description))
+            showMessage(text: Localized("staking_withdraw_input_amount_minlimit_error", arguments: (minDelegateAmountLimit/PlatonConfig.VON.LAT).description))
             return
         }
 
         guard currentAmount >= minDelegateAmountLimit else {
-            showMessage(text: Localized("staking_withdraw_input_amount_minlimit_error", arguments: minDelegateAmountLimit.description))
+            showMessage(text: Localized("staking_withdraw_input_amount_minlimit_error", arguments: (minDelegateAmountLimit/PlatonConfig.VON.LAT).description))
             return
         }
 

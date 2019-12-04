@@ -190,6 +190,8 @@ class ATextFieldView: UIView {
         internalHeight = 65.0
         tipsLabel.isHidden = true
         heightChange?(self)
+        magnitudeLabel.text = nil
+        tipLabelLeadingV.isHidden = true
     }
 
     @objc private func action(_ sender: UIButton) {

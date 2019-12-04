@@ -186,5 +186,4 @@ class NodeTableViewCell: UITableViewCell {
     @objc func containerViewTapAction() {
         cellDidSelectedHandle?()
     }
-
 }

@@ -135,13 +135,14 @@ class AssetReceiveViewControllerV060: BaseViewController {
             self.showMessage(text: Localized("SharedQRView_photolib_unauthorized_tips"))
         } else {
             self.showMessage(text: Localized("QRDisplayViewController_share"))
-            self.onNavRight()
+            self.onNavRight(image: image)
         }
     }
 
-    @objc func onNavRight() {
+    @objc func onNavRight(image: UIImage) {
         let popUpVC = PopUpViewController()
         let view = SharedView(frame: .zero)
+        view.shareObject = image
         popUpVC.setUpContentView(view: view, size: CGSize(width: PopUpContentWidth, height: SharedView.getSharedViewHeight()))
         popUpVC.setCloseEvent(button: view.closeBtn)
         popUpVC.show(inViewController: self)

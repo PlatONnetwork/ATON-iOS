@@ -27,7 +27,7 @@
                             </constraints>
                         </view>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="- -" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dUe-qb-Kw8">
-                            <rect key="frame" x="76" y="16" width="19" height="20"/>
+                            <rect key="frame" x="76" y="16" width="93" height="20"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                             <nil key="highlightedColor"/>
                         </label>
@@ -44,17 +44,17 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YtF-bK-ccn" userLabel="backupContainer">
-                            <rect key="frame" x="111" y="15.5" width="248" height="21"/>
+                            <rect key="frame" x="185" y="15.5" width="174" height="21"/>
                             <subviews>
                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="backUpIcon" translatesAutoresizingMaskIntoConstraints="NO" id="77x-SS-ZgE">
-                                    <rect key="frame" x="90" y="0.0" width="14" height="14"/>
+                                    <rect key="frame" x="16" y="0.0" width="14" height="14"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="14" id="2N7-kq-Pw7"/>
                                         <constraint firstAttribute="width" constant="14" id="wwi-Ed-Smz"/>
                                     </constraints>
                                 </imageView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="WalletManager_backUp" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0m5-j1-AS8">
-                                    <rect key="frame" x="109" y="0.0" width="133" height="14.5"/>
+                                    <rect key="frame" x="35" y="0.0" width="133" height="14.5"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                     <color key="textColor" red="0.062745098040000002" green="0.36078431370000003" blue="0.99607843139999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -64,7 +64,7 @@
                                     </userDefinedRuntimeAttributes>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lGx-GQ-xeh">
-                                    <rect key="frame" x="0.0" y="0.0" width="248" height="21"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="174" height="21"/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </button>
                             </subviews>
@@ -73,6 +73,7 @@
                                 <constraint firstAttribute="trailing" secondItem="0m5-j1-AS8" secondAttribute="trailing" constant="6" id="8RI-6C-7pS"/>
                                 <constraint firstAttribute="trailing" secondItem="lGx-GQ-xeh" secondAttribute="trailing" id="BAO-xl-HMM"/>
                                 <constraint firstItem="77x-SS-ZgE" firstAttribute="top" secondItem="YtF-bK-ccn" secondAttribute="top" id="EEM-K5-8rh"/>
+                                <constraint firstItem="77x-SS-ZgE" firstAttribute="leading" secondItem="YtF-bK-ccn" secondAttribute="leading" constant="16" id="Rqq-VC-tD8"/>
                                 <constraint firstAttribute="bottom" secondItem="lGx-GQ-xeh" secondAttribute="bottom" id="ab5-eg-6U3"/>
                                 <constraint firstItem="lGx-GQ-xeh" firstAttribute="top" secondItem="YtF-bK-ccn" secondAttribute="top" id="iVr-Gy-cVT"/>
                                 <constraint firstItem="0m5-j1-AS8" firstAttribute="leading" secondItem="77x-SS-ZgE" secondAttribute="trailing" constant="5" id="kd4-KV-idb"/>

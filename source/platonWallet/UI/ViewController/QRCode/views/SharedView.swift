@@ -8,14 +8,23 @@
 
 import UIKit
 import Foundation
+import Localize_Swift
 
 let itemHorizontalCount = 4
-let itemHorizontalSpacing = 20
+let itemHorizontalSpacing = 5
 let containerEdge = 16
-let itemratio = 1.5
+let itemratio = 1.2
 
-//let itemWidth = (kUIScreenWidth - CGFloat(containerEdge) * 2 - CGFloat((itemHorizontalSpacing * (itemHorizontalCount - 1))))/CGFloat(itemHorizontalCount)
-let itemWidth = CGFloat(54)
+let itemWidth = (kUIScreenWidth - CGFloat(containerEdge) * 2 - CGFloat((itemHorizontalSpacing * (itemHorizontalCount - 1))))/CGFloat(itemHorizontalCount)
+//let itemWidth = CGFloat(54)
+
+struct UrlsSchemes {
+    static let weixin = "weixin://"
+    static let qq = "mqq://"
+    static let sina = "sinaweibo://"
+    static let facebook = "fb://"
+    static let twitter = "twitter://"
+}
 
 class SharedView: UIView ,UICollectionViewDelegate,UICollectionViewDataSource {
 
@@ -24,14 +33,13 @@ class SharedView: UIView ,UICollectionViewDelegate,UICollectionViewDataSource {
     var collectionView : UICollectionView?
     let Identifier       = "SharedCollectionViewCell"
 
-    //let titles = ["SharedWechatFriend","SharedWechatMoment","SharedQQ","SharedWeibo","SharedFacebook","SharedTwitter","SharedMore"]
-
     var titles : [String] = []
     var imgs : [String] = []
     var urlschemes : [String] = []
+    var shareObject: UIImage?
 
     public class func getSharedViewHeight() -> CGFloat {
-        return 51 + 51 + itemWidth * CGFloat(itemratio) * 2 + CGFloat(itemHorizontalSpacing * 2)
+        return 51 + 51 + itemWidth * CGFloat(itemratio) * 2 + CGFloat(itemHorizontalSpacing * 2) + 10
     }
 
     override init(frame: CGRect) {
@@ -41,23 +49,25 @@ class SharedView: UIView ,UICollectionViewDelegate,UICollectionViewDataSource {
         self.initData()
 
         let layout = UICollectionViewFlowLayout.init()
-
-        layout.itemSize = CGSize(width: itemWidth, height: itemWidth * CGFloat(itemratio))
+        layout.estimatedItemSize = CGSize(width: 65, height: 100)
+//        layout.itemSize = CGSize(width: itemWidth, height: itemWidth * CGFloat(itemratio))
         layout.minimumLineSpacing = CGFloat(itemHorizontalSpacing)
         layout.minimumInteritemSpacing = CGFloat(itemHorizontalSpacing)
         layout.scrollDirection = .vertical
-        layout.sectionInset = UIEdgeInsets.init(top: 5, left: 5, bottom: 5, right: 5)
+        layout.sectionInset = UIEdgeInsets.init(top: 5, left: 2, bottom: 5, right: 2)
 
-        collectionView = UICollectionView.init(frame: CGRect(x:0, y:0, width:0, height:0), collectionViewLayout: layout)
-        collectionView?.backgroundColor = UIColor.white
+        collectionView =  UICollectionView(frame: .zero, collectionViewLayout: layout)
+//        collectionView = UICollectionView.init(frame: CGRect(x:0, y:0, width:0, height:0), collectionViewLayout: layout)
+        collectionView?.backgroundColor = .white
+        collectionView?.isScrollEnabled = false
         collectionView?.delegate = self
         collectionView?.dataSource = self
-        self.addSubview(collectionView!)
+        addSubview(collectionView!)
         collectionView?.snp.makeConstraints({ (make) in
-            make.top.equalTo(self).offset(51 + 8)
+            make.top.equalTo(self).offset(51)
             make.leading.equalTo(self).offset(containerEdge)
             make.trailing.equalTo(self).offset(-containerEdge)
-            make.bottom.equalTo((self))
+            make.bottom.equalToSuperview().offset(-56)
         })
 
         _ = self.headerAndFooterView()
@@ -65,8 +75,7 @@ class SharedView: UIView ,UICollectionViewDelegate,UICollectionViewDataSource {
         // 注册cell
         collectionView?.register(UINib.init(nibName: "SharedCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: Identifier)
 
-        self.backgroundColor = .white
-        collectionView!.backgroundColor = .white
+        backgroundColor = .white
         collectionView?.addBottomSepline()
     }
 
@@ -78,34 +87,34 @@ class SharedView: UIView ,UICollectionViewDelegate,UICollectionViewDataSource {
          imgs = ["imgwechat","imgmoment","imgQQ","imgBlog","imgFacebook","imgTwitter","imgmore"]
          */
 
-        if UIApplication.shared.canOpenURL(URL(string: "weixin://")!) {
-            urlschemes.append("weixin://")
+//        if UIApplication.shared.canOpenURL(URL(string: UrlsSchemes.weixin)!) {
+            urlschemes.append(UrlsSchemes.weixin)
             titles.append("SharedWechatFriend")
             imgs.append("imgwechat")
-        }
+//        }
 
-        if UIApplication.shared.canOpenURL(URL(string: "mqq://")!) {
-            urlschemes.append("mqq://")
+//        if UIApplication.shared.canOpenURL(URL(string: UrlsSchemes.qq)!) {
+            urlschemes.append(UrlsSchemes.qq)
             titles.append("SharedQQ")
             imgs.append("imgQQ")
-        }
-        if UIApplication.shared.canOpenURL(URL(string: "sinaweibo://")!) {
-            urlschemes.append("sinaweibo://")
+//        }
+//        if UIApplication.shared.canOpenURL(URL(string: UrlsSchemes.sina)!) {
+            urlschemes.append(UrlsSchemes.sina)
             titles.append("SharedWeibo")
             imgs.append("imgBlog")
-        }
+//        }
 
-        if UIApplication.shared.canOpenURL(URL(string: "fb://")!) {
-            urlschemes.append("fb://")
+//        if UIApplication.shared.canOpenURL(URL(string: UrlsSchemes.facebook)!) {
+            urlschemes.append(UrlsSchemes.facebook)
             titles.append("SharedFacebook")
             imgs.append("imgFacebook")
-        }
+//        }
 
-        if UIApplication.shared.canOpenURL(URL(string: "twitter://")!) {
-            urlschemes.append("twitter://")
+//        if UIApplication.shared.canOpenURL(URL(string: UrlsSchemes.twitter)!) {
+            urlschemes.append(UrlsSchemes.twitter)
             titles.append("SharedTwitter")
             imgs.append("imgTwitter")
-        }
+//        }
 
     }
 
@@ -164,18 +173,44 @@ class SharedView: UIView ,UICollectionViewDelegate,UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print(indexPath.row)
-
         let urlString = urlschemes[indexPath.row]
-        if let url = URL(string: urlString) {
-            //根据iOS系统版本，分别处理
-            if #available(iOS 10, *) {
-                UIApplication.shared.open(url, options: [:],
-                                          completionHandler: {
-                                            (_) in
-                })
-            } else {
-                UIApplication.shared.openURL(url)
+        guard UIApplication.shared.canOpenURL(URL(string: urlString)!) else {
+            UIApplication.shared.keyWindow?.rootViewController?.showMessage(text: Localized("social_share_error_uninstall_app"), delay: 1.5)
+            return
+        }
+
+        guard
+            let shareImage = shareObject,
+            (urlString == UrlsSchemes.facebook || urlString == UrlsSchemes.sina),
+            let controller = UIApplication.shared.keyWindow?.rootViewController
+        else {
+            if let url = URL(string: urlString) {
+                //根据iOS系统版本，分别处理
+                if #available(iOS 10, *) {
+                    UIApplication.shared.open(url, options: [:],
+                                              completionHandler: {
+                                                (_) in
+                    })
+                } else {
+                    UIApplication.shared.openURL(url)
+                }
             }
+            return
+        }
+
+        let shareObject = UMShareImageObject()
+        shareObject.shareImage = shareImage
+        let messageObject = UMSocialMessageObject()
+        messageObject.shareObject = shareObject
+
+        if urlString == UrlsSchemes.facebook {
+            UMSocialManager.default()?.share(to: .facebook, messageObject: messageObject, currentViewController: controller, completion: { (data, error) in
+
+            })
+        } else if urlString == UrlsSchemes.sina {
+            UMSocialManager.default()?.share(to: .sina, messageObject: messageObject, currentViewController: controller, completion: { (data, error) in
+
+            })
         }
     }
 
