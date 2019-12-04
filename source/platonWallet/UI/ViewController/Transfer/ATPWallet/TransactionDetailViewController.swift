@@ -11,7 +11,7 @@ import Localize_Swift
 
 class TransactionDetailViewController: BaseViewController {
 
-    public var transaction: Transaction?
+    var transaction: Transaction?
     var txSendAddress: String?
 
     var listData: [(title: String, value: String, copy: Bool)] = []
@@ -40,18 +40,9 @@ class TransactionDetailViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         super.leftNavigationTitle = "TransactionDetailVC_nav_title"
+        initObserver()
         initData()
         initSubViews()
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        NotificationCenter.default.addObserver(self, selector: #selector(didReceiveTransactionUpdate(_:)), name: Notification.Name.ATON.DidUpdateTransactionByHash, object: nil)
-    }
-
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        NotificationCenter.default.removeObserver(self, name: Notification.Name.ATON.DidUpdateTransactionByHash, object: nil)
     }
 
     @objc func didReceiveTransactionUpdate(_ notification: Notification) {
@@ -82,6 +73,10 @@ class TransactionDetailViewController: BaseViewController {
             self?.transferDetailView.frame.size = self?.transferDetailView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize) ?? CGSize(width: UIScreen.main.bounds.width, height: 250)
             self?.tableView.tableHeaderView = self?.transferDetailView
         }
+    }
+
+    func initObserver() {
+        NotificationCenter.default.addObserver(self, selector: #selector(didReceiveTransactionUpdate(_:)), name: Notification.Name.ATON.DidUpdateTransactionByHash, object: nil)
     }
 
     func initData() {

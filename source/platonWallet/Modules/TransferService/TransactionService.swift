@@ -72,6 +72,8 @@ class TransactionService : BaseService {
 
     func transactionStatusPooling() {
         let txs = TransferPersistence.getUnConfirmedTransactions()
+        print("hashes=================")
+        print(txs)
         guard txs.count > 0 else { return }
 
         let hashes = txs.filter { $0.txhash != nil }.map { $0.txhash!.lowercased() }
