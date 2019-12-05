@@ -11,4 +11,5 @@ import Foundation
 struct LocalKeys {
     static let ReminderThresholdValue = "ReminderThresholdValue" // 超额提醒
     static let isOpenResendReminder = "isOpenResendReminder" // 重发提醒
+    static let SelectedChainIdKey = "SelectedChainIdKey"
 }

@@ -17,14 +17,14 @@ class SettingService {
         let standard = UserDefaults.standard
         let defaultChainIds = AppConfig.NodeURL.defaultNodesURL.map { $0.chainId }
         guard
-            let chainId = standard.string(forKey: AppConfig.LocalKeys.SelectedChainIdKey), defaultChainIds.contains(chainId) else {
+            let chainId = standard.string(forKey: LocalKeys.SelectedChainIdKey), defaultChainIds.contains(chainId) else {
             if let defaultNode = AppConfig.NodeURL.defaultNodesURL.first(where: { $0.isSelected == true }) {
-                standard.set(defaultNode.chainId, forKey: AppConfig.LocalKeys.SelectedChainIdKey)
+                standard.set(defaultNode.chainId, forKey: LocalKeys.SelectedChainIdKey)
                 standard.synchronize()
                 return defaultNode.chainId
             } else {
                 let chainId = AppConfig.NodeURL.defaultNodesURL.first!.chainId
-                standard.set(chainId, forKey: AppConfig.LocalKeys.SelectedChainIdKey)
+                standard.set(chainId, forKey: LocalKeys.SelectedChainIdKey)
                 standard.synchronize()
                 return chainId
             }
@@ -66,12 +66,12 @@ class SettingService {
     func setCurrentNodeChainId(nodeChain: NodeChain) {
         let standard = UserDefaults.standard
         guard
-            let chainId = standard.string(forKey: AppConfig.LocalKeys.SelectedChainIdKey),
+            let chainId = standard.string(forKey: LocalKeys.SelectedChainIdKey),
             chainId != nodeChain.chainId
             else {
                 return
         }
-        standard.set(nodeChain.chainId, forKey: AppConfig.LocalKeys.SelectedChainIdKey)
+        standard.set(nodeChain.chainId, forKey: LocalKeys.SelectedChainIdKey)
         standard.synchronize()
     }
 

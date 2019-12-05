@@ -112,10 +112,6 @@ struct AppConfig {
         static let appVersion = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String
     }
 
-    struct LocalKeys {
-        static let SelectedChainIdKey = "SelectedChainIdKey"
-    }
-
     struct OvertimeTranction {
         static let overtime = 2*60*60*1000
     }
