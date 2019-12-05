@@ -21,19 +21,27 @@ platform :ios do
     # add actions here: https://docs.fastlane.tools/actions
   end
   lane :metrics do
-    # scan(scheme: "platonWallet", code_coverage: true, derived_data_path: "./DerivedData", output_directory: "./reports", devices: ["iPhone 8 Plus"])
-    slather(
-      cobertura_xml: true, 
-      scheme: "platonWalletTests", 
-      build_directory: "./DerivedData", 
+    scan(
+      scheme: "platonWallet", 
+      code_coverage: true, 
+      derived_data_path: "./DerivedData", 
       output_directory: "./reports", 
-      proj: "./platonWallet.xcodeproj", 
-      workspace: "./platonWallet.xcworkspace", 
-      ignore: ["*ViewController*.swift", "*view*.swift", "*View*.swift", "*UI*.swift"],
-      binary_basename: "platonWallet")
-    lizard(source_folder: "./platonWallet", language: "swift", export_type: "xml", report_file: "reports/lizard-report.xml")
-    swiftlint(config_file: "./fastlane/.swiftlint.yml", output_file: "./reports/swiftlint.txt", ignore_exit_status: true)
-    sonar
+      device: "iPhone X",
+      reinstall_app: true,
+      app_identifier: "com.platon.aton"
+      )
+    # slather(
+    #   cobertura_xml: true, 
+    #   scheme: "platonWalletTests", 
+    #   build_directory: "./DerivedData", 
+    #   output_directory: "./reports", 
+    #   proj: "./platonWallet.xcodeproj", 
+    #   workspace: "./platonWallet.xcworkspace", 
+    #   ignore: ["*ViewController*.swift", "*view*.swift", "*View*.swift", "*UI*.swift"],
+    #   binary_basename: "platonWallet")
+    # lizard(source_folder: "./platonWallet", language: "swift", export_type: "xml", report_file: "reports/lizard-report.xml")
+    # swiftlint(config_file: "./fastlane/.swiftlint.yml", output_file: "./reports/swiftlint.txt", ignore_exit_status: true)
+    # sonar
   end
   lane :tests do
   	run_tests(

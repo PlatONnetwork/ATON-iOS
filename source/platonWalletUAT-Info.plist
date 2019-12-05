@@ -42,7 +42,11 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>32</string>
+	<string>34</string>
+	<key>FacebookAppID</key>
+	<string>2374479646134721</string>
+	<key>FacebookDisplayName</key>
+	<string>ATON</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>weixin</string>
