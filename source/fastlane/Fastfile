@@ -22,7 +22,7 @@ platform :ios do
   end
   lane :metrics do
     scan(
-      scheme: "platonWallet", 
+      scheme: "platonWalletTests", 
       code_coverage: true, 
       derived_data_path: "./DerivedData", 
       output_directory: "./reports", 
