@@ -209,29 +209,29 @@ extension AppDelegate {
             return
         }
 
-        RemoteService.sharedInstance.getRemoteVersion { [weak self] (result, data) in
+        guard
+            let buildVersionString = Bundle.main.infoDictionary!["CFBundleVersion"] as? String,
+            let buildVersion = Int(buildVersionString) else { return }
+
+        RemoteService.sharedInstance.getRemoteVersion(versionCode: buildVersion) { (result, data) in
             switch result {
             case .success:
                 if let remoteVersion = data as? RemoteVersion {
                     SettingService.shareInstance.remoteVersion = remoteVersion
                 }
 
-                let appBuild = Bundle.main.infoDictionary!["CFBundleVersion"] as? String ?? ""
-                let remoteBuild = SettingService.shareInstance.remoteVersion?.build ?? ""
-                if Int(appBuild) ?? 0 < Int(remoteBuild) ?? 0 {
-                    guard
-                        let localDate = UserDefaults.standard.object(forKey: "UpdateVersionAlertDate") as? Date,
-                        Calendar.current.isDate(localDate, inSameDayAs: Date()) else {
-                            UserDefaults.standard.set(Date(), forKey: "UpdateVersionAlertDate")
-                            self?.showShouldUpdateVersionAlert()
-                            return
-                    }
-
-                    if SettingService.shareInstance.remoteVersion?.isForce == true {
-                        self?.showShouldUpdateVersionAlert()
-                    }
-                    UserDefaults.standard.set(Date(), forKey: "UpdateVersionAlertDate")
+                guard SettingService.shareInstance.remoteVersion?.isNeed == true else { return }
+                guard
+                    let localDate = UserDefaults.standard.object(forKey: "UpdateVersionAlertDate") as? Date,
+                    Calendar.current.isDate(localDate, inSameDayAs: Date()) else {
+                        UserDefaults.standard.set(Date(), forKey: "UpdateVersionAlertDate")
+                        self.showShouldUpdateVersionAlert()
+                        return
                 }
+
+                guard SettingService.shareInstance.remoteVersion?.isForce == true else { return }
+                self.showShouldUpdateVersionAlert()
+                UserDefaults.standard.set(Date(), forKey: "UpdateVersionAlertDate")
             case .fail:
                 break
             }
@@ -239,10 +239,10 @@ extension AppDelegate {
     }
 
     func showShouldUpdateVersionAlert() {
-        let controller = UIAlertController(title: Localized("about_version_update_alert_title"), message: Localized("about_version_update_alert_message_1") + (SettingService.shareInstance.remoteVersion?.version ?? "") + Localized("about_version_update_alert_message_2"), preferredStyle: .alert)
+        let controller = UIAlertController(title: Localized("about_version_update_alert_title"), message: Localized("about_version_update_alert_message_1") + (SettingService.shareInstance.remoteVersion?.newVersion ?? "") + Localized("about_version_update_alert_message_2"), preferredStyle: .alert)
         let cancelAction = UIAlertAction(title: Localized("about_version_update_alert_cancel"), style: .cancel, handler: nil)
         let okAction = UIAlertAction(title: Localized("about_version_update_alert_ok"), style: .default) { (_) in
-            UIApplication.shared.openURL(URL(string: SettingService.shareInstance.remoteVersion?.appStoreId ?? "https://developer.platon.network/mobile/index.html")!)
+            UIApplication.shared.openURL(URL(string: SettingService.shareInstance.remoteVersion?.url ?? "https://developer.platon.network/mobile/index.html")!)
         }
         if SettingService.shareInstance.remoteVersion?.isForce == false {
             controller.addAction(cancelAction)

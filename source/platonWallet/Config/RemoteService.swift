@@ -38,11 +38,17 @@ class RemoteService {
         }
     }
 
-    func getRemoteVersion(completion: PlatonCommonCompletion?) {
-        let url = SettingService.shareInstance.getCentralizationHost() + "/config/aton-update.json"
+    func getRemoteVersion(versionCode: Int, completion: PlatonCommonCompletion?) {
+        let url = SettingService.getCentralizationURL() + "/config/checkUpdate"
+
+        var parameters: [String: Any] = [:]
+        parameters["versionCode"] = versionCode
+        parameters["deviceType"] = "ios"
+        parameters["channelCode"] = "AppStore"
 
         var request = URLRequest(url: try! url.asURL())
-        request.httpMethod = "GET"
+        request.httpBody = try! JSONSerialization.data(withJSONObject: parameters)
+        request.httpMethod = "POST"
         request.timeoutInterval = requestTimeout
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
@@ -53,7 +59,7 @@ class RemoteService {
                     let decoder = JSONDecoder()
                     let response = try decoder.decode(RemoteVersionResponse.self, from: data)
 
-                    completion?(.success, response.data.ios as AnyObject)
+                    completion?(.success, response.data as AnyObject)
                 } catch let err {
                     completion?(.fail(-1, err.localizedDescription), nil)
                 }
