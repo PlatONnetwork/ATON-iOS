@@ -266,9 +266,18 @@ extension AssetTransactionViewControllerV060 {
 
         let pendingTxs = getPendingTransation()
 
-        guard let tx = pendingTxs.first(where: { $0.txhash?.lowercased() == txStatus.hash?.lowercased() }) else { return }
-        tx.txReceiptStatus = status.rawValue
+        for txObj in dataSource {
+            for tx in txObj.value {
+                if tx.txhash?.lowercased() == txStatus.hash?.lowercased() {
+                    tx.txReceiptStatus = status.rawValue
+                }
+            }
+        }
         tableView.reloadData()
+
+//        guard let tx = pendingTxs.first(where: { $0.txhash?.lowercased() == txStatus.hash?.lowercased() }) else { return }
+//        tx.txReceiptStatus = status.rawValue
+//        tableView.reloadData()
     }
 }
 
