@@ -543,7 +543,6 @@ extension WithDrawViewController {
                         tx.value = amount
                         tx.transactionType = Int(type)
                         tx.toType = .contract
-                        tx.gasUsed = self.estimateUseGas?.description
                         tx.nodeName = self.currentNode?.name
                         tx.txType = .delegateWithdraw
                         tx.direction = .Receive

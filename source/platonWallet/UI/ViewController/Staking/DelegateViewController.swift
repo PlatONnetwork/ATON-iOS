@@ -323,7 +323,8 @@ extension DelegateViewController {
             let walletObject = walletStyle,
             let balanceObject = balanceStyle,
             let nodeId = currentNode?.nodeId,
-            let gasPrice = gasPrice?.description else { return }
+            let gasPriceString = gasPrice?.description,
+            let gasLimitString = gasLimit?.description else { return }
         let currentAddress = walletObject.currentWallet.address
 
         let typ = balanceObject.selectedIndex == 0 ? UInt16(0) : UInt16(1) // 0：自由金额 1：锁仓金额
@@ -339,7 +340,7 @@ extension DelegateViewController {
                     guard let nonce = blockNonce else { return }
                     let nonceString = nonce.quantity.description
 
-                    let transactionData = TransactionQrcode(amount: self.currentAmount.description, chainId: web3.properties.chainId, from: walletObject.currentWallet.address, to: PlatonConfig.ContractAddress.stakingContractAddress, gasLimit: funcType.gas.description, gasPrice: gasPrice, nonce: nonceString, typ: typ, nodeId: nodeId, nodeName: self.currentNode?.name, stakingBlockNum: nil, functionType: funcType.typeValue)
+                    let transactionData = TransactionQrcode(amount: self.currentAmount.description, chainId: web3.properties.chainId, from: walletObject.currentWallet.address, to: PlatonConfig.ContractAddress.stakingContractAddress, gasLimit: gasLimitString, gasPrice: gasPriceString, nonce: nonceString, typ: typ, nodeId: nodeId, nodeName: self.currentNode?.name, stakingBlockNum: nil, functionType: funcType.typeValue)
 
                     let qrcodeData = QrcodeData(qrCodeType: 0, qrCodeData: [transactionData], timestamp: Int(Date().timeIntervalSince1970 * 1000), chainId: web3.chainId, functionType: 1004, from: walletObject.currentWallet.address)
                     guard
@@ -493,7 +494,6 @@ extension DelegateViewController {
                         tx.value = amount
                         tx.transactionType = Int(type)
                         tx.toType = .contract
-                        tx.gasUsed = self.estimateUseGas.description
                         tx.nodeName = self.currentNode?.name
                         tx.txType = .delegateCreate
                         tx.direction = .Sent
