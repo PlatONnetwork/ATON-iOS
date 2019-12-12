@@ -268,10 +268,10 @@ extension AssetTransactionViewControllerV060 {
             for tx in txObj.value {
                 if tx.txhash?.lowercased() == txStatus.hash?.lowercased() {
                     tx.txReceiptStatus = status.rawValue
+                    tableView.reloadData()
                 }
             }
         }
-        tableView.reloadData()
     }
 }
 
