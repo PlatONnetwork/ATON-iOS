@@ -264,8 +264,6 @@ extension AssetTransactionViewControllerV060 {
     @objc func didReceiveTransactionUpdate(_ notification: Notification) {
         guard let txStatus = notification.object as? TransactionsStatusByHash, let status = txStatus.localStatus else { return }
 
-        let pendingTxs = getPendingTransation()
-
         for txObj in dataSource {
             for tx in txObj.value {
                 if tx.txhash?.lowercased() == txStatus.hash?.lowercased() {
@@ -274,10 +272,6 @@ extension AssetTransactionViewControllerV060 {
             }
         }
         tableView.reloadData()
-
-//        guard let tx = pendingTxs.first(where: { $0.txhash?.lowercased() == txStatus.hash?.lowercased() }) else { return }
-//        tx.txReceiptStatus = status.rawValue
-//        tableView.reloadData()
     }
 }
 

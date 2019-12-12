@@ -229,9 +229,9 @@ extension AppDelegate {
                         return
                 }
 
-//                guard SettingService.shareInstance.remoteVersion?.isForce == true else { return }
-//                self.showShouldUpdateVersionAlert()
-//                UserDefaults.standard.set(Date(), forKey: "UpdateVersionAlertDate")
+                guard SettingService.shareInstance.remoteVersion?.isForce == true else { return }
+                self.showShouldUpdateVersionAlert()
+                UserDefaults.standard.set(Date(), forKey: "UpdateVersionAlertDate")
             case .fail:
                 break
             }

@@ -215,7 +215,14 @@ class platonWalletTests: XCTestCase {
             XCTAssertNil(wallet, "addressinfo should be nil")
         }
     }
-    
-    
-    
+
+    func testDecimalPlaceConvert() {
+        let amountValue = BigUInt(499999750000)
+        XCTAssert(amountValue.convertLastTenDecimalPlaceToZero() == BigUInt(500000000000), "amount convert should be equal")
+    }
+
+    func testBalanceDecimalPlaceConvert() {
+        let amountValue = BigUInt(499999750000)
+        XCTAssert(amountValue.convertBalanceDecimalPlaceToZero() == BigUInt(490000000000), "amount convert should be equal")
+    }
 }

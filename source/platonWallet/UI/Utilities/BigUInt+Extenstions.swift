@@ -8,6 +8,7 @@
 
 import Foundation
 import BigInt
+import platonWeb3
 
 extension BigUInt {
 
@@ -208,5 +209,34 @@ extension BigUInt {
 
     func convertToEnergon(round:Int) -> String {
         return self.divide(by: ETHToWeiMultiplier, round: round)
+    }
+
+    func convertBalanceDecimalPlaceToZero() -> BigUInt {
+        return convertDecimalPlaceToZero(round: 10, isCeil: false)
+    }
+
+    func convertLastTenDecimalPlaceToZero() -> BigUInt {
+        return convertDecimalPlaceToZero(round: 10, isCeil: true)
+    }
+
+    func convertDecimalPlaceToZero(round: Int, isCeil: Bool = true) -> BigUInt {
+        let vonValue = self
+        let tenPowerValue = BigUInt(10).power(round)
+        let tenAddOnePowerValue = BigUInt(10).power(round-1)
+
+        let (quotient1, _) = vonValue.quotientAndRemainder(dividingBy: tenPowerValue)
+        let (quotient2, _) = vonValue.quotientAndRemainder(dividingBy: tenAddOnePowerValue)
+
+        guard isCeil == true else {
+            return quotient1*tenPowerValue
+        }
+
+        let subQuotient = quotient2 - quotient1*BigUInt(10)
+        guard subQuotient >= BigUInt(5) else {
+            return quotient1*tenPowerValue
+        }
+
+        let newQuotient = (quotient1+BigUInt(1))*tenPowerValue
+        return newQuotient
     }
 }
