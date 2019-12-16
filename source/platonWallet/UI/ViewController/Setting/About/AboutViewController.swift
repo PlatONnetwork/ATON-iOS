@@ -8,6 +8,7 @@
 
 import UIKit
 import Localize_Swift
+
 class AboutViewController: BaseViewController {
 
     @IBOutlet weak var versionLabel: UILabel!
@@ -23,13 +24,7 @@ class AboutViewController: BaseViewController {
         versionIcon.backgroundColor = .red
         versionIcon.layer.cornerRadius = 5.0
 
-        let appBuild = Bundle.main.infoDictionary!["CFBundleVersion"] as? String ?? ""
-        let remoteVersion = SettingService.shareInstance.remoteVersion?.version ?? ""
-        if appBuild.compare(remoteVersion) == ComparisonResult.orderedAscending {
-            versionIcon.isHidden = false
-        } else {
-            versionIcon.isHidden = true
-        }
+        versionIcon.isHidden = !(SettingService.shareInstance.remoteVersion?.isNeed == true)
     }
 
     @IBAction func aboutUs(_ sender: Any) {
@@ -37,8 +32,12 @@ class AboutViewController: BaseViewController {
     }
 
     @IBAction func softwareUpdate(_ sender: Any) {
-        UIApplication.shared.openURL(URL(string: "https://itunes.apple.com/cn/app/id1473112418?mt=8")!)
-        //UIApplication.shared.openURL(URL(string: "https://github.com/PlatONnetwork")!)
+        guard SettingService.shareInstance.remoteVersion?.isNeed == true else {
+            showMessage(text: Localized("about_version_update_latest"), delay: 2.0)
+            return
+        }
+
+        UIApplication.shared.openURL(URL(string: SettingService.shareInstance.remoteVersion?.url ?? "https://itunes.apple.com/cn/app/id1473112418?mt=8")!)
     }
 
     @IBAction func privacyPolicy(_ sender: Any) {
