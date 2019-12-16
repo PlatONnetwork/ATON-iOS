@@ -21,7 +21,15 @@ platform :ios do
     # add actions here: https://docs.fastlane.tools/actions
   end
   lane :metrics do
-    # scan(scheme: "platonWallet", code_coverage: true, derived_data_path: "./DerivedData", output_directory: "./reports", devices: ["iPhone 8 Plus"])
+    # scan(
+    #   scheme: "platonWalletTests", 
+    #   code_coverage: true, 
+    #   derived_data_path: "./DerivedData", 
+    #   output_directory: "./reports", 
+    #   device: "iPhone X",
+    #   reinstall_app: true,
+    #   app_identifier: "com.platon.aton"
+    #   )
     slather(
       cobertura_xml: true, 
       scheme: "platonWalletTests", 

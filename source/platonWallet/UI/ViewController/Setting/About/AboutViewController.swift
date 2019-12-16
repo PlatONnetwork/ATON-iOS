@@ -23,13 +23,7 @@ class AboutViewController: BaseViewController {
         versionIcon.backgroundColor = .red
         versionIcon.layer.cornerRadius = 5.0
 
-        let appBuild = Bundle.main.infoDictionary!["CFBundleVersion"] as? String ?? ""
-        let remoteVersion = SettingService.shareInstance.remoteVersion?.version ?? ""
-        if appBuild.compare(remoteVersion) == ComparisonResult.orderedAscending {
-            versionIcon.isHidden = false
-        } else {
-            versionIcon.isHidden = true
-        }
+        versionIcon.isHidden == !(SettingService.shareInstance.remoteVersion?.isNeed == true)
     }
 
     @IBAction func aboutUs(_ sender: Any) {

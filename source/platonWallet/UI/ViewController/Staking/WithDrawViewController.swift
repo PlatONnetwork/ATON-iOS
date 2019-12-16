@@ -32,7 +32,7 @@ class WithDrawViewController: BaseViewController {
     var amountBalance: BigUInt {
         guard
             let balance = AssetService.sharedInstace.balances.first(where: { $0.addr.lowercased() == walletStyle?.currentWallet.address.lowercased() }),
-            let freeBalance = BigUInt(balance.free ?? "0") else { return BigUInt.zero }
+            let freeBalance = BigUInt(balance.free ?? "0")?.convertBalanceDecimalPlaceToZero() else { return BigUInt.zero }
         return freeBalance
     }
 
@@ -543,7 +543,6 @@ extension WithDrawViewController {
                         tx.value = amount
                         tx.transactionType = Int(type)
                         tx.toType = .contract
-                        tx.gasUsed = self.estimateUseGas?.description
                         tx.nodeName = self.currentNode?.name
                         tx.txType = .delegateWithdraw
                         tx.direction = .Receive
@@ -661,7 +660,7 @@ extension WithDrawViewController {
         web3.platon.gasPrice { [weak self] (response) in
             switch response.status {
             case .success(let result):
-                self?.gasPrice = result.quantity
+                self?.gasPrice = result.quantity.convertLastTenDecimalPlaceToZero()
             case .failure:
                 break
             }

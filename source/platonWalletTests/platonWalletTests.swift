@@ -160,13 +160,6 @@ class platonWalletTests: XCTestCase {
         
     }
 
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
-    }
-
     
     func testIPQuery(){
         var list : [String] = []
@@ -222,7 +215,14 @@ class platonWalletTests: XCTestCase {
             XCTAssertNil(wallet, "addressinfo should be nil")
         }
     }
-    
-    
-    
+
+    func testDecimalPlaceConvert() {
+        let amountValue = BigUInt(499999750000)
+        XCTAssert(amountValue.convertLastTenDecimalPlaceToZero() == BigUInt(500000000000), "amount convert should be equal")
+    }
+
+    func testBalanceDecimalPlaceConvert() {
+        let amountValue = BigUInt(499999750000)
+        XCTAssert(amountValue.convertBalanceDecimalPlaceToZero() == BigUInt(490000000000), "amount convert should be equal")
+    }
 }

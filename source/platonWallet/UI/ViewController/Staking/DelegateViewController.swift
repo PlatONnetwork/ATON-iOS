@@ -20,7 +20,7 @@ class DelegateViewController: BaseViewController {
     var balanceStyle: BalancesCellStyle?
     var currentAmount: BigUInt = BigUInt.zero
     var canDelegation: CanDelegation?
-    var gasPrice: BigUInt?
+    var gasPrice: BigUInt? // 链上获取的gasPrice
     var gasLimit: BigUInt?
     var estimateUseGas: BigUInt = BigUInt.zero
     var isDelegateAll: Bool = false
@@ -46,7 +46,7 @@ class DelegateViewController: BaseViewController {
     var freeBalanceBInt: BigUInt {
         guard
             let balance = AssetService.sharedInstace.balances.first(where: { $0.addr.lowercased() == walletStyle?.currentWallet.address.lowercased() }),
-            let freeBInt = BigUInt(balance.free ?? "0") else {
+            let freeBInt = BigUInt(balance.free ?? "0")?.convertBalanceDecimalPlaceToZero() else {
                 return BigUInt.zero
         }
         return freeBInt
@@ -111,7 +111,10 @@ class DelegateViewController: BaseViewController {
                 self?.hideLoadingHUD()
                 switch result {
                 case .success:
-                    if let newData = data as? CanDelegation {
+                    if var newData = data as? CanDelegation {
+                        newData.free = (BigUInt(newData.free ?? "0") ?? BigUInt.zero).convertBalanceDecimalPlaceToZero().description
+                        newData.lock = (BigUInt(newData.lock ?? "0") ?? BigUInt.zero).convertBalanceDecimalPlaceToZero().description
+
                         var walletBalance = AssetService.sharedInstace.balances.first(where: { $0.addr.lowercased() == walletAddr.lowercased() })
                         walletBalance?.free = newData.free
                         walletBalance?.lock = newData.lock
@@ -158,9 +161,9 @@ class DelegateViewController: BaseViewController {
         }
 
         var balances: [(String, String)] = []
-        balances.append((Localized("staking_balance_can_used"), balance?.free ?? "0"))
-        if let lock = balance?.lock, (BigUInt(lock) ?? BigUInt.zero) > BigUInt.zero {
-            balances.append((Localized("staking_balance_locked_position"), lock))
+        balances.append((Localized("staking_balance_can_used"), (BigUInt(balance?.free ?? "0") ?? BigUInt.zero).convertBalanceDecimalPlaceToZero().description))
+        if let lock = balance?.lock, let convertLock = BigUInt(lock)?.convertBalanceDecimalPlaceToZero(), convertLock > BigUInt.zero {
+            balances.append((Localized("staking_balance_locked_position"), convertLock.description))
         }
 
         balanceStyle = BalancesCellStyle(balances: balances, selectedIndex: 0, isExpand: false)
@@ -323,7 +326,8 @@ extension DelegateViewController {
             let walletObject = walletStyle,
             let balanceObject = balanceStyle,
             let nodeId = currentNode?.nodeId,
-            let gasPrice = gasPrice?.description else { return }
+            let selectedGasPrice = gasPrice,
+            let selectedGasLimit = gasLimit else { return }
         let currentAddress = walletObject.currentWallet.address
 
         let typ = balanceObject.selectedIndex == 0 ? UInt16(0) : UInt16(1) // 0：自由金额 1：锁仓金额
@@ -339,7 +343,7 @@ extension DelegateViewController {
                     guard let nonce = blockNonce else { return }
                     let nonceString = nonce.quantity.description
 
-                    let transactionData = TransactionQrcode(amount: self.currentAmount.description, chainId: web3.properties.chainId, from: walletObject.currentWallet.address, to: PlatonConfig.ContractAddress.stakingContractAddress, gasLimit: funcType.gas.description, gasPrice: gasPrice, nonce: nonceString, typ: typ, nodeId: nodeId, nodeName: self.currentNode?.name, stakingBlockNum: nil, functionType: funcType.typeValue)
+                    let transactionData = TransactionQrcode(amount: self.currentAmount.description, chainId: web3.properties.chainId, from: walletObject.currentWallet.address, to: PlatonConfig.ContractAddress.stakingContractAddress, gasLimit: selectedGasLimit.description, gasPrice: selectedGasPrice.description, nonce: nonceString, typ: typ, nodeId: nodeId, nodeName: self.currentNode?.name, stakingBlockNum: nil, functionType: funcType.typeValue)
 
                     let qrcodeData = QrcodeData(qrCodeType: 0, qrCodeData: [transactionData], timestamp: Int(Date().timeIntervalSince1970 * 1000), chainId: web3.chainId, functionType: 1004, from: walletObject.currentWallet.address)
                     guard
@@ -367,7 +371,7 @@ extension DelegateViewController {
             }
             self.showLoadingHUD()
 
-            StakingService.sharedInstance.createDelgate(typ: typ, nodeId: nodeId, amount: self.currentAmount, sender: currentAddress, privateKey: pri, gas: self.gasLimit, gasPrice: self.gasPrice, { [weak self] (result, data) in
+            StakingService.sharedInstance.createDelgate(typ: typ, nodeId: nodeId, amount: self.currentAmount, sender: currentAddress, privateKey: pri, gas: selectedGasLimit, gasPrice: selectedGasPrice, { [weak self] (result, data) in
                 guard let self = self else { return }
                 self.hideLoadingHUD()
 
@@ -493,7 +497,6 @@ extension DelegateViewController {
                         tx.value = amount
                         tx.transactionType = Int(type)
                         tx.toType = .contract
-                        tx.gasUsed = self.estimateUseGas.description
                         tx.nodeName = self.currentNode?.name
                         tx.txType = .delegateCreate
                         tx.direction = .Sent
@@ -592,15 +595,20 @@ extension DelegateViewController {
             needEstimateGas = BigUInt(amountStr) ?? BigUInt.zero
         }
 
+        let currentGasPrice = gasPrice ?? PlatonConfig.FuncGasPrice.defaultGasPrice
         let gasLimitValue = web3.staking.getGasCreateDelegate(typ: typ, nodeId: nodeId, amount: needEstimateGas)
         gasLimit = gasLimitValue
-        estimateUseGas = gasLimitValue.multiplied(by: gasPrice ?? PlatonConfig.FuncGasPrice.defaultGasPrice)
+        estimateUseGas = gasLimitValue.multiplied(by: currentGasPrice)
 
         if isDelegateAll == true, balanceStyle?.isLock == false {
             if currentAmount > estimateUseGas {
                 // 非锁仓余额才可以相减
                 currentAmount -= estimateUseGas
                 cell.amountView.textField.text = currentAmount.divide(by: ETHToWeiMultiplier, round: 8)
+
+                let gasLimitOfAll = web3.staking.getGasCreateDelegate(typ: typ, nodeId: nodeId, amount: currentAmount)
+                gasLimit = gasLimitOfAll
+                estimateUseGas = gasLimitOfAll.multiplied(by: currentGasPrice)
             }
             isDelegateAll = false
             cell.amountView.checkInvalidNow(showErrorMsg: true)
@@ -626,7 +634,7 @@ extension DelegateViewController {
         web3.platon.gasPrice { [weak self] (response) in
             switch response.status {
             case .success(let result):
-                self?.gasPrice = result.quantity
+                self?.gasPrice = result.quantity.convertLastTenDecimalPlaceToZero()
             case .failure:
                 break
             }
