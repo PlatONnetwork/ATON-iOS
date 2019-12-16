@@ -9,6 +9,10 @@
 import Foundation
 
 struct RemoteVersionResponse: Decodable {
+    var data: RemoteVersioIOSResponse
+}
+
+struct RemoteVersioIOSResponse: Decodable {
     var ios: RemoteVersion
 }
 
