@@ -634,7 +634,7 @@ extension DelegateViewController {
         web3.platon.gasPrice { [weak self] (response) in
             switch response.status {
             case .success(let result):
-                self?.gasPrice = result.quantity.convertLastTenDecimalPlaceToZero()
+                self?.gasPrice = result.quantity > PlatonConfig.FuncGasPrice.minGasPrice ? result.quantity.convertLastTenDecimalPlaceToZero() : PlatonConfig.FuncGasPrice.minGasPrice
             case .failure:
                 break
             }
