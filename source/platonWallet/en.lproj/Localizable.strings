@@ -867,6 +867,7 @@
 "error_wallet_no_balance" = "insufficient wallet balance";
 
 "about_current_version" = "Current Version";
+"about_latest_version" = "Available Version ";
 "about_version_update_alert_title" = "Update Available";
 "about_version_update_alert_message_1" = "New version is available. Version ";
 "about_version_update_alert_message_2" = ", Update now?";

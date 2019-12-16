@@ -45,7 +45,7 @@ final class StakingService: BaseService {
         }
     }
 
-    func updateNodeListData(isRankingSorted: Bool = true, completion: PlatonCommonCompletion?) {
+    func updateNodeListData(isRankingSorted: Bool = true, completion: ((_ result : PlatonCommonResult, _ obj : [Node]) -> Void)?) {
         let url = SettingService.getCentralizationURL() + "/node/nodelist"
 
         var request = URLRequest(url: try! url.asURL())
@@ -67,14 +67,14 @@ final class StakingService: BaseService {
                     })
 
                     DispatchQueue.main.async {
-                        completion?(.success, sortData as AnyObject)
+                        completion?(.success, sortData)
                     }
                     NodePersistence.add(nodes: response.data, nil)
                 } catch let error {
-                    completion?(.fail(-1, error.localizedDescription), nil)
+                    completion?(.fail(-1, error.localizedDescription), [])
                 }
             case .failure(let error):
-                completion?(.fail(-1, error.localizedDescription), nil)
+                completion?(.fail(-1, error.localizedDescription), [])
             }
         }
     }
@@ -82,9 +82,10 @@ final class StakingService: BaseService {
     func getNodeList(
         controllerType: NodeControllerType,
         isRankingSorted: Bool,
+        isFetch: Bool = false,
         completion: PlatonCommonCompletion?) {
 
-        if controllerType == .active {
+        if controllerType == .active && isFetch == false {
             let copyData = NodePersistence.getActiveNode(isRankingSorted: isRankingSorted).detached
             let sortData = copyData.sorted(by: { (lhs, rhs) -> Bool in
                 return isRankingSorted ? Int(lhs.ratePA ?? "0") ?? 0 > Int(rhs.ratePA ?? "0") ?? 0 : lhs.ranking < rhs.ranking
@@ -95,7 +96,7 @@ final class StakingService: BaseService {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 completion?(.success, sortData as AnyObject)
             }
-        } else if controllerType == .candidate {
+        } else if controllerType == .candidate && isFetch == false {
             let copyData = NodePersistence.getCandiateNode(isRankingSorted: isRankingSorted).detached
             let sortData = copyData.sorted(by: { (lhs, rhs) -> Bool in
                 return isRankingSorted ? Int(lhs.ratePA ?? "0") ?? 0 > Int(rhs.ratePA ?? "0") ?? 0 : lhs.ranking < rhs.ranking
@@ -108,7 +109,39 @@ final class StakingService: BaseService {
             }
         } else {
             // 这里本身访问网络请求，存在延时，并不需要设置延时回调
-            updateNodeListData(isRankingSorted: isRankingSorted, completion: completion)
+            updateNodeListData(isRankingSorted: isRankingSorted) { (result, data) in
+                switch result {
+                case .success:
+                    if controllerType == .active {
+                        let oriData = data.filter { $0.nodeStatus == NodeStatus.Active.rawValue }
+                        let sortData = oriData.sorted(by: { (lhs, rhs) -> Bool in
+                            return isRankingSorted ? Int(lhs.ratePA ?? "0") ?? 0 > Int(rhs.ratePA ?? "0") ?? 0 : lhs.ranking < rhs.ranking
+                        }).sorted(by: { (lhs, rhs) -> Bool in
+                            return isRankingSorted ? lhs.ranking < rhs.ranking : Int(lhs.ratePA ?? "0") ?? 0 > Int(rhs.ratePA ?? "0") ?? 0
+                        })
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                            completion?(.success, sortData as AnyObject)
+                        }
+                    } else if controllerType == .candidate {
+                        let oriData = data.filter { $0.nodeStatus == NodeStatus.Candidate.rawValue }
+                        let sortData = oriData.sorted(by: { (lhs, rhs) -> Bool in
+                            return isRankingSorted ? Int(lhs.ratePA ?? "0") ?? 0 > Int(rhs.ratePA ?? "0") ?? 0 : lhs.ranking < rhs.ranking
+                        }).sorted(by: { (lhs, rhs) -> Bool in
+                            return isRankingSorted ? lhs.ranking < rhs.ranking : Int(lhs.ratePA ?? "0") ?? 0 > Int(rhs.ratePA ?? "0") ?? 0
+                        })
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                            completion?(.success, sortData as AnyObject)
+                        }
+                    } else {
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                            completion?(.success, data as AnyObject)
+                        }
+                    }
+                case .fail(let errCode, let errMessage):
+                    completion?(.fail(errCode, errMessage), nil)
+                }
+
+            }
         }
     }
 
@@ -137,7 +170,6 @@ final class StakingService: BaseService {
                 }
             case .failure(let error):
                 self.failCompletionOnMainThread(code: -1, errorMsg: error.localizedDescription, completion: &completion)
-                break
             }
         }
     }

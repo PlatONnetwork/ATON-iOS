@@ -20,10 +20,11 @@ class AboutViewController: BaseViewController {
         super.leftNavigationTitle = "AboutVC_nav_title"
 
         let appVersion = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as? String
-        versionLabel.text = Localized("about_current_version") + "V" + appVersion!
+
         versionIcon.backgroundColor = .red
         versionIcon.layer.cornerRadius = 5.0
 
+        versionLabel.text = ((SettingService.shareInstance.remoteVersion?.isNeed == true) ? Localized("about_latest_version") : Localized("about_current_version")) + "V" + appVersion!
         versionIcon.isHidden = !(SettingService.shareInstance.remoteVersion?.isNeed == true)
     }
 
