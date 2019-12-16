@@ -10,6 +10,28 @@ import Foundation
 import RealmSwift
 
 extension RealmHelper {
+    public static func migrationBelow0741(migration: Migration, schemaVersion:UInt64, oldSchemaVersion: UInt64) {
+        #if UAT
+        #else
+        migration.enumerateObjects(ofType: Wallet.className()) { (oldObject, newObject) in
+            guard oldObject != nil, newObject != nil else { return }
+            guard let chainId = oldObject!["chainId"] as? String, chainId == AppConfig.ChainID.VERSION_074 else { return }
+            newObject!["chainId"] = AppConfig.ChainID.VERSION_0741
+        }
+
+        migration.enumerateObjects(ofType: Transaction.className()) { (oldObject, newObject) in
+            guard oldObject != nil, newObject != nil else { return }
+            guard let chainId = oldObject!["chainId"] as? String, chainId == AppConfig.ChainID.VERSION_074 else { return }
+            newObject!["chainId"] = AppConfig.ChainID.VERSION_0741
+        }
+
+        migration.enumerateObjects(ofType: AddressInfo.className()) { (oldObject, newObject) in
+            guard oldObject != nil, newObject != nil else { return }
+            guard let chainId = oldObject!["chainId"] as? String, chainId == AppConfig.ChainID.VERSION_074 else { return }
+            newObject!["chainId"] = AppConfig.ChainID.VERSION_0741
+        }
+        #endif
+    }
 
     public static func migrationBelow073(migration: Migration, schemaVersion: UInt64, oldSchemaVersion: UInt64) {
 
