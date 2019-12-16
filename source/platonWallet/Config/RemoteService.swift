@@ -53,7 +53,7 @@ class RemoteService {
                     let decoder = JSONDecoder()
                     let response = try decoder.decode(RemoteVersionResponse.self, from: data)
 
-                    completion?(.success, response.ios as AnyObject)
+                    completion?(.success, response.data.ios as AnyObject)
                 } catch let err {
                     completion?(.fail(-1, err.localizedDescription), nil)
                 }

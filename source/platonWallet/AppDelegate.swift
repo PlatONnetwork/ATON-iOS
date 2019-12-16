@@ -117,11 +117,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LicenseVCDelegate {
     func gotoAtonController() {
         if WalletService.sharedInstance.wallets.count > 0 {
             gotoMainTab()
-            getRemoteVersion()
             getRemoteConfig()
         } else {
             gotoWalletCreateVC()
         }
+        getRemoteVersion()
     }
 
     func gotoAgreementController() {
@@ -205,6 +205,10 @@ extension AppDelegate {
     }
 
     func getRemoteVersion() {
+        if window?.rootViewController is LaunchViewController {
+            return
+        }
+
         RemoteService.sharedInstance.getRemoteVersion { [weak self] (result, data) in
             switch result {
             case .success:
@@ -244,6 +248,6 @@ extension AppDelegate {
             controller.addAction(cancelAction)
         }
         controller.addAction(okAction)
-        UIApplication.shared.keyWindow?.rootViewController?.present(controller, animated: true, completion: nil)
+        window?.rootViewController?.present(controller, animated: true, completion: nil)
     }
 }
