@@ -26,11 +26,11 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
             let maxGasPrice = defaultGasPrice.multiplied(by: BigUInt(6))
 
             guard let priceLevel = gasPriceLevel else {
-                return defaultGasPrice
+                return defaultGasPrice.convertLastTenDecimalPlaceToZero()
             }
 
             let price = minGasPrice + (((maxGasPrice - minGasPrice) * BigUInt(Int(priceLevel * 10000000)) / BigUInt(10000000)))
-            return price
+            return price.convertLastTenDecimalPlaceToZero()
         }
     }
 

@@ -8,14 +8,13 @@
 
 import Foundation
 
-struct RemoteVersionResponse: Decodable {
-    var ios: RemoteVersion
+struct RemoteVersion: Decodable {
+    var isNeed: Bool?
+    var isForce: Bool?
+    var newVersion: String?
+    var url: String?
 }
 
-struct RemoteVersion: Decodable {
-    var version: String?
-    var build: String?
-    var downloadUrl: String?
-    var appStoreId: String?
-    var isForce: Bool = false
+struct RemoteVersionResponse: Decodable {
+    var data: RemoteVersion
 }

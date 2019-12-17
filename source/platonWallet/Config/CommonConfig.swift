@@ -17,11 +17,13 @@ struct AppConfig {
     }
 
     struct ChainID {
+        static let VERSION_074 = "97"
+        static let VERSION_0741 = "96"
         static let TEST = "103"
         #if UAT
         static let PRODUCT = "101"
         #else
-        static let PRODUCT = "97"
+        static let PRODUCT = AppConfig.ChainID.VERSION_0741
         #endif
     }
 

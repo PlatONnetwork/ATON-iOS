@@ -262,13 +262,21 @@ extension AssetTransactionViewControllerV060 {
     }
 
     @objc func didReceiveTransactionUpdate(_ notification: Notification) {
-        guard let txStatus = notification.object as? TransactionsStatusByHash, let status = txStatus.localStatus else { return }
-
-        let pendingTxs = getPendingTransation()
-
-        guard let tx = pendingTxs.first(where: { $0.txhash?.lowercased() == txStatus.hash?.lowercased() }) else { return }
-        tx.txReceiptStatus = status.rawValue
-        tableView.reloadData()
+        // 由于余额发生变化时会更新交易记录，因此，这里并需要再次更新
+//        print("get something")
+//        print(notification.object)
+//        guard let txStatus = notification.object as? TransactionsStatusByHash, let status = txStatus.localStatus else { return }
+//
+//        for txObj in dataSource {
+//            for tx in txObj.value {
+//                if tx.txhash?.lowercased() == txStatus.hash?.lowercased() {
+//                    tx.txReceiptStatus = status.rawValue
+//                    DispatchQueue.main.async {
+//                        self.tableView.reloadData()
+//                    }
+//                }
+//            }
+//        }
     }
 }
 

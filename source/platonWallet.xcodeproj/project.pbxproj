@@ -132,7 +132,6 @@
 		818A9136217F59E600D03D57 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818A9135217F59E600D03D57 /* File.swift */; };
 		818A913B2181B7DF00D03D57 /* Web3Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818A913A2181B7DF00D03D57 /* Web3Helper.swift */; };
 		818A913F2181E6BA00D03D57 /* Date+Extenstions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818A913E2181E6BA00D03D57 /* Date+Extenstions.swift */; };
-		818A91412182C23300D03D57 /* NSDecimal+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818A91402182C23300D03D57 /* NSDecimal+Swift.swift */; };
 		818CFA5A22F954B400565F2D /* TransactionDetailTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818CFA5922F954B400565F2D /* TransactionDetailTableViewCell.swift */; };
 		818CFA5C22F984DA00565F2D /* TransactionDetailHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818CFA5B22F984DA00565F2D /* TransactionDetailHeaderView.swift */; };
 		818D74EA2184347D00EB1402 /* QRCodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818D74E92184347D00EB1402 /* QRCodeView.swift */; };
@@ -320,7 +319,6 @@
 		81B58A0F235DA1FC00816B4E /* DelegateRecordMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D7E26C22E85B4C0069CDED /* DelegateRecordMainViewController.swift */; };
 		81B58A10235DA1FC00816B4E /* NodeSettingViewControllerV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1F87B822014FD70002BE67 /* NodeSettingViewControllerV2.swift */; };
 		81B58A11235DA1FC00816B4E /* AddWalletMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A25B9B4218850B600B9433A /* AddWalletMenuViewController.swift */; };
-		81B58A12235DA1FC00816B4E /* NSDecimal+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818A91402182C23300D03D57 /* NSDecimal+Swift.swift */; };
 		81B58A14235DA1FC00816B4E /* TransactionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CB8ADC228EA99B009E8AA0 /* TransactionResponse.swift */; };
 		81B58A15235DA1FC00816B4E /* DropDownVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813C3411223A327300DE92F1 /* DropDownVIew.swift */; };
 		81B58A16235DA1FC00816B4E /* MainImportWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ADE4516217F0801006F1C81 /* MainImportWalletViewController.swift */; };
@@ -812,7 +810,6 @@
 		818A9135217F59E600D03D57 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		818A913A2181B7DF00D03D57 /* Web3Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Web3Helper.swift; sourceTree = "<group>"; };
 		818A913E2181E6BA00D03D57 /* Date+Extenstions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extenstions.swift"; sourceTree = "<group>"; };
-		818A91402182C23300D03D57 /* NSDecimal+Swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSDecimal+Swift.swift"; sourceTree = "<group>"; };
 		818CFA5922F954B400565F2D /* TransactionDetailTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailTableViewCell.swift; sourceTree = "<group>"; };
 		818CFA5B22F984DA00565F2D /* TransactionDetailHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionDetailHeaderView.swift; sourceTree = "<group>"; };
 		818D74E92184347D00EB1402 /* QRCodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeView.swift; sourceTree = "<group>"; };
@@ -1592,7 +1589,6 @@
 				81EE99C82175E665008DF8CB /* CommonUtilities.swift */,
 				818A913E2181E6BA00D03D57 /* Date+Extenstions.swift */,
 				818A9135217F59E600D03D57 /* File.swift */,
-				818A91402182C23300D03D57 /* NSDecimal+Swift.swift */,
 				81E2E85D2186E2C5008B7504 /* String+Extensions.swift */,
 				819A522821902E7E00E4C500 /* UIBarItem+Extensions.swift */,
 				9ADE450B217ED3DC006F1C81 /* UIButton+Extensions.swift */,
@@ -2877,7 +2873,6 @@
 				81B58A0F235DA1FC00816B4E /* DelegateRecordMainViewController.swift in Sources */,
 				81B58A10235DA1FC00816B4E /* NodeSettingViewControllerV2.swift in Sources */,
 				81B58A11235DA1FC00816B4E /* AddWalletMenuViewController.swift in Sources */,
-				81B58A12235DA1FC00816B4E /* NSDecimal+Swift.swift in Sources */,
 				81B58A14235DA1FC00816B4E /* TransactionResponse.swift in Sources */,
 				81B58A15235DA1FC00816B4E /* DropDownVIew.swift in Sources */,
 				81B58A16235DA1FC00816B4E /* MainImportWalletViewController.swift in Sources */,
@@ -3141,7 +3136,6 @@
 				81D7E26D22E85B4C0069CDED /* DelegateRecordMainViewController.swift in Sources */,
 				9A1F87B922014FD70002BE67 /* NodeSettingViewControllerV2.swift in Sources */,
 				9A25B9B6218850B600B9433A /* AddWalletMenuViewController.swift in Sources */,
-				818A91412182C23300D03D57 /* NSDecimal+Swift.swift in Sources */,
 				81CB8ADD228EA99C009E8AA0 /* TransactionResponse.swift in Sources */,
 				813C3412223A327300DE92F1 /* DropDownVIew.swift in Sources */,
 				9ADE4517217F0801006F1C81 /* MainImportWalletViewController.swift in Sources */,
@@ -3481,7 +3475,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 066997A993A7BD843316E036 /* Pods-platonWallet.debug.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconBeta;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -3513,7 +3507,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B6C6C66ABA19AFA1DEE6933E /* Pods-platonWallet.release.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconBeta;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;

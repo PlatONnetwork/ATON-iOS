@@ -95,7 +95,7 @@ class ValidatorNodeListViewController: BaseViewController, IndicatorInfoProvider
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if isViewLoaded {
-            fetchData(nil)
+            fetchData(isFetch: controllerType == .all, nil)
         }
     }
 
@@ -120,9 +120,8 @@ class ValidatorNodeListViewController: BaseViewController, IndicatorInfoProvider
 
 extension ValidatorNodeListViewController {
 
-    private func fetchData(_ nodeId: String?) {
-        StakingService.sharedInstance.getNodeList(controllerType: controllerType, isRankingSorted: isRankingSorted) { [weak self] (result, data) in
-            
+    private func fetchData(isFetch: Bool, _ nodeId: String?) {
+        StakingService.sharedInstance.getNodeList(controllerType: controllerType, isRankingSorted: isRankingSorted, isFetch: isFetch) { [weak self] (result, data) in
             self?.tableView.mj_header.endRefreshing()
             self?.tableView.mj_footer.endRefreshing()
             switch result {
@@ -152,7 +151,7 @@ extension ValidatorNodeListViewController {
     }
 
     @objc func fetchDataLastest() {
-        fetchData(nil)
+        fetchData(isFetch: true, nil)
     }
 
     @objc func fetchDataMore() {

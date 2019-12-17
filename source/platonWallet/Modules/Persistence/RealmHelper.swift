@@ -49,6 +49,10 @@ class RealmHelper {
             if oldSchemaVersion < 25 {
                 migrationBelow0732(migration: migration, schemaVersion: schemaVersion, oldSchemaVersion: oldSchemaVersion)
             }
+
+            if oldSchemaVersion < 26 {
+                migrationBelow0741(migration: migration, schemaVersion: schemaVersion, oldSchemaVersion: oldSchemaVersion)
+            }
         },shouldCompactOnLaunch: {(totalBytes, usedBytes) in
             //set db max size as 500M
             let oneHundredMB = 500 * 1024 * 1024
