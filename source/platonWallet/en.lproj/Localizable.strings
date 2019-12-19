@@ -807,6 +807,7 @@
 "input_amount_trillion" = "trillion";
 
 "node_status_active" = "Active";
+"node_status_consensus" = "Verifying";
 "node_status_candidate" = "Candidate";
 "node_status_exiting" = "Exiting";
 "node_status_exited" = "Exited";

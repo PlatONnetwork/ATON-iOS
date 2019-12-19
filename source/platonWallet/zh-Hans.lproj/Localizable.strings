@@ -816,6 +816,7 @@
 "input_amount_trillion" = "万亿";
 
 "node_status_active" = "活跃中";
+"node_status_consensus" = "共识中";
 "node_status_candidate" = "候选中";
 "node_status_exiting" = "退出中";
 "node_status_exited" = "已退出";

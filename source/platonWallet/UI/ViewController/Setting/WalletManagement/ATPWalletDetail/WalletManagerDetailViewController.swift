@@ -65,7 +65,7 @@ class WalletManagerDetailViewController: BaseViewController {
 
         if self.wallet.type == .observed {
             self.exportMnemonicContainer.isHidden = true
-            self.renameContainer.isHidden = true
+//            self.renameContainer.isHidden = true
             self.exportPriContainer.isHidden = true
             self.exportKeyStore.isHidden = true
         }

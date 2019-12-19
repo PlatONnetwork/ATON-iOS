@@ -52,24 +52,46 @@ class AssetVCSharedData {
         }
     }
 
-    var selectedWallet: AnyObject? {
+    var currentWalletAddress: String? {
         didSet {
-            guard selectedWallet != nil else {
-
-                if walletList.count > 0 {
-                    //if delete selected wallet，set the first wallet
-                    selectedWallet = walletList.first as AnyObject
-                } else {
-
-                }
-
-                return
-            }
             for v in walletChangeHandlers {
                 v.value()
             }
         }
     }
+
+    var selectedWallet: AnyObject? {
+        guard
+            let address = currentWalletAddress,
+            let wallet = (walletList as? [Wallet])?.first(where: { $0.address.lowercased() == address.lowercased() })
+            else {
+                if let defaultWallet = walletList.first as? Wallet {
+                    currentWalletAddress = defaultWallet.address
+                    return defaultWallet
+                }
+                return nil
+        }
+        return wallet as AnyObject
+    }
+
+//    var selectedWallet: AnyObject? {
+//        didSet {
+//            guard selectedWallet != nil else {
+//
+//                if walletList.count > 0 {
+//                    //if delete selected wallet，set the first wallet
+//                    selectedWallet = walletList.first as AnyObject
+//                } else {
+//
+//                }
+//
+//                return
+//            }
+//            for v in walletChangeHandlers {
+//                v.value()
+//            }
+//        }
+//    }
     var cWallet: Wallet? {
         guard let wallet = selectedWallet as? Wallet  else {
             return nil
@@ -102,7 +124,8 @@ class AssetVCSharedData {
         if let wallet = object as? Wallet {
             if let selectedWallet = AssetVCSharedData.sharedData.selectedWallet as? Wallet {
                 if selectedWallet.address.ishexStringEqual(other: wallet.address) {
-                    AssetVCSharedData.sharedData.selectedWallet = nil
+//                    AssetVCSharedData.sharedData.selectedWallet = nil
+                    AssetVCSharedData.sharedData.currentWalletAddress = nil;
                 }
             }
         }
@@ -113,11 +136,12 @@ class AssetVCSharedData {
 
     public func reloadWallets() {
         let newList = self.walletList
-        if newList.count > 0 {
-            self.selectedWallet = newList.first as AnyObject
-        } else {
-            self.selectedWallet = nil
-        }
+        currentWalletAddress = (newList as? [Wallet])?.first?.address
+//        if newList.count > 0 {
+//            self.selectedWallet = newList.first as AnyObject
+//        } else {
+//            self.selectedWallet = nil
+//        }
     }
 
     func updateSelectedWallet() {
@@ -126,7 +150,8 @@ class AssetVCSharedData {
             let wl = walletList as? [Wallet]
         else { return }
         let currentSw = wl.first(where: { $0.address.lowercased() == sw.address.lowercased() })
-        selectedWallet = currentSw
+        currentWalletAddress = currentSw?.address
+//        selectedWallet = currentSw
     }
 }
 
