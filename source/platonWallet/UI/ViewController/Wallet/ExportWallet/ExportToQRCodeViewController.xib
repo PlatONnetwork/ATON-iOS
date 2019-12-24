@@ -33,15 +33,15 @@
                     <rect key="frame" x="16" y="65.5" width="343" height="343"/>
                     <subviews>
                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="J4w-5W-foi">
-                            <rect key="frame" x="50" y="50" width="243" height="243"/>
+                            <rect key="frame" x="30" y="30" width="283" height="283"/>
                         </imageView>
                     </subviews>
                     <color key="backgroundColor" red="0.94117647058823528" green="0.94509803921568625" blue="0.96078431372549022" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstItem="J4w-5W-foi" firstAttribute="centerY" secondItem="TBc-7h-95a" secondAttribute="centerY" id="7nQ-M3-mof"/>
-                        <constraint firstItem="J4w-5W-foi" firstAttribute="top" secondItem="TBc-7h-95a" secondAttribute="top" constant="50" id="Afj-1Z-Z1P"/>
+                        <constraint firstItem="J4w-5W-foi" firstAttribute="top" secondItem="TBc-7h-95a" secondAttribute="top" constant="30" id="Afj-1Z-Z1P"/>
                         <constraint firstItem="J4w-5W-foi" firstAttribute="centerX" secondItem="TBc-7h-95a" secondAttribute="centerX" id="BND-2u-Bha"/>
-                        <constraint firstItem="J4w-5W-foi" firstAttribute="leading" secondItem="TBc-7h-95a" secondAttribute="leading" constant="50" id="V9x-2D-REZ"/>
+                        <constraint firstItem="J4w-5W-foi" firstAttribute="leading" secondItem="TBc-7h-95a" secondAttribute="leading" constant="30" id="V9x-2D-REZ"/>
                         <constraint firstAttribute="width" secondItem="TBc-7h-95a" secondAttribute="height" multiplier="1:1" id="dm1-eZ-ADd"/>
                     </constraints>
                 </view>

@@ -148,9 +148,9 @@ extension AssetTransactionViewControllerV060 {
     func getPendingTransation() -> [Transaction] {
         guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return [] }
 
-        var transactions = TransferPersistence.getTransactionsByAddress(from: selectedAddress, status: TransactionReceiptStatus.pending)
-        transactions.txSort()
-        return transactions
+        var pendingTxsInDB = TransferPersistence.getTransactionsByAddress(from: selectedAddress, status: TransactionReceiptStatus.pending)
+        pendingTxsInDB.txSort()
+        return pendingTxsInDB
     }
 
     func getTimeoutTransaction() -> [Transaction] {
@@ -183,10 +183,9 @@ extension AssetTransactionViewControllerV060 {
         self.tableView.reloadData()
     }
 
-    func fetchTransaction(beginSequence: Int64) {
+    func fetchTransaction(beginSequence: Int64, completion: (() -> Void)?) {
         guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return }
         TransactionService.service.getBatchTransaction(addresses: [selectedAddress], beginSequence: beginSequence, listSize: listSize, direction: "new") { [weak self] (result, response) in
-
             guard let self = self else {
                 return
             }
@@ -195,7 +194,6 @@ extension AssetTransactionViewControllerV060 {
             if let parentCon = self.parentController {
                 parentCon.endFetchData()
             }
-
             switch result {
             case .success:
                 // 返回的交易数据条数为0，则显示无加载更多
@@ -236,19 +234,18 @@ extension AssetTransactionViewControllerV060 {
                     pendingexcludedTxs.append(contentsOf: mappedTimeoutTxs)
                     pendingexcludedTxs.sortByConfirmTimes()
                 }
-
                 var pendingTransaction = self.getPendingTransation()
                 let txHashes = remoteTransactions.map { $0.txhash!.add0x() }
                 pendingTransaction = pendingTransaction.filter { !txHashes.contains($0.txhash!.add0x()) }
                 pendingTransaction.append(contentsOf: pendingexcludedTxs)
                 self.dataSource[selectedAddress] = pendingTransaction
-
                 AssetService.sharedInstace.fetchWalletBalanceForV7(nil)
 
                 self.tableView.mj_footer.isHidden = (self.dataSource[selectedAddress]?.count ?? 0 < self.listSize)
                 self.tableView.reloadData()
+                completion?()
             case .fail:
-                break
+                completion?()
             }
         }
     }
@@ -263,20 +260,21 @@ extension AssetTransactionViewControllerV060 {
 
     @objc func didReceiveTransactionUpdate(_ notification: Notification) {
         // 由于余额发生变化时会更新交易记录，因此，这里并需要再次更新
-//        print("get something")
-//        print(notification.object)
-//        guard let txStatus = notification.object as? TransactionsStatusByHash, let status = txStatus.localStatus else { return }
-//
-//        for txObj in dataSource {
-//            for tx in txObj.value {
-//                if tx.txhash?.lowercased() == txStatus.hash?.lowercased() {
-//                    tx.txReceiptStatus = status.rawValue
-//                    DispatchQueue.main.async {
-//                        self.tableView.reloadData()
-//                    }
-//                }
-//            }
-//        }
+
+        guard let txStatus = notification.object as? TransactionsStatusByHash, let status = txStatus.localStatus else { return }
+        fetchTransaction(beginSequence: -1) { [weak self] in
+            guard let self = self else { return }
+            for txObj in self.dataSource {
+                for tx in txObj.value {
+                    if tx.txhash?.lowercased() == txStatus.hash?.lowercased() {
+                        tx.txReceiptStatus = status.rawValue
+                        DispatchQueue.main.async {
+                            self.tableView.reloadData()
+                        }
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -291,7 +289,7 @@ extension AssetTransactionViewControllerV060 {
 //    }
 
     func fetchTransactionLastest() {
-        fetchTransaction(beginSequence: -1)
+        fetchTransaction(beginSequence: -1, completion: nil)
     }
 
     @objc func pollingWalletTransactions() {

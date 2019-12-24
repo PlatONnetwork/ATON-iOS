@@ -9,7 +9,8 @@
 		"url": "",
 		"ratePA": "0",
 		"nodeStatus": "Active",
-		"isInit": true
+		"isInit": true,
+        "isConsensus": false
 	}, {
 		"nodeId": "0x9e0b0968fd8977e41d321bc1f9d653f169368581028fd08c9419ddf28c1be1286aae51539aa416c2041261ae8aca4f3e2cd010dbbb1c79e14fdf432b38b8234a",
 		"ranking": 2,
@@ -18,6 +19,7 @@
 		"url": "",
 		"ratePA": "0",
 		"nodeStatus": "Active",
-		"isInit": true
+		"isInit": true,
+        "isConsensus": false
 	}]
 }

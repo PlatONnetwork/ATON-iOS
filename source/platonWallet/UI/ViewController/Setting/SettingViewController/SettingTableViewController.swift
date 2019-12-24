@@ -9,14 +9,14 @@
 import UIKit
 import Localize_Swift
 import LocalAuthentication
+import BigInt
+import platonWeb3
 
 class SettingTableViewController: BaseViewController, UITableViewDelegate, UITableViewDataSource {
 
     lazy var tableView: UITableView = {
-
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.backgroundColor = UIViewController_backround
-        //tableView.separatorColor = UIColor(rgb: 0x32394E)
         tableView.separatorColor = UIColor(rgb: 0xE4E7F3)
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
         tableView.layoutMargins = .zero
@@ -27,7 +27,20 @@ class SettingTableViewController: BaseViewController, UITableViewDelegate, UITab
         return tableView
     }()
 
-    var isSupportLocalAuth: Bool = false
+    var isSupportLocalAuth: Bool {
+        var error: NSError?
+        if LAContext().canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
+            return true
+        } else {
+            if error!.code == kLAErrorBiometryNotAvailable {
+                return false
+            } else {
+                return true
+            }
+        }
+    }
+
+    var datasource: [SettingItem] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,24 +49,16 @@ class SettingTableViewController: BaseViewController, UITableViewDelegate, UITab
         tableView.snp.makeConstraints { (maker) in
             maker.edges.equalToSuperview()
         }
-
-        var error: NSError?
-        if LAContext().canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
-            isSupportLocalAuth = true
-        } else {
-
-            if error!.code == kLAErrorBiometryNotAvailable {
-                isSupportLocalAuth = false
-            } else {
-                isSupportLocalAuth = true
-            }
-        }
-
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        tableView.reloadData()
+        initData()
+    }
+
+    @objc func switchResendRemainder(_ sender: UISwitch) {
+        SettingService.shareInstance.isResendReminder = sender.isOn
+        initData()
     }
 
     @objc func switchLocalAuthSetting(_ sender: UISwitch) {
@@ -90,14 +95,26 @@ class SettingTableViewController: BaseViewController, UITableViewDelegate, UITab
             }
 
         }
+    }
 
+    func initData() {
+        let nodeSetItem = SettingItem(title: "SettingsVC_nodeSet_title", content: .none)
+        let thresholdItem = SettingItem(title: "SettingsVC_threshold_title", content: .threshold(value: SettingService.shareInstance.thresholdValue))
+        let resendItem = SettingItem(title: "SettingsVC_Resend_title", content: .resend(value: SettingService.shareInstance.isResendReminder))
+        let authItem = SettingItem(title: "SettingsVC_faceId_title", content: .auth(value: (UIApplication.shared.delegate as! AppDelegate).isOpenLocalAuthState()))
+        let languageItem = SettingItem(title: "SettingsVC_languages_title", content: .language(value: Localize.currentLanguage()))
+
+        if isSupportLocalAuth {
+            datasource = [nodeSetItem, thresholdItem, resendItem, authItem, languageItem]
+        } else {
+            datasource = [nodeSetItem, thresholdItem, resendItem, languageItem]
+        }
+        tableView.reloadData()
     }
 
     // MARK: - Table view data source
-
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-
-        return isSupportLocalAuth ? 3 : 2
+        return datasource.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -107,8 +124,16 @@ class SettingTableViewController: BaseViewController, UITableViewDelegate, UITab
         var title: String = ""
         let rigthArrowImgV = UIImageView(image: UIImage(named: "icon_right_arrow"))
 
-        func languagesSetCell() {
-            title = "SettingsVC_languages_title"
+        let item = datasource[indexPath.row]
+        title = item.title
+        switch item.content {
+        case .none:
+            cell.contentView.addSubview(rigthArrowImgV)
+            rigthArrowImgV.snp.makeConstraints { (maker) in
+                maker.right.equalToSuperview().offset(-18)
+                maker.centerY.equalToSuperview()
+            }
+        case .threshold(let value):
             cell.contentView.addSubview(rigthArrowImgV)
             rigthArrowImgV.snp.makeConstraints { (maker) in
                 maker.right.equalToSuperview().offset(-18)
@@ -116,8 +141,43 @@ class SettingTableViewController: BaseViewController, UITableViewDelegate, UITab
             }
 
             let lanL = UILabel(frame: .zero)
+            lanL.text = (value/PlatonConfig.VON.LAT).description.displayForMicrometerLevel(maxRound: 8).ATPSuffix()
+            lanL.textColor = UIColor(rgb: 0x000000)
+            lanL.font = UIFont.systemFont(ofSize: 15)
+            cell.contentView.addSubview(lanL)
+            lanL.snp.makeConstraints { (maker) in
+                maker.right.equalTo(rigthArrowImgV.snp.left).offset(-4)
+                maker.centerY.equalToSuperview()
+            }
+        case .resend(let value):
+            let `switch` = UISwitch(frame: .zero)
+            `switch`.addTarget(self, action: #selector(switchResendRemainder(_ :)), for: .valueChanged)
+            `switch`.isOn = value
+            `switch`.onTintColor = UIColor(rgb: 0x4CD964)
+            cell.contentView.addSubview(`switch`)
+            `switch`.snp.makeConstraints { (maker) in
+                maker.right.equalToSuperview().offset(-18)
+                maker.centerY.equalToSuperview()
+            }
+        case .auth(let value):
+            let `switch` = UISwitch(frame: .zero)
+            `switch`.addTarget(self, action: #selector(switchLocalAuthSetting(_ :)), for: .valueChanged)
+            `switch`.isOn = value
+            `switch`.onTintColor = UIColor(rgb: 0x4CD964)
+            cell.contentView.addSubview(`switch`)
+            `switch`.snp.makeConstraints { (maker) in
+                maker.right.equalToSuperview().offset(-18)
+                maker.centerY.equalToSuperview()
+            }
+        case .language(let value):
+            cell.contentView.addSubview(rigthArrowImgV)
+            rigthArrowImgV.snp.makeConstraints { (maker) in
+                maker.right.equalToSuperview().offset(-18)
+                maker.centerY.equalToSuperview()
+            }
 
-            if Localize.currentLanguage() == "en" {
+            let lanL = UILabel(frame: .zero)
+            if value == "en" {
                 lanL.text = "English"
             } else {
                 lanL.text = "简体中文"
@@ -129,38 +189,6 @@ class SettingTableViewController: BaseViewController, UITableViewDelegate, UITab
                 maker.right.equalTo(rigthArrowImgV.snp.left).offset(-4)
                 maker.centerY.equalToSuperview()
             }
-        }
-
-        switch indexPath.row {
-        case 0:
-            title = "SettingsVC_nodeSet_title"
-            cell.contentView.addSubview(rigthArrowImgV)
-            rigthArrowImgV.snp.makeConstraints { (maker) in
-                maker.right.equalToSuperview().offset(-18)
-                maker.centerY.equalToSuperview()
-            }
-        case 1:
-            if isSupportLocalAuth {
-                title = "SettingsVC_faceId_title"
-                let `switch` = UISwitch(frame: .zero)
-                `switch`.addTarget(self, action: #selector(switchLocalAuthSetting(_ :)), for: .valueChanged)
-                `switch`.isOn = (UIApplication.shared.delegate as! AppDelegate).isOpenLocalAuthState()
-                `switch`.onTintColor = UIColor(rgb: 0x4CD964)
-                cell.contentView.addSubview(`switch`)
-                `switch`.snp.makeConstraints { (maker) in
-                    maker.right.equalToSuperview().offset(-18)
-                    maker.centerY.equalToSuperview()
-                }
-            } else {
-                languagesSetCell()
-            }
-
-        case 2:
-
-            languagesSetCell()
-
-        default:
-            title = ""
         }
 
         let titleL = UILabel(frame: .zero)
@@ -177,39 +205,40 @@ class SettingTableViewController: BaseViewController, UITableViewDelegate, UITab
         return cell
     }
 
+    func showThresholdListView(value: BigUInt) {
+        let listData = [
+            BigUInt(100)*PlatonConfig.VON.LAT,
+            BigUInt(1000)*PlatonConfig.VON.LAT,
+            BigUInt(10000)*PlatonConfig.VON.LAT,
+            BigUInt(100000)*PlatonConfig.VON.LAT,
+            BigUInt(1000000)*PlatonConfig.VON.LAT]
+
+        let contentView = ThresholdValueSelectView(listData: listData, selected: value)
+        contentView.show(viewController: self)
+        contentView.valueChangedHandler = { [weak self] (value) in
+            SettingService.shareInstance.thresholdValue = value
+            self?.initData()
+        }
+    }
+
     // MARK: - UITableView Delegate
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
-        switch indexPath.row {
-        case 0:
+        let item = datasource[indexPath.row]
+        switch item.content {
+        case .none:
             navigationController?.pushViewController(NodeSettingViewControllerV2(), animated: true)
-
-        case 1:
-            do {
-                if !isSupportLocalAuth {
-                    let vc = LanguageSettingVC()
-                    navigationController?.pushViewController(vc, animated: true)
-                } else {
-                    break
-                }
-            }
-
-        case 2 :
-            do {
-                let vc = LanguageSettingVC()
-                navigationController?.pushViewController(vc, animated: true)
-            }
+        case .threshold(let value):
+            showThresholdListView(value: value)
+        case .language(_):
+            let vc = LanguageSettingVC()
+            navigationController?.pushViewController(vc, animated: true)
         default:
-            do {
-
-            }
             break
         }
-
     }
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
@@ -221,4 +250,17 @@ class SettingTableViewController: BaseViewController, UITableViewDelegate, UITab
         }
     }
 
+}
+
+enum SettingType {
+    case none
+    case threshold(value: BigUInt)
+    case language(value: String)
+    case auth(value: Bool)
+    case resend(value: Bool)
+}
+
+struct SettingItem {
+    var title: String
+    var content: SettingType
 }

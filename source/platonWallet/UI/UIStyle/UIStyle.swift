@@ -54,6 +54,7 @@ let common_line_color = UIColor(rgb: 0xE4E7F3)
 let text_blue_color = UIColor(rgb: 0x2A5FFE)
 
 let status_blue_color = UIColor(rgb: 0x4A90E2)
+let status_orange_color = UIColor(rgb: 0xF79D10)
 let status_green_color = UIColor(rgb: 0x19A20E)
 let status_red_color = UIColor(rgb: 0xF5302C)
 let status_darkgray_color = UIColor(rgb: 0x525768)

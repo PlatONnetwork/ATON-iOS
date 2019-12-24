@@ -25,6 +25,22 @@ class TransferPersistence {
         }
     }
 
+    public class func update(txhash: String, status: Int) {
+        RealmWriteQueue.async {
+            autoreleasepool(invoking: {
+                let realm = try! Realm(configuration: RealmHelper.getConfig())
+                let predicate = NSPredicate(format: "txhash == %@ AND chainId == %@", txhash, SettingService.shareInstance.currentNodeChainId)
+
+                try? realm.write {
+                    let r = realm.objects(Transaction.self).filter(predicate)
+                    for tx in r {
+                        tx.txReceiptStatus = status
+                    }
+                }
+            })
+        }
+    }
+
     public class func update(
         txhash: String,
         status: Int,
@@ -131,7 +147,7 @@ class TransferPersistence {
         RealmWriteQueue.async {
             autoreleasepool(invoking: {
                 let realm = try! Realm(configuration: RealmHelper.getConfig())
-                let predicate = NSPredicate(format: "txhash != %@ AND blockNumber != %@", "","")
+                let predicate = NSPredicate(format: "txhash != %@ AND (txReceiptStatus == %@ OR txReceiptStatus == %@)", "",NSNumber(value: TransactionReceiptStatus.sucess.rawValue),NSNumber(value: TransactionReceiptStatus.businessCodeError.rawValue))
                 try? realm.write {
                     realm.delete(realm.objects(Transaction.self).filter(predicate))
                 }

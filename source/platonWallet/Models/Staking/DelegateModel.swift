@@ -33,6 +33,7 @@ struct DelegateDetail: Decodable {
     var released: String?
     var sequence: String?
     var isInit: Bool = false
+    var isConsensus: Bool = false
 }
 
 struct Delegation: Decodable {

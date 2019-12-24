@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import Localize_Swift
 
 extension Node {
     var nStatus: NodeStatus {
@@ -32,7 +33,7 @@ extension Node {
     var status: (String, UIColor) {
         switch nStatus {
         case .Active:
-            return (nStatus.description, status_blue_color)
+            return isConsensus ? (Localized("node_status_consensus"), status_orange_color) : (nStatus.description, status_blue_color)
         case .Candidate:
             return (nStatus.description, status_green_color)
         case .Exiting:

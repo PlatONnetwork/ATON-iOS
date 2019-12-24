@@ -11,6 +11,8 @@ disabled_rules: # 禁用指定的规则
   - function_body_length
   - function_parameter_count
   - file_length
+  - cyclomatic_complexity
+  - unused_capture_list
 opt_in_rules: # 启用指定的规则
   - empty_count
   # - missing_docs

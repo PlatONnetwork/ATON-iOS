@@ -37,7 +37,6 @@ public struct Keystore {
         try self.init(password: password, mnemonic: mnemonic, passphrase: "")
 
         self.mnemonic = try encrypt(mnemonic: mnemonic, password: password)
-
     }
 
     public init(contentsOf url: URL) throws {
@@ -183,7 +182,6 @@ extension Keystore: Codable {
         case crypto
         case version
         case publicKey
-        case mnemonic
     }
 
     enum UppercaseCodingKeys: String, CodingKey {
@@ -203,7 +201,6 @@ extension Keystore: Codable {
         version = try values.decode(Int.self, forKey: .version)
         address = try values.decodeIfPresent(String.self, forKey: .address) ?? ""
         publicKey = try values.decodeIfPresent(String.self, forKey: .publicKey)
-        mnemonic = try values.decodeIfPresent(String.self, forKey: .mnemonic)
     }
 
     public func encode(to encoder: Encoder) throws {
@@ -213,7 +210,6 @@ extension Keystore: Codable {
         try container.encode(crypto, forKey: .crypto)
         try container.encode(version, forKey: .version)
         try container.encodeIfPresent(publicKey, forKey: .publicKey)
-        try container.encodeIfPresent(mnemonic, forKey: .mnemonic)
     }
 }
 

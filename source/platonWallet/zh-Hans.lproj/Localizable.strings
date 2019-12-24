@@ -397,6 +397,8 @@
 "SettingsVC_faceId_title" = "指纹/面纹解锁";
 "SettingsVC_languages_title" = "语言";
 "SettingsVC_faceId_openFailed_tips" = "Touch ID或Face ID已锁定，请至“系统-设置”解锁后重试";
+"SettingsVC_threshold_title" = "大额提醒";
+"SettingsVC_Resend_title" = "防重发提醒";
 
 "SettingsVC_nodeSet_editBtn_title" = "编辑";
 "SettingsVC_nodeSet_saveBtn_title" = "保存";
@@ -814,6 +816,7 @@
 "input_amount_trillion" = "万亿";
 
 "node_status_active" = "活跃中";
+"node_status_consensus" = "共识中";
 "node_status_candidate" = "候选中";
 "node_status_exiting" = "退出中";
 "node_status_exited" = "已退出";
@@ -927,4 +930,6 @@
 "empty_view_refresh_title" = "刷新";
 
 "social_share_error_uninstall_app" = "应用未安装";
+"threshold_confirm_value" = "发送数量超过%@，确认是否继续发送？";
+"resend_transfer_confirm_value" = "最近有一笔相同的发送记录，确认是否继续发送";
 "about_version_update_latest" = "当前已是最新版本！";
