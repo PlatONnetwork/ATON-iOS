@@ -45,8 +45,8 @@ class platon071Tests: XCTestCase {
         let expectaion = self.expectation(description: "testGetNodePersistence")
         let nodeId1 = "0x81f4ab0012303bff59c35cead6c2487909cbf59bb0b2b677c2ff36d7009b39a572b2f73214d8590022d20410cbf92631844a7ce8a7d5b840c0e25cd93dc234d9"
         let nodeId2 = "0x81f4ab0012303bff59c35cead6c2487909cbf59bb0b2b677c2ff36d7009b39a572b2f73214d8590022d20410cbf92631844a7ce8a7d5b840c0e25cd93dc234d8"
-        let node1 = Node(nodeId: nodeId1, ranking: 1, name: "testNode", deposit: "10000", url: "url", ratePA: "10000", nStatus: .Active, isInit: false)
-        let node2 = Node(nodeId: nodeId2, ranking: 2, name: "testNode", deposit: "10000", url: "url", ratePA: "10001", nStatus: .Candidate, isInit: false)
+        let node1 = Node(nodeId: nodeId1, ranking: 1, name: "testNode", deposit: "10000", url: "url", ratePA: "10000", nStatus: .Active, isInit: false, isConsensus: false)
+        let node2 = Node(nodeId: nodeId2, ranking: 2, name: "testNode", deposit: "10000", url: "url", ratePA: "10001", nStatus: .Candidate, isInit: false, isConsensus: false)
         NodePersistence.add(nodes: [node1, node2]) {
             expectaion.fulfill()
         }
@@ -66,7 +66,7 @@ class platon071Tests: XCTestCase {
     func testSaveNodePersistence() {
         let expectaion = self.expectation(description: "testSaveNodePersistence")
         let nodeId = "0x81f4ab0012303bff59c35cead6c2487909cbf59bb0b2b677c2ff36d7009b39a572b2f73214d8590022d20410cbf92631844a7ce8a7d5b840c0e25cd93dc234d1"
-        let node = Node(nodeId: nodeId, ranking: 1, name: "testNode", deposit: "10000", url: "url", ratePA: "10000", nStatus: .Active, isInit: false)
+        let node = Node(nodeId: nodeId, ranking: 1, name: "testNode", deposit: "10000", url: "url", ratePA: "10000", nStatus: .Active, isInit: false, isConsensus: false)
         
         NodePersistence.add(nodes: [node], {
             expectaion.fulfill()

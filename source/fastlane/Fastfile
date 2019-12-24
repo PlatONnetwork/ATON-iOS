@@ -21,15 +21,15 @@ platform :ios do
     # add actions here: https://docs.fastlane.tools/actions
   end
   lane :metrics do
-    scan(
-      scheme: "platonWallet", 
-      code_coverage: true, 
-      derived_data_path: "./DerivedData", 
-      output_directory: "./reports", 
-      device: "iPhone X",
-      reinstall_app: true,
-      app_identifier: "com.platon.aton"
-      )
+    # scan(
+    #   scheme: "platonWallet", 
+    #   code_coverage: true, 
+    #   derived_data_path: "./DerivedData", 
+    #   output_directory: "./reports", 
+    #   device: "iPhone X",
+    #   reinstall_app: true,
+    #   app_identifier: "com.platon.aton"
+    #   )
     # slather(
     #   cobertura_xml: true, 
     #   scheme: "platonWalletTests", 
@@ -41,7 +41,7 @@ platform :ios do
     #   binary_basename: "platonWallet")
     # lizard(source_folder: "./platonWallet", language: "swift", export_type: "xml", report_file: "reports/lizard-report.xml")
     # swiftlint(config_file: "./fastlane/.swiftlint.yml", output_file: "./reports/swiftlint.txt", ignore_exit_status: true)
-    # sonar
+    sonar
   end
   lane :tests do
   	run_tests(

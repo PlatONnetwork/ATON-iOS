@@ -88,11 +88,11 @@ class WalletServiceTests: XCTestCase {
         
         let newName = WalletUtil.generateNewObservedWalletName()
         
-        let newIndexStr = String(newName.suffix(from: newName.index(newName.startIndex, offsetBy: 11)))
+        let newIndexStr = String(newName.suffix(from: newName.index(newName.startIndex, offsetBy: 6)))
         let newIndex = Int(newIndexStr)
         
         if let walletName = observeredWallet?.name {
-            let lastIndexStr = String(walletName.suffix(from: walletName.index(walletName.startIndex, offsetBy: 11)))
+            let lastIndexStr = String(walletName.suffix(from: walletName.index(walletName.startIndex, offsetBy: 6)))
             let lastIndex = Int(lastIndexStr)
             
             XCTAssertTrue(((newIndex ?? 0) - (lastIndex ?? 0)) == 1, "new observer wallet name is not valid")
