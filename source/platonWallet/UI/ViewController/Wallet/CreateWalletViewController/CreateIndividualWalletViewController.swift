@@ -168,7 +168,7 @@ class CreateIndividualWalletViewController: BaseViewController,StartBackupMnemon
     }
 
     @objc func afterBackup() {
-//        WalletService.sharedInstance.afterBackupMnemonic(wallet: wallet)
+        WalletService.sharedInstance.afterBackupMnemonic(wallet: wallet)
     }
 
     func showInputPswAlert() {

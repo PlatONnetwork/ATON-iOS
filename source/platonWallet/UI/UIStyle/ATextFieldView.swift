@@ -34,7 +34,7 @@ class ATextFieldView: UIView {
 
     private var mode: TextFieldCheckMode = .endEdit
 
-    private var check: ((String) -> (correct: Bool, errMsg: String))?
+    private var check: ((String, Bool) -> (correct: Bool, errMsg: String))?
 
     private var heightChange: ((ATextFieldView) -> Void)?
 
@@ -171,7 +171,7 @@ class ATextFieldView: UIView {
         layoutIfNeeded()
     }
 
-    func checkInput(mode: TextFieldCheckMode, check: @escaping ((String) -> (Bool, String)), heightChange: @escaping ((ATextFieldView) -> Void)) {
+    func checkInput(mode: TextFieldCheckMode, check: @escaping ((String, Bool) -> (Bool, String)), heightChange: @escaping ((ATextFieldView) -> Void)) {
         self.mode = mode
         self.check = check
         self.heightChange = heightChange
@@ -181,7 +181,7 @@ class ATextFieldView: UIView {
         if self.check == nil {
             assert(false, "Fatal Error:no check logic")
         }
-        return self.startCheck(text: self.textField.text ?? "", showErrorMsg: showErrorMsg)
+        return startCheck(text: textField.text ?? "", isDelete: false, showErrorMsg: showErrorMsg)
     }
 
     public func cleanErrorState() {
@@ -198,14 +198,14 @@ class ATextFieldView: UIView {
         actions[sender.tag - 100]()
     }
 
-    private func startCheck(text: String, showErrorMsg: Bool = true, isEditing: Bool = false) -> (correct: Bool, errMsg: String)? {
+    private func startCheck(text: String, isDelete: Bool, showErrorMsg: Bool = true, isEditing: Bool = false) -> (correct: Bool, errMsg: String)? {
         guard check != nil else {
             return nil
         }
 
-        guard text.count > 0 else {
-            return nil
-        }
+//        guard text.count > 0 else {
+//            return nil
+//        }
 
         // 展示数量级
         let magnitude = text.inputAmountForMagnitude()
@@ -213,7 +213,7 @@ class ATextFieldView: UIView {
         tipLabelLeadingV.isHidden = magnitude == nil
 
         // 校验数量是否符合
-        let res = check!(text)
+        let res = check!(text, isDelete)
 
         if !showErrorMsg {
             return res
@@ -251,22 +251,31 @@ extension ATextFieldView: UITextFieldDelegate {
 
         //check must be in the last
         if mode == .endEdit || mode == .all {
-            _ = startCheck(text: textField.text ?? "")
+            _ = startCheck(text: textField.text ?? "", isDelete: false)
         }
     }
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if mode == .textChange || mode == .all {
+        if string != "" {
+            if !string.validFloatNumber() {
+                return false
+            }
+
             if let text = textField.text, let textRange = Range(range, in: text) {
                 let appendtext = text.replacingCharacters(in: textRange, with: string)
-                _ = startCheck(text: appendtext, isEditing: true)
+                if !appendtext.trimNumberLeadingZero().isValidInputAmoutWith8DecimalPlace() {
+                    return false
+                }
             }
         }
 
-        if let text = textField.text, let textRange = Range(range, in: text) {
-            let appendtext = text.replacingCharacters(in: textRange, with: string)
-            guard shouldChangeCharactersCompletion != nil else { return true }
-            return self.shouldChangeCharactersCompletion!(appendtext, string)
+        if mode == .textChange || mode == .all {
+            if let text = textField.text, let textRange = Range(range, in: text) {
+                let appendtext = text.replacingCharacters(in: textRange, with: string)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    _ = self.startCheck(text: appendtext, isDelete: string == "", isEditing: true)
+                }
+            }
         }
 
         return true

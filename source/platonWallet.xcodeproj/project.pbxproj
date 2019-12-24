@@ -387,7 +387,6 @@
 		81B58A56235DA1FC00816B4E /* WalletDetailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8120027721A3BD520050E1B0 /* WalletDetailCell.swift */; };
 		81B58A57235DA1FC00816B4E /* AddressInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81E2E84E2186AEAF008B7504 /* AddressInfo.swift */; };
 		81B58A58235DA1FC00816B4E /* TransactionDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8120029121A3EB390050E1B0 /* TransactionDetailViewController.swift */; };
-		81B58A59235DA1FC00816B4E /* LicenseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF9AC2A2183252600E97F07 /* LicenseViewController.swift */; };
 		81B58A5A235DA1FC00816B4E /* CommonUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EE99C82175E665008DF8CB /* CommonUtilities.swift */; };
 		81B58A5B235DA1FC00816B4E /* NodeAboutDelegateTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D7E27222E869A90069CDED /* NodeAboutDelegateTableViewCell.swift */; };
 		81B58A5C235DA1FC00816B4E /* UIBarItem+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819A522821902E7E00E4C500 /* UIBarItem+Extensions.swift */; };
@@ -424,7 +423,6 @@
 		81B58A7E235DA1FC00816B4E /* AboutViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8156664621C1ECA3000E02D4 /* AboutViewController.xib */; };
 		81B58A7F235DA1FC00816B4E /* TSLXIBViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8131914E2235FB48002D4A72 /* TSLXIBViewController.xib */; };
 		81B58A80235DA1FC00816B4E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81C88E0821746B39005F17F7 /* Main.storyboard */; };
-		81B58A81235DA1FC00816B4E /* LicenseViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AF9AC2B2183252600E97F07 /* LicenseViewController.xib */; };
 		81B58A82235DA1FC00816B4E /* WalletDetailCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8120027821A3BD520050E1B0 /* WalletDetailCell.xib */; };
 		81B58A83235DA1FC00816B4E /* SharedCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 814980F821913AA7009F99EE /* SharedCollectionViewCell.xib */; };
 		81B58A85235DA1FC00816B4E /* SharedQRView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 81515BCC21C74E9000054197 /* SharedQRView.xib */; };
@@ -663,8 +661,6 @@
 		9AF9AC212182E04000E97F07 /* PresentationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF9AC112182E04000E97F07 /* PresentationManager.swift */; };
 		9AF9AC222182E04000E97F07 /* PopupDialogContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF9AC122182E04000E97F07 /* PopupDialogContainerView.swift */; };
 		9AF9AC242182E19600E97F07 /* PAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF9AC232182E19600E97F07 /* PAlertController.swift */; };
-		9AF9AC2C2183252600E97F07 /* LicenseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF9AC2A2183252600E97F07 /* LicenseViewController.swift */; };
-		9AF9AC2D2183252600E97F07 /* LicenseViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AF9AC2B2183252600E97F07 /* LicenseViewController.xib */; };
 		B1DAED1D34810B2B9FF14A4A /* Pods_platonWallet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D427B78BFE8D21222DD020CB /* Pods_platonWallet.framework */; };
 		F4C14E17EDDB11FFD2934C8A /* Pods_platonWalletUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B921C95E2605F8C1B9AA186 /* Pods_platonWalletUITests.framework */; };
 /* End PBXBuildFile section */
@@ -1041,8 +1037,6 @@
 		9AF9AC112182E04000E97F07 /* PresentationManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PresentationManager.swift; sourceTree = "<group>"; };
 		9AF9AC122182E04000E97F07 /* PopupDialogContainerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopupDialogContainerView.swift; sourceTree = "<group>"; };
 		9AF9AC232182E19600E97F07 /* PAlertController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PAlertController.swift; sourceTree = "<group>"; };
-		9AF9AC2A2183252600E97F07 /* LicenseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LicenseViewController.swift; sourceTree = "<group>"; };
-		9AF9AC2B2183252600E97F07 /* LicenseViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = LicenseViewController.xib; sourceTree = "<group>"; };
 		A4BB6563189E24AE4F9CC0C4 /* Pods_platonWalletUAT.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_platonWalletUAT.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA889E430E082B94A0834EAA /* Pods_platonWalletTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_platonWalletTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AEEA53535EEEF0A17C62F948 /* Pods-platonWalletTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-platonWalletTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-platonWalletTests/Pods-platonWalletTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -1704,7 +1698,6 @@
 				812A7EDE219EA72300BE9C1C /* WalletDetail */,
 				819A522E2190620A00E4C500 /* Launch */,
 				9AE31428218FEB2E00B5433F /* LocalAuth */,
-				9AF9AC29218324F700E97F07 /* License */,
 				81D16B5421831A9000A283AF /* QRCode */,
 				81FCCCDD2179B6710052FC29 /* Asset */,
 				81FCCCE82179B6710052FC29 /* Wallet */,
@@ -2050,15 +2043,6 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
-		9AF9AC29218324F700E97F07 /* License */ = {
-			isa = PBXGroup;
-			children = (
-				9AF9AC2A2183252600E97F07 /* LicenseViewController.swift */,
-				9AF9AC2B2183252600E97F07 /* LicenseViewController.xib */,
-			);
-			path = License;
-			sourceTree = "<group>";
-		};
 		A0CD6C6641A0A126F2A0DAAC /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -2258,7 +2242,6 @@
 				81B58A7E235DA1FC00816B4E /* AboutViewController.xib in Resources */,
 				81B58A7F235DA1FC00816B4E /* TSLXIBViewController.xib in Resources */,
 				81B58A80235DA1FC00816B4E /* Main.storyboard in Resources */,
-				81B58A81235DA1FC00816B4E /* LicenseViewController.xib in Resources */,
 				81DD58D5238BA24D007844ED /* TransactionCell.xib in Resources */,
 				81B58A82235DA1FC00816B4E /* WalletDetailCell.xib in Resources */,
 				81B58A83235DA1FC00816B4E /* SharedCollectionViewCell.xib in Resources */,
@@ -2326,7 +2309,6 @@
 				8156664821C1ECA3000E02D4 /* AboutViewController.xib in Resources */,
 				813191502235FB48002D4A72 /* TSLXIBViewController.xib in Resources */,
 				81C88E0A21746B39005F17F7 /* Main.storyboard in Resources */,
-				9AF9AC2D2183252600E97F07 /* LicenseViewController.xib in Resources */,
 				81DD58D4238BA24D007844ED /* TransactionCell.xib in Resources */,
 				8120027C21A3BD530050E1B0 /* WalletDetailCell.xib in Resources */,
 				814980FA21913AA7009F99EE /* SharedCollectionViewCell.xib in Resources */,
@@ -2951,7 +2933,6 @@
 				81B58A56235DA1FC00816B4E /* WalletDetailCell.swift in Sources */,
 				81B58A57235DA1FC00816B4E /* AddressInfo.swift in Sources */,
 				81B58A58235DA1FC00816B4E /* TransactionDetailViewController.swift in Sources */,
-				81B58A59235DA1FC00816B4E /* LicenseViewController.swift in Sources */,
 				81DD58F7238BA24D007844ED /* LanguageSettingTableViewCell.swift in Sources */,
 				81B58A5A235DA1FC00816B4E /* CommonUtilities.swift in Sources */,
 				81B58A5B235DA1FC00816B4E /* NodeAboutDelegateTableViewCell.swift in Sources */,
@@ -3218,7 +3199,6 @@
 				8120027B21A3BD530050E1B0 /* WalletDetailCell.swift in Sources */,
 				81E2E84F2186AEAF008B7504 /* AddressInfo.swift in Sources */,
 				812002AE21A3EB390050E1B0 /* TransactionDetailViewController.swift in Sources */,
-				9AF9AC2C2183252600E97F07 /* LicenseViewController.swift in Sources */,
 				81EE99C92175E665008DF8CB /* CommonUtilities.swift in Sources */,
 				81D7E27322E869A90069CDED /* NodeAboutDelegateTableViewCell.swift in Sources */,
 				819A522921902E7E00E4C500 /* UIBarItem+Extensions.swift in Sources */,

@@ -45,13 +45,9 @@ class WalletManagerDetailViewController: BaseViewController {
         if let w = WalletService.sharedInstance.getWalletByAddress(address: wallet.address) {
             self.wallet = w
         }
-        if wallet.canBackupMnemonic {
-            deleteBtn.isHidden = true
-            self.exportMnemonicContainer.isHidden = false
-        } else {
-            deleteBtn.isHidden = false
-            self.exportMnemonicContainer.isHidden = true
-        }
+
+        deleteBtn.isHidden = wallet.canBackupMnemonic
+        exportMnemonicContainer.isHidden = (self.wallet.keystoreMnemonic.count == 0)
     }
 
     func setupUI() {
@@ -60,14 +56,12 @@ class WalletManagerDetailViewController: BaseViewController {
         walletName.text = wallet.name
         address.text = wallet.address
         address.adjustsFontSizeToFitWidth = true
-        
-        self.exportMnemonicContainer.isHidden = !self.wallet.canBackupMnemonic
+        exportMnemonicContainer.isHidden = (self.wallet.keystoreMnemonic.count == 0)
 
         if self.wallet.type == .observed {
-            self.exportMnemonicContainer.isHidden = true
-//            self.renameContainer.isHidden = true
-            self.exportPriContainer.isHidden = true
-            self.exportKeyStore.isHidden = true
+            exportMnemonicContainer.isHidden = true
+            exportPriContainer.isHidden = true
+            exportKeyStore.isHidden = true
         }
 
     }

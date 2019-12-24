@@ -18,16 +18,8 @@ enum SendInputTableViewCellType {
 
 class SendInputTableViewCell: UITableViewCell {
 
-    var cellDidContentChangeHandler: (() -> Void)?
     var cellDidContentEditingHandler: ((BigUInt, Bool) -> Void)?
-
-    // 最少输入的数量
-    var minAmountLimit: BigUInt?
     var maxAmountLimit: BigUInt?
-    var estimateUseGas: BigUInt?
-    var balance: BigUInt?
-    var isLockAmount: Bool? = false
-    var inputType: SendInputTableViewCellType?
 
     lazy var amountView = { () -> ATextFieldView in
         let amountView = ATextFieldView.create(title: "ATextFieldView_withdraw_title")
@@ -40,39 +32,25 @@ class SendInputTableViewCell: UITableViewCell {
                 amountView.checkInvalidNow(showErrorMsg: true)
             }
         })
-        amountView.checkInput(mode: .all, check: { [weak self] text -> (Bool, String) in
-            let inputformat = CommonService.checkTransferAmoutInput(text: text, balance: self?.balance ?? BigUInt.zero, minLimit: self?.minAmountLimit, maxLimit: self?.maxAmountLimit, fee: self?.estimateUseGas, type: self?.inputType, isLockAmount: self?.isLockAmount)
-//            let inputformat = CommonService.checkTransferAmoutInput(text: text, minLimit: self?.minAmountLimit, maxLimit: self?.maxAmountLimit, fee: self?.estimateUseGas, type: self?.inputType)
-            if !inputformat.0 {
-                return inputformat
-            }
-            return inputformat
 
-            }, heightChange: { [weak self] _ in
-                if amountView.textField.isFirstResponder {
-                    self?.cellDidContentChangeHandler?()
-                }
-
-        })
-
-        amountView.shouldChangeCharactersCompletion = { [weak self] (concatenated,replacement) in
-            print("concatenated: \(concatenated), replacement: \(replacement)")
-            if replacement == "" {
-                self?.cellDidContentEditingHandler?(BigUInt.mutiply(a: concatenated, by: ETHToWeiMultiplier) ?? BigUInt.zero, false)
-                return true
-            }
-
-            if !replacement.validFloatNumber() {
-                return false
-            }
-
-            if !concatenated.trimNumberLeadingZero().isValidInputAmoutWith8DecimalPlace() {
-                return false
-            }
-
-            self?.cellDidContentEditingHandler?(BigUInt.mutiply(a: concatenated, by: ETHToWeiMultiplier) ?? BigUInt.zero, true)
-            return true
-        }
+//        amountView.shouldChangeCharactersCompletion = { [weak self] (concatenated,replacement) in
+//            print("concatenated: \(concatenated), replacement: \(replacement)")
+//            if replacement == "" {
+//                self?.cellDidContentEditingHandler?(BigUInt.mutiply(a: concatenated, by: ETHToWeiMultiplier) ?? BigUInt.zero, false)
+//                return true
+//            }
+//
+//            if !replacement.validFloatNumber() {
+//                return false
+//            }
+//
+//            if !concatenated.trimNumberLeadingZero().isValidInputAmoutWith8DecimalPlace() {
+//                return false
+//            }
+//
+//            self?.cellDidContentEditingHandler?(BigUInt.mutiply(a: concatenated, by: ETHToWeiMultiplier) ?? BigUInt.zero, true)
+//            return true
+//        }
 
         amountView.endEditCompletion = { [weak self] text in
             self?.cellDidContentEditingHandler?(BigUInt.mutiply(a: text, by: ETHToWeiMultiplier) ?? BigUInt.zero, true)

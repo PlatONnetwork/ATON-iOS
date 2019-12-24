@@ -67,10 +67,11 @@ class WalletManagerTableViewCell: UITableViewCell {
             address.text = aptWallet.address
             walletIcon.image = UIImage(named: aptWallet.avatar)?.circleImage()
 
-            if aptWallet.canBackupMnemonic {
+            if (aptWallet.keystoreMnemonic.count > 0) {
                 self.backupContainer.isHidden = false
                 self.backupButton.isEnabled = true
             }
+
             jointIcon.isHidden = true
         }
 

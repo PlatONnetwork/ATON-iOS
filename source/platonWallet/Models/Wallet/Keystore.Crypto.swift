@@ -49,9 +49,7 @@ extension Keystore {
 
             self.init(cipherText: Data(bytes: encryptedKey), cipherParams: cipherParams, kdfParams: kdfParams, mac: mac)
         }
-
     }
-
 }
 
 extension Keystore.Crypto: Codable {

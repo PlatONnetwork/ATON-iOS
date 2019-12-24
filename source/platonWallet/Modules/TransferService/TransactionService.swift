@@ -97,8 +97,11 @@ class TransactionService : BaseService {
                         status = .timeout
                     }
 
+
+                    // 发现获取交易状态接口的虽然发生改变，但是交易记录列表接口不一定更新的，延时删除这条数据
                     if status != .pending {
-                        TransferPersistence.delete(txhash)
+                        TransferPersistence.update(txhash: txhash, status: status.rawValue)
+//                        TransferPersistence.delete(txhash)
                     }
 
                     DispatchQueue.main.async {
