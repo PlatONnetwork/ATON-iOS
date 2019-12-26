@@ -168,9 +168,16 @@ struct CommonService {
                 message = Localized("staking_withdraw_balance_Insufficient_error")
             }
         } else if type == .delegate {
-            if balance < feeBInt + amount {
-                valid = false
-                message = Localized("staking_delegate_balance_Insufficient_error")
+            if isLockAmount == true {
+                if balance < feeBInt {
+                    valid = false
+                    message = Localized("staking_delegate_balance_Insufficient_error")
+                }
+            } else {
+                if balance < feeBInt + amount {
+                    valid = false
+                    message = Localized("staking_delegate_balance_Insufficient_error")
+                }
             }
         } else {
             if balance < feeBInt {
@@ -193,7 +200,7 @@ struct CommonService {
             return (false, Localized("transferVC_amout_amout_input_error"))
         }
 
-        let (valid, message) = checkAmountLimit(balance: balance, amount: amountVON, minLimit: minLimit ?? .zero, maxLimit: maxLimit, fee: fee, type: type ?? .transfer)
+        let (valid, message) = checkAmountLimit(balance: balance, amount: amountVON, minLimit: minLimit ?? .zero, maxLimit: maxLimit, fee: fee, type: type ?? .transfer, isLockAmount: isLockAmount)
         guard valid == true else {
             return (valid, message ?? "")
         }

@@ -218,8 +218,9 @@ class AlertStylePopViewController: UIViewController, UITextFieldDelegate {
     func configChoiceView() {
         self.imageIcon.image = UIImage(named: "alertTipImage")
         self.confirmButton.localizedNormalTitle = "alert_confirmBtn_title"
-        self.confirmButton.localizedNormalTitle = "alert_quit_backup_yes"
-        self.cancelButton.localizedNormalTitle = "alert_quit_backup_no"
+//        self.confirmButton.localizedNormalTitle = "alert_quit_backup_yes"
+//        self.cancelButton.localizedNormalTitle = "alert_quit_backup_no"
+        self.cancelButton.localizedNormalTitle = "alert_cancelBtn_title"
         self.hideInputArea()
     }
 

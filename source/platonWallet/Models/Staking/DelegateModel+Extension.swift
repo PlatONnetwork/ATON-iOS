@@ -17,10 +17,11 @@ extension Delegate {
     }
 
     var balance: String {
-        guard let abalance = availableDelegationBalance else {
+        guard let abalance = BigUInt(availableDelegationBalance ?? "0"), abalance > BigUInt.zero else {
             return "--"
         }
-        return abalance.vonToLATString ?? "--"
+
+        return (availableDelegationBalance ?? "0").vonToLATString ?? "--"
     }
 
     var walletAvatar: UIImage? {
