@@ -103,14 +103,14 @@ class DelegateDetailViewController: BaseViewController {
 extension DelegateDetailViewController {
 
     private func gotoDelgateController(_ dDetail: DelegateDetail) {
-        guard
-            let balance = AssetService.sharedInstace.balances.first(where: { $0.addr.lowercased() == delegate?.walletAddress.lowercased() }),
-            let lockValue = BigUInt(balance.lock ?? "0"),
-            let freeValue = BigUInt(balance.free ?? "0"),
-            lockValue + freeValue > BigUInt.zero else {
-                showMessage(text: Localized("error_wallet_no_balance"))
-                return
-        }
+//        guard
+//            let balance = AssetService.sharedInstace.balances.first(where: { $0.addr.lowercased() == delegate?.walletAddress.lowercased() }),
+//            let lockValue = BigUInt(balance.lock ?? "0"),
+//            let freeValue = BigUInt(balance.free ?? "0"),
+//            lockValue + freeValue > BigUInt.zero else {
+//                showMessage(text: Localized("error_wallet_no_balance"))
+//                return
+//        }
 
         let controller = DelegateViewController()
         controller.currentNode = dDetail.delegateToNode()

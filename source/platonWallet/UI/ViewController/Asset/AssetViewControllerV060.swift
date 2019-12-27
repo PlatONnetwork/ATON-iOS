@@ -586,7 +586,7 @@ extension AssetViewControllerV060 {
                         let thTx = TwoHourTransaction()
                         thTx.createTime = Int(Date().timeIntervalSince1970 * 1000)
                         thTx.to = to.add0x().lowercased()
-                        thTx.from = to.add0x().lowercased()
+                        thTx.from = from.add0x().lowercased()
                         thTx.value = amount
                         TwoHourTransactionPersistence.add(tx: thTx)
 

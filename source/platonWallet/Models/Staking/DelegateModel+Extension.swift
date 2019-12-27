@@ -17,10 +17,11 @@ extension Delegate {
     }
 
     var balance: String {
-        guard let abalance = availableDelegationBalance else {
+        guard let abalance = BigUInt(availableDelegationBalance ?? "0"), abalance > BigUInt.zero else {
             return "--"
         }
-        return abalance.vonToLATString ?? "--"
+
+        return (availableDelegationBalance ?? "0").vonToLATString ?? "--"
     }
 
     var walletAvatar: UIImage? {
@@ -39,7 +40,7 @@ extension DelegateDetail {
     var status: (String, UIColor) {
         switch nodeStatus {
         case .Active:
-            return (nodeStatus.description, status_blue_color)
+            return isConsensus ? (Localized("node_status_consensus"), status_orange_color) : (nodeStatus.description, status_blue_color)
         case .Candidate:
             return (nodeStatus.description, status_green_color)
         case .Exiting:

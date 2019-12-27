@@ -374,7 +374,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
         }
 
         guard let amount = amountView.textField.text, let amountBInt = BigUInt.mutiply(a: amount, by: PlatonConfig.VON.LAT.description) else { return }
-        guard amountBInt <= SettingService.shareInstance.thresholdValue else {
+        guard amountBInt < SettingService.shareInstance.thresholdValue else {
             showThresholdConfirmView()
             return
         }
