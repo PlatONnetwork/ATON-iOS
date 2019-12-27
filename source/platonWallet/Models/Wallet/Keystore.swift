@@ -101,9 +101,21 @@ public struct Keystore {
 
         let derivedKey: Data
         switch crypto.kdf {
-        case "scrypt":
-            let scrypt = Scrypt(params: crypto.kdfParams)
-            derivedKey = try scrypt.calculate(password: password)
+        case .SCRYPT:
+            if let scryptParams = crypto.kdfParams as? ScryptParams {
+                let scrypt = Scrypt(params: scryptParams)
+                derivedKey = try scrypt.calculate(password: password)
+            } else {
+                throw DecryptError.unsupportedKDFParams
+            }
+        case .PBKDF2:
+            if let pbkdf2Params = crypto.kdfParams as? PBKDF2Params, let pw = password.data(using: .utf8)?.bytes {
+                let pbkdf2 = try PKCS5.PBKDF2(password: pw, salt: pbkdf2Params.salt, iterations: pbkdf2Params.iterations, keyLength: pbkdf2Params.dklen, variant: pbkdf2Params.prf)
+                let derivedKeyBytes = try pbkdf2.calculate()
+                derivedKey = Data(bytes: derivedKeyBytes)
+            } else {
+                throw DecryptError.unsupportedKDFParams
+            }
         default:
             throw DecryptError.unsupportedKDF
         }
@@ -168,11 +180,13 @@ public enum DecryptError: Error {
     case unsupportedCipher
     case invalidCipher
     case invalidPassword
+    case unsupportedKDFParams
 }
 
 public enum EncryptError: Error {
     case invalidMnemonic
     case invalidDerivationPath
+    case unsupportedKDF
 }
 
 extension Keystore: Codable {
