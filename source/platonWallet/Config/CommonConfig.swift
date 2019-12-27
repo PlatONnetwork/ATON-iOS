@@ -103,7 +103,8 @@ struct AppConfig {
         struct HOST {
             static let UATNET = "https://aton.test.platon.network"
             static let PRODUCTNET = "https://aton.main.platon.network"
-            static let TESTNET = "http://192.168.9.190:1000"
+//            static let TESTNET = "http://192.168.9.190:1000"
+            static let TESTNET = "http://58.250.250.234:1000"
 //            static let TESTNET = "http://58.250.250.234:1000"
             static let DEVNET = "http://192.168.9.190:443"
         }
