@@ -17,6 +17,8 @@
 		8115BEAC218B1DDA009FFE3B /* TransactionListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8115BEAB218B1DDA009FFE3B /* TransactionListViewController.swift */; };
 		8115BEAF218B2025009FFE3B /* TransactionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8115BEAD218B2025009FFE3B /* TransactionCell.swift */; };
 		8115BEB0218B2025009FFE3B /* TransactionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8115BEAE218B2025009FFE3B /* TransactionCell.xib */; };
+		8118862623B5E09100CAE5BA /* PBKDF2Params.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8118862523B5E09000CAE5BA /* PBKDF2Params.swift */; };
+		8118862723B5E09100CAE5BA /* PBKDF2Params.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8118862523B5E09000CAE5BA /* PBKDF2Params.swift */; };
 		811AB2AF22EE8CB100284F1A /* NodeDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811AB2AE22EE8CB100284F1A /* NodeDetailViewController.swift */; };
 		811AB2B122EE9FAA00284F1A /* NodeBaseInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811AB2B022EE9FAA00284F1A /* NodeBaseInfoView.swift */; };
 		811AB2B322EECBEC00284F1A /* WithDrawViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 811AB2B222EECBEC00284F1A /* WithDrawViewController.swift */; };
@@ -694,6 +696,7 @@
 		8115BEAB218B1DDA009FFE3B /* TransactionListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionListViewController.swift; sourceTree = "<group>"; };
 		8115BEAD218B2025009FFE3B /* TransactionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionCell.swift; sourceTree = "<group>"; };
 		8115BEAE218B2025009FFE3B /* TransactionCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransactionCell.xib; sourceTree = "<group>"; };
+		8118862523B5E09000CAE5BA /* PBKDF2Params.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PBKDF2Params.swift; sourceTree = "<group>"; };
 		811AB2AE22EE8CB100284F1A /* NodeDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeDetailViewController.swift; sourceTree = "<group>"; };
 		811AB2B022EE9FAA00284F1A /* NodeBaseInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeBaseInfoView.swift; sourceTree = "<group>"; };
 		811AB2B222EECBEC00284F1A /* WithDrawViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithDrawViewController.swift; sourceTree = "<group>"; };
@@ -1670,6 +1673,7 @@
 				9AD67AAB2174865300A8432F /* Wallet.swift */,
 				813C340F223A03A800DE92F1 /* Wallet+extension.swift */,
 				9AD67AAD21748B2900A8432F /* Keystore.swift */,
+				8118862523B5E09000CAE5BA /* PBKDF2Params.swift */,
 				9A56557A217578EA002A1F6C /* Keystore.Crypto.swift */,
 				9A56557C2176CB05002A1F6C /* HDPath.swift */,
 				9A56557E21772DE2002A1F6C /* WalletUtil.swift */,
@@ -2820,6 +2824,7 @@
 				81B589ED235DA1FC00816B4E /* WalletSelectionTableViewCell.swift in Sources */,
 				81B589EE235DA1FC00816B4E /* NetworkManager.swift in Sources */,
 				81B589EF235DA1FC00816B4E /* QRCodeDecoder.swift in Sources */,
+				8118862723B5E09100CAE5BA /* PBKDF2Params.swift in Sources */,
 				81B589F0235DA1FC00816B4E /* AppDelegate.swift in Sources */,
 				81B589F1235DA1FC00816B4E /* ATextFieldView.swift in Sources */,
 				81B589F2235DA1FC00816B4E /* PTSPagerTabStripViewController.swift in Sources */,
@@ -3085,6 +3090,7 @@
 				8141E678233CA673001A9351 /* QRCodeDecoder.swift in Sources */,
 				81C88E0521746B39005F17F7 /* AppDelegate.swift in Sources */,
 				811AB2BF22EED79A00284F1A /* ATextFieldView.swift in Sources */,
+				8118862623B5E09100CAE5BA /* PBKDF2Params.swift in Sources */,
 				81D7E25522E7F6E80069CDED /* PTSPagerTabStripViewController.swift in Sources */,
 				81E2E85E2186E2C5008B7504 /* String+Extensions.swift in Sources */,
 				81E2E86421870956008B7504 /* BigUInt+Extenstions.swift in Sources */,
