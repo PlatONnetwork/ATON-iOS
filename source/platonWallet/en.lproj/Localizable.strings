@@ -411,6 +411,7 @@
 "SettingsVC_nodeSet_defaultTestNetwork_test_des" = "Test Network";
 "SettingsVC_nodeSet_defaultTestNetwork_develop_des" = "Develop Network";
 "SettingsVC_nodeSet_NewBaleyworld_des" = "NewBaleyworld";
+"SettingsVC_nodeSet_parallel_des" = "ParallelNet";
 "SettingsVC_nodeSet_switchSuccess_tips" = "Node switch Succeed";
 "SettingsVC_nodeSet_switchFail_tips" = "Node switch Failed";
 "SettingsVC_nodeSet_recovery_tips" = "Node connect failed";

@@ -12,23 +12,24 @@ import RealmSwift
 extension RealmHelper {
     public static func migrationBelow0741(migration: Migration, schemaVersion:UInt64, oldSchemaVersion: UInt64) {
         #if UAT
+        #elseif PARALLELNET
         #else
         migration.enumerateObjects(ofType: Wallet.className()) { (oldObject, newObject) in
             guard oldObject != nil, newObject != nil else { return }
-            guard let chainId = oldObject!["chainId"] as? String, chainId == AppConfig.ChainID.VERSION_074 else { return }
-            newObject!["chainId"] = AppConfig.ChainID.VERSION_0741
+            guard let chainId = oldObject!["chainId"] as? String, (chainId == AppConfig.ChainID.VERSION_074 || chainId == AppConfig.ChainID.VERSION_MAINNET) else { return }
+            newObject!["chainId"] = AppConfig.ChainID.PRODUCT
         }
 
         migration.enumerateObjects(ofType: Transaction.className()) { (oldObject, newObject) in
             guard oldObject != nil, newObject != nil else { return }
-            guard let chainId = oldObject!["chainId"] as? String, chainId == AppConfig.ChainID.VERSION_074 else { return }
-            newObject!["chainId"] = AppConfig.ChainID.VERSION_0741
+            guard let chainId = oldObject!["chainId"] as? String, (chainId == AppConfig.ChainID.VERSION_074 || chainId == AppConfig.ChainID.VERSION_MAINNET) else { return }
+            newObject!["chainId"] = AppConfig.ChainID.PRODUCT
         }
 
         migration.enumerateObjects(ofType: AddressInfo.className()) { (oldObject, newObject) in
             guard oldObject != nil, newObject != nil else { return }
-            guard let chainId = oldObject!["chainId"] as? String, chainId == AppConfig.ChainID.VERSION_074 else { return }
-            newObject!["chainId"] = AppConfig.ChainID.VERSION_0741
+            guard let chainId = oldObject!["chainId"] as? String, (chainId == AppConfig.ChainID.VERSION_074 || chainId == AppConfig.ChainID.VERSION_MAINNET) else { return }
+            newObject!["chainId"] = AppConfig.ChainID.PRODUCT
         }
         #endif
     }

@@ -50,11 +50,17 @@ class SettingService {
         } else {
             return devHost
         }
+        #elseif PARALLELNET
+        if chainId == AppConfig.ChainID.PRODUCT {
+            return uatHost
+        } else {
+            return uatHost // 暂无用到
+        }
         #else
         if chainId == AppConfig.ChainID.PRODUCT {
             return proHost
         } else {
-            return uatHost
+            return proHost // 暂无用到
         }
         #endif
     }
