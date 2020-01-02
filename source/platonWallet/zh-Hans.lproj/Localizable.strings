@@ -734,7 +734,7 @@
 "staking_main_delegate_text" = "可委托余额";
 "staking_main_undelegating_text" = "总委托";
 "staking_main_delegate_detail" = "详情";
-"staking_main_delegate_total" = "总计委托";
+"staking_main_delegate_total" = "总计委托(LAT)";
 "staking_main_delegate_record" = "委托记录";
 "staking_main_delegate_faq" = "常见问题";
 "staking_main_delegate_tutorial" = "使用教程";
@@ -934,3 +934,6 @@
 "threshold_confirm_value" = "发送数量超过%@，确认是否继续发送？";
 "resend_transfer_confirm_value" = "最近有一笔相同的发送记录，确认是否继续发送";
 "about_version_update_latest" = "当前已是最新版本！";
+
+"mydelegates_delegate_record" = "委托记录";
+"mydelegates_claim_record" = "领取记录";

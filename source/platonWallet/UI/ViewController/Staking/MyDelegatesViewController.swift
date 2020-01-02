@@ -57,7 +57,7 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
         view.addSubview(headerView)
         headerView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(74)
+//            make.height.equalTo(74)
             make.top.equalToSuperview().offset(UIApplication.shared.statusBarFrame.height)
         }
         headerView.recordButtonHandler = { [weak self] in
@@ -127,13 +127,15 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
 
     func updateDelagateHeader() {
         guard listData.count > 0 else {
-            headerView.totalBalanceLabel.text = "--"
+            headerView.totalDelegateLabel.text = "--"
+//            headerView.totalBalanceLabel.text = "--"
             return
         }
         let total = listData.reduce(BigUInt(0)) { (result, delegate) -> BigUInt in
             return result + BigUInt(delegate.delegated ?? "0")!
         }
-        headerView.totalBalanceLabel.text = (total.description.vonToLATString ?? "0").ATPSuffix()
+        headerView.totalDelegateLabel.text = (total.description.vonToLATString ?? "0").ATPSuffix()
+//        headerView.totalBalanceLabel.text = (total.description.vonToLATString ?? "0").ATPSuffix()
     }
 
     private func gotoDelegateRecordVC() {
