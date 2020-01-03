@@ -722,7 +722,6 @@
 "staking_main_mydelegate_text" = "My Delegations";
 "staking_main_validator_text" = "Validators";
 "staking_main_wallet_name" = "Wallet Name";
-"staking_main_delegate_text" = "Available balance";
 "staking_main_undelegating_text" = "Delegated";
 "staking_main_delegate_detail" = "Details";
 "staking_main_delegate_total" = "Total Delegated(LAT)";
@@ -753,8 +752,6 @@
 "staking_validator_node_all" = "All";
 "staking_validator_node_active" = "Active";
 "staking_validator_node_candidate" = "Candidate";
-"staking_validator_node_rank" = "Rank";
-"staking_validator_node_yield" = "Yield";
 
 "staking_validator_delegate_total" = "Staked";
 "staking_validator_delegate_rate_about" = "Yield";
@@ -783,9 +780,7 @@
 "staking_doubt_delegate" = "Delegations";
 "staking_doubt_delegate_detail" = "The user keeps the delegate's Token ownership forever, and the user can withdraw the delegated token at any time.\nThe Validator's operator address and reward receiving address are not allowed for delegation.";
 "staking_doubt_reward" = "Rewards";
-"staking_doubt_reward_detail" = "Delegation rewards come from validation block reward, staking reward and transaction fees. Reward assigned by validator. For details on how to assign, please see the official website description of each validator.";
-"staking_doubt_risk" = "Risk";
-"staking_doubt_risk_detail" = "Validators would be punished for double signing or low block rate. It would indirectly affect your reward. Please select qualified validators.";
+"staking_doubt_reward_detail" = "The delegations will be locked for at least one epoch(10750 blocks) to gain. According to the delegated reward ratio set by the nodes, the profits obtained by the nodes are distributed. Node benefits include block rewards and staking rewards.";
 
 "staking_doubt_undelegate" = "Note";
 "staking_doubt_undelegate_detail" = "The transaction has been successfully submitted and the delegated LAT can return to your account immediately.\nThe Invalid delegations has to be withdrawal all at once;\nIf the remaining delegations has been less than %@LAT, it will be automatically returned all.";
@@ -927,3 +922,20 @@
 
 "mydelegates_delegate_record" = "Delegation Rec";
 "mydelegates_claim_record" = "Claim Rec";
+"mydelegates_unclaimed_reward" = "Unclaimed Reward";
+"mydelegates_total_reward" = "Total Reward";
+"mydelegates_claim" = "Claim";
+"mydelegates_search_placeholder" = "Search by validator name";
+
+"node_sort_title" = "Sort";
+"node_sort_rank" = "Rank";
+"node_sort_delegated" = "Delegated";
+"node_sort_delegator" = "Delegators";
+"node_sort_yield" = "Expected delegation annualized yield";
+
+"reward_ratio" = "Reward Ratio";
+"reward_total" = "Total Reward";
+
+"delegate_detail_balance" = "Available Balance";
+"delegate_detail_delegated" = "Total Delegated";
+"delegate_detail_unclaimed_reward" = "Unclaimed Reward：";

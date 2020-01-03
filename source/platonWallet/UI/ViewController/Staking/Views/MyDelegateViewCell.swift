@@ -11,12 +11,14 @@ import Localize_Swift
 
 class MyDelegateViewCell: UITableViewCell {
 
-    public let walletAvatarIV = UIImageView()
-    public let walletNameLabel = UILabel()
-    public let walletAddressLabel = UILabel()
+    let walletAvatarIV = UIImageView()
+    let walletNameLabel = UILabel()
+    let walletAddressLabel = UILabel()
 
-    public let delegateLabel = UILabel()
-    public let unDelegatingLabel = UILabel()
+    let delegatedLabel = UILabel()
+    let totalRewardLabel = UILabel()
+    let unclaimedRewardLabel = UILabel()
+    let claimButton = UIButton()
 
     var cellDidHandle: ((_ cell: MyDelegateViewCell) -> Void)?
 
@@ -26,8 +28,7 @@ class MyDelegateViewCell: UITableViewCell {
             walletNameLabel.text = delegate?.walletName
             walletAddressLabel.text = delegate?.walletAddress.addressForDisplay()
 
-            delegateLabel.text = delegate?.balance
-            unDelegatingLabel.text = delegate?.delegateValue
+            delegatedLabel.text = delegate?.delegateValue
         }
     }
 
@@ -48,7 +49,7 @@ class MyDelegateViewCell: UITableViewCell {
             make.leading.equalToSuperview().offset(10)
             make.trailing.equalToSuperview().offset(-10)
             make.top.equalToSuperview().offset(16)
-            make.height.equalTo(128)
+            make.height.equalTo(184)
             make.bottom.equalToSuperview()
         }
 
@@ -119,7 +120,7 @@ class MyDelegateViewCell: UITableViewCell {
         }
 
         let delegateTipLabel = UILabel()
-        delegateTipLabel.localizedText = "staking_main_delegate_text"
+        delegateTipLabel.localizedText = "staking_main_undelegating_text"
         delegateTipLabel.textColor = common_lightLightGray_color
         delegateTipLabel.font = UIFont.systemFont(ofSize: 12)
         delegateBackgroundView.addSubview(delegateTipLabel)
@@ -130,38 +131,75 @@ class MyDelegateViewCell: UITableViewCell {
             make.width.equalToSuperview().offset(-34).dividedBy(2)
         }
 
-        delegateLabel.textColor = .black
-        delegateLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium)
-        delegateLabel.text = "--"
-        delegateLabel.adjustsFontSizeToFitWidth = true
-        delegateBackgroundView.addSubview(delegateLabel)
-        delegateLabel.snp.makeConstraints { make in
+        delegatedLabel.textColor = .black
+        delegatedLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+        delegatedLabel.text = "--"
+        delegatedLabel.adjustsFontSizeToFitWidth = true
+        delegateBackgroundView.addSubview(delegatedLabel)
+        delegatedLabel.snp.makeConstraints { make in
             make.leading.equalTo(delegateTipLabel)
             make.top.equalTo(delegateTipLabel.snp.bottom).offset(9)
             make.height.equalTo(14)
             make.width.equalTo(delegateTipLabel)
         }
 
-        let unDelegatingTipLabel = UILabel()
-        unDelegatingTipLabel.localizedText = "staking_main_undelegating_text"
-        unDelegatingTipLabel.textColor = common_lightLightGray_color
-        unDelegatingTipLabel.font = UIFont.systemFont(ofSize: 12)
-        delegateBackgroundView.addSubview(unDelegatingTipLabel)
-        unDelegatingTipLabel.snp.makeConstraints { make in
+        let totalRewardTipLabel = UILabel()
+        totalRewardTipLabel.localizedText = "mydelegates_total_reward"
+        totalRewardTipLabel.textColor = common_lightLightGray_color
+        totalRewardTipLabel.font = UIFont.systemFont(ofSize: 12)
+        delegateBackgroundView.addSubview(totalRewardTipLabel)
+        totalRewardTipLabel.snp.makeConstraints { make in
             make.leading.equalTo(delegateTipLabel.snp.trailing).offset(5)
             make.top.equalTo(delegateTipLabel.snp.top)
             make.width.equalTo(delegateTipLabel)
         }
 
-        unDelegatingLabel.textColor = .black
-        unDelegatingLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium)
-        unDelegatingLabel.text = "--"
-        unDelegatingLabel.adjustsFontSizeToFitWidth = true
-        delegateBackgroundView.addSubview(unDelegatingLabel)
-        unDelegatingLabel.snp.makeConstraints { make in
-            make.leading.equalTo(unDelegatingTipLabel)
-            make.top.equalTo(unDelegatingTipLabel.snp.bottom).offset(9)
+        totalRewardLabel.textColor = .black
+        totalRewardLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+        totalRewardLabel.text = "--"
+        totalRewardLabel.adjustsFontSizeToFitWidth = true
+        delegateBackgroundView.addSubview(totalRewardLabel)
+        totalRewardLabel.snp.makeConstraints { make in
+            make.leading.equalTo(totalRewardTipLabel)
+            make.top.equalTo(totalRewardTipLabel.snp.bottom).offset(9)
             make.height.equalTo(14)
+        }
+
+        let unclaimedRewardTipLabel = UILabel()
+        unclaimedRewardTipLabel.localizedText = "mydelegates_unclaimed_reward"
+        unclaimedRewardTipLabel.textColor = common_lightLightGray_color
+        unclaimedRewardTipLabel.font = UIFont.systemFont(ofSize: 12)
+        delegateBackgroundView.addSubview(unclaimedRewardTipLabel)
+        unclaimedRewardTipLabel.snp.makeConstraints { make in
+            make.leading.equalTo(delegateTipLabel.snp.leading)
+            make.trailing.equalTo(delegateTipLabel.snp.trailing)
+            make.top.equalTo(delegatedLabel.snp.bottom).offset(12)
+        }
+
+        unclaimedRewardLabel.textColor = .black
+        unclaimedRewardLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+        unclaimedRewardLabel.text = "--"
+        unclaimedRewardLabel.adjustsFontSizeToFitWidth = true
+        delegateBackgroundView.addSubview(unclaimedRewardLabel)
+        unclaimedRewardLabel.snp.makeConstraints { make in
+            make.leading.equalTo(unclaimedRewardTipLabel)
+            make.trailing.equalToSuperview().offset(-120)
+            make.top.equalTo(unclaimedRewardTipLabel.snp.bottom).offset(7)
+            make.width.equalTo(unclaimedRewardTipLabel)
+        }
+
+        claimButton.localizedNormalTitle = "mydelegates_claim"
+        claimButton.titleLabel?.font = .systemFont(ofSize: 13)
+        claimButton.layer.cornerRadius = 14.0
+        claimButton.layer.borderColor = common_blue_color.cgColor
+        claimButton.layer.borderWidth = 1
+        claimButton.setTitleColor(common_blue_color, for: .normal)
+        delegateBackgroundView.addSubview(claimButton)
+        claimButton.snp.makeConstraints { make in
+            make.height.equalTo(28)
+            make.width.equalTo(67)
+            make.trailing.equalToSuperview().offset(-10)
+            make.centerY.equalTo(unclaimedRewardLabel.snp.centerY)
         }
     }
 

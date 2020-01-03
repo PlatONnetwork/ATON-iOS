@@ -54,19 +54,10 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
-        view.addSubview(headerView)
-        headerView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview()
-//            make.height.equalTo(74)
-            make.top.equalToSuperview().offset(UIApplication.shared.statusBarFrame.height)
-        }
-        headerView.recordButtonHandler = { [weak self] in
-            self?.gotoDelegateRecordVC()
-        }
 
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
-            make.top.equalTo(headerView.snp.bottom)
+            make.top.equalToSuperview().offset(UIApplication.shared.statusBarFrame.height)
             make.bottom.leading.trailing.equalToSuperview()
         }
 
@@ -79,6 +70,18 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
             }
             view.customView(holder)
             view.isScrollAllowed(true)
+        }
+
+        tableView.tableHeaderView = headerView
+        headerView.setNeedsLayout()
+        headerView.layoutIfNeeded()
+        headerView.frame.size = headerView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+        tableView.tableHeaderView = headerView
+        headerView.delegateRecordHandler = { [weak self] in
+            self?.gotoDelegateRecordVC()
+        }
+        headerView.rewardRecordHandler = { [weak self] in
+            self?.gotoRewardDetailVC()
         }
 
         tableView.tableFooterView = footerView
@@ -149,6 +152,10 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
         controller.delegate = delegate
         controller.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(controller, animated: true)
+    }
+
+    private func gotoRewardDetailVC() {
+
     }
 
     private func doShowValidatorListController() {

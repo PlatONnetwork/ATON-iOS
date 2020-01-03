@@ -7,44 +7,109 @@
 //
 
 import UIKit
+import Localize_Swift
 
 class WalletBaseInfoView: UIView {
 
-    public let avatarIV = UIImageView()
-    public let nameLabel = UILabel()
-    public let addressLabel = UILabel()
+    public let nodeAvatarIV = UIImageView()
+    public let nodeNameLabel = UILabel()
+    public let nodeAddressLabel = UILabel()
+
+    public let rewardRatioLabel = UILabel()
+    public let totalRewardLabel = UILabel()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .white
 
-        avatarIV.addMaskView(corners: .allCorners, cornerRadiiV: 21)
-        avatarIV.image = UIImage(named: "walletAvatar_1")
-        addSubview(avatarIV)
-        avatarIV.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.leading.equalToSuperview().offset(13)
+        let nodeBackgroundView = UIImageView()
+        nodeBackgroundView.image = UIImage(named: "bj2")
+        addSubview(nodeBackgroundView)
+        nodeBackgroundView.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(10)
+            make.trailing.equalToSuperview().offset(-10)
+            make.top.equalToSuperview().offset(16)
+            make.bottom.equalToSuperview().offset(-16)
+        }
+
+        nodeAvatarIV.addMaskView(corners: .allCorners, cornerRadiiV: 21)
+        nodeAvatarIV.image = UIImage(named: "walletAvatar_1")
+        nodeBackgroundView.addSubview(nodeAvatarIV)
+        nodeAvatarIV.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(20)
+            make.leading.equalToSuperview().offset(10)
             make.width.height.equalTo(42)
         }
 
-        nameLabel.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.medium)
-        nameLabel.textColor = .black
-        nameLabel.text = "--"
-        addSubview(nameLabel)
-        nameLabel.snp.makeConstraints { make in
-            make.top.equalTo(avatarIV.snp.top)
-            make.leading.equalTo(avatarIV.snp.trailing).offset(5)
-            make.trailing.equalToSuperview().offset(-16)
+        nodeNameLabel.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.medium)
+        nodeNameLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
+        nodeNameLabel.textColor = .white
+        nodeBackgroundView.addSubview(nodeNameLabel)
+        nodeNameLabel.snp.makeConstraints { make in
+            make.top.equalTo(nodeAvatarIV.snp.top)
+            make.leading.equalTo(nodeAvatarIV.snp.trailing).offset(5)
         }
 
-        addressLabel.font = UIFont.systemFont(ofSize: 13)
-        addressLabel.textColor = common_darkGray_color
-        addressLabel.text = "--"
-        addSubview(addressLabel)
-        addressLabel.snp.makeConstraints { make in
-            make.top.equalTo(nameLabel.snp.bottom).offset(8)
-            make.leading.equalTo(nameLabel.snp.leading)
-            make.trailing.equalTo(nameLabel.snp.trailing)
+        nodeAddressLabel.font = UIFont.systemFont(ofSize: 13)
+        nodeAddressLabel.textColor = .white
+        nodeAddressLabel.text = "--"
+        nodeBackgroundView.addSubview(nodeAddressLabel)
+        nodeAddressLabel.snp.makeConstraints { make in
+            make.top.equalTo(nodeNameLabel.snp.bottom).offset(6)
+            make.leading.equalTo(nodeNameLabel.snp.leading)
+        }
+
+        let delegateContentView = UIView()
+        delegateContentView.backgroundColor = .clear
+        nodeBackgroundView.addSubview(delegateContentView)
+        delegateContentView.snp.makeConstraints { make in
+            make.top.equalTo(nodeAvatarIV.snp.bottom).offset(20)
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalToSuperview().priorityMedium()
+        }
+
+        let rewardRatioTipLabel = UILabel()
+        rewardRatioTipLabel.text = Localized("delegate_detail_balance")
+        rewardRatioTipLabel.textColor = .white
+        rewardRatioTipLabel.font = UIFont.systemFont(ofSize: 13)
+        delegateContentView.addSubview(rewardRatioTipLabel)
+        rewardRatioTipLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(20)
+            make.top.equalToSuperview().offset(14)
+            make.height.equalTo(14)
+            make.width.equalToSuperview().offset(-40).dividedBy(2)
+        }
+
+        rewardRatioLabel.textColor = .white
+        rewardRatioLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+        rewardRatioLabel.text = "--"
+        delegateContentView.addSubview(rewardRatioLabel)
+        rewardRatioLabel.snp.makeConstraints { make in
+            make.leading.equalTo(rewardRatioTipLabel)
+            make.top.equalTo(rewardRatioTipLabel.snp.bottom).offset(9)
+            make.width.equalTo(rewardRatioTipLabel.snp.width)
+            make.height.equalTo(14)
+        }
+
+        let totalRewardTipLabel = UILabel()
+        totalRewardTipLabel.text = Localized("delegate_detail_delegated")
+        totalRewardTipLabel.textColor = .white
+        totalRewardTipLabel.font = UIFont.systemFont(ofSize: 13)
+        delegateContentView.addSubview(totalRewardTipLabel)
+        totalRewardTipLabel.snp.makeConstraints { make in
+            make.leading.equalTo(rewardRatioTipLabel.snp.trailing)
+            make.top.equalTo(rewardRatioTipLabel.snp.top)
+            make.width.equalTo(rewardRatioTipLabel)
+        }
+
+        totalRewardLabel.textColor = .white
+        totalRewardLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+        totalRewardLabel.text = "--"
+        delegateContentView.addSubview(totalRewardLabel)
+        totalRewardLabel.snp.makeConstraints { make in
+            make.leading.equalTo(totalRewardTipLabel)
+            make.top.equalTo(totalRewardTipLabel.snp.bottom).offset(9)
+            make.width.equalTo(totalRewardTipLabel.snp.width)
+            make.height.equalTo(14)
         }
     }
 

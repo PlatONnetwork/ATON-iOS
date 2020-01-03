@@ -1,37 +1,24 @@
 //
-//  DelegateRecordViewController.swift
+//  RewardRecordViewController.swift
 //  platonWallet
 //
-//  Created by Admin on 24/7/2019.
-//  Copyright © 2019 ju. All rights reserved.
+//  Created by Admin on 3/1/2020.
+//  Copyright © 2020 ju. All rights reserved.
 //
 
 import UIKit
 import MJRefresh
 import Localize_Swift
 
-class DelegateRecordViewController: BaseViewController, IndicatorInfoProvider {
+class RewardRecordViewController: BaseViewController {
 
-    public enum RecordType: String {
-        case all
-        case redeem
-        case delegate
-    }
-
-    var recordType: RecordType = .all
-    var listData: [Transaction] = [] {
+    var listData: [RewardModel] = [] {
         didSet {
             tableView.mj_footer.isHidden = listData.count == 0
         }
     }
 
     let listSize: Int = 20
-
-    func indicatorInfo(for pagerTabStripController: PagerTabStripViewController) -> IndicatorInfo {
-        return itemInfo
-    }
-
-    var itemInfo: IndicatorInfo = "All"
 
     lazy var tableView = { () -> UITableView in
         let tbView = UITableView(frame: .zero)
@@ -58,11 +45,6 @@ class DelegateRecordViewController: BaseViewController, IndicatorInfoProvider {
         let footer = MJRefreshAutoFooter(refreshingTarget: self, refreshingAction: #selector(fetchDataMore))!
         return footer
     }()
-
-    init(itemInfo: String) {
-        self.itemInfo = IndicatorInfo(title: itemInfo)
-        super.init(nibName: nil, bundle: nil)
-    }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -92,19 +74,9 @@ class DelegateRecordViewController: BaseViewController, IndicatorInfoProvider {
 
     }
 
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
 
-extension DelegateRecordViewController {
+extension RewardRecordViewController {
     private func fetchData(sequence: String, direction: RefreshDirection) {
 
         let addresses = (AssetVCSharedData.sharedData.walletList as! [Wallet]).map { return $0.address }
@@ -130,7 +102,7 @@ extension DelegateRecordViewController {
                     }
 
                     if let newData = data as? [Transaction], newData.count > 0 {
-                        
+
                         _ = newData.map({ (tx) -> Transaction in
                             switch tx.txType! {
                             case .delegateWithdraw,
@@ -171,20 +143,35 @@ extension DelegateRecordViewController {
     }
 }
 
-extension DelegateRecordViewController: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+extension RewardRecordViewController: UITableViewDelegate, UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return listData.count
     }
 
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return listData[section].records.count
+    }
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let reward = listData[section]
+
+
+    }
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+
+        let record = reward.records[indexPath.row]
+
         let cell = tableView.dequeueReusableCell(withIdentifier: "DelegateRecordTableViewCell") as! DelegateRecordTableViewCell
-        let transaction = listData[indexPath.row]
-        cell.transaction = transaction
-        cell.cellDidHandler = { [weak self] _ in
-            let controller = TransactionDetailViewController()
-            controller.transaction = transaction
-            self?.navigationController?.pushViewController(controller, animated: true)
-        }
+
+
+
+//        cell.transaction = transaction
+//        cell.cellDidHandler = { [weak self] _ in
+//            let controller = TransactionDetailViewController()
+//            controller.transaction = transaction
+//            self?.navigationController?.pushViewController(controller, animated: true)
+//        }
         return cell
     }
 }

@@ -34,10 +34,7 @@ class DelegateDetailViewController: BaseViewController {
         return tbView
     }()
 
-    lazy var walletHeaderView = { () -> WalletBaseInfoView in
-        let headerView = WalletBaseInfoView()
-        return headerView
-    }()
+    let walletHeaderView = WalletBaseInfoView()
 
     lazy var refreshHeader: MJRefreshHeader = {
         let header = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(fetchData))!
@@ -56,16 +53,9 @@ class DelegateDetailViewController: BaseViewController {
 
         view.backgroundColor = normal_background_color
 
-        view.addSubview(walletHeaderView)
-        walletHeaderView.snp.makeConstraints { make in
-            make.leading.trailing.top.equalToSuperview()
-            make.height.equalTo(68)
-        }
-
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
-            make.top.equalTo(walletHeaderView.snp.bottom)
-            make.leading.trailing.bottom.equalToSuperview()
+            make.edges.equalToSuperview()
         }
         tableView.emptyDataSetView { [weak self] view in
             let holder = self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, nil,"3.img-No trust") as? TableViewNoDataPlaceHolder
@@ -76,6 +66,12 @@ class DelegateDetailViewController: BaseViewController {
                 view.verticalOffset(-contentInset.top/2.0)
             }
         }
+
+        tableView.tableHeaderView = walletHeaderView
+        walletHeaderView.setNeedsLayout()
+        walletHeaderView.layoutIfNeeded()
+        walletHeaderView.frame.size = walletHeaderView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+        tableView.tableHeaderView = walletHeaderView
 
         let doubtButtonItem = UIBarButtonItem(image: UIImage(named: "3.icon_doubt"), style: .done, target: self, action: #selector(doubtTapAction))
         doubtButtonItem.tintColor = .black
@@ -133,9 +129,9 @@ extension DelegateDetailViewController {
     }
 
     private func setupWalletData() {
-        walletHeaderView.avatarIV.image = delegate?.walletAvatar ?? UIImage(named: "walletAvatar_1")
-        walletHeaderView.nameLabel.text = delegate?.walletName ?? "--"
-        walletHeaderView.addressLabel.text = delegate?.walletAddress.addressForDisplay() ?? "--"
+        walletHeaderView.nodeAvatarIV.image = delegate?.walletAvatar ?? UIImage(named: "walletAvatar_1")
+        walletHeaderView.nodeNameLabel.text = delegate?.walletName ?? "--"
+        walletHeaderView.nodeAddressLabel.text = delegate?.walletAddress.addressForDisplay() ?? "--"
     }
 
     @objc private func fetchData() {

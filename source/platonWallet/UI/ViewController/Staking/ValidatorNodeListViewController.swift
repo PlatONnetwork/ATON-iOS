@@ -24,7 +24,7 @@ class ValidatorNodeListViewController: BaseViewController, IndicatorInfoProvider
 
     var itemInfo: IndicatorInfo = "All"
     var controllerType: NodeControllerType = .all
-    var isRankingSorted: Bool = true
+    var currentSort: NodeSort = .rank
 
     lazy var tableView = { () -> UITableView in
         let tbView = UITableView(frame: .zero)
@@ -40,6 +40,22 @@ class ValidatorNodeListViewController: BaseViewController, IndicatorInfoProvider
             tbView.estimatedRowHeight = 100
         }
         return tbView
+    }()
+
+    lazy var searchBar = { () -> UISearchBar in
+        let searchbar = UISearchBar(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 40))
+        searchbar.backgroundImage = UIImage()
+        searchbar.setImage(UIImage(), for: .search, state: .focused)
+        searchbar.setImage(UIImage(), for: .search, state: .normal)
+        searchbar.delegate = self
+        if let textField = searchbar.value(forKey: "searchField") as? UITextField {
+            textField.layer.cornerRadius = 18.0
+            textField.layer.borderColor = common_blue_color.cgColor
+            textField.layer.borderWidth = 1
+            textField.font = .systemFont(ofSize: 14)
+            textField.LocalizePlaceholder = "mydelegates_search_placeholder"
+        }
+        return searchbar
     }()
 
     lazy var refreshHeader: MJRefreshHeader = {
@@ -81,6 +97,7 @@ class ValidatorNodeListViewController: BaseViewController, IndicatorInfoProvider
             view.customView(holder)
             view.isScrollAllowed(true)
         }
+        
         tableView.mj_header = refreshHeader
         tableView.mj_footer = refreshFooter
         tableView.mj_header.beginRefreshing()
@@ -121,7 +138,7 @@ class ValidatorNodeListViewController: BaseViewController, IndicatorInfoProvider
 extension ValidatorNodeListViewController {
 
     private func fetchData(isFetch: Bool, _ nodeId: String?) {
-        StakingService.sharedInstance.getNodeList(controllerType: controllerType, isRankingSorted: isRankingSorted, isFetch: isFetch) { [weak self] (result, data) in
+        StakingService.sharedInstance.getNodeList(controllerType: controllerType, isRankingSorted: true, isFetch: isFetch) { [weak self] (result, data) in
             self?.tableView.mj_header.endRefreshing()
             self?.tableView.mj_footer.endRefreshing()
             switch result {
@@ -143,10 +160,37 @@ extension ValidatorNodeListViewController {
         }
     }
 
-    public func pullDownForRefreshData(isRankSelected: Bool) {
-        isRankingSorted = isRankSelected
+    func nodeSortDidTapHandle() {
+        let listData = [
+            NodeSort.rank,
+            NodeSort.delegated,
+            NodeSort.delegator,
+            NodeSort.yield
+        ]
+
+        let contentView = ThresholdValueSelectView<NodeSort>(listData: listData, selected: currentSort, title: Localized("node_sort_title"))
+        contentView.show(viewController: self)
+        contentView.valueChangedHandler = { [weak self] (value) in
+            guard self?.currentSort != value else {
+                return
+            }
+
+            self?.currentSort = value
+            self?.pullDownForRefreshData()
+        }
+    }
+
+    public func pullDownForRefreshData() {
         if tableView.mj_header != nil {
             tableView.mj_header.beginRefreshing()
+        }
+    }
+
+    func searchDidTapHandler(isOn: Bool) {
+        if isOn && tableView.tableHeaderView == nil {
+            tableView.tableHeaderView = searchBar
+        } else if !isOn && tableView.tableHeaderView != nil {
+            tableView.tableHeaderView = nil
         }
     }
 
@@ -183,5 +227,15 @@ extension ValidatorNodeListViewController: UITableViewDelegate, UITableViewDataS
         controller.nodeId = listData[indexPath.row].nodeId
         controller.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(controller, animated: true)
+    }
+}
+
+extension ValidatorNodeListViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        print("start search")
+    }
+
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+
     }
 }

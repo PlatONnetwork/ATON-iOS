@@ -11,7 +11,8 @@ import Localize_Swift
 
 class MyDelegateHeaderView: UIView {
 
-    var recordButtonHandler: (() -> Void)?
+    var delegateRecordHandler: (() -> Void)?
+    var rewardRecordHandler: (() -> Void)?
 
     let totalDelegateLabel = UILabel()
     let unclaimedRewardLabel = UILabel()
@@ -50,12 +51,13 @@ class MyDelegateHeaderView: UIView {
         totalDelegateLabel.text = "--"
         bgIV.addSubview(totalDelegateLabel)
         totalDelegateLabel.snp.makeConstraints { make in
-            make.top.equalTo(totalDelegateLabel.snp.bottom).offset(6)
+            make.top.equalTo(totalDelegateTipLabel.snp.bottom).offset(6)
             make.leading.equalTo(totalDelegateTipLabel.snp.leading)
             make.trailing.equalToSuperview().offset(-20)
         }
 
         let unclaimedRewardTipLabel = UILabel()
+        unclaimedRewardTipLabel.localizedText = "mydelegates_unclaimed_reward"
         unclaimedRewardTipLabel.font = .systemFont(ofSize: 13)
         unclaimedRewardTipLabel.textColor = .white
         bgIV.addSubview(unclaimedRewardTipLabel)
@@ -67,6 +69,7 @@ class MyDelegateHeaderView: UIView {
 
         unclaimedRewardLabel.font = .systemFont(ofSize: 14)
         unclaimedRewardLabel.textColor = .white
+        unclaimedRewardLabel.text = "--"
         bgIV.addSubview(unclaimedRewardLabel)
         unclaimedRewardLabel.snp.makeConstraints { make in
             make.leading.equalTo(unclaimedRewardTipLabel.snp.leading)
@@ -77,7 +80,7 @@ class MyDelegateHeaderView: UIView {
         let totalRewardTipLabel = UILabel()
         totalRewardTipLabel.font = .systemFont(ofSize: 13)
         totalRewardTipLabel.textColor = .white
-        totalRewardTipLabel.localizedText = ""
+        totalRewardTipLabel.localizedText = "mydelegates_total_reward"
         bgIV.addSubview(totalRewardTipLabel)
         totalRewardTipLabel.snp.makeConstraints { make in
             make.leading.equalTo(bgIV.snp.centerX).offset(5)
@@ -87,10 +90,11 @@ class MyDelegateHeaderView: UIView {
 
         totalRewardLabel.font = .systemFont(ofSize: 14)
         totalRewardLabel.textColor = .white
+        totalRewardLabel.text = "--"
         bgIV.addSubview(totalRewardLabel)
         totalRewardLabel.snp.makeConstraints { make in
-            make.leading.equalTo(unclaimedRewardTipLabel.snp.leading)
-            make.trailing.equalTo(unclaimedRewardTipLabel.snp.trailing)
+            make.leading.equalTo(totalRewardTipLabel.snp.leading)
+            make.trailing.equalTo(totalRewardTipLabel.snp.trailing)
             make.top.equalTo(totalRewardTipLabel.snp.bottom).offset(5)
         }
 
@@ -108,6 +112,7 @@ class MyDelegateHeaderView: UIView {
         delegateButton.titleLabel?.font = .systemFont(ofSize: 13)
         delegateButton.setTitleColor(.white, for: .normal)
         delegateButton.setImage(UIImage(named: "3.icon_Delegate3-w"), for: .normal)
+        delegateButton.addTarget(self, action: #selector(delegateRecordTapAction), for: .touchUpInside)
         bgIV.addSubview(delegateButton)
         delegateButton.snp.makeConstraints { make in
             make.leading.equalToSuperview()
@@ -121,6 +126,7 @@ class MyDelegateHeaderView: UIView {
         rewardButton.titleLabel?.font = .systemFont(ofSize: 13)
         rewardButton.setTitleColor(.white, for: .normal)
         rewardButton.setImage(UIImage(named: "3.icon_Claim Rec2"), for: .normal)
+        rewardButton.addTarget(self, action: #selector(rewardRecordTapAction), for: .touchUpInside)
         bgIV.addSubview(rewardButton)
         rewardButton.snp.makeConstraints { make in
             make.leading.equalTo(bgIV.snp.centerX)
@@ -130,29 +136,27 @@ class MyDelegateHeaderView: UIView {
             make.height.equalTo(delegateButton.snp.height)
         }
 
-
-//        let recordButton = UIButton()
-//        recordButton.addTarget(self, action: #selector(recordTapAction), for: .touchUpInside)
-//        recordButton.localizedNormalTitle = "staking_main_delegate_record"
-//        recordButton.setTitleColor(common_blue_color, for: .normal)
-//        recordButton.setImage(UIImage(named: "3.icon_Record"), for: .normal)
-//        recordButton.titleLabel?.font = UIFont.systemFont(ofSize: 13)
-//        recordButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 0)
-//        addSubview(recordButton)
-//        recordButton.snp.makeConstraints { make in
-//            make.top.equalTo(delegateAvatarIV)
-//            make.leading.greaterThanOrEqualTo(delegateNameTipLabel.snp.trailing).offset(5)
-//            make.trailing.equalToSuperview().offset(-16)
-//        }
-
+        let lineVIV = UIImageView()
+        lineVIV.backgroundColor = line_white_color
+        bgIV.addSubview(lineVIV)
+        lineVIV.snp.makeConstraints { make in
+            make.width.equalTo(1/UIScreen.main.scale)
+            make.height.equalTo(12)
+            make.centerX.equalToSuperview()
+            make.centerY.equalTo(delegateButton.snp.centerY)
+        }
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    @objc private func recordTapAction() {
-        recordButtonHandler?()
+    @objc private func delegateRecordTapAction() {
+        delegateRecordHandler?()
+    }
+
+    @objc private func rewardRecordTapAction() {
+        rewardRecordHandler?()
     }
 
     /*

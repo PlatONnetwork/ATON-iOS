@@ -731,7 +731,6 @@
 "staking_main_mydelegate_text" = "我的委托";
 "staking_main_validator_text" = "验证节点";
 "staking_main_wallet_name" = "钱包名称";
-"staking_main_delegate_text" = "可委托余额";
 "staking_main_undelegating_text" = "总委托";
 "staking_main_delegate_detail" = "详情";
 "staking_main_delegate_total" = "总计委托(LAT)";
@@ -762,8 +761,6 @@
 "staking_validator_node_all" = "所有";
 "staking_validator_node_active" = "活跃中";
 "staking_validator_node_candidate" = "候选中";
-"staking_validator_node_rank" = "排名";
-"staking_validator_node_yield" = "年化率";
 
 "staking_validator_delegate_total" = "总质押";
 "staking_validator_delegate_rate_about" = "预计年化率";
@@ -792,9 +789,7 @@
 "staking_doubt_delegate" = "委托";
 "staking_doubt_delegate_detail" = "委托的Token所有权永远归于委托人，用户可以随时赎回委托的Token。\n验证节点关联的操作地址和奖励接收地址不允许参与委托。";
 "staking_doubt_reward" = "收益";
-"staking_doubt_reward_detail" = "委托收益来自节点的收益分配，节点收益主要有出块奖励、质押奖励和区块手续费奖励。具体如何分配请查看各节点官网说明";
-"staking_doubt_risk" = "风险";
-"staking_doubt_risk_detail" = "节点双重签名、出块率低会被惩罚，从而间接影响您的收益。为规避风险，请认真选择合格的节点。";
+"staking_doubt_reward_detail" = "委托至少锁定一个周期（10750区块）才有收益。根据节点设置的委托奖励比例对节点获得的收益进行分配。节点收益包含出块奖励和质押奖励。";
 
 "staking_doubt_undelegate" = "说明";
 "staking_doubt_undelegate_detail" = "赎回交易提交成功，委托的Token可立即到账；\n待赎回委托必须一次性全部赎回；\n赎回数量扣除后，已委托剩余数量少于%@LAT时，自动赎回全部。";
@@ -937,3 +932,21 @@
 
 "mydelegates_delegate_record" = "委托记录";
 "mydelegates_claim_record" = "领取记录";
+"mydelegates_unclaimed_reward" = "待领取奖励";
+"mydelegates_total_reward" = "累计奖励";
+"mydelegates_claim" = "领取";
+"mydelegates_search_placeholder" = "输入节点名称查询";
+
+"node_sort_title" = "排序";
+"node_sort_rank" = "节点排名";
+"node_sort_delegated" = "接受委托量";
+"node_sort_delegator" = "委托者数";
+"node_sort_yield" = "预计委托年化收益率";
+
+"reward_ratio" = "委托奖励比例";
+"reward_total" = "累计委托奖励";
+
+"delegate_detail_balance" = "可委托余额";
+"delegate_detail_delegated" = "总委托";
+
+"delegate_detail_unclaimed_reward" = "待领取奖励：";

@@ -175,8 +175,7 @@ class DelegateViewController: BaseViewController {
 
         let contents = [
             (Localized("staking_doubt_delegate"), Localized("staking_doubt_delegate_detail")),
-            (Localized("staking_doubt_reward"), Localized("staking_doubt_reward_detail")),
-            (Localized("staking_doubt_risk"), Localized("staking_doubt_risk_detail"))
+            (Localized("staking_doubt_reward"), Localized("staking_doubt_reward_detail"))
         ]
         let item6 = DelegateTableViewCellStyle.doubt(contents: contents)
         listData = [item1, item2, item3, item4, item5, item6]
@@ -258,8 +257,6 @@ extension DelegateViewController: UITableViewDelegate, UITableViewDataSource {
             cell.amountView.checkInput(mode: .all, check: { [weak self](text, isDelete) -> (Bool, String) in
                 guard let self = self else { return (true, "") }
                 var amountVON = BigUInt.mutiply(a: text, by: PlatonConfig.VON.LAT.description) ?? BigUInt.zero
-                print("get amountVON: \(amountVON.description)")
-                print("maxDelegateAmountLimit: \(self.maxDelegateAmountLimit.description)")
                 if amountVON > self.maxDelegateAmountLimit {
                     amountVON = self.maxDelegateAmountLimit
                     cell.amountView.textField.text = amountVON.divide(by: PlatonConfig.VON.LAT.description, round: 8)
@@ -269,7 +266,6 @@ extension DelegateViewController: UITableViewDelegate, UITableViewDataSource {
                 self.currentAmount = amountVON
                 self.estimateGas(amountVON, cell)
                 self.tableView.reloadSections(IndexSet([indexPath.section+1]), with: .none)
-                print("get amount1: \(self.currentAmount.description)")
 
                 return CommonService.checkStakingAmoutInput(inputVON: text == "" ? nil : self.currentAmount, balance: self.freeBalanceBInt, minLimit: self.minDelegateAmountLimit, maxLimit: self.maxDelegateAmountLimit, fee: self.estimateUseGas, type: .delegate, isLockAmount: self.balanceStyle?.isLock)
             }) { [weak self] _ in
