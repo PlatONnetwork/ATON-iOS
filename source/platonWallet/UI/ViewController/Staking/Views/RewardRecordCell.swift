@@ -11,33 +11,53 @@ import Localize_Swift
 
 class RewardRecordCell: UITableViewCell {
 
-    public let avatarIV = UIImageView()
-    public let nameLabel = UILabel()
-    public let addressLabel = UILabel()
-    public let balanceLabel = UILabel()
+    let avatarIV = UIImageView()
+    let nameLabel = UILabel()
+    let addressLabel = UILabel()
+    let balanceLabel = UILabel()
     let detailButton = UIButton()
-
-    public let timeLabel = UILabel()
+    let timeLabel = UILabel()
+    let detailContentView = UIView()
 
     var cellDidHandler: ((RewardRecordCell) -> Void)?
+    var recordDetailDidHadler: ((RewardRecordCell) -> Void)?
 
     var reward: RewardModel? {
         didSet {
             avatarIV.image = reward?.avatarImage
-            if let nodeName = transaction?.nodeName, nodeName.count > 0 {
-                nodeNameLabel.text = nodeName
-            } else {
-                nodeNameLabel.text = "--"
-            }
-            addressLabel.text = transaction?.recordWalletAddress ?? ""
-            nameLabel.text = transaction?.recordWalletName ?? "--"
-            nodeAddressLabel.text = transaction?.nodeId?.nodeIdForDisplayShort() ?? "--"
-            nodeBalanceLabel.text = transaction?.recordAmountForDisplay ?? "--"
+            nameLabel.text = reward?.walletName ?? "--"
+            addressLabel.text = reward?.walletAddress ?? "--"
+            balanceLabel.text = reward?.amountForDisplay ?? "--"
+//            timeLabel.text = transaction?.recordTime ?? "--"
+            detailButton.isSelected = reward?.isOpen ?? false
 
-            timeLabel.text = transaction?.recordTime ?? "--"
+            if let records = reward?.records, (records.count > 0 && reward?.isOpen == true) {
+
+                for (index, record) in records.enumerated() {
+                    let view = RewardRecordDetailView()
+                    view.tag = index + 1
+                    view.titleLabel.text = record.nodeName ?? "--"
+                    view.valueLabel.text = record.amountForDisplay
+                    detailContentView.addSubview(view)
+
+                    view.snp.makeConstraints { make in
+                        make.leading.trailing.equalToSuperview()
+                        if index == records.count - 1 {
+                            make.bottom.equalToSuperview().offset(-16)
+                        }
+                        if index > 0 {
+                            let preView = detailContentView.viewWithTag(index)
+                            make.top.equalTo(preView!.snp.bottom)
+                        } else {
+                            make.top.equalToSuperview()
+                        }
+                    }
+                }
+            } else {
+                _ = detailContentView.subviews.map { $0.removeFromSuperview() }
+            }
         }
     }
-
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -56,7 +76,7 @@ class RewardRecordCell: UITableViewCell {
             make.leading.equalToSuperview().offset(10)
             make.trailing.equalToSuperview().offset(-10)
             make.top.equalToSuperview().offset(16)
-            make.height.equalTo(128)
+//            make.height.equalTo(128)
             make.bottom.equalToSuperview()
         }
 
@@ -76,56 +96,56 @@ class RewardRecordCell: UITableViewCell {
             make.height.equalTo(60)
         }
 
-        nodeAvatarIV.addMaskView(corners: .allCorners, cornerRadiiV: 21)
-        nodeAvatarIV.image = UIImage(named: "walletAvatar_1")
-        walletBackgroundView.addSubview(nodeAvatarIV)
-        nodeAvatarIV.snp.makeConstraints { make in
+        avatarIV.addMaskView(corners: .allCorners, cornerRadiiV: 21)
+        avatarIV.image = UIImage(named: "walletAvatar_1")
+        walletBackgroundView.addSubview(avatarIV)
+        avatarIV.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.leading.equalToSuperview().offset(5)
             make.width.height.equalTo(42)
         }
 
-        nodeNameLabel.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.medium)
-        nodeNameLabel.textColor = .black
-        nodeNameLabel.text = Localized("staking_main_wallet_name")
-        nodeNameLabel.setContentHuggingPriority(.required, for: .horizontal)
-        walletBackgroundView.addSubview(nodeNameLabel)
-        nodeNameLabel.snp.makeConstraints { make in
+        nameLabel.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.medium)
+        nameLabel.textColor = .black
+        nameLabel.text = Localized("staking_main_wallet_name")
+        nameLabel.setContentHuggingPriority(.required, for: .horizontal)
+        walletBackgroundView.addSubview(nameLabel)
+        nameLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(12)
-            make.leading.equalTo(nodeAvatarIV.snp.trailing).offset(5)
+            make.leading.equalTo(avatarIV.snp.trailing).offset(5)
             make.height.equalTo(18)
         }
 
-        nodeAddressLabel.font = UIFont.systemFont(ofSize: 13)
-        nodeAddressLabel.textColor = common_darkGray_color
-        nodeAddressLabel.text = "--"
-        walletBackgroundView.addSubview(nodeAddressLabel)
-        nodeAddressLabel.snp.makeConstraints { make in
-            make.top.equalTo(nodeNameLabel.snp.bottom).offset(3)
-            make.leading.equalTo(nodeNameLabel.snp.leading)
+        addressLabel.font = UIFont.systemFont(ofSize: 13)
+        addressLabel.textColor = common_darkGray_color
+        addressLabel.text = "--"
+        walletBackgroundView.addSubview(addressLabel)
+        addressLabel.snp.makeConstraints { make in
+            make.top.equalTo(nameLabel.snp.bottom).offset(3)
+            make.leading.equalTo(nameLabel.snp.leading)
         }
 
-        nodeBalanceLabel.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.medium)
-        nodeBalanceLabel.textColor = .black
-        nodeBalanceLabel.text = "0.00"
-        nodeBalanceLabel.textAlignment = .right
-        nodeBalanceLabel.adjustsFontSizeToFitWidth = true
-        nodeBalanceLabel.minimumScaleFactor = 0.5
-        walletBackgroundView.addSubview(nodeBalanceLabel)
-        nodeBalanceLabel.snp.makeConstraints { make in
-            make.top.equalTo(nodeNameLabel)
-            make.leading.equalTo(nodeNameLabel.snp.trailing).offset(5)
+        balanceLabel.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.medium)
+        balanceLabel.textColor = .black
+        balanceLabel.text = "0.00"
+        balanceLabel.textAlignment = .right
+        balanceLabel.adjustsFontSizeToFitWidth = true
+        balanceLabel.minimumScaleFactor = 0.5
+        walletBackgroundView.addSubview(balanceLabel)
+        balanceLabel.snp.makeConstraints { make in
+            make.top.equalTo(nameLabel)
+            make.leading.equalTo(nameLabel.snp.trailing).offset(5)
             make.trailing.equalToSuperview().offset(-10)
         }
 
         let delegateBackgroundView = UIView()
-        delegateBackgroundView.isUserInteractionEnabled = false
+//        delegateBackgroundView.isUserInteractionEnabled = false
         delegateBackgroundView.backgroundColor = .white
         containerView.addSubview(delegateBackgroundView)
         delegateBackgroundView.snp.makeConstraints { make in
             make.top.equalTo(walletBackgroundView.snp.bottom)
             make.leading.trailing.equalTo(walletBackgroundView)
-            make.bottom.equalToSuperview()
+//            make.bottom.equalToSuperview()
         }
 
         timeLabel.text = "#"
@@ -135,19 +155,39 @@ class RewardRecordCell: UITableViewCell {
         delegateBackgroundView.addSubview(timeLabel)
         timeLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(10)
-            make.centerY.equalToSuperview()
+            make.top.equalToSuperview().offset(12)
+            make.bottom.equalToSuperview().offset(-16)
             make.height.equalTo(15)
             //            make.width.equalToSuperview().offset(-10).dividedBy(2)
         }
 
         detailButton.setImage(UIImage(named: "3.icon_Drop-down"), for: .normal)
         detailButton.setImage(UIImage(named: "3.icon_Pull up"), for: .selected)
+        detailButton.addTarget(self, action: #selector(recordDetailAction), for: .touchUpInside)
         delegateBackgroundView.addSubview(detailButton)
         detailButton.snp.makeConstraints { make in
-            make.height.width.equalTo(42)
+            make.height.width.equalTo(21)
             make.centerY.equalToSuperview()
             make.trailing.equalToSuperview().offset(-10)
         }
+
+        containerView.addSubview(detailContentView)
+        detailContentView.snp.makeConstraints { make in
+            make.top.equalTo(delegateBackgroundView.snp.bottom)
+            make.leading.trailing.equalTo(walletBackgroundView)
+            make.bottom.equalToSuperview()
+        }
+
+        let lineV = UIView()
+        lineV.backgroundColor = UIColor(rgb: 0xE4E7F3)
+        detailContentView.addSubview(lineV)
+        lineV.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(10)
+            make.trailing.equalToSuperview().offset(-10)
+            make.height.equalTo(1/UIScreen.main.scale)
+            make.top.equalToSuperview()
+        }
+
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -158,4 +198,42 @@ class RewardRecordCell: UITableViewCell {
         cellDidHandler?(self)
     }
 
+    @objc private func recordDetailAction() {
+        recordDetailDidHadler?(self)
+    }
+
+}
+
+class RewardRecordDetailView: UIView {
+
+    let titleLabel = UILabel()
+    let valueLabel = UILabel()
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+
+        titleLabel.font = .systemFont(ofSize: 14)
+        titleLabel.textColor = .black
+        addSubview(titleLabel)
+        titleLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(10)
+            make.top.equalToSuperview().offset(16)
+            make.bottom.equalToSuperview()
+        }
+
+        valueLabel.font = .systemFont(ofSize: 14, weight: .medium)
+        valueLabel.textColor = .black
+        valueLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        valueLabel.setContentHuggingPriority(.required, for: .horizontal)
+        addSubview(valueLabel)
+        valueLabel.snp.makeConstraints { make in
+            make.leading.equalTo(titleLabel.snp.trailing)
+            make.trailing.equalToSuperview().offset(-10)
+            make.centerY.equalTo(titleLabel.snp.centerY)
+        }
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 }

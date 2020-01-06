@@ -155,7 +155,9 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
     }
 
     private func gotoRewardDetailVC() {
-
+        let viewController = RewardRecordViewController()
+        viewController.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(viewController, animated: true)
     }
 
     private func doShowValidatorListController() {

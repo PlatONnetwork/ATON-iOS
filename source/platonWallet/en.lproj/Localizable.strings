@@ -939,3 +939,5 @@
 "delegate_detail_balance" = "Available Balance";
 "delegate_detail_delegated" = "Total Delegated";
 "delegate_detail_unclaimed_reward" = "Unclaimed Reward：";
+
+"wallet_receive_qrcode_warning" = "You are on the %@ Network. Never transfer other network LATs to this address.";

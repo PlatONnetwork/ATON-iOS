@@ -32,6 +32,14 @@ class SettingService {
         return chainId
     }
 
+    var currentNetworkName: String {
+        let currentNode = AppConfig.NodeURL.defaultNodesURL.first(where: { $0.chainId == currentNodeChainId })
+        guard let desc = currentNode?.desc else {
+            return ""
+        }
+        return Localized(desc)
+    }
+
     var remoteVersion: RemoteVersion?
     var remoteConfig: RemoteConfig?
 

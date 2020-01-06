@@ -950,3 +950,5 @@
 "delegate_detail_delegated" = "总委托";
 
 "delegate_detail_unclaimed_reward" = "待领取奖励：";
+
+"wallet_receive_qrcode_warning" = "当前%@网络，切勿将其他网络LAT转入到当前地址";
