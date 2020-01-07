@@ -890,6 +890,9 @@
 		81F1EFFC23BF33D8000D687C /* RewardRecordCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F1EFFB23BF33D8000D687C /* RewardRecordCell.swift */; };
 		81F1EFFD23BF33D8000D687C /* RewardRecordCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F1EFFB23BF33D8000D687C /* RewardRecordCell.swift */; };
 		81F1EFFE23BF33D8000D687C /* RewardRecordCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F1EFFB23BF33D8000D687C /* RewardRecordCell.swift */; };
+		81F1F00423C30FA9000D687C /* RewardClaimComfirmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F1F00323C30FA9000D687C /* RewardClaimComfirmView.swift */; };
+		81F1F00523C30FA9000D687C /* RewardClaimComfirmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F1F00323C30FA9000D687C /* RewardClaimComfirmView.swift */; };
+		81F1F00623C30FA9000D687C /* RewardClaimComfirmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F1F00323C30FA9000D687C /* RewardClaimComfirmView.swift */; };
 		81F5123D22FEE812005F3BDF /* DelegateModel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F5123C22FEE811005F3BDF /* DelegateModel+Extension.swift */; };
 		81FCCCD9217970580052FC29 /* UIView+Extenstions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FCCCD8217970580052FC29 /* UIView+Extenstions.swift */; };
 		81FCCCDB2179B3F10052FC29 /* AppFramework.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FCCCDA2179B3F10052FC29 /* AppFramework.swift */; };
@@ -1274,6 +1277,7 @@
 		81F1EFF323BF2D5E000D687C /* RewardRecordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardRecordViewController.swift; sourceTree = "<group>"; };
 		81F1EFF723BF2F99000D687C /* RewardRecordModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardRecordModel.swift; sourceTree = "<group>"; };
 		81F1EFFB23BF33D8000D687C /* RewardRecordCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardRecordCell.swift; sourceTree = "<group>"; };
+		81F1F00323C30FA9000D687C /* RewardClaimComfirmView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardClaimComfirmView.swift; sourceTree = "<group>"; };
 		81F5123C22FEE811005F3BDF /* DelegateModel+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DelegateModel+Extension.swift"; sourceTree = "<group>"; };
 		81FCCCD8217970580052FC29 /* UIView+Extenstions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extenstions.swift"; sourceTree = "<group>"; };
 		81FCCCDA2179B3F10052FC29 /* AppFramework.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFramework.swift; sourceTree = "<group>"; };
@@ -1834,6 +1838,7 @@
 				811AB2C222EEE30600284F1A /* DoubtTableViewCell.swift */,
 				81F1EFEB23BEE477000D687C /* NodeDetailCell.swift */,
 				81F1EFFB23BF33D8000D687C /* RewardRecordCell.swift */,
+				81F1F00323C30FA9000D687C /* RewardClaimComfirmView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -3337,6 +3342,7 @@
 				8118866C23B7590C00CAE5BA /* MJExtensionLoadMoreFooterView.swift in Sources */,
 				8118866D23B7590C00CAE5BA /* WalletManagerTableViewCell.swift in Sources */,
 				81F1EFEE23BEE477000D687C /* NodeDetailCell.swift in Sources */,
+				81F1F00623C30FA9000D687C /* RewardClaimComfirmView.swift in Sources */,
 				8118866E23B7590C00CAE5BA /* PopupDialog+Keyboard.swift in Sources */,
 				8118866F23B7590C00CAE5BA /* UIViewController+Extenstions.swift in Sources */,
 				8118867023B7590C00CAE5BA /* NodePersistence.swift in Sources */,
@@ -3609,6 +3615,7 @@
 				81B589A2235DA1FC00816B4E /* MJExtensionLoadMoreFooterView.swift in Sources */,
 				81B589A3235DA1FC00816B4E /* WalletManagerTableViewCell.swift in Sources */,
 				81F1EFED23BEE477000D687C /* NodeDetailCell.swift in Sources */,
+				81F1F00523C30FA9000D687C /* RewardClaimComfirmView.swift in Sources */,
 				81B589A4235DA1FC00816B4E /* PopupDialog+Keyboard.swift in Sources */,
 				81B589A5235DA1FC00816B4E /* UIViewController+Extenstions.swift in Sources */,
 				81B589A6235DA1FC00816B4E /* NodePersistence.swift in Sources */,
@@ -3881,6 +3888,7 @@
 				9AF9AC1D2182E04000E97F07 /* PopupDialog+Keyboard.swift in Sources */,
 				9ADE4505217EC8AC006F1C81 /* UIViewController+Extenstions.swift in Sources */,
 				81F1EFEC23BEE477000D687C /* NodeDetailCell.swift in Sources */,
+				81F1F00423C30FA9000D687C /* RewardClaimComfirmView.swift in Sources */,
 				81E64A59230400F3000F2E7C /* NodePersistence.swift in Sources */,
 				81D7E24922E7F6270069CDED /* PTSButtonBarView.swift in Sources */,
 				81D7E26B22E85A370069CDED /* DelegateRecordViewController.swift in Sources */,

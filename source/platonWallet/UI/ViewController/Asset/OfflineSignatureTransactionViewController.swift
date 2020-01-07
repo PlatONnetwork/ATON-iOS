@@ -94,12 +94,15 @@ class OfflineSignatureTransactionViewController: BaseViewController {
         valueLabel.attributedText = attributed
 
         listData.append((title: Localized("confirm_authorize_function_type"), value: codes.first?.typeString ?? "--"))
-        listData.append((title: Localized("confirm_authorize_from"), value:  codes.first?.fromName ?? "--"))
+
         if codes.first?.functionType == 1004 {
+            listData.append((title: Localized("confirm_authorize_from"), value:  codes.first?.fromName ?? "--"))
             listData.append((title: Localized("confirm_authorize_delegate_to"), value:  codes.first?.toName ?? "--"))
         } else if codes.first?.functionType == 1005 {
+            listData.append((title: Localized("confirm_authorize_from"), value:  codes.first?.fromName ?? "--"))
             listData.append((title: Localized("confirm_authorize_undelegate_to"), value:  codes.first?.toName ?? "--"))
         } else {
+            listData.append((title: Localized("confirm_send_from"), value:  codes.first?.fromName ?? "--"))
             listData.append((title: Localized("confirm_authorize_to"), value: codes.first?.toName ?? "--"))
         }
 

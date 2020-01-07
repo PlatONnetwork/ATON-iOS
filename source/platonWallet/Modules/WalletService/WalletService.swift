@@ -241,6 +241,23 @@ public final class WalletService {
                     return
                 }
 
+                if keystoreObj.crypto.kdf != .SCRYPT {
+                    let privateKeyData = Data(bytes: privateKey!.hexToBytes())
+
+                    guard WalletUtil.isValidPrivateKeyData(privateKeyData) else {
+                        completion(nil, Error.invalidKey)
+                        return
+                    }
+
+                    guard let ks = try? Keystore(password: password, privateKey: privateKeyData) else {
+                        DispatchQueue.main.async {
+                            completion(nil, Error.keystoreGeneFailed)
+                        }
+                        return
+                    }
+                    wallet.key = ks
+                }
+
                 wallet.updateInfoFromPrivateKey(privateKey!)
 
                 do {

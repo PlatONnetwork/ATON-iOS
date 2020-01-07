@@ -21,6 +21,7 @@ class MyDelegateViewCell: UITableViewCell {
     let claimButton = UIButton()
 
     var cellDidHandle: ((_ cell: MyDelegateViewCell) -> Void)?
+    var claimDidHandle: ((_ cell: MyDelegateViewCell) -> Void)?
 
     var delegate: Delegate? {
         didSet {
@@ -110,7 +111,7 @@ class MyDelegateViewCell: UITableViewCell {
         }
 
         let delegateBackgroundView = UIView()
-        delegateBackgroundView.isUserInteractionEnabled = false
+//        delegateBackgroundView.isUserInteractionEnabled = false
         delegateBackgroundView.backgroundColor = .white
         containerView.addSubview(delegateBackgroundView)
         delegateBackgroundView.snp.makeConstraints { make in
@@ -194,6 +195,7 @@ class MyDelegateViewCell: UITableViewCell {
         claimButton.layer.borderColor = common_blue_color.cgColor
         claimButton.layer.borderWidth = 1
         claimButton.setTitleColor(common_blue_color, for: .normal)
+        claimButton.addTarget(self, action: #selector(claimTapAction), for: .touchUpInside)
         delegateBackgroundView.addSubview(claimButton)
         claimButton.snp.makeConstraints { make in
             make.height.equalTo(28)
@@ -209,5 +211,9 @@ class MyDelegateViewCell: UITableViewCell {
 
     @objc func containerTapAction() {
         cellDidHandle?(self)
+    }
+
+    @objc func claimTapAction() {
+        claimDidHandle?(self)
     }
 }

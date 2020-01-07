@@ -164,6 +164,31 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
         guard let tabController = self.parent as? StakingMainViewController else { return }
         tabController.moveToValidatorListController()
     }
+
+    func claimRewardAction() {
+        let controller = PopUpViewController()
+        let confirmView = RewardClaimComfirmView()
+        confirmView.onCompletion = { [weak self] in
+
+        }
+
+//        let confirmView = UIView.viewFromXib(theClass: TransferConfirmView.self) as! TransferConfirmView
+//        confirmView.hideExecutor()
+//        let unionAttr = NSAttributedString(string: " LAT", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16)])
+//        let amountAttr = NSMutableAttributedString(string: amountView.textField.text!.displayForMicrometerLevel(maxRound: 8))
+//        amountAttr.append(unionAttr)
+//        confirmView.totalLabel.attributedText = amountAttr
+//        confirmView.toAddressLabel.text = walletAddressView.textField.text!.addressDisplayInLocal() ?? "--"
+//        confirmView.walletName.text = wallet.address.addressDisplayInLocal() ?? "--"
+//        let feeString = self.totalFee().divide(by: ETHToWeiMultiplier, round: 8)
+//        confirmView.feeLabel.text = feeString.ATPSuffix()
+//        if wallet.type == .observed {
+//            confirmView.submitBtn.localizedNormalTitle =  "confirm_button_next"
+//        }
+//
+        controller.setUpConfirmView(view: confirmView, width: PopUpContentWidth)
+        controller.show(inViewController: self)
+    }
 }
 
 extension MyDelegatesViewController: UITableViewDelegate, UITableViewDataSource {
@@ -177,6 +202,9 @@ extension MyDelegatesViewController: UITableViewDelegate, UITableViewDataSource 
         cell.delegate = delegate
         cell.cellDidHandle = { [weak self] tapCell in
             self?.gotoDelegateDetailVC(delegate)
+        }
+        cell.claimDidHandle = { [weak self] _ in
+            self?.claimRewardAction()
         }
         return cell
     }

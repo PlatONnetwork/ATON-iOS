@@ -941,3 +941,10 @@
 "delegate_detail_unclaimed_reward" = "Unclaimed Reward：";
 
 "wallet_receive_qrcode_warning" = "You are on the %@ Network. Never transfer other network LATs to this address.";
+
+"claim_comfirm_title" = "Claim Rewards";
+"claim_comfirm_desc" = "Estimated reward, subject to actual receipt";
+"claim_comfirm_fee" = "Fee";
+"claim_comfirm_wallet" = "Claim Wallet";
+"claim_comfirm_balance" = "Balance:";
+"claim_comfirm_comfirm" = "Confirm";
