@@ -13,17 +13,17 @@ import OHHTTPStubs
 import RealmSwift
 @testable import platonWallet
 
-extension RLPItem {
-    init(epoch: UInt64,
-         amount: BigUInt) {
-        let epochData = Data.newData(unsignedLong: epoch)
-        let epochBytes = epochData.bytes
-        self = .array(
-            .bytes(epochBytes),
-            .bigUInt(amount)
-        )
-    }
-}
+//extension RLPItem {
+//    init(epoch: UInt64,
+//         amount: BigUInt) {
+//        let epochData = Data.newData(unsignedLong: epoch)
+//        let epochBytes = epochData.bytes
+//        self = .array(
+//            .bytes(epochBytes),
+//            .bigUInt(amount)
+//        )
+//    }
+//}
 
 
 class platon071Tests: XCTestCase {

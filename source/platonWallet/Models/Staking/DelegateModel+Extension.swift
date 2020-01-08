@@ -72,7 +72,7 @@ extension DelegateDetail {
 
 extension DelegateDetail {
     func delegateToNode() -> Node? {
-        return Node(nodeId: nodeId, ranking: nil, name: nodeName, deposit: nil, url: url, ratePA: nil, nStatus: nodeStatus, isInit: false, isConsensus: isConsensus)
+        return Node(nodeId: nodeId, ranking: nil, name: nodeName, deposit: nil, url: url, ratePA: nil, nStatus: nodeStatus, isInit: false, isConsensus: isConsensus, delegateSum: nil, delegate: nil)
     }
 }
 

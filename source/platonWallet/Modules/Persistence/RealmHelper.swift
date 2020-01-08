@@ -35,7 +35,7 @@ class RealmHelper {
 
     public class func getConfig() -> Realm.Configuration {
         //v0.7.0 update scheme version to 8
-        let schemaVersion: UInt64 = 28
+        let schemaVersion: UInt64 = 29
 
         let config = Realm.Configuration(schemaVersion: schemaVersion, migrationBlock: { migration, oldSchemaVersion in
             if oldSchemaVersion < 23 {

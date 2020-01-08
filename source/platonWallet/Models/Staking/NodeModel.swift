@@ -45,6 +45,9 @@ class Node: Object, Decodable {
     // 增加新的状态0.7.5
     @objc dynamic var isConsensus: Bool = false
 
+    @objc dynamic var delegateSum: String? = "" // 委托数量
+    @objc dynamic var delegate: String? = "" // 委托者数量
+
     required init() {
         super.init()
     }
@@ -70,7 +73,9 @@ class Node: Object, Decodable {
         ratePA: String?,
         nStatus: NodeStatus,
         isInit: Bool,
-        isConsensus: Bool
+        isConsensus: Bool,
+        delegateSum: String?,
+        delegate: String?
         ) {
         self.init()
         self.nodeId = nodeId
@@ -82,6 +87,8 @@ class Node: Object, Decodable {
         self.nodeStatus = nStatus.rawValue
         self.isInit = isInit
         self.isConsensus = isConsensus
+        self.delegateSum = delegateSum
+        self.delegate = delegate
     }
 }
 
@@ -139,6 +146,6 @@ struct NodeDetail: Decodable {
         blockOutNumber = try container.decodeIfPresent(Int.self, forKey: .blockOutNumber)
         blockRate = try container.decodeIfPresent(String.self, forKey: .blockRate)
 
-        node = Node(nodeId: nodeId, ranking: ranking, name: name, deposit: deposit, url: url, ratePA: ratePA, nStatus: nodeStatus, isInit: isInit, isConsensus: isConsensus)
+        node = Node(nodeId: nodeId, ranking: ranking, name: name, deposit: deposit, url: url, ratePA: ratePA, nStatus: nodeStatus, isInit: isInit, isConsensus: isConsensus, delegateSum: delegateSum, delegate: delegate)
     }
 }

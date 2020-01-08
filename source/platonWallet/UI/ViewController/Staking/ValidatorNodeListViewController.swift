@@ -138,7 +138,7 @@ class ValidatorNodeListViewController: BaseViewController, IndicatorInfoProvider
 extension ValidatorNodeListViewController {
 
     private func fetchData(isFetch: Bool, _ nodeId: String?) {
-        StakingService.sharedInstance.getNodeList(controllerType: controllerType, isRankingSorted: true, isFetch: isFetch) { [weak self] (result, data) in
+        StakingService.sharedInstance.getNodeList(controllerType: controllerType, sort: currentSort, isFetch: isFetch) { [weak self] (result, data) in
             self?.tableView.mj_header.endRefreshing()
             self?.tableView.mj_footer.endRefreshing()
             switch result {

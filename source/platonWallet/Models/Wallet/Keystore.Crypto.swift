@@ -41,7 +41,9 @@ extension Keystore {
 
         public init(password: String, data: Data) throws {
             let cipherParams = CipherParams()
-            let kdfParams = ScryptParams()
+            var kdfParams = ScryptParams()
+            kdfParams.p = 1
+            kdfParams.n = 65536
 
             let scrypt = Scrypt(params: kdfParams)
             let derivedKey = try scrypt.calculate(password: password)

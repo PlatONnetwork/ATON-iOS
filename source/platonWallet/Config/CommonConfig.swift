@@ -113,7 +113,8 @@ struct AppConfig {
 //            static let TESTNET = "http://192.168.9.190:1000"
             static let TESTNET = "http://58.250.250.234:1000"
 //            static let TESTNET = "http://58.250.250.234:1000"
-            static let DEVNET = "http://192.168.9.190:443"
+//            static let DEVNET = "http://192.168.9.190:443"
+            static let DEVNET = "http://192.168.120.141:6789"
         }
         static let PATH = "/app/v0700"
     }

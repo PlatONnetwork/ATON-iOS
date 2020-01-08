@@ -15,6 +15,11 @@ final class StakingService: BaseService {
 
     static let sharedInstance = StakingService()
 
+    func searchNodes(text: String, type: NodeControllerType, sort: NodeSort) -> [Node] {
+        let nodes = NodePersistence.searchNodes(text: text, type: type, sort: sort)
+        return nodes
+    }
+
     func getMyDelegate(adddresses: [String], completion: PlatonCommonCompletion?) {
         var completion = completion
         var parameters: [String: Any] = [:]
@@ -45,7 +50,7 @@ final class StakingService: BaseService {
         }
     }
 
-    func updateNodeListData(isRankingSorted: Bool = true, completion: ((_ result : PlatonCommonResult, _ obj : [Node]) -> Void)?) {
+    func updateNodeListData(sort: NodeSort, completion: ((_ result : PlatonCommonResult, _ obj : [Node]) -> Void)?) {
         let url = SettingService.getCentralizationURL() + "/node/nodelist"
 
         var request = URLRequest(url: try! url.asURL())
@@ -61,9 +66,64 @@ final class StakingService: BaseService {
                     let response = try decoder.decode(JSONResponse<[Node]>.self, from: data)
                     let copyData = response.data.detached
                     let sortData = copyData.sorted(by: { (lhs, rhs) -> Bool in
-                        return isRankingSorted ? Int(lhs.ratePA ?? "0") ?? 0 > Int(rhs.ratePA ?? "0") ?? 0 : lhs.ranking < rhs.ranking
-                    }).sorted(by: { (lhs, rhs) -> Bool in
-                        return isRankingSorted ? lhs.ranking < rhs.ranking : Int(lhs.ratePA ?? "0") ?? 0 > Int(rhs.ratePA ?? "0") ?? 0
+                        switch sort {
+                        case .rank:
+                            if lhs.ranking != rhs.ranking {
+                                return lhs.ranking < rhs.ranking
+                            }
+
+                            if lhs.delegateSum != rhs.delegateSum {
+                                return (BigUInt(lhs.delegateSum ?? "0") ?? BigUInt.zero) > (BigUInt(rhs.delegateSum ?? "0") ?? BigUInt.zero)
+                            }
+
+                            if lhs.delegate != rhs.delegate {
+                                return (Int(lhs.delegate ?? "0") ?? 0) > (Int(rhs.delegate ?? "0") ?? 0)
+                            }
+
+                            return (Int(lhs.ratePA ?? "0") ?? 0) > (Int(rhs.ratePA ?? "0") ?? 0)
+                        case .delegated:
+                            if lhs.delegateSum != lhs.delegateSum {
+                                return (BigUInt(lhs.delegateSum ?? "0") ?? BigUInt.zero) > (BigUInt(rhs.delegateSum ?? "0") ?? BigUInt.zero)
+                            }
+
+                            if lhs.ranking != rhs.ranking {
+                                return lhs.ranking < rhs.ranking
+                            }
+
+                            if lhs.delegate != rhs.delegate {
+                                return (Int(lhs.delegate ?? "0") ?? 0) > (Int(rhs.delegate ?? "0") ?? 0)
+                            }
+
+                            return (Int(lhs.ratePA ?? "0") ?? 0) > (Int(rhs.ratePA ?? "0") ?? 0)
+                        case .delegator:
+                            if lhs.delegate != rhs.delegate {
+                                return (Int(lhs.delegate ?? "0") ?? 0) > (Int(rhs.delegate ?? "0") ?? 0)
+                            }
+
+                            if lhs.ranking != rhs.ranking {
+                                return lhs.ranking < rhs.ranking
+                            }
+
+                            if lhs.delegateSum != rhs.delegateSum {
+                                return (BigUInt(lhs.delegateSum ?? "0") ?? BigUInt.zero) > (BigUInt(rhs.delegateSum ?? "0") ?? BigUInt.zero)
+                            }
+
+                            return (Int(lhs.ratePA ?? "0") ?? 0) > (Int(rhs.ratePA ?? "0") ?? 0)
+                        case .yield:
+                            if lhs.ratePA != rhs.ratePA {
+                                return (Int(lhs.ratePA ?? "0") ?? 0) > (Int(rhs.ratePA ?? "0") ?? 0)
+                            }
+
+                            if lhs.ranking != rhs.ranking {
+                                return lhs.ranking < rhs.ranking
+                            }
+
+                            if lhs.delegateSum != rhs.delegateSum {
+                                return (BigUInt(lhs.delegateSum ?? "0") ?? BigUInt.zero) > (BigUInt(rhs.delegateSum ?? "0") ?? BigUInt.zero)
+                            }
+
+                            return (Int(lhs.delegate ?? "0") ?? 0) > (Int(rhs.delegate ?? "0") ?? 0)
+                        }
                     })
 
                     DispatchQueue.main.async {
@@ -81,56 +141,56 @@ final class StakingService: BaseService {
 
     func getNodeList(
         controllerType: NodeControllerType,
-        isRankingSorted: Bool,
+        sort: NodeSort,
         isFetch: Bool = false,
         completion: PlatonCommonCompletion?) {
 
         if controllerType == .active && isFetch == false {
-            let copyData = NodePersistence.getActiveNode(isRankingSorted: isRankingSorted).detached
-            let sortData = copyData.sorted(by: { (lhs, rhs) -> Bool in
-                return isRankingSorted ? Int(lhs.ratePA ?? "0") ?? 0 > Int(rhs.ratePA ?? "0") ?? 0 : lhs.ranking < rhs.ranking
-            }).sorted(by: { (lhs, rhs) -> Bool in
-                return isRankingSorted ? lhs.ranking < rhs.ranking : Int(lhs.ratePA ?? "0") ?? 0 > Int(rhs.ratePA ?? "0") ?? 0
-            })
+            let copyData = NodePersistence.getActiveNode(sort: sort).detached
+//            let sortData = copyData.sorted(by: { (lhs, rhs) -> Bool in
+//                return isRankingSorted ? Int(lhs.ratePA ?? "0") ?? 0 > Int(rhs.ratePA ?? "0") ?? 0 : lhs.ranking < rhs.ranking
+//            }).sorted(by: { (lhs, rhs) -> Bool in
+//                return isRankingSorted ? lhs.ranking < rhs.ranking : Int(lhs.ratePA ?? "0") ?? 0 > Int(rhs.ratePA ?? "0") ?? 0
+//            })
 
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                completion?(.success, sortData as AnyObject)
+                completion?(.success, copyData as AnyObject)
             }
         } else if controllerType == .candidate && isFetch == false {
-            let copyData = NodePersistence.getCandiateNode(isRankingSorted: isRankingSorted).detached
-            let sortData = copyData.sorted(by: { (lhs, rhs) -> Bool in
-                return isRankingSorted ? Int(lhs.ratePA ?? "0") ?? 0 > Int(rhs.ratePA ?? "0") ?? 0 : lhs.ranking < rhs.ranking
-            }).sorted(by: { (lhs, rhs) -> Bool in
-                return isRankingSorted ? lhs.ranking < rhs.ranking : Int(lhs.ratePA ?? "0") ?? 0 > Int(rhs.ratePA ?? "0") ?? 0
-            })
+            let copyData = NodePersistence.getCandiateNode(sort: sort).detached
+//            let sortData = copyData.sorted(by: { (lhs, rhs) -> Bool in
+//                return isRankingSorted ? Int(lhs.ratePA ?? "0") ?? 0 > Int(rhs.ratePA ?? "0") ?? 0 : lhs.ranking < rhs.ranking
+//            }).sorted(by: { (lhs, rhs) -> Bool in
+//                return isRankingSorted ? lhs.ranking < rhs.ranking : Int(lhs.ratePA ?? "0") ?? 0 > Int(rhs.ratePA ?? "0") ?? 0
+//            })
             // 不延时回调的话，会发生下拉刷新顶部出现位移偏差
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                completion?(.success, sortData as AnyObject)
+                completion?(.success, copyData as AnyObject)
             }
         } else {
             // 这里本身访问网络请求，存在延时，并不需要设置延时回调
-            updateNodeListData(isRankingSorted: isRankingSorted) { (result, data) in
+            updateNodeListData(sort: sort) { (result, data) in
                 switch result {
                 case .success:
                     if controllerType == .active {
                         let oriData = data.filter { $0.nodeStatus == NodeStatus.Active.rawValue }
-                        let sortData = oriData.sorted(by: { (lhs, rhs) -> Bool in
-                            return isRankingSorted ? Int(lhs.ratePA ?? "0") ?? 0 > Int(rhs.ratePA ?? "0") ?? 0 : lhs.ranking < rhs.ranking
-                        }).sorted(by: { (lhs, rhs) -> Bool in
-                            return isRankingSorted ? lhs.ranking < rhs.ranking : Int(lhs.ratePA ?? "0") ?? 0 > Int(rhs.ratePA ?? "0") ?? 0
-                        })
+//                        let sortData = oriData.sorted(by: { (lhs, rhs) -> Bool in
+//                            return isRankingSorted ? Int(lhs.ratePA ?? "0") ?? 0 > Int(rhs.ratePA ?? "0") ?? 0 : lhs.ranking < rhs.ranking
+//                        }).sorted(by: { (lhs, rhs) -> Bool in
+//                            return isRankingSorted ? lhs.ranking < rhs.ranking : Int(lhs.ratePA ?? "0") ?? 0 > Int(rhs.ratePA ?? "0") ?? 0
+//                        })
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                            completion?(.success, sortData as AnyObject)
+                            completion?(.success, oriData as AnyObject)
                         }
                     } else if controllerType == .candidate {
                         let oriData = data.filter { $0.nodeStatus == NodeStatus.Candidate.rawValue }
-                        let sortData = oriData.sorted(by: { (lhs, rhs) -> Bool in
-                            return isRankingSorted ? Int(lhs.ratePA ?? "0") ?? 0 > Int(rhs.ratePA ?? "0") ?? 0 : lhs.ranking < rhs.ranking
-                        }).sorted(by: { (lhs, rhs) -> Bool in
-                            return isRankingSorted ? lhs.ranking < rhs.ranking : Int(lhs.ratePA ?? "0") ?? 0 > Int(rhs.ratePA ?? "0") ?? 0
-                        })
+//                        let sortData = oriData.sorted(by: { (lhs, rhs) -> Bool in
+//                            return isRankingSorted ? Int(lhs.ratePA ?? "0") ?? 0 > Int(rhs.ratePA ?? "0") ?? 0 : lhs.ranking < rhs.ranking
+//                        }).sorted(by: { (lhs, rhs) -> Bool in
+//                            return isRankingSorted ? lhs.ranking < rhs.ranking : Int(lhs.ratePA ?? "0") ?? 0 > Int(rhs.ratePA ?? "0") ?? 0
+//                        })
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                            completion?(.success, sortData as AnyObject)
+                            completion?(.success, oriData as AnyObject)
                         }
                     } else {
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {

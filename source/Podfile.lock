@@ -21,11 +21,11 @@ PODS:
   - OHHTTPStubs/OHPathHelpers (8.0.0)
   - OHHTTPStubs/Swift (8.0.0):
     - OHHTTPStubs/Default
-  - platonWeb3 (0.7.0):
-    - BigInt
-    - CryptoSwift
-    - Localize-Swift
-    - secp256k1.swift
+  - platonWeb3 (0.7.5):
+    - BigInt (~> 4.0)
+    - CryptoSwift (~> 0.8)
+    - Localize-Swift (~> 2.0)
+    - secp256k1.swift (~> 0.1)
   - Realm (3.13.1):
     - Realm/Headers (= 3.13.1)
   - Realm/Headers (3.13.1)
@@ -101,7 +101,7 @@ DEPENDENCIES:
   - ZXingObjC
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  https://github.com/CocoaPods/Specs.git:
     - Alamofire
     - BigInt
     - CryptoSwift
@@ -154,7 +154,7 @@ SPEC CHECKSUMS:
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
   MJRefresh: 7798e16e53a5ef7f332dd05b27664db4e29530fd
   OHHTTPStubs: 9cbce6364bec557cc3439aa6bb7514670d780881
-  platonWeb3: 20e794f2ae93ed43d50faf7cff66e4c90e64fd36
+  platonWeb3: 4495ab2230715b6ed4343c2a8dcb675e6b230dc4
   Realm: 50071da38fe079e0735e47c9f2eae738c68c5996
   RealmSwift: 8a1e6a02b7a08cd17a31e3115143fb69fe5f3fb9
   RTRootNavigationController: afa6913402be26f8326f7f37fc1550aa67baddcc
@@ -178,4 +178,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 391257285a4076fc501f3d50fad62e1dd11d07ec
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.8.4

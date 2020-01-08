@@ -8,6 +8,7 @@
 
 import Foundation
 import Localize_Swift
+import RealmSwift
 
 enum NodeSort {
     case rank // 排名
@@ -25,6 +26,45 @@ enum NodeSort {
             return Localized("node_sort_delegator")
         case .yield:
             return Localized("node_sort_yield")
+        }
+    }
+}
+
+extension NodeSort {
+    var sortArray: [SortDescriptor] {
+        switch self {
+        case .rank:
+            let sortPropertis = [
+                SortDescriptor(keyPath: "ranking", ascending: true),
+                SortDescriptor(keyPath: "delegateSum", ascending: false),
+                SortDescriptor(keyPath: "delegate", ascending: false),
+                SortDescriptor(keyPath: "ratePA", ascending: false)
+            ]
+            return sortPropertis
+        case .delegated:
+            let sortPropertis = [
+                SortDescriptor(keyPath: "delegateSum", ascending: false),
+                SortDescriptor(keyPath: "ranking", ascending: true),
+                SortDescriptor(keyPath: "delegate", ascending: false),
+                SortDescriptor(keyPath: "ratePA", ascending: false)
+            ]
+            return sortPropertis
+        case .delegator:
+            let sortPropertis = [
+                SortDescriptor(keyPath: "delegate", ascending: false),
+                SortDescriptor(keyPath: "delegateSum", ascending: false),
+                SortDescriptor(keyPath: "ranking", ascending: true),
+                SortDescriptor(keyPath: "ratePA", ascending: false)
+            ]
+            return sortPropertis
+        case .yield:
+            let sortPropertis = [
+                SortDescriptor(keyPath: "ratePA", ascending: false),
+                SortDescriptor(keyPath: "ranking", ascending: true),
+                SortDescriptor(keyPath: "delegateSum", ascending: false),
+                SortDescriptor(keyPath: "delegate", ascending: false)
+            ]
+            return sortPropertis
         }
     }
 }
