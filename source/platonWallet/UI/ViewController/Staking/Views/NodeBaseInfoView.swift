@@ -168,9 +168,10 @@ class NodeBaseInfoView: UIView {
             make.leading.equalToSuperview().offset(20)
             make.top.equalToSuperview().offset(14)
             make.height.equalTo(14)
-            make.width.equalToSuperview().offset(-40).dividedBy(2)
+            make.trailing.equalTo(rewardContentView.snp.centerX).offset(-5)
         }
 
+        rewardRatioLabel.adjustsFontSizeToFitWidth = true
         rewardRatioLabel.textColor = .white
         rewardRatioLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium)
         rewardRatioLabel.text = "--"
@@ -188,11 +189,13 @@ class NodeBaseInfoView: UIView {
         totalRewardTipLabel.font = UIFont.systemFont(ofSize: 13)
         rewardContentView.addSubview(totalRewardTipLabel)
         totalRewardTipLabel.snp.makeConstraints { make in
-            make.leading.equalTo(rewardRatioTipLabel.snp.trailing)
+            make.leading.equalTo(rewardContentView.snp.centerX).offset(5)
+            make.trailing.equalToSuperview().offset(-20)
+//            make.leading.equalTo(rewardRatioTipLabel.snp.trailing)
             make.top.equalTo(rewardRatioTipLabel.snp.top)
-            make.width.equalTo(rewardRatioTipLabel)
         }
 
+        totalRewardLabel.adjustsFontSizeToFitWidth = true
         totalRewardLabel.textColor = .white
         totalRewardLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium)
         totalRewardLabel.text = "--"

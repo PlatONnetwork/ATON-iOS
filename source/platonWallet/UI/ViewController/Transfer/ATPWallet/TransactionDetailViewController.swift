@@ -162,6 +162,9 @@ class TransactionDetailViewController: BaseViewController {
             } else {
                 listData.append((title: Localized("TransactionDetailVC_proposal_type"), value: tx.proposalType?.localizedDesciption ?? "--", copy: false))
             }
+        } else if txType == .claimReward {
+            listData.append((title: Localized("TransactionDetailVC_claim_wallet"), value: tx.fromNameString ?? "--", copy: false))
+            listData.append((title: Localized("TransactionDetailVC_reward_amount"), value: (tx.totalReward?.vonToLATString ?? "0.00").ATPSuffix(), copy: false))
         }
         listData.append((title: Localized("TransactionDetailVC_energon_price"), value: tx.actualTxCostDescription?.displayForMicrometerLevel(maxRound: 8).ATPSuffix() ?? "0", copy: false))
         listData.append((title: Localized("TransactionDetailVC_transaction_hash"), value: tx.txhash ?? "--", copy: true))

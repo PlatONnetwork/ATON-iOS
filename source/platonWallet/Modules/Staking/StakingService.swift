@@ -15,6 +15,38 @@ final class StakingService: BaseService {
 
     static let sharedInstance = StakingService()
 
+    func rewardClaim(from: String, privateKey: String, gas: RemoteGas, completion: CommonCompletion<Transaction>?) {
+        web3.reward.withdrawDelegateReward(sender: from, privateKey: privateKey, gasLimit: gas.gasLimitBInt, gasPrice: gas.gasPriceBInt) { (result, data) in
+            switch result {
+            case .success:
+                if let hashData = data {
+                    let transaction = Transaction()
+                    transaction.txhash = hashData.toHexString().add0x()
+                    transaction.from = from
+                    transaction.txType = .claimReward
+                    transaction.toType = .contract
+                    transaction.txReceiptStatus = -1
+                    transaction.confirmTimes = Int(Date().timeIntervalSince1970 * 1000)
+                    transaction.direction = .Receive
+                    transaction.to = PlatonConfig.ContractAddress.rewardContractAddress
+                    transaction.gasPrice = gas.gasPrice
+                    transaction.gas = gas.gasLimit
+                    DispatchQueue.main.async {
+                        completion?(PlatonCommonResult.success, transaction)
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        completion?(PlatonCommonResult.success, nil)
+                    }
+                }
+            case .fail(let errCode, let errMsg):
+                DispatchQueue.main.async {
+                    completion?(PlatonCommonResult.fail(errCode, errMsg), nil)
+                }
+            }
+        }
+    }
+
     func searchNodes(text: String, type: NodeControllerType, sort: NodeSort) -> [Node] {
         let nodes = NodePersistence.searchNodes(text: text, type: type, sort: sort)
         return nodes
@@ -259,7 +291,7 @@ final class StakingService: BaseService {
             case .success(let data):
                 do {
                     let decoder = JSONDecoder()
-                    let response = try decoder.decode(JSONResponse<[DelegateDetail]>.self, from: data)
+                    let response = try decoder.decode(JSONResponse<TotalDelegate>.self, from: data)
                     self.successCompletionOnMain(obj: response.data as AnyObject, completion: &completion)
                 } catch let err {
                     self.failCompletionOnMainThread(code: -1, errorMsg: err.localizedDescription, completion: &completion)

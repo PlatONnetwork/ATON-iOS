@@ -43,7 +43,7 @@ extension Keystore {
             let cipherParams = CipherParams()
             var kdfParams = ScryptParams()
             kdfParams.p = 1
-            kdfParams.n = 65536
+            kdfParams.n = 16384
 
             let scrypt = Scrypt(params: kdfParams)
             let derivedKey = try scrypt.calculate(password: password)

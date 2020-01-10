@@ -142,6 +142,8 @@
 "TransactionDetailVC_proposal_voteabstain" = "VoteAbstain";
 "TransactionDetailVC_doublesign" = "区块双签";
 "TransactionDetailVC_transaction_hash" = "交易哈希:";
+"TransactionDetailVC_claim_wallet" = "领取钱包:";
+"TransactionDetailVC_reward_amount" = "领取数量:";
 
 //qr scan
 "QRScanerVC_nav_title" = "扫描";
@@ -387,6 +389,7 @@
 "TransactionStatus_declareVersion_title" = "版本声明";
 "TransactionStatus_reportDuplicateSign_title" = "举报验证节点";
 "TransactionStatus_createRestrictingPlan_title" = "创建锁仓";
+"TransactionStatus_claimReward_title" = "领取奖励";
 "TransactionStatus_unknown_title" = "未知";
 
 
@@ -959,3 +962,5 @@
 "claim_comfirm_wallet" = "领取钱包";
 "claim_comfirm_balance" = "可用余额：";
 "claim_comfirm_comfirm" = "确认";
+
+"mydelegates_search_cancel" = "隐藏";

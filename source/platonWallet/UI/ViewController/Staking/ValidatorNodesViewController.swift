@@ -13,6 +13,8 @@ class ValidatorNodesViewController: ButtonBarPagerTabStripViewController, Indica
 
     var itemInfo: IndicatorInfo = IndicatorInfo(title: "staking_main_validator_text")
 
+    var currentSort: NodeSort = .rank
+
     func indicatorInfo(for pagerTabStripController: PagerTabStripViewController) -> IndicatorInfo {
         return itemInfo
     }
@@ -34,17 +36,39 @@ class ValidatorNodesViewController: ButtonBarPagerTabStripViewController, Indica
     @objc func rankingTapAction() {
         rankButton.isSelected = !rankButton.isSelected
 
-        guard
-            let controllers = viewControllers as? [ValidatorNodeListViewController] else { return }
-        let controller = controllers[currentIndex]
-        controller.nodeSortDidTapHandle()
+        showNodeSortView()
     }
 
     @objc func searhTapAction() {
-        searchButton.isSelected = !searchButton.isSelected
-
         guard let controllers = viewControllers as? [ValidatorNodeListViewController] else { return }
-        _ = controllers.map { $0.searchDidTapHandler(isOn: searchButton.isSelected) }
+        let controller = controllers[currentIndex]
+        controller.searchDidTapHandler()
+    }
+
+    func startToRefreshData() {
+        guard
+            let controllers = viewControllers as? [ValidatorNodeListViewController] else { return }
+        _ = controllers.map { $0.fetchDataLastest() }
+    }
+
+    func showNodeSortView() {
+        let listData = [
+            NodeSort.rank,
+            NodeSort.delegated,
+            NodeSort.delegator,
+            NodeSort.yield
+        ]
+
+        let contentView = ThresholdValueSelectView<NodeSort>(listData: listData, selected: currentSort, title: Localized("node_sort_title"))
+        contentView.show(viewController: self)
+        contentView.valueChangedHandler = { [weak self] (value) in
+            guard self?.currentSort != value else {
+                return
+            }
+
+            self?.currentSort = value
+            self?.startToRefreshData()
+        }
     }
 
     override func viewDidLoad() {

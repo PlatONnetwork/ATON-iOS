@@ -154,4 +154,13 @@ class TransferPersistence {
             })
         }
     }
+
+    public class func getRewardPendingTransaction(address: String) -> [Transaction] {
+        let realm = try! Realm(configuration: RealmHelper.getConfig())
+        let transactionType = Int(TxType.claimReward.rawValue) ?? 5000
+        let predicate = NSPredicate(format: "transactionType == %@ AND from CONTAINS[cd] %@ AND chainId == %@ AND txReceiptStatus == %@", NSNumber(value: transactionType), address, SettingService.shareInstance.currentNodeChainId, NSNumber(value: TransactionReceiptStatus.pending.rawValue))
+        let r = realm.objects(Transaction.self).filter(predicate)
+        let array = Array(r).detached
+        return array
+    }
 }

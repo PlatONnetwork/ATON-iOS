@@ -30,8 +30,59 @@ class MyDelegateViewCell: UITableViewCell {
             walletAddressLabel.text = delegate?.walletAddress.addressForDisplay()
 
             delegatedLabel.text = delegate?.delegateValue
+            totalRewardLabel.text = delegate?.cumulativeRewardValue
+            unclaimedRewardLabel.text = delegate?.withdrawRewardValue
+
+            guard let status = delegate?.status else {
+                claimButton.isHidden = true
+                return
+            }
+
+            switch status {
+            case .unclaim:
+                claimButton.localizedNormalTitle = "mydelegates_claim"
+                claimButton.isHidden = false
+                pendingLayer.isHidden = true
+            case .claiming:
+                claimButton.setTitle(nil, for: .normal)
+                claimButton.isHidden = false
+                pendingLayer.isHidden = false
+            case .none:
+                claimButton.localizedNormalTitle = "mydelegates_claim"
+                claimButton.isHidden = true
+            }
         }
     }
+
+    lazy var pendingLayer: CALayer = { () -> CALayer in
+        let replicatorLayer = CAReplicatorLayer()
+        replicatorLayer.frame = CGRect(x: (67 - 21)/2.0, y: (28-6)/2.0, width: 21, height: 6)
+        replicatorLayer.instanceCount = 3
+        replicatorLayer.instanceTransform = CATransform3DMakeTranslation(7, 0, 0)
+        replicatorLayer.instanceDelay = 1/3.0
+
+        let dotLayer = CAShapeLayer()
+        let path = UIBezierPath()
+        path.move(to: CGPoint(x: 3, y: 0))
+        path.addLine(to: CGPoint(x: 7, y: 0))
+        path.addLine(to: CGPoint(x: 4, y: 6))
+        path.addLine(to: CGPoint(x: 0, y: 6))
+        path.close()
+
+        dotLayer.path = path.cgPath
+        dotLayer.fillColor = UIColor(rgb: 0x2a5ffe).cgColor
+        replicatorLayer.addSublayer(dotLayer)
+
+        let keyAnimation = CAKeyframeAnimation(keyPath: "opacity")
+        keyAnimation.isRemovedOnCompletion = false
+        keyAnimation.duration = 1.0
+        keyAnimation.keyTimes = [NSNumber(value: 0.0), NSNumber(0.5), NSNumber(1.0)]
+        keyAnimation.values = [1.0, 0.7, 0.5]
+        keyAnimation.repeatCount = Float.infinity
+        dotLayer.add(keyAnimation, forKey: nil)
+
+        return replicatorLayer
+    }()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -189,7 +240,7 @@ class MyDelegateViewCell: UITableViewCell {
             make.width.equalTo(unclaimedRewardTipLabel)
         }
 
-        claimButton.localizedNormalTitle = "mydelegates_claim"
+        claimButton.layer.addSublayer(pendingLayer)
         claimButton.titleLabel?.font = .systemFont(ofSize: 13)
         claimButton.layer.cornerRadius = 14.0
         claimButton.layer.borderColor = common_blue_color.cgColor

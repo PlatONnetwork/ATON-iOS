@@ -146,6 +146,8 @@
 "TransactionDetailVC_proposal_voteabstain" = "VoteAbstain";
 "TransactionDetailVC_doublesign" = "Double Siging";
 "TransactionDetailVC_transaction_hash" = "Tx Hash:";
+"TransactionDetailVC_claim_wallet" = "Claim Wallet:";
+"TransactionDetailVC_reward_amount" = "Reward amount:";
 
 //qr scan
 "QRScanerVC_nav_title" = "QR Scan";
@@ -391,6 +393,7 @@
 "TransactionStatus_declareVersion_title" = "DeclareVersion";
 "TransactionStatus_reportDuplicateSign_title" = "ReportValidator";
 "TransactionStatus_createRestrictingPlan_title" = "CreateRestricting";
+"TransactionStatus_claimReward_title" = "ClaimRewards";
 "TransactionStatus_unknown_title" = "unknown";
 
 
@@ -948,3 +951,5 @@
 "claim_comfirm_wallet" = "Claim Wallet";
 "claim_comfirm_balance" = "Balance:";
 "claim_comfirm_comfirm" = "Confirm";
+
+"mydelegates_search_cancel" = "Hide";

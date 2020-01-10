@@ -22,7 +22,7 @@ class MyDelegateHeaderView: UIView {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .white
+        backgroundColor = normal_background_color
 
         let bgIV = UIImageView()
         bgIV.isUserInteractionEnabled = true
@@ -67,6 +67,7 @@ class MyDelegateHeaderView: UIView {
             make.top.equalTo(totalDelegateLabel.snp.bottom).offset(20)
         }
 
+        unclaimedRewardLabel.adjustsFontSizeToFitWidth = true
         unclaimedRewardLabel.font = .systemFont(ofSize: 14)
         unclaimedRewardLabel.textColor = .white
         unclaimedRewardLabel.text = "--"
@@ -88,6 +89,7 @@ class MyDelegateHeaderView: UIView {
             make.top.equalTo(unclaimedRewardTipLabel.snp.top)
         }
 
+        totalRewardLabel.adjustsFontSizeToFitWidth = true
         totalRewardLabel.font = .systemFont(ofSize: 14)
         totalRewardLabel.textColor = .white
         totalRewardLabel.text = "--"
@@ -95,7 +97,7 @@ class MyDelegateHeaderView: UIView {
         totalRewardLabel.snp.makeConstraints { make in
             make.leading.equalTo(totalRewardTipLabel.snp.leading)
             make.trailing.equalTo(totalRewardTipLabel.snp.trailing)
-            make.top.equalTo(totalRewardTipLabel.snp.bottom).offset(5)
+            make.top.equalTo(unclaimedRewardLabel.snp.top)
         }
 
         let lineHIV = UIImageView()
@@ -105,13 +107,14 @@ class MyDelegateHeaderView: UIView {
             make.height.equalTo(1/UIScreen.main.scale)
             make.leading.equalToSuperview().offset(6)
             make.trailing.equalToSuperview().offset(-6)
-            make.top.equalTo(unclaimedRewardLabel.snp.bottom).offset(20)
+            make.top.equalTo(totalDelegateLabel.snp.bottom).offset(82)
         }
 
         delegateButton.localizedNormalTitle = "mydelegates_delegate_record"
         delegateButton.titleLabel?.font = .systemFont(ofSize: 13)
         delegateButton.setTitleColor(.white, for: .normal)
         delegateButton.setImage(UIImage(named: "3.icon_Delegate3-w"), for: .normal)
+        delegateButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5)
         delegateButton.addTarget(self, action: #selector(delegateRecordTapAction), for: .touchUpInside)
         bgIV.addSubview(delegateButton)
         delegateButton.snp.makeConstraints { make in
@@ -126,6 +129,7 @@ class MyDelegateHeaderView: UIView {
         rewardButton.titleLabel?.font = .systemFont(ofSize: 13)
         rewardButton.setTitleColor(.white, for: .normal)
         rewardButton.setImage(UIImage(named: "3.icon_Claim Rec2"), for: .normal)
+        rewardButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 5)
         rewardButton.addTarget(self, action: #selector(rewardRecordTapAction), for: .touchUpInside)
         bgIV.addSubview(rewardButton)
         rewardButton.snp.makeConstraints { make in

@@ -109,4 +109,12 @@ extension NodeDetail {
         }
         return "--"
     }
+
+    var delegatedRewardPerValue: String {
+        return String(format: "%.2f", ((Float(delegatedRewardPer ?? "0") ?? 0) / 100.0)) + "%"
+    }
+
+    var cumulativeRewardValue: String {
+        return cumulativeReward?.vonToLATString ?? "0"
+    }
 }

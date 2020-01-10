@@ -42,7 +42,7 @@ class DelegateDetailViewController: BaseViewController {
     }()
 
     var delegate: Delegate?
-    var delegateDetail: DelegateDetail?
+    var totalDelegate: TotalDelegate?
     var listData: [DelegateDetail] = []
 
     override func viewDidLoad() {
@@ -57,6 +57,7 @@ class DelegateDetailViewController: BaseViewController {
         tableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+
         tableView.emptyDataSetView { [weak self] view in
             let holder = self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, nil,"3.img-No trust") as? TableViewNoDataPlaceHolder
             holder?.descriptionLabel.text = Localized("delegate_node_details_nodata")
@@ -147,8 +148,15 @@ extension DelegateDetailViewController {
             case .success:
                 self?.listData.removeAll()
 
-                if let newData = data as? [DelegateDetail], newData.count > 0 {
-                    self?.listData.append(contentsOf: newData)
+                if let tDelegate = data as? TotalDelegate {
+                    self?.totalDelegate = tDelegate
+
+                    self?.walletHeaderView.rewardRatioLabel.text = tDelegate.availableDelegationBalanceValue
+                    self?.walletHeaderView.totalRewardLabel.text = tDelegate.delegatedValue
+
+                    if let newData = tDelegate.item, newData.count > 0 {
+                        self?.listData.append(contentsOf: newData)
+                    }
                 }
                 self?.tableView.reloadData()
             case .fail:

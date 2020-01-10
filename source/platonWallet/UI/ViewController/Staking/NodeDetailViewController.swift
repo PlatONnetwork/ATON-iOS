@@ -34,7 +34,6 @@ class NodeDetailViewController: BaseViewController {
         return tbView
     }()
 
-
     lazy var delegateButton = { () -> PButton in
         let button = PButton()
         button.setTitle(Localized("statking_validator_Delegate"), for: .normal)
@@ -139,6 +138,8 @@ class NodeDetailViewController: BaseViewController {
         nodeInfoView.nodeNameLabel.text = nodeDetail?.node.name ?? "--"
         nodeInfoView.nodeAddressLabel.text = nodeDetail?.node.nodeId?.nodeIdForDisplay() ?? "--"
         nodeInfoView.rateLabel.text = nodeDetail?.node.rate ?? "--"
+        nodeInfoView.rewardRatioLabel.text = nodeDetail?.delegatedRewardPerValue
+        nodeInfoView.totalRewardLabel.text = nodeDetail?.cumulativeRewardValue
 
         nodeInfoView.nodeNameButton.isHidden = (nodeDetail?.website == nil || nodeDetail?.website?.count == 0)
         nodeInfoView.statusButton.setTitle(nodeDetail?.node.status.0 ?? "--", for: .normal)

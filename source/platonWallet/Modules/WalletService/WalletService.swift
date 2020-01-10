@@ -235,7 +235,6 @@ public final class WalletService {
             let wallet = Wallet(name: walletName, keystoreObject: keystoreObj)
 
             self.exportPrivateKey(wallet: wallet, password: password, completion: { (privateKey, error) in
-
                 if error != nil && privateKey == nil {
                     completion(nil, error)
                     return

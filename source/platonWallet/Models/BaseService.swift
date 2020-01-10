@@ -19,6 +19,7 @@ let onMainPerformTimeout = 2.0
 
 let serviceQueue = DispatchQueue(label: "com.service.base", qos: .userInitiated, attributes: .concurrent)
 
+typealias CommonCompletion<T> = (_ result: PlatonCommonResult, _ data: T?) -> Void
 typealias PlatonCommonCompletion = (_ result : PlatonCommonResult, _ obj : AnyObject?) -> Void
 
 class BaseService {

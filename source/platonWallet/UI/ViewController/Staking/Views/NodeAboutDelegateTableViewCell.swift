@@ -41,6 +41,7 @@ class NodeAboutDelegateTableViewCell: UITableViewCell {
             lockedDelegateLabel.text = delegateDetail?.delegatedString ?? "--"
             unlockedDelegateLabel.text = delegateDetail?.releasedString ?? "--"
             nodeNameButton.isHidden = delegateDetail?.website?.count == 0
+            unclaimedLabel.text = delegateDetail?.withdrawRewardValue
 
             if delegateDetail?.isConsensus == false {
                 topConstraint?.update(priority: .high)
@@ -223,7 +224,7 @@ class NodeAboutDelegateTableViewCell: UITableViewCell {
         rewardContentView.addSubview(unclaimedLabel)
         unclaimedLabel.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
-            make.leading.equalTo(unclaimedTipLabel.snp.trailing).offset(6)
+            make.leading.equalTo(unclaimedTipLabel.snp.trailing).offset(2)
         }
 
         delegateButton.addTarget(self, action: #selector(delegateTapAction), for: .touchUpInside)

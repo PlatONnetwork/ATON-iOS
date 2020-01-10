@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -893,6 +893,9 @@
 		81F1F00423C30FA9000D687C /* RewardClaimComfirmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F1F00323C30FA9000D687C /* RewardClaimComfirmView.swift */; };
 		81F1F00523C30FA9000D687C /* RewardClaimComfirmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F1F00323C30FA9000D687C /* RewardClaimComfirmView.swift */; };
 		81F1F00623C30FA9000D687C /* RewardClaimComfirmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F1F00323C30FA9000D687C /* RewardClaimComfirmView.swift */; };
+		81F1F07D23C84D02000D687C /* RemoteGas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F1F07C23C84D02000D687C /* RemoteGas.swift */; };
+		81F1F07E23C84D02000D687C /* RemoteGas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F1F07C23C84D02000D687C /* RemoteGas.swift */; };
+		81F1F07F23C84D02000D687C /* RemoteGas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F1F07C23C84D02000D687C /* RemoteGas.swift */; };
 		81F5123D22FEE812005F3BDF /* DelegateModel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F5123C22FEE811005F3BDF /* DelegateModel+Extension.swift */; };
 		81FCCCD9217970580052FC29 /* UIView+Extenstions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FCCCD8217970580052FC29 /* UIView+Extenstions.swift */; };
 		81FCCCDB2179B3F10052FC29 /* AppFramework.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FCCCDA2179B3F10052FC29 /* AppFramework.swift */; };
@@ -1278,6 +1281,7 @@
 		81F1EFF723BF2F99000D687C /* RewardRecordModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardRecordModel.swift; sourceTree = "<group>"; };
 		81F1EFFB23BF33D8000D687C /* RewardRecordCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardRecordCell.swift; sourceTree = "<group>"; };
 		81F1F00323C30FA9000D687C /* RewardClaimComfirmView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardClaimComfirmView.swift; sourceTree = "<group>"; };
+		81F1F07C23C84D02000D687C /* RemoteGas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteGas.swift; sourceTree = "<group>"; };
 		81F5123C22FEE811005F3BDF /* DelegateModel+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DelegateModel+Extension.swift"; sourceTree = "<group>"; };
 		81FCCCD8217970580052FC29 /* UIView+Extenstions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extenstions.swift"; sourceTree = "<group>"; };
 		81FCCCDA2179B3F10052FC29 /* AppFramework.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFramework.swift; sourceTree = "<group>"; };
@@ -2030,6 +2034,7 @@
 				81ACB9CD2302A59300BB460B /* Transaction+Extension.swift */,
 				81CB8ADC228EA99B009E8AA0 /* TransactionResponse.swift */,
 				8141E673233A1C7D001A9351 /* TransactionQrcode.swift */,
+				81F1F07C23C84D02000D687C /* RemoteGas.swift */,
 			);
 			path = Transfer;
 			sourceTree = "<group>";
@@ -3109,6 +3114,7 @@
 				81F1F00623C30FA9000D687C /* RewardClaimComfirmView.swift in Sources */,
 				8118866E23B7590C00CAE5BA /* PopupDialog+Keyboard.swift in Sources */,
 				8118866F23B7590C00CAE5BA /* UIViewController+Extenstions.swift in Sources */,
+				81F1F07F23C84D02000D687C /* RemoteGas.swift in Sources */,
 				8118867023B7590C00CAE5BA /* NodePersistence.swift in Sources */,
 				8118867123B7590C00CAE5BA /* PTSButtonBarView.swift in Sources */,
 				8118867223B7590C00CAE5BA /* DelegateRecordViewController.swift in Sources */,
@@ -3382,6 +3388,7 @@
 				81F1F00523C30FA9000D687C /* RewardClaimComfirmView.swift in Sources */,
 				81B589A4235DA1FC00816B4E /* PopupDialog+Keyboard.swift in Sources */,
 				81B589A5235DA1FC00816B4E /* UIViewController+Extenstions.swift in Sources */,
+				81F1F07E23C84D02000D687C /* RemoteGas.swift in Sources */,
 				81B589A6235DA1FC00816B4E /* NodePersistence.swift in Sources */,
 				81B589A7235DA1FC00816B4E /* PTSButtonBarView.swift in Sources */,
 				81B589A8235DA1FC00816B4E /* DelegateRecordViewController.swift in Sources */,
@@ -3655,6 +3662,7 @@
 				81F1F00423C30FA9000D687C /* RewardClaimComfirmView.swift in Sources */,
 				81E64A59230400F3000F2E7C /* NodePersistence.swift in Sources */,
 				81D7E24922E7F6270069CDED /* PTSButtonBarView.swift in Sources */,
+				81F1F07D23C84D02000D687C /* RemoteGas.swift in Sources */,
 				81D7E26B22E85A370069CDED /* DelegateRecordViewController.swift in Sources */,
 				9ADE4523218009DB006F1C81 /* PPasswordTextField.swift in Sources */,
 				811AB2BD22EED6BB00284F1A /* SendInputTableViewCell.swift in Sources */,

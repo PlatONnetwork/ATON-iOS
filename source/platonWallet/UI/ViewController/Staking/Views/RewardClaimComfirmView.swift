@@ -88,6 +88,7 @@ class RewardClaimComfirmView: UIView {
             make.leading.equalToSuperview().offset(16)
         }
 
+        feeLabel.textAlignment = .right
         feeLabel.textColor = .black
         feeLabel.font = .systemFont(ofSize: 14)
         addSubview(feeLabel)
@@ -109,6 +110,7 @@ class RewardClaimComfirmView: UIView {
             make.leading.equalToSuperview().offset(16)
         }
 
+        walletLabel.textAlignment = .right
         walletLabel.textColor = .black
         walletLabel.font = .systemFont(ofSize: 14, weight: .medium)
         addSubview(walletLabel)

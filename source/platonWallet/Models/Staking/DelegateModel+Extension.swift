@@ -16,14 +16,6 @@ extension Delegate {
         return AssetVCSharedData.sharedData.getWalletName(for: walletAddress) ?? "--"
     }
 
-    var balance: String {
-        guard let abalance = BigUInt(availableDelegationBalance ?? "0"), abalance > BigUInt.zero else {
-            return "--"
-        }
-
-        return (availableDelegationBalance ?? "0").vonToLATString ?? "--"
-    }
-
     var walletAvatar: UIImage? {
         let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.address.lowercased() == walletAddress.lowercased() }.first
         guard let avatarString = localWallet?.address.walletAddressLastCharacterAvatar() else { return nil }
@@ -32,6 +24,40 @@ extension Delegate {
 
     var delegateValue: String {
         return delegated?.vonToLATString ?? "--"
+    }
+
+    var cumulativeRewardValue: String {
+        return cumulativeReward?.vonToLATString ?? "--"
+    }
+
+    var withdrawRewardValue: String {
+        return withdrawReward?.vonToLATString ?? "--"
+    }
+
+    var status: RewardStatus {
+        let txs = TransferPersistence.getRewardPendingTransaction(address: walletAddress)
+        if txs.count > 0 {
+            return .claiming
+        }
+
+        if let withdrawRewardBigUInt = BigUInt(withdrawReward ?? "0"), withdrawRewardBigUInt > BigUInt.zero {
+            return .unclaim
+        }
+
+        return .none
+    }
+
+    var freeBalanceBInt: BigUInt {
+        guard
+            let balance = AssetService.sharedInstace.balances.first(where: { $0.addr.lowercased() == walletAddress.lowercased() }),
+            let freeBInt = BigUInt(balance.free ?? "0") else {
+                return BigUInt.zero
+        }
+        return freeBInt
+    }
+
+    var freeBalanceValue: String {
+        return Localized("claim_comfirm_balance") + "：" + (freeBalanceBInt.description.vonToLATString ?? "0.00").ATPSuffix()
     }
 }
 
@@ -68,6 +94,8 @@ extension DelegateDetail {
         let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.address.lowercased() == address.lowercased() }.first
         return localWallet != nil
     }
+
+
 }
 
 extension DelegateDetail {

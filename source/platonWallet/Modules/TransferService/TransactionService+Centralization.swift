@@ -123,4 +123,33 @@ extension TransactionService {
             }
         }
     }
+
+    func getContractGas(from: String, txType: TxType, completion: CommonCompletion<RemoteGas>?) {
+        var parameters : Dictionary<String,Any> = [:]
+        parameters["from"] = from
+        parameters["txType"] = txType.rawValue
+
+        let url = SettingService.getCentralizationURL() + "/transaction/estimateGas"
+
+        var request = URLRequest(url: try! url.asURL())
+        request.httpBody = try! JSONSerialization.data(withJSONObject: parameters)
+        request.httpMethod = "POST"
+        request.timeoutInterval = requestTimeout
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        Alamofire.request(request).responseData { response in
+            switch response.result {
+            case .success(let data):
+                do {
+                    let decoder = JSONDecoder()
+                    let response = try decoder.decode(JSONResponse<RemoteGas>.self, from: data)
+                    completion?(.success, response.data)
+                } catch let err {
+                    completion?(.fail(-1, err.localizedDescription), nil)
+                }
+            case .failure(let error):
+                completion?(.fail(-1, error.localizedDescription), nil)
+            }
+        }
+    }
 }

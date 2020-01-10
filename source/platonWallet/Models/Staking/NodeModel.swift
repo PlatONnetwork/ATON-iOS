@@ -101,6 +101,8 @@ struct NodeDetail: Decodable {
     var delegate: String?
     var blockOutNumber: Int?
     var blockRate: String?
+    var delegatedRewardPer: String?
+    var cumulativeReward: String?
 
     enum NodeCodingKeys: String, CodingKey {
         case nodeId
@@ -122,6 +124,8 @@ struct NodeDetail: Decodable {
         case delegate
         case blockOutNumber
         case blockRate
+        case delegatedRewardPer
+        case cumulativeReward
     }
 
     public init(from decoder: Decoder) throws {
@@ -145,6 +149,8 @@ struct NodeDetail: Decodable {
         delegate = try container.decodeIfPresent(String.self, forKey: .delegate)
         blockOutNumber = try container.decodeIfPresent(Int.self, forKey: .blockOutNumber)
         blockRate = try container.decodeIfPresent(String.self, forKey: .blockRate)
+        delegatedRewardPer = try container.decodeIfPresent(String.self, forKey: .delegatedRewardPer)
+        cumulativeReward = try container.decodeIfPresent(String.self, forKey: .cumulativeReward)
 
         node = Node(nodeId: nodeId, ranking: ranking, name: name, deposit: deposit, url: url, ratePA: ratePA, nStatus: nodeStatus, isInit: isInit, isConsensus: isConsensus, delegateSum: delegateSum, delegate: delegate)
     }
