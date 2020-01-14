@@ -376,6 +376,21 @@ extension Transaction {
         }
     }
 
+    var topValueDescription : String? {
+        get {
+            if let type = txType, type == .claimReward {
+                return BigUInt(totalReward ?? "0")?.divide(by: ETHToWeiMultiplier, round: 8).displayForMicrometerLevel(maxRound: 8)
+            } else if let type = txType, type == .delegateWithdraw {
+                return ((BigUInt(value ?? "0") ?? BigUInt.zero) + (BigUInt(totalReward ?? "0") ?? BigUInt.zero)) .divide(by: ETHToWeiMultiplier, round: 8).displayForMicrometerLevel(maxRound: 8)
+            } else {
+                guard value != nil else {
+                    return "0.00"
+                }
+                return BigUInt(value!)?.divide(by: ETHToWeiMultiplier, round: 8).displayForMicrometerLevel(maxRound: 8)
+            }
+        }
+    }
+
     var valueDescription : String? {
         get {
             if let type = txType, type == .claimReward {

@@ -208,7 +208,8 @@ extension AssetTransactionViewControllerV060 {
                         tx.direction = (selectedAddress.lowercased() == tx.from?.lowercased() ? .Sent : selectedAddress.lowercased() == tx.to?.lowercased() ? .Receive : .unknown)
                         return tx
                     case .delegateWithdraw,
-                         .stakingWithdraw:
+                         .stakingWithdraw,
+                         .claimReward:
                         tx.direction = .Receive
                         return tx
                     default:

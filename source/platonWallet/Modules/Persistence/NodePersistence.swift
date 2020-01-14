@@ -31,7 +31,7 @@ class NodePersistence {
     public class func getAll(sort: NodeSort) -> [Node] {
         let realm = try! Realm(configuration: RealmHelper.getConfig())
         let r = realm.objects(Node.self).sorted(by: sort.sortArray)
-        let array = Array(r)
+        let array = Array(r).detached
         return array
     }
 
@@ -39,7 +39,7 @@ class NodePersistence {
         let predicate = NSPredicate(format: "nodeStatus == 'Active'")
         let realm = try! Realm(configuration: RealmHelper.getConfig())
         let r = realm.objects(Node.self).filter(predicate).sorted(by: sort.sortArray)
-        let array = Array(r)
+        let array = Array(r).detached
         return array
     }
 
@@ -47,7 +47,7 @@ class NodePersistence {
         let predicate = NSPredicate(format: "nodeStatus == 'Candidate'")
         let realm = try! Realm(configuration: RealmHelper.getConfig())
         let r = realm.objects(Node.self).filter(predicate).sorted(by: sort.sortArray)
-        let array = Array(r)
+        let array = Array(r).detached
         return array
     }
 
@@ -61,7 +61,7 @@ class NodePersistence {
 
         let realm = try! Realm(configuration: RealmHelper.getConfig())
         let r = realm.objects(Node.self).filter(predicate).sorted(by: sort.sortArray)
-        let array = Array(r)
+        let array = Array(r).detached
         return array
     }
 }

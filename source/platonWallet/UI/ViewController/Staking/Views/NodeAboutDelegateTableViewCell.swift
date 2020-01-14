@@ -9,6 +9,7 @@
 import UIKit
 import Localize_Swift
 import SnapKit
+import BigInt
 
 class NodeAboutDelegateTableViewCell: UITableViewCell {
 
@@ -43,10 +44,10 @@ class NodeAboutDelegateTableViewCell: UITableViewCell {
             nodeNameButton.isHidden = delegateDetail?.website?.count == 0
             unclaimedLabel.text = delegateDetail?.withdrawRewardValue
 
-            if delegateDetail?.isConsensus == false {
-                topConstraint?.update(priority: .high)
-            } else {
+            if (delegateDetail?.withdrawRewardBInt ?? BigUInt.zero) > BigUInt.zero {
                 topConstraint?.update(priority: .low)
+            } else {
+                topConstraint?.update(priority: .high)
             }
         }
     }

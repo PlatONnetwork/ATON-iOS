@@ -11,12 +11,16 @@ import Foundation
 class RewardModel: Decodable {
     var address: String
     var totalReward: String
+    var sequence: Int
     var records: [RewardRecordModel]
+    var timestamp: String
     var isOpen: Bool = false
 
-    init(address: String, totalReward: String, records: [RewardRecordModel], isOpen: Bool) {
+    init(address: String, totalReward: String, timestamp: String, sequence: Int, records: [RewardRecordModel], isOpen: Bool) {
         self.address = address
         self.totalReward = totalReward
+        self.timestamp = timestamp
+        self.sequence = sequence
         self.records = records
         self.isOpen = isOpen
     }
@@ -25,6 +29,8 @@ class RewardModel: Decodable {
         case address
         case totalReward
         case records = "item"
+        case timestamp
+        case sequence
     }
 }
 
@@ -60,6 +66,17 @@ extension RewardModel {
 
     var amountForDisplay: String {
         return "+" + (totalReward.vonToLATString ?? "0").balanceFixToDisplay(maxRound: 8).ATPSuffix()
+    }
+
+    var recordTime: String? {
+        let format = DateFormatter()
+        let date = Date(timeIntervalSince1970: TimeInterval((Int(timestamp) ?? 0)/1000))
+        let localZone = NSTimeZone.local
+        format.timeZone = localZone
+        format.locale = NSLocale.current
+        format.dateFormat = "#yyyy/MMdd HH:mm"
+        let strDate = format.string(from: date)
+        return strDate
     }
 }
 

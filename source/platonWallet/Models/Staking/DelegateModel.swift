@@ -49,10 +49,14 @@ struct DelegateDetail: Decodable {
     var sequence: String?
     var isInit: Bool = false
     var isConsensus: Bool = false
-    var withdrawReward: String
+    var withdrawReward: String?
 
     var withdrawRewardValue: String {
-        return withdrawReward.vonToLATString ?? "--"
+        return withdrawReward?.vonToLATString ?? "--"
+    }
+
+    var withdrawRewardBInt: BigUInt {
+        return BigUInt(withdrawReward ?? "0") ?? BigUInt.zero
     }
 
 }

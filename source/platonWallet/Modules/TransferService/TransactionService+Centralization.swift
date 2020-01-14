@@ -124,10 +124,17 @@ extension TransactionService {
         }
     }
 
-    func getContractGas(from: String, txType: TxType, completion: CommonCompletion<RemoteGas>?) {
+    func getContractGas(from: String, txType: TxType, nodeId: String? = nil, stakingBlockNum: String? = nil, completion: CommonCompletion<RemoteGas>?) {
         var parameters : Dictionary<String,Any> = [:]
         parameters["from"] = from
         parameters["txType"] = txType.rawValue
+        if let nid = nodeId {
+            parameters["nodeId"] = nid
+        }
+
+        if let sBlockNum = stakingBlockNum {
+            parameters["stakingBlockNum"] = sBlockNum
+        }
 
         let url = SettingService.getCentralizationURL() + "/transaction/estimateGas"
 

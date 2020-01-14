@@ -143,8 +143,7 @@ class NodeDetailViewController: BaseViewController {
 
         nodeInfoView.nodeNameButton.isHidden = (nodeDetail?.website == nil || nodeDetail?.website?.count == 0)
         nodeInfoView.statusButton.setTitle(nodeDetail?.node.status.0 ?? "--", for: .normal)
-//        nodeInfoView.statusButton.setTitleColor(nodeDetail?.node.status.1 ?? status_blue_color, for: .normal)
-//        nodeInfoView.statusButton.layer.borderColor = (nodeDetail?.node.status.1 ?? status_blue_color).cgColor
+        nodeInfoView.ratePATrend = nodeDetail?.delegatedRatePATrend
 
         footerView.institutionalLabel.text = nodeDetail?.institutionalForDisplay ?? "--"
         footerView.websiteLabel.text = nodeDetail?.websiteForDisplay ?? "--"
@@ -177,7 +176,7 @@ class NodeDetailViewController: BaseViewController {
         var details: [(String, String)] = []
         details.append((Localized("statking_validator_total_staked"), nodeDetail?.totalStaked ?? "--"))
         details.append((Localized("statking_validator_delegations"), nodeDetail?.delegations ?? "--"))
-        details.append((Localized("statking_validator_delegators"), nodeDetail?.delegate ?? "--"))
+        details.append((Localized("statking_validator_delegators"), nodeDetail?.node.delegate ?? "--"))
         details.append((Localized("statking_validator_blocks"), nodeDetail?.blockOut ?? "--"))
         details.append((Localized("statking_validator_blocks_rate"), nodeDetail?.bRate ?? "--"))
         details.append((Localized("statking_validator_slash"), nodeDetail?.slash ?? "--"))
@@ -270,7 +269,6 @@ extension NodeDetailViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
 }
-
 
 
 class NoNetWorkView: UIView {

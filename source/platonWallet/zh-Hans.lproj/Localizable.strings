@@ -401,7 +401,7 @@
 "SettingsVC_languages_title" = "语言";
 "SettingsVC_faceId_openFailed_tips" = "Touch ID或Face ID已锁定，请至“系统-设置”解锁后重试";
 "SettingsVC_threshold_title" = "大额提醒";
-"SettingsVC_Resend_title" = "防重发提醒";
+"SettingsVC_Resend_title" = "重复交易提醒";
 
 "SettingsVC_nodeSet_editBtn_title" = "编辑";
 "SettingsVC_nodeSet_saveBtn_title" = "保存";
@@ -765,7 +765,7 @@
 "staking_validator_node_active" = "活跃中";
 "staking_validator_node_candidate" = "候选中";
 
-"staking_validator_delegate_total" = "总质押";
+"staking_validator_delegate_total" = "委托";
 "staking_validator_delegate_rate_about" = "预计年化率";
 
 "statking_validator_total_staked" = "总质押(LAT)";
@@ -908,6 +908,8 @@
 "confirm_generate_qrcode_for_signed_tx" = "授权签名";
 "confirm_generate_qrcode_for_signed_tx_tip" = "使用对应观察钱包扫描下方二维码，完成授权";
 "confirm_button_signed_tx" = "完成";
+"confirm_reward_wallet" = "领取钱包:";
+"confirm_reward_amount" = "领取数量:";
 
 "offline_signature_title" = "交易预览";
 
@@ -915,6 +917,7 @@
 "offline_signature_notmatch_wallet" = "钱包不匹配";
 "touchid_auth_text" = "请验证%@";
 "touchid_verify_fail" = "指纹识别失败，请再试一次";
+"offline_signature_not_privatekey" = "签名钱包密钥不存在";
 
 "delete_observed_wallet_alert_title" = "删除观察钱包";
 "delete_observed_wallet_alert_message" = "请确认是否删除此观察钱包？";
@@ -964,3 +967,5 @@
 "claim_comfirm_comfirm" = "确认";
 
 "mydelegates_search_cancel" = "隐藏";
+
+"transaction_warning_wait_for_previous" = "请等待上笔交易完成后方可继续交易！";

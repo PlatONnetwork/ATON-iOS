@@ -385,6 +385,12 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
             return
         }
 
+        let transactions = TransferPersistence.getTransferPendingTransaction(address: wallet.address)
+        guard transactions.count == 0 else {
+            showErrorMessage(text: Localized("transaction_warning_wait_for_previous"))
+            return
+        }
+
         let twoHourTxs = TwoHourTransactionPersistence.getTwoHourTransactions(from: wallet.address, to: toAddress, value: amountBInt.description)
         let currentTimeInterval =  Date().millisecondsSince1970
         let twoHourTimeInterval = currentTimeInterval-AppConfig.OvertimeTranction.overtime
@@ -457,41 +463,8 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
         offlineConfirmView.submitBtn.localizedNormalTitle = "confirm_button_next"
 
         let controller = PopUpViewController()
-        controller.onCompletion = { [weak self] in
-            self?.showQrcodeScan()
-        }
-        controller.setUpConfirmView(view: offlineConfirmView, width: PopUpContentWidth)
-        controller.show(inViewController: self)
-    }
-
-    @objc func showQrcodeScan() {
-        var qrcodeData: QrcodeData<[String]>?
-        let scanView = OfflineSignatureScanView()
-        scanView.scanCompletion = { [weak self] in
-            self?.doShowScanController(completion: { (data) in
-                guard
-                    let qrcode = data,
-                    let signedDatas = qrcode.qrCodeData, qrcode.chainId == web3.chainId else { return }
-                if qrcode.timestamp != self?.generateQrCode?.timestamp {
-                    self?.showErrorMessage(text: Localized("offline_signature_invalid"), delay: 2.0)
-                    return
-                }
-                DispatchQueue.main.async {
-                    scanView.textView.text = signedDatas.joined(separator: ";")
-                }
-                qrcodeData = qrcode
-            })
-        }
-        let type = ConfirmViewType.qrcodeScan(contentView: scanView)
-        let offlineConfirmView = OfflineSignatureConfirmView(confirmType: type)
-        offlineConfirmView.titleLabel.localizedText = "confirm_scan_qrcode_for_read"
-        offlineConfirmView.descriptionLabel.localizedText = "confirm_scan_qrcode_for_read_tip"
-        offlineConfirmView.submitBtn.localizedNormalTitle = "confirm_button_send"
-
-        let controller = PopUpViewController()
         controller.onCompletion = {
-            guard let qrcode = qrcodeData else { return }
-            AssetViewControllerV060.sendSignatureTransaction(qrcode: qrcode)
+            AssetViewControllerV060.getInstance()?.showQrcodeScan()
         }
         controller.setUpConfirmView(view: offlineConfirmView, width: PopUpContentWidth)
         controller.show(inViewController: self)
@@ -519,7 +492,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
                     let nonceString = nonce.quantity.description
 
                     let transactionData = TransactionQrcode(amount: amount, chainId: web3.properties.chainId, from: wallet.address, to: to, gasLimit: gasLimit, gasPrice: gasPrice, nonce: nonceString, typ: nil, nodeId: nil, nodeName: nil, stakingBlockNum: nil, functionType: 0)
-                    let qrcodeData = QrcodeData(qrCodeType: 0, qrCodeData: [transactionData], timestamp: Int(Date().timeIntervalSince1970 * 1000), chainId: web3.chainId, functionType: nil, from: nil)
+                    let qrcodeData = QrcodeData(qrCodeType: 0, qrCodeData: [transactionData], chainId: web3.chainId, functionType: nil, from: nil)
                     guard
                         let data = try? JSONEncoder().encode(qrcodeData),
                         let content = String(data: data, encoding: .utf8) else { return }

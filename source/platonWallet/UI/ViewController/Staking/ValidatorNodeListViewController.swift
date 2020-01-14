@@ -30,7 +30,20 @@ class ValidatorNodeListViewController: BaseViewController, IndicatorInfoProvider
     }
 
     var isSearching: Bool = false
-    var isShowSearch: Bool = false
+    var isShowSearch: Bool = false {
+        didSet {
+            if isShowSearch {
+                tableView.mj_header = nil
+                tableView.mj_footer = nil
+                tableView.tableHeaderView = searchBar
+                searchBar.becomeFirstResponder()
+            } else {
+                tableView.mj_footer = refreshFooter
+                tableView.mj_header = refreshHeader
+                tableView.tableHeaderView = nil
+            }
+        }
+    }
 
     lazy var tableView = { () -> UITableView in
         let tbView = UITableView(frame: .zero)
@@ -40,6 +53,8 @@ class ValidatorNodeListViewController: BaseViewController, IndicatorInfoProvider
         tbView.separatorStyle = .none
         tbView.backgroundColor = normal_background_color
         tbView.tableFooterView = UIView()
+        tbView.mj_header = refreshHeader
+        tbView.mj_footer = refreshFooter
         if #available(iOS 11, *) {
             tbView.estimatedRowHeight = UITableView.automaticDimension
         } else {
@@ -75,8 +90,15 @@ class ValidatorNodeListViewController: BaseViewController, IndicatorInfoProvider
         return searchbar
     }()
 
-    let refreshHeader = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(fetchDataLastest))!
-    let refreshFooter = MJRefreshAutoFooter(refreshingTarget: self, refreshingAction: #selector(fetchDataMore))!
+    lazy var refreshHeader = { () -> MJRefreshHeader in
+        let header = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(fetchDataLastest))!
+        return header
+    }()
+
+    lazy var refreshFooter = { () -> MJRefreshFooter in
+        let footer = MJRefreshAutoFooter(refreshingTarget: self, refreshingAction: #selector(fetchDataMore))!
+        return footer
+    }()
 
     var listData: [Node] = [] {
         didSet {
@@ -111,10 +133,7 @@ class ValidatorNodeListViewController: BaseViewController, IndicatorInfoProvider
             view.customView(holder)
             view.isScrollAllowed(true)
         }
-
-        tableView.mj_header = refreshHeader
-        tableView.mj_footer = refreshFooter
-        tableView.mj_header.beginRefreshing()
+//        tableView.mj_header.beginRefreshing()
 
         NotificationCenter.default.addObserver(self, selector: #selector(scrollToTop), name: Notification.Name.ATON.DidTabBarDoubleClick, object: nil)
     }
@@ -125,7 +144,7 @@ class ValidatorNodeListViewController: BaseViewController, IndicatorInfoProvider
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        if isViewLoaded {
+        if isViewLoaded && !isShowSearch {
             fetchData(isFetch: controllerType == .all, nil)
         }
     }
@@ -155,13 +174,8 @@ extension ValidatorNodeListViewController {
 
     private func fetchData(isFetch: Bool, _ nodeId: String?) {
         StakingService.sharedInstance.getNodeList(controllerType: controllerType, sort: currentSort, isFetch: isFetch) { [weak self] (result, data) in
-            if self?.tableView.mj_header != nil {
-                self?.tableView.mj_header.endRefreshing()
-            }
-
-            if self?.tableView.mj_footer != nil {
-                self?.tableView.mj_footer.endRefreshing()
-            }
+            self?.tableView.mj_header.endRefreshing()
+            self?.tableView.mj_footer.endRefreshing()
 
             switch result {
             case .success:
@@ -170,38 +184,20 @@ extension ValidatorNodeListViewController {
                 }
 
                 if let newData = data as? [Node], newData.count > 0 {
-                    if self?.tableView.mj_footer != nil {
-                        self?.tableView.mj_footer.resetNoMoreData()
-                    }
+                    self?.tableView.mj_footer.resetNoMoreData()
                     self?.listData.append(contentsOf: newData)
                 } else {
-                    if self?.tableView.mj_footer != nil {
-                        self?.tableView.mj_footer.endRefreshingWithNoMoreData()
-                    }
+                    self?.tableView.mj_footer.endRefreshingWithNoMoreData()
                 }
                 self?.tableView.reloadData()
             case .fail:
-                if self?.tableView.mj_footer != nil {
-                    self?.tableView.mj_footer.isHidden = true
-                }
+                self?.tableView.mj_footer.isHidden = true
             }
-        }
-    }
-
-    public func pullDownForRefreshData() {
-        if tableView.mj_header != nil {
-            tableView.mj_header.beginRefreshing()
         }
     }
 
     func searchDidTapHandler() {
         isShowSearch = !isShowSearch
-        if isShowSearch && tableView.tableHeaderView == nil {
-            tableView.tableHeaderView = searchBar
-            searchBar.becomeFirstResponder()
-        } else if !isShowSearch && tableView.tableHeaderView != nil {
-            tableView.tableHeaderView = nil
-        }
     }
 
     func hideSearchBarView() {
@@ -210,6 +206,14 @@ extension ValidatorNodeListViewController {
     }
 
     @objc func fetchDataLastest() {
+        if isShowSearch {
+            guard let text = searchBar.text else {
+                return
+            }
+            searchResults = StakingService.sharedInstance.searchNodes(text: text, type: controllerType, sort: currentSort)
+            tableView.reloadData()
+            return
+        }
         fetchData(isFetch: true, nil)
     }
 
@@ -261,15 +265,14 @@ extension ValidatorNodeListViewController: UITableViewDelegate, UITableViewDataS
 
 extension ValidatorNodeListViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        print("start search")
         guard let text = searchBar.text else { return }
+        searchBar.resignFirstResponder()
         isSearching = true
         searchResults = StakingService.sharedInstance.searchNodes(text: text, type: controllerType, sort: currentSort)
         tableView.reloadData()
     }
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        print("searchBarCancelButtonClicked")
         isSearching = false
         searchResults = []
         hideSearchBarView()

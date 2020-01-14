@@ -31,7 +31,7 @@ class MyDelegateViewCell: UITableViewCell {
 
             delegatedLabel.text = delegate?.delegateValue
             totalRewardLabel.text = delegate?.cumulativeRewardValue
-            unclaimedRewardLabel.text = delegate?.withdrawRewardValue
+            unclaimedRewardLabel.attributedText = delegate?.withdrawRewardValue
 
             guard let status = delegate?.status else {
                 claimButton.isHidden = true
@@ -229,7 +229,7 @@ class MyDelegateViewCell: UITableViewCell {
         }
 
         unclaimedRewardLabel.textColor = .black
-        unclaimedRewardLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+        unclaimedRewardLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         unclaimedRewardLabel.text = "--"
         unclaimedRewardLabel.adjustsFontSizeToFitWidth = true
         delegateBackgroundView.addSubview(unclaimedRewardLabel)

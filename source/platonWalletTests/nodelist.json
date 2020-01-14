@@ -7,7 +7,7 @@
 		"name": "platon.node.1",
 		"deposit": "10000000000000000000000000",
 		"url": "",
-		"ratePA": "0",
+		"delegatedRatePA": "0",
 		"nodeStatus": "Active",
 		"isInit": true,
         "isConsensus": false
@@ -17,7 +17,7 @@
 		"name": "platon.node.3",
 		"deposit": "10000000000000000000000000",
 		"url": "",
-		"ratePA": "0",
+		"delegatedRatePA": "0",
 		"nodeStatus": "Active",
 		"isInit": true,
         "isConsensus": false

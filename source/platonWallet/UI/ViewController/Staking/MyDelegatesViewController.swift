@@ -11,6 +11,7 @@ import Localize_Swift
 import EmptyDataSet_Swift
 import MJRefresh
 import BigInt
+import platonWeb3
 
 class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
 
@@ -49,6 +50,8 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
     }
 
     var listData: [Delegate] = []
+    var generateQrCode: QrcodeData<[TransactionQrcode]>?
+    var currentDelegate: Delegate?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -134,7 +137,9 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
 
     func updateDelagateHeader() {
         guard listData.count > 0 else {
-            headerView.totalDelegateLabel.text = "--"
+            headerView.totalDelegateLabel.text = "0.00"
+            headerView.totalRewardLabel.text = "0.00"
+            headerView.unclaimedRewardLabel.text = "0.00"
             return
         }
         let total = listData.reduce(BigUInt(0)) { (result, delegate) -> BigUInt in
@@ -191,47 +196,58 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
                 self?.showErrorMessage(text: errMsg ?? "get gas api error", delay: 2.0)
             }
         }
-
-//        let confirmView = UIView.viewFromXib(theClass: TransferConfirmView.self) as! TransferConfirmView
-//        confirmView.hideExecutor()
-//        let unionAttr = NSAttributedString(string: " LAT", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16)])
-//        let amountAttr = NSMutableAttributedString(string: amountView.textField.text!.displayForMicrometerLevel(maxRound: 8))
-//        amountAttr.append(unionAttr)
-//        confirmView.totalLabel.attributedText = amountAttr
-//        confirmView.toAddressLabel.text = walletAddressView.textField.text!.addressDisplayInLocal() ?? "--"
-//        confirmView.walletName.text = wallet.address.addressDisplayInLocal() ?? "--"
-//        let feeString = self.totalFee().divide(by: ETHToWeiMultiplier, round: 8)
-//        confirmView.feeLabel.text = feeString.ATPSuffix()
-//        if wallet.type == .observed {
-//            confirmView.submitBtn.localizedNormalTitle =  "confirm_button_next"
-//        }
-//
-
     }
 
     func showClaimConfirmView(delegate: Delegate, gas: RemoteGas) {
         let controller = PopUpViewController()
         let confirmView = RewardClaimComfirmView()
-        confirmView.valueLabel.text = delegate.withdrawRewardValue
+        confirmView.valueLabel.attributedText = delegate.withdrawRewardValue
         confirmView.walletLabel.text = delegate.walletName
         confirmView.balanceLabel.text = delegate.freeBalanceValue
         confirmView.feeLabel.text = (gas.gasUsed.vonToLATString ?? "0.00").ATPSuffix()
         confirmView.comfirmBtn.style = (delegate.freeBalanceBInt >= gas.gasUsedBInt) ? .blue : .disable
-        confirmView.onCompletion = { [weak self] in
-            controller.onDismissViewController()
+        controller.setUpConfirmView(view: confirmView, width: PopUpContentWidth)
+        controller.onCompletion = { [weak self] in
             self?.inputPasswordForClaimTransaction(delegate: delegate, gas: gas)
         }
-        controller.setUpConfirmView(view: confirmView, width: PopUpContentWidth)
         controller.show(inViewController: self)
     }
 
     func inputPasswordForClaimTransaction(delegate: Delegate, gas: RemoteGas) {
+        currentDelegate = delegate
         guard let wallet = (AssetVCSharedData.sharedData.walletList as? [Wallet])?.first(where: { $0.address.lowercased() == delegate.walletAddress.lowercased() }) else {
             showMessage(text: "notfound wallet", delay: 2.0)
             return
         }
 
+        guard let amount = delegate.withdrawReward else {
+            showErrorMessage(text: "withdraw reward must be > 0")
+            return
+        }
+
         if wallet.type == .observed {
+            let funcType = FuncType.withdrawDelegateReward
+            web3.platon.platonGetNonce(sender: wallet.address) { [weak self] (result, blockNonce) in
+                guard let self = self else { return }
+                switch result {
+                case .success:
+                    guard let nonce = blockNonce else { return }
+                    let nonceString = nonce.quantity.description
+
+                    let transactionData = TransactionQrcode(amount: amount, chainId: web3.properties.chainId, from: wallet.address, to: PlatonConfig.ContractAddress.rewardContractAddress, gasLimit: gas.gasLimit, gasPrice: gas.gasPrice, nonce: nonceString, typ: nil, nodeId: nil, nodeName: nil, stakingBlockNum: nil, functionType: funcType.typeValue)
+
+                    let qrcodeData = QrcodeData(qrCodeType: 0, qrCodeData: [transactionData], chainId: web3.chainId, functionType: 5000, from: wallet.address)
+                    guard
+                        let data = try? JSONEncoder().encode(qrcodeData),
+                        let content = String(data: data, encoding: .utf8) else { return }
+                    self.generateQrCode = qrcodeData
+                    DispatchQueue.main.async {
+                        self.showOfflineConfirmView(content: content)
+                    }
+                case .fail:
+                    break
+                }
+            }
             return
         }
 
@@ -262,6 +278,123 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
                 self?.tableView.mj_header.beginRefreshing()
             case .fail(_, let errMsg):
                 self?.showMessage(text: errMsg ?? "network error", delay: 2.0)
+            }
+        }
+    }
+
+    func showOfflineConfirmView(content: String) {
+        let qrcodeView = OfflineSignatureQRCodeView()
+        let qrcodeWidth = PopUpContentWidth - 32
+        let qrcodeImage = UIImage.geneQRCodeImageFor(content, size: qrcodeWidth, isGzip: true)
+        qrcodeView.imageView.image = qrcodeImage
+
+        let type = ConfirmViewType.qrcodeGenerate(contentView: qrcodeView)
+        let offlineConfirmView = OfflineSignatureConfirmView(confirmType: type)
+        offlineConfirmView.titleLabel.localizedText = "confirm_generate_qrcode_for_transaction"
+        offlineConfirmView.descriptionLabel.localizedText = "confirm_generate_qrcode_for_transaction_tip"
+        offlineConfirmView.submitBtn.localizedNormalTitle = "confirm_button_next"
+
+        let controller = PopUpViewController()
+        controller.onCompletion = { [weak self] in
+            self?.showQrcodeScan()
+        }
+        controller.setUpConfirmView(view: offlineConfirmView, width: PopUpContentWidth)
+        controller.show(inViewController: self)
+    }
+
+    func showQrcodeScan() {
+        var qrcodeData: QrcodeData<[String]>?
+        let scanView = OfflineSignatureScanView()
+        scanView.scanCompletion = { [weak self] in
+            self?.doShowScanController(completion: { (data) in
+                guard
+                    let qrcode = data,
+                    let signedDatas = qrcode.qrCodeData, qrcode.chainId == web3.chainId else { return }
+                DispatchQueue.main.async {
+                    scanView.textView.text = signedDatas.joined(separator: ";")
+                }
+                qrcodeData = qrcode
+            })
+        }
+        let type = ConfirmViewType.qrcodeScan(contentView: scanView)
+        let offlineConfirmView = OfflineSignatureConfirmView(confirmType: type)
+        offlineConfirmView.titleLabel.localizedText = "confirm_scan_qrcode_for_read"
+        offlineConfirmView.descriptionLabel.localizedText = "confirm_scan_qrcode_for_read_tip"
+        offlineConfirmView.submitBtn.localizedNormalTitle = "confirm_button_send"
+
+        let controller = PopUpViewController()
+        controller.onCompletion = {
+            guard let qrcode = qrcodeData else { return }
+            self.sendSignatureTransaction(qrcode: qrcode)
+        }
+        controller.setUpConfirmView(view: offlineConfirmView, width: PopUpContentWidth)
+        controller.show(inViewController: self)
+    }
+
+    func doShowScanController(completion: ((QrcodeData<[String]>?) -> Void)?) {
+        let controller = QRScannerViewController()
+        controller.hidesBottomBarWhenPushed = true
+        controller.scanCompletion = { result in
+            let qrcodeType = QRCodeDecoder().decode(result)
+            switch qrcodeType {
+            case .signedTransaction(let data):
+                completion?(data)
+            default:
+                AssetViewControllerV060.getInstance()?.showMessage(text: Localized("QRScan_failed_tips"))
+                completion?(nil)
+            }
+        }
+
+        (UIApplication.shared.keyWindow?.rootViewController as? BaseNavigationController)?.pushViewController(controller, animated: true)
+    }
+
+    func sendSignatureTransaction(qrcode: QrcodeData<[String]>) {
+
+        guard
+            let signatureArr = qrcode.qrCodeData,
+            let type = qrcode.functionType,
+            let from = qrcode.from,
+            let amount = currentDelegate?.withdrawReward
+        else { return }
+        for (index, signature) in signatureArr.enumerated() {
+            let bytes = signature.hexToBytes()
+            let rlpItem = try? RLPDecoder().decode(bytes)
+
+            if
+                let signedTransactionRLP = rlpItem,
+                let signedTransaction = try? EthereumSignedTransaction(rlp: signedTransactionRLP) {
+                web3.platon.sendRawTransaction(transaction: signedTransaction) { (response) in
+                    switch response.status {
+                    case .success(let result):
+                        guard
+                            let to = signedTransaction.to?.rawAddress.toHexString().add0x() else { return }
+                        let gasPrice = signedTransaction.gasPrice.quantity
+                        let gasLimit = signedTransaction.gasLimit.quantity
+                        let gasUsed = gasPrice.multiplied(by: gasLimit).description
+
+                        let tx = Transaction()
+                        tx.from = from
+                        tx.to = to
+                        tx.gasUsed = gasUsed
+                        tx.createTime = Int(Date().timeIntervalSince1970 * 1000)
+                        tx.txhash = result.bytes.toHexString().add0x()
+                        tx.txReceiptStatus = -1
+                        tx.totalReward = amount
+                        tx.transactionType = Int(type)
+                        tx.toType = .contract
+                        tx.txType = .claimReward
+                        tx.direction = .Receive
+                        TransferPersistence.add(tx: tx)
+
+                        if index == signatureArr.count - 1 {
+                            DispatchQueue.main.async {
+                                self.tableView.mj_header.beginRefreshing()
+                            }
+                        }
+                    case .failure:
+                        break
+                    }
+                }
             }
         }
     }

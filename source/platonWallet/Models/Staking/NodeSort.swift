@@ -38,7 +38,7 @@ extension NodeSort {
                 SortDescriptor(keyPath: "ranking", ascending: true),
                 SortDescriptor(keyPath: "delegateSum", ascending: false),
                 SortDescriptor(keyPath: "delegate", ascending: false),
-                SortDescriptor(keyPath: "ratePA", ascending: false)
+                SortDescriptor(keyPath: "delegatedRatePA", ascending: false)
             ]
             return sortPropertis
         case .delegated:
@@ -46,7 +46,7 @@ extension NodeSort {
                 SortDescriptor(keyPath: "delegateSum", ascending: false),
                 SortDescriptor(keyPath: "ranking", ascending: true),
                 SortDescriptor(keyPath: "delegate", ascending: false),
-                SortDescriptor(keyPath: "ratePA", ascending: false)
+                SortDescriptor(keyPath: "delegatedRatePA", ascending: false)
             ]
             return sortPropertis
         case .delegator:
@@ -54,12 +54,12 @@ extension NodeSort {
                 SortDescriptor(keyPath: "delegate", ascending: false),
                 SortDescriptor(keyPath: "delegateSum", ascending: false),
                 SortDescriptor(keyPath: "ranking", ascending: true),
-                SortDescriptor(keyPath: "ratePA", ascending: false)
+                SortDescriptor(keyPath: "delegatedRatePA", ascending: false)
             ]
             return sortPropertis
         case .yield:
             let sortPropertis = [
-                SortDescriptor(keyPath: "ratePA", ascending: false),
+                SortDescriptor(keyPath: "delegatedRatePA", ascending: false),
                 SortDescriptor(keyPath: "ranking", ascending: true),
                 SortDescriptor(keyPath: "delegateSum", ascending: false),
                 SortDescriptor(keyPath: "delegate", ascending: false)

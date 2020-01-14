@@ -26,6 +26,7 @@ class DelegateDetailViewController: BaseViewController {
         tbView.separatorStyle = .none
         tbView.backgroundColor = normal_background_color
         tbView.tableFooterView = UIView()
+        tbView.mj_header = refreshHeader
         if #available(iOS 11, *) {
             tbView.estimatedRowHeight = UITableView.automaticDimension
         } else {
@@ -78,22 +79,13 @@ class DelegateDetailViewController: BaseViewController {
         doubtButtonItem.tintColor = .black
         navigationItem.rightBarButtonItem = doubtButtonItem
 
-        tableView.mj_header = refreshHeader
-
         setupWalletData()
-
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        if isViewLoaded {
-            tableView.mj_header.beginRefreshing()
-        }
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         GuidanceViewMgr.sharedInstance.checkGuidance(page: GuidancePage.DelegateDetailViewController, presentedVC: self)
+        tableView.mj_header.beginRefreshing()
     }
 }
 

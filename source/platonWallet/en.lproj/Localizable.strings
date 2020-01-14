@@ -756,7 +756,7 @@
 "staking_validator_node_active" = "Active";
 "staking_validator_node_candidate" = "Candidate";
 
-"staking_validator_delegate_total" = "Staked";
+"staking_validator_delegate_total" = "Delegated";
 "staking_validator_delegate_rate_about" = "Yield";
 
 "statking_validator_total_staked" = "Total Staked(LAT)";
@@ -900,11 +900,14 @@
 "confirm_generate_qrcode_for_signed_tx_tip" = "Scan the OR code to finish your authorization for the observed wallet.";
 "confirm_button_signed_tx" = "Finish";
 "offline_signature_title" = "Details";
+"confirm_reward_wallet" = "Claim Wallet:";
+"confirm_reward_amount" = "Reward amount:";
 
 "offline_signature_invalid" = "Invalid Signature";
 "offline_signature_notmatch_wallet" = "Wallet Mismatch";
 "touchid_auth_text" = "Please verify your %@";
 "touchid_verify_fail" = "Fingerprint verification failed, please try again! !";
+"offline_signature_not_privatekey" = "Wallet keystore does not exist";
 
 "delete_observed_wallet_alert_title" = "Delete Wallet";
 "delete_observed_wallet_alert_message" = "Are you sure want to delete observed wallet?";
@@ -953,3 +956,5 @@
 "claim_comfirm_comfirm" = "Confirm";
 
 "mydelegates_search_cancel" = "Hide";
+
+"transaction_warning_wait_for_previous" = "Please wait for the transaction to complete before continuing！";

@@ -8,6 +8,7 @@
 
 import UIKit
 import Localize_Swift
+import BigInt
 
 class TransactionDetailViewController: BaseViewController {
 
@@ -58,7 +59,8 @@ class TransactionDetailViewController: BaseViewController {
                 case .transfer:
                     currentTx.direction = (senderAddress.lowercased() == currentTx.from?.lowercased() ? .Sent : senderAddress.lowercased() == currentTx.to?.lowercased() ? .Receive : .unknown)
                 case .delegateWithdraw,
-                     .stakingWithdraw:
+                     .stakingWithdraw,
+                     .claimReward:
                     currentTx.direction = .Receive
                 default:
                     currentTx.direction = .Sent
@@ -113,6 +115,9 @@ class TransactionDetailViewController: BaseViewController {
             listData.append((title:  txType == .delegateCreate ? Localized("TransactionDetailVC_delegated_to") : Localized("TransactionDetailVC_withdraw_to"), value: tx.toNameString ?? "--", copy: false))
             listData.append((title: Localized("TransactionDetailVC_nodeId"), value: tx.nodeId ?? "--", copy: false))
             listData.append((title: txType == .delegateCreate ? Localized("TransactionDetailVC_delegated_amount") : Localized("TransactionDetailVC_withdrawal_amount"), value: tx.valueDescription?.displayForMicrometerLevel(maxRound: 8).ATPSuffix() ?? "--", copy: false))
+            if let totalRewardBInt = BigUInt(tx.totalReward ?? "0"), totalRewardBInt > BigUInt.zero {
+                listData.append((title: Localized("TransactionDetailVC_reward_amount"), value: tx.totalReward?.displayForMicrometerLevel(maxRound: 8).ATPSuffix() ?? "--", copy: false))
+            }
         } else if txType == .stakingCreate ||
                   txType == .stakingAdd ||
                   txType == .stakingEdit ||

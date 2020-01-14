@@ -93,7 +93,8 @@ class WalletDetailCell: UITableViewCell {
             case .transfer:
                 direction = (selectedAddress.lowercased() == tx.from?.lowercased() ? .Sent : selectedAddress.lowercased() == tx.to?.lowercased() ? .Receive : .unknown)
             case .delegateWithdraw,
-                 .stakingWithdraw:
+                 .stakingWithdraw,
+                 .claimReward:
                 direction = .Receive
             default:
                 direction = .Sent

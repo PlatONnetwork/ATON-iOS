@@ -14,8 +14,7 @@ struct RemoteGas: Decodable {
     var gasPrice: String?
 
     var gasLimitBInt: BigUInt {
-        return BigUInt(1000000)
-//        return BigUInt(gasLimit ?? "0") ?? BigUInt.zero
+        return BigUInt(gasLimit ?? "0") ?? BigUInt.zero
     }
 
     var gasPriceBInt: BigUInt {

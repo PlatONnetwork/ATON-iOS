@@ -57,6 +57,7 @@ struct AppConfig {
         static let pendingTransactionPollingTimerEnable = true
         static let pendingTransactionPollingTimerInterval = 3
         static let balancePollingTimerInterval = 5
+        static let viewControllerUpdateInterval = 3
     }
 
     struct H5URL {

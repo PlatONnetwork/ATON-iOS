@@ -15,6 +15,40 @@ final class StakingService: BaseService {
 
     static let sharedInstance = StakingService()
 
+    func getRewardDelegate(adddresses: [String], beginSequence: Int, listSize: Int, direction: String, completion: PlatonCommonCompletion?) {
+        var completion = completion
+        var parameters: [String: Any] = [:]
+        parameters["walletAddrs"] = adddresses
+        parameters["beginSequence"] = beginSequence
+        parameters["listSize"] = listSize
+        parameters["direction"] = direction
+
+
+        let url = SettingService.getCentralizationURL() + "/transaction/getRewardTransactions"
+
+        var request = URLRequest(url: try! url.asURL())
+        request.httpBody = try! JSONSerialization.data(withJSONObject: parameters)
+        request.httpMethod = "POST"
+        request.timeoutInterval = requestTimeout
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+
+        Alamofire.request(request).responseData { response in
+            switch response.result {
+            case .success(let data):
+                do {
+                    let decoder = JSONDecoder()
+                    let response = try decoder.decode(JSONResponse<[RewardModel]>.self, from: data)
+                    self.successCompletionOnMain(obj: response.data as AnyObject, completion: &completion)
+                } catch let err {
+                    self.failCompletionOnMainThread(code: -1, errorMsg: err.localizedDescription, completion: &completion)
+                }
+            case .failure(let error):
+                self.failCompletionOnMainThread(code: -1, errorMsg: error.localizedDescription, completion: &completion)
+                break
+            }
+        }
+    }
+
     func rewardClaim(from: String, privateKey: String, gas: RemoteGas, completion: CommonCompletion<Transaction>?) {
         web3.reward.withdrawDelegateReward(sender: from, privateKey: privateKey, gasLimit: gas.gasLimitBInt, gasPrice: gas.gasPriceBInt) { (result, data) in
             switch result {
@@ -112,7 +146,7 @@ final class StakingService: BaseService {
                                 return (Int(lhs.delegate ?? "0") ?? 0) > (Int(rhs.delegate ?? "0") ?? 0)
                             }
 
-                            return (Int(lhs.ratePA ?? "0") ?? 0) > (Int(rhs.ratePA ?? "0") ?? 0)
+                            return (Int(lhs.delegatedRatePA ?? "0") ?? 0) > (Int(rhs.delegatedRatePA ?? "0") ?? 0)
                         case .delegated:
                             if lhs.delegateSum != lhs.delegateSum {
                                 return (BigUInt(lhs.delegateSum ?? "0") ?? BigUInt.zero) > (BigUInt(rhs.delegateSum ?? "0") ?? BigUInt.zero)
@@ -126,7 +160,7 @@ final class StakingService: BaseService {
                                 return (Int(lhs.delegate ?? "0") ?? 0) > (Int(rhs.delegate ?? "0") ?? 0)
                             }
 
-                            return (Int(lhs.ratePA ?? "0") ?? 0) > (Int(rhs.ratePA ?? "0") ?? 0)
+                            return (Int(lhs.delegatedRatePA ?? "0") ?? 0) > (Int(rhs.delegatedRatePA ?? "0") ?? 0)
                         case .delegator:
                             if lhs.delegate != rhs.delegate {
                                 return (Int(lhs.delegate ?? "0") ?? 0) > (Int(rhs.delegate ?? "0") ?? 0)
@@ -140,10 +174,10 @@ final class StakingService: BaseService {
                                 return (BigUInt(lhs.delegateSum ?? "0") ?? BigUInt.zero) > (BigUInt(rhs.delegateSum ?? "0") ?? BigUInt.zero)
                             }
 
-                            return (Int(lhs.ratePA ?? "0") ?? 0) > (Int(rhs.ratePA ?? "0") ?? 0)
+                            return (Int(lhs.delegatedRatePA ?? "0") ?? 0) > (Int(rhs.delegatedRatePA ?? "0") ?? 0)
                         case .yield:
-                            if lhs.ratePA != rhs.ratePA {
-                                return (Int(lhs.ratePA ?? "0") ?? 0) > (Int(rhs.ratePA ?? "0") ?? 0)
+                            if lhs.delegatedRatePA != rhs.delegatedRatePA {
+                                return (Int(lhs.delegatedRatePA ?? "0") ?? 0) > (Int(rhs.delegatedRatePA ?? "0") ?? 0)
                             }
 
                             if lhs.ranking != rhs.ranking {
@@ -179,22 +213,11 @@ final class StakingService: BaseService {
 
         if controllerType == .active && isFetch == false {
             let copyData = NodePersistence.getActiveNode(sort: sort).detached
-//            let sortData = copyData.sorted(by: { (lhs, rhs) -> Bool in
-//                return isRankingSorted ? Int(lhs.ratePA ?? "0") ?? 0 > Int(rhs.ratePA ?? "0") ?? 0 : lhs.ranking < rhs.ranking
-//            }).sorted(by: { (lhs, rhs) -> Bool in
-//                return isRankingSorted ? lhs.ranking < rhs.ranking : Int(lhs.ratePA ?? "0") ?? 0 > Int(rhs.ratePA ?? "0") ?? 0
-//            })
-
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 completion?(.success, copyData as AnyObject)
             }
         } else if controllerType == .candidate && isFetch == false {
             let copyData = NodePersistence.getCandiateNode(sort: sort).detached
-//            let sortData = copyData.sorted(by: { (lhs, rhs) -> Bool in
-//                return isRankingSorted ? Int(lhs.ratePA ?? "0") ?? 0 > Int(rhs.ratePA ?? "0") ?? 0 : lhs.ranking < rhs.ranking
-//            }).sorted(by: { (lhs, rhs) -> Bool in
-//                return isRankingSorted ? lhs.ranking < rhs.ranking : Int(lhs.ratePA ?? "0") ?? 0 > Int(rhs.ratePA ?? "0") ?? 0
-//            })
             // 不延时回调的话，会发生下拉刷新顶部出现位移偏差
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                 completion?(.success, copyData as AnyObject)
@@ -206,21 +229,11 @@ final class StakingService: BaseService {
                 case .success:
                     if controllerType == .active {
                         let oriData = data.filter { $0.nodeStatus == NodeStatus.Active.rawValue }
-//                        let sortData = oriData.sorted(by: { (lhs, rhs) -> Bool in
-//                            return isRankingSorted ? Int(lhs.ratePA ?? "0") ?? 0 > Int(rhs.ratePA ?? "0") ?? 0 : lhs.ranking < rhs.ranking
-//                        }).sorted(by: { (lhs, rhs) -> Bool in
-//                            return isRankingSorted ? lhs.ranking < rhs.ranking : Int(lhs.ratePA ?? "0") ?? 0 > Int(rhs.ratePA ?? "0") ?? 0
-//                        })
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                             completion?(.success, oriData as AnyObject)
                         }
                     } else if controllerType == .candidate {
                         let oriData = data.filter { $0.nodeStatus == NodeStatus.Candidate.rawValue }
-//                        let sortData = oriData.sorted(by: { (lhs, rhs) -> Bool in
-//                            return isRankingSorted ? Int(lhs.ratePA ?? "0") ?? 0 > Int(rhs.ratePA ?? "0") ?? 0 : lhs.ranking < rhs.ranking
-//                        }).sorted(by: { (lhs, rhs) -> Bool in
-//                            return isRankingSorted ? lhs.ranking < rhs.ranking : Int(lhs.ratePA ?? "0") ?? 0 > Int(rhs.ratePA ?? "0") ?? 0
-//                        })
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                             completion?(.success, oriData as AnyObject)
                         }
@@ -281,10 +294,6 @@ final class StakingService: BaseService {
         request.httpMethod = "POST"
         request.timeoutInterval = requestTimeout
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-
-        Alamofire.request(request).responseJSON { (response) in
-            print(response)
-        }
 
         Alamofire.request(request).responseData { response in
             switch response.result {

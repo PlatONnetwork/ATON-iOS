@@ -10,6 +10,11 @@ import Foundation
 import RealmSwift
 
 extension RealmHelper {
+    public static func migrationBelow076(migration: Migration, schemaVersion: UInt64, oldSchemaVersion: UInt64) {
+
+        migration.renameProperty(onType: Node.className(), from: "ratePA", to: "delegatedRatePA")
+    }
+
     public static func migrationBelow0741(migration: Migration, schemaVersion:UInt64, oldSchemaVersion: UInt64) {
         #if UAT
         #elseif PARALLELNET
@@ -65,7 +70,6 @@ extension RealmHelper {
         migration.deleteData(forType: "DelegateDetailDel")
     }
 
-    
     public static func migrationBelow0732(migration: Migration, schemaVersion: UInt64, oldSchemaVersion: UInt64) {
         migration.deleteData(forType: "NodeInfo")
     }

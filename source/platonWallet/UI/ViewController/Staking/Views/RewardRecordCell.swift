@@ -28,8 +28,10 @@ class RewardRecordCell: UITableViewCell {
             nameLabel.text = reward?.walletName ?? "--"
             addressLabel.text = reward?.walletAddress ?? "--"
             balanceLabel.text = reward?.amountForDisplay ?? "--"
-//            timeLabel.text = transaction?.recordTime ?? "--"
+            timeLabel.text = reward?.recordTime ?? "--"
             detailButton.isSelected = reward?.isOpen ?? false
+
+            _ = detailContentView.subviews.filter { $0 is RewardRecordDetailView }.map { $0.removeFromSuperview() }
 
             if let records = reward?.records, (records.count > 0 && reward?.isOpen == true) {
 
@@ -49,12 +51,10 @@ class RewardRecordCell: UITableViewCell {
                             let preView = detailContentView.viewWithTag(index)
                             make.top.equalTo(preView!.snp.bottom)
                         } else {
-                            make.top.equalToSuperview()
+                            make.top.equalToSuperview().offset(1)
                         }
                     }
                 }
-            } else {
-                _ = detailContentView.subviews.map { $0.removeFromSuperview() }
             }
         }
     }
@@ -139,7 +139,7 @@ class RewardRecordCell: UITableViewCell {
         }
 
         let delegateBackgroundView = UIView()
-//        delegateBackgroundView.isUserInteractionEnabled = false
+        delegateBackgroundView.isUserInteractionEnabled = false
         delegateBackgroundView.backgroundColor = .white
         containerView.addSubview(delegateBackgroundView)
         delegateBackgroundView.snp.makeConstraints { make in
@@ -163,7 +163,7 @@ class RewardRecordCell: UITableViewCell {
 
         detailButton.setImage(UIImage(named: "3.icon_Drop-down"), for: .normal)
         detailButton.setImage(UIImage(named: "3.icon_Pull up"), for: .selected)
-        detailButton.addTarget(self, action: #selector(recordDetailAction), for: .touchUpInside)
+//        detailButton.addTarget(self, action: #selector(recordDetailAction), for: .touchUpInside)
         delegateBackgroundView.addSubview(detailButton)
         detailButton.snp.makeConstraints { make in
             make.height.width.equalTo(21)

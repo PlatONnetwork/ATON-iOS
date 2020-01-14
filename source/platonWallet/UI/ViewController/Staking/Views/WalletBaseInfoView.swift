@@ -79,8 +79,9 @@ class WalletBaseInfoView: UIView {
             make.trailing.equalTo(delegateContentView.snp.centerX).offset(-5)
         }
 
+        rewardRatioLabel.adjustsFontSizeToFitWidth = true
         rewardRatioLabel.textColor = .white
-        rewardRatioLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+        rewardRatioLabel.font = UIFont.systemFont(ofSize: 14)
         rewardRatioLabel.text = "--"
         delegateContentView.addSubview(rewardRatioLabel)
         rewardRatioLabel.snp.makeConstraints { make in
@@ -101,8 +102,9 @@ class WalletBaseInfoView: UIView {
             make.top.equalTo(rewardRatioTipLabel.snp.top)
         }
 
+        totalRewardLabel.adjustsFontSizeToFitWidth = true
         totalRewardLabel.textColor = .white
-        totalRewardLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+        totalRewardLabel.font = UIFont.systemFont(ofSize: 14)
         totalRewardLabel.text = "--"
         delegateContentView.addSubview(totalRewardLabel)
         totalRewardLabel.snp.makeConstraints { make in

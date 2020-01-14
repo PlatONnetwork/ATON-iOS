@@ -23,15 +23,26 @@ extension Delegate {
     }
 
     var delegateValue: String {
-        return delegated?.vonToLATString ?? "--"
+        return delegated?.vonToLATString ?? "0.00"
     }
 
     var cumulativeRewardValue: String {
-        return cumulativeReward?.vonToLATString ?? "--"
+        return cumulativeReward?.vonToLATString ?? "0.00"
     }
 
-    var withdrawRewardValue: String {
-        return withdrawReward?.vonToLATString ?? "--"
+    var withdrawRewardValue: NSAttributedString {
+        let contents = (withdrawReward?.vonToLATWith12DecimalString ?? "0.00").split(separator: ".")
+        guard contents.count == 2 else {
+            return NSAttributedString(string: (withdrawReward?.vonToLATWith12DecimalString ?? "0.00"))
+        }
+
+        let firstValue = contents[0]
+        let secondValue = contents[1]
+
+        let secondAttributed = NSAttributedString(string: "." + String(secondValue), attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14, weight: .medium)])
+        let mutableAttributed = NSMutableAttributedString(string: String(firstValue))
+        mutableAttributed.append(secondAttributed)
+        return mutableAttributed
     }
 
     var status: RewardStatus {
@@ -100,7 +111,7 @@ extension DelegateDetail {
 
 extension DelegateDetail {
     func delegateToNode() -> Node? {
-        return Node(nodeId: nodeId, ranking: nil, name: nodeName, deposit: nil, url: url, ratePA: nil, nStatus: nodeStatus, isInit: false, isConsensus: isConsensus, delegateSum: nil, delegate: nil)
+        return Node(nodeId: nodeId, ranking: nil, name: nodeName, deposit: nil, url: url, delegatedRatePA: nil, nStatus: nodeStatus, isInit: false, isConsensus: isConsensus, delegateSum: nil, delegate: nil)
     }
 }
 

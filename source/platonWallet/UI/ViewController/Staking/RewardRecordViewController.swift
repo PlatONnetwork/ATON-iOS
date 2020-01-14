@@ -50,6 +50,7 @@ class RewardRecordViewController: BaseViewController {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+        super.leftNavigationTitle = "mydelegates_claim_record"
         view.backgroundColor = normal_background_color
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
@@ -70,7 +71,7 @@ class RewardRecordViewController: BaseViewController {
 }
 
 extension RewardRecordViewController {
-    private func fetchData(sequence: String, direction: RefreshDirection) {
+    private func fetchData(sequence: Int, direction: RefreshDirection) {
 
         let addresses = (AssetVCSharedData.sharedData.walletList as! [Wallet]).map { return $0.address }
         guard addresses.count > 0 else {
@@ -79,74 +80,42 @@ extension RewardRecordViewController {
             return
         }
 
-        tableView.mj_header.endRefreshing()
-        tableView.mj_footer.endRefreshing()
+        StakingService.sharedInstance.getRewardDelegate(adddresses: addresses, beginSequence: sequence, listSize: listSize, direction: "new") { [weak self] (result, data) in
+            self?.tableView.mj_header.endRefreshing()
+            self?.tableView.mj_footer.endRefreshing()
 
-        let subItem1 = RewardRecordModel(nodeId: "0x4198419840", nodeName: "opppp", reward: "890000000000000000")
-        let subItem2 = RewardRecordModel(nodeId: "0x141084391849", nodeName: "faklfjka", reward: "1888700000000000")
-        let subItem3 = RewardRecordModel(nodeId: "0x19192391313", nodeName: "fadfka", reward: "890000000000000000")
+            switch result {
+            case .success:
+                if direction == .new {
+                    self?.listData.removeAll()
+                }
 
-        let item1 = RewardModel(address: "0x349184148948", totalReward: "88881431340000000000", records: [subItem1, subItem2, subItem3], isOpen: false)
-        let item2 = RewardModel(address: "0x349184148948", totalReward: "88881431340000000000", records: [subItem1], isOpen: false)
+                if let rewards = data as? [RewardModel], rewards.count > 0 {
+                    self?.listData.append(contentsOf: rewards)
 
-        listData.append(item1)
-        listData.append(item2)
-        tableView.reloadData()
-
-//        TransactionService.service.getDelegateRecord(
-//            addresses: addresses,
-//            beginSequence: sequence,
-//            listSize: listSize,
-//            direction: direction.rawValue,
-//            type: recordType.rawValue) { [weak self] (result, data) in
-//                self?.tableView.mj_header.endRefreshing()
-//                self?.tableView.mj_footer.endRefreshing()
-//
-//                switch result {
-//                case .success:
-//                    if direction == .new {
-//                        self?.listData.removeAll()
-//                    }
-//
-//                    if let newData = data as? [Transaction], newData.count > 0 {
-//
-//                        _ = newData.map({ (tx) -> Transaction in
-//                            switch tx.txType! {
-//                            case .delegateWithdraw,
-//                                 .stakingWithdraw:
-//                                tx.direction = .Receive
-//                                return tx
-//                            default:
-//                                tx.direction = .Sent
-//                                return tx
-//                            }
-//                        })
-//
-//                        self?.listData.append(contentsOf: newData)
-//                        self?.tableView.mj_footer.resetNoMoreData()
-//                    } else {
-//                        self?.tableView.mj_footer.endRefreshingWithNoMoreData()
-//                    }
-//
-//                    self?.tableView.reloadData()
-//
-//                case .fail:
-//                    self?.tableView.mj_footer.isHidden = true
-//                    break
-//                }
-//        }
+                    self?.tableView.mj_footer.resetNoMoreData()
+                } else {
+                    self?.tableView.mj_footer.endRefreshingWithNoMoreData()
+                }
+                self?.tableView.reloadData()
+            case .fail(_, let errMsg):
+                self?.tableView.mj_footer.isHidden = true
+                self?.showErrorMessage(text: errMsg ?? "get data error")
+            }
+        }
     }
 
     @objc func fetchDataLastest() {
-        fetchData(sequence: "0", direction: .new)
+        fetchData(sequence: -1, direction: .new)
     }
 
     @objc func fetchDataMore() {
-//        guard let sequence = listData.last?.sequence else {
-//            tableView.mj_footer.endRefreshingWithNoMoreData()
-//            return
-//        }
-//        fetchData(sequence: String(sequence), direction: .old)
+        guard let sequence = listData.last?.sequence else {
+            tableView.mj_footer.endRefreshingWithNoMoreData()
+            return
+        }
+        print("sequence: \(sequence)")
+        fetchData(sequence: sequence, direction: .old)
     }
 }
 
@@ -159,19 +128,12 @@ extension RewardRecordViewController: UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "RewardRecordCell") as! RewardRecordCell
         cell.reward = listData[indexPath.row]
-        cell.recordDetailDidHadler = { [weak self] _ in
-            if var reward = self?.listData[indexPath.row] {
+        cell.cellDidHandler = { [weak self] _ in
+            if let reward = self?.listData[indexPath.row] {
                 reward.isOpen = !reward.isOpen
                 self?.tableView.reloadRows(at: [indexPath], with: .fade)
             }
         }
-
-//        cell.transaction = transaction
-//        cell.cellDidHandler = { [weak self] _ in
-//            let controller = TransactionDetailViewController()
-//            controller.transaction = transaction
-//            self?.navigationController?.pushViewController(controller, animated: true)
-//        }
         return cell
     }
 }

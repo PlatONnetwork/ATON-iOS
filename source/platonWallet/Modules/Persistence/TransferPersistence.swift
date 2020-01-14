@@ -163,4 +163,31 @@ class TransferPersistence {
         let array = Array(r).detached
         return array
     }
+
+    public class func getDelegateCreatePendingTransaction(address: String, nodeId: String) -> [Transaction] {
+        let realm = try! Realm(configuration: RealmHelper.getConfig())
+        let transactionType = Int(TxType.delegateCreate.rawValue) ?? 1004
+        let predicate = NSPredicate(format: "transactionType == %@ AND from CONTAINS[cd] %@ AND nodeId == %@ AND chainId == %@ AND txReceiptStatus == %@", NSNumber(value: transactionType), address, nodeId, SettingService.shareInstance.currentNodeChainId, NSNumber(value: TransactionReceiptStatus.pending.rawValue))
+        let r = realm.objects(Transaction.self).filter(predicate)
+        let array = Array(r).detached
+        return array
+    }
+
+    public class func getDelegateWithdrawPendingTransaction(address: String, nodeId: String) -> [Transaction] {
+        let realm = try! Realm(configuration: RealmHelper.getConfig())
+        let transactionType = Int(TxType.delegateWithdraw.rawValue) ?? 1005
+        let predicate = NSPredicate(format: "transactionType == %@ AND from CONTAINS[cd] %@ AND nodeId == %@ AND chainId == %@ AND txReceiptStatus == %@", NSNumber(value: transactionType), address, nodeId, SettingService.shareInstance.currentNodeChainId, NSNumber(value: TransactionReceiptStatus.pending.rawValue))
+        let r = realm.objects(Transaction.self).filter(predicate)
+        let array = Array(r).detached
+        return array
+    }
+
+    public class func getTransferPendingTransaction(address: String) -> [Transaction] {
+        let realm = try! Realm(configuration: RealmHelper.getConfig())
+        let transactionType = Int(TxType.transfer.rawValue) ?? 0
+        let predicate = NSPredicate(format: "transactionType == %@ AND from CONTAINS[cd] %@ AND chainId == %@ AND txReceiptStatus == %@", NSNumber(value: transactionType), address, SettingService.shareInstance.currentNodeChainId, NSNumber(value: TransactionReceiptStatus.pending.rawValue))
+        let r = realm.objects(Transaction.self).filter(predicate)
+        let array = Array(r).detached
+        return array
+    }
 }

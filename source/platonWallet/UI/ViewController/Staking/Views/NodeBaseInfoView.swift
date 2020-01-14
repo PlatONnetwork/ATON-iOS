@@ -42,6 +42,19 @@ class NodeBaseInfoView: UIView {
         }
     }
 
+    var ratePATrend: RateTrend? {
+        didSet {
+            switch ratePATrend! {
+            case .none:
+                trendIV.image = nil
+            case .up:
+                trendIV.image = UIImage(named: "3.icon_Rose")
+            case .down:
+                trendIV.image = UIImage(named: "3.icon_Fell")
+            }
+        }
+    }
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .white
@@ -118,7 +131,7 @@ class NodeBaseInfoView: UIView {
             make.trailing.equalToSuperview().offset(-10)
         }
 
-        trendIV.image = UIImage(named: "3.icon_Fell")
+        trendIV.image = nil
         nodeBackgroundView.addSubview(trendIV)
         trendIV.snp.makeConstraints { make in
             make.centerY.equalTo(rateView.snp.centerY).offset(-3)
@@ -173,8 +186,8 @@ class NodeBaseInfoView: UIView {
 
         rewardRatioLabel.adjustsFontSizeToFitWidth = true
         rewardRatioLabel.textColor = .white
-        rewardRatioLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium)
-        rewardRatioLabel.text = "--"
+        rewardRatioLabel.font = UIFont.systemFont(ofSize: 14)
+        rewardRatioLabel.text = "0.00"
         rewardContentView.addSubview(rewardRatioLabel)
         rewardRatioLabel.snp.makeConstraints { make in
             make.leading.equalTo(rewardRatioTipLabel)
@@ -197,8 +210,8 @@ class NodeBaseInfoView: UIView {
 
         totalRewardLabel.adjustsFontSizeToFitWidth = true
         totalRewardLabel.textColor = .white
-        totalRewardLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium)
-        totalRewardLabel.text = "--"
+        totalRewardLabel.font = UIFont.systemFont(ofSize: 14)
+        totalRewardLabel.text = "0.00"
         rewardContentView.addSubview(totalRewardLabel)
         totalRewardLabel.snp.makeConstraints { make in
             make.leading.equalTo(totalRewardTipLabel)
