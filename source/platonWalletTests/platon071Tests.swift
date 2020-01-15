@@ -45,8 +45,8 @@ class platon071Tests: XCTestCase {
         let expectaion = self.expectation(description: "testGetNodePersistence")
         let nodeId1 = "0x81f4ab0012303bff59c35cead6c2487909cbf59bb0b2b677c2ff36d7009b39a572b2f73214d8590022d20410cbf92631844a7ce8a7d5b840c0e25cd93dc234d9"
         let nodeId2 = "0x81f4ab0012303bff59c35cead6c2487909cbf59bb0b2b677c2ff36d7009b39a572b2f73214d8590022d20410cbf92631844a7ce8a7d5b840c0e25cd93dc234d8"
-        let node1 = Node(nodeId: nodeId1, ranking: 1, name: "testNode", deposit: "10000", url: "url", ratePA: "10000", nStatus: .Active, isInit: false, isConsensus: false)
-        let node2 = Node(nodeId: nodeId2, ranking: 2, name: "testNode", deposit: "10000", url: "url", ratePA: "10001", nStatus: .Candidate, isInit: false, isConsensus: false)
+        let node1 = Node(nodeId: nodeId1, ranking: 1, name: "testNode", deposit: "10000", url: "url", delegatedRatePA: "10000", nStatus: .Active, isInit: false, isConsensus: false, delegateSum: "100000000000", delegate: "11")
+        let node2 = Node(nodeId: nodeId2, ranking: 2, name: "testNode", deposit: "10000", url: "url", delegatedRatePA: "10000", nStatus: .Candidate, isInit: false, isConsensus: false, delegateSum: "10002843200000", delegate: "22")
         NodePersistence.add(nodes: [node1, node2]) {
             expectaion.fulfill()
         }
@@ -54,11 +54,11 @@ class platon071Tests: XCTestCase {
         waitForExpectations(timeout: 10) { (error) in
             print(error?.localizedDescription ?? "")
         }
-        
-        let result1 = NodePersistence.getActiveNode().filter { $0.nodeStatus != NodeStatus.Active.rawValue }
+
+        let result1 = NodePersistence.getActiveNode(sort: .rank).filter { $0.nodeStatus != NodeStatus.Active.rawValue }
         XCTAssert(result1.count == 0, "get active node status should be active")
         
-        let result2 = NodePersistence.getCandiateNode().filter { $0.nodeStatus != NodeStatus.Candidate.rawValue }
+        let result2 = NodePersistence.getCandiateNode(sort: .rank).filter { $0.nodeStatus != NodeStatus.Candidate.rawValue }
         XCTAssert(result2.count == 0, "get active node status should be candiate")
         
     }
@@ -66,7 +66,7 @@ class platon071Tests: XCTestCase {
     func testSaveNodePersistence() {
         let expectaion = self.expectation(description: "testSaveNodePersistence")
         let nodeId = "0x81f4ab0012303bff59c35cead6c2487909cbf59bb0b2b677c2ff36d7009b39a572b2f73214d8590022d20410cbf92631844a7ce8a7d5b840c0e25cd93dc234d1"
-        let node = Node(nodeId: nodeId, ranking: 1, name: "testNode", deposit: "10000", url: "url", ratePA: "10000", nStatus: .Active, isInit: false, isConsensus: false)
+        let node = Node(nodeId: nodeId, ranking: 1, name: "testNode", deposit: "10000", url: "url", delegatedRatePA: "10000", nStatus: .Active, isInit: false, isConsensus: false, delegateSum: "100000000000", delegate: "11")
         
         NodePersistence.add(nodes: [node], {
             expectaion.fulfill()
@@ -74,7 +74,7 @@ class platon071Tests: XCTestCase {
         
         wait(for: [expectaion], timeout: 5.0)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            let result = NodePersistence.getAll().filter { $0.nodeId?.lowercased() == nodeId.lowercased() }
+            let result = NodePersistence.getAll(sort: .rank).filter { $0.nodeId?.lowercased() == nodeId.lowercased() }
             XCTAssert(result.count > 0, "node should be save")
         }
     }
@@ -137,11 +137,10 @@ class platon071Tests: XCTestCase {
         }
         
         let expectaion = self.expectation(description: "testNodeListAPI")
-        StakingService.sharedInstance.updateNodeListData { (result, data) in
+        StakingService.sharedInstance.updateNodeListData(sort: .rank) { (result, data) in
             switch result {
             case .success:
-                
-                let result = NodePersistence.getAll()
+                let result = NodePersistence.getAll(sort: .rank)
                 XCTAssertTrue(result.count == 2, "get node list success")
                 expectaion.fulfill()
             case .fail(_, _):
@@ -212,7 +211,7 @@ class platon071Tests: XCTestCase {
         StakingService.sharedInstance.getDelegateDetail(address: walletAddress) { (result, data) in
             switch result {
             case .success:
-                XCTAssertTrue((data as? [DelegateDetail]) != nil, "response should be decode DelegateDetail Type")
+                XCTAssertTrue((data as? TotalDelegate) != nil, "response should be decode TotalDelegate Type")
                 expectaion.fulfill()
             case .fail(_, _):
                 XCTAssert(false, "get delegate detail failure")
