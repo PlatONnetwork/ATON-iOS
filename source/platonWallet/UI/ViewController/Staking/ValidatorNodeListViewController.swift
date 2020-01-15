@@ -198,6 +198,10 @@ extension ValidatorNodeListViewController {
 
     func searchDidTapHandler() {
         isShowSearch = !isShowSearch
+        if !isShowSearch {
+            isSearching = false
+            tableView.reloadData()
+        }
     }
 
     func hideSearchBarView() {
