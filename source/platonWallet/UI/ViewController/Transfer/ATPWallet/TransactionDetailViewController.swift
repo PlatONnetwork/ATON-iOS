@@ -116,7 +116,7 @@ class TransactionDetailViewController: BaseViewController {
             listData.append((title: Localized("TransactionDetailVC_nodeId"), value: tx.nodeId ?? "--", copy: false))
             listData.append((title: txType == .delegateCreate ? Localized("TransactionDetailVC_delegated_amount") : Localized("TransactionDetailVC_withdrawal_amount"), value: tx.valueDescription?.displayForMicrometerLevel(maxRound: 8).ATPSuffix() ?? "--", copy: false))
             if let totalRewardBInt = BigUInt(tx.totalReward ?? "0"), totalRewardBInt > BigUInt.zero {
-                listData.append((title: Localized("TransactionDetailVC_reward_amount"), value: tx.totalReward?.displayForMicrometerLevel(maxRound: 8).ATPSuffix() ?? "--", copy: false))
+                listData.append((title: Localized("TransactionDetailVC_reward_amount"), value: tx.totalReward?.vonToLATString?.ATPSuffix() ?? "--", copy: false))
             }
         } else if txType == .stakingCreate ||
                   txType == .stakingAdd ||

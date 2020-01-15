@@ -597,6 +597,7 @@
 "AboutVC_Policy" = "隐私政策";
 "AboutVC_AboutUs" = "关于我们";
 "AboutVC_update" = "版本更新";
+"AboutVC_Service_Policy" = "服务协议";
 
 //Vote
 "CandidateListVC_title" = "投票";

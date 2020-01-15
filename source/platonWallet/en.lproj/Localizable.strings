@@ -587,6 +587,7 @@
 "AboutVC_Policy" = "Privacy Policy";
 "AboutVC_AboutUs" = "About us";
 "AboutVC_update" = "APP Update";
+"AboutVC_Service_Policy" = "Service Agreement";
 
 //Vote
 "CandidateListVC_title" = "Vote";

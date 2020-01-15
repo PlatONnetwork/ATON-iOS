@@ -43,10 +43,15 @@ class AboutViewController: BaseViewController {
 
     @IBAction func privacyPolicy(_ sender: Any) {
         let controller = WebCommonViewController()
-//        controller.navigationTitle = Localized("delegate_faq_title")
         controller.requestUrl = AppConfig.H5URL.PrivacyPolicyURL.policyurl
         controller.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(controller, animated: true)
-//        UIApplication.shared.openURL(URL(string: "https://www.platon.network")!)
+    }
+
+    @IBAction func servicePolicy(_ sender: Any) {
+        let controller = WebCommonViewController()
+        controller.requestUrl = AppConfig.H5URL.LisenceURL.serviceurl
+        controller.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(controller, animated: true)
     }
 }
