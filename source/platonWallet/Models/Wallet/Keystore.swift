@@ -37,7 +37,6 @@ public struct Keystore {
         try self.init(password: password, mnemonic: mnemonic, passphrase: "")
 
         self.mnemonic = try encrypt(mnemonic: mnemonic, password: password)
-
     }
 
     public init(contentsOf url: URL) throws {
@@ -102,9 +101,21 @@ public struct Keystore {
 
         let derivedKey: Data
         switch crypto.kdf {
-        case "scrypt":
-            let scrypt = Scrypt(params: crypto.kdfParams)
-            derivedKey = try scrypt.calculate(password: password)
+        case .SCRYPT:
+            if let scryptParams = crypto.kdfParams as? ScryptParams {
+                let scrypt = Scrypt(params: scryptParams)
+                derivedKey = try scrypt.calculate(password: password)
+            } else {
+                throw DecryptError.unsupportedKDFParams
+            }
+        case .PBKDF2:
+            if let pbkdf2Params = crypto.kdfParams as? PBKDF2Params, let pw = password.data(using: .utf8)?.bytes {
+                let pbkdf2 = try PKCS5.PBKDF2(password: pw, salt: pbkdf2Params.salt, iterations: pbkdf2Params.iterations, keyLength: pbkdf2Params.dklen, variant: pbkdf2Params.prf)
+                let derivedKeyBytes = try pbkdf2.calculate()
+                derivedKey = Data(bytes: derivedKeyBytes)
+            } else {
+                throw DecryptError.unsupportedKDFParams
+            }
         default:
             throw DecryptError.unsupportedKDF
         }
@@ -169,11 +180,13 @@ public enum DecryptError: Error {
     case unsupportedCipher
     case invalidCipher
     case invalidPassword
+    case unsupportedKDFParams
 }
 
 public enum EncryptError: Error {
     case invalidMnemonic
     case invalidDerivationPath
+    case unsupportedKDF
 }
 
 extension Keystore: Codable {
@@ -183,7 +196,6 @@ extension Keystore: Codable {
         case crypto
         case version
         case publicKey
-        case mnemonic
     }
 
     enum UppercaseCodingKeys: String, CodingKey {
@@ -203,7 +215,6 @@ extension Keystore: Codable {
         version = try values.decode(Int.self, forKey: .version)
         address = try values.decodeIfPresent(String.self, forKey: .address) ?? ""
         publicKey = try values.decodeIfPresent(String.self, forKey: .publicKey)
-        mnemonic = try values.decodeIfPresent(String.self, forKey: .mnemonic)
     }
 
     public func encode(to encoder: Encoder) throws {
@@ -213,7 +224,6 @@ extension Keystore: Codable {
         try container.encode(crypto, forKey: .crypto)
         try container.encode(version, forKey: .version)
         try container.encodeIfPresent(publicKey, forKey: .publicKey)
-        try container.encodeIfPresent(mnemonic, forKey: .mnemonic)
     }
 }
 

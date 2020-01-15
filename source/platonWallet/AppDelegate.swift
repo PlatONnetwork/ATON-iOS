@@ -14,11 +14,8 @@ import LocalAuthentication
 import platonWeb3
 import Localize_Swift
 
-private let userDefault_key_isLocalAuthenticationOpen = "isLocalAuthenticationOpen"
-private let userDefault_key_isFirst = "isFirst"
-
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, LicenseVCDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow? {
         didSet {
@@ -55,8 +52,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LicenseVCDelegate {
 
         self.initStatusBar()
 
-        UserDefaults.standard.register(defaults: [userDefault_key_isFirst:true, userDefault_key_isLocalAuthenticationOpen:false])
-
+        UserDefaults.standard.register(defaults: [LocalKeys.isFirst: true, LocalKeys.isLocalAuthenticationOpen: false])
         gotoNextVC(initSuccess:initSuccess)
 
         checkIsOpenLocalAuth()
@@ -107,11 +103,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LicenseVCDelegate {
             return
         }
 
-//        if UserDefaults.standard.bool(forKey: userDefault_key_isFirst) {
-//            gotoAgreementController()
-//        }else {
+        if UserDefaults.standard.bool(forKey: LocalKeys.isFirst) {
+            gotoAgreementController()
+        }else {
             gotoAtonController()
-//        }
+        }
     }
 
     func gotoAtonController() {
@@ -127,7 +123,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LicenseVCDelegate {
     func gotoAgreementController() {
         let controller = ServiceAgreementViewController()
         controller.nextActionHandler = { [weak self] in
-            UserDefaults.standard.set(false, forKey: userDefault_key_isFirst)
+            UserDefaults.standard.set(false, forKey: LocalKeys.isFirst)
             UserDefaults.standard.synchronize()
             self?.gotoAtonController()
         }
@@ -149,20 +145,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, LicenseVCDelegate {
     }
 
     func localAuthStateSwitch(_ open:Bool) {
-        UserDefaults.standard.set(open, forKey: userDefault_key_isLocalAuthenticationOpen)
+        UserDefaults.standard.set(open, forKey: LocalKeys.isLocalAuthenticationOpen)
         UserDefaults.standard.synchronize()
     }
 
     func isOpenLocalAuthState() -> Bool {
-        return UserDefaults.standard.bool(forKey: userDefault_key_isLocalAuthenticationOpen)
-    }
-
-    ///LicenseVCDelegate
-    func didClickNextStep() {
-
-        UserDefaults.standard.set(false, forKey: userDefault_key_isFirst)
-        UserDefaults.standard.synchronize()
-        gotoNextVC()
+        return UserDefaults.standard.bool(forKey: LocalKeys.isLocalAuthenticationOpen)
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

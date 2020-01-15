@@ -13,6 +13,7 @@
 		"locked": "0",
 		"unLocked": "0",
 		"released": "11000000000000000000",
-        "isInit": false
+        "isInit": false,
+        "isConsensus": false
 	}]
 }

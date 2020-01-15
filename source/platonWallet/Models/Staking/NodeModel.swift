@@ -42,6 +42,8 @@ class Node: Object, Decodable {
     @objc dynamic var isInit: Bool = false
     // 不同的链
     @objc dynamic var chainUrl: String? = ""
+    // 增加新的状态0.7.5
+    @objc dynamic var isConsensus: Bool = false
 
     required init() {
         super.init()
@@ -67,7 +69,8 @@ class Node: Object, Decodable {
         url: String?,
         ratePA: String?,
         nStatus: NodeStatus,
-        isInit: Bool
+        isInit: Bool,
+        isConsensus: Bool
         ) {
         self.init()
         self.nodeId = nodeId
@@ -78,6 +81,7 @@ class Node: Object, Decodable {
         self.ratePA = ratePA
         self.nodeStatus = nStatus.rawValue
         self.isInit = isInit
+        self.isConsensus = isConsensus
     }
 }
 
@@ -100,6 +104,7 @@ struct NodeDetail: Decodable {
         case ratePA
         case nodeStatus
         case isInit
+        case isConsensus
     }
 
     enum CodingKeys: String, CodingKey {
@@ -124,6 +129,7 @@ struct NodeDetail: Decodable {
         let ratePA = try nodeContainer.decodeIfPresent(String.self, forKey: .ratePA)
         let nodeStatus = try nodeContainer.decode(NodeStatus.self, forKey: .nodeStatus)
         let isInit = try nodeContainer.decode(Bool.self, forKey: .isInit)
+        let isConsensus = try nodeContainer.decode(Bool.self, forKey: .isConsensus)
 
         website = try container.decodeIfPresent(String.self, forKey: .website)
         intro = try container.decodeIfPresent(String.self, forKey: .intro)
@@ -133,6 +139,6 @@ struct NodeDetail: Decodable {
         blockOutNumber = try container.decodeIfPresent(Int.self, forKey: .blockOutNumber)
         blockRate = try container.decodeIfPresent(String.self, forKey: .blockRate)
 
-        node = Node(nodeId: nodeId, ranking: ranking, name: name, deposit: deposit, url: url, ratePA: ratePA, nStatus: nodeStatus, isInit: isInit)
+        node = Node(nodeId: nodeId, ranking: ranking, name: name, deposit: deposit, url: url, ratePA: ratePA, nStatus: nodeStatus, isInit: isInit, isConsensus: isConsensus)
     }
 }

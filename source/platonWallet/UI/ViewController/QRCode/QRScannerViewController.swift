@@ -264,7 +264,7 @@ class QRScannerViewController: BaseViewController, AVCaptureMetadataOutputObject
 
         let path = UIBezierPath(rect: view.bounds)
         let x = (view.bounds.size.width - scanFrameSize) / 2
-        let centerRect = CGRect(x: x, y: 137, width: scanFrameSize, height: scanFrameSize)
+        let centerRect = CGRect(x: x, y: (view.bounds.height-scanFrameSize)/2.0, width: scanFrameSize, height: scanFrameSize)
 
         path.append(UIBezierPath(rect: centerRect).reversing())
         let shape = CAShapeLayer()

@@ -25,7 +25,7 @@ class ExportToQRCodeViewController: BaseViewController {
         noteLabel.text = note
 
         qrCodeImg.backgroundColor = UIColor.white
-        qrCodeImg.image = UIImage.geneQRCodeImageFor(plainText, size: 230)
+        qrCodeImg.image = UIImage.geneQRCodeImageFor(plainText, size: view.bounds.width - 60 - 32)
         qrCodeImg.contentMode = .center
         copyButton.style = .blue
     }

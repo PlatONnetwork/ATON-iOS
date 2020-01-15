@@ -335,12 +335,12 @@ public final class WalletService {
     }
 
     public func exportMnemonic(wallet: Wallet, password: String, completion: @escaping (String?, Error?) -> Void) {
-
         guard let keystore = wallet.key else {
             completion(nil, Error.invalidWallet)
             return
         }
-        guard let encryptedMnemonic = keystore.mnemonic else {
+        let encryptedMnemonic = wallet.keystoreMnemonic
+        guard encryptedMnemonic.count > 0 else {
             completion(nil, Error.invalidMnemonic)
             return
         }
@@ -358,20 +358,23 @@ public final class WalletService {
     }
 
     public func afterBackupMnemonic(wallet: Wallet) {
-        guard var keystore = wallet.key else {
-            return
-        }
-        keystore.mnemonic = nil
-        guard let json = try? JSONEncoder().encode(keystore) else {
-            return
-        }
-        let fileURL = keystoreFolderURL.appendingPathComponent(wallet.keystorePath)
-        try? json.write(to: fileURL, options: [.atomicWrite])
+        wallet.isBackup = true
+        WallletPersistence.sharedInstance.updateWalletBackupStatus(wallet: wallet, isBackup: true)
 
-        let w = wallets.first { (item) -> Bool in
-            item.uuid == wallet.uuid
-        }
-        w?.key?.mnemonic = nil
+//        guard var keystore = wallet.key else {
+//            return
+//        }
+//        keystore.mnemonic = nil
+//        guard let json = try? JSONEncoder().encode(keystore) else {
+//            return
+//        }
+//        let fileURL = keystoreFolderURL.appendingPathComponent(wallet.keystorePath)
+//        try? json.write(to: fileURL, options: [.atomicWrite])
+//
+//        let w = wallets.first { (item) -> Bool in
+//            item.uuid == wallet.uuid
+//        }
+//        w?.key?.mnemonic = nil
     }
 
     public func deleteWallet(_ wallet:Wallet) {
@@ -480,6 +483,7 @@ public final class WalletService {
     */
 
         wallet.keystorePath = fileName
+        wallet.mnemonic = keystore.mnemonic ?? ""
 
         WallletPersistence.sharedInstance.save(wallet: wallet)
 

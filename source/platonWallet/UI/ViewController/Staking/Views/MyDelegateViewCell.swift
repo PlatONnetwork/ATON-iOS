@@ -127,7 +127,7 @@ class MyDelegateViewCell: UITableViewCell {
             make.leading.equalToSuperview().offset(12)
             make.top.equalToSuperview().offset(14)
             make.height.equalTo(14)
-            make.width.equalToSuperview().offset(-24).dividedBy(2)
+            make.width.equalToSuperview().offset(-34).dividedBy(2)
         }
 
         delegateLabel.textColor = .black
@@ -148,7 +148,7 @@ class MyDelegateViewCell: UITableViewCell {
         unDelegatingTipLabel.font = UIFont.systemFont(ofSize: 12)
         delegateBackgroundView.addSubview(unDelegatingTipLabel)
         unDelegatingTipLabel.snp.makeConstraints { make in
-            make.leading.equalTo(delegateTipLabel.snp.trailing)
+            make.leading.equalTo(delegateTipLabel.snp.trailing).offset(5)
             make.top.equalTo(delegateTipLabel.snp.top)
             make.width.equalTo(delegateTipLabel)
         }

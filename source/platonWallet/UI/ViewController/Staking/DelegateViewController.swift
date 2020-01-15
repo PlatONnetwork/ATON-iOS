@@ -40,7 +40,7 @@ class DelegateViewController: BaseViewController {
 
     // current account balance amount
     var maxDelegateAmountLimit: BigUInt {
-        return balanceStyle?.currentBalanceBInt ?? BigUInt.zero
+        return balanceStyle?.currentBalanceBInt.convertBalanceDecimalPlaceToZero() ?? BigUInt.zero
     }
 
     var freeBalanceBInt: BigUInt {
@@ -245,23 +245,35 @@ extension DelegateViewController: UITableViewDelegate, UITableViewDataSource {
             return cell
         case .inputAmount:
             let cell = tableView.dequeueReusableCell(withIdentifier: "SendInputTableViewCell") as! SendInputTableViewCell
-            cell.inputType = .delegate
             cell.amountView.titleLabel.text = Localized("ATextFieldView_delegate_title")
             cell.amountView.textField.LocalizePlaceholder = Localized("staking_amount_placeholder", arguments: (minDelegateAmountLimit/PlatonConfig.VON.LAT).description)
-            cell.minAmountLimit = minDelegateAmountLimit
-            cell.estimateUseGas = estimateUseGas
             cell.maxAmountLimit = maxDelegateAmountLimit
-            cell.balance = freeBalanceBInt
-            cell.isLockAmount = balanceStyle?.isLock
             cell.amountView.isUserInteractionEnabled = (canDelegation?.canDelegation == true)
-            cell.cellDidContentChangeHandler = { [weak self] in
-                self?.updateHeightOfRow(cell)
-            }
             cell.cellDidContentEditingHandler = { [weak self] (amountVON, _) in
-                self?.isDelegateAll = (amountVON == cell.maxAmountLimit)
-                self?.currentAmount = amountVON
-                self?.estimateGas(amountVON, cell)
-                self?.tableView.reloadSections(IndexSet([indexPath.section+1]), with: .none)
+//                self?.isDelegateAll = (amountVON == cell.maxAmountLimit)
+//                self?.currentAmount = amountVON
+//                self?.estimateGas(amountVON, cell)
+//                self?.tableView.reloadSections(IndexSet([indexPath.section+1]), with: .none)
+            }
+            cell.amountView.checkInput(mode: .all, check: { [weak self](text, isDelete) -> (Bool, String) in
+                guard let self = self else { return (true, "") }
+                var amountVON = BigUInt.mutiply(a: text, by: PlatonConfig.VON.LAT.description) ?? BigUInt.zero
+                print("get amountVON: \(amountVON.description)")
+                print("maxDelegateAmountLimit: \(self.maxDelegateAmountLimit.description)")
+                if amountVON > self.maxDelegateAmountLimit {
+                    amountVON = self.maxDelegateAmountLimit
+                    cell.amountView.textField.text = amountVON.divide(by: PlatonConfig.VON.LAT.description, round: 8)
+                }
+
+                self.isDelegateAll = (amountVON == cell.maxAmountLimit)
+                self.currentAmount = amountVON
+                self.estimateGas(amountVON, cell)
+                self.tableView.reloadSections(IndexSet([indexPath.section+1]), with: .none)
+                print("get amount1: \(self.currentAmount.description)")
+
+                return CommonService.checkStakingAmoutInput(inputVON: text == "" ? nil : self.currentAmount, balance: self.freeBalanceBInt, minLimit: self.minDelegateAmountLimit, maxLimit: self.maxDelegateAmountLimit, fee: self.estimateUseGas, type: .delegate, isLockAmount: self.balanceStyle?.isLock)
+            }) { [weak self] _ in
+                self?.updateHeightOfRow(cell)
             }
             return cell
         case .singleButton(let title):
@@ -609,9 +621,9 @@ extension DelegateViewController {
                 let gasLimitOfAll = web3.staking.getGasCreateDelegate(typ: typ, nodeId: nodeId, amount: currentAmount)
                 gasLimit = gasLimitOfAll
                 estimateUseGas = gasLimitOfAll.multiplied(by: currentGasPrice)
+                cell.amountView.checkInvalidNow(showErrorMsg: true)
             }
             isDelegateAll = false
-            cell.amountView.checkInvalidNow(showErrorMsg: true)
         }
 
         cell.amountView.feeLabel.text = (estimateUseGas.description.vonToLATString ?? "0.00").displayFeeString

@@ -56,6 +56,21 @@ class WallletPersistence {
         }
     }
 
+    func updateWalletBackupStatus(wallet: Wallet, isBackup: Bool) {
+        let predicate = NSPredicate(format: "chainId == %@ && primaryKeyIdentifier == %@", SettingService.shareInstance.currentNodeChainId, wallet.primaryKeyIdentifier)
+        RealmWriteQueue.async {
+            autoreleasepool(invoking: {
+                let realm = try! Realm(configuration: RealmHelper.getConfig())
+                try? realm.write {
+                    let r = realm.objects(Wallet.self).filter(predicate)
+                    for wal in r {
+                        wal.isBackup = isBackup
+                    }
+                }
+            })
+        }
+    }
+
     func updateWalletUserArrangementIndex(wallet: Wallet, userArrangementIndex: Int) {
 
         let predicate = NSPredicate(format: "chainId == %@ && primaryKeyIdentifier == %@", SettingService.shareInstance.currentNodeChainId, wallet.primaryKeyIdentifier)

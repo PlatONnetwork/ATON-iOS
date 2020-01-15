@@ -145,6 +145,7 @@ struct CommonService {
             } else if type == .delegate {
                 message = Localized("staking_input_amount_minlimit_error", arguments: (minLimitBInt/PlatonConfig.VON.LAT).description)
             }
+            return (valid, message)
         }
 
         if
@@ -158,6 +159,7 @@ struct CommonService {
             } else {
                 message = Localized("transferVC_Insufficient_balance")
             }
+            return (valid, message)
         }
 
         if type == .withdraw {
@@ -166,9 +168,16 @@ struct CommonService {
                 message = Localized("staking_withdraw_balance_Insufficient_error")
             }
         } else if type == .delegate {
-            if balance < feeBInt {
-                valid = false
-                message = Localized("staking_delegate_balance_Insufficient_error")
+            if isLockAmount == true {
+                if balance < feeBInt {
+                    valid = false
+                    message = Localized("staking_delegate_balance_Insufficient_error")
+                }
+            } else {
+                if balance < feeBInt + amount {
+                    valid = false
+                    message = Localized("staking_delegate_balance_Insufficient_error")
+                }
             }
         } else {
             if balance < feeBInt {
@@ -180,7 +189,26 @@ struct CommonService {
         return (valid, message)
     }
 
-    static func checkTransferAmoutInput(text: String, balance: BigUInt, minLimit: BigUInt? = nil, maxLimit: BigUInt? = nil, fee: BigUInt? = BigUInt("0")!, type: SendInputTableViewCellType?, isLockAmount: Bool? = false) -> (Bool, String) {
+    static func checkStakingAmoutInput(inputVON: BigUInt?, balance: BigUInt, minLimit: BigUInt? = nil, maxLimit: BigUInt? = nil, fee: BigUInt? = BigUInt("0")!, type: SendInputTableViewCellType?, isLockAmount: Bool? = false) -> (Bool, String) {
+
+        // if input empty, not regular
+        guard let amountVON = inputVON else {
+            return (true, "")
+        }
+
+        guard amountVON > BigUInt.zero else {
+            return (false, Localized("transferVC_amout_amout_input_error"))
+        }
+
+        let (valid, message) = checkAmountLimit(balance: balance, amount: amountVON, minLimit: minLimit ?? .zero, maxLimit: maxLimit, fee: fee, type: type ?? .transfer, isLockAmount: isLockAmount)
+        guard valid == true else {
+            return (valid, message ?? "")
+        }
+
+        return (true, "")
+    }
+
+    static func checkStakingAmoutInput(text: String, balance: BigUInt, minLimit: BigUInt? = nil, maxLimit: BigUInt? = nil, fee: BigUInt? = BigUInt("0")!, type: SendInputTableViewCellType?, isLockAmount: Bool? = false) -> (Bool, String) {
 
         // if input empty, not regular
         guard text.count > 0 else {

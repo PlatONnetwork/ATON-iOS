@@ -213,32 +213,47 @@ extension WithDrawViewController: UITableViewDelegate, UITableViewDataSource {
             return cell
         case .inputAmount:
             let cell = tableView.dequeueReusableCell(withIdentifier: "SendInputTableViewCell") as! SendInputTableViewCell
-            cell.inputType = .withdraw
             cell.amountView.titleLabel.text = Localized("ATextFieldView_withdraw_title")
             cell.amountView.textField.LocalizePlaceholder = Localized("staking_amount_placeholder", arguments: (minDelegateAmountLimit/PlatonConfig.VON.LAT).description)
-            cell.minAmountLimit = minDelegateAmountLimit
             cell.maxAmountLimit = BigUInt(balanceStyle?.currentBalance.1 ?? "0")
-            cell.balance = amountBalance
-            cell.estimateUseGas = estimateUseGas
-            cell.cellDidContentChangeHandler = { [weak self] in
+
+            cell.amountView.checkInput(mode: .all, check: { [weak self] (text, isDelete) -> (Bool, String) in
+                guard let self = self else { return (true, "") }
+
+                var amountVON = BigUInt.mutiply(a: text, by: PlatonConfig.VON.LAT.description) ?? BigUInt.zero
+                let maxDelegateAmountLimit = BigUInt(self.balanceStyle?.currentBalance.1 ?? "0") ?? BigUInt.zero
+
+                if !isDelete && amountVON > self.minDelegateAmountLimit && maxDelegateAmountLimit < self.minDelegateAmountLimit + amountVON {
+                    amountVON = maxDelegateAmountLimit
+                    cell.amountView.textField.text = amountVON.divide(by: PlatonConfig.VON.LAT.description, round: 8)
+                }
+                self.estimateGas(amountVON, cell)
+                self.currentAmount = amountVON
+                self.tableView.reloadSections(IndexSet([indexPath.section + 1]), with: .none)
+
+                let regularText = amountVON > BigUInt.zero ? amountVON.divide(by: PlatonConfig.VON.LAT.description, round: 8) : ""
+
+                return CommonService.checkStakingAmoutInput(text: regularText, balance: self.amountBalance, minLimit: self.minDelegateAmountLimit, maxLimit: BigUInt(self.balanceStyle?.currentBalance.1 ?? "0"), fee: self.estimateUseGas, type: .withdraw, isLockAmount: false)
+            }) { [weak self] _ in
                 self?.updateHeightOfRow(cell)
             }
+
             cell.cellDidContentEditingHandler = { [weak self] (amountVON, isRegular) in
-                var inputAmountVON = amountVON
-
-                let minAMountLimit = self?.minDelegateAmountLimit ?? BigUInt(10).multiplied(by: PlatonConfig.VON.LAT)
-
-                if let cAmount = BigUInt(self?.balanceStyle?.currentBalance.1 ?? "0"), cAmount >= minAMountLimit, inputAmountVON >= minAMountLimit, cAmount > inputAmountVON, isRegular == true {
-                    if cAmount - inputAmountVON < minAMountLimit {
-                        inputAmountVON = cAmount
-                        DispatchQueue.main.async {
-                            cell.amountView.textField.text = inputAmountVON.divide(by: ETHToWeiMultiplier, round: 8)
-                        }
-                    }
-                }
-                self?.estimateGas(inputAmountVON, cell)
-                self?.currentAmount = inputAmountVON
-                self?.tableView.reloadSections(IndexSet([indexPath.section + 1]), with: .none)
+//                var inputAmountVON = amountVON
+//
+//                let minAMountLimit = self?.minDelegateAmountLimit ?? BigUInt(10).multiplied(by: PlatonConfig.VON.LAT)
+//
+//                if let cAmount = BigUInt(self?.balanceStyle?.currentBalance.1 ?? "0"), cAmount >= minAMountLimit, inputAmountVON >= minAMountLimit, cAmount > inputAmountVON, isRegular == true {
+//                    if cAmount - inputAmountVON < minAMountLimit {
+//                        inputAmountVON = cAmount
+//                        DispatchQueue.main.async {
+//                            cell.amountView.textField.text = inputAmountVON.divide(by: ETHToWeiMultiplier, round: 8)
+//                        }
+//                    }
+//                }
+//                self?.estimateGas(inputAmountVON, cell)
+//                self?.currentAmount = inputAmountVON
+//                self?.tableView.reloadSections(IndexSet([indexPath.section + 1]), with: .none)
             }
             if let bStyle = balanceStyle, bStyle.selectedIndex == 1 {
                 cell.amountView.textField.isEnabled = false

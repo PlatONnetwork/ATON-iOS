@@ -45,6 +45,10 @@ public final class Wallet: Object {
 
     @objc dynamic var lockedBalance: String = ""
 
+    @objc dynamic var mnemonic: String = ""
+
+    @objc dynamic var isBackup: Bool = false
+
     // 钱包类型
     var type: WalletType {
         if key == nil {
@@ -64,11 +68,26 @@ public final class Wallet: Object {
         return ks.address
     }
 
+    // 0.7.5 修改助记词存放位置
+    var keystoreMnemonic: String {
+        guard mnemonic.count > 0 else {
+            if let mn = key?.mnemonic, mn.count > 0 {
+                return mn
+            }
+            return ""
+        }
+        return mnemonic
+    }
+
     public var key: Keystore?
 
     public var canBackupMnemonic: Bool {
         get {
-            return key?.mnemonic != nil
+            guard keystoreMnemonic.count > 0 else {
+                return false
+            }
+
+            return !isBackup
         }
     }
 

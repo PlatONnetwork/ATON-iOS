@@ -31,6 +31,7 @@ excluded: # 执行 linting 时忽略的路径。 优先级比 `included` 更高�
 #   ignores_comments: true
 #   ignores_interpolated_strings: true
 #   ignores_urls: true
+unused_capture_list: false
 
 type_name:
   min_length: 1 # 只是警告

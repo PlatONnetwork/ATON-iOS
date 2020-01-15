@@ -9,6 +9,7 @@
 import Foundation
 import Alamofire
 import Localize_Swift
+import platonWeb3
 
 class SettingService {
 
@@ -16,14 +17,14 @@ class SettingService {
         let standard = UserDefaults.standard
         let defaultChainIds = AppConfig.NodeURL.defaultNodesURL.map { $0.chainId }
         guard
-            let chainId = standard.string(forKey: AppConfig.LocalKeys.SelectedChainIdKey), defaultChainIds.contains(chainId) else {
+            let chainId = standard.string(forKey: LocalKeys.SelectedChainIdKey), defaultChainIds.contains(chainId) else {
             if let defaultNode = AppConfig.NodeURL.defaultNodesURL.first(where: { $0.isSelected == true }) {
-                standard.set(defaultNode.chainId, forKey: AppConfig.LocalKeys.SelectedChainIdKey)
+                standard.set(defaultNode.chainId, forKey: LocalKeys.SelectedChainIdKey)
                 standard.synchronize()
                 return defaultNode.chainId
             } else {
                 let chainId = AppConfig.NodeURL.defaultNodesURL.first!.chainId
-                standard.set(chainId, forKey: AppConfig.LocalKeys.SelectedChainIdKey)
+                standard.set(chainId, forKey: LocalKeys.SelectedChainIdKey)
                 standard.synchronize()
                 return chainId
             }
@@ -65,12 +66,42 @@ class SettingService {
     func setCurrentNodeChainId(nodeChain: NodeChain) {
         let standard = UserDefaults.standard
         guard
-            let chainId = standard.string(forKey: AppConfig.LocalKeys.SelectedChainIdKey),
+            let chainId = standard.string(forKey: LocalKeys.SelectedChainIdKey),
             chainId != nodeChain.chainId
             else {
                 return
         }
-        standard.set(nodeChain.chainId, forKey: AppConfig.LocalKeys.SelectedChainIdKey)
+        standard.set(nodeChain.chainId, forKey: LocalKeys.SelectedChainIdKey)
         standard.synchronize()
+    }
+
+    var thresholdValue: BigUInt {
+        get {
+            if let value = UserDefaults.standard.object(forKey: LocalKeys.ReminderThresholdValue) as? String {
+                return BigUInt(stringLiteral: value)
+            }
+            UserDefaults.standard.set((BigUInt(1000)*PlatonConfig.VON.LAT).description, forKey: LocalKeys.ReminderThresholdValue)
+            UserDefaults.standard.synchronize()
+            return BigUInt(1000)*PlatonConfig.VON.LAT
+        }
+        set {
+            UserDefaults.standard.set(newValue.description, forKey: LocalKeys.ReminderThresholdValue)
+            UserDefaults.standard.synchronize()
+        }
+    }
+
+    var isResendReminder: Bool {
+        get {
+            if let value = UserDefaults.standard.object(forKey: LocalKeys.isOpenResendReminder) as? Bool {
+                return value
+            }
+            UserDefaults.standard.set(true, forKey: LocalKeys.isOpenResendReminder)
+            UserDefaults.standard.synchronize()
+            return true
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: LocalKeys.isOpenResendReminder)
+            UserDefaults.standard.synchronize()
+        }
     }
 }

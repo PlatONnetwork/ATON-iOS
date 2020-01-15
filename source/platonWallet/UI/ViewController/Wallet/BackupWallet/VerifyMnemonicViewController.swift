@@ -188,6 +188,7 @@ class VerifyMnemonicViewController: BaseViewController,MnemonicGridViewDelegate 
             guard self.walletAddress != nil, let wallet = WalletService.sharedInstance.getWalletByAddress(address: self.walletAddress!) else {
                 return
             }
+
             WalletService.sharedInstance.afterBackupMnemonic(wallet: wallet)
             NotificationCenter.default.post(name: Notification.Name.ATON.updateWalletList, object: nil)
         } else {

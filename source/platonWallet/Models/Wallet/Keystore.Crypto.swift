@@ -10,6 +10,12 @@ import Foundation
 import CryptoSwift
 import ScryptSwift
 
+public enum KDF: String, Codable {
+    case SCRYPT = "scrypt"
+    case PBKDF2 = "pbkdf2"
+    case unknown
+}
+
 extension Keystore {
 
     public struct Crypto {
@@ -20,13 +26,13 @@ extension Keystore {
 
         public var cipherParams: Crypto.CipherParams
 
-        public var kdf: String = "scrypt"
+        public var kdf: KDF = KDF.SCRYPT
 
-        public var kdfParams: ScryptParams
+        public var kdfParams: Any
 
         public var mac: Data
 
-        public init(cipherText: Data, cipherParams: CipherParams, kdfParams: ScryptParams, mac: Data) {
+        public init(cipherText: Data, cipherParams: CipherParams, kdfParams: Any, mac: Data) {
             self.cipherText = cipherText
             self.cipherParams = cipherParams
             self.kdfParams = kdfParams
@@ -49,9 +55,7 @@ extension Keystore {
 
             self.init(cipherText: Data(bytes: encryptedKey), cipherParams: cipherParams, kdfParams: kdfParams, mac: mac)
         }
-
     }
-
 }
 
 extension Keystore.Crypto: Codable {
@@ -72,8 +76,14 @@ extension Keystore.Crypto: Codable {
 
         cipher = try values.decode(String.self, forKey: .cipher)
         cipherParams = try values.decode(CipherParams.self, forKey: .cipherParams)
-        kdf = try values.decode(String.self, forKey: .kdf)
-        kdfParams = try values.decode(ScryptParams.self, forKey: .kdfParams)
+        kdf = try values.decode(KDF.self, forKey: .kdf)
+        if let scryptParams = try? values.decode(ScryptParams.self, forKey: .kdfParams) {
+            kdfParams = scryptParams
+        } else if let pbkdf2Params = try? values.decode(PBKDF2Params.self, forKey: .kdfParams) {
+            kdfParams = pbkdf2Params
+        } else {
+            throw DecryptError.unsupportedKDF
+        }
 
         let macStr = try values.decode(String.self, forKey: .mac)
         mac = Data(bytes: macStr.hexToBytes())
@@ -85,7 +95,14 @@ extension Keystore.Crypto: Codable {
         try container.encode(cipher, forKey: .cipher)
         try container.encode(cipherParams, forKey: .cipherParams)
         try container.encode(kdf, forKey: .kdf)
-        try container.encode(kdfParams, forKey: .kdfParams)
+        if let scryptParams = kdfParams as? ScryptParams {
+            try container.encode(scryptParams, forKey: .kdfParams)
+        } else if let pbkdf2Params = kdfParams as? PBKDF2Params {
+            try container.encode(pbkdf2Params, forKey: .kdfParams)
+        } else {
+            throw EncryptError.unsupportedKDF
+        }
+
         try container.encode(mac.toHexString(), forKey: .mac)
     }
 }
