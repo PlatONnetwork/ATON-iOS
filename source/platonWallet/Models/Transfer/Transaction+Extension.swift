@@ -72,17 +72,17 @@ extension Transaction {
         }
 
         if let valueStr = value, Int(valueStr) == 0 {
-            return (valueDescription, UIColor(rgb: 0xb6bbd0))
+            return (topValueDescription, UIColor(rgb: 0xb6bbd0))
         }
 
         switch direction {
         case .Sent:
-            guard let string = valueDescription else {
+            guard let string = topValueDescription else {
                 return (nil, nil)
             }
             return ("-" + string, UIColor(rgb: 0xff3b3b))
         case .Receive:
-            guard let string = valueDescription else {
+            guard let string = topValueDescription else {
                 return (nil, nil)
             }
             return ("+" + string, UIColor(rgb: 0x19a20e))
@@ -111,20 +111,20 @@ extension Transaction {
 
     var amountTextString: String {
         if let valueStr = value, Int(valueStr) == 0 {
-            return valueDescription!
+            return topValueDescription!
         }
 
         if txReceiptStatus == TransactionReceiptStatus.businessCodeError.rawValue {
-            return valueDescription!
+            return topValueDescription!
         }
 
         switch direction {
         case .Sent:
-            return "-" + valueDescription!
+            return "-" + topValueDescription!
         case .Receive:
-            return "+" + valueDescription!
+            return "+" + topValueDescription!
         default:
-            return "-" + valueDescription!
+            return "-" + topValueDescription!
         }
     }
 

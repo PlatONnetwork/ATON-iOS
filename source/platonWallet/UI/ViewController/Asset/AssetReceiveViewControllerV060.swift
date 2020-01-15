@@ -30,6 +30,16 @@ class AssetReceiveViewControllerV060: BaseViewController {
         qrCodeView.saveImgAndShreadBtn.addTarget(self, action: #selector(onSaveImgAndShared), for: .touchUpInside)
         qrCodeView.addressLabel.text = AssetVCSharedData.sharedData.selectedWalletAddress
 
+        let attachment = NSTextAttachment()
+        attachment.bounds = CGRect(x: 0, y: -1, width: 10, height: 10)
+        attachment.image = UIImage(named: "3.icon_warning")
+
+        let attr = NSMutableAttributedString()
+        attr.append(NSAttributedString(attachment: attachment))
+        attr.append(NSAttributedString(string: " "))
+        attr.append(NSAttributedString(string: Localized("wallet_receive_qrcode_warning", arguments: SettingService.shareInstance.currentNetworkName)))
+        qrCodeView.tipsLabel.attributedText = attr
+
         AssetVCSharedData.sharedData.registerHandler(object: self) {[weak self] in
             let qrImage = UIImage.geneQRCodeImageFor(AssetVCSharedData.sharedData.selectedWalletAddress!, size: 300.0)
 //            let qrImage = self?.setupQRCodeImage(AssetVCSharedData.sharedData.selectedWalletAddress!, image: nil)

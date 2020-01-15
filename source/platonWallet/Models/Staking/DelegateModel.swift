@@ -20,7 +20,22 @@ struct JSONResponse<T: Decodable>: Decodable {
 struct Delegate: Decodable {
     var walletAddress: String
     var delegated: String?
+    var cumulativeReward: String?
+    var withdrawReward: String?
+}
+
+struct TotalDelegate: Decodable {
     var availableDelegationBalance: String?
+    var delegated: String?
+    var item: [DelegateDetail]?
+
+    var availableDelegationBalanceValue: String {
+        return availableDelegationBalance?.vonToLATString ?? "--"
+    }
+
+    var delegatedValue: String {
+        return delegated?.vonToLATString ?? "--"
+    }
 }
 
 struct DelegateDetail: Decodable {
@@ -34,6 +49,16 @@ struct DelegateDetail: Decodable {
     var sequence: String?
     var isInit: Bool = false
     var isConsensus: Bool = false
+    var withdrawReward: String?
+
+    var withdrawRewardValue: String {
+        return withdrawReward?.vonToLATString ?? "--"
+    }
+
+    var withdrawRewardBInt: BigUInt {
+        return BigUInt(withdrawReward ?? "0") ?? BigUInt.zero
+    }
+
 }
 
 struct Delegation: Decodable {
@@ -128,4 +153,10 @@ public enum DelegateStatus: String, Decodable {
     case redeem
     case redeemSucc
     case redeemFail
+}
+
+enum RewardStatus {
+    case none // 无可用领取
+    case unclaim // 待领取
+    case claiming // 领取中
 }

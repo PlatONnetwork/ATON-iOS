@@ -142,6 +142,8 @@
 "TransactionDetailVC_proposal_voteabstain" = "VoteAbstain";
 "TransactionDetailVC_doublesign" = "区块双签";
 "TransactionDetailVC_transaction_hash" = "交易哈希:";
+"TransactionDetailVC_claim_wallet" = "领取钱包:";
+"TransactionDetailVC_reward_amount" = "领取数量:";
 
 //qr scan
 "QRScanerVC_nav_title" = "扫描";
@@ -387,6 +389,7 @@
 "TransactionStatus_declareVersion_title" = "版本声明";
 "TransactionStatus_reportDuplicateSign_title" = "举报验证节点";
 "TransactionStatus_createRestrictingPlan_title" = "创建锁仓";
+"TransactionStatus_claimReward_title" = "领取奖励";
 "TransactionStatus_unknown_title" = "未知";
 
 
@@ -398,7 +401,7 @@
 "SettingsVC_languages_title" = "语言";
 "SettingsVC_faceId_openFailed_tips" = "Touch ID或Face ID已锁定，请至“系统-设置”解锁后重试";
 "SettingsVC_threshold_title" = "大额提醒";
-"SettingsVC_Resend_title" = "防重发提醒";
+"SettingsVC_Resend_title" = "重复交易提醒";
 
 "SettingsVC_nodeSet_editBtn_title" = "编辑";
 "SettingsVC_nodeSet_saveBtn_title" = "保存";
@@ -409,6 +412,7 @@
 "SettingsVC_nodeSet_defaultTestNetwork_test_des" = "测试环境网";
 "SettingsVC_nodeSet_defaultTestNetwork_develop_des" = "开发环境网";
 "SettingsVC_nodeSet_NewBaleyworld_des" = "新贝莱世界";
+"SettingsVC_nodeSet_parallel_des" = "平行网";
 "SettingsVC_nodeSet_switchSuccess_tips" = "节点切换成功";
 "SettingsVC_nodeSet_switchFail_tips" = "节点切换失败";
 "SettingsVC_nodeSet_recovery_tips" = "节点连接失败，已还原修改";
@@ -730,10 +734,9 @@
 "staking_main_mydelegate_text" = "我的委托";
 "staking_main_validator_text" = "验证节点";
 "staking_main_wallet_name" = "钱包名称";
-"staking_main_delegate_text" = "可委托余额";
 "staking_main_undelegating_text" = "总委托";
 "staking_main_delegate_detail" = "详情";
-"staking_main_delegate_total" = "总计委托";
+"staking_main_delegate_total" = "总计委托(LAT)";
 "staking_main_delegate_record" = "委托记录";
 "staking_main_delegate_faq" = "常见问题";
 "staking_main_delegate_tutorial" = "使用教程";
@@ -761,10 +764,8 @@
 "staking_validator_node_all" = "所有";
 "staking_validator_node_active" = "活跃中";
 "staking_validator_node_candidate" = "候选中";
-"staking_validator_node_rank" = "排名";
-"staking_validator_node_yield" = "年化率";
 
-"staking_validator_delegate_total" = "总质押";
+"staking_validator_delegate_total" = "委托";
 "staking_validator_delegate_rate_about" = "预计年化率";
 
 "statking_validator_total_staked" = "总质押(LAT)";
@@ -789,11 +790,9 @@
 "ATextFieldView_withdraw_title" = "赎回数量:";
 
 "staking_doubt_delegate" = "委托";
-"staking_doubt_delegate_detail" = "委托的Token所有权永远归于委托人，用户可以随时赎回委托的Token。\n验证节点关联的操作地址和奖励接收地址不允许参与委托。";
+"staking_doubt_delegate_detail" = "委托的Token所有权永远归于委托人，您可以随时赎回委托的Token。\n验证节点关联的操作地址和奖励接收地址不允许参与委托。";
 "staking_doubt_reward" = "收益";
-"staking_doubt_reward_detail" = "委托收益来自节点的收益分配，节点收益主要有出块奖励、质押奖励和区块手续费奖励。具体如何分配请查看各节点官网说明";
-"staking_doubt_risk" = "风险";
-"staking_doubt_risk_detail" = "节点双重签名、出块率低会被惩罚，从而间接影响您的收益。为规避风险，请认真选择合格的节点。";
+"staking_doubt_reward_detail" = "委托至少锁定一个周期（10750区块）才有收益。根据节点设置的委托奖励比例对节点获得的收益进行分配。节点收益包含出块奖励和质押奖励。";
 
 "staking_doubt_undelegate" = "说明";
 "staking_doubt_undelegate_detail" = "赎回交易提交成功，委托的Token可立即到账；\n待赎回委托必须一次性全部赎回；\n赎回数量扣除后，已委托剩余数量少于%@LAT时，自动赎回全部。";
@@ -909,6 +908,8 @@
 "confirm_generate_qrcode_for_signed_tx" = "授权签名";
 "confirm_generate_qrcode_for_signed_tx_tip" = "使用对应观察钱包扫描下方二维码，完成授权";
 "confirm_button_signed_tx" = "完成";
+"confirm_reward_wallet" = "领取钱包:";
+"confirm_reward_amount" = "领取数量:";
 
 "offline_signature_title" = "交易预览";
 
@@ -916,6 +917,7 @@
 "offline_signature_notmatch_wallet" = "钱包不匹配";
 "touchid_auth_text" = "请验证%@";
 "touchid_verify_fail" = "指纹识别失败，请再试一次";
+"offline_signature_not_privatekey" = "签名钱包密钥不存在";
 
 "delete_observed_wallet_alert_title" = "删除观察钱包";
 "delete_observed_wallet_alert_message" = "请确认是否删除此观察钱包？";
@@ -933,3 +935,37 @@
 "threshold_confirm_value" = "发送数量超过%@，确认是否继续发送？";
 "resend_transfer_confirm_value" = "最近有一笔相同的发送记录，确认是否继续发送";
 "about_version_update_latest" = "当前已是最新版本！";
+
+"mydelegates_delegate_record" = "委托记录";
+"mydelegates_claim_record" = "领取记录";
+"mydelegates_unclaimed_reward" = "待领取奖励";
+"mydelegates_total_reward" = "累计奖励";
+"mydelegates_claim" = "领取";
+"mydelegates_search_placeholder" = "输入节点名称查询";
+
+"node_sort_title" = "排序";
+"node_sort_rank" = "节点排名";
+"node_sort_delegated" = "接受委托量";
+"node_sort_delegator" = "委托者数";
+"node_sort_yield" = "预计委托年化收益率";
+
+"reward_ratio" = "委托奖励比例";
+"reward_total" = "累计委托奖励";
+
+"delegate_detail_balance" = "可委托余额";
+"delegate_detail_delegated" = "总委托";
+
+"delegate_detail_unclaimed_reward" = "待领取奖励：";
+
+"wallet_receive_qrcode_warning" = "当前%@网络，切勿将其他网络LAT转入到当前地址";
+
+"claim_comfirm_title" = "领取奖励";
+"claim_comfirm_desc" = "预估奖励，以实际到账为准";
+"claim_comfirm_fee" = "交易手续费";
+"claim_comfirm_wallet" = "领取钱包";
+"claim_comfirm_balance" = "可用余额：";
+"claim_comfirm_comfirm" = "确认";
+
+"mydelegates_search_cancel" = "隐藏";
+
+"transaction_warning_wait_for_previous" = "请等待上笔交易完成后方可继续交易！";

@@ -1,10 +1,10 @@
 {
-	"errMsg": "�ɹ�",
-	"code": 0,
-	"data": [{
-		"walletAddress": "0xa7074774f4e1e033c6cbd471ec072f7734144a0c",
-		"delegate": "11000000000000000000",
-		"redeem": "0",
-		"availableDelegationBalance": "988931140000000000000"
-	}]
+    "errMsg": "�ɹ�",
+    "code": 0,
+    "data": [{
+        "walletAddress": "0xad9ef6a7b77b49854d17b30781f96332a7146263",
+        "delegated": "34000000000000000000",
+        "cumulativeReward": "12653094407762370538000000000",
+        "withdrawReward": "1522832791723124648000000000"
+    }]
 }

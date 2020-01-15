@@ -69,6 +69,7 @@ class PButton: UIButton {
             switch style {
             case .plain:
                 do {}
+                isUserInteractionEnabled = true
             case .blue:
                 //shadow
                 self.layer.shadowColor = UIColor(rgb: 0x0051ff).cgColor
@@ -81,6 +82,7 @@ class PButton: UIButton {
 
                 setBackgroundImage(layerToImage(layer: gradientLayer(color: blueNormalGradient))?.resizableImage(withCapInsets: UIEdgeInsets(top: 3, left: 3, bottom: 3, right: 3), resizingMode: .stretch), for: .normal)
                 setBackgroundImage(layerToImage(layer: gradientLayer(color: blueHighlightedGradient))?.resizableImage(withCapInsets: UIEdgeInsets(top: 3, left: 3, bottom: 3, right: 3), resizingMode: .stretch), for: .highlighted)
+                isUserInteractionEnabled = true
             case .gray:
                 //shadow
                 layer.shadowColor = UIColor(rgb: 0x969696).cgColor
@@ -93,6 +95,7 @@ class PButton: UIButton {
 
                 setBackgroundImage(layerToImage(layer: gradientLayer(color: grayNormalGradient))?.resizableImage(withCapInsets: UIEdgeInsets(top: 3, left: 3, bottom: 3, right: 3), resizingMode: .stretch), for: .normal)
                 setBackgroundImage(layerToImage(layer: gradientLayer(color: grayHighlightedGradient))?.resizableImage(withCapInsets: UIEdgeInsets(top: 3, left: 3, bottom: 3, right: 3), resizingMode: .stretch), for: .highlighted)
+                isUserInteractionEnabled = true
             case .delete:
                 self.layer.shadowColor = UIColor.clear.cgColor
                 setTitleColor(UIColor(rgb: 0xF5302C), for: .normal)
@@ -100,12 +103,14 @@ class PButton: UIButton {
                 self.layer.borderColor = UIColor(rgb: 0xF5302C).cgColor
                 self.layer.borderWidth = 1
                 self.layer.cornerRadius = 22
+                isUserInteractionEnabled = true
             case .alert:
                 setTitleColor(UIColor(rgb: 0xF5302C), for: .normal)
                 setTitleColor(UIColor(rgb: 0xDC5E5B), for: .highlighted)
 
                 setBackgroundImage(UIImage(color: UIColor(rgb: 0xDC5151)), for: .normal)
                 setBackgroundImage(UIImage(color: UIColor(rgb: 0xDC5151)), for: .highlighted)
+                isUserInteractionEnabled = true
             case .disable:
 
                 layer.shadowColor = UIColor(rgb: 0x969696).cgColor
@@ -117,6 +122,7 @@ class PButton: UIButton {
 
                 setBackgroundImage(layerToImage(layer: gradientLayer(color: disableNormalGradient))?.resizableImage(withCapInsets: UIEdgeInsets(top: 3, left: 3, bottom: 3, right: 3), resizingMode: .stretch), for: .normal)
                 setBackgroundImage(layerToImage(layer: gradientLayer(color: disableHighlightedGradient))?.resizableImage(withCapInsets: UIEdgeInsets(top: 3, left: 3, bottom: 3, right: 3), resizingMode: .stretch), for: .highlighted)
+                isUserInteractionEnabled = false
             }
         }
     }

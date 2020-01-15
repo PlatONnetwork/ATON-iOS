@@ -27,7 +27,11 @@ extension Node {
     }
 
     var delegateAmount: String {
-        return (deposit?.vonToLATString ?? "0.00").ATPSuffix()
+        return (delegateSum?.vonToLATString ?? "0.00").ATPSuffix()
+    }
+
+    var delegators: String {
+        return delegate?.displayForMicrometerLevel(maxRound: 8) ?? "0"
     }
 
     var status: (String, UIColor) {
@@ -48,7 +52,7 @@ extension Node {
             return "--"
         }
         guard
-            let ratePAN = Decimal(string: ratePA ?? "0") else { return "0.00%" }
+            let ratePAN = Decimal(string: delegatedRatePA ?? "0") else { return "0.00%" }
         let ratePANDvi10 = ratePAN/Decimal(floatLiteral: 100.0)
         let formatter = NumberFormatter()
         formatter.numberStyle = .decimal
@@ -81,7 +85,7 @@ extension NodeDetail {
     }
 
     var delegations: String {
-        return delegateSum?.vonToLATString ?? "0"
+        return node.delegateSum?.vonToLATString ?? "0"
     }
 
     var slash: String {
@@ -108,5 +112,13 @@ extension NodeDetail {
             return intro!
         }
         return "--"
+    }
+
+    var delegatedRewardPerValue: String {
+        return String(format: "%.2f", ((Float(delegatedRewardPer ?? "0") ?? 0) / 100.0)) + "%"
+    }
+
+    var cumulativeRewardValue: String {
+        return (cumulativeReward?.vonToLATString ?? "0").ATPSuffix()
     }
 }

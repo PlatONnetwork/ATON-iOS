@@ -19,11 +19,15 @@ struct AppConfig {
     struct ChainID {
         static let VERSION_074 = "97"
         static let VERSION_0741 = "96"
+        static let VERSION_MAINNET = "95"
+        static let VERSION_UATNET = "299"
         static let TEST = "103"
-        #if UAT
+        #if UAT //测试网络
         static let PRODUCT = "101"
+        #elseif PARALLELNET // 平行网络
+        static let PRODUCT = AppConfig.ChainID.VERSION_UATNET
         #else
-        static let PRODUCT = AppConfig.ChainID.VERSION_0741
+        static let PRODUCT = AppConfig.ChainID.VERSION_MAINNET
         #endif
     }
 
@@ -38,10 +42,13 @@ struct AppConfig {
             (nodeURL: AppConfig.NodeURL.DefaultNodeURL_Alpha_V071, desc: "SettingsVC_nodeSet_defaultTestNetwork_test_des", chainId: AppConfig.ChainID.PRODUCT, isSelected: true),
             (nodeURL: AppConfig.NodeURL.DefaultNodeURL_Alpha_V071_DEV, desc: "SettingsVC_nodeSet_defaultTestNetwork_develop_des", chainId: AppConfig.ChainID.TEST, isSelected: false)
         ]
+        #elseif PARALLELNET
+        static let defaultNodesURL = [
+            (nodeURL: DefaultNodeURL_UAT, desc: "SettingsVC_nodeSet_parallel_des", chainId: AppConfig.ChainID.PRODUCT, isSelected: false),
+        ]
         #else
         static let defaultNodesURL = [
             (nodeURL: DefaultNodeURL_PRODUCT, desc: "SettingsVC_nodeSet_NewBaleyworld_des", chainId: AppConfig.ChainID.PRODUCT, isSelected: false),
-//            (nodeURL: DefaultNodeURL_UAT, desc: "SettingsVC_nodeSet_defaultTestNetwork_des", chainId: AppConfig.ChainID.TEST, isSelected: true)
         ]
         #endif
     }
@@ -50,6 +57,7 @@ struct AppConfig {
         static let pendingTransactionPollingTimerEnable = true
         static let pendingTransactionPollingTimerInterval = 3
         static let balancePollingTimerInterval = 5
+        static let viewControllerUpdateInterval = 3
     }
 
     struct H5URL {
@@ -101,14 +109,15 @@ struct AppConfig {
 
     struct ServerURL {
         struct HOST {
-            static let UATNET = "https://aton.test.platon.network"
+            static let UATNET = "https://aton.uatnet.platon.network"
             static let PRODUCTNET = "https://aton.main.platon.network"
 //            static let TESTNET = "http://192.168.9.190:1000"
             static let TESTNET = "http://58.250.250.234:1000"
 //            static let TESTNET = "http://58.250.250.234:1000"
             static let DEVNET = "http://192.168.9.190:443"
+//            static let DEVNET = "http://192.168.120.141:6789"
         }
-        static let PATH = "/app/v0700"
+        static let PATH = "/app/v0760"
     }
 
     struct AppInfo {
@@ -123,8 +132,7 @@ struct AppConfig {
 extension String {
     var chainid: String {
         switch self {
-        case AppConfig.NodeURL.DefaultNodeURL_Alpha_V071_DEV,
-             AppConfig.NodeURL.DefaultNodeURL_UAT:
+        case AppConfig.NodeURL.DefaultNodeURL_Alpha_V071_DEV:
             return AppConfig.ChainID.TEST
         default:
             return AppConfig.ChainID.PRODUCT

@@ -13,39 +13,38 @@ import platonWeb3
 struct QrcodeData<QRData: Codable>: Codable {
     var qrCodeType: Int?
     var qrCodeData: QRData?
-    var timestamp: Int?
     var chainId: String?
     var functionType: UInt16?
     var from: String?
 }
 
-extension QrcodeData {
-    func rlp() -> RLPItem {
-
-        let qrCodeTypeRLP = RLPItem(integerLiteral: UInt(qrCodeType ?? 0))
-        var qrcodeDataRLP: RLPItem?
-        if let txQrcode = qrCodeData as? [TransactionQrcode] {
-            let resultRLPs = txQrcode.map { $0.rlp() }
-            let rlpedItems = resultRLPs.map { (rlpItem) -> RLPItem in
-                let rawRlp = try? RLPEncoder().encode(rlpItem)
-                return RLPItem.bytes(rawRlp ?? Bytes())
-            }
-
-            qrcodeDataRLP = RLPItem.array(rlpedItems)
-        } else if let txQrcode = qrCodeData as? [String] {
-            let result = txQrcode.map { $0.rlp() }
-            qrcodeDataRLP = RLPItem.array(result)
-        } else {
-            qrcodeDataRLP = RLPItem(bytes: Bytes())
-        }
-        let timestampRLP = RLPItem(integerLiteral: UInt(timestamp ?? 0))
-        let chainIdRLP = RLPItem(stringLiteral: chainId ?? "")
-        let functionTypeRLP = RLPItem(bytes: functionType?.makeBytes() ?? Bytes())
-        let fromRLP = RLPItem(stringLiteral: from ?? "")
-
-        return RLPItem.array([qrCodeTypeRLP, qrcodeDataRLP!, timestampRLP, chainIdRLP, functionTypeRLP, fromRLP])
-    }
-}
+//extension QrcodeData {
+//    func rlp() -> RLPItem {
+//
+//        let qrCodeTypeRLP = RLPItem(integerLiteral: UInt(qrCodeType ?? 0))
+//        var qrcodeDataRLP: RLPItem?
+//        if let txQrcode = qrCodeData as? [TransactionQrcode] {
+//            let resultRLPs = txQrcode.map { $0.rlp() }
+//            let rlpedItems = resultRLPs.map { (rlpItem) -> RLPItem in
+//                let rawRlp = try? RLPEncoder().encode(rlpItem)
+//                return RLPItem.bytes(rawRlp ?? Bytes())
+//            }
+//
+//            qrcodeDataRLP = RLPItem.array(rlpedItems)
+//        } else if let txQrcode = qrCodeData as? [String] {
+//            let result = txQrcode.map { $0.rlp() }
+//            qrcodeDataRLP = RLPItem.array(result)
+//        } else {
+//            qrcodeDataRLP = RLPItem(bytes: Bytes())
+//        }
+//        let timestampRLP = RLPItem(integerLiteral: UInt(timestamp ?? 0))
+//        let chainIdRLP = RLPItem(stringLiteral: chainId ?? "")
+//        let functionTypeRLP = RLPItem(bytes: functionType?.makeBytes() ?? Bytes())
+//        let fromRLP = RLPItem(stringLiteral: from ?? "")
+//
+//        return RLPItem.array([qrCodeTypeRLP, qrcodeDataRLP!, timestampRLP, chainIdRLP, functionTypeRLP, fromRLP])
+//    }
+//}
 
 //extension QrcodeData<T> where T: TransactionQrcode {
 //    func rlp() -> RLPItem {
@@ -87,55 +86,55 @@ struct TransactionQrcode: Codable {
 }
 
 extension RLPItem {
-    func newQrcode() -> QrcodeData<[TransactionQrcode]>? {
-        let rlp = self
-        guard let array = rlp.array, array.count == 6, let txArray = array[1].array, let bt = txArray.first?.bytes, let dcRLP = try? RLPDecoder().decode(bt), dcRLP.newTx() != nil else {
-            return nil
-        }
+//    func newQrcode() -> QrcodeData<[TransactionQrcode]>? {
+//        let rlp = self
+//        guard let array = rlp.array, array.count == 6, let txArray = array[1].array, let bt = txArray.first?.bytes, let dcRLP = try? RLPDecoder().decode(bt), dcRLP.newTx() != nil else {
+//            return nil
+//        }
+//
+//        let qrCodeType = UInt(bytes: array[0].bytes ?? Bytes())
+//
+//        var qrCodeDatas: [TransactionQrcode]?
+//
+//        if let txArray = array[1].array {
+//            let bytesArr = txArray.map { $0.bytes! }
+//            let result = bytesArr.map { (bytes) -> TransactionQrcode in
+//                let response = (try? RLPDecoder().decode(bytes))?.newTx()
+//                return response!
+//            }
+//            qrCodeDatas = result
+//        }
+//
+//        let timestamp = UInt(bytes: array[2].bytes ?? Bytes())
+//        let chainId = array[3].bytes?.makeString()
+//        let functionType = UInt16(bytes: array[4].bytes ?? Bytes())
+//        let from = array[5].bytes?.makeString()
+//
+//        return QrcodeData(qrCodeType: Int(qrCodeType), qrCodeData: qrCodeDatas, timestamp: Int(timestamp), chainId: chainId, functionType: functionType, from: from)
+//    }
 
-        let qrCodeType = UInt(bytes: array[0].bytes ?? Bytes())
-
-        var qrCodeDatas: [TransactionQrcode]?
-
-        if let txArray = array[1].array {
-            let bytesArr = txArray.map { $0.bytes! }
-            let result = bytesArr.map { (bytes) -> TransactionQrcode in
-                let response = (try? RLPDecoder().decode(bytes))?.newTx()
-                return response!
-            }
-            qrCodeDatas = result
-        }
-
-        let timestamp = UInt(bytes: array[2].bytes ?? Bytes())
-        let chainId = array[3].bytes?.makeString()
-        let functionType = UInt16(bytes: array[4].bytes ?? Bytes())
-        let from = array[5].bytes?.makeString()
-
-        return QrcodeData(qrCodeType: Int(qrCodeType), qrCodeData: qrCodeDatas, timestamp: Int(timestamp), chainId: chainId, functionType: functionType, from: from)
-    }
-
-    func newSigned() -> QrcodeData<[String]>? {
-        let rlp = self
-        guard let array = rlp.array, array.count == 6, let txArray = array[1].array, txArray.first?.string != nil else {
-            return nil
-        }
-
-        let qrCodeType = UInt(bytes: array[0].bytes ?? Bytes())
-
-        var qrCodeDatas: [String]?
-
-        if let txArray = array[1].array {
-            let result = txArray.map { $0.string! }
-            qrCodeDatas = result
-        }
-
-        let timestamp = UInt(bytes: array[2].bytes ?? Bytes())
-        let chainId = array[3].bytes?.makeString()
-        let functionType = UInt16(bytes: array[4].bytes ?? Bytes())
-        let from = array[5].bytes?.makeString()
-
-        return QrcodeData(qrCodeType: Int(qrCodeType), qrCodeData: qrCodeDatas, timestamp: Int(timestamp), chainId: chainId, functionType: functionType, from: from)
-    }
+//    func newSigned() -> QrcodeData<[String]>? {
+//        let rlp = self
+//        guard let array = rlp.array, array.count == 6, let txArray = array[1].array, txArray.first?.string != nil else {
+//            return nil
+//        }
+//
+//        let qrCodeType = UInt(bytes: array[0].bytes ?? Bytes())
+//
+//        var qrCodeDatas: [String]?
+//
+//        if let txArray = array[1].array {
+//            let result = txArray.map { $0.string! }
+//            qrCodeDatas = result
+//        }
+//
+//        let timestamp = UInt(bytes: array[2].bytes ?? Bytes())
+//        let chainId = array[3].bytes?.makeString()
+//        let functionType = UInt16(bytes: array[4].bytes ?? Bytes())
+//        let from = array[5].bytes?.makeString()
+//
+//        return QrcodeData(qrCodeType: Int(qrCodeType), qrCodeData: qrCodeDatas, timestamp: Int(timestamp), chainId: chainId, functionType: functionType, from: from)
+//    }
 
     func newTx() -> TransactionQrcode? {
         let rlp = self

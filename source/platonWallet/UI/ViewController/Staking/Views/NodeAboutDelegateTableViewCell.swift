@@ -8,6 +8,8 @@
 
 import UIKit
 import Localize_Swift
+import SnapKit
+import BigInt
 
 class NodeAboutDelegateTableViewCell: UITableViewCell {
 
@@ -19,9 +21,12 @@ class NodeAboutDelegateTableViewCell: UITableViewCell {
 
     public let lockedDelegateLabel = UILabel()
     public let unlockedDelegateLabel = UILabel()
+    let unclaimedLabel = UILabel()
 
     public let delegateButton = UIButton()
     public let withDrawButton = UIButton()
+
+    var topConstraint: Constraint?
 
     var didLinkHanlder: ((NodeAboutDelegateTableViewCell) -> Void)?
     var didDelegateHandler: ((NodeAboutDelegateTableViewCell) -> Void)?
@@ -37,6 +42,13 @@ class NodeAboutDelegateTableViewCell: UITableViewCell {
             lockedDelegateLabel.text = delegateDetail?.delegatedString ?? "--"
             unlockedDelegateLabel.text = delegateDetail?.releasedString ?? "--"
             nodeNameButton.isHidden = delegateDetail?.website?.count == 0
+            unclaimedLabel.text = delegateDetail?.withdrawRewardValue
+
+            if (delegateDetail?.withdrawRewardBInt ?? BigUInt.zero) > BigUInt.zero {
+                topConstraint?.update(priority: .low)
+            } else {
+                topConstraint?.update(priority: .high)
+            }
         }
     }
 
@@ -56,7 +68,7 @@ class NodeAboutDelegateTableViewCell: UITableViewCell {
             make.leading.equalToSuperview().offset(10)
             make.trailing.equalToSuperview().offset(-10)
             make.top.equalToSuperview().offset(16)
-            make.height.equalTo(172)
+//            make.height.equalTo(172)
             make.bottom.equalToSuperview()
         }
 
@@ -96,7 +108,6 @@ class NodeAboutDelegateTableViewCell: UITableViewCell {
             make.leading.equalTo(nodeAvatarIV.snp.trailing).offset(5)
             make.height.equalTo(18)
         }
-
 
         nodeNameButton.addTarget(self, action: #selector(linkTapAction), for: .touchUpInside)
         nodeNameButton.setImage(UIImage(named: "3.icon_link"), for: .normal)
@@ -180,6 +191,43 @@ class NodeAboutDelegateTableViewCell: UITableViewCell {
             make.height.equalTo(14)
         }
 
+        let rewardContentView = UIView()
+        rewardContentView.backgroundColor = UIColor(rgb: 0xECF2FF)
+        delegateBackgroundView.addSubview(rewardContentView)
+        rewardContentView.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(12)
+            make.trailing.equalToSuperview().offset(-12)
+            make.top.equalTo(lockedDelegateLabel.snp.bottom).offset(15)
+            make.height.equalTo(40)
+        }
+
+        let rewardIV = UIImageView()
+        rewardIV.image = UIImage(named: "3.icon_Claim Rec")
+        rewardContentView.addSubview(rewardIV)
+        rewardIV.snp.makeConstraints { make in
+            make.width.height.equalTo(20)
+            make.centerY.equalToSuperview()
+            make.leading.equalToSuperview().offset(10)
+        }
+
+        let unclaimedTipLabel = UILabel()
+        unclaimedTipLabel.textColor = common_lightLightGray_color
+        unclaimedTipLabel.font = .systemFont(ofSize: 12)
+        unclaimedTipLabel.text = Localized("delegate_detail_unclaimed_reward")
+        rewardContentView.addSubview(unclaimedTipLabel)
+        unclaimedTipLabel.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.leading.equalTo(rewardIV.snp.trailing).offset(6)
+        }
+
+        unclaimedLabel.textColor = .black
+        unclaimedLabel.font = .systemFont(ofSize: 14)
+        rewardContentView.addSubview(unclaimedLabel)
+        unclaimedLabel.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.leading.equalTo(unclaimedTipLabel.snp.trailing).offset(2)
+        }
+
         delegateButton.addTarget(self, action: #selector(delegateTapAction), for: .touchUpInside)
         delegateButton.setCellBottomStyle(UIImage(named: "3.icon_Delegate3"), UIImage(named: "3.icon_Delegate4"), "staking_delegate")
         delegateBackgroundView.addSubview(delegateButton)
@@ -188,13 +236,15 @@ class NodeAboutDelegateTableViewCell: UITableViewCell {
             make.width.equalToSuperview().dividedBy(2)
             make.leading.equalToSuperview()
             make.height.equalTo(40)
+            topConstraint = make.top.equalTo(lockedDelegateLabel.snp.bottom).offset(15).priorityHigh().constraint
+            make.top.equalTo(rewardContentView.snp.bottom).offset(15).priorityMedium()
         }
 
         withDrawButton.addTarget(self, action: #selector(withdrawTapAction), for: .touchUpInside)
         withDrawButton.setCellBottomStyle(UIImage(named: "3.icon_Undelegate 3"), UIImage(named: "3.icon_Undelegate4"), "staking_withdraw")
         delegateBackgroundView.addSubview(withDrawButton)
         withDrawButton.snp.makeConstraints { make in
-            make.bottom.equalToSuperview()
+            make.top.equalTo(delegateButton.snp.top)
             make.width.equalToSuperview().dividedBy(2)
             make.trailing.equalToSuperview()
             make.height.equalTo(40)

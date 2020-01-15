@@ -83,9 +83,13 @@ class DelegateRecordViewController: BaseViewController, IndicatorInfoProvider {
             view.customView(holder)
             view.isScrollAllowed(true)
         }
+
         tableView.mj_header = refreshHeader
         tableView.mj_footer = refreshFooter
         tableView.mj_header.beginRefreshing()
+
+
+
     }
 
     /*
@@ -130,7 +134,8 @@ extension DelegateRecordViewController {
                         _ = newData.map({ (tx) -> Transaction in
                             switch tx.txType! {
                             case .delegateWithdraw,
-                                 .stakingWithdraw:
+                                 .stakingWithdraw,
+                                 .claimReward:
                                 tx.direction = .Receive
                                 return tx
                             default:

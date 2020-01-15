@@ -20,17 +20,28 @@ class DelegateViewController: BaseViewController {
     var balanceStyle: BalancesCellStyle?
     var currentAmount: BigUInt = BigUInt.zero
     var canDelegation: CanDelegation?
-    var gasPrice: BigUInt? // 链上获取的gasPrice
-    var gasLimit: BigUInt?
-    var estimateUseGas: BigUInt = BigUInt.zero
     var isDelegateAll: Bool = false
     var generateQrCode: QrcodeData<[TransactionQrcode]>?
+    var remoteGas: RemoteGas?
+    var pollingTimer : Timer?
 
     var canUseWallets: [Wallet] {
         get {
             let wallets = (AssetVCSharedData.sharedData.walletList as! [Wallet]).sorted(by: <)
             return wallets
         }
+    }
+
+    var gasLimit: BigUInt? {
+        return remoteGas?.gasLimitBInt
+    }
+
+    var gasPrice: BigUInt? {
+        return remoteGas?.gasPriceBInt
+    }
+
+    var estimateUseGas: BigUInt {
+        return remoteGas?.gasUsedBInt ?? BigUInt.zero
     }
 
     // min delgate amount
@@ -89,12 +100,17 @@ class DelegateViewController: BaseViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         initListData()
-        getGasPrice()
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         GuidanceViewMgr.sharedInstance.checkGuidance(page: GuidancePage.DelegateAction, presentedVC: self)
+        startTimer()
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        stopTimer()
     }
 
     @objc private func cancelFirstResponser() {
@@ -128,6 +144,9 @@ class DelegateViewController: BaseViewController {
                         }
 
                         self?.tableView.reloadData()
+
+                        guard let address = self?.walletStyle?.currentWallet.address else { return }
+                        self?.getGas(walletAddr: address, nodeId: nodeId)
                     }
                     completion?()
                 case .fail:
@@ -175,8 +194,7 @@ class DelegateViewController: BaseViewController {
 
         let contents = [
             (Localized("staking_doubt_delegate"), Localized("staking_doubt_delegate_detail")),
-            (Localized("staking_doubt_reward"), Localized("staking_doubt_reward_detail")),
-            (Localized("staking_doubt_risk"), Localized("staking_doubt_risk_detail"))
+            (Localized("staking_doubt_reward"), Localized("staking_doubt_reward_detail"))
         ]
         let item6 = DelegateTableViewCellStyle.doubt(contents: contents)
         listData = [item1, item2, item3, item4, item5, item6]
@@ -258,8 +276,6 @@ extension DelegateViewController: UITableViewDelegate, UITableViewDataSource {
             cell.amountView.checkInput(mode: .all, check: { [weak self](text, isDelete) -> (Bool, String) in
                 guard let self = self else { return (true, "") }
                 var amountVON = BigUInt.mutiply(a: text, by: PlatonConfig.VON.LAT.description) ?? BigUInt.zero
-                print("get amountVON: \(amountVON.description)")
-                print("maxDelegateAmountLimit: \(self.maxDelegateAmountLimit.description)")
                 if amountVON > self.maxDelegateAmountLimit {
                     amountVON = self.maxDelegateAmountLimit
                     cell.amountView.textField.text = amountVON.divide(by: PlatonConfig.VON.LAT.description, round: 8)
@@ -269,7 +285,6 @@ extension DelegateViewController: UITableViewDelegate, UITableViewDataSource {
                 self.currentAmount = amountVON
                 self.estimateGas(amountVON, cell)
                 self.tableView.reloadSections(IndexSet([indexPath.section+1]), with: .none)
-                print("get amount1: \(self.currentAmount.description)")
 
                 return CommonService.checkStakingAmoutInput(inputVON: text == "" ? nil : self.currentAmount, balance: self.freeBalanceBInt, minLimit: self.minDelegateAmountLimit, maxLimit: self.maxDelegateAmountLimit, fee: self.estimateUseGas, type: .delegate, isLockAmount: self.balanceStyle?.isLock)
             }) { [weak self] _ in
@@ -340,6 +355,13 @@ extension DelegateViewController {
             let nodeId = currentNode?.nodeId,
             let selectedGasPrice = gasPrice,
             let selectedGasLimit = gasLimit else { return }
+
+        let transactions = TransferPersistence.getDelegateCreatePendingTransaction(address: walletObject.currentWallet.address, nodeId: nodeId)
+        guard transactions.count == 0 else {
+            showErrorMessage(text: Localized("transaction_warning_wait_for_previous"))
+            return
+        }
+
         let currentAddress = walletObject.currentWallet.address
 
         let typ = balanceObject.selectedIndex == 0 ? UInt16(0) : UInt16(1) // 0：自由金额 1：锁仓金额
@@ -357,7 +379,7 @@ extension DelegateViewController {
 
                     let transactionData = TransactionQrcode(amount: self.currentAmount.description, chainId: web3.properties.chainId, from: walletObject.currentWallet.address, to: PlatonConfig.ContractAddress.stakingContractAddress, gasLimit: selectedGasLimit.description, gasPrice: selectedGasPrice.description, nonce: nonceString, typ: typ, nodeId: nodeId, nodeName: self.currentNode?.name, stakingBlockNum: nil, functionType: funcType.typeValue)
 
-                    let qrcodeData = QrcodeData(qrCodeType: 0, qrCodeData: [transactionData], timestamp: Int(Date().timeIntervalSince1970 * 1000), chainId: web3.chainId, functionType: 1004, from: walletObject.currentWallet.address)
+                    let qrcodeData = QrcodeData(qrCodeType: 0, qrCodeData: [transactionData], chainId: web3.chainId, functionType: 1004, from: walletObject.currentWallet.address)
                     guard
                         let data = try? JSONEncoder().encode(qrcodeData),
                         let content = String(data: data, encoding: .utf8) else { return }
@@ -435,10 +457,6 @@ extension DelegateViewController {
                 guard
                     let qrcode = data,
                     let signedDatas = qrcode.qrCodeData, qrcode.chainId == web3.chainId else { return }
-                if qrcode.timestamp != self?.generateQrCode?.timestamp {
-                    self?.showErrorMessage(text: Localized("offline_signature_invalid"), delay: 2.0)
-                    return
-                }
                 DispatchQueue.main.async {
                     scanView.textView.text = signedDatas.joined(separator: ";")
                 }
@@ -595,32 +613,11 @@ extension DelegateViewController {
     }
 
     func estimateGas(_ amountVon: BigUInt, _ cell: SendInputTableViewCell) {
-        var needEstimateGas = amountVon
-        guard
-            let balanceObject = balanceStyle,
-            let nodeId = currentNode?.nodeId else { return }
-
-        let typ = balanceObject.selectedIndex == 0 ? UInt16(0) : UInt16(1) // 0：自由金额 1：锁仓金额
-        if isDelegateAll, balanceStyle?.isLock == false {
-            // 当全部委托的时候把0替换为1，防止出现0字节导致gas不足的情况
-            let amountStr = amountVon.description.replacingOccurrences(of: "0", with: "1")
-            needEstimateGas = BigUInt(amountStr) ?? BigUInt.zero
-        }
-
-        let currentGasPrice = gasPrice ?? PlatonConfig.FuncGasPrice.defaultGasPrice
-        let gasLimitValue = web3.staking.getGasCreateDelegate(typ: typ, nodeId: nodeId, amount: needEstimateGas)
-        gasLimit = gasLimitValue
-        estimateUseGas = gasLimitValue.multiplied(by: currentGasPrice)
-
         if isDelegateAll == true, balanceStyle?.isLock == false {
             if currentAmount > estimateUseGas {
                 // 非锁仓余额才可以相减
                 currentAmount -= estimateUseGas
                 cell.amountView.textField.text = currentAmount.divide(by: ETHToWeiMultiplier, round: 8)
-
-                let gasLimitOfAll = web3.staking.getGasCreateDelegate(typ: typ, nodeId: nodeId, amount: currentAmount)
-                gasLimit = gasLimitOfAll
-                estimateUseGas = gasLimitOfAll.multiplied(by: currentGasPrice)
                 cell.amountView.checkInvalidNow(showErrorMsg: true)
             }
             isDelegateAll = false
@@ -642,14 +639,45 @@ extension DelegateViewController {
 }
 
 extension DelegateViewController {
-    private func getGasPrice() {
-        web3.platon.gasPrice { [weak self] (response) in
-            switch response.status {
-            case .success(let result):
-                self?.gasPrice = result.quantity > PlatonConfig.FuncGasPrice.minGasPrice ? result.quantity.convertLastTenDecimalPlaceToZero() : PlatonConfig.FuncGasPrice.minGasPrice
-            case .failure:
-                break
+    private func getGas(walletAddr: String, nodeId: String) {
+        TransactionService.service.getContractGas(from: walletAddr, txType: TxType.delegateCreate, nodeId: nodeId) { [weak self] (result, remoteGas) in
+            self?.hideLoadingHUD()
+            switch result {
+            case .success:
+                guard let gas = remoteGas else {
+                    self?.showErrorMessage(text: "get gas api error", delay: 2.0)
+                    return
+                }
+                self?.remoteGas = gas
+            case .fail(_, let errMsg):
+                self?.showErrorMessage(text: errMsg ?? "get gas api error", delay: 2.0)
             }
         }
+    }
+}
+
+extension DelegateViewController {
+    func startTimer() {
+        pollingTimer = Timer.scheduledTimer(timeInterval: TimeInterval(AppConfig.TimerSetting.viewControllerUpdateInterval), target: self, selector: #selector(viewControllerPolling), userInfo: nil, repeats: true)
+        pollingTimer?.fire()
+    }
+
+    @objc func viewControllerPolling() {
+        guard
+            let walletObject = walletStyle,
+            let nodeId = currentNode?.nodeId else { return }
+
+        let transactions = TransferPersistence.getDelegateCreatePendingTransaction(address: walletObject.currentWallet.address, nodeId: nodeId)
+        guard transactions.count > 0 else {
+            stopTimer()
+            return
+        }
+
+        fetchCanDelegation()
+    }
+
+    func stopTimer() {
+        pollingTimer?.invalidate()
+        pollingTimer = nil
     }
 }

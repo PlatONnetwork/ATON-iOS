@@ -31,19 +31,28 @@ enum NodeStatus: String, Decodable {
     }
 }
 
+enum RateTrend: String, Decodable {
+    case none = "0"
+    case up = "1"
+    case down = "-1"
+}
+
 class Node: Object, Decodable {
     @objc dynamic var nodeId: String? = ""
     @objc dynamic var ranking: Int = 0
     @objc dynamic var name: String? = ""
     @objc dynamic var deposit: String? = ""
     @objc dynamic var url: String? = ""
-    @objc dynamic var ratePA: String? = ""
     @objc dynamic var nodeStatus: String = NodeStatus.Active.rawValue
     @objc dynamic var isInit: Bool = false
     // 不同的链
     @objc dynamic var chainUrl: String? = ""
     // 增加新的状态0.7.5
     @objc dynamic var isConsensus: Bool = false
+
+    @objc dynamic var delegateSum: String? = "" // 委托数量
+    @objc dynamic var delegate: String? = "" // 委托者数量
+    @objc dynamic var delegatedRatePA: String? = ""
 
     required init() {
         super.init()
@@ -67,10 +76,12 @@ class Node: Object, Decodable {
         name: String?,
         deposit: String?,
         url: String?,
-        ratePA: String?,
+        delegatedRatePA: String?,
         nStatus: NodeStatus,
         isInit: Bool,
-        isConsensus: Bool
+        isConsensus: Bool,
+        delegateSum: String?,
+        delegate: String?
         ) {
         self.init()
         self.nodeId = nodeId
@@ -78,10 +89,12 @@ class Node: Object, Decodable {
         self.name = name
         self.deposit = deposit
         self.url = url
-        self.ratePA = ratePA
+        self.delegatedRatePA = delegatedRatePA
         self.nodeStatus = nStatus.rawValue
         self.isInit = isInit
         self.isConsensus = isConsensus
+        self.delegateSum = delegateSum
+        self.delegate = delegate
     }
 }
 
@@ -90,10 +103,11 @@ struct NodeDetail: Decodable {
     var website: String?
     var intro: String?
     var punishNumber: Int?
-    var delegateSum: String?
-    var delegate: String?
     var blockOutNumber: Int?
     var blockRate: String?
+    var delegatedRewardPer: String?
+    var cumulativeReward: String?
+    var delegatedRatePATrend: RateTrend = .none
 
     enum NodeCodingKeys: String, CodingKey {
         case nodeId
@@ -101,20 +115,23 @@ struct NodeDetail: Decodable {
         case name
         case deposit
         case url
-        case ratePA
+        case delegatedRatePA
         case nodeStatus
         case isInit
         case isConsensus
+        case delegateSum
+        case delegate
     }
 
     enum CodingKeys: String, CodingKey {
         case website
         case intro
         case punishNumber
-        case delegateSum
-        case delegate
+        case delegatedRatePATrend
         case blockOutNumber
         case blockRate
+        case delegatedRewardPer
+        case cumulativeReward
     }
 
     public init(from decoder: Decoder) throws {
@@ -126,19 +143,23 @@ struct NodeDetail: Decodable {
         let name = try nodeContainer.decode(String.self, forKey: .name)
         let deposit = try nodeContainer.decodeIfPresent(String.self, forKey: .deposit)
         let url = try nodeContainer.decodeIfPresent(String.self, forKey: .url)
-        let ratePA = try nodeContainer.decodeIfPresent(String.self, forKey: .ratePA)
+        let delegatedRatePA = try nodeContainer.decodeIfPresent(String.self, forKey: .delegatedRatePA)
         let nodeStatus = try nodeContainer.decode(NodeStatus.self, forKey: .nodeStatus)
         let isInit = try nodeContainer.decode(Bool.self, forKey: .isInit)
         let isConsensus = try nodeContainer.decode(Bool.self, forKey: .isConsensus)
+        let delegateSum = try nodeContainer.decodeIfPresent(String.self, forKey: .delegateSum)
+        let delegate = try nodeContainer.decodeIfPresent(String.self, forKey: .delegate)
 
         website = try container.decodeIfPresent(String.self, forKey: .website)
         intro = try container.decodeIfPresent(String.self, forKey: .intro)
         punishNumber = try container.decodeIfPresent(Int.self, forKey: .punishNumber)
-        delegateSum = try container.decodeIfPresent(String.self, forKey: .delegateSum)
-        delegate = try container.decodeIfPresent(String.self, forKey: .delegate)
+
         blockOutNumber = try container.decodeIfPresent(Int.self, forKey: .blockOutNumber)
         blockRate = try container.decodeIfPresent(String.self, forKey: .blockRate)
+        delegatedRewardPer = try container.decodeIfPresent(String.self, forKey: .delegatedRewardPer)
+        cumulativeReward = try container.decodeIfPresent(String.self, forKey: .cumulativeReward)
+        delegatedRatePATrend = try container.decodeIfPresent(RateTrend.self, forKey: .delegatedRatePATrend) ?? .none
 
-        node = Node(nodeId: nodeId, ranking: ranking, name: name, deposit: deposit, url: url, ratePA: ratePA, nStatus: nodeStatus, isInit: isInit, isConsensus: isConsensus)
+        node = Node(nodeId: nodeId, ranking: ranking, name: name, deposit: deposit, url: url, delegatedRatePA: delegatedRatePA, nStatus: nodeStatus, isInit: isInit, isConsensus: isConsensus, delegateSum: delegateSum, delegate: delegate)
     }
 }
