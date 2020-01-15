@@ -876,6 +876,7 @@
 "error_wallet_no_balance" = "钱包余额不足";
 
 "about_current_version" = "当前版本";
+"about_latest_version" = "发现新版本";
 "about_version_update_alert_title" = "版本更新";
 "about_version_update_alert_message_1" = "发现新版本";
 "about_version_update_alert_message_2" = "，是否立即更新？";
@@ -926,4 +927,4 @@
 "empty_view_refresh_title" = "刷新";
 
 "social_share_error_uninstall_app" = "应用未安装";
-"about_version_update_latest" = "当前已是最新版本";
+"about_version_update_latest" = "当前已是最新版本！";

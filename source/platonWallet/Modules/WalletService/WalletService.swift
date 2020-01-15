@@ -421,6 +421,8 @@ public final class WalletService {
     }
 
     private func saveObservedWalletToDB(wallet: Wallet) throws {
+        wallet.chainId = SettingService.shareInstance.currentNodeChainId
+
         let sameUuidWallet = wallets.first { (item) -> Bool in
             item.uuid == wallet.uuid && item.chainId == wallet.chainId
         }
@@ -444,8 +446,9 @@ public final class WalletService {
             throw Error.invalidWallet
         }
 
+        wallet.chainId = SettingService.shareInstance.currentNodeChainId
         let sameUuidWallet = wallets.first { (item) -> Bool in
-            item.uuid == wallet.uuid && item.chainId == wallet.chainId
+            (item.uuid == wallet.uuid && item.chainId == wallet.chainId) || (item.address.lowercased() == wallet.address.lowercased() && item.chainId == wallet.chainId)
         }
 
         if sameUuidWallet != nil {
