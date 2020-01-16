@@ -155,7 +155,7 @@ class NodeBaseInfoView: UIView {
         rateTitleLabel.textAlignment = .center
         rateTitleLabel.font = .systemFont(ofSize: 11)
         rateTitleLabel.textColor = .white
-        rateTitleLabel.text = Localized("staking_validator_delegate_rate_about")
+        rateTitleLabel.text = Localized("staking_validator_detail_delegate_rate_about")
         rateView.addSubview(rateTitleLabel)
         rateTitleLabel.snp.makeConstraints { make in
             make.trailing.leading.equalToSuperview()

@@ -193,8 +193,8 @@ class DelegateViewController: BaseViewController {
         let item5 = DelegateTableViewCellStyle.singleButton(title: Localized("statking_validator_Delegate"))
 
         let contents = [
-            (Localized("staking_doubt_delegate"), Localized("staking_doubt_delegate_detail")),
-            (Localized("staking_doubt_reward"), Localized("staking_doubt_reward_detail"))
+            (Localized("staking_doubt_delegate"), NSMutableAttributedString(string: Localized("staking_doubt_delegate_detail"))),
+            (Localized("staking_doubt_reward"), NSMutableAttributedString(string: Localized("staking_doubt_reward_detail")))
         ]
         let item6 = DelegateTableViewCellStyle.doubt(contents: contents)
         listData = [item1, item2, item3, item4, item5, item6]
@@ -311,7 +311,7 @@ extension DelegateViewController: UITableViewDelegate, UITableViewDataSource {
             let content = contents[indexPath.row]
             let cell = tableView.dequeueReusableCell(withIdentifier: "DoubtTableViewCell") as! DoubtTableViewCell
             cell.titleLabel.text = content.0
-            cell.contentLabel.text = content.1
+            cell.contentLabel.attributedText = content.1
             return cell
         default:
             return UITableViewCell()

@@ -151,8 +151,12 @@ class WithDrawViewController: BaseViewController {
         let item4 = DelegateTableViewCellStyle.inputAmount
         let item5 = DelegateTableViewCellStyle.singleButton(title: Localized("statking_validator_Withdraw"))
 
+        let noteAttribute = NSAttributedString(string: "\n" + Localized("staking_doubt_undelegate_note"), attributes: [NSAttributedString.Key.foregroundColor: UIColor.black])
+        let mutableAttribute = NSMutableAttributedString(string: Localized("staking_doubt_undelegate_detail", arguments: (minDelegateAmountLimit/PlatonConfig.VON.LAT).description))
+        mutableAttribute.append(noteAttribute)
+
         let contents = [
-            (Localized("staking_doubt_undelegate"), Localized("staking_doubt_undelegate_detail", arguments: (minDelegateAmountLimit/PlatonConfig.VON.LAT).description))
+            (Localized("staking_doubt_undelegate"), mutableAttribute)
         ]
         let item6 = DelegateTableViewCellStyle.doubt(contents: contents)
         listData = [item1, item2, item3, item4, item5, item6]
@@ -283,7 +287,7 @@ extension WithDrawViewController: UITableViewDelegate, UITableViewDataSource {
             let content = contents[indexPath.row]
             let cell = tableView.dequeueReusableCell(withIdentifier: "DoubtTableViewCell") as! DoubtTableViewCell
             cell.titleLabel.text = content.0
-            cell.contentLabel.text = content.1
+            cell.contentLabel.attributedText = content.1
             return cell
         default:
             return UITableViewCell()

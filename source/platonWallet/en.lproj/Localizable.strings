@@ -225,6 +225,7 @@
 
 //alert
 "alert_input_psw_title" = "Input wallet password";
+"alert_input_psw_for_delete_title" = "Input wallet password";
 "alert_input_psw_title_placeholder" = "Input the wallet's password";
 "alert_confirmBtn_title" = "Confirm";
 "alert_cancelBtn_title" = "Cancel";
@@ -750,8 +751,10 @@
 "staking_alert_unlocked_delegate_detail" = "Locked in about 6.1 hours, the unlocked delegate has no reward.Un-delegation (i.e. withdrawal) takes immediate effect.and,the delegated LAT immediately returns to the account.";
 "staking_alert_released_delegate" = "Invalid delegations";
 "staking_alert_released_detail" = "Validator exits, the delegations is automatically released,and need user to withdraw the delegations";
-"staking_alert_annualized_rate" = "Yield";
-"staking_alert_annualized_rate_detail" = "The expected annualized rate of the current validator, the Delegation rewards is distributed by the validator";
+"staking_alert_annualized_rate" = "Expected delegated annualized yield";
+"staking_alert_annualized_rate_detail" = "Annualized rate of return for each delegated net income in the last 4 epochs，For reference only！";
+"staking_alert_annualized_reward" = "Delegated reward ratio";
+"staking_alert_annualized_reward_detail" = "Proportion of rewards distributed by the node to the delegators";
 
 "staking_validator_node_all" = "All";
 "staking_validator_node_active" = "Active";
@@ -759,6 +762,7 @@
 
 "staking_validator_delegate_total" = "Delegated";
 "staking_validator_delegate_rate_about" = "Yield";
+"staking_validator_detail_delegate_rate_about" = "Yield";
 
 "statking_validator_total_staked" = "Total Staked(LAT)";
 "statking_validator_delegations" = "Delegations(LAT)";
@@ -788,6 +792,7 @@
 
 "staking_doubt_undelegate" = "Note";
 "staking_doubt_undelegate_detail" = "The transaction has been successfully submitted and the delegated LAT can return to your account immediately.\nThe Invalid delegations has to be withdrawal all at once;\nIf the remaining delegations has been less than %@LAT, it will be automatically returned all.";
+"staking_doubt_undelegate_note" = "Note: When withdrawing all delegations,Claim rewards automatically.";
 
 "staking_balance_can_used" = "Balance";
 "staking_balance_locked_position" = "Restricted balance";

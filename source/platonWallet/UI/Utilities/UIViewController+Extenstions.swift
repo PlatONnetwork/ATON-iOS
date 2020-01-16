@@ -246,7 +246,7 @@ extension UIViewController {
 }
 
 extension UIViewController {
-    func showPasswordInputPswAlert(for wallet: Wallet, completion: ((String?, String?, Error?) -> Void)?) {
+    func showPasswordInputPswAlert(for wallet: Wallet, isForDelete: Bool? = false, completion: ((String?, String?, Error?) -> Void)?) {
 
         let alertVC = AlertStylePopViewController.initFromNib()
         let style = PAlertStyle.passwordInput(walletName: wallet.name)
@@ -282,6 +282,9 @@ extension UIViewController {
             return true
         }
         alertVC.style = style
+        if isForDelete == true {
+            alertVC.titleLabel.localizedText = "alert_input_psw_for_delete_title"
+        }
         alertVC.showInViewController(viewController: self)
 
         return

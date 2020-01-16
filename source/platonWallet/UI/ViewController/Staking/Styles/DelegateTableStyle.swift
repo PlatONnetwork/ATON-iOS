@@ -17,7 +17,7 @@ enum DelegateTableViewCellStyle {
     case inputAmount
     case feeUsed(fee: String)
     case singleButton(title: String)
-    case doubt(contents: [(title: String, content: String)])
+    case doubt(contents: [(title: String, content: NSMutableAttributedString)])
 }
 
 // 可展开绑定的样式数据
