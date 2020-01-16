@@ -191,6 +191,8 @@ extension TransactionQrcode {
             return Localized("TransactionStatus_delegateCreate_title")
         case 1005:
             return Localized("TransactionStatus_delegateWithdraw_title")
+        case 5000:
+            return Localized("TransactionStatus_claimReward_title")
         default:
             return Localized("TransactionStatus_sending_title")
         }

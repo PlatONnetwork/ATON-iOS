@@ -478,7 +478,7 @@ extension AssetViewControllerV060: UIScrollViewDelegate, ChildScrollViewDidScrol
 
         let wallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).first(where: { $0.address.lowercased() == codes.first?.from?.lowercased() })
         guard wallet != nil else {
-            showErrorMessage(text: Localized("offline_signature_notmatch_wallet"), delay: 2.0)
+            showErrorMessage(text: Localized("offline_signature_not_privatekey"), delay: 2.0)
             return
         }
 
