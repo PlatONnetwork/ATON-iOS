@@ -976,3 +976,8 @@
 
 "transaction_warning_wait_for_previous" = "请等待上笔交易完成后方可继续交易！";
 "withdraw_detail_balance" = "余额：";
+
+"delegate_all_warnings" = "建议保留少量余额，以支持委托赎回和奖励领取操作。";
+
+"alert_delegate_all" = "全部委托";
+"alert_delegate_all_without_01" = "保留余额";

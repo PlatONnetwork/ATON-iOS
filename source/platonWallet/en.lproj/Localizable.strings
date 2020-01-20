@@ -966,3 +966,7 @@
 "transaction_warning_wait_for_previous" = "Please wait for the transaction to complete before continuing！";
 
 "withdraw_detail_balance" = "Balance：";
+
+"delegate_all_warnings" = "Recommended to keep a small balance to support delegated withdrawal and reward claim operations.";
+"alert_delegate_all" = "Delegate All";
+"alert_delegate_all_without_01" = "Keep Balance";

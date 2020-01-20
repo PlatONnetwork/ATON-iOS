@@ -185,7 +185,7 @@ class DelegateViewController: BaseViewController {
             balances.append((Localized("staking_balance_locked_position"), convertLock.description))
         }
 
-        balanceStyle = BalancesCellStyle(balances: balances, selectedIndex: 0, isExpand: false)
+        balanceStyle = BalancesCellStyle(balances: balances, stakingBlockNums: [], selectedIndex: 0, isExpand: false)
 
         let item2 = DelegateTableViewCellStyle.wallets(walletStyle: walletStyle!)
         let item3 = DelegateTableViewCellStyle.walletBalances(balanceStyle: balanceStyle!)
@@ -368,7 +368,6 @@ extension DelegateViewController {
         let typ = balanceObject.selectedIndex == 0 ? UInt16(0) : UInt16(1) // 0：自由金额 1：锁仓金额
 
         if walletObject.currentWallet.type == .observed {
-
             let funcType = FuncType.createDelegate(typ: typ, nodeId: nodeId, amount: self.currentAmount)
 
             web3.platon.platonGetNonce(sender: walletObject.currentWallet.address) { [weak self] (result, blockNonce) in
@@ -570,8 +569,7 @@ extension DelegateViewController {
         if let lock = balance?.lock, (BigUInt(lock) ?? BigUInt.zero) > BigUInt.zero {
             balances.append((Localized("staking_balance_locked_position"), lock))
         }
-        balanceStyle = BalancesCellStyle(balances: balances, selectedIndex: 0, isExpand: false)
-
+        balanceStyle = BalancesCellStyle(balances: balances, stakingBlockNums: [], selectedIndex: 0, isExpand: false)
         listData[indexSection + 1] = DelegateTableViewCellStyle.walletBalances(balanceStyle: balanceStyle!)
         tableView.reloadSections(IndexSet([indexSection, indexSection+1, indexSection+2, indexSection+3]), with: .fade)
         guard indexRow != 0 else { return }
@@ -592,7 +590,6 @@ extension DelegateViewController {
         balanceStyle = newBalanceStyle
 
         listData[indexSection] = DelegateTableViewCellStyle.walletBalances(balanceStyle: balanceStyle!)
-
         tableView.reloadSections(IndexSet([indexSection, indexSection+1]), with: .fade)
 
         if currentAmount != .zero {
@@ -650,6 +647,7 @@ extension DelegateViewController {
                     return
                 }
                 self?.remoteGas = gas
+                self?.tableView.reloadData()
             case .fail(_, let errMsg):
                 self?.showErrorMessage(text: errMsg ?? "get gas api error", delay: 2.0)
             }

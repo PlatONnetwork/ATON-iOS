@@ -9,6 +9,7 @@
 import UIKit
 import Localize_Swift
 import BigInt
+import platonWeb3
 
 enum SendInputTableViewCellType {
     case delegate
@@ -26,11 +27,7 @@ class SendInputTableViewCell: UITableViewCell {
         amountView.feeLabel.text = "0.00".displayFeeString
         amountView.textField.keyboardType = .decimalPad
         amountView.addAction(title: "send_sendAll", action: { [weak self] in
-            if let maxAmount = self?.maxAmountLimit {
-                amountView.textField.text = maxAmount.divide(by: ETHToWeiMultiplier, round: 8)
-                self?.cellDidContentEditingHandler?(maxAmount, true)
-                amountView.checkInvalidNow(showErrorMsg: true)
-            }
+            self?.showDelegateAllView()
         })
 
 //        amountView.shouldChangeCharactersCompletion = { [weak self] (concatenated,replacement) in
@@ -78,4 +75,42 @@ class SendInputTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
+    func showDelegateAllView() {
+        guard let controller = viewController() else { return }
+        let alertVC = AlertStylePopViewController.initFromNib()
+        alertVC.style = PAlertStyle.ChoiceView(message: Localized("delegate_all_warnings", arguments: (SettingService.shareInstance.thresholdValue/PlatonConfig.VON.LAT).description.ATPSuffix()))
+
+        let confirmAttr = NSMutableAttributedString(string: Localized("alert_delegate_all_without_01"), attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16)])
+        let without01Attr = NSAttributedString(string: " (0.1LAT)", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 12)])
+        confirmAttr.append(without01Attr)
+
+        alertVC.confirmButton.setAttributedTitle(confirmAttr, for: .normal)
+        alertVC.cancelButton.setTitle(Localized("alert_delegate_all"), for: .normal)
+        alertVC.onAction(confirm: { [weak self](_, _) -> (Bool) in
+            self?.retainLATForDelegate()
+            return true
+        }) { [weak self] (_, _) -> (Bool) in
+            self?.persistDelegateAll()
+            return true
+        }
+        alertVC.showInViewController(viewController: controller)
+    }
+
+    func persistDelegateAll() {
+        guard let maxAmount = maxAmountLimit else { return }
+        amountView.textField.text = maxAmount.divide(by: ETHToWeiMultiplier, round: 8)
+        cellDidContentEditingHandler?(maxAmount, true)
+        amountView.checkInvalidNow(showErrorMsg: true)
+    }
+
+    func retainLATForDelegate() {
+        guard let maxAmount = maxAmountLimit else { return }
+        let LAT0_1 = (BigUInt(1) * PlatonConfig.VON.LAT)/BigUInt(10)
+        let newAmount = maxAmount - LAT0_1
+        guard newAmount > BigUInt.zero else { return }
+
+        amountView.textField.text = newAmount.divide(by: ETHToWeiMultiplier, round: 8)
+        cellDidContentEditingHandler?(maxAmount, true)
+        amountView.checkInvalidNow(showErrorMsg: true)
+    }
 }

@@ -23,6 +23,7 @@ enum DelegateTableViewCellStyle {
 // 可展开绑定的样式数据
 struct BalancesCellStyle {
     var balances: [(String, String)] = []
+    var stakingBlockNums: [UInt64] = []
     var selectedIndex: Int = 0
     var isExpand: Bool = false
 
@@ -32,6 +33,10 @@ struct BalancesCellStyle {
 
     var currentBalance: (String, String) {
         return balances[selectedIndex]
+    }
+
+    var currentBlockNum: UInt64 {
+        return stakingBlockNums[selectedIndex]
     }
 
     func balance(for index: Int) -> (String, String) {
