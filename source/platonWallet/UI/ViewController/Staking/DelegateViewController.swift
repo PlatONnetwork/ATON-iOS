@@ -267,6 +267,7 @@ extension DelegateViewController: UITableViewDelegate, UITableViewDataSource {
             cell.amountView.textField.LocalizePlaceholder = Localized("staking_amount_placeholder", arguments: (minDelegateAmountLimit/PlatonConfig.VON.LAT).description)
             cell.maxAmountLimit = maxDelegateAmountLimit
             cell.amountView.isUserInteractionEnabled = (canDelegation?.canDelegation == true)
+            cell.amountView.feeLabel.text = estimateUseGas.description.vonToLATString?.displayFeeString
             cell.cellDidContentEditingHandler = { [weak self] (amountVON, _) in
 //                self?.isDelegateAll = (amountVON == cell.maxAmountLimit)
 //                self?.currentAmount = amountVON
@@ -623,7 +624,7 @@ extension DelegateViewController {
             isDelegateAll = false
         }
 
-        cell.amountView.feeLabel.text = (estimateUseGas.description.vonToLATString ?? "0.00").displayFeeString
+//        cell.amountView.feeLabel.text = (estimateUseGas.description.vonToLATString ?? "0.00").displayFeeString
     }
 
     func doShowTransactionDetail(_ transaction: Transaction) {

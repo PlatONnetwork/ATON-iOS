@@ -225,7 +225,7 @@
 
 //alert
 "alert_input_psw_title" = "Input wallet password";
-"alert_input_psw_for_delete_title" = "Input wallet password";
+"alert_input_psw_for_delete_title" = "Enter wallet password to confirm deletion";
 "alert_input_psw_title_placeholder" = "Input the wallet's password";
 "alert_confirmBtn_title" = "Confirm";
 "alert_cancelBtn_title" = "Cancel";
@@ -951,7 +951,8 @@
 "delegate_detail_delegated" = "Total Delegated";
 "delegate_detail_unclaimed_reward" = "Unclaimed Reward：";
 
-"wallet_receive_qrcode_warning" = "You are on the %@ Network. Never transfer other network LATs to this address.";
+"wallet_receive_qrcode_warning_1" = "You are on the ";
+"wallet_receive_qrcode_warning_2" = " Network. Never transfer other network LATs to this address.";
 
 "claim_comfirm_title" = "Claim Rewards";
 "claim_comfirm_desc" = "Estimated reward, subject to actual receipt";
@@ -963,3 +964,5 @@
 "mydelegates_search_cancel" = "Hide";
 
 "transaction_warning_wait_for_previous" = "Please wait for the transaction to complete before continuing！";
+
+"withdraw_detail_balance" = "Balance：";

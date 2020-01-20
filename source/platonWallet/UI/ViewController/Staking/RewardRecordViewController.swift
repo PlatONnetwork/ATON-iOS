@@ -80,7 +80,7 @@ extension RewardRecordViewController {
             return
         }
 
-        StakingService.sharedInstance.getRewardDelegate(adddresses: addresses, beginSequence: sequence, listSize: listSize, direction: "new") { [weak self] (result, data) in
+        StakingService.sharedInstance.getRewardDelegate(adddresses: addresses, beginSequence: sequence, listSize: listSize, direction: direction.rawValue) { [weak self] (result, data) in
             self?.tableView.mj_header.endRefreshing()
             self?.tableView.mj_footer.endRefreshing()
 

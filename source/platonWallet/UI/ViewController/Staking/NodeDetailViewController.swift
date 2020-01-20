@@ -91,6 +91,12 @@ class NodeDetailViewController: BaseViewController {
         nodeInfoView.layoutIfNeeded()
         nodeInfoView.frame.size = nodeInfoView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
         tableView.tableHeaderView = nodeInfoView
+        nodeInfoView.nodeLinkHandler = { [weak self] in
+            self?.openWebSiteController()
+        }
+        nodeInfoView.tipsShowHandler = { [weak self] in
+            self?.rewardDoubtTapAction()
+        }
 
         footerView.websiteLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openWebSiteController)))
         tableView.tableFooterView = footerView
@@ -245,6 +251,24 @@ class NodeDetailViewController: BaseViewController {
         alertVC.showInViewController(viewController: self)
     }
 
+    @objc private func rewardDoubtTapAction() {
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.paragraphSpacing = 10
+
+        let titleAttr = NSAttributedString(string: Localized("staking_alert_annualized_reward") + "\n", attributes: [NSAttributedString.Key.foregroundColor: text_blue_color, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16, weight: .medium), NSAttributedString.Key.paragraphStyle: paragraphStyle])
+        let detailAttr = NSAttributedString(string: Localized("staking_alert_annualized_reward_detail") + "\n", attributes: [NSAttributedString.Key.foregroundColor: common_darkGray_color, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13), NSAttributedString.Key.paragraphStyle: paragraphStyle])
+
+        let alertVC = AlertStylePopViewController.initFromNib()
+        let style = PAlertStyle.AlertWithText(attributedStrings: [titleAttr, detailAttr])
+        alertVC.onAction(confirm: { (_, _) -> (Bool) in
+            return true
+        }) { (_, _) -> (Bool) in
+            return true
+        }
+        alertVC.style = style
+        alertVC.showInViewController(viewController: self)
+    }
+
     /*
     // MARK: - Navigation
 
@@ -269,7 +293,6 @@ extension NodeDetailViewController: UITableViewDelegate, UITableViewDataSource {
         return cell
     }
 }
-
 
 class NoNetWorkView: UIView {
     var refreshHandler: (() -> Void)?
