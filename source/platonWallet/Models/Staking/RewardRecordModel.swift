@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import BigInt
 
 class RewardModel: Decodable {
     var address: String
@@ -82,6 +83,9 @@ extension RewardModel {
 
 extension RewardRecordModel {
     var amountForDisplay: String {
-        return "+" + (reward?.vonToLATString ?? "0").balanceFixToDisplay(maxRound: 8).ATPSuffix()
+        if let rewardBInt = BigInt(reward ?? "0"), rewardBInt > BigUInt.zero {
+            return "+" + (reward?.vonToLATString ?? "0").balanceFixToDisplay(maxRound: 8).ATPSuffix()
+        }
+        return (reward?.vonToLATString ?? "0").balanceFixToDisplay(maxRound: 8).ATPSuffix()
     }
 }

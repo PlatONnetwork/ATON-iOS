@@ -168,8 +168,8 @@ extension DelegateDetailViewController: UITableViewDelegate, UITableViewDataSour
         let delegateDetail = self.listData[indexPath.row]
         cell.delegateDetail = delegateDetail
         cell.delegateButton.isEnabled = delegateDetail.isExistWallet(address: delegate!.walletAddress)
-        cell.delegateButton.isSelected = delegateDetail.isInit || (delegateDetail.nodeStatus == .Exiting || delegateDetail.nodeStatus == .Exited)
-        cell.delegateButton.backgroundColor = delegateDetail.isExistWallet(address: delegate!.walletAddress) && !delegateDetail.isInit && (delegateDetail.nodeStatus == .Active || delegateDetail.nodeStatus == .Candidate) ? UIColor.white : UIColor(rgb: 0xDCDFE8, alpha: 0.4)
+        cell.delegateButton.isSelected = delegateDetail.isInit || (delegateDetail.nodeStatus == .Exiting || delegateDetail.nodeStatus == .Exited || delegateDetail.releasedBInt > BigUInt.zero)
+        cell.delegateButton.backgroundColor = delegateDetail.isExistWallet(address: delegate!.walletAddress) && !delegateDetail.isInit && (delegateDetail.nodeStatus == .Active || delegateDetail.nodeStatus == .Candidate) && delegateDetail.releasedBInt == BigUInt.zero ? UIColor.white : UIColor(rgb: 0xDCDFE8, alpha: 0.4)
         cell.withDrawButton.isEnabled = delegateDetail.isExistWallet(address: delegate!.walletAddress)
         cell.withDrawButton.backgroundColor = delegateDetail.isExistWallet(address: delegate!.walletAddress) ? UIColor.white : UIColor(rgb: 0xDCDFE8, alpha: 0.4)
 
@@ -177,7 +177,8 @@ extension DelegateDetailViewController: UITableViewDelegate, UITableViewDataSour
             self?.openWebSiteController(delegateDetail.website)
         }
         cell.didDelegateHandler = { [weak self] _ in
-            if delegateDetail.nodeStatus == .Exited || delegateDetail.nodeStatus == .Exiting {
+            if delegateDetail.nodeStatus == .Exited || delegateDetail.nodeStatus == .Exiting || delegateDetail.releasedBInt > BigUInt.zero {
+                self?.showMessage(text: Localized("delegate_detail_unable_alert"))
                 return
             }
             if delegateDetail.isInit {

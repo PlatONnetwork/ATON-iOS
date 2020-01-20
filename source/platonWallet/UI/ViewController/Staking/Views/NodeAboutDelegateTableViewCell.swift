@@ -21,8 +21,8 @@ class NodeAboutDelegateTableViewCell: UITableViewCell {
 
     public let lockedDelegateLabel = UILabel()
     public let unlockedDelegateLabel = UILabel()
+    let rewardContentView = UIView()
     let unclaimedLabel = UILabel()
-
     public let delegateButton = UIButton()
     public let withDrawButton = UIButton()
 
@@ -46,8 +46,10 @@ class NodeAboutDelegateTableViewCell: UITableViewCell {
 
             if (delegateDetail?.withdrawRewardBInt ?? BigUInt.zero) > BigUInt.zero {
                 topConstraint?.update(priority: .low)
+                rewardContentView.isHidden = false
             } else {
                 topConstraint?.update(priority: .high)
+                rewardContentView.isHidden = true
             }
         }
     }
@@ -191,7 +193,6 @@ class NodeAboutDelegateTableViewCell: UITableViewCell {
             make.height.equalTo(14)
         }
 
-        let rewardContentView = UIView()
         rewardContentView.backgroundColor = UIColor(rgb: 0xECF2FF)
         delegateBackgroundView.addSubview(rewardContentView)
         rewardContentView.snp.makeConstraints { make in

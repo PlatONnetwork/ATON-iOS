@@ -114,7 +114,6 @@ extension RewardRecordViewController {
             tableView.mj_footer.endRefreshingWithNoMoreData()
             return
         }
-        print("sequence: \(sequence)")
         fetchData(sequence: sequence, direction: .old)
     }
 }

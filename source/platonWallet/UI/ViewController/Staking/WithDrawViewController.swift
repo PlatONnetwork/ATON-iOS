@@ -387,6 +387,11 @@ extension WithDrawViewController {
                     let sBlockNum = UInt64(stakingBlockNum),
                     let canUsedAmount = dValue.getDelegationValueAmount(index: balanceSelectedIndex),
                     let tempPri = tempPrivateKey {
+
+                    guard canUsedAmount > BigUInt.zero else {
+                        continue
+                    }
+
                     var amount = BigUInt.zero
 
                     if canUsedAmount > self.currentAmount - usedAmount {
