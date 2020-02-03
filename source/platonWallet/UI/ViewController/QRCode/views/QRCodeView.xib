@@ -33,22 +33,32 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AgU-CZ-bdJ">
-                            <rect key="frame" x="23" y="23" width="329" height="14.5"/>
+                            <rect key="frame" x="175" y="23" width="31" height="14.5"/>
                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                             <color key="textColor" red="1" green="0.41960784313725491" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="3.icon_warning" translatesAutoresizingMaskIntoConstraints="NO" id="aNO-AH-qse">
+                            <rect key="frame" x="162" y="25.5" width="10" height="10"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="10" id="2b7-cL-EQc"/>
+                                <constraint firstAttribute="height" constant="10" id="4oV-It-a3v"/>
+                            </constraints>
+                        </imageView>
                     </subviews>
                     <color key="backgroundColor" red="0.97610527276992798" green="0.9841117262840271" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstItem="aGb-vB-2Kg" firstAttribute="top" secondItem="AgU-CZ-bdJ" secondAttribute="bottom" constant="12" id="1YG-AD-u9R"/>
                         <constraint firstItem="Kn0-9p-pVo" firstAttribute="top" secondItem="aGb-vB-2Kg" secondAttribute="bottom" constant="15" id="D2V-fG-o0y"/>
+                        <constraint firstItem="aNO-AH-qse" firstAttribute="centerY" secondItem="AgU-CZ-bdJ" secondAttribute="centerY" id="F4y-GS-RPb"/>
+                        <constraint firstItem="AgU-CZ-bdJ" firstAttribute="leading" secondItem="aNO-AH-qse" secondAttribute="trailing" constant="3" id="Rgj-YH-3AK"/>
                         <constraint firstAttribute="trailing" secondItem="aGb-vB-2Kg" secondAttribute="trailing" id="SgE-1F-KAB"/>
                         <constraint firstItem="AgU-CZ-bdJ" firstAttribute="top" secondItem="tWg-EU-FDX" secondAttribute="top" constant="23" id="Thg-l9-HQC"/>
                         <constraint firstItem="Kn0-9p-pVo" firstAttribute="centerX" secondItem="tWg-EU-FDX" secondAttribute="centerX" id="YJg-t5-srW"/>
+                        <constraint firstItem="AgU-CZ-bdJ" firstAttribute="centerX" secondItem="tWg-EU-FDX" secondAttribute="centerX" constant="3" id="e7c-Ba-amP"/>
                         <constraint firstItem="aGb-vB-2Kg" firstAttribute="centerX" secondItem="tWg-EU-FDX" secondAttribute="centerX" id="ngM-hn-J8k"/>
-                        <constraint firstAttribute="trailing" secondItem="AgU-CZ-bdJ" secondAttribute="trailing" constant="23" id="sIe-b8-YTp"/>
-                        <constraint firstItem="AgU-CZ-bdJ" firstAttribute="leading" secondItem="tWg-EU-FDX" secondAttribute="leading" constant="23" id="xQJ-HW-Zmi"/>
+                        <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="AgU-CZ-bdJ" secondAttribute="trailing" constant="23" id="sIe-b8-YTp"/>
+                        <constraint firstItem="AgU-CZ-bdJ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="tWg-EU-FDX" secondAttribute="leading" constant="23" id="xQJ-HW-Zmi"/>
                         <constraint firstItem="aGb-vB-2Kg" firstAttribute="leading" secondItem="tWg-EU-FDX" secondAttribute="leading" id="xc2-TZ-8Xb"/>
                     </constraints>
                 </view>
@@ -87,4 +97,7 @@
             <point key="canvasLocation" x="132" y="262.66866566716647"/>
         </view>
     </objects>
+    <resources>
+        <image name="3.icon_warning" width="10" height="10"/>
+    </resources>
 </document>

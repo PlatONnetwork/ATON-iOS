@@ -43,13 +43,16 @@ class MyDelegateViewCell: UITableViewCell {
                 claimButton.localizedNormalTitle = "mydelegates_claim"
                 claimButton.isHidden = false
                 pendingLayer.isHidden = true
+                claimButton.isEnabled = true
             case .claiming:
                 claimButton.setTitle(nil, for: .normal)
                 claimButton.isHidden = false
                 pendingLayer.isHidden = false
+                claimButton.isEnabled = false
             case .none:
                 claimButton.localizedNormalTitle = "mydelegates_claim"
                 claimButton.isHidden = true
+                claimButton.isEnabled = false
             }
         }
     }

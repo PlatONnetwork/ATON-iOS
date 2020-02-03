@@ -62,12 +62,7 @@ struct AppConfig {
 
     struct H5URL {
         struct LisenceURL {
-            static let serviceurl_en = SettingService.shareInstance.getCentralizationHost() + "/aton-agreement/en-us/agreement.html"
-            static let serviceurl_cn = SettingService.shareInstance.getCentralizationHost() + "/aton-agreement/zh-cn/agreement.html"
-
-            static var serviceurl: String {
-                return Localize.currentLanguage() == "en" ? serviceurl_en : serviceurl_cn
-            }
+            static let serviceurl = SettingService.shareInstance.getCentralizationHost() + ServerURL.POLICYPATHWITHVERSION + "/agreement.html"
         }
 
         struct FAQURL {
@@ -98,12 +93,7 @@ struct AppConfig {
         }
 
         struct PrivacyPolicyURL {
-            static let policy_en = SettingService.shareInstance.getCentralizationHost() +  "/aton-agreement/en-us/privacyAgreement.html"
-            static let policy_cn = SettingService.shareInstance.getCentralizationHost() + "/aton-agreement/zh-cn/privacyAgreement.html"
-
-            static var policyurl: String {
-                return Localize.currentLanguage() == "en" ? policy_en : policy_cn
-            }
+            static let policyurl = SettingService.shareInstance.getCentralizationHost() + ServerURL.POLICYPATH + "/privacyAgreement.html"
         }
     }
 
@@ -118,6 +108,12 @@ struct AppConfig {
 //            static let DEVNET = "http://192.168.120.141:6789"
         }
         static let PATH = "/app/v0760"
+        static var POLICYPATHWITHVERSION: String {
+            return Localize.currentLanguage() == "en" ? "/aton-agreement/en-us/v0760" : "/aton-agreement/zh-cn/v0760"
+        }
+        static var POLICYPATH: String {
+            return Localize.currentLanguage() == "en" ? "/aton-agreement/en-us" : "/aton-agreement/zh-cn"
+        }
     }
 
     struct AppInfo {

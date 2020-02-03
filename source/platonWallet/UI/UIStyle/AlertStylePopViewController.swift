@@ -117,6 +117,7 @@ class AlertStylePopViewController: UIViewController, UITextFieldDelegate {
 
     func styleInitilize() {
 
+        self.titleLabel.numberOfLines = 0
         self.titleLabel.localizedText  = ""
         self.textFieldInput.delegate = self
         self.textFieldInput.autocorrectionType = .no

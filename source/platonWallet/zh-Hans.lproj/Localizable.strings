@@ -223,6 +223,7 @@
 
 //alert
 "alert_input_psw_title" = "请输入密码进行确认";
+"alert_input_psw_for_delete_title" = "请输入钱包密码进行删除确认";
 "alert_input_psw_title_placeholder" = "请输入钱包密码";
 "alert_confirmBtn_title" = "确认";
 "alert_cancelBtn_title" = "取消";
@@ -759,19 +760,22 @@
 "staking_alert_unlocked_delegate_detail" = "委托大约在6.1小时内完成锁定，未锁定的委托没有收益，赎回的委托立即到账";
 "staking_alert_released_delegate" = "待赎回委托";
 "staking_alert_released_detail" = "一旦节点退出，原委托与节点解除关联，委托失效，需要主动赎回委托";
-"staking_alert_annualized_rate" = "预计年化率";
-"staking_alert_annualized_rate_detail" = "当前节点的预计年化率，具体委托收益由节点分配";
+"staking_alert_annualized_rate" = "预计委托年化收益率";
+"staking_alert_annualized_rate_detail" = "近4个结算周期每份额委托净收益折合成的年化收益率，仅做参考。";
+"staking_alert_annualized_reward" = "委托奖励比例";
+"staking_alert_annualized_reward_detail" = "节点收益(出块奖励，质押奖励)分配给委托者的奖励比例";
 
 "staking_validator_node_all" = "所有";
 "staking_validator_node_active" = "活跃中";
 "staking_validator_node_candidate" = "候选中";
 
 "staking_validator_delegate_total" = "委托";
-"staking_validator_delegate_rate_about" = "预计年化率";
+"staking_validator_delegate_rate_about" = "预计收益率";
+"staking_validator_detail_delegate_rate_about" = "预计委托收益率";
 
 "statking_validator_total_staked" = "总质押(LAT)";
 "statking_validator_delegations" = "接受委托(LAT)";
-"statking_validator_delegators" = "委托者";
+"statking_validator_delegators" = "委托者数";
 "statking_validator_slash" = "处罚次数";
 "statking_validator_blocks" = "已出块数";
 "statking_validator_blocks_rate" = "出块率";
@@ -797,6 +801,7 @@
 
 "staking_doubt_undelegate" = "说明";
 "staking_doubt_undelegate_detail" = "赎回交易提交成功，委托的Token可立即到账；\n待赎回委托必须一次性全部赎回；\n赎回数量扣除后，已委托剩余数量少于%@LAT时，自动赎回全部。";
+"staking_doubt_undelegate_note" = "注意：操作全部赎回时，将自动领取委托奖励。";
 
 "staking_balance_can_used" = "可用余额";
 "staking_balance_locked_position" = "锁仓余额";
@@ -886,7 +891,7 @@
 "about_version_update_alert_cancel" = "暂不更新";
 "about_version_update_alert_ok" = "立即更新";
 
-"delegate_detail_unable_alert" = "请先赎回 “已解除委托”";
+"delegate_detail_unable_alert" = "请先赎回 “已待赎回委托”";
 
 "import_observed_wallet_tip_1" = "存储大额资金建议使用观察钱包和冷钱包联动管理。";
 "import_observed_wallet_tip_2" = "交易时需要配合冷钱包进行操作。";
@@ -915,7 +920,6 @@
 "offline_signature_title" = "交易预览";
 
 "offline_signature_invalid" = "无效签名";
-"offline_signature_notmatch_wallet" = "钱包不匹配";
 "touchid_auth_text" = "请验证%@";
 "touchid_verify_fail" = "指纹识别失败，请再试一次";
 "offline_signature_not_privatekey" = "签名钱包密钥不存在";
@@ -956,9 +960,10 @@
 "delegate_detail_balance" = "可委托余额";
 "delegate_detail_delegated" = "总委托";
 
-"delegate_detail_unclaimed_reward" = "待领取奖励：";
+"delegate_detail_unclaimed_reward" = "可领取奖励：";
 
-"wallet_receive_qrcode_warning" = "当前%@网络，切勿将其他网络LAT转入到当前地址";
+"wallet_receive_qrcode_warning_1" = "当前";
+"wallet_receive_qrcode_warning_2" = "网络，切勿将其他网络LAT转入到当前地址";
 
 "claim_comfirm_title" = "领取奖励";
 "claim_comfirm_desc" = "预估奖励，以实际到账为准";
@@ -970,3 +975,4 @@
 "mydelegates_search_cancel" = "隐藏";
 
 "transaction_warning_wait_for_previous" = "请等待上笔交易完成后方可继续交易！";
+"withdraw_detail_balance" = "余额：";

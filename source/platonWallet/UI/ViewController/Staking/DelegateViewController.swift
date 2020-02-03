@@ -193,8 +193,8 @@ class DelegateViewController: BaseViewController {
         let item5 = DelegateTableViewCellStyle.singleButton(title: Localized("statking_validator_Delegate"))
 
         let contents = [
-            (Localized("staking_doubt_delegate"), Localized("staking_doubt_delegate_detail")),
-            (Localized("staking_doubt_reward"), Localized("staking_doubt_reward_detail"))
+            (Localized("staking_doubt_delegate"), NSMutableAttributedString(string: Localized("staking_doubt_delegate_detail"))),
+            (Localized("staking_doubt_reward"), NSMutableAttributedString(string: Localized("staking_doubt_reward_detail")))
         ]
         let item6 = DelegateTableViewCellStyle.doubt(contents: contents)
         listData = [item1, item2, item3, item4, item5, item6]
@@ -267,6 +267,7 @@ extension DelegateViewController: UITableViewDelegate, UITableViewDataSource {
             cell.amountView.textField.LocalizePlaceholder = Localized("staking_amount_placeholder", arguments: (minDelegateAmountLimit/PlatonConfig.VON.LAT).description)
             cell.maxAmountLimit = maxDelegateAmountLimit
             cell.amountView.isUserInteractionEnabled = (canDelegation?.canDelegation == true)
+            cell.amountView.feeLabel.text = estimateUseGas.description.vonToLATString?.displayFeeString
             cell.cellDidContentEditingHandler = { [weak self] (amountVON, _) in
 //                self?.isDelegateAll = (amountVON == cell.maxAmountLimit)
 //                self?.currentAmount = amountVON
@@ -311,7 +312,7 @@ extension DelegateViewController: UITableViewDelegate, UITableViewDataSource {
             let content = contents[indexPath.row]
             let cell = tableView.dequeueReusableCell(withIdentifier: "DoubtTableViewCell") as! DoubtTableViewCell
             cell.titleLabel.text = content.0
-            cell.contentLabel.text = content.1
+            cell.contentLabel.attributedText = content.1
             return cell
         default:
             return UITableViewCell()
@@ -623,7 +624,7 @@ extension DelegateViewController {
             isDelegateAll = false
         }
 
-        cell.amountView.feeLabel.text = (estimateUseGas.description.vonToLATString ?? "0.00").displayFeeString
+//        cell.amountView.feeLabel.text = (estimateUseGas.description.vonToLATString ?? "0.00").displayFeeString
     }
 
     func doShowTransactionDetail(_ transaction: Transaction) {

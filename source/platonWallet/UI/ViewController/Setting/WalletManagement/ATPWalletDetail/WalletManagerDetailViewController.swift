@@ -124,7 +124,7 @@ class WalletManagerDetailViewController: BaseViewController {
             return
         }
 
-        showPasswordInputPswAlert(for: wallet) { [weak self] (_, password, error) in
+        showPasswordInputPswAlert(for: wallet, isForDelete: type == .deleteWallet) { [weak self] (_, password, error) in
             guard let self = self else { return }
             if let errMessage = error?.localizedDescription {
                 self.showErrorMessage(text: errMessage, delay: 2.0)

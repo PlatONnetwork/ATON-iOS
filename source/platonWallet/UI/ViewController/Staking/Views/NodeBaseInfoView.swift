@@ -26,7 +26,8 @@ class NodeBaseInfoView: UIView {
     let rewardContentView = UIView()
     var bottomConstraint: Constraint?
 
-    var nodeLinkHandler: ((_ url: String) -> Void)?
+    var nodeLinkHandler: (() -> Void)?
+    var tipsShowHandler: (() -> Void)?
 
     var isInitNode: Bool = false {
         didSet {
@@ -59,6 +60,7 @@ class NodeBaseInfoView: UIView {
         super.init(frame: frame)
         backgroundColor = .white
 
+        nodeBackgroundView.isUserInteractionEnabled = true
         nodeBackgroundView.image = UIImage(named: "bj2")
 //        nodeBackgroundView.contentMode =
         addSubview(nodeBackgroundView)
@@ -103,6 +105,7 @@ class NodeBaseInfoView: UIView {
             make.centerY.equalTo(nodeNameLabel)
         }
 
+        nodeNameButton.addTarget(self, action: #selector(link), for: .touchUpInside)
         nodeNameButton.setImage(UIImage(named: "3.icon_link2"), for: .normal)
         nodeBackgroundView.addSubview(nodeNameButton)
         nodeNameButton.snp.makeConstraints { make in
@@ -155,7 +158,7 @@ class NodeBaseInfoView: UIView {
         rateTitleLabel.textAlignment = .center
         rateTitleLabel.font = .systemFont(ofSize: 11)
         rateTitleLabel.textColor = .white
-        rateTitleLabel.text = Localized("staking_validator_delegate_rate_about")
+        rateTitleLabel.text = Localized("staking_validator_detail_delegate_rate_about")
         rateView.addSubview(rateTitleLabel)
         rateTitleLabel.snp.makeConstraints { make in
             make.trailing.leading.equalToSuperview()
@@ -181,7 +184,17 @@ class NodeBaseInfoView: UIView {
             make.leading.equalToSuperview().offset(20)
             make.top.equalToSuperview().offset(14)
             make.height.equalTo(14)
-            make.trailing.equalTo(rewardContentView.snp.centerX).offset(-5)
+            make.trailing.lessThanOrEqualTo(rewardContentView.snp.centerX).offset(-5)
+        }
+
+        let rewardRatioIV = UIButton()
+        rewardRatioIV.addTarget(self, action: #selector(tipsShow), for: .touchUpInside)
+        rewardRatioIV.setImage(UIImage(named: "3.icon_doubt2"), for: .normal)
+        rewardContentView.addSubview(rewardRatioIV)
+        rewardRatioIV.snp.makeConstraints { make in
+            make.width.height.equalTo(12)
+            make.centerY.equalTo(rewardRatioTipLabel)
+            make.leading.equalTo(rewardRatioTipLabel.snp.trailing).offset(3)
         }
 
         rewardRatioLabel.adjustsFontSizeToFitWidth = true
@@ -192,7 +205,7 @@ class NodeBaseInfoView: UIView {
         rewardRatioLabel.snp.makeConstraints { make in
             make.leading.equalTo(rewardRatioTipLabel)
             make.top.equalTo(rewardRatioTipLabel.snp.bottom).offset(9)
-            make.width.equalTo(rewardRatioTipLabel.snp.width)
+            make.trailing.equalTo(rewardContentView.snp.centerX).offset(-5)
             make.height.equalTo(14)
         }
 
@@ -223,5 +236,13 @@ class NodeBaseInfoView: UIView {
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    @objc func link() {
+        nodeLinkHandler?()
+    }
+
+    @objc func tipsShow() {
+        tipsShowHandler?()
     }
 }
