@@ -911,6 +911,8 @@
 		81FCCD122179E9F20052FC29 /* TransactionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FCCD0A2179E9F10052FC29 /* TransactionService.swift */; };
 		81FCCD142179E9F20052FC29 /* AssetService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FCCD0E2179E9F20052FC29 /* AssetService.swift */; };
 		81FCCD162179EA0F0052FC29 /* RealmHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FCCD152179EA0F0052FC29 /* RealmHelper.swift */; };
+		81FF580923D6A2BA0064A471 /* remoteGas.json in Resources */ = {isa = PBXBuildFile; fileRef = 81FF580823D6A2BA0064A471 /* remoteGas.json */; };
+		81FF580B23D6A6170064A471 /* rewardRecords.json in Resources */ = {isa = PBXBuildFile; fileRef = 81FF580A23D6A6170064A471 /* rewardRecords.json */; };
 		984B45A65A39894AE5B14720 /* Pods_platonWalletUAT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4BB6563189E24AE4F9CC0C4 /* Pods_platonWalletUAT.framework */; };
 		9A11FC482181E90C002D9A96 /* LeftAlignLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A11FC472181E90C002D9A96 /* LeftAlignLayout.swift */; };
 		9A1F87B922014FD70002BE67 /* NodeSettingViewControllerV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1F87B822014FD70002BE67 /* NodeSettingViewControllerV2.swift */; };
@@ -1297,6 +1299,8 @@
 		81FCCD0A2179E9F10052FC29 /* TransactionService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionService.swift; sourceTree = "<group>"; };
 		81FCCD0E2179E9F20052FC29 /* AssetService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetService.swift; sourceTree = "<group>"; };
 		81FCCD152179EA0F0052FC29 /* RealmHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmHelper.swift; sourceTree = "<group>"; };
+		81FF580823D6A2BA0064A471 /* remoteGas.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = remoteGas.json; sourceTree = "<group>"; };
+		81FF580A23D6A6170064A471 /* rewardRecords.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = rewardRecords.json; sourceTree = "<group>"; };
 		9A11FC472181E90C002D9A96 /* LeftAlignLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftAlignLayout.swift; sourceTree = "<group>"; };
 		9A1F87B822014FD70002BE67 /* NodeSettingViewControllerV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeSettingViewControllerV2.swift; sourceTree = "<group>"; };
 		9A25B99D2186DF9E00B9433A /* WalletManagerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletManagerTableViewCell.swift; sourceTree = "<group>"; };
@@ -2290,8 +2294,10 @@
 				81466842232FB22900A141D9 /* getBalance.json */,
 				81466844232FB22A00A141D9 /* transactionList.json */,
 				81466840232FAC0E00A141D9 /* delegateDetails.json */,
+				81FF580823D6A2BA0064A471 /* remoteGas.json */,
 				8146683E232FAB4700A141D9 /* nodeDetails.json */,
 				8146683A232F986C00A141D9 /* nodelist.json */,
+				81FF580A23D6A6170064A471 /* rewardRecords.json */,
 				8146683C232FA94300A141D9 /* listDelegateGroupByAddr.json */,
 				9ADE44DE217B1C64006F1C81 /* platonWalletTests.swift */,
 				9ADE44E6217B1D97006F1C81 /* WalletServiceTests.swift */,
@@ -2815,7 +2821,9 @@
 				8146683F232FAB4700A141D9 /* nodeDetails.json in Resources */,
 				8146684B232FB22B00A141D9 /* delegateRecord.json in Resources */,
 				81466847232FB22B00A141D9 /* getBalance.json in Resources */,
+				81FF580B23D6A6170064A471 /* rewardRecords.json in Resources */,
 				8146683B232F986C00A141D9 /* nodelist.json in Resources */,
+				81FF580923D6A2BA0064A471 /* remoteGas.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

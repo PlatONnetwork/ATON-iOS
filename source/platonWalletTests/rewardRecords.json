@@ -1,0 +1,213 @@
+{
+    "errMsg": "Success",
+    "code": 0,
+    "data": [{
+        "address": "0x9a5b1bc394125160fe64d2617f1c545340ceabab",
+        "totalReward": "33474946500712470000000000",
+        "sequence": 1579513453754,
+        "timestamp": "1579513453754",
+        "item": [{
+            "nodeId": "0x411a6c3640b6cd13799e7d4ed286c95104e3a31fbb05d7ae0004463db648f26e93f7f5848ee9795fb4bbb5f83985afd63f750dc4cf48f53b0e84d26d6834c20c",
+            "nodeName": "wuyiqin_2",
+            "reward": "4877979613330200000000000"
+        }, {
+            "nodeId": "0x411a6c3640b6cd13799e7d4ed286c95104e3a31fbb05d7ae0004463db648f26e93f7f5848ee9795fb4bbb5f83985afd63f750dc4cf48f53b0e84d26d6834c20c",
+            "nodeName": "wuyiqin_2",
+            "reward": "11649100831863400000000000"
+        }, {
+            "nodeId": "0x77fffc999d9f9403b65009f1eb27bae65774e2d8ea36f7b20a89f82642a5067557430e6edfe5320bb81c3666a19cf4a5172d6533117d7ebcd0f2c82055499050",
+            "nodeName": "wuyiqin_1",
+            "reward": "433899037509400000000000"
+        }, {
+            "nodeId": "0x77fffc999d9f9403b65009f1eb27bae65774e2d8ea36f7b20a89f82642a5067557430e6edfe5320bb81c3666a19cf4a5172d6533117d7ebcd0f2c82055499050",
+            "nodeName": "wuyiqin_1",
+            "reward": "16513967018009470000000000"
+        }]
+    }, {
+        "address": "0xbd89e39a8d44d8e2448ae93ad07f5636e9cf4c05",
+        "totalReward": "12533242022346650000000000",
+        "sequence": 1579511215889,
+        "timestamp": "1579511215889",
+        "item": [{
+            "nodeId": "0x411a6c3640b6cd13799e7d4ed286c95104e3a31fbb05d7ae0004463db648f26e93f7f5848ee9795fb4bbb5f83985afd63f750dc4cf48f53b0e84d26d6834c20c",
+            "nodeName": "wuyiqin_2",
+            "reward": "12533242022346650000000000"
+        }]
+    }, {
+        "address": "0xbd89e39a8d44d8e2448ae93ad07f5636e9cf4c05",
+        "totalReward": "1827985107571200000000000",
+        "sequence": 1579509167304,
+        "timestamp": "1579509167304",
+        "item": [{
+            "nodeId": "0x77fffc999d9f9403b65009f1eb27bae65774e2d8ea36f7b20a89f82642a5067557430e6edfe5320bb81c3666a19cf4a5172d6533117d7ebcd0f2c82055499050",
+            "nodeName": "wuyiqin_1",
+            "reward": "1827985107571200000000000"
+        }]
+    }, {
+        "address": "0xbd89e39a8d44d8e2448ae93ad07f5636e9cf4c05",
+        "totalReward": "2840445937270720000000000",
+        "sequence": 1579505920540,
+        "timestamp": "1579505920540",
+        "item": [{
+            "nodeId": "0x411a6c3640b6cd13799e7d4ed286c95104e3a31fbb05d7ae0004463db648f26e93f7f5848ee9795fb4bbb5f83985afd63f750dc4cf48f53b0e84d26d6834c20c",
+            "nodeName": "wuyiqin_2",
+            "reward": "1655930151905700000000000"
+        }, {
+            "nodeId": "0x77fffc999d9f9403b65009f1eb27bae65774e2d8ea36f7b20a89f82642a5067557430e6edfe5320bb81c3666a19cf4a5172d6533117d7ebcd0f2c82055499050",
+            "nodeName": "wuyiqin_1",
+            "reward": "1184515785365020000000000"
+        }]
+    }, {
+        "address": "0xbd89e39a8d44d8e2448ae93ad07f5636e9cf4c05",
+        "totalReward": "691256955054870000000000",
+        "sequence": 1579502878281,
+        "timestamp": "1579502878281",
+        "item": [{
+            "nodeId": "0x411a6c3640b6cd13799e7d4ed286c95104e3a31fbb05d7ae0004463db648f26e93f7f5848ee9795fb4bbb5f83985afd63f750dc4cf48f53b0e84d26d6834c20c",
+            "nodeName": "wuyiqin_2",
+            "reward": "0"
+        }, {
+            "nodeId": "0x77fffc999d9f9403b65009f1eb27bae65774e2d8ea36f7b20a89f82642a5067557430e6edfe5320bb81c3666a19cf4a5172d6533117d7ebcd0f2c82055499050",
+            "nodeName": "wuyiqin_1",
+            "reward": "691256955054870000000000"
+        }]
+    }, {
+        "address": "0xbd89e39a8d44d8e2448ae93ad07f5636e9cf4c05",
+        "totalReward": "1406646593786100000000000",
+        "sequence": 1579502707117,
+        "timestamp": "1579502707117",
+        "item": [{
+            "nodeId": "0x411a6c3640b6cd13799e7d4ed286c95104e3a31fbb05d7ae0004463db648f26e93f7f5848ee9795fb4bbb5f83985afd63f750dc4cf48f53b0e84d26d6834c20c",
+            "nodeName": "wuyiqin_2",
+            "reward": "1406646593786100000000000"
+        }]
+    }, {
+        "address": "0xbd89e39a8d44d8e2448ae93ad07f5636e9cf4c05",
+        "totalReward": "11998092019493550000000000",
+        "sequence": 1579501155165,
+        "timestamp": "1579501155165",
+        "item": [{
+            "nodeId": "0x411a6c3640b6cd13799e7d4ed286c95104e3a31fbb05d7ae0004463db648f26e93f7f5848ee9795fb4bbb5f83985afd63f750dc4cf48f53b0e84d26d6834c20c",
+            "nodeName": "wuyiqin_2",
+            "reward": "8624519984162900000000000"
+        }, {
+            "nodeId": "0x77fffc999d9f9403b65009f1eb27bae65774e2d8ea36f7b20a89f82642a5067557430e6edfe5320bb81c3666a19cf4a5172d6533117d7ebcd0f2c82055499050",
+            "nodeName": "wuyiqin_1",
+            "reward": "3373572035330650000000000"
+        }]
+    }, {
+        "address": "0xbd89e39a8d44d8e2448ae93ad07f5636e9cf4c05",
+        "totalReward": "26583664314671000000000000",
+        "sequence": 1579491763160,
+        "timestamp": "1579491763160",
+        "item": [{
+            "nodeId": "0x77fffc999d9f9403b65009f1eb27bae65774e2d8ea36f7b20a89f82642a5067557430e6edfe5320bb81c3666a19cf4a5172d6533117d7ebcd0f2c82055499050",
+            "nodeName": "wuyiqin_1",
+            "reward": "26583664314671000000000000"
+        }]
+    }, {
+        "address": "0x9a5b1bc394125160fe64d2617f1c545340ceabab",
+        "totalReward": "54201170687622800000000000",
+        "sequence": 1579490971258,
+        "timestamp": "1579490971258",
+        "item": [{
+            "nodeId": "0x411a6c3640b6cd13799e7d4ed286c95104e3a31fbb05d7ae0004463db648f26e93f7f5848ee9795fb4bbb5f83985afd63f750dc4cf48f53b0e84d26d6834c20c",
+            "nodeName": "wuyiqin_2",
+            "reward": "54201170687622800000000000"
+        }]
+    }, {
+        "address": "0x9a5b1bc394125160fe64d2617f1c545340ceabab",
+        "totalReward": "423574480389730000000000",
+        "sequence": 1579490947632,
+        "timestamp": "1579490947632",
+        "item": [{
+            "nodeId": "0x77fffc999d9f9403b65009f1eb27bae65774e2d8ea36f7b20a89f82642a5067557430e6edfe5320bb81c3666a19cf4a5172d6533117d7ebcd0f2c82055499050",
+            "nodeName": "wuyiqin_1",
+            "reward": "423574480389730000000000"
+        }]
+    }, {
+        "address": "0x9a5b1bc394125160fe64d2617f1c545340ceabab",
+        "totalReward": "29025577086176780000000000",
+        "sequence": 1579422525126,
+        "timestamp": "1579422525126",
+        "item": [{
+            "nodeId": "0x411a6c3640b6cd13799e7d4ed286c95104e3a31fbb05d7ae0004463db648f26e93f7f5848ee9795fb4bbb5f83985afd63f750dc4cf48f53b0e84d26d6834c20c",
+            "nodeName": "wuyiqin_2",
+            "reward": "28792772298733200000000000"
+        }, {
+            "nodeId": "0x77fffc999d9f9403b65009f1eb27bae65774e2d8ea36f7b20a89f82642a5067557430e6edfe5320bb81c3666a19cf4a5172d6533117d7ebcd0f2c82055499050",
+            "nodeName": "wuyiqin_1",
+            "reward": "232804787443580000000000"
+        }]
+    }, {
+        "address": "0x9a5b1bc394125160fe64d2617f1c545340ceabab",
+        "totalReward": "55921114854100000000000",
+        "sequence": 1579250274574,
+        "timestamp": "1579250274574",
+        "item": [{
+            "nodeId": "0x77fffc999d9f9403b65009f1eb27bae65774e2d8ea36f7b20a89f82642a5067557430e6edfe5320bb81c3666a19cf4a5172d6533117d7ebcd0f2c82055499050",
+            "nodeName": "wuyiqin_1",
+            "reward": "55921114854100000000000"
+        }]
+    }, {
+        "address": "0x9a5b1bc394125160fe64d2617f1c545340ceabab",
+        "totalReward": "152362102685300000000000",
+        "sequence": 1579245603766,
+        "timestamp": "1579245603766",
+        "item": [{
+            "nodeId": "0x77fffc999d9f9403b65009f1eb27bae65774e2d8ea36f7b20a89f82642a5067557430e6edfe5320bb81c3666a19cf4a5172d6533117d7ebcd0f2c82055499050",
+            "nodeName": "wuyiqin_1",
+            "reward": "152362102685300000000000"
+        }]
+    }, {
+        "address": "0xbd89e39a8d44d8e2448ae93ad07f5636e9cf4c05",
+        "totalReward": "144274250465120000000000",
+        "sequence": 1579232013644,
+        "timestamp": "1579232013644",
+        "item": [{
+            "nodeId": "0x411a6c3640b6cd13799e7d4ed286c95104e3a31fbb05d7ae0004463db648f26e93f7f5848ee9795fb4bbb5f83985afd63f750dc4cf48f53b0e84d26d6834c20c",
+            "nodeName": "wuyiqin_2",
+            "reward": "144274250465120000000000"
+        }]
+    }, {
+        "address": "0xbd89e39a8d44d8e2448ae93ad07f5636e9cf4c05",
+        "totalReward": "233577180238000000000000",
+        "sequence": 1579228716566,
+        "timestamp": "1579228716566",
+        "item": [{
+            "nodeId": "0x77fffc999d9f9403b65009f1eb27bae65774e2d8ea36f7b20a89f82642a5067557430e6edfe5320bb81c3666a19cf4a5172d6533117d7ebcd0f2c82055499050",
+            "nodeName": "wuyiqin_1",
+            "reward": "233577180238000000000000"
+        }]
+    }, {
+        "address": "0xbd89e39a8d44d8e2448ae93ad07f5636e9cf4c05",
+        "totalReward": "116788590119000000000000",
+        "sequence": 1579228516357,
+        "timestamp": "1579228516357",
+        "item": [{
+            "nodeId": "0x77fffc999d9f9403b65009f1eb27bae65774e2d8ea36f7b20a89f82642a5067557430e6edfe5320bb81c3666a19cf4a5172d6533117d7ebcd0f2c82055499050",
+            "nodeName": "wuyiqin_1",
+            "reward": "116788590119000000000000"
+        }]
+    }, {
+        "address": "0xbd89e39a8d44d8e2448ae93ad07f5636e9cf4c05",
+        "totalReward": "583942950595000000000000",
+        "sequence": 1579228401402,
+        "timestamp": "1579228401402",
+        "item": [{
+            "nodeId": "0x77fffc999d9f9403b65009f1eb27bae65774e2d8ea36f7b20a89f82642a5067557430e6edfe5320bb81c3666a19cf4a5172d6533117d7ebcd0f2c82055499050",
+            "nodeName": "wuyiqin_1",
+            "reward": "583942950595000000000000"
+        }]
+    }, {
+        "address": "0xbd89e39a8d44d8e2448ae93ad07f5636e9cf4c05",
+        "totalReward": "116788590119000000000000",
+        "sequence": 1579227960089,
+        "timestamp": "1579227960089",
+        "item": [{
+            "nodeId": "0x77fffc999d9f9403b65009f1eb27bae65774e2d8ea36f7b20a89f82642a5067557430e6edfe5320bb81c3666a19cf4a5172d6533117d7ebcd0f2c82055499050",
+            "nodeName": "wuyiqin_1",
+            "reward": "116788590119000000000000"
+        }]
+    }]
+}

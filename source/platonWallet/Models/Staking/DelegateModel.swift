@@ -59,6 +59,9 @@ struct DelegateDetail: Decodable {
         return BigUInt(withdrawReward ?? "0") ?? BigUInt.zero
     }
 
+    var releasedBInt: BigUInt {
+        return BigUInt(released ?? "0") ?? BigUInt.zero
+    }
 }
 
 struct Delegation: Decodable {
