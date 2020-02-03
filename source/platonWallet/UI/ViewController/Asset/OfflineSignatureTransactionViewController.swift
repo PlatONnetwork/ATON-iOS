@@ -46,6 +46,7 @@ class OfflineSignatureTransactionViewController: BaseViewController {
         valueLabel.font = UIFont.systemFont(ofSize: 30, weight: .medium)
         valueLabel.textColor = common_blue_color
         valueLabel.textAlignment = .center
+        valueLabel.adjustsFontSizeToFitWidth = true
         headerView.addSubview(valueLabel)
         valueLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(16)
@@ -94,12 +95,18 @@ class OfflineSignatureTransactionViewController: BaseViewController {
         valueLabel.attributedText = attributed
 
         listData.append((title: Localized("confirm_authorize_function_type"), value: codes.first?.typeString ?? "--"))
-        listData.append((title: Localized("confirm_authorize_from"), value:  codes.first?.fromName ?? "--"))
+
         if codes.first?.functionType == 1004 {
+            listData.append((title: Localized("confirm_authorize_from"), value:  codes.first?.fromName ?? "--"))
             listData.append((title: Localized("confirm_authorize_delegate_to"), value:  codes.first?.toName ?? "--"))
         } else if codes.first?.functionType == 1005 {
+            listData.append((title: Localized("confirm_authorize_from"), value:  codes.first?.fromName ?? "--"))
             listData.append((title: Localized("confirm_authorize_undelegate_to"), value:  codes.first?.toName ?? "--"))
+        } else if codes.first?.functionType == 5000 {
+            listData.append((title: Localized("confirm_reward_wallet"), value: codes.first?.fromName ?? "--"))
+            listData.append((title: Localized("confirm_reward_amount"), value: totalLAT))
         } else {
+            listData.append((title: Localized("confirm_send_from"), value:  codes.first?.fromName ?? "--"))
             listData.append((title: Localized("confirm_authorize_to"), value: codes.first?.toName ?? "--"))
         }
 
@@ -140,7 +147,12 @@ class OfflineSignatureTransactionViewController: BaseViewController {
         }
 
         guard let wallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).first(where: { $0.address.lowercased() == codes.first?.from?.lowercased() }) else {
-            showErrorMessage(text: Localized("offline_signature_notmatch_wallet"), delay: 2.0)
+            showErrorMessage(text: Localized("offline_signature_not_privatekey"), delay: 2.0)
+            return
+        }
+
+        guard wallet.type != .observed else {
+            showErrorMessage(text: Localized("offline_signature_not_privatekey"))
             return
         }
 
@@ -161,6 +173,9 @@ class OfflineSignatureTransactionViewController: BaseViewController {
                 } else if code.functionType == 1005 {
                     guard let signatureString = self.signedWithdrawTx(pri: pri, txQrcode: code) else { continue }
                     signedStrings.append(signatureString)
+                } else if code.functionType == 5000 {
+                    guard let signatureString = self.signedClaimRewardTx(pri: pri, txQrcode: code) else { continue }
+                    signedStrings.append(signatureString)
                 } else {
                     guard let signatureString = self.signedTransferTx(pri: pri, txQrcode: code) else { continue }
                     signedStrings.append(signatureString)
@@ -171,7 +186,7 @@ class OfflineSignatureTransactionViewController: BaseViewController {
                 let code = codes.first,
                 let from = code.from,
                 let type = code.functionType else { return }
-            let qrcodeData = QrcodeData(qrCodeType: 1, qrCodeData: signedStrings, timestamp: self.qrcode?.timestamp, chainId: web3.chainId, functionType: type, from: from)
+            let qrcodeData = QrcodeData(qrCodeType: 1, qrCodeData: signedStrings, chainId: web3.chainId, functionType: type, from: from)
 
             guard
                 let jsonData = try? JSONEncoder().encode(qrcodeData),
@@ -242,6 +257,30 @@ class OfflineSignatureTransactionViewController: BaseViewController {
         let nonce = EthereumQuantity(quantity: nonceBigInt)
         let funcType = FuncType.createDelegate(typ: typ, nodeId: nodeId, amount: amount)
         let txSigned = web3.platon.platonSignTransaction(to: PlatonConfig.ContractAddress.stakingContractAddress, nonce: nonce, data: funcType.rlpData.bytes, sender: sender, privateKey: pri, gasPrice: gasPrice, gas: gasLimit, value: nil, estimated: true)
+
+        guard
+            let transactionSigned = txSigned else { return nil }
+        let bytes = try? RLPEncoder().encode(transactionSigned.rlp())
+
+        guard
+            let signedString = bytes?.toHexString().add0x() else { return nil }
+        return signedString
+    }
+
+    func signedClaimRewardTx(pri: String, txQrcode: TransactionQrcode) -> String? {
+        guard
+            let sender = txQrcode.from,
+            let nonceBigInt = BigUInt(txQrcode.nonce ?? "0"),
+            let gasPrice = BigUInt(txQrcode.gasPrice ?? "0"),
+            let gasLimit = BigUInt(txQrcode.gasLimit ?? "0")
+            else {
+                self.showErrorMessage(text: "qrcode is invalid", delay: 2.0)
+                return nil
+        }
+
+        let nonce = EthereumQuantity(quantity: nonceBigInt)
+        let funcType = FuncType.withdrawDelegateReward
+        let txSigned = web3.platon.platonSignTransaction(to: PlatonConfig.ContractAddress.rewardContractAddress, nonce: nonce, data: funcType.rlpData.bytes, sender: sender, privateKey: pri, gasPrice: gasPrice, gas: gasLimit, value: nil, estimated: true)
 
         guard
             let transactionSigned = txSigned else { return nil }

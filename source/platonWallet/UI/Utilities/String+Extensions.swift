@@ -33,6 +33,12 @@ extension String {
     var displayFeeString: String {
         return Localized("VoteConfirm_fee_colon") + self.ATPSuffix()
     }
+
+    var vonToLATWith12DecimalString: String? {
+        guard let von = BigUInt(self) else { return nil }
+        let valueLAT = von.divide(by: ETHToWeiMultiplier, round: 12)
+        return valueLAT.displayForMicrometerLevel(maxRound: 12)
+    }
 }
 
 extension String {
@@ -114,7 +120,11 @@ extension String {
     }
 
     func isValidInputAmoutWith8DecimalPlace() -> Bool {
-        let regex = "^(([1-9]{1}\\d*)|(0{1}))(.{1}\\d{0,8}){0,1}$"
+        return isValidInputAmoutWithDecimalPlace(maxRound: 8)
+    }
+
+    func isValidInputAmoutWithDecimalPlace(maxRound: Int) -> Bool {
+        let regex = String(format: "^(([1-9]{1}\\d*)|(0{1}))(.{1}\\d{0,%d}){0,1}$", maxRound)
         let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
         let isValid = predicate.evaluate(with: self)
         return isValid
@@ -209,7 +219,7 @@ extension String {
     }
 
     func displayForMicrometerLevel(maxRound : Int) -> String {
-        guard self.isValidInputAmoutWith8DecimalPlace() else {
+        guard self.isValidInputAmoutWithDecimalPlace(maxRound: maxRound) else {
             return self
         }
 

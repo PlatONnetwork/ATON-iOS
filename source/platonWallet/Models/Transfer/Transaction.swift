@@ -41,6 +41,7 @@ enum TxType: String, Decodable {
     case submitCancel = "2005"
     case reportDuplicateSign = "3000"
     case createRestrictingPlan = "4000"
+    case claimReward = "5000"
     case unknown = "-1"
 
     var localizeTitle: String {
@@ -85,6 +86,8 @@ enum TxType: String, Decodable {
             return Localized("TransactionStatus_createRestrictingPlan_title")
         case .submitCancel:
             return Localized("TransactionStatus_submitCancel_title")
+        case .claimReward:
+            return Localized("TransactionStatus_claimReward_title")
         case .unknown:
             return Localized("TransactionStatus_unknown_title")
         }
@@ -214,6 +217,8 @@ class Transaction : Object, Decodable {
 
     @objc dynamic var chainId: String = ""
 
+    var totalReward: String?
+
     var sequence: Int64?
 
     var txType: TxType? {
@@ -263,7 +268,8 @@ class Transaction : Object, Decodable {
                 "proposalType",
                 "proposalId",
                 "vote",
-                "unDelegation"
+                "unDelegation",
+                "totalReward"
         ]
     }
 
@@ -298,6 +304,7 @@ class Transaction : Object, Decodable {
         case vote
         case version
         case reportType
+        case totalReward
     }
 
     required convenience init(from decoder: Decoder) throws {
@@ -337,6 +344,7 @@ class Transaction : Object, Decodable {
         proposalId = try? container.decode(String.self, forKey: .proposalId)
         version = try? container.decode(String.self, forKey: .version)
         reportType = try? container.decode(ReportType.self, forKey: .reportType)
+        totalReward = try? container.decode(String.self, forKey: .totalReward)
     }
 }
 
@@ -368,12 +376,24 @@ extension Transaction {
         }
     }
 
+    var topValueDescription : String? {
+        get {
+            return BigUInt(value ?? "0")?.divide(by: ETHToWeiMultiplier, round: 8).displayForMicrometerLevel(maxRound: 8)
+        }
+    }
+
     var valueDescription : String? {
         get {
-            guard value != nil else {
-                return "0.00"
+            if let type = txType, type == .claimReward {
+                return BigUInt(totalReward ?? "0")?.divide(by: ETHToWeiMultiplier, round: 8).displayForMicrometerLevel(maxRound: 8)
+            } else if let type = txType, type == .delegateWithdraw {
+                return BigUInt(unDelegation ?? "0")?.divide(by: ETHToWeiMultiplier, round: 8).displayForMicrometerLevel(maxRound: 8)
+            } else {
+                guard value != nil else {
+                    return "0.00"
+                }
+                return BigUInt(value!)?.divide(by: ETHToWeiMultiplier, round: 8).displayForMicrometerLevel(maxRound: 8)
             }
-            return BigUInt(value!)?.divide(by: ETHToWeiMultiplier, round: 8).displayForMicrometerLevel(maxRound: 8)
         }
     }
 

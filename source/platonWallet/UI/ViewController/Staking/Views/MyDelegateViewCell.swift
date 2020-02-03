@@ -11,14 +11,17 @@ import Localize_Swift
 
 class MyDelegateViewCell: UITableViewCell {
 
-    public let walletAvatarIV = UIImageView()
-    public let walletNameLabel = UILabel()
-    public let walletAddressLabel = UILabel()
+    let walletAvatarIV = UIImageView()
+    let walletNameLabel = UILabel()
+    let walletAddressLabel = UILabel()
 
-    public let delegateLabel = UILabel()
-    public let unDelegatingLabel = UILabel()
+    let delegatedLabel = UILabel()
+    let totalRewardLabel = UILabel()
+    let unclaimedRewardLabel = UILabel()
+    let claimButton = UIButton()
 
     var cellDidHandle: ((_ cell: MyDelegateViewCell) -> Void)?
+    var claimDidHandle: ((_ cell: MyDelegateViewCell) -> Void)?
 
     var delegate: Delegate? {
         didSet {
@@ -26,10 +29,63 @@ class MyDelegateViewCell: UITableViewCell {
             walletNameLabel.text = delegate?.walletName
             walletAddressLabel.text = delegate?.walletAddress.addressForDisplay()
 
-            delegateLabel.text = delegate?.balance
-            unDelegatingLabel.text = delegate?.delegateValue
+            delegatedLabel.text = delegate?.delegateValue
+            totalRewardLabel.text = delegate?.cumulativeRewardValue
+            unclaimedRewardLabel.attributedText = delegate?.withdrawRewardValue
+
+            guard let status = delegate?.status else {
+                claimButton.isHidden = true
+                return
+            }
+
+            switch status {
+            case .unclaim:
+                claimButton.localizedNormalTitle = "mydelegates_claim"
+                claimButton.isHidden = false
+                pendingLayer.isHidden = true
+                claimButton.isEnabled = true
+            case .claiming:
+                claimButton.setTitle(nil, for: .normal)
+                claimButton.isHidden = false
+                pendingLayer.isHidden = false
+                claimButton.isEnabled = false
+            case .none:
+                claimButton.localizedNormalTitle = "mydelegates_claim"
+                claimButton.isHidden = true
+                claimButton.isEnabled = false
+            }
         }
     }
+
+    lazy var pendingLayer: CALayer = { () -> CALayer in
+        let replicatorLayer = CAReplicatorLayer()
+        replicatorLayer.frame = CGRect(x: (67 - 21)/2.0, y: (28-6)/2.0, width: 21, height: 6)
+        replicatorLayer.instanceCount = 3
+        replicatorLayer.instanceTransform = CATransform3DMakeTranslation(7, 0, 0)
+        replicatorLayer.instanceDelay = 1/3.0
+
+        let dotLayer = CAShapeLayer()
+        let path = UIBezierPath()
+        path.move(to: CGPoint(x: 3, y: 0))
+        path.addLine(to: CGPoint(x: 7, y: 0))
+        path.addLine(to: CGPoint(x: 4, y: 6))
+        path.addLine(to: CGPoint(x: 0, y: 6))
+        path.close()
+
+        dotLayer.path = path.cgPath
+        dotLayer.fillColor = UIColor(rgb: 0x2a5ffe).cgColor
+        replicatorLayer.addSublayer(dotLayer)
+
+        let keyAnimation = CAKeyframeAnimation(keyPath: "opacity")
+        keyAnimation.isRemovedOnCompletion = false
+        keyAnimation.duration = 1.0
+        keyAnimation.keyTimes = [NSNumber(value: 0.0), NSNumber(0.5), NSNumber(1.0)]
+        keyAnimation.values = [1.0, 0.7, 0.5]
+        keyAnimation.repeatCount = Float.infinity
+        dotLayer.add(keyAnimation, forKey: nil)
+
+        return replicatorLayer
+    }()
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -48,7 +104,7 @@ class MyDelegateViewCell: UITableViewCell {
             make.leading.equalToSuperview().offset(10)
             make.trailing.equalToSuperview().offset(-10)
             make.top.equalToSuperview().offset(16)
-            make.height.equalTo(128)
+            make.height.equalTo(184)
             make.bottom.equalToSuperview()
         }
 
@@ -109,7 +165,7 @@ class MyDelegateViewCell: UITableViewCell {
         }
 
         let delegateBackgroundView = UIView()
-        delegateBackgroundView.isUserInteractionEnabled = false
+//        delegateBackgroundView.isUserInteractionEnabled = false
         delegateBackgroundView.backgroundColor = .white
         containerView.addSubview(delegateBackgroundView)
         delegateBackgroundView.snp.makeConstraints { make in
@@ -119,7 +175,7 @@ class MyDelegateViewCell: UITableViewCell {
         }
 
         let delegateTipLabel = UILabel()
-        delegateTipLabel.localizedText = "staking_main_delegate_text"
+        delegateTipLabel.localizedText = "staking_main_undelegating_text"
         delegateTipLabel.textColor = common_lightLightGray_color
         delegateTipLabel.font = UIFont.systemFont(ofSize: 12)
         delegateBackgroundView.addSubview(delegateTipLabel)
@@ -130,38 +186,76 @@ class MyDelegateViewCell: UITableViewCell {
             make.width.equalToSuperview().offset(-34).dividedBy(2)
         }
 
-        delegateLabel.textColor = .black
-        delegateLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium)
-        delegateLabel.text = "--"
-        delegateLabel.adjustsFontSizeToFitWidth = true
-        delegateBackgroundView.addSubview(delegateLabel)
-        delegateLabel.snp.makeConstraints { make in
+        delegatedLabel.textColor = .black
+        delegatedLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+        delegatedLabel.text = "--"
+        delegatedLabel.adjustsFontSizeToFitWidth = true
+        delegateBackgroundView.addSubview(delegatedLabel)
+        delegatedLabel.snp.makeConstraints { make in
             make.leading.equalTo(delegateTipLabel)
             make.top.equalTo(delegateTipLabel.snp.bottom).offset(9)
             make.height.equalTo(14)
             make.width.equalTo(delegateTipLabel)
         }
 
-        let unDelegatingTipLabel = UILabel()
-        unDelegatingTipLabel.localizedText = "staking_main_undelegating_text"
-        unDelegatingTipLabel.textColor = common_lightLightGray_color
-        unDelegatingTipLabel.font = UIFont.systemFont(ofSize: 12)
-        delegateBackgroundView.addSubview(unDelegatingTipLabel)
-        unDelegatingTipLabel.snp.makeConstraints { make in
+        let totalRewardTipLabel = UILabel()
+        totalRewardTipLabel.localizedText = "mydelegates_total_reward"
+        totalRewardTipLabel.textColor = common_lightLightGray_color
+        totalRewardTipLabel.font = UIFont.systemFont(ofSize: 12)
+        delegateBackgroundView.addSubview(totalRewardTipLabel)
+        totalRewardTipLabel.snp.makeConstraints { make in
             make.leading.equalTo(delegateTipLabel.snp.trailing).offset(5)
             make.top.equalTo(delegateTipLabel.snp.top)
             make.width.equalTo(delegateTipLabel)
         }
 
-        unDelegatingLabel.textColor = .black
-        unDelegatingLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium)
-        unDelegatingLabel.text = "--"
-        unDelegatingLabel.adjustsFontSizeToFitWidth = true
-        delegateBackgroundView.addSubview(unDelegatingLabel)
-        unDelegatingLabel.snp.makeConstraints { make in
-            make.leading.equalTo(unDelegatingTipLabel)
-            make.top.equalTo(unDelegatingTipLabel.snp.bottom).offset(9)
+        totalRewardLabel.textColor = .black
+        totalRewardLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+        totalRewardLabel.text = "--"
+        totalRewardLabel.adjustsFontSizeToFitWidth = true
+        delegateBackgroundView.addSubview(totalRewardLabel)
+        totalRewardLabel.snp.makeConstraints { make in
+            make.leading.equalTo(totalRewardTipLabel)
+            make.top.equalTo(totalRewardTipLabel.snp.bottom).offset(9)
             make.height.equalTo(14)
+        }
+
+        let unclaimedRewardTipLabel = UILabel()
+        unclaimedRewardTipLabel.localizedText = "mydelegates_unclaimed_reward"
+        unclaimedRewardTipLabel.textColor = common_lightLightGray_color
+        unclaimedRewardTipLabel.font = UIFont.systemFont(ofSize: 12)
+        delegateBackgroundView.addSubview(unclaimedRewardTipLabel)
+        unclaimedRewardTipLabel.snp.makeConstraints { make in
+            make.leading.equalTo(delegateTipLabel.snp.leading)
+            make.trailing.equalTo(delegateTipLabel.snp.trailing)
+            make.top.equalTo(delegatedLabel.snp.bottom).offset(12)
+        }
+
+        unclaimedRewardLabel.textColor = .black
+        unclaimedRewardLabel.font = UIFont.systemFont(ofSize: 16, weight: .medium)
+        unclaimedRewardLabel.text = "--"
+        unclaimedRewardLabel.adjustsFontSizeToFitWidth = true
+        delegateBackgroundView.addSubview(unclaimedRewardLabel)
+        unclaimedRewardLabel.snp.makeConstraints { make in
+            make.leading.equalTo(unclaimedRewardTipLabel)
+            make.trailing.equalToSuperview().offset(-120)
+            make.top.equalTo(unclaimedRewardTipLabel.snp.bottom).offset(7)
+            make.width.equalTo(unclaimedRewardTipLabel)
+        }
+
+        claimButton.layer.addSublayer(pendingLayer)
+        claimButton.titleLabel?.font = .systemFont(ofSize: 13)
+        claimButton.layer.cornerRadius = 14.0
+        claimButton.layer.borderColor = common_blue_color.cgColor
+        claimButton.layer.borderWidth = 1
+        claimButton.setTitleColor(common_blue_color, for: .normal)
+        claimButton.addTarget(self, action: #selector(claimTapAction), for: .touchUpInside)
+        delegateBackgroundView.addSubview(claimButton)
+        claimButton.snp.makeConstraints { make in
+            make.height.equalTo(28)
+            make.width.equalTo(67)
+            make.trailing.equalToSuperview().offset(-10)
+            make.centerY.equalTo(unclaimedRewardLabel.snp.centerY)
         }
     }
 
@@ -171,5 +265,9 @@ class MyDelegateViewCell: UITableViewCell {
 
     @objc func containerTapAction() {
         cellDidHandle?(self)
+    }
+
+    @objc func claimTapAction() {
+        claimDidHandle?(self)
     }
 }

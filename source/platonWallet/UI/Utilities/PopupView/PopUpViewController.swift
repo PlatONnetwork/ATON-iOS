@@ -77,6 +77,15 @@ class PopUpViewController: UIViewController {
                 })
             }
         }
+
+        if let confirmView = contentView as? RewardClaimComfirmView {
+            confirmView.onCompletion = { [weak self] in
+                guard let self = self else { return }
+                self.onDismissViewController(animated: true, completion: {
+                    self.onCompletion?()
+                })
+            }
+        }
     }
 
     func setUpContentView(view : UIView, size : CGSize) {
@@ -132,7 +141,6 @@ class PopUpViewController: UIViewController {
     }
 
     open func show(inViewController vc: UIViewController, animated: Bool = false) {
-
         modalPresentationStyle = .overCurrentContext
         vc.tabBarController?.present(self, animated: animated, completion: {
             UIView.animate(withDuration: 0.35,

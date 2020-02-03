@@ -13,33 +13,62 @@ class ValidatorNodesViewController: ButtonBarPagerTabStripViewController, Indica
 
     var itemInfo: IndicatorInfo = IndicatorInfo(title: "staking_main_validator_text")
 
+    var currentSort: NodeSort = .rank
+
     func indicatorInfo(for pagerTabStripController: PagerTabStripViewController) -> IndicatorInfo {
         return itemInfo
     }
 
     lazy var rankButton = { () -> UIButton in
         let button = UIButton()
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 12)
-        button.setTitleColor(common_blue_color, for: .normal)
-        button.localizedNormalTitle = "staking_validator_node_rank"
-        button.localizedSelectedTitle = "staking_validator_node_yield"
         button.setImage(UIImage(named: "3.icon_ sorting"), for: .normal)
-        button.semanticContentAttribute = UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft ? .forceLeftToRight : .forceRightToLeft
-        button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 5)
-        button.titleLabel?.adjustsFontSizeToFitWidth = true
-        button.titleLabel?.baselineAdjustment = .alignCenters
-        button.layer.cornerRadius = 11.0
-        button.layer.borderColor = common_blue_color.cgColor
-        button.layer.borderWidth = 1 / UIScreen.main.scale
         button.addTarget(self, action: #selector(rankingTapAction), for: .touchUpInside)
+        return button
+    }()
+
+    lazy var searchButton = { () -> UIButton in
+        let button = UIButton()
+        button.setImage(UIImage(named: "3.icon_ Search"), for: .normal)
+        button.addTarget(self, action: #selector(searhTapAction), for: .touchUpInside)
         return button
     }()
 
     @objc func rankingTapAction() {
         rankButton.isSelected = !rankButton.isSelected
 
+        showNodeSortView()
+    }
+
+    @objc func searhTapAction() {
         guard let controllers = viewControllers as? [ValidatorNodeListViewController] else { return }
-        _ = controllers.map { $0.pullDownForRefreshData(isRankSelected: !rankButton.isSelected) }
+        let controller = controllers[currentIndex]
+        controller.searchDidTapHandler()
+    }
+
+    func startToRefreshData() {
+        guard
+            let controllers = viewControllers as? [ValidatorNodeListViewController] else { return }
+        _ = controllers.map { $0.fetchDataLastest() }
+    }
+
+    func showNodeSortView() {
+        let listData = [
+            NodeSort.rank,
+            NodeSort.delegated,
+            NodeSort.delegator,
+            NodeSort.yield
+        ]
+
+        let contentView = ThresholdValueSelectView<NodeSort>(listData: listData, selected: currentSort, title: Localized("node_sort_title"))
+        contentView.show(viewController: self)
+        contentView.valueChangedHandler = { [weak self] (value) in
+            guard self?.currentSort != value else {
+                return
+            }
+
+            self?.currentSort = value
+            self?.startToRefreshData()
+        }
     }
 
     override func viewDidLoad() {
@@ -69,7 +98,10 @@ class ValidatorNodesViewController: ButtonBarPagerTabStripViewController, Indica
         containerView.isScrollEnabled = false
         buttonBarView.frame = CGRect(x: buttonBarView.frame.minX, y: buttonBarView.frame.minY + UIApplication.shared.statusBarFrame.height, width: buttonBarView.frame.width, height: buttonBarView.frame.height + 28)
         buttonBarView.addSubview(rankButton)
-        rankButton.frame = CGRect(x: buttonBarView.frame.width - 67 - 10, y: (buttonBarView.frame.height - 22)/2.0, width: 67, height: 22)
+        rankButton.frame = CGRect(x: buttonBarView.frame.width - 18 - 14, y: (buttonBarView.frame.height - 22)/2.0, width: 18, height: 22)
+        buttonBarView.addSubview(searchButton)
+        searchButton.frame = CGRect(x: rankButton.frame.minX-18-10, y: (buttonBarView.frame.height - 22)/2.0, width: 18, height: 22)
+        containerView.backgroundColor = .red
         containerView.frame = CGRect(x: containerView.frame.minX, y: buttonBarView.frame.maxY, width: containerView.frame.width, height: containerView.frame.height - UIApplication.shared.statusBarFrame.height)
 
     }

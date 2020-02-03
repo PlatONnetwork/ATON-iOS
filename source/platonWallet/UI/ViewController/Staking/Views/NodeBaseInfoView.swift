@@ -8,73 +8,106 @@
 
 import UIKit
 import Localize_Swift
+import SnapKit
 
 class NodeBaseInfoView: UIView {
 
+    let nodeBackgroundView = UIImageView()
     public let nodeAvatarIV = UIImageView()
     public let nodeNameLabel = UILabel()
     public let nodeAddressLabel = UILabel()
     public let statusButton = UIButton()
     public let rateLabel = UILabel()
-
-    public let totalStakedLabel = UILabel()
-    public let delegationsLabel = UILabel()
-    public let delegatorsLabel = UILabel()
-    public let slashLabel = UILabel()
-    public let blocksLabel = UILabel()
-    public let blocksRateLabel = UILabel()
     public let nodeNameButton = UIButton()
+    public let trendIV = UIImageView()
 
-    var nodeLinkHandler: ((_ url: String) -> Void)?
+    public let rewardRatioLabel = UILabel()
+    public let totalRewardLabel = UILabel()
+    let rewardContentView = UIView()
+    var bottomConstraint: Constraint?
+
+    var nodeLinkHandler: (() -> Void)?
+    var tipsShowHandler: (() -> Void)?
+
+    var isInitNode: Bool = false {
+        didSet {
+            if isInitNode {
+                nodeBackgroundView.image = UIImage(named: "bj3")
+                bottomConstraint?.update(priority: .required)
+                rewardContentView.isHidden = true
+            } else {
+                nodeBackgroundView.image = UIImage(named: "bj2")
+                bottomConstraint?.update(priority: .low)
+                rewardContentView.isHidden = false
+            }
+        }
+    }
+
+    var ratePATrend: RateTrend? {
+        didSet {
+            switch ratePATrend! {
+            case .none:
+                trendIV.image = nil
+            case .up:
+                trendIV.image = UIImage(named: "3.icon_Rose")
+            case .down:
+                trendIV.image = UIImage(named: "3.icon_Fell")
+            }
+        }
+    }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .white
 
-        let nodeBackgroundView = UIImageView()
-        nodeBackgroundView.image = UIImage(named: "bg_staking_wallet_img")?.resizableImage(withCapInsets: UIEdgeInsets(top: 3, left: 345, bottom: 3, right: 3), resizingMode: .stretch)
+        nodeBackgroundView.isUserInteractionEnabled = true
+        nodeBackgroundView.image = UIImage(named: "bj2")
+//        nodeBackgroundView.contentMode =
         addSubview(nodeBackgroundView)
         nodeBackgroundView.snp.makeConstraints { make in
-            make.leading.trailing.top.equalToSuperview()
-            make.height.equalTo(60)
+            make.leading.equalToSuperview().offset(10)
+            make.trailing.equalToSuperview().offset(-10)
+            make.top.equalToSuperview().offset(16)
+            make.bottom.equalToSuperview().offset(-16)
         }
 
         nodeAvatarIV.addMaskView(corners: .allCorners, cornerRadiiV: 21)
         nodeAvatarIV.image = UIImage(named: "walletAvatar_1")
         nodeBackgroundView.addSubview(nodeAvatarIV)
         nodeAvatarIV.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.leading.equalToSuperview().offset(5)
+            make.top.equalToSuperview().offset(20)
+            make.leading.equalToSuperview().offset(10)
             make.width.height.equalTo(42)
+            bottomConstraint = make.bottom.equalToSuperview().offset(-20).priorityLow().constraint
         }
 
         nodeNameLabel.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.medium)
         nodeNameLabel.setContentHuggingPriority(.defaultHigh, for: .horizontal)
-        nodeNameLabel.textColor = .black
+        nodeNameLabel.textColor = .white
         nodeNameLabel.text = Localized("staking_main_wallet_name")
-        addSubview(nodeNameLabel)
+        nodeBackgroundView.addSubview(nodeNameLabel)
         nodeNameLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(12)
+            make.top.equalTo(nodeAvatarIV.snp.top)
             make.leading.equalTo(nodeAvatarIV.snp.trailing).offset(5)
-            make.height.equalTo(18)
         }
 
         statusButton.setTitle("--", for: .normal)
-        statusButton.setTitleColor(common_blue_color, for: .normal)
+        statusButton.setTitleColor(.white, for: .normal)
         statusButton.layer.cornerRadius = 3.0
         statusButton.layer.borderWidth = 1 / UIScreen.main.scale
         statusButton.titleLabel?.font = UIFont.systemFont(ofSize: 11)
-        statusButton.layer.borderColor = status_blue_color.cgColor
+        statusButton.layer.borderColor = UIColor.white.cgColor
         statusButton.contentEdgeInsets = UIEdgeInsets(top: 2, left: 8, bottom: 2, right: 8)
         statusButton.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .horizontal)
-        addSubview(statusButton)
+        nodeBackgroundView.addSubview(statusButton)
         statusButton.snp.makeConstraints { make in
             make.leading.equalTo(nodeNameLabel.snp.trailing).offset(4)
             make.centerY.equalTo(nodeNameLabel)
         }
 
-        nodeNameButton.setImage(UIImage(named: "3.icon_link"), for: .normal)
-        addSubview(nodeNameButton)
+        nodeNameButton.addTarget(self, action: #selector(link), for: .touchUpInside)
+        nodeNameButton.setImage(UIImage(named: "3.icon_link2"), for: .normal)
+        nodeBackgroundView.addSubview(nodeNameButton)
         nodeNameButton.snp.makeConstraints { make in
             make.leading.equalTo(statusButton.snp.trailing).offset(6)
             make.height.equalTo(16)
@@ -82,27 +115,36 @@ class NodeBaseInfoView: UIView {
         }
 
         nodeAddressLabel.font = UIFont.systemFont(ofSize: 13)
-        nodeAddressLabel.textColor = common_darkGray_color
+        nodeAddressLabel.textColor = .white
         nodeAddressLabel.text = "--"
-        addSubview(nodeAddressLabel)
+        nodeBackgroundView.addSubview(nodeAddressLabel)
         nodeAddressLabel.snp.makeConstraints { make in
-            make.top.equalTo(nodeNameLabel.snp.bottom).offset(3)
+            make.top.equalTo(nodeNameLabel.snp.bottom).offset(6)
             make.leading.equalTo(nodeNameLabel.snp.leading)
         }
 
         let rateView = UIView()
         rateView.backgroundColor = .clear
         rateView.isUserInteractionEnabled = false
-        addSubview(rateView)
+        nodeBackgroundView.addSubview(rateView)
+
         rateView.snp.makeConstraints { make in
             make.top.equalTo(nodeNameLabel)
             make.leading.greaterThanOrEqualTo(nodeNameButton.snp.trailing).offset(5)
             make.trailing.equalToSuperview().offset(-10)
         }
 
+        trendIV.image = nil
+        nodeBackgroundView.addSubview(trendIV)
+        trendIV.snp.makeConstraints { make in
+            make.centerY.equalTo(rateView.snp.centerY).offset(-3)
+            make.trailing.equalTo(rateView.snp.leading).offset(-2)
+            make.leading.greaterThanOrEqualTo(nodeNameButton.snp.trailing).offset(5)
+        }
+
         rateLabel.textAlignment = .center
         rateLabel.font = UIFont.systemFont(ofSize: 17, weight: UIFont.Weight.medium)
-        rateLabel.textColor = common_blue_color
+        rateLabel.textColor = .white
         rateLabel.text = "0.00%"
         rateLabel.adjustsFontSizeToFitWidth = true
 //        rateLabel.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .horizontal)
@@ -115,8 +157,8 @@ class NodeBaseInfoView: UIView {
         let rateTitleLabel = UILabel()
         rateTitleLabel.textAlignment = .center
         rateTitleLabel.font = .systemFont(ofSize: 11)
-        rateTitleLabel.textColor = common_lightLightGray_color
-        rateTitleLabel.text = Localized("staking_validator_delegate_rate_about")
+        rateTitleLabel.textColor = .white
+        rateTitleLabel.text = Localized("staking_validator_detail_delegate_rate_about")
         rateView.addSubview(rateTitleLabel)
         rateTitleLabel.snp.makeConstraints { make in
             make.trailing.leading.equalToSuperview()
@@ -125,153 +167,82 @@ class NodeBaseInfoView: UIView {
 //            make.leading.equalTo(nodeAddressLabel.snp.trailing)
         }
 
-        let delegateBackgroundView = UIView()
-        delegateBackgroundView.backgroundColor = .white
-        addSubview(delegateBackgroundView)
-        delegateBackgroundView.snp.makeConstraints { make in
-            make.top.equalTo(nodeBackgroundView.snp.bottom)
-            make.leading.trailing.equalTo(nodeBackgroundView)
-            make.bottom.equalToSuperview()
+        rewardContentView.backgroundColor = .clear
+        nodeBackgroundView.addSubview(rewardContentView)
+        rewardContentView.snp.makeConstraints { make in
+            make.top.equalTo(nodeAvatarIV.snp.bottom).offset(20)
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalToSuperview().priorityMedium()
         }
 
-        let totalStakedTipLabel = UILabel()
-        totalStakedTipLabel.text = Localized("statking_validator_total_staked")
-        totalStakedTipLabel.textColor = common_lightLightGray_color
-        totalStakedTipLabel.font = UIFont.systemFont(ofSize: 12)
-        delegateBackgroundView.addSubview(totalStakedTipLabel)
-        totalStakedTipLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(12)
+        let rewardRatioTipLabel = UILabel()
+        rewardRatioTipLabel.text = Localized("reward_ratio")
+        rewardRatioTipLabel.textColor = .white
+        rewardRatioTipLabel.font = UIFont.systemFont(ofSize: 13)
+        rewardContentView.addSubview(rewardRatioTipLabel)
+        rewardRatioTipLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(20)
             make.top.equalToSuperview().offset(14)
             make.height.equalTo(14)
-            make.width.equalToSuperview().offset(-24).dividedBy(2)
+            make.trailing.lessThanOrEqualTo(rewardContentView.snp.centerX).offset(-5)
         }
 
-        totalStakedLabel.textColor = .black
-        totalStakedLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium)
-        totalStakedLabel.text = "--"
-        delegateBackgroundView.addSubview(totalStakedLabel)
-        totalStakedLabel.snp.makeConstraints { make in
-            make.leading.equalTo(totalStakedTipLabel)
-            make.top.equalTo(totalStakedTipLabel.snp.bottom).offset(9)
-            make.width.equalTo(totalStakedTipLabel.snp.width)
+        let rewardRatioIV = UIButton()
+        rewardRatioIV.addTarget(self, action: #selector(tipsShow), for: .touchUpInside)
+        rewardRatioIV.setImage(UIImage(named: "3.icon_doubt2"), for: .normal)
+        rewardContentView.addSubview(rewardRatioIV)
+        rewardRatioIV.snp.makeConstraints { make in
+            make.width.height.equalTo(12)
+            make.centerY.equalTo(rewardRatioTipLabel)
+            make.leading.equalTo(rewardRatioTipLabel.snp.trailing).offset(3)
+        }
+
+        rewardRatioLabel.adjustsFontSizeToFitWidth = true
+        rewardRatioLabel.textColor = .white
+        rewardRatioLabel.font = UIFont.systemFont(ofSize: 14)
+        rewardRatioLabel.text = "0.00"
+        rewardContentView.addSubview(rewardRatioLabel)
+        rewardRatioLabel.snp.makeConstraints { make in
+            make.leading.equalTo(rewardRatioTipLabel)
+            make.top.equalTo(rewardRatioTipLabel.snp.bottom).offset(9)
+            make.trailing.equalTo(rewardContentView.snp.centerX).offset(-5)
             make.height.equalTo(14)
         }
 
-        let delegationsTipLabel = UILabel()
-        delegationsTipLabel.text = Localized("statking_validator_delegations")
-        delegationsTipLabel.textColor = common_lightLightGray_color
-        delegationsTipLabel.font = UIFont.systemFont(ofSize: 12)
-        delegateBackgroundView.addSubview(delegationsTipLabel)
-        delegationsTipLabel.snp.makeConstraints { make in
-            make.leading.equalTo(totalStakedTipLabel.snp.trailing)
-            make.top.equalTo(totalStakedTipLabel.snp.top)
-            make.width.equalTo(totalStakedTipLabel)
+        let totalRewardTipLabel = UILabel()
+        totalRewardTipLabel.text = Localized("reward_total")
+        totalRewardTipLabel.textColor = .white
+        totalRewardTipLabel.font = UIFont.systemFont(ofSize: 13)
+        rewardContentView.addSubview(totalRewardTipLabel)
+        totalRewardTipLabel.snp.makeConstraints { make in
+            make.leading.equalTo(rewardContentView.snp.centerX).offset(5)
+            make.trailing.equalToSuperview().offset(-20)
+//            make.leading.equalTo(rewardRatioTipLabel.snp.trailing)
+            make.top.equalTo(rewardRatioTipLabel.snp.top)
         }
 
-        delegationsLabel.textColor = .black
-        delegationsLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium)
-        delegationsLabel.text = "--"
-        delegateBackgroundView.addSubview(delegationsLabel)
-        delegationsLabel.snp.makeConstraints { make in
-            make.leading.equalTo(delegationsTipLabel)
-            make.top.equalTo(delegationsTipLabel.snp.bottom).offset(9)
-            make.width.equalTo(delegationsTipLabel.snp.width)
+        totalRewardLabel.adjustsFontSizeToFitWidth = true
+        totalRewardLabel.textColor = .white
+        totalRewardLabel.font = UIFont.systemFont(ofSize: 14)
+        totalRewardLabel.text = "0.00"
+        rewardContentView.addSubview(totalRewardLabel)
+        totalRewardLabel.snp.makeConstraints { make in
+            make.leading.equalTo(totalRewardTipLabel)
+            make.top.equalTo(totalRewardTipLabel.snp.bottom).offset(9)
+            make.width.equalTo(totalRewardTipLabel.snp.width)
             make.height.equalTo(14)
         }
-
-        let delegatorsTipLabel = UILabel()
-        delegatorsTipLabel.text = Localized("statking_validator_delegators")
-        delegatorsTipLabel.textColor = common_lightLightGray_color
-        delegatorsTipLabel.font = UIFont.systemFont(ofSize: 12)
-        delegateBackgroundView.addSubview(delegatorsTipLabel)
-        delegatorsTipLabel.snp.makeConstraints { make in
-            make.leading.equalTo(totalStakedLabel)
-            make.top.equalTo(totalStakedLabel.snp.bottom).offset(15)
-            make.height.equalTo(14)
-            make.width.equalTo(totalStakedTipLabel)
-        }
-
-        delegatorsLabel.textColor = .black
-        delegatorsLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium)
-        delegatorsLabel.text = "--"
-        delegateBackgroundView.addSubview(delegatorsLabel)
-        delegatorsLabel.snp.makeConstraints { make in
-            make.leading.equalTo(delegatorsTipLabel)
-            make.top.equalTo(delegatorsTipLabel.snp.bottom).offset(9)
-            make.height.equalTo(14)
-            make.width.equalTo(delegatorsTipLabel.snp.width)
-        }
-
-        let slashTipLabel = UILabel()
-        slashTipLabel.text = Localized("statking_validator_slash")
-        slashTipLabel.textColor = common_lightLightGray_color
-        slashTipLabel.font = UIFont.systemFont(ofSize: 12)
-        delegateBackgroundView.addSubview(slashTipLabel)
-        slashTipLabel.snp.makeConstraints { make in
-            make.leading.equalTo(delegatorsTipLabel.snp.trailing)
-            make.top.equalTo(delegatorsTipLabel.snp.top)
-            make.width.equalTo(delegatorsTipLabel)
-        }
-
-        slashLabel.textColor = .black
-        slashLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium)
-        slashLabel.text = "--"
-        delegateBackgroundView.addSubview(slashLabel)
-        slashLabel.snp.makeConstraints { make in
-            make.leading.equalTo(slashTipLabel)
-            make.top.equalTo(slashTipLabel.snp.bottom).offset(9)
-            make.height.equalTo(14)
-            make.width.equalTo(slashTipLabel.snp.width)
-        }
-
-        let blocksTipLabel = UILabel()
-        blocksTipLabel.text = Localized("statking_validator_blocks")
-        blocksTipLabel.textColor = common_lightLightGray_color
-        blocksTipLabel.font = UIFont.systemFont(ofSize: 12)
-        delegateBackgroundView.addSubview(blocksTipLabel)
-        blocksTipLabel.snp.makeConstraints { make in
-            make.leading.equalTo(delegatorsLabel)
-            make.top.equalTo(delegatorsLabel.snp.bottom).offset(15)
-            make.height.equalTo(14)
-            make.width.equalTo(delegatorsTipLabel)
-        }
-
-        blocksLabel.textColor = .black
-        blocksLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium)
-        blocksLabel.text = "--"
-        delegateBackgroundView.addSubview(blocksLabel)
-        blocksLabel.snp.makeConstraints { make in
-            make.leading.equalTo(blocksTipLabel)
-            make.top.equalTo(blocksTipLabel.snp.bottom).offset(9)
-            make.height.equalTo(14)
-            make.width.equalTo(blocksTipLabel.snp.width)
-        }
-
-        let blocksRateTipLabel = UILabel()
-        blocksRateTipLabel.text = Localized("statking_validator_blocks_rate")
-        blocksRateTipLabel.textColor = common_lightLightGray_color
-        blocksRateTipLabel.font = UIFont.systemFont(ofSize: 12)
-        delegateBackgroundView.addSubview(blocksRateTipLabel)
-        blocksRateTipLabel.snp.makeConstraints { make in
-            make.leading.equalTo(blocksTipLabel.snp.trailing)
-            make.top.equalTo(blocksTipLabel.snp.top)
-            make.width.equalTo(blocksTipLabel)
-        }
-
-        blocksRateLabel.textColor = .black
-        blocksRateLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium)
-        blocksRateLabel.text = "--"
-        delegateBackgroundView.addSubview(blocksRateLabel)
-        blocksRateLabel.snp.makeConstraints { make in
-            make.leading.equalTo(blocksRateTipLabel)
-            make.top.equalTo(blocksRateTipLabel.snp.bottom).offset(9)
-            make.height.equalTo(14)
-            make.width.equalTo(blocksRateTipLabel.snp.width)
-        }
-
     }
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    @objc func link() {
+        nodeLinkHandler?()
+    }
+
+    @objc func tipsShow() {
+        tipsShowHandler?()
     }
 }

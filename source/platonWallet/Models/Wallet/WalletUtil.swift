@@ -154,11 +154,14 @@ class WalletUtil {
     static func generateNewObservedWalletName() -> String {
         let wallets = WallletPersistence.sharedInstance.getAll(detached: true)
         let observeredWallets = wallets.filter { $0.type == .observed }
-        guard let lastObWallet = observeredWallets.last else {
-            return "Wallet1"
-        }
+//        guard let lastObWallet = observeredWallets.last else {
+//            return "Wallet1"
+//        }
 
-        let walletName = lastObWallet.name
+        let observerWallet = observeredWallets.filter { $0.name.hasPrefix("Wallet") }.last
+        guard let walletName = observerWallet?.name else { return "Wallet1" }
+
+//        let walletName = lastObWallet.name
         let indexString = String(walletName.suffix(from: walletName.index(walletName.startIndex, offsetBy: 6)))
         guard let index = Int(indexString) else { return "Wallet1" }
         return String(format: "Wallet%d", index + 1)

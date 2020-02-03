@@ -26,6 +26,7 @@ class DelegateDetailViewController: BaseViewController {
         tbView.separatorStyle = .none
         tbView.backgroundColor = normal_background_color
         tbView.tableFooterView = UIView()
+        tbView.mj_header = refreshHeader
         if #available(iOS 11, *) {
             tbView.estimatedRowHeight = UITableView.automaticDimension
         } else {
@@ -34,10 +35,7 @@ class DelegateDetailViewController: BaseViewController {
         return tbView
     }()
 
-    lazy var walletHeaderView = { () -> WalletBaseInfoView in
-        let headerView = WalletBaseInfoView()
-        return headerView
-    }()
+    let walletHeaderView = WalletBaseInfoView()
 
     lazy var refreshHeader: MJRefreshHeader = {
         let header = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(fetchData))!
@@ -45,7 +43,7 @@ class DelegateDetailViewController: BaseViewController {
     }()
 
     var delegate: Delegate?
-    var delegateDetail: DelegateDetail?
+    var totalDelegate: TotalDelegate?
     var listData: [DelegateDetail] = []
 
     override func viewDidLoad() {
@@ -56,17 +54,11 @@ class DelegateDetailViewController: BaseViewController {
 
         view.backgroundColor = normal_background_color
 
-        view.addSubview(walletHeaderView)
-        walletHeaderView.snp.makeConstraints { make in
-            make.leading.trailing.top.equalToSuperview()
-            make.height.equalTo(68)
-        }
-
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
-            make.top.equalTo(walletHeaderView.snp.bottom)
-            make.leading.trailing.bottom.equalToSuperview()
+            make.edges.equalToSuperview()
         }
+
         tableView.emptyDataSetView { [weak self] view in
             let holder = self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, nil,"3.img-No trust") as? TableViewNoDataPlaceHolder
             holder?.descriptionLabel.text = Localized("delegate_node_details_nodata")
@@ -77,26 +69,23 @@ class DelegateDetailViewController: BaseViewController {
             }
         }
 
+        tableView.tableHeaderView = walletHeaderView
+        walletHeaderView.setNeedsLayout()
+        walletHeaderView.layoutIfNeeded()
+        walletHeaderView.frame.size = walletHeaderView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+        tableView.tableHeaderView = walletHeaderView
+
         let doubtButtonItem = UIBarButtonItem(image: UIImage(named: "3.icon_doubt"), style: .done, target: self, action: #selector(doubtTapAction))
         doubtButtonItem.tintColor = .black
         navigationItem.rightBarButtonItem = doubtButtonItem
 
-        tableView.mj_header = refreshHeader
-
         setupWalletData()
-
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        if isViewLoaded {
-            tableView.mj_header.beginRefreshing()
-        }
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         GuidanceViewMgr.sharedInstance.checkGuidance(page: GuidancePage.DelegateDetailViewController, presentedVC: self)
+        tableView.mj_header.beginRefreshing()
     }
 }
 
@@ -133,9 +122,9 @@ extension DelegateDetailViewController {
     }
 
     private func setupWalletData() {
-        walletHeaderView.avatarIV.image = delegate?.walletAvatar ?? UIImage(named: "walletAvatar_1")
-        walletHeaderView.nameLabel.text = delegate?.walletName ?? "--"
-        walletHeaderView.addressLabel.text = delegate?.walletAddress.addressForDisplay() ?? "--"
+        walletHeaderView.nodeAvatarIV.image = delegate?.walletAvatar ?? UIImage(named: "walletAvatar_1")
+        walletHeaderView.nodeNameLabel.text = delegate?.walletName ?? "--"
+        walletHeaderView.nodeAddressLabel.text = delegate?.walletAddress.addressForDisplay() ?? "--"
     }
 
     @objc private func fetchData() {
@@ -151,8 +140,15 @@ extension DelegateDetailViewController {
             case .success:
                 self?.listData.removeAll()
 
-                if let newData = data as? [DelegateDetail], newData.count > 0 {
-                    self?.listData.append(contentsOf: newData)
+                if let tDelegate = data as? TotalDelegate {
+                    self?.totalDelegate = tDelegate
+
+                    self?.walletHeaderView.rewardRatioLabel.text = tDelegate.availableDelegationBalanceValue
+                    self?.walletHeaderView.totalRewardLabel.text = tDelegate.delegatedValue
+
+                    if let newData = tDelegate.item, newData.count > 0 {
+                        self?.listData.append(contentsOf: newData)
+                    }
                 }
                 self?.tableView.reloadData()
             case .fail:
@@ -172,8 +168,8 @@ extension DelegateDetailViewController: UITableViewDelegate, UITableViewDataSour
         let delegateDetail = self.listData[indexPath.row]
         cell.delegateDetail = delegateDetail
         cell.delegateButton.isEnabled = delegateDetail.isExistWallet(address: delegate!.walletAddress)
-        cell.delegateButton.isSelected = delegateDetail.isInit || (delegateDetail.nodeStatus == .Exiting || delegateDetail.nodeStatus == .Exited)
-        cell.delegateButton.backgroundColor = delegateDetail.isExistWallet(address: delegate!.walletAddress) && !delegateDetail.isInit && (delegateDetail.nodeStatus == .Active || delegateDetail.nodeStatus == .Candidate) ? UIColor.white : UIColor(rgb: 0xDCDFE8, alpha: 0.4)
+        cell.delegateButton.isSelected = delegateDetail.isInit || (delegateDetail.nodeStatus == .Exiting || delegateDetail.nodeStatus == .Exited || delegateDetail.releasedBInt > BigUInt.zero)
+        cell.delegateButton.backgroundColor = delegateDetail.isExistWallet(address: delegate!.walletAddress) && !delegateDetail.isInit && (delegateDetail.nodeStatus == .Active || delegateDetail.nodeStatus == .Candidate) && delegateDetail.releasedBInt == BigUInt.zero ? UIColor.white : UIColor(rgb: 0xDCDFE8, alpha: 0.4)
         cell.withDrawButton.isEnabled = delegateDetail.isExistWallet(address: delegate!.walletAddress)
         cell.withDrawButton.backgroundColor = delegateDetail.isExistWallet(address: delegate!.walletAddress) ? UIColor.white : UIColor(rgb: 0xDCDFE8, alpha: 0.4)
 
@@ -181,7 +177,8 @@ extension DelegateDetailViewController: UITableViewDelegate, UITableViewDataSour
             self?.openWebSiteController(delegateDetail.website)
         }
         cell.didDelegateHandler = { [weak self] _ in
-            if delegateDetail.nodeStatus == .Exited || delegateDetail.nodeStatus == .Exiting {
+            if delegateDetail.nodeStatus == .Exited || delegateDetail.nodeStatus == .Exiting || delegateDetail.releasedBInt > BigUInt.zero {
+                self?.showMessage(text: Localized("delegate_detail_unable_alert"))
                 return
             }
             if delegateDetail.isInit {

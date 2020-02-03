@@ -1,21 +1,24 @@
 {
-	"errMsg": "�ɹ�",
-	"code": 0,
-	"data": {
-		"nodeId": "0x2ed01bb6d18fbaec826e062039f569e87e5ee09fcc664dd8e28356568caf93c3b2e859726b010049fc5d8e3631d86e5c104afcaf9ecdbc1760197784e5f055bd",
-		"name": "platon.node.1",
-		"deposit": "10000000000000000000000000",
-		"website": "www.platon.network",
-		"intro": "The PlatON Node",
-		"url": "",
-		"nodeStatus": "Active",
-		"punishNumber": 0,
-		"delegateSum": "0",
-		"delegate": "0",
-		"blockOutNumber": 50745,
-		"blockRate": "7800.0",
-		"ratePA": "0",
-		"isInit": true,
-        "isConsensus": false
-	}
+    "errMsg": "�ɹ�",
+    "code": 0,
+    "data": {
+        "nodeId": "0x77fffc999d9f9403b65009f1eb27bae65774e2d8ea36f7b20a89f82642a5067557430e6edfe5320bb81c3666a19cf4a5172d6533117d7ebcd0f2c82055499050",
+        "name": "chendai-node3",
+        "deposit": "5001463999510840000000000",
+        "website": "www.baidu.com",
+        "intro": "chendai-node3-details",
+        "url": "",
+        "nodeStatus": "Active",
+        "punishNumber": 0,
+        "delegateSum": "1463999510840000000000",
+        "delegate": "4",
+        "blockOutNumber": 191490,
+        "blockRate": "9999",
+        "delegatedRatePA": "0",
+        "delegatedRatePATrend": "0",
+        "isInit": false,
+        "isConsensus": true,
+        "delegatedRewardPer": "1000",
+        "cumulativeReward": "669417293806053656430871628883"
+    }
 }

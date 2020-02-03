@@ -28,7 +28,7 @@ class NodeTableViewCell: UITableViewCell {
         didSet {
             avatarIV.kf.setImage(with: URL(string: node?.url ?? ""), placeholder: UIImage(named: "3.icon_default"))
             nameLabel.text = node?.name
-            delegateAmountLabel.text = node?.delegateAmount
+            delegateAmountLabel.text = (node?.delegateAmount ?? "0.00 LAT") + " / " + (node?.delegators ?? "0")
             statusButton.setTitle(node?.status.0 ?? "--", for: .normal)
             statusButton.setTitleColor(node?.status.1 ?? status_blue_color, for: .normal)
             statusButton.layer.borderColor = (node?.status.1 ?? status_blue_color).cgColor

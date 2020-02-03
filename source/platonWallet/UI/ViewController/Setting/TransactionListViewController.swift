@@ -124,7 +124,8 @@ class TransactionListViewController: BaseViewController,UITableViewDelegate,UITa
                             tx.direction = (currentAddress.lowercased() == tx.from?.lowercased() ? .Sent : currentAddress.lowercased() == tx.to?.lowercased() ? .Receive : .unknown)
                             return tx
                         case .delegateWithdraw,
-                             .stakingWithdraw:
+                             .stakingWithdraw,
+                             .claimReward:
                             tx.direction = .Receive
                             return tx
                         default:
@@ -151,7 +152,8 @@ class TransactionListViewController: BaseViewController,UITableViewDelegate,UITa
                             }
                             return tx
                         case .delegateWithdraw,
-                             .stakingWithdraw:
+                             .stakingWithdraw,
+                             .claimReward:
                             tx.direction = .Receive
                             return tx
                         default:

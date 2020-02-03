@@ -187,6 +187,14 @@ extension CreateIndividualWalletViewController :UITextFieldDelegate {
             }
         }
 
+        if textField == self.nameTF && string != "" {
+            if let text = textField.text, let textRange = Range(range, in: text) {
+                let appendtext = text.replacingCharacters(in: textRange, with: string)
+                let result = CommonService.isValidWalletName(appendtext, checkDuplicate: true)
+                return result.0
+            }
+        }
+
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             self.checkCanEableButton()
             self.strengthView.isHidden = !(self.pswTF.text?.count ?? 0 > 0)

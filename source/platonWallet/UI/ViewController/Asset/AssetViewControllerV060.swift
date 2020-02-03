@@ -232,14 +232,14 @@ class AssetViewControllerV060: BaseViewController, PopupMenuTableDelegate {
     }
 
     func resetCurrentTab() {
-        if NetworkManager.shared.reachabilityManager?.isReachable == false && pageViewCurrentIndex == 1 && (AssetVCSharedData.sharedData.selectedWallet as? Wallet)?.type == .cold {
+        if NetworkManager.shared.reachabilityManager?.isReachable == false && pageViewCurrentIndex == 1 {
             AssetViewControllerV060.setPageViewController(index: 0)
         }
     }
 
     // 禁用UIPageController 在离线状态下的拖动手势
     func updatePageControllerDataSource() {
-        if NetworkManager.shared.reachabilityManager?.isReachable == false && (AssetVCSharedData.sharedData.selectedWallet as? Wallet)?.type == .cold {
+        if NetworkManager.shared.reachabilityManager?.isReachable == false {
             pageVC.dataSource = nil
         } else {
             pageVC.dataSource = self
@@ -431,7 +431,8 @@ extension AssetViewControllerV060: UIScrollViewDelegate, ChildScrollViewDidScrol
     @objc func onScan() {
         let controller = QRScannerViewController()
         controller.scanCompletion = { [weak self] (res) in
-            self?.handleScanResp(res)
+            guard let self = self else { return }
+            self.handleScanResp(res)
         }
         controller.hidesBottomBarWhenPushed = true
         (UIApplication.shared.keyWindow?.rootViewController as? BaseNavigationController)?.pushViewController(controller, animated: true)
@@ -451,6 +452,8 @@ extension AssetViewControllerV060: UIScrollViewDelegate, ChildScrollViewDidScrol
         switch qrcodeType {
         case .transaction(let data):
             doShowConfirmViewController(qrcode: data)
+        case .signedTransaction(let data):
+            showQrcodeScan(scanData: data)
         case .address(let data):
             sectionView.setSectionSelectedIndex(index: 1)
             sendVC.walletAddressView.textField.text = data
@@ -475,7 +478,7 @@ extension AssetViewControllerV060: UIScrollViewDelegate, ChildScrollViewDidScrol
 
         let wallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).first(where: { $0.address.lowercased() == codes.first?.from?.lowercased() })
         guard wallet != nil else {
-            showErrorMessage(text: Localized("offline_signature_notmatch_wallet"), delay: 2.0)
+            showErrorMessage(text: Localized("offline_signature_not_privatekey"), delay: 2.0)
             return
         }
 
@@ -485,28 +488,56 @@ extension AssetViewControllerV060: UIScrollViewDelegate, ChildScrollViewDidScrol
         navigationController?.pushViewController(controller, animated: true)
     }
 
-//    func doShowQrcodeScan(qrcode: QrcodeData<SignatureQrcode>) {
-//        guard
-//            let signedDatas = qrcode.qrCodeData?.signedData, signedDatas.count > 0
-//            else { return }
-//
-//        let signatureView = OfflineSignatureScanView()
-//        let contentString = signedDatas.joined(separator: ";")
-//        signatureView.textView.text = contentString
-//
-//        let type = ConfirmViewType.qrcodeScan(contentView: signatureView)
-//        let offlineConfirmView = OfflineSignatureConfirmView(confirmType: type)
-//        offlineConfirmView.titleLabel.localizedText = "confirm_scan_qrcode_for_read"
-//        offlineConfirmView.descriptionLabel.localizedText = "confirm_scan_qrcode_for_read_tip"
-//        offlineConfirmView.submitBtn.localizedNormalTitle = "confirm_button_send"
-//
-//        let controller = PopUpViewController()
-//        controller.setUpConfirmView(view: offlineConfirmView, width: PopUpContentWidth)
-//        controller.show(inViewController: self)
-//        controller.onCompletion = { [weak self] in
-//            AssetViewControllerV060.sendSignatureTransaction(qrcode: qrcode)
-//        }
-//    }
+    func showQrcodeScan(scanData: QrcodeData<[String]>? = nil) {
+        let scanView = OfflineSignatureScanView()
+        var qrcodeData: QrcodeData<[String]>? = scanData
+
+        if let data = qrcodeData, let signedString = data.qrCodeData  {
+            scanView.textView.text = signedString.joined(separator: ";")
+        }
+
+        scanView.scanCompletion = { [weak self] in
+            self?.doShowScanController(completion: { (data) in
+                guard
+                    let qrcode = data,
+                    let signedDatas = qrcode.qrCodeData, qrcode.chainId == web3.chainId else { return }
+                DispatchQueue.main.async {
+                    scanView.textView.text = signedDatas.joined(separator: ";")
+                }
+                qrcodeData = qrcode
+            })
+        }
+        let type = ConfirmViewType.qrcodeScan(contentView: scanView)
+        let offlineConfirmView = OfflineSignatureConfirmView(confirmType: type)
+        offlineConfirmView.titleLabel.localizedText = "confirm_scan_qrcode_for_read"
+        offlineConfirmView.descriptionLabel.localizedText = "confirm_scan_qrcode_for_read_tip"
+        offlineConfirmView.submitBtn.localizedNormalTitle = "confirm_button_send"
+
+        let controller = PopUpViewController()
+        controller.onCompletion = {
+            guard let qrcode = qrcodeData else { return }
+            AssetViewControllerV060.sendSignatureTransaction(qrcode: qrcode)
+        }
+        controller.setUpConfirmView(view: offlineConfirmView, width: PopUpContentWidth)
+        controller.show(inViewController: self)
+    }
+
+    func doShowScanController(completion: ((QrcodeData<[String]>?) -> Void)?) {
+        let controller = QRScannerViewController()
+        controller.hidesBottomBarWhenPushed = true
+        controller.scanCompletion = { result in
+            let qrcodeType = QRCodeDecoder().decode(result)
+            switch qrcodeType {
+            case .signedTransaction(let data):
+                completion?(data)
+            default:
+                AssetViewControllerV060.getInstance()?.showMessage(text: Localized("QRScan_failed_tips"))
+                completion?(nil)
+            }
+        }
+
+        (UIApplication.shared.keyWindow?.rootViewController as? BaseNavigationController)?.pushViewController(controller, animated: true)
+    }
 
     func doShowTransactionDetail(_ transaction: Transaction) {
         // 重置输入框
