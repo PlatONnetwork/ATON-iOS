@@ -23,7 +23,6 @@ final class StakingService: BaseService {
         parameters["listSize"] = listSize
         parameters["direction"] = direction
 
-
         let url = SettingService.getCentralizationURL() + "/transaction/getRewardTransactions"
 
         var request = URLRequest(url: try! url.asURL())
