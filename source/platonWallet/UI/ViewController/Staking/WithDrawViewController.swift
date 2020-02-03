@@ -21,10 +21,21 @@ class WithDrawViewController: BaseViewController {
     var delegation: Delegation?
 
     var listData: [DelegateTableViewCellStyle] = []
-    var estimateUseGas: BigUInt?
-    var remoteGasArr: [RemoteGas?] = []
+    var remoteGas: RemoteGas?
     var generateQrCode: QrcodeData<[TransactionQrcode]>?
     var pollingTimer : Timer?
+
+    var gasLimit: BigUInt? {
+        return remoteGas?.gasLimitBInt
+    }
+
+    var gasPrice: BigUInt? {
+        return remoteGas?.gasPriceBInt
+    }
+
+    var estimateUseGas: BigUInt {
+        return remoteGas?.gasUsedBInt ?? BigUInt.zero
+    }
 
     var minDelegateAmountLimit: BigUInt {
         return delegation?.minDelegationBInt ?? BigUInt(10).multiplied(by: PlatonConfig.VON.LAT)
@@ -107,6 +118,7 @@ class WithDrawViewController: BaseViewController {
                     self?.delegation = newData
                     self?.initBalanceStyle()
                 }
+
             case .fail(_, let errMsg):
                 self?.showMessage(text: errMsg ?? "error")
             }
@@ -120,17 +132,21 @@ class WithDrawViewController: BaseViewController {
             return
         }
 
-        let totalDelegate = dele.deleList.reduce(BigUInt.zero) { (result, dValue) -> BigUInt in
-            return result + BigUInt(dValue.delegated ?? "0")!
+        var balances: [(String, String)] = []
+        var stakingBlockNums: [UInt64] = []
+        var selectedIndex: Int = 0
+        for (index, deleItem) in dele.deleList.enumerated() {
+            if let delegated = deleItem.delegated, let delegatedBInt = BigUInt(delegated), delegatedBInt > BigUInt.zero {
+                balances.append((Localized("staking_balance_Delegated"), delegatedBInt.description))
+                stakingBlockNums.append(UInt64(deleItem.stakingBlockNum ?? "0") ?? 0)
+            } else if let released = deleItem.released, let releasedBInt = BigUInt(released), releasedBInt > BigUInt.zero {
+                balances.append((Localized("staking_balance_release_Delegated"), releasedBInt.description))
+                stakingBlockNums.append(UInt64(deleItem.stakingBlockNum ?? "0") ?? 0)
+                selectedIndex = index
+            }
         }
 
-        let totalReleased = dele.deleList.reduce(BigUInt.zero) { (result, dValue) -> BigUInt in
-            return result + BigUInt(dValue.released ?? "0")!
-        }
-
-        let bStyle = BalancesCellStyle(balances: [
-            (Localized("staking_balance_Delegated"), totalDelegate.description),
-            (Localized("staking_balance_release_Delegated"), totalReleased.description)], selectedIndex: totalReleased > BigUInt.zero ? 1 : 0, isExpand: false)
+        let bStyle = BalancesCellStyle(balances: balances, stakingBlockNums: stakingBlockNums, selectedIndex: selectedIndex, isExpand: false)
         balanceStyle = bStyle
 
         initListData()
@@ -142,7 +158,10 @@ class WithDrawViewController: BaseViewController {
             let node = currentNode,
             let bStyle = balanceStyle,
             let wallet = localWallet else { return }
-        estimateGas()
+
+        if let nodeId = node.nodeId {
+            getGas(walletAddr: wallet.address, nodeId: nodeId, stakingBlockNum: String(bStyle.currentBlockNum))
+        }
 
         let item1 = DelegateTableViewCellStyle.nodeInfo(node: node)
         walletStyle = WalletsCellStyle(wallets: [wallet], selectedIndex: 0, isExpand: false)
@@ -227,7 +246,7 @@ extension WithDrawViewController: UITableViewDelegate, UITableViewDataSource {
             cell.amountView.titleLabel.text = Localized("ATextFieldView_withdraw_title")
             cell.amountView.textField.LocalizePlaceholder = Localized("staking_amount_placeholder", arguments: (minDelegateAmountLimit/PlatonConfig.VON.LAT).description)
             cell.maxAmountLimit = BigUInt(balanceStyle?.currentBalance.1 ?? "0")
-            cell.amountView.feeLabel.text = (estimateUseGas?.description.vonToLATString ?? "0.00").displayFeeString
+            cell.amountView.feeLabel.text = (estimateUseGas.description.vonToLATString ?? "0.00").displayFeeString
 
             cell.amountView.checkInput(mode: .all, check: { [weak self] (text, isDelete) -> (Bool, String) in
                 guard let self = self else { return (true, "") }
@@ -297,33 +316,6 @@ extension WithDrawViewController: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension WithDrawViewController {
-    func withdrawDelegateAction(
-        stakingBlockNum: UInt64,
-        nodeId: String,
-        amount: BigUInt,
-        sender: String,
-        privateKey: String,
-        gasPrice: BigUInt,
-        gasLimit: BigUInt,
-        completion: ((Transaction) -> Void)?) {
-        showLoadingHUD()
-
-        StakingService.sharedInstance.withdrawDelegate(stakingBlockNum: stakingBlockNum, nodeId: nodeId, amount: amount, sender: sender, privateKey: privateKey, gas: gasLimit, gasPrice: gasPrice) { [weak self] (result, data) in
-            self?.hideLoadingHUD()
-            switch result {
-            case .success:
-                if let transaction = data as? Transaction {
-                    completion?(transaction)
-                }
-            case .fail(_, let errMsg):
-                if let message = errMsg, message == "insufficient funds for gas * price + value" {
-                    self?.showMessage(text: Localized(message), delay: 2.0)
-                } else {
-                    self?.showMessage(text: errMsg ?? "call web3 error", delay: 2.0)
-                }
-            }
-        }
-    }
 
     func nextButtonCellDidHandle() {
         view.endEditing(true)
@@ -346,7 +338,9 @@ extension WithDrawViewController {
         guard
             let balance = AssetService.sharedInstace.balances.first(where: { $0.addr.lowercased() == walletStyle?.currentWallet.address.lowercased() }),
             let freeBalance = BigUInt(balance.free ?? "0"),
-            let estimateGas = estimateUseGas, freeBalance >= estimateGas else {
+            let selectedGasPrice = gasPrice,
+            let selectedGasLimit = gasLimit,
+            freeBalance >= estimateUseGas else {
                 showMessage(text: Localized("staking_withdraw_balance_Insufficient_error"))
                 return
         }
@@ -354,7 +348,8 @@ extension WithDrawViewController {
         guard
             let walletObject = walletStyle,
             let balanceSelectedIndex = balanceStyle?.selectedIndex,
-            let nodeId = currentNode?.nodeId else { return }
+            let nodeId = currentNode?.nodeId,
+            let stakingBlockNum = balanceStyle?.currentBlockNum else { return }
         let currentAddress = walletObject.currentWallet.address
 
         let transactions = TransferPersistence.getDelegateWithdrawPendingTransaction(address: walletObject.currentWallet.address, nodeId: nodeId)
@@ -364,11 +359,31 @@ extension WithDrawViewController {
         }
 
         if walletObject.currentWallet.type == .observed {
-            offlineGenerateQRCode(walletObject: walletObject, balanceSelectedIndex: balanceSelectedIndex, nodeId: nodeId)
+            let funcType = FuncType.withdrewDelegate(stakingBlockNum: stakingBlockNum, nodeId: nodeId, amount: self.currentAmount)
+            web3.platon.platonGetNonce(sender: walletObject.currentWallet.address) { [weak self] (result, blockNonce) in
+                guard let self = self else { return }
+                switch result {
+                case .success:
+                    guard let nonce = blockNonce else { return }
+                    let nonceString = nonce.quantity.description
+
+                    let transactionData = TransactionQrcode(amount: self.currentAmount.description, chainId: web3.properties.chainId, from: walletObject.currentWallet.address, to: PlatonConfig.ContractAddress.stakingContractAddress, gasLimit: selectedGasLimit.description, gasPrice: selectedGasPrice.description, nonce: nonceString, typ: nil, nodeId: nodeId, nodeName: self.currentNode?.name, stakingBlockNum: String(stakingBlockNum), functionType: funcType.typeValue)
+
+                    let qrcodeData = QrcodeData(qrCodeType: 0, qrCodeData: [transactionData], chainId: web3.chainId, functionType: 1005, from: walletObject.currentWallet.address)
+                    guard
+                        let data = try? JSONEncoder().encode(qrcodeData),
+                        let content = String(data: data, encoding: .utf8) else { return }
+                    self.generateQrCode = qrcodeData
+                    DispatchQueue.main.async {
+                        self.showOfflineConfirmView(content: content)
+                    }
+                case .fail:
+                    break
+                }
+            }
             return
         }
-
-        var tempPrivateKey: String?
+        
         showPasswordInputPswAlert(for: walletObject.currentWallet) { [weak self] (privateKey, _, error) in
             guard let self = self else { return }
             guard let pri = privateKey else {
@@ -378,107 +393,25 @@ extension WithDrawViewController {
                 return
             }
 
-            tempPrivateKey = pri
-            var usedAmount = BigUInt.zero
-
-            for (index, dValue) in (self.delegation?.deleList ?? []).enumerated() {
-                if
-                    let stakingBlockNum = dValue.stakingBlockNum,
-                    let sBlockNum = UInt64(stakingBlockNum),
-                    let canUsedAmount = dValue.getDelegationValueAmount(index: balanceSelectedIndex),
-                    let tempPri = tempPrivateKey {
-
-                    guard canUsedAmount > BigUInt.zero else {
-                        continue
-                    }
-
-                    var amount = BigUInt.zero
-
-                    if canUsedAmount > self.currentAmount - usedAmount {
-                        amount = self.currentAmount - usedAmount
-                        usedAmount += amount
-                    } else {
-                        amount = canUsedAmount
-                        usedAmount += amount
-                    }
-
-                    if amount <= BigUInt.zero {
-                        return
-                    }
-
-                    let gasLimit = self.remoteGasArr[index]?.gasLimitBInt ?? PlatonConfig.FuncGas.defaultGas
-                    let gasPrice = self.remoteGasArr[index]?.gasPriceBInt ?? PlatonConfig.FuncGasPrice.defaultGasPrice
-
-                    self.withdrawDelegateAction(stakingBlockNum: sBlockNum, nodeId: nodeId, amount: amount, sender: currentAddress, privateKey: tempPri, gasPrice: gasPrice, gasLimit: gasLimit, completion: { [weak self] (transaction) in
-                        guard let self = self else { return }
-                        transaction.gasUsed = self.estimateUseGas?.description
-                        transaction.nodeName = self.currentNode?.name
+            self.showLoadingHUD()
+            StakingService.sharedInstance.withdrawDelegate(stakingBlockNum: stakingBlockNum, nodeId: nodeId, amount: self.currentAmount, sender: currentAddress, privateKey: pri, gas: selectedGasLimit, gasPrice: selectedGasPrice) { [weak self] (result, data) in
+                self?.hideLoadingHUD()
+                switch result {
+                case .success:
+                    if let transaction = data as? Transaction {
+                        transaction.gasUsed = self?.estimateUseGas.description
+                        transaction.nodeName = self?.currentNode?.name
                         TransferPersistence.add(tx: transaction)
-                        if index == (self.delegation?.deleList ?? []).count - 1 {
-                            self.doShowTransactionDetail(transaction)
-                        }
-                    })
-                }
-            }
-        }
-    }
-
-    func offlineGenerateQRCode(
-        walletObject: WalletsCellStyle,
-        balanceSelectedIndex: Int,
-        nodeId: String) {
-
-        var usedAmount = BigUInt.zero
-        var qrcodeArr: [TransactionQrcode] = []
-
-        for (index, dValue) in (self.delegation?.deleList ?? []).enumerated() {
-            if
-                let stakingBlockNum = dValue.stakingBlockNum,
-                let sBlockNum = UInt64(stakingBlockNum),
-                let canUsedAmount = dValue.getDelegationValueAmount(index: balanceSelectedIndex) {
-
-                var amount = BigUInt.zero
-
-                if canUsedAmount > self.currentAmount - usedAmount {
-                    amount = self.currentAmount - usedAmount
-                    usedAmount += amount
-                } else {
-                    amount = canUsedAmount
-                    usedAmount += amount
-                }
-
-                if amount <= BigUInt.zero {
-                    return
-                }
-
-                let funcType = FuncType.withdrewDelegate(stakingBlockNum: sBlockNum, nodeId: nodeId, amount: amount)
-
-                let gasLimit = remoteGasArr[index]?.gasLimit ?? funcType.gas.description
-                let gasPrice = remoteGasArr[index]?.gasPrice ?? PlatonConfig.FuncGasPrice.defaultGasPrice.description
-
-                web3.platon.platonGetNonce(sender: walletObject.currentWallet.address) { [weak self] (result, blockNonce) in
-                    guard let self = self else { return }
-                    switch result {
-                    case .success:
-                        guard let nonce = blockNonce else { return }
-                        let nonceString = nonce.quantity.description
-
-                        let transactionData = TransactionQrcode(amount: amount.description, chainId: web3.properties.chainId, from: walletObject.currentWallet.address, to: PlatonConfig.ContractAddress.stakingContractAddress, gasLimit: gasLimit, gasPrice: gasPrice, nonce: nonceString, typ: nil, nodeId: nodeId, nodeName: self.currentNode?.name, stakingBlockNum: String(sBlockNum), functionType: funcType.typeValue)
-                        qrcodeArr.append(transactionData)
-                    case .fail:
-                        break
+                        self?.doShowTransactionDetail(transaction)
+                    }
+                case .fail(_, let errMsg):
+                    if let message = errMsg, message == "insufficient funds for gas * price + value" {
+                        self?.showMessage(text: Localized(message), delay: 2.0)
+                    } else {
+                        self?.showMessage(text: errMsg ?? "call web3 error", delay: 2.0)
                     }
                 }
             }
-        }
-
-        let qrcodeData = QrcodeData(qrCodeType: 0, qrCodeData: qrcodeArr, chainId: web3.chainId, functionType: 1005, from: walletObject.currentWallet.address)
-        guard
-            let data = try? JSONEncoder().encode(qrcodeData),
-            let content = String(data: data, encoding: .utf8) else { return }
-        self.generateQrCode = qrcodeData
-        DispatchQueue.main.async {
-            self.showOfflineConfirmView(content: content)
         }
     }
 
@@ -626,6 +559,14 @@ extension WithDrawViewController {
 
         listData[indexSection] = DelegateTableViewCellStyle.walletBalances(balanceStyle: newBalanceStyle)
         tableView.reloadSections(IndexSet([indexSection, indexSection+1, indexSection+2]), with: .fade)
+
+        guard
+            let nodeId = currentNode?.nodeId,
+            let address = walletStyle?.currentWallet.address,
+            indexRow != 0
+        else { return }
+
+        getGas(walletAddr: address, nodeId: nodeId, stakingBlockNum: String(bStyle.currentBlockNum))
     }
 
     func updateHeightOfRow(_ cell: SendInputTableViewCell) {
@@ -637,34 +578,6 @@ extension WithDrawViewController {
             tableView.beginUpdates()
             tableView.endUpdates()
             UIView.setAnimationsEnabled(true)
-        }
-    }
-
-    func estimateGas() {
-        guard
-            let nodeId = currentNode?.nodeId, let address = currentAddress else { return }
-
-        var estimateTotalGas: BigUInt = BigUInt.zero
-        var tempRemoteGasArr: [RemoteGas?] = []
-
-        for (index, dValue) in (self.delegation?.deleList ?? []).enumerated() {
-            if
-                let stakingBlockNum = dValue.stakingBlockNum {
-                getGas(walletAddr: address, nodeId: nodeId, stakingBlockNum: stakingBlockNum) { (gas) in
-                    if let remoteGas = gas {
-                        estimateTotalGas += remoteGas.gasUsedBInt
-                        tempRemoteGasArr.append(remoteGas)
-                    } else {
-                        tempRemoteGasArr.append(nil)
-                    }
-
-                    if index == (self.delegation?.deleList.count ?? 1) - 1 {
-                        self.estimateUseGas = estimateTotalGas
-                        self.remoteGasArr = tempRemoteGasArr
-                        self.tableView.reloadData()
-                    }
-                }
-            }
         }
     }
 
@@ -681,20 +594,19 @@ extension WithDrawViewController {
 }
 
 extension WithDrawViewController {
-    private func getGas(walletAddr: String, nodeId: String, stakingBlockNum: String, completion: ((RemoteGas?) -> Void)?) {
+    private func getGas(walletAddr: String, nodeId: String, stakingBlockNum: String) {
         TransactionService.service.getContractGas(from: walletAddr, txType: TxType.delegateWithdraw, nodeId: nodeId, stakingBlockNum: stakingBlockNum) { [weak self] (result, remoteGas) in
             self?.hideLoadingHUD()
             switch result {
             case .success:
                 guard let gas = remoteGas else {
                     self?.showErrorMessage(text: "get gas api error", delay: 2.0)
-                    completion?(nil)
                     return
                 }
-                completion?(gas)
+                self?.remoteGas = gas
+                self?.tableView.reloadData()
             case .fail(_, let errMsg):
                 self?.showErrorMessage(text: errMsg ?? "get gas api error", delay: 2.0)
-                completion?(nil)
             }
         }
     }

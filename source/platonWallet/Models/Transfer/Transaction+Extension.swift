@@ -155,19 +155,21 @@ extension Transaction {
     }
 
     var txTypeIcon: UIImage? {
-        switch direction {
-        case .Receive:
-            if txType! == .transfer {
-                return UIImage(named: "txRecvSign")
-            }
+        switch txType! {
+        case .delegateCreate:
+            return UIImage(named: "1.icon_Delegate")
+        case .delegateWithdraw:
             return UIImage(named: "1.icon_Undelegate")
-        case .Sent:
-            if txType! == .transfer {
+        case .contractCreate:
+            return UIImage(named: "1.icon_Create a contract")
+        case .contractExecute:
+            return UIImage(named: "1.icon_Executing a contract")
+        default:
+            if direction == .Receive {
+                return UIImage(named: "txRecvSign")
+            } else {
                 return UIImage(named: "txSendSign")
             }
-            return UIImage(named: "1.icon_Delegate")
-        default:
-            return nil
         }
     }
 

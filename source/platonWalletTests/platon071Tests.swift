@@ -358,4 +358,62 @@ class platon071Tests: XCTestCase {
             
         })
     }
+
+    func testGasAPI() {
+        stub(condition: isPath(AppConfig.ServerURL.PATH + "/transaction/estimateGas")) { (request) -> OHHTTPStubsResponse in
+            let stubPath = OHPathForFile("remoteGas.json", type(of: self))
+            return fixture(filePath: stubPath!, headers: ["Content-Type":"application/json"])
+        }
+
+        let expectaion = self.expectation(description: "testGasAPI")
+        let walletAddr = "0x9a5b1bc394125160fe64d2617f1c545340ceabab"
+        let txType = TxType.claimReward
+        TransactionService.service.getContractGas(from: walletAddr, txType: txType) { (result, data) in
+            switch result {
+            case .success:
+                XCTAssert(data != nil, "response should be decode RemoteGas Type")
+                expectaion.fulfill()
+            case .fail(_, _):
+                XCTAssert(false, "get gas failure")
+            }
+        }
+        waitForExpectations(timeout: 10) { (error) in
+            print(error?.localizedDescription ?? "")
+        }
+    }
+
+    func testRewardRecordsAPI() {
+        stub(condition: isPath(AppConfig.ServerURL.PATH + "/transaction/getRewardTransactions")) { (request) -> OHHTTPStubsResponse in
+            let stubPath = OHPathForFile("rewardRecords.json", type(of: self))
+            return fixture(filePath: stubPath!, headers: ["Content-Type":"application/json"])
+        }
+
+        let expectaion = self.expectation(description: "testRewardRecordsAPI")
+        let addresses = ["0x9C893e9fC6Da77e91555437Fdb6AEf28E1D1Eb13", "0xbd89e39a8D44d8e2448ae93Ad07F5636e9cF4c05", "0x9a5B1bC394125160FE64d2617F1C545340ceAbaB"]
+
+        StakingService.sharedInstance.getRewardDelegate(adddresses: addresses, beginSequence: -1, listSize: 20, direction: "new") { (result, data) in
+            switch result {
+            case .success:
+                XCTAssertTrue((data as? [RewardModel]) != nil, "response should be decode RewardModel Type")
+                expectaion.fulfill()
+            case .fail(_, _):
+                XCTAssert(false, "get RewardRecords failure")
+            }
+        }
+        waitForExpectations(timeout: 10) { (error) in
+            print(error?.localizedDescription ?? "")
+        }
+    }
+
+    func testValidatorDecimal() {
+        let content = "1234567.1234567890123456"
+        let result1 = content.isValidInputAmoutWithDecimalPlace(maxRound: 16)
+        XCTAssert(result1, "should be 16 decimal")
+    }
+
+    func test12Decimal() {
+        let content = "1234567.123456789012"
+        let result = content.displayForMicrometerLevel(maxRound: 12)
+        XCTAssertEqual("1,234,567.123456789012", result, "the result should be 12 decimal")
+    }
 }
