@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">
-<coverage line-rate="0.0000000000000000" branch-rate="1.0000000000000000" lines-covered="0" lines-valid="4467" branches-covered="0" branches-valid="0" complexity="0.0" timestamp="1579586775" version="Slather 2.4.7">
+<coverage line-rate="0.0000000000000000" branch-rate="1.0000000000000000" lines-covered="0" lines-valid="4469" branches-covered="0" branches-valid="0" complexity="0.0" timestamp="1580714163" version="Slather 2.4.7">
   <sources>
     <source>/Users/ned/Documents/yuham/ios/platon/ATON-iOS/source</source>
   </sources>
@@ -1283,19 +1283,19 @@
             <line number="170" branch="false" hits="0"/>
             <line number="171" branch="false" hits="0"/>
             <line number="172" branch="false" hits="0"/>
+            <line number="173" branch="false" hits="0"/>
             <line number="174" branch="false" hits="0"/>
-            <line number="175" branch="false" hits="0"/>
             <line number="176" branch="false" hits="0"/>
             <line number="177" branch="false" hits="0"/>
+            <line number="178" branch="false" hits="0"/>
             <line number="179" branch="false" hits="0"/>
-            <line number="180" branch="false" hits="0"/>
             <line number="181" branch="false" hits="0"/>
             <line number="182" branch="false" hits="0"/>
             <line number="183" branch="false" hits="0"/>
             <line number="184" branch="false" hits="0"/>
             <line number="185" branch="false" hits="0"/>
-            <line number="189" branch="false" hits="0"/>
-            <line number="190" branch="false" hits="0"/>
+            <line number="186" branch="false" hits="0"/>
+            <line number="187" branch="false" hits="0"/>
             <line number="191" branch="false" hits="0"/>
             <line number="192" branch="false" hits="0"/>
             <line number="193" branch="false" hits="0"/>
@@ -1304,8 +1304,8 @@
             <line number="196" branch="false" hits="0"/>
             <line number="197" branch="false" hits="0"/>
             <line number="198" branch="false" hits="0"/>
+            <line number="199" branch="false" hits="0"/>
             <line number="200" branch="false" hits="0"/>
-            <line number="201" branch="false" hits="0"/>
             <line number="202" branch="false" hits="0"/>
             <line number="203" branch="false" hits="0"/>
             <line number="204" branch="false" hits="0"/>
@@ -1314,11 +1314,11 @@
             <line number="207" branch="false" hits="0"/>
             <line number="208" branch="false" hits="0"/>
             <line number="209" branch="false" hits="0"/>
+            <line number="210" branch="false" hits="0"/>
             <line number="211" branch="false" hits="0"/>
-            <line number="212" branch="false" hits="0"/>
             <line number="213" branch="false" hits="0"/>
+            <line number="214" branch="false" hits="0"/>
             <line number="215" branch="false" hits="0"/>
-            <line number="216" branch="false" hits="0"/>
             <line number="217" branch="false" hits="0"/>
             <line number="218" branch="false" hits="0"/>
             <line number="219" branch="false" hits="0"/>
@@ -1356,8 +1356,8 @@
             <line number="251" branch="false" hits="0"/>
             <line number="252" branch="false" hits="0"/>
             <line number="253" branch="false" hits="0"/>
+            <line number="254" branch="false" hits="0"/>
             <line number="255" branch="false" hits="0"/>
-            <line number="256" branch="false" hits="0"/>
             <line number="257" branch="false" hits="0"/>
             <line number="258" branch="false" hits="0"/>
             <line number="259" branch="false" hits="0"/>
@@ -1366,13 +1366,15 @@
             <line number="262" branch="false" hits="0"/>
             <line number="263" branch="false" hits="0"/>
             <line number="264" branch="false" hits="0"/>
+            <line number="265" branch="false" hits="0"/>
             <line number="266" branch="false" hits="0"/>
-            <line number="267" branch="false" hits="0"/>
             <line number="268" branch="false" hits="0"/>
             <line number="269" branch="false" hits="0"/>
+            <line number="270" branch="false" hits="0"/>
             <line number="271" branch="false" hits="0"/>
-            <line number="272" branch="false" hits="0"/>
             <line number="273" branch="false" hits="0"/>
+            <line number="274" branch="false" hits="0"/>
+            <line number="275" branch="false" hits="0"/>
           </lines>
         </class>
         <class name="Transaction" filename="platonWallet/Models/Transfer/Transaction.swift" line-rate="0.0000000000000000" branch-rate="1.0000000000000000" complexity="0.0">
