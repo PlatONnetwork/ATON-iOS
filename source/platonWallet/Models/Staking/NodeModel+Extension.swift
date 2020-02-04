@@ -31,7 +31,7 @@ extension Node {
     }
 
     var delegators: String {
-        return delegate?.displayForMicrometerLevel(maxRound: 8) ?? "0"
+        return delegate?.decimalFormat() ?? "0"
     }
 
     var status: (String, UIColor) {

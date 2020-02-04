@@ -61,7 +61,7 @@ class DelegateRecordTableViewCell: UITableViewCell {
             make.leading.equalToSuperview().offset(10)
             make.trailing.equalToSuperview().offset(-10)
             make.top.equalToSuperview().offset(16)
-            make.height.equalTo(128)
+//            make.height.equalTo(128)
             make.bottom.equalToSuperview()
         }
 
@@ -147,18 +147,18 @@ class DelegateRecordTableViewCell: UITableViewCell {
 
         timeLabel.text = "#"
         timeLabel.textColor = common_lightLightGray_color
-        timeLabel.font = .systemFont(ofSize: 15)
+        timeLabel.font = .systemFont(ofSize: 13)
         timeLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
         delegateBackgroundView.addSubview(timeLabel)
         timeLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(10)
-            make.centerY.equalToSuperview()
-            make.height.equalTo(15)
+            make.top.equalToSuperview().offset(12)
+            make.bottom.equalToSuperview().offset(-14)
 //            make.width.equalToSuperview().offset(-10).dividedBy(2)
         }
 
         walletAddressLabel.textColor = common_lightLightGray_color
-        walletAddressLabel.font = .systemFont(ofSize: 15)
+        walletAddressLabel.font = .systemFont(ofSize: 13)
         walletAddressLabel.setContentHuggingPriority(.required, for: .horizontal)
         walletAddressLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
         delegateBackgroundView.addSubview(walletAddressLabel)
@@ -168,7 +168,7 @@ class DelegateRecordTableViewCell: UITableViewCell {
         }
 
         walletNameLabel.textColor = common_lightLightGray_color
-        walletNameLabel.font = .systemFont(ofSize: 15)
+        walletNameLabel.font = .systemFont(ofSize: 13)
         delegateBackgroundView.addSubview(walletNameLabel)
         walletNameLabel.snp.makeConstraints { make in
             make.trailing.equalTo(walletAddressLabel.snp.leading)
@@ -183,11 +183,6 @@ class DelegateRecordTableViewCell: UITableViewCell {
             make.leading.greaterThanOrEqualTo(timeLabel.snp.trailing).offset(10)
             make.height.width.equalTo(20)
         }
-
-
-
-
-
     }
 
     required init?(coder aDecoder: NSCoder) {

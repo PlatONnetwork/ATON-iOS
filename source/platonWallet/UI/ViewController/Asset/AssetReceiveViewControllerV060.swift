@@ -41,7 +41,7 @@ class AssetReceiveViewControllerV060: BaseViewController {
         attr.append(attribute_1)
         attr.append(NSAttributedString(string: SettingService.shareInstance.currentNetworkName))
         attr.append(attribute_2)
-        qrCodeView.tipsLabel.localizedAttributedTexts = [attribute_1, NSAttributedString(string: SettingService.shareInstance.currentNetworkName), attribute_2]
+        qrCodeView.tipsLabel.localizedAttributedTexts = [attribute_1, NSAttributedString(string: SettingService.shareInstance.currentNetworkDesc), attribute_2]
 
         AssetVCSharedData.sharedData.registerHandler(object: self) {[weak self] in
             let qrImage = UIImage.geneQRCodeImageFor(AssetVCSharedData.sharedData.selectedWalletAddress!, size: 300.0)

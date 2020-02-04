@@ -43,6 +43,7 @@ class AboutViewController: BaseViewController {
 
     @IBAction func privacyPolicy(_ sender: Any) {
         let controller = WebCommonViewController()
+        controller.navigationTitle = Localized("PersonalVC_privacy_policy")
         controller.requestUrl = AppConfig.H5URL.PrivacyPolicyURL.policyurl
         controller.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(controller, animated: true)
@@ -50,6 +51,7 @@ class AboutViewController: BaseViewController {
 
     @IBAction func servicePolicy(_ sender: Any) {
         let controller = WebCommonViewController()
+         controller.navigationTitle = Localized("PersonalVC_service_agreement")
         controller.requestUrl = AppConfig.H5URL.LisenceURL.serviceurl
         controller.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(controller, animated: true)
