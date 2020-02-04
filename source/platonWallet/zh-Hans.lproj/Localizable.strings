@@ -265,6 +265,8 @@
 "PersonalVC_cell_wallet_About" = "关于";
 "PersonalVC_cell_wallet_community" = "官方社区";
 "PersonalVC_cell_wallet_feedback" = "帮助和反馈";
+"PersonalVC_service_agreement" = "服务协议";
+"PersonalVC_privacy_policy" = "隐私政策";
 
 //WalletManagerDetailViewController
 "WalletManagerDetailVC_title" = "钱包管理";
@@ -795,7 +797,7 @@
 "ATextFieldView_withdraw_title" = "赎回数量:";
 
 "staking_doubt_delegate" = "委托";
-"staking_doubt_delegate_detail" = "委托的Token所有权永远归于委托人，您可以随时赎回委托的Token。\n验证节点关联的操作地址和奖励接收地址不允许参与委托。";
+"staking_doubt_delegate_detail" = "委托的Token可以随时赎回。\n验证节点关联的操作地址不允许参与委托。";
 "staking_doubt_reward" = "收益";
 "staking_doubt_reward_detail" = "委托至少锁定一个周期（10750区块）才有收益。根据节点设置的委托奖励比例对节点获得的收益进行分配。节点收益包含出块奖励和质押奖励。";
 

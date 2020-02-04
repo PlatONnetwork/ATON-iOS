@@ -650,6 +650,7 @@ extension DelegateViewController {
                     return
                 }
                 self?.remoteGas = gas
+                self?.tableView.reloadData()
             case .fail(_, let errMsg):
                 self?.showErrorMessage(text: errMsg ?? "get gas api error", delay: 2.0)
             }

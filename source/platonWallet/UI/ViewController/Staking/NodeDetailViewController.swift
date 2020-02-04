@@ -97,6 +97,9 @@ class NodeDetailViewController: BaseViewController {
         nodeInfoView.tipsShowHandler = { [weak self] in
             self?.rewardDoubtTapAction()
         }
+        nodeInfoView.tipsShowYieldHandler = { [weak self] in
+            self?.doubtTapAction()
+        }
 
         footerView.websiteLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openWebSiteController)))
         tableView.tableFooterView = footerView
@@ -133,10 +136,6 @@ class NodeDetailViewController: BaseViewController {
         noNetworkEmptyView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-
-        let doubtButtonItem = UIBarButtonItem(image: UIImage(named: "3.icon_doubt"), style: .done, target: self, action: #selector(doubtTapAction))
-        doubtButtonItem.tintColor = .black
-        navigationItem.rightBarButtonItem = doubtButtonItem
     }
 
     private func setupData() {

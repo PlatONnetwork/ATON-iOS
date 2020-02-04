@@ -119,6 +119,12 @@ extension String {
         return false
     }
 
+    func decimalFormat() -> String {
+        guard let valueInt = Int(self) else { return self }
+        let result = NumberFormatter.localizedString(from: NSNumber(value: valueInt), number: .decimal)
+        return result
+    }
+
     func isValidInputAmoutWith8DecimalPlace() -> Bool {
         return isValidInputAmoutWithDecimalPlace(maxRound: 8)
     }

@@ -270,6 +270,8 @@
 "PersonalVC_cell_wallet_About" = "About";
 "PersonalVC_cell_wallet_community" = "Official Community";
 "PersonalVC_cell_wallet_feedback" = "Support and feedback";
+"PersonalVC_service_agreement" = "Service Agreement";
+"PersonalVC_privacy_policy" = "Privacy Policy";
 
 
 //WalletManagerDetailViewController
@@ -786,7 +788,7 @@
 "ATextFieldView_withdraw_title" = "Amount:";
 
 "staking_doubt_delegate" = "Delegations";
-"staking_doubt_delegate_detail" = "The user keeps the delegate's Token ownership forever, and the user can withdraw the delegated token at any time.\nThe Validator's operator address and reward receiving address are not allowed for delegation.";
+"staking_doubt_delegate_detail" = "The user can withdraw the delegated token at any time.\nThe Validator's operator address are not allowed for delegation.";
 "staking_doubt_reward" = "Rewards";
 "staking_doubt_reward_detail" = "The delegations will be locked for at least one epoch(10750 blocks) to gain. According to the delegated reward ratio set by the nodes, the profits obtained by the nodes are distributed. Node benefits include block rewards and staking rewards.";
 
