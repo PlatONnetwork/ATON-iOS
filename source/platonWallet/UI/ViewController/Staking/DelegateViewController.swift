@@ -263,9 +263,11 @@ extension DelegateViewController: UITableViewDelegate, UITableViewDataSource {
             return cell
         case .inputAmount:
             let cell = tableView.dequeueReusableCell(withIdentifier: "SendInputTableViewCell") as! SendInputTableViewCell
+            cell.type = .delegate
             cell.amountView.titleLabel.text = Localized("ATextFieldView_delegate_title")
             cell.amountView.textField.LocalizePlaceholder = Localized("staking_amount_placeholder", arguments: (minDelegateAmountLimit/PlatonConfig.VON.LAT).description)
             cell.maxAmountLimit = maxDelegateAmountLimit
+            cell.gas = estimateUseGas
             cell.amountView.isUserInteractionEnabled = (canDelegation?.canDelegation == true)
             cell.amountView.feeLabel.text = estimateUseGas.description.vonToLATString?.displayFeeString
             cell.cellDidContentEditingHandler = { [weak self] (amountVON, _) in

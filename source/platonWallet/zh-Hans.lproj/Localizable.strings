@@ -809,6 +809,7 @@
 "staking_balance_locked_position" = "锁仓余额";
 "staking_balance_Delegated" = "已委托";
 "staking_balance_release_Delegated" = "待赎回委托";
+"staking_balance_release_Delegated_index" = "第%d份";
 
 "input_amount_hundred" = "百";
 "input_amount_thousand" = "千";
@@ -881,6 +882,7 @@
 "staking_withdraw_input_amount_maxlimit_error" = "超出可赎回数量，无法提交";
 "staking_withdraw_balance_Insufficient_error" = "余额不足支付手续费，无法赎回委托";
 "staking_delegate_balance_Insufficient_error" = "余额不足支付手续费，无法委托";
+"staking_delegateall_keep_balance_error" = "余额不足保留0.1LAT";
 
 "error_no_wallet" = "无可用钱包";
 "error_wallet_no_balance" = "钱包余额不足";

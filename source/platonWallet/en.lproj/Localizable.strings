@@ -800,6 +800,7 @@
 "staking_balance_locked_position" = "Restricted balance";
 "staking_balance_Delegated" = "Delegated";
 "staking_balance_release_Delegated" = "Invalid delegations";
+"staking_balance_release_Delegated_index" = "%dst";
 
 "input_amount_hundred" = "hundred";
 "input_amount_thousand" = "thousand";
@@ -872,6 +873,7 @@
 "staking_withdraw_input_amount_maxlimit_error" = "Exceeded the available amount and cannot be submitted";
 "staking_withdraw_balance_Insufficient_error" = "Insufficient balance payment fee";
 "staking_delegate_balance_Insufficient_error" = "Insufficient balance payment fee";
+"staking_delegateall_keep_balance_error" = "Cannot keep balance 0.1LAT";
 
 "error_no_wallet" = "No wallet available";
 "error_wallet_no_balance" = "insufficient wallet balance";

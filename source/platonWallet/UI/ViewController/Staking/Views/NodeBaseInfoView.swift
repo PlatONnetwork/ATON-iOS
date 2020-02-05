@@ -24,6 +24,7 @@ class NodeBaseInfoView: UIView {
     public let rewardRatioLabel = UILabel()
     public let totalRewardLabel = UILabel()
     let rewardContentView = UIView()
+    let rateView = UIButton()
     var bottomConstraint: Constraint?
 
     var nodeLinkHandler: (() -> Void)?
@@ -36,10 +37,12 @@ class NodeBaseInfoView: UIView {
                 nodeBackgroundView.image = UIImage(named: "bj3")
                 bottomConstraint?.update(priority: .required)
                 rewardContentView.isHidden = true
+                rateView.isHidden = true
             } else {
                 nodeBackgroundView.image = UIImage(named: "bj2")
                 bottomConstraint?.update(priority: .low)
                 rewardContentView.isHidden = false
+                rateView.isHidden = false
             }
         }
     }
@@ -124,7 +127,6 @@ class NodeBaseInfoView: UIView {
             make.leading.equalTo(nodeNameLabel.snp.leading)
         }
 
-        let rateView = UIButton()
         rateView.backgroundColor = .clear
         rateView.addTarget(self, action: #selector(tipsShowYield), for: .touchUpInside)
         nodeBackgroundView.addSubview(rateView)

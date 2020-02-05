@@ -68,7 +68,7 @@ extension Delegate {
     }
 
     var freeBalanceValue: String {
-        return Localized("claim_comfirm_balance") + "：" + (freeBalanceBInt.description.vonToLATString ?? "0.00").ATPSuffix()
+        return Localized("claim_comfirm_balance") + (freeBalanceBInt.description.vonToLATString ?? "0.00").ATPSuffix()
     }
 }
 
