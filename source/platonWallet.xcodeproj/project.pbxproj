@@ -913,6 +913,9 @@
 		81FCCD162179EA0F0052FC29 /* RealmHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FCCD152179EA0F0052FC29 /* RealmHelper.swift */; };
 		81FF580923D6A2BA0064A471 /* remoteGas.json in Resources */ = {isa = PBXBuildFile; fileRef = 81FF580823D6A2BA0064A471 /* remoteGas.json */; };
 		81FF580B23D6A6170064A471 /* rewardRecords.json in Resources */ = {isa = PBXBuildFile; fileRef = 81FF580A23D6A6170064A471 /* rewardRecords.json */; };
+		81FF583223EAE40E0064A471 /* NodeSearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FF583123EAE40E0064A471 /* NodeSearchBarView.swift */; };
+		81FF583323EAE40F0064A471 /* NodeSearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FF583123EAE40E0064A471 /* NodeSearchBarView.swift */; };
+		81FF583423EAE40F0064A471 /* NodeSearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FF583123EAE40E0064A471 /* NodeSearchBarView.swift */; };
 		984B45A65A39894AE5B14720 /* Pods_platonWalletUAT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4BB6563189E24AE4F9CC0C4 /* Pods_platonWalletUAT.framework */; };
 		9A11FC482181E90C002D9A96 /* LeftAlignLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A11FC472181E90C002D9A96 /* LeftAlignLayout.swift */; };
 		9A1F87B922014FD70002BE67 /* NodeSettingViewControllerV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1F87B822014FD70002BE67 /* NodeSettingViewControllerV2.swift */; };
@@ -1301,6 +1304,7 @@
 		81FCCD152179EA0F0052FC29 /* RealmHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmHelper.swift; sourceTree = "<group>"; };
 		81FF580823D6A2BA0064A471 /* remoteGas.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = remoteGas.json; sourceTree = "<group>"; };
 		81FF580A23D6A6170064A471 /* rewardRecords.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = rewardRecords.json; sourceTree = "<group>"; };
+		81FF583123EAE40E0064A471 /* NodeSearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeSearchBarView.swift; sourceTree = "<group>"; };
 		9A11FC472181E90C002D9A96 /* LeftAlignLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftAlignLayout.swift; sourceTree = "<group>"; };
 		9A1F87B822014FD70002BE67 /* NodeSettingViewControllerV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeSettingViewControllerV2.swift; sourceTree = "<group>"; };
 		9A25B99D2186DF9E00B9433A /* WalletManagerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletManagerTableViewCell.swift; sourceTree = "<group>"; };
@@ -1847,6 +1851,7 @@
 				81F1EFEB23BEE477000D687C /* NodeDetailCell.swift */,
 				81F1EFFB23BF33D8000D687C /* RewardRecordCell.swift */,
 				81F1F00323C30FA9000D687C /* RewardClaimComfirmView.swift */,
+				81FF583123EAE40E0064A471 /* NodeSearchBarView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -3239,6 +3244,7 @@
 				811886DF23B7590C00CAE5BA /* TransferPersistence.swift in Sources */,
 				811886E023B7590C00CAE5BA /* PopupDialogDefaultView.swift in Sources */,
 				811886E123B7590C00CAE5BA /* CommunityCellStyle.swift in Sources */,
+				81FF583423EAE40F0064A471 /* NodeSearchBarView.swift in Sources */,
 				811886E223B7590C00CAE5BA /* QuickSaveAddressButton.swift in Sources */,
 				811886E323B7590C00CAE5BA /* AddAddressInfoView.swift in Sources */,
 				811886E423B7590C00CAE5BA /* StakingService.swift in Sources */,
@@ -3513,6 +3519,7 @@
 				81B58A17235DA1FC00816B4E /* TransferPersistence.swift in Sources */,
 				81B58A18235DA1FC00816B4E /* PopupDialogDefaultView.swift in Sources */,
 				81B58A19235DA1FC00816B4E /* CommunityCellStyle.swift in Sources */,
+				81FF583323EAE40F0064A471 /* NodeSearchBarView.swift in Sources */,
 				81B58A1A235DA1FC00816B4E /* QuickSaveAddressButton.swift in Sources */,
 				81DD58EB238BA24D007844ED /* AddAddressInfoView.swift in Sources */,
 				81B58A1B235DA1FC00816B4E /* StakingService.swift in Sources */,
@@ -3787,6 +3794,7 @@
 				81E072B6223A5DD1003F6A28 /* QuickSaveAddressButton.swift in Sources */,
 				81200D4B22FBF29D002E2944 /* StakingService.swift in Sources */,
 				819A522D2190367400E4C500 /* UINavigationItem+Extensions.swift in Sources */,
+				81FF583223EAE40E0064A471 /* NodeSearchBarView.swift in Sources */,
 				81DD58D2238BA24D007844ED /* AddressBookTableViewCell.swift in Sources */,
 				81DD58EE238BA24D007844ED /* SettingTableViewCell.swift in Sources */,
 				81E072B9223A8359003F6A28 /* AlertStylePopViewController.swift in Sources */,

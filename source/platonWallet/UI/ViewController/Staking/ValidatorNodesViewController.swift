@@ -29,9 +29,16 @@ class ValidatorNodesViewController: ButtonBarPagerTabStripViewController, Indica
     lazy var searchButton = { () -> UIButton in
         let button = UIButton()
         button.setImage(UIImage(named: "3.icon_ Search"), for: .normal)
+        button.setImage(UIImage(named: "3.icon_ Search2"), for: .selected)
         button.addTarget(self, action: #selector(searhTapAction), for: .touchUpInside)
         return button
     }()
+
+    var isSelectedSearchButton: Bool = false  {
+        didSet {
+            searchButton.isSelected = isSelectedSearchButton
+        }
+    }
 
     @objc func rankingTapAction() {
         rankButton.isSelected = !rankButton.isSelected
@@ -40,6 +47,8 @@ class ValidatorNodesViewController: ButtonBarPagerTabStripViewController, Indica
     }
 
     @objc func searhTapAction() {
+        searchButton.isSelected = !searchButton.isSelected
+
         guard let controllers = viewControllers as? [ValidatorNodeListViewController] else { return }
         let controller = controllers[currentIndex]
         controller.searchDidTapHandler()
