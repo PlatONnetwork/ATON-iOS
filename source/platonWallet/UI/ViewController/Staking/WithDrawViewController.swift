@@ -135,14 +135,18 @@ class WithDrawViewController: BaseViewController {
         var balances: [(String, String)] = []
         var stakingBlockNums: [UInt64] = []
         var selectedIndex: Int = 0
+        var releasedIndex: Int = 1
         for (index, deleItem) in dele.deleList.enumerated() {
             if let delegated = deleItem.delegated, let delegatedBInt = BigUInt(delegated), delegatedBInt > BigUInt.zero {
                 balances.append((Localized("staking_balance_Delegated"), delegatedBInt.description))
                 stakingBlockNums.append(UInt64(deleItem.stakingBlockNum ?? "0") ?? 0)
             } else if let released = deleItem.released, let releasedBInt = BigUInt(released), releasedBInt > BigUInt.zero {
-                balances.append((Localized("staking_balance_release_Delegated"), releasedBInt.description))
+                balances.append((Localized("staking_balance_release_Delegated") + "(" + Localized("staking_balance_release_Delegated_index", arguments: releasedIndex) + ")" , releasedBInt.description))
                 stakingBlockNums.append(UInt64(deleItem.stakingBlockNum ?? "0") ?? 0)
-                selectedIndex = index
+                if selectedIndex == 0 {
+                    selectedIndex = index
+                }
+                releasedIndex += 1
             }
         }
 
@@ -243,6 +247,7 @@ extension WithDrawViewController: UITableViewDelegate, UITableViewDataSource {
             return cell
         case .inputAmount:
             let cell = tableView.dequeueReusableCell(withIdentifier: "SendInputTableViewCell") as! SendInputTableViewCell
+            cell.type = .withdraw
             cell.amountView.titleLabel.text = Localized("ATextFieldView_withdraw_title")
             cell.amountView.textField.LocalizePlaceholder = Localized("staking_amount_placeholder", arguments: (minDelegateAmountLimit/PlatonConfig.VON.LAT).description)
             cell.maxAmountLimit = BigUInt(balanceStyle?.currentBalance.1 ?? "0")
@@ -284,7 +289,7 @@ extension WithDrawViewController: UITableViewDelegate, UITableViewDataSource {
 //                self?.currentAmount = inputAmountVON
 //                self?.tableView.reloadSections(IndexSet([indexPath.section + 1]), with: .none)
             }
-            if let bStyle = balanceStyle, bStyle.selectedIndex == 1 {
+            if let bStyle = balanceStyle, bStyle.selectedIndex > 0 {
                 cell.amountView.textField.isEnabled = false
                 self.currentAmount = BigUInt(bStyle.currentBalance.1) ?? BigUInt.zero
                 cell.amountView.textField.text = BigUInt(bStyle.currentBalance.1)?.divide(by: ETHToWeiMultiplier, round: 8)
@@ -556,9 +561,15 @@ extension WithDrawViewController {
             newBalanceStyle.selectedIndex = indexRow - 1
         }
         balanceStyle = newBalanceStyle
+//        currentAmount = BigUInt.zero
 
         listData[indexSection] = DelegateTableViewCellStyle.walletBalances(balanceStyle: newBalanceStyle)
         tableView.reloadSections(IndexSet([indexSection, indexSection+1, indexSection+2]), with: .fade)
+
+        if currentAmount != .zero {
+            let cell = tableView.cellForRow(at: IndexPath(row: 0, section: indexSection+1)) as? SendInputTableViewCell
+            cell?.amountView.checkInvalidNow(showErrorMsg: true)
+        }
 
         guard
             let nodeId = currentNode?.nodeId,

@@ -227,6 +227,11 @@ class ATextFieldView: UIView {
         return res
     }
 
+    func resetErrorState(errMsg: String) {
+        tipsLabel.text = errMsg
+        self.setTextFieldStyle(style: .Error, notifyHeightChange: false)
+    }
+
     public enum TextFieldCheckMode {
         case endEdit
         case textChange

@@ -75,10 +75,6 @@ class DelegateDetailViewController: BaseViewController {
         walletHeaderView.frame.size = walletHeaderView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
         tableView.tableHeaderView = walletHeaderView
 
-        let doubtButtonItem = UIBarButtonItem(image: UIImage(named: "3.icon_doubt"), style: .done, target: self, action: #selector(doubtTapAction))
-        doubtButtonItem.tintColor = .black
-        navigationItem.rightBarButtonItem = doubtButtonItem
-
         setupWalletData()
     }
 
@@ -189,6 +185,9 @@ extension DelegateDetailViewController: UITableViewDelegate, UITableViewDataSour
         }
         cell.didWithdrawHandler = { [weak self] _ in
             self?.gotoWithdrawController(delegateDetail)
+        }
+        cell.didInvalidDelegateHandler = { [weak self] in
+            self?.doubtTapAction()
         }
         return cell
     }

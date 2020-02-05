@@ -21,6 +21,8 @@ class SendInputTableViewCell: UITableViewCell {
 
     var cellDidContentEditingHandler: ((BigUInt, Bool) -> Void)?
     var maxAmountLimit: BigUInt?
+    var gas: BigUInt?
+    var type: SendInputTableViewCellType?
 
     lazy var amountView = { () -> ATextFieldView in
         let amountView = ATextFieldView.create(title: "ATextFieldView_withdraw_title")
@@ -76,6 +78,15 @@ class SendInputTableViewCell: UITableViewCell {
     }
 
     func showDelegateAllView() {
+        guard let cellType = type, cellType == .delegate else {
+            if let maxAmount = maxAmountLimit {
+                amountView.textField.text = maxAmount.divide(by: ETHToWeiMultiplier, round: 8)
+                cellDidContentEditingHandler?(maxAmount, true)
+                amountView.checkInvalidNow(showErrorMsg: true)
+            }
+            return
+        }
+
         guard let controller = viewController() else { return }
         let alertVC = AlertStylePopViewController.initFromNib()
         alertVC.style = PAlertStyle.ChoiceView(message: Localized("delegate_all_warnings", arguments: (SettingService.shareInstance.thresholdValue/PlatonConfig.VON.LAT).description.ATPSuffix()))
@@ -97,17 +108,28 @@ class SendInputTableViewCell: UITableViewCell {
     }
 
     func persistDelegateAll() {
-        guard let maxAmount = maxAmountLimit else { return }
+        guard let maxAmount = maxAmountLimit, let gasBInt = gas else { return }
+        guard maxAmount > gasBInt else {
+            amountView.textField.text = "0.00"
+            cellDidContentEditingHandler?(maxAmount, true)
+            amountView.resetErrorState(errMsg: Localized("staking_withdraw_balance_Insufficient_error"))
+            return
+        }
         amountView.textField.text = maxAmount.divide(by: ETHToWeiMultiplier, round: 8)
         cellDidContentEditingHandler?(maxAmount, true)
         amountView.checkInvalidNow(showErrorMsg: true)
     }
 
     func retainLATForDelegate() {
-        guard let maxAmount = maxAmountLimit else { return }
+        guard let maxAmount = maxAmountLimit, let gasBInt = gas else { return }
         let LAT0_1 = (BigUInt(1) * PlatonConfig.VON.LAT)/BigUInt(10)
+        guard maxAmount > LAT0_1 + gasBInt else {
+            amountView.textField.text = "0.00"
+            cellDidContentEditingHandler?(maxAmount, true)
+            amountView.resetErrorState(errMsg: Localized("staking_delegateall_keep_balance_error"))
+            return
+        }
         let newAmount = maxAmount - LAT0_1
-        guard newAmount > BigUInt.zero else { return }
 
         amountView.textField.text = newAmount.divide(by: ETHToWeiMultiplier, round: 8)
         cellDidContentEditingHandler?(maxAmount, true)

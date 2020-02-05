@@ -21,6 +21,7 @@ class NodeAboutDelegateTableViewCell: UITableViewCell {
 
     public let lockedDelegateLabel = UILabel()
     public let unlockedDelegateLabel = UILabel()
+    let invalidDelegateIV = UIImageView()
     let rewardContentView = UIView()
     let unclaimedLabel = UILabel()
     public let delegateButton = UIButton()
@@ -31,6 +32,7 @@ class NodeAboutDelegateTableViewCell: UITableViewCell {
     var didLinkHanlder: ((NodeAboutDelegateTableViewCell) -> Void)?
     var didDelegateHandler: ((NodeAboutDelegateTableViewCell) -> Void)?
     var didWithdrawHandler: ((NodeAboutDelegateTableViewCell) -> Void)?
+    var didInvalidDelegateHandler: (() -> Void)?
 
     var delegateDetail: DelegateDetail? {
         didSet {
@@ -172,25 +174,46 @@ class NodeAboutDelegateTableViewCell: UITableViewCell {
             make.height.equalTo(14)
         }
 
+        let invalidDelgateContainer = UIButton()
+        invalidDelgateContainer.addTarget(self, action: #selector(invaliDelegateTapAction), for: .touchUpInside)
+        delegateBackgroundView.addSubview(invalidDelgateContainer)
+        invalidDelgateContainer.snp.makeConstraints { make in
+            make.leading.equalTo(lockDelegateTipLabel.snp.trailing)
+            make.top.equalTo(lockDelegateTipLabel.snp.top)
+            make.trailing.equalToSuperview()
+            make.bottom.equalTo(lockedDelegateLabel.snp.bottom)
+        }
+
         let unlockedDelegatingTipLabel = UILabel()
         unlockedDelegatingTipLabel.text = Localized("staking_delegate_release")
         unlockedDelegatingTipLabel.textColor = common_lightLightGray_color
         unlockedDelegatingTipLabel.font = UIFont.systemFont(ofSize: 12)
-        delegateBackgroundView.addSubview(unlockedDelegatingTipLabel)
+        invalidDelgateContainer.addSubview(unlockedDelegatingTipLabel)
         unlockedDelegatingTipLabel.snp.makeConstraints { make in
-            make.leading.equalTo(lockDelegateTipLabel.snp.trailing)
-            make.top.equalTo(lockDelegateTipLabel.snp.top)
-            make.width.equalTo(lockDelegateTipLabel)
+            make.leading.equalToSuperview()
+            make.top.equalToSuperview()
+//            make.leading.equalTo(lockDelegateTipLabel.snp.trailing)
+//            make.top.equalTo(lockDelegateTipLabel.snp.top)
+//            make.width.equalTo(lockDelegateTipLabel)
+        }
+
+        invalidDelegateIV.image = UIImage(named: "3.icon_doubt")
+        invalidDelgateContainer.addSubview(invalidDelegateIV)
+        invalidDelegateIV.snp.makeConstraints { make in
+            make.leading.equalTo(unlockedDelegatingTipLabel.snp.trailing).offset(3)
+            make.centerY.equalTo(unlockedDelegatingTipLabel.snp.centerY)
+            make.height.width.equalTo(12)
         }
 
         unlockedDelegateLabel.textColor = .black
         unlockedDelegateLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium)
         unlockedDelegateLabel.text = "--"
-        delegateBackgroundView.addSubview(unlockedDelegateLabel)
+        invalidDelgateContainer.addSubview(unlockedDelegateLabel)
         unlockedDelegateLabel.snp.makeConstraints { make in
             make.leading.equalTo(unlockedDelegatingTipLabel)
             make.top.equalTo(unlockedDelegatingTipLabel.snp.bottom).offset(9)
             make.height.equalTo(14)
+            make.trailing.equalToSuperview().offset(-12)
         }
 
         rewardContentView.backgroundColor = UIColor(rgb: 0xECF2FF)
@@ -286,6 +309,10 @@ class NodeAboutDelegateTableViewCell: UITableViewCell {
 
     @objc private func withdrawTapAction() {
         didWithdrawHandler?(self)
+    }
+
+    @objc func invaliDelegateTapAction() {
+        didInvalidDelegateHandler?()
     }
 
 }

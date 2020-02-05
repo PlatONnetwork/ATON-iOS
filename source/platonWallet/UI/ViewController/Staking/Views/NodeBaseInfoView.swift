@@ -24,10 +24,12 @@ class NodeBaseInfoView: UIView {
     public let rewardRatioLabel = UILabel()
     public let totalRewardLabel = UILabel()
     let rewardContentView = UIView()
+    let rateView = UIButton()
     var bottomConstraint: Constraint?
 
     var nodeLinkHandler: (() -> Void)?
     var tipsShowHandler: (() -> Void)?
+    var tipsShowYieldHandler: (() -> Void)?
 
     var isInitNode: Bool = false {
         didSet {
@@ -35,10 +37,12 @@ class NodeBaseInfoView: UIView {
                 nodeBackgroundView.image = UIImage(named: "bj3")
                 bottomConstraint?.update(priority: .required)
                 rewardContentView.isHidden = true
+                rateView.isHidden = true
             } else {
                 nodeBackgroundView.image = UIImage(named: "bj2")
                 bottomConstraint?.update(priority: .low)
                 rewardContentView.isHidden = false
+                rateView.isHidden = false
             }
         }
     }
@@ -123,9 +127,8 @@ class NodeBaseInfoView: UIView {
             make.leading.equalTo(nodeNameLabel.snp.leading)
         }
 
-        let rateView = UIView()
         rateView.backgroundColor = .clear
-        rateView.isUserInteractionEnabled = false
+        rateView.addTarget(self, action: #selector(tipsShowYield), for: .touchUpInside)
         nodeBackgroundView.addSubview(rateView)
 
         rateView.snp.makeConstraints { make in
@@ -161,10 +164,20 @@ class NodeBaseInfoView: UIView {
         rateTitleLabel.text = Localized("staking_validator_detail_delegate_rate_about")
         rateView.addSubview(rateTitleLabel)
         rateTitleLabel.snp.makeConstraints { make in
-            make.trailing.leading.equalToSuperview()
+            make.trailing.leading.lessThanOrEqualToSuperview().priorityLow()
             make.top.equalTo(rateLabel.snp.bottom).offset(4)
             make.bottom.equalToSuperview()
+            make.centerX.equalToSuperview().offset(-7)
 //            make.leading.equalTo(nodeAddressLabel.snp.trailing)
+        }
+
+        let rateTitleIV = UIImageView()
+        rateTitleIV.image = UIImage(named: "3.icon_doubt2")
+        rateView.addSubview(rateTitleIV)
+        rateTitleIV.snp.makeConstraints { make in
+            make.width.height.equalTo(12)
+            make.centerY.equalTo(rateTitleLabel)
+            make.leading.equalTo(rateTitleLabel.snp.trailing).offset(3)
         }
 
         rewardContentView.backgroundColor = .clear
@@ -175,22 +188,30 @@ class NodeBaseInfoView: UIView {
             make.bottom.equalToSuperview().priorityMedium()
         }
 
+        let rewardRatioContainer = UIButton()
+        rewardRatioContainer.addTarget(self, action: #selector(tipsShow), for: .touchUpInside)
+        rewardContentView.addSubview(rewardRatioContainer)
+        rewardRatioContainer.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(20)
+            make.top.equalToSuperview().offset(14)
+            make.trailing.lessThanOrEqualTo(rewardContentView.snp.centerX).offset(-5)
+        }
+
         let rewardRatioTipLabel = UILabel()
         rewardRatioTipLabel.text = Localized("reward_ratio")
         rewardRatioTipLabel.textColor = .white
         rewardRatioTipLabel.font = UIFont.systemFont(ofSize: 13)
-        rewardContentView.addSubview(rewardRatioTipLabel)
+        rewardRatioContainer.addSubview(rewardRatioTipLabel)
         rewardRatioTipLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(20)
-            make.top.equalToSuperview().offset(14)
+            make.leading.equalToSuperview()
+            make.top.equalToSuperview()
             make.height.equalTo(14)
-            make.trailing.lessThanOrEqualTo(rewardContentView.snp.centerX).offset(-5)
+            make.trailing.equalToSuperview()
         }
 
-        let rewardRatioIV = UIButton()
-        rewardRatioIV.addTarget(self, action: #selector(tipsShow), for: .touchUpInside)
-        rewardRatioIV.setImage(UIImage(named: "3.icon_doubt2"), for: .normal)
-        rewardContentView.addSubview(rewardRatioIV)
+        let rewardRatioIV = UIImageView()
+        rewardRatioIV.image = UIImage(named: "3.icon_doubt2")
+        rewardRatioContainer.addSubview(rewardRatioIV)
         rewardRatioIV.snp.makeConstraints { make in
             make.width.height.equalTo(12)
             make.centerY.equalTo(rewardRatioTipLabel)
@@ -201,12 +222,13 @@ class NodeBaseInfoView: UIView {
         rewardRatioLabel.textColor = .white
         rewardRatioLabel.font = UIFont.systemFont(ofSize: 14)
         rewardRatioLabel.text = "0.00"
-        rewardContentView.addSubview(rewardRatioLabel)
+        rewardRatioContainer.addSubview(rewardRatioLabel)
         rewardRatioLabel.snp.makeConstraints { make in
             make.leading.equalTo(rewardRatioTipLabel)
             make.top.equalTo(rewardRatioTipLabel.snp.bottom).offset(9)
             make.trailing.equalTo(rewardContentView.snp.centerX).offset(-5)
             make.height.equalTo(14)
+            make.bottom.equalToSuperview()
         }
 
         let totalRewardTipLabel = UILabel()
@@ -244,5 +266,9 @@ class NodeBaseInfoView: UIView {
 
     @objc func tipsShow() {
         tipsShowHandler?()
+    }
+
+    @objc func tipsShowYield() {
+        tipsShowYieldHandler?()
     }
 }

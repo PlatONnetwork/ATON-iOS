@@ -387,7 +387,11 @@ extension Transaction {
             if let type = txType, type == .claimReward {
                 return BigUInt(totalReward ?? "0")?.divide(by: ETHToWeiMultiplier, round: 8).displayForMicrometerLevel(maxRound: 8)
             } else if let type = txType, type == .delegateWithdraw {
-                return BigUInt(unDelegation ?? "0")?.divide(by: ETHToWeiMultiplier, round: 8).displayForMicrometerLevel(maxRound: 8)
+                if let withdrawValue = unDelegation {
+                    return BigUInt(withdrawValue)?.divide(by: ETHToWeiMultiplier, round: 8).displayForMicrometerLevel(maxRound: 8)
+                } else {
+                    return BigUInt(value ?? "0")?.divide(by: ETHToWeiMultiplier, round: 8).displayForMicrometerLevel(maxRound: 8)
+                }
             } else {
                 guard value != nil else {
                     return "0.00"
