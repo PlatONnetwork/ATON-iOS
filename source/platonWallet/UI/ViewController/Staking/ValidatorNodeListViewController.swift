@@ -35,13 +35,15 @@ class ValidatorNodeListViewController: BaseViewController, IndicatorInfoProvider
             if isShowSearch {
                 tableView.mj_header = nil
                 tableView.mj_footer = nil
-                tableView.tableHeaderView = searchBar
-                searchBar.becomeFirstResponder()
+                tableView.tableHeaderView = searchView
+                searchView.searchBar.becomeFirstResponder()
             } else {
                 tableView.mj_footer = refreshFooter
                 tableView.mj_header = refreshHeader
                 tableView.tableHeaderView = nil
             }
+            guard let controller = parent as? ValidatorNodesViewController else { return }
+            controller.isSelectedSearchButton = isShowSearch
         }
     }
 
@@ -63,32 +65,7 @@ class ValidatorNodeListViewController: BaseViewController, IndicatorInfoProvider
         return tbView
     }()
 
-    lazy var searchBar = { () -> UISearchBar in
-        let searchbar = UISearchBar()
-        searchbar.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: 40)
-        searchbar.backgroundImage = UIImage()
-        searchbar.setImage(UIImage(), for: .search, state: .focused)
-        searchbar.setImage(UIImage(), for: .search, state: .normal)
-        searchbar.delegate = self
-        searchbar.showsCancelButton = true
-        let cancelButton = searchbar.value(forKey: "cancelButton") as! UIButton
-        cancelButton.setTitle(Localized("mydelegates_search_cancel"), for: .normal)
-        cancelButton.setTitleColor(common_blue_color, for: .normal)
-        cancelButton.titleLabel?.font = UIFont.systemFont(ofSize: 14)
-        if let textField = searchbar.value(forKey: "searchField") as? UITextField {
-            if #available(iOS 11.0, *) {
-                textField.layer.cornerRadius = 18.0
-            } else {
-                textField.layer.cornerRadius = 14.0
-            }
-            textField.backgroundColor = normal_background_color
-            textField.layer.borderColor = common_blue_color.cgColor
-            textField.layer.borderWidth = 1
-            textField.font = .systemFont(ofSize: 14)
-            textField.LocalizePlaceholder = "mydelegates_search_placeholder"
-        }
-        return searchbar
-    }()
+    let searchView = NodeSearchBarView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 66))
 
     lazy var refreshHeader = { () -> MJRefreshHeader in
         let header = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(fetchDataLastest))!
@@ -135,6 +112,8 @@ class ValidatorNodeListViewController: BaseViewController, IndicatorInfoProvider
         }
 //        tableView.mj_header.beginRefreshing()
 
+        searchView.searchBar.delegate = self
+
         NotificationCenter.default.addObserver(self, selector: #selector(scrollToTop), name: Notification.Name.ATON.DidTabBarDoubleClick, object: nil)
     }
 
@@ -147,6 +126,9 @@ class ValidatorNodeListViewController: BaseViewController, IndicatorInfoProvider
         if isViewLoaded && !isShowSearch {
             fetchData(isFetch: controllerType == .all, nil)
         }
+
+        guard let controller = parent as? ValidatorNodesViewController else { return }
+        controller.isSelectedSearchButton = isShowSearch
     }
 
     @objc func scrollToTop() {
@@ -211,7 +193,7 @@ extension ValidatorNodeListViewController {
 
     @objc func fetchDataLastest() {
         if isShowSearch {
-            guard let text = searchBar.text else {
+            guard let text = searchView.searchBar.text else {
                 return
             }
             searchResults = StakingService.sharedInstance.searchNodes(text: text, type: controllerType, sort: currentSort)
