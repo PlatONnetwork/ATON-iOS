@@ -916,6 +916,9 @@
 		81FF583223EAE40E0064A471 /* NodeSearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FF583123EAE40E0064A471 /* NodeSearchBarView.swift */; };
 		81FF583323EAE40F0064A471 /* NodeSearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FF583123EAE40E0064A471 /* NodeSearchBarView.swift */; };
 		81FF583423EAE40F0064A471 /* NodeSearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FF583123EAE40E0064A471 /* NodeSearchBarView.swift */; };
+		81FF583623EAFAF70064A471 /* QRCodeRLPDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FF583523EAFAF70064A471 /* QRCodeRLPDecoder.swift */; };
+		81FF583723EAFAF80064A471 /* QRCodeRLPDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FF583523EAFAF70064A471 /* QRCodeRLPDecoder.swift */; };
+		81FF583823EAFAF80064A471 /* QRCodeRLPDecoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FF583523EAFAF70064A471 /* QRCodeRLPDecoder.swift */; };
 		984B45A65A39894AE5B14720 /* Pods_platonWalletUAT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4BB6563189E24AE4F9CC0C4 /* Pods_platonWalletUAT.framework */; };
 		9A11FC482181E90C002D9A96 /* LeftAlignLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A11FC472181E90C002D9A96 /* LeftAlignLayout.swift */; };
 		9A1F87B922014FD70002BE67 /* NodeSettingViewControllerV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1F87B822014FD70002BE67 /* NodeSettingViewControllerV2.swift */; };
@@ -1305,6 +1308,7 @@
 		81FF580823D6A2BA0064A471 /* remoteGas.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = remoteGas.json; sourceTree = "<group>"; };
 		81FF580A23D6A6170064A471 /* rewardRecords.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = rewardRecords.json; sourceTree = "<group>"; };
 		81FF583123EAE40E0064A471 /* NodeSearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeSearchBarView.swift; sourceTree = "<group>"; };
+		81FF583523EAFAF70064A471 /* QRCodeRLPDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeRLPDecoder.swift; sourceTree = "<group>"; };
 		9A11FC472181E90C002D9A96 /* LeftAlignLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftAlignLayout.swift; sourceTree = "<group>"; };
 		9A1F87B822014FD70002BE67 /* NodeSettingViewControllerV2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeSettingViewControllerV2.swift; sourceTree = "<group>"; };
 		9A25B99D2186DF9E00B9433A /* WalletManagerTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletManagerTableViewCell.swift; sourceTree = "<group>"; };
@@ -1467,6 +1471,7 @@
 				81926A06231DFEC500CAF498 /* RemoteVersion.swift */,
 				8141E66B2338EBE3001A9351 /* NetworkManager.swift */,
 				8141E677233CA673001A9351 /* QRCodeDecoder.swift */,
+				81FF583523EAFAF70064A471 /* QRCodeRLPDecoder.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -3237,6 +3242,7 @@
 				811886D823B7590C00CAE5BA /* CommunityNameTableViewCell.swift in Sources */,
 				811886D923B7590C00CAE5BA /* DelegateRecordMainViewController.swift in Sources */,
 				811886DA23B7590C00CAE5BA /* NodeSettingViewControllerV2.swift in Sources */,
+				81FF583823EAFAF80064A471 /* QRCodeRLPDecoder.swift in Sources */,
 				811886DB23B7590C00CAE5BA /* AddWalletMenuViewController.swift in Sources */,
 				811886DC23B7590C00CAE5BA /* TransactionResponse.swift in Sources */,
 				811886DD23B7590C00CAE5BA /* DropDownVIew.swift in Sources */,
@@ -3512,6 +3518,7 @@
 				81DD58F1238BA24D007844ED /* CommunityNameTableViewCell.swift in Sources */,
 				81B58A0F235DA1FC00816B4E /* DelegateRecordMainViewController.swift in Sources */,
 				81B58A10235DA1FC00816B4E /* NodeSettingViewControllerV2.swift in Sources */,
+				81FF583723EAFAF80064A471 /* QRCodeRLPDecoder.swift in Sources */,
 				81B58A11235DA1FC00816B4E /* AddWalletMenuViewController.swift in Sources */,
 				81B58A14235DA1FC00816B4E /* TransactionResponse.swift in Sources */,
 				81B58A15235DA1FC00816B4E /* DropDownVIew.swift in Sources */,
@@ -3787,6 +3794,7 @@
 				9A25B9B6218850B600B9433A /* AddWalletMenuViewController.swift in Sources */,
 				81CB8ADD228EA99C009E8AA0 /* TransactionResponse.swift in Sources */,
 				813C3412223A327300DE92F1 /* DropDownVIew.swift in Sources */,
+				81FF583623EAFAF70064A471 /* QRCodeRLPDecoder.swift in Sources */,
 				9ADE4517217F0801006F1C81 /* MainImportWalletViewController.swift in Sources */,
 				81FCCD0F2179E9F20052FC29 /* TransferPersistence.swift in Sources */,
 				9AF9AC172182E04000E97F07 /* PopupDialogDefaultView.swift in Sources */,

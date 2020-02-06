@@ -56,7 +56,4 @@ class NodeSearchBarView: UIView {
             make.height.equalTo(40)
         }
     }
-
-
-
 }

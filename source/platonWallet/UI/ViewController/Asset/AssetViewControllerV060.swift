@@ -600,6 +600,9 @@ extension AssetViewControllerV060 {
                         let gasLimit = signedTransaction.gasLimit.quantity
                         let gasUsed = gasPrice.multiplied(by: gasLimit).description
                         let amount = signedTransaction.value.quantity.description
+
+                        let rlpResult = try? QRCodeRLPDecoder().decode(signedTransaction.data.bytes)
+
                         let tx = Transaction()
                         tx.senderAddress = from
                         tx.from = from.add0x()
@@ -608,10 +611,21 @@ extension AssetViewControllerV060 {
                         tx.createTime = Int(Date().timeIntervalSince1970 * 1000)
                         tx.txhash = result.bytes.toHexString().add0x()
                         tx.txReceiptStatus = -1
-                        tx.value = amount
+                        tx.value = (type == 5000) ? qrcode.rn ?? "0" : amount
                         tx.transactionType = Int(type)
                         tx.toType = (type != 0) ? .contract : .address
-                        tx.direction = .Sent
+                        if let resultDetail = rlpResult {
+                            tx.nodeId = resultDetail.1 ?? ""
+                            if type == 1004 || type == 1005 {
+                                tx.value = (resultDetail.2 ?? BigUInt.zero).description
+                            }
+                        }
+                        if type == 5000 {
+                            tx.totalReward = qrcode.rn ?? "0"
+                        }
+                        tx.nodeName = qrcode.nodeName ?? ""
+                        tx.direction = (type == 1005 || type == 5000) ? .Receive : .Sent
+                        tx.txType = TxType(rawValue: String(type))
                         TransferPersistence.add(tx: tx)
 
                         let thTx = TwoHourTransaction()

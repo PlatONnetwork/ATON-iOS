@@ -186,7 +186,7 @@ class OfflineSignatureTransactionViewController: BaseViewController {
                 let code = codes.first,
                 let from = code.from,
                 let type = code.functionType else { return }
-            let qrcodeData = QrcodeData(qrCodeType: 1, qrCodeData: signedStrings, chainId: web3.chainId, functionType: type, from: from)
+            let qrcodeData = QrcodeData(qrCodeType: 1, qrCodeData: signedStrings, chainId: web3.chainId, functionType: type, from: from, nodeName: code.nodeName, rn: self.qrcode?.rn, timestamp: self.qrcode?.timestamp)
 
             guard
                 let jsonData = try? JSONEncoder().encode(qrcodeData),
