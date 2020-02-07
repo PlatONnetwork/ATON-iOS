@@ -19,7 +19,7 @@ class TransferPersistence {
             autoreleasepool(invoking: {
                 let realm = try! Realm(configuration: RealmHelper.getConfig())
                 try? realm.write {
-                    realm.add(tx, update: true)
+                    realm.add(tx, update: .all)
                 }
             })
         }

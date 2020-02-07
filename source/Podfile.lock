@@ -26,11 +26,11 @@ PODS:
     - CryptoSwift (~> 0.8)
     - Localize-Swift (~> 2.0)
     - secp256k1.swift (~> 0.1)
-  - Realm (3.13.1):
-    - Realm/Headers (= 3.13.1)
-  - Realm/Headers (3.13.1)
-  - RealmSwift (3.13.1):
-    - Realm (= 3.13.1)
+  - Realm (4.3.0):
+    - Realm/Headers (= 4.3.0)
+  - Realm/Headers (4.3.0)
+  - RealmSwift (4.3.0):
+    - Realm (= 4.3.0)
   - RTRootNavigationController (0.7.1):
     - RTRootNavigationController/Core (= 0.7.1)
   - RTRootNavigationController/Core (0.7.1)
@@ -78,7 +78,7 @@ DEPENDENCIES:
   - MJRefresh
   - OHHTTPStubs/Swift
   - platonWeb3 (~> 0.7.6)
-  - RealmSwift (= 3.13.1)
+  - RealmSwift (~> 4.3.0)
   - RTRootNavigationController (= 0.7.1)
   - ScryptSwift (= 0.0.1)
   - secp256k1.swift (~> 0.1)
@@ -154,8 +154,8 @@ SPEC CHECKSUMS:
   MJRefresh: 7798e16e53a5ef7f332dd05b27664db4e29530fd
   OHHTTPStubs: 9cbce6364bec557cc3439aa6bb7514670d780881
   platonWeb3: a9f1f3b3887a2cfe0265b14ef618c836158c5067
-  Realm: 50071da38fe079e0735e47c9f2eae738c68c5996
-  RealmSwift: 8a1e6a02b7a08cd17a31e3115143fb69fe5f3fb9
+  Realm: 9357c3589555793e1860a7104a7412bca4a48d99
+  RealmSwift: 402f1e379a8ef82c635313037b043f0f06de880c
   RTRootNavigationController: afa6913402be26f8326f7f37fc1550aa67baddcc
   ScryptSwift: c771529fa895a563febe3184add81bbe5e2f85aa
   secp256k1.swift: a7e7a214f6db6ce5db32cc6b2b45e5c4dd633634
@@ -175,6 +175,6 @@ SPEC CHECKSUMS:
   UMCShare: 552b29753f1b4da87b51d96545ed19e6263df397
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: d03028e3860f5d89be63563761a538146e394f77
+PODFILE CHECKSUM: 0b77c4a878de49c46dcf18132db8b662ddee3527
 
 COCOAPODS: 1.8.4
