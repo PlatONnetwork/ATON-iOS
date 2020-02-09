@@ -974,3 +974,6 @@
 "delegate_all_warnings" = "Recommended to keep a small balance to support delegated withdrawal and reward claim operations.";
 "alert_delegate_all" = "Delegate All";
 "alert_delegate_all_without_01" = "Keep Balance";
+
+"pop_selection_title_withdraw" = "Select Delegations";
+"pop_selection_title_delegate" = "Select Delegations";

@@ -28,7 +28,7 @@ class WalletBaseInfoView: UIView {
             make.leading.equalToSuperview().offset(10)
             make.trailing.equalToSuperview().offset(-10)
             make.top.equalToSuperview().offset(16)
-            make.bottom.equalToSuperview().offset(-16)
+            make.bottom.equalToSuperview()
         }
 
         nodeAvatarIV.addMaskView(corners: .allCorners, cornerRadiiV: 21)

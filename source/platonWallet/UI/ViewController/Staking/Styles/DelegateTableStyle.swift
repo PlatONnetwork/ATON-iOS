@@ -22,7 +22,7 @@ enum DelegateTableViewCellStyle {
 
 // 可展开绑定的样式数据
 struct BalancesCellStyle {
-    var balances: [(String, String)] = []
+    var balances: [(String, String, Bool)] = []
     var stakingBlockNums: [UInt64] = []
     var selectedIndex: Int = 0
     var isExpand: Bool = false
@@ -31,7 +31,7 @@ struct BalancesCellStyle {
         return isExpand ? balances.count + 1 : 1
     }
 
-    var currentBalance: (String, String) {
+    var currentBalance: (String, String, Bool) {
         return balances[selectedIndex]
     }
 
@@ -39,17 +39,12 @@ struct BalancesCellStyle {
         return stakingBlockNums[selectedIndex]
     }
 
-    func balance(for index: Int) -> (String, String) {
+    func balance(for index: Int) -> (String, String, Bool) {
         if isExpand {
             return index == 0 ? balances[selectedIndex] : balances[index - 1]
         } else {
             return balances[selectedIndex]
         }
-    }
-
-    // 当前选中是否是锁仓余额
-    var isLock: Bool {
-        return selectedIndex != 0
     }
 }
 

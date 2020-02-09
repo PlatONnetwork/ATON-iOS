@@ -21,7 +21,7 @@ class WalletBalanceTableViewCell: UITableViewCell {
 
     var cellDidHandle: ((_ cell: WalletBalanceTableViewCell) -> Void)?
 
-    func setupBalanceData(_ balance: (String, String)) {
+    func setupBalanceData(_ balance: (String, String, Bool)) {
         balanceTipLabel.text = balance.0
         balanceLabel.text = (balance.1.vonToLATString ?? "0").balanceFixToDisplay(maxRound: 8).ATPSuffix()
     }
