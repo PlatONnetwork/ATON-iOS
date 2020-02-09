@@ -135,7 +135,7 @@ class WithDrawViewController: BaseViewController {
         var balances: [(String, String, Bool)] = []
         var stakingBlockNums: [UInt64] = []
         var releasedIndex: Int = 1
-        for (index, deleItem) in dele.deleList.enumerated() {
+        for (_, deleItem) in dele.deleList.enumerated() {
             if let delegated = deleItem.delegated, let delegatedBInt = BigUInt(delegated), delegatedBInt > BigUInt.zero {
                 balances.append((Localized("staking_balance_Delegated"), delegatedBInt.description, false))
                 stakingBlockNums.append(UInt64(deleItem.stakingBlockNum ?? "0") ?? 0)
@@ -293,7 +293,7 @@ extension WithDrawViewController: UITableViewDelegate, UITableViewDataSource {
             }
             if let bStyle = balanceStyle, bStyle.currentBalance.2 == true {
                 cell.amountView.textField.isEnabled = false
-                self.currentAmount = BigUInt(bStyle.currentBalance.1) ?? BigUInt.zero
+                currentAmount = BigUInt(bStyle.currentBalance.1) ?? BigUInt.zero
                 cell.amountView.textField.text = BigUInt(bStyle.currentBalance.1)?.divide(by: ETHToWeiMultiplier, round: 8)
             } else {
                 cell.amountView.textField.isEnabled = true
@@ -554,6 +554,10 @@ extension WithDrawViewController {
     func refreshBalanceAndInputAmountCell(_ indexPath: IndexPath) {
         let indexSection = indexPath.section
         guard let bStyle = balanceStyle else { return }
+        if bStyle.currentBalance.2 == false {
+            currentAmount = BigUInt.zero
+        }
+
         listData[indexSection] = DelegateTableViewCellStyle.walletBalances(balanceStyle: bStyle)
         tableView.reloadSections(IndexSet([indexSection, indexSection+1, indexSection+2]), with: .fade)
 
