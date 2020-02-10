@@ -179,10 +179,10 @@ class DelegateViewController: BaseViewController {
             return item.addr.lowercased() == walletStyle!.currentWallet.address.lowercased()
         }
 
-        var balances: [(String, String)] = []
-        balances.append((Localized("staking_balance_can_used"), (BigUInt(balance?.free ?? "0") ?? BigUInt.zero).convertBalanceDecimalPlaceToZero().description))
+        var balances: [(String, String, Bool)] = []
+        balances.append((Localized("staking_balance_can_used"), (BigUInt(balance?.free ?? "0") ?? BigUInt.zero).convertBalanceDecimalPlaceToZero().description, false))
         if let lock = balance?.lock, let convertLock = BigUInt(lock)?.convertBalanceDecimalPlaceToZero(), convertLock > BigUInt.zero {
-            balances.append((Localized("staking_balance_locked_position"), convertLock.description))
+            balances.append((Localized("staking_balance_locked_position"), convertLock.description, true))
         }
 
         balanceStyle = BalancesCellStyle(balances: balances, stakingBlockNums: [], selectedIndex: 0, isExpand: false)
@@ -250,11 +250,10 @@ extension DelegateViewController: UITableViewDelegate, UITableViewDataSource {
         case .walletBalances(let balanceStyle):
             let cell = tableView.dequeueReusableCell(withIdentifier: "WalletBalanceTableViewCell") as! WalletBalanceTableViewCell
             cell.setupBalanceData(balanceStyle.balance(for: indexPath.row))
-            cell.bottomlineV.isHidden = (indexPath.row == 0 || indexPath.row == balanceStyle.cellCount - 1)
-            cell.isSelectedCell = (balanceStyle.balances.count <= 1) ? false : indexPath.row == 0 ? true : indexPath.row == balanceStyle.selectedIndex + 1 ? true : false
-            cell.rightImageView.image = (balanceStyle.balances.count <= 1) ? nil :
-                indexPath.row == 0 ? UIImage(named: "3.icon_ drop-down") : indexPath.row == balanceStyle.selectedIndex + 1 ? UIImage(named: "iconApprove") : nil
-            cell.isTopCell = indexPath.row == 0
+            cell.bottomlineV.isHidden = true
+            cell.isSelectedCell = balanceStyle.balances.count > 1
+            cell.rightImageView.image = balanceStyle.balances.count > 1 ? UIImage(named: "3.icon_ drop-down") : nil
+            cell.isTopCell = true
 
             cell.cellDidHandle = { [weak self] (_ cell: WalletBalanceTableViewCell) in
                 guard let self = self, balanceStyle.balances.count > 1 else { return }
@@ -289,7 +288,7 @@ extension DelegateViewController: UITableViewDelegate, UITableViewDataSource {
                 self.estimateGas(amountVON, cell)
                 self.tableView.reloadSections(IndexSet([indexPath.section+1]), with: .none)
 
-                return CommonService.checkStakingAmoutInput(inputVON: text == "" ? nil : self.currentAmount, balance: self.freeBalanceBInt, minLimit: self.minDelegateAmountLimit, maxLimit: self.maxDelegateAmountLimit, fee: self.estimateUseGas, type: .delegate, isLockAmount: self.balanceStyle?.isLock)
+                return CommonService.checkStakingAmoutInput(inputVON: text == "" ? nil : self.currentAmount, balance: self.freeBalanceBInt, minLimit: self.minDelegateAmountLimit, maxLimit: self.maxDelegateAmountLimit, fee: self.estimateUseGas, type: .delegate, isLockAmount: self.balanceStyle?.currentBalance.2)
             }) { [weak self] _ in
                 self?.updateHeightOfRow(cell)
             }
@@ -297,7 +296,7 @@ extension DelegateViewController: UITableViewDelegate, UITableViewDataSource {
         case .singleButton(let title):
             let cell = tableView.dequeueReusableCell(withIdentifier: "SingleButtonTableViewCell") as! SingleButtonTableViewCell
             cell.button.setTitle(title, for: .normal)
-            if balanceStyle?.isLock == true {
+            if balanceStyle?.currentBalance.2 == true {
                 cell.disableTapAction = (currentAmount < minDelegateAmountLimit) || currentAmount > maxDelegateAmountLimit || estimateUseGas > canDelegation?.freeBigUInt ?? BigUInt.zero
             } else {
                 cell.disableTapAction = (currentAmount < minDelegateAmountLimit) || currentAmount + estimateUseGas > maxDelegateAmountLimit
@@ -381,7 +380,7 @@ extension DelegateViewController {
 
                     let transactionData = TransactionQrcode(amount: self.currentAmount.description, chainId: web3.properties.chainId, from: walletObject.currentWallet.address, to: PlatonConfig.ContractAddress.stakingContractAddress, gasLimit: selectedGasLimit.description, gasPrice: selectedGasPrice.description, nonce: nonceString, typ: typ, nodeId: nodeId, nodeName: self.currentNode?.name, stakingBlockNum: nil, functionType: funcType.typeValue)
 
-                    let qrcodeData = QrcodeData(qrCodeType: 0, qrCodeData: [transactionData], chainId: web3.chainId, functionType: 1004, from: walletObject.currentWallet.address)
+                    let qrcodeData = QrcodeData(qrCodeType: 0, qrCodeData: [transactionData], chainId: web3.chainId, functionType: 1004, from: walletObject.currentWallet.address, nodeName: self.currentNode?.name, rn: nil, timestamp: Int(Date().timeIntervalSince1970 * 1000))
                     guard
                         let data = try? JSONEncoder().encode(qrcodeData),
                         let content = String(data: data, encoding: .utf8) else { return }
@@ -566,10 +565,10 @@ extension DelegateViewController {
             return item.addr.lowercased() == walletStyle?.currentWallet.address.lowercased()
         }
 
-        var balances: [(String, String)] = []
-        balances.append((Localized("staking_balance_can_used"), balance?.free ?? "0"))
+        var balances: [(String, String, Bool)] = []
+        balances.append((Localized("staking_balance_can_used"), balance?.free ?? "0", false))
         if let lock = balance?.lock, (BigUInt(lock) ?? BigUInt.zero) > BigUInt.zero {
-            balances.append((Localized("staking_balance_locked_position"), lock))
+            balances.append((Localized("staking_balance_locked_position"), lock, false))
         }
         balanceStyle = BalancesCellStyle(balances: balances, stakingBlockNums: [], selectedIndex: 0, isExpand: false)
         listData[indexSection + 1] = DelegateTableViewCellStyle.walletBalances(balanceStyle: balanceStyle!)
@@ -580,19 +579,55 @@ extension DelegateViewController {
     }
 
     func balanceCellDidHandle(_ cell: WalletBalanceTableViewCell) {
-        guard let bStyle = balanceStyle else { return }
+//        guard let bStyle = balanceStyle else { return }
+//
+//        let indexPath = tableView.indexPath(for: cell)
+//        var newBalanceStyle = bStyle
+//        newBalanceStyle.isExpand = !newBalanceStyle.isExpand
+//        guard let indexRow = indexPath?.row, let indexSection = indexPath?.section else { return }
+//        if indexRow != 0 {
+//            newBalanceStyle.selectedIndex = indexRow - 1
+//        }
+//        balanceStyle = newBalanceStyle
+//
+//        listData[indexSection] = DelegateTableViewCellStyle.walletBalances(balanceStyle: balanceStyle!)
+//        tableView.reloadSections(IndexSet([indexSection, indexSection+1]), with: .fade)
+//
+//        if currentAmount != .zero {
+//            let cell = tableView.cellForRow(at: IndexPath(row: 0, section: indexSection+1)) as? SendInputTableViewCell
+//            cell?.amountView.checkInvalidNow(showErrorMsg: true)
+//        }
 
-        let indexPath = tableView.indexPath(for: cell)
-        var newBalanceStyle = bStyle
-        newBalanceStyle.isExpand = !newBalanceStyle.isExpand
-        guard let indexRow = indexPath?.row, let indexSection = indexPath?.section else { return }
-        if indexRow != 0 {
-            newBalanceStyle.selectedIndex = indexRow - 1
+        view.endEditing(true)
+        guard
+            let balances = balanceStyle?.balances,
+            let selected = balanceStyle?.currentBalance,
+            let indexPath = tableView.indexPath(for: cell)
+            else { return }
+
+        let type = PopSelectedViewType.delegate(datasource: balances, selected: selected)
+        let contentView = ThresholdValueSelectView(title: Localized("pop_selection_title_delegate"), type: type)
+        contentView.show(viewController: self)
+        contentView.valueChangedHandler = { [weak self] value in
+            switch value {
+            case .delegate(_, let newSelected):
+                guard selected != newSelected else {
+                    return
+                }
+                guard let index = balances.firstIndex(where: { $0 == newSelected }) else { return }
+                self?.balanceStyle?.selectedIndex = index
+                self?.refreshBalanceAndInputAmountCell(indexPath)
+            default:
+                break
+            }
         }
-        balanceStyle = newBalanceStyle
+    }
 
-        listData[indexSection] = DelegateTableViewCellStyle.walletBalances(balanceStyle: balanceStyle!)
-        tableView.reloadSections(IndexSet([indexSection, indexSection+1]), with: .fade)
+    func refreshBalanceAndInputAmountCell(_ indexPath: IndexPath) {
+        let indexSection = indexPath.section
+        guard let bStyle = balanceStyle else { return }
+        listData[indexSection] = DelegateTableViewCellStyle.walletBalances(balanceStyle: bStyle)
+        tableView.reloadSections(IndexSet([indexSection, indexSection+1, indexSection+2]), with: .fade)
 
         if currentAmount != .zero {
             let cell = tableView.cellForRow(at: IndexPath(row: 0, section: indexSection+1)) as? SendInputTableViewCell
@@ -613,7 +648,7 @@ extension DelegateViewController {
     }
 
     func estimateGas(_ amountVon: BigUInt, _ cell: SendInputTableViewCell) {
-        if isDelegateAll == true, balanceStyle?.isLock == false {
+        if isDelegateAll == true, balanceStyle?.currentBalance.2 == false {
             if currentAmount > estimateUseGas {
                 // 非锁仓余额才可以相减
                 currentAmount -= estimateUseGas

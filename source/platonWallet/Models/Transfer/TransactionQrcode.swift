@@ -16,6 +16,9 @@ struct QrcodeData<QRData: Codable>: Codable {
     var chainId: String?
     var functionType: UInt16?
     var from: String?
+    var nodeName: String?
+    var rn: String?
+    var timestamp: Int?
 }
 
 //extension QrcodeData {

@@ -78,7 +78,7 @@ class RewardClaimComfirmView: UIView {
 
         let feeTipLabel = UILabel()
         feeTipLabel.text = Localized("claim_comfirm_fee")
-        feeTipLabel.font = .systemFont(ofSize: 16)
+        feeTipLabel.font = .systemFont(ofSize: 14)
         feeTipLabel.textColor = common_darkGray_color
         feeTipLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
         feeTipLabel.setContentHuggingPriority(.required, for: .horizontal)
@@ -100,7 +100,7 @@ class RewardClaimComfirmView: UIView {
 
         let walletTipLabel = UILabel()
         walletTipLabel.text = Localized("claim_comfirm_wallet")
-        walletTipLabel.font = .systemFont(ofSize: 16)
+        walletTipLabel.font = .systemFont(ofSize: 14)
         walletTipLabel.textColor = common_darkGray_color
         walletTipLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
         walletTipLabel.setContentHuggingPriority(.required, for: .horizontal)

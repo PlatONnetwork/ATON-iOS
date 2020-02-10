@@ -41,6 +41,7 @@ class ValidatorNodesViewController: ButtonBarPagerTabStripViewController, Indica
     }
 
     @objc func rankingTapAction() {
+        view.endEditing(true)
         rankButton.isSelected = !rankButton.isSelected
 
         showNodeSortView()
@@ -68,15 +69,20 @@ class ValidatorNodesViewController: ButtonBarPagerTabStripViewController, Indica
             NodeSort.yield
         ]
 
-        let contentView = ThresholdValueSelectView<NodeSort>(listData: listData, selected: currentSort, title: Localized("node_sort_title"))
+        let type = PopSelectedViewType.sort(datasource: listData, selected: currentSort)
+        let contentView = ThresholdValueSelectView(title: Localized("node_sort_title"), type: type)
         contentView.show(viewController: self)
-        contentView.valueChangedHandler = { [weak self] (value) in
-            guard self?.currentSort != value else {
-                return
+        contentView.valueChangedHandler = { [weak self] value in
+            switch value {
+            case .sort(_, let selected):
+                guard self?.currentSort != selected else {
+                    return
+                }
+                self?.currentSort = selected
+                self?.startToRefreshData()
+            default:
+                break
             }
-
-            self?.currentSort = value
-            self?.startToRefreshData()
         }
     }
 

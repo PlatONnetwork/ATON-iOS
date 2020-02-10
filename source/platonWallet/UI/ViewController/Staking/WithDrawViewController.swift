@@ -132,22 +132,24 @@ class WithDrawViewController: BaseViewController {
             return
         }
 
-        var balances: [(String, String)] = []
+        var balances: [(String, String, Bool)] = []
         var stakingBlockNums: [UInt64] = []
-        var selectedIndex: Int = 0
         var releasedIndex: Int = 1
-        for (index, deleItem) in dele.deleList.enumerated() {
+        for (_, deleItem) in dele.deleList.enumerated() {
             if let delegated = deleItem.delegated, let delegatedBInt = BigUInt(delegated), delegatedBInt > BigUInt.zero {
-                balances.append((Localized("staking_balance_Delegated"), delegatedBInt.description))
+                balances.append((Localized("staking_balance_Delegated"), delegatedBInt.description, false))
                 stakingBlockNums.append(UInt64(deleItem.stakingBlockNum ?? "0") ?? 0)
             } else if let released = deleItem.released, let releasedBInt = BigUInt(released), releasedBInt > BigUInt.zero {
-                balances.append((Localized("staking_balance_release_Delegated") + "(" + Localized("staking_balance_release_Delegated_index", arguments: releasedIndex) + ")" , releasedBInt.description))
+                balances.append((Localized("staking_balance_release_Delegated") + "(" + Localized("staking_balance_release_Delegated_index", arguments: releasedIndex) + ")" , releasedBInt.description, true))
                 stakingBlockNums.append(UInt64(deleItem.stakingBlockNum ?? "0") ?? 0)
-                if selectedIndex == 0 {
-                    selectedIndex = index
-                }
                 releasedIndex += 1
             }
+        }
+
+        // 优先选中待赎回选项
+        var selectedIndex: Int = 0
+        if balances.count >= 2 && balances.first?.2 == false {
+            selectedIndex = 1
         }
 
         let bStyle = BalancesCellStyle(balances: balances, stakingBlockNums: stakingBlockNums, selectedIndex: selectedIndex, isExpand: false)
@@ -233,17 +235,17 @@ extension WithDrawViewController: UITableViewDelegate, UITableViewDataSource {
         case .walletBalances(let balanceStyle):
             let cell = tableView.dequeueReusableCell(withIdentifier: "WalletBalanceTableViewCell") as! WalletBalanceTableViewCell
             cell.shadowView.isHidden = indexPath.row != 0
-            cell.setupBalanceData(balanceStyle.balance(for: indexPath.row))
-            cell.bottomlineV.isHidden = (indexPath.row == 0 || indexPath.row == balanceStyle.cellCount - 1)
-            cell.isSelectedCell = indexPath.row == 0 ? true : indexPath.row == balanceStyle.selectedIndex + 1 ? true : false
-            cell.rightImageView.image = indexPath.row == 0 ? UIImage(named: "3.icon_ drop-down") : indexPath.row == balanceStyle.selectedIndex + 1 ? UIImage(named: "iconApprove") : nil
-            cell.isTopCell = indexPath.row == 0
+            cell.setupBalanceData(balanceStyle.currentBalance)
+            cell.bottomlineV.isHidden = true
+            cell.isSelectedCell = true
+            cell.rightImageView.image = UIImage(named: "3.icon_ drop-down")
+            cell.isTopCell = true
 
             cell.cellDidHandle = { [weak self] (_ cell: WalletBalanceTableViewCell) in
                 guard let self = self else { return }
                 self.balanceCellDidHandle(cell)
             }
-            cell.isUserInteractionEnabled = indexPath.row == 0 ? true : (BigUInt(balanceStyle.balance(for: indexPath.row).1) ?? BigUInt.zero > BigUInt.zero)
+            cell.isUserInteractionEnabled = true
             return cell
         case .inputAmount:
             let cell = tableView.dequeueReusableCell(withIdentifier: "SendInputTableViewCell") as! SendInputTableViewCell
@@ -289,9 +291,9 @@ extension WithDrawViewController: UITableViewDelegate, UITableViewDataSource {
 //                self?.currentAmount = inputAmountVON
 //                self?.tableView.reloadSections(IndexSet([indexPath.section + 1]), with: .none)
             }
-            if let bStyle = balanceStyle, bStyle.selectedIndex > 0 {
+            if let bStyle = balanceStyle, bStyle.currentBalance.2 == true {
                 cell.amountView.textField.isEnabled = false
-                self.currentAmount = BigUInt(bStyle.currentBalance.1) ?? BigUInt.zero
+                currentAmount = BigUInt(bStyle.currentBalance.1) ?? BigUInt.zero
                 cell.amountView.textField.text = BigUInt(bStyle.currentBalance.1)?.divide(by: ETHToWeiMultiplier, round: 8)
             } else {
                 cell.amountView.textField.isEnabled = true
@@ -352,7 +354,6 @@ extension WithDrawViewController {
 
         guard
             let walletObject = walletStyle,
-            let balanceSelectedIndex = balanceStyle?.selectedIndex,
             let nodeId = currentNode?.nodeId,
             let stakingBlockNum = balanceStyle?.currentBlockNum else { return }
         let currentAddress = walletObject.currentWallet.address
@@ -374,7 +375,7 @@ extension WithDrawViewController {
 
                     let transactionData = TransactionQrcode(amount: self.currentAmount.description, chainId: web3.properties.chainId, from: walletObject.currentWallet.address, to: PlatonConfig.ContractAddress.stakingContractAddress, gasLimit: selectedGasLimit.description, gasPrice: selectedGasPrice.description, nonce: nonceString, typ: nil, nodeId: nodeId, nodeName: self.currentNode?.name, stakingBlockNum: String(stakingBlockNum), functionType: funcType.typeValue)
 
-                    let qrcodeData = QrcodeData(qrCodeType: 0, qrCodeData: [transactionData], chainId: web3.chainId, functionType: 1005, from: walletObject.currentWallet.address)
+                    let qrcodeData = QrcodeData(qrCodeType: 0, qrCodeData: [transactionData], chainId: web3.chainId, functionType: 1005, from: walletObject.currentWallet.address, nodeName: self.currentNode?.name, rn: nil, timestamp: Int(Date().timeIntervalSince1970 * 1000))
                     guard
                         let data = try? JSONEncoder().encode(qrcodeData),
                         let content = String(data: data, encoding: .utf8) else { return }
@@ -550,20 +551,14 @@ extension WithDrawViewController {
         tableView.reloadSections(IndexSet([indexSection]), with: .fade)
     }
 
-    func balanceCellDidHandle(_ cell: WalletBalanceTableViewCell) {
+    func refreshBalanceAndInputAmountCell(_ indexPath: IndexPath) {
+        let indexSection = indexPath.section
         guard let bStyle = balanceStyle else { return }
-
-        let indexPath = tableView.indexPath(for: cell)
-        var newBalanceStyle = bStyle
-        newBalanceStyle.isExpand = !newBalanceStyle.isExpand
-        guard let indexRow = indexPath?.row, let indexSection = indexPath?.section else { return }
-        if indexRow != 0 {
-            newBalanceStyle.selectedIndex = indexRow - 1
+        if bStyle.currentBalance.2 == false {
+            currentAmount = BigUInt.zero
         }
-        balanceStyle = newBalanceStyle
-//        currentAmount = BigUInt.zero
 
-        listData[indexSection] = DelegateTableViewCellStyle.walletBalances(balanceStyle: newBalanceStyle)
+        listData[indexSection] = DelegateTableViewCellStyle.walletBalances(balanceStyle: bStyle)
         tableView.reloadSections(IndexSet([indexSection, indexSection+1, indexSection+2]), with: .fade)
 
         if currentAmount != .zero {
@@ -574,10 +569,36 @@ extension WithDrawViewController {
         guard
             let nodeId = currentNode?.nodeId,
             let address = walletStyle?.currentWallet.address,
-            indexRow != 0
+            let stakingBlockNum = balanceStyle?.currentBlockNum
+            else { return }
+
+        getGas(walletAddr: address, nodeId: nodeId, stakingBlockNum: String(stakingBlockNum))
+    }
+
+    func balanceCellDidHandle(_ cell: WalletBalanceTableViewCell) {
+        view.endEditing(true)
+        guard
+            let balances = balanceStyle?.balances,
+            let selected = balanceStyle?.currentBalance,
+            let indexPath = tableView.indexPath(for: cell)
         else { return }
 
-        getGas(walletAddr: address, nodeId: nodeId, stakingBlockNum: String(bStyle.currentBlockNum))
+        let type = PopSelectedViewType.delegate(datasource: balances, selected: selected)
+        let contentView = ThresholdValueSelectView(title: Localized("pop_selection_title_withdraw"), type: type)
+        contentView.show(viewController: self)
+        contentView.valueChangedHandler = { [weak self] value in
+            switch value {
+            case .delegate(_, let newSelected):
+                guard selected != newSelected else {
+                    return
+                }
+                guard let index = balances.firstIndex(where: { $0 == newSelected }) else { return }
+                self?.balanceStyle?.selectedIndex = index
+                self?.refreshBalanceAndInputAmountCell(indexPath)
+            default:
+                break
+            }
+        }
     }
 
     func updateHeightOfRow(_ cell: SendInputTableViewCell) {

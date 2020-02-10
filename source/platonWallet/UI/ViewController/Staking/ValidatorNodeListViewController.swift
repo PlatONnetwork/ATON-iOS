@@ -131,6 +131,11 @@ class ValidatorNodeListViewController: BaseViewController, IndicatorInfoProvider
         controller.isSelectedSearchButton = isShowSearch
     }
 
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        searchView.searchBar.resignFirstResponder()
+    }
+
     @objc func scrollToTop() {
         if isViewLoaded {
             if tableView.mj_header != nil {
@@ -246,6 +251,12 @@ extension ValidatorNodeListViewController: UITableViewDelegate, UITableViewDataS
         }
         controller.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(controller, animated: true)
+    }
+}
+
+extension ValidatorNodeListViewController: UIScrollViewDelegate {
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        searchView.searchBar.resignFirstResponder()
     }
 }
 

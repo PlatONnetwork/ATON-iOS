@@ -213,11 +213,17 @@ class SettingTableViewController: BaseViewController, UITableViewDelegate, UITab
             BigUInt(100000)*PlatonConfig.VON.LAT,
             BigUInt(1000000)*PlatonConfig.VON.LAT]
 
-        let contentView = ThresholdValueSelectView<BigUInt>(listData: listData, selected: value)
+        let type = PopSelectedViewType.threshold(datasource: listData, selected: value)
+        let contentView = ThresholdValueSelectView(type: type)
         contentView.show(viewController: self)
-        contentView.valueChangedHandler = { [weak self] (value) in
-            SettingService.shareInstance.thresholdValue = value
-            self?.initData()
+        contentView.valueChangedHandler = { [weak self] value in
+            switch value {
+            case .threshold(_, let selected):
+                SettingService.shareInstance.thresholdValue = selected
+                self?.initData()
+            default:
+                break
+            }
         }
     }
 

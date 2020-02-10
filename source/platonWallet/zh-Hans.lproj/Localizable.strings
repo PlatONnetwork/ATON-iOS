@@ -985,3 +985,6 @@
 
 "alert_delegate_all" = "全部委托";
 "alert_delegate_all_without_01" = "保留余额";
+
+"pop_selection_title_withdraw" = "选择赎回项";
+"pop_selection_title_delegate" = "选择可用的LAT";
