@@ -14,7 +14,7 @@ enum PopSelectedViewType {
     case none
     case sort(datasource: [NodeSort], selected: NodeSort)
     case threshold(datasource: [BigUInt], selected: BigUInt)
-    case delegate(datasource: [(String, String, Bool)], selected: (String, String, Bool))
+    case delegate(datasource: [(String, String, Bool)], selected: Int)
 
     var count: Int {
         switch self {
@@ -35,7 +35,7 @@ class ThresholdValueSelectView: UIView, UITableViewDelegate, UITableViewDataSour
     var type: PopSelectedViewType = PopSelectedViewType.none
     var cellHeight: CGFloat {
         switch type {
-        case .delegate(_, _):
+        case .delegate:
             return 62.0
         default:
             return 46.0
@@ -162,7 +162,7 @@ class ThresholdValueSelectView: UIView, UITableViewDelegate, UITableViewDataSour
             let cell = tableView.dequeueReusableCell(withIdentifier: "balanceSelectCell") as! BalanceSelectCell
             cell.titleLabel.text = datasource[indexPath.row].0
             cell.valueLabel.text = datasource[indexPath.row].1.vonToLATString?.balanceFixToDisplay(maxRound: 8).ATPSuffix()
-            cell.selectedIV.isHidden = datasource[indexPath.row] != selectedValue
+            cell.selectedIV.isHidden = indexPath.row != selectedValue
             return cell
         case .sort(let datasource, let selectedValue):
             let cell = tableView.dequeueReusableCell(withIdentifier: "thresholdCellIdentifier") as! ThresholdSelectCell
@@ -183,12 +183,11 @@ class ThresholdValueSelectView: UIView, UITableViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         switch type {
         case .delegate(let datasource, var selectedValue):
-            let item = datasource[indexPath.row]
-            if item == selectedValue {
+            if indexPath.row == selectedValue {
                 tableView.reloadData()
                 return
             }
-            selectedValue = item
+            selectedValue = indexPath.row
             tableView.reloadData()
             valueChangedHandler?(PopSelectedViewType.delegate(datasource: [], selected: selectedValue))
             dismiss()

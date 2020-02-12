@@ -660,7 +660,7 @@
 //VoteConfirm
 "VoteConfirm_title" = "Voting Confirmation";
 "VoteConfirm_payment_info" = "Type:";
-"VoteConfirm_fee_colon" = "Fee:";
+"VoteConfirm_fee_colon" = "Estimated fee:";
 "VoteConfirm_submitBtn_title" = "Confirm";
 "VoteConfirm_vote" = "Vote";
 

@@ -673,7 +673,7 @@
 //
 "VoteConfirm_title" = "投票确认";
 "VoteConfirm_payment_info" = "类型：";
-"VoteConfirm_fee_colon" = "手续费：";
+"VoteConfirm_fee_colon" = "预估手续费：";
 "VoteConfirm_submitBtn_title" = "确定";
 "VoteConfirm_vote" = "投票";
 

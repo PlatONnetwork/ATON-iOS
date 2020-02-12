@@ -359,6 +359,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
     }
 
     @objc func onSendButton(_ sender: UIButton) {
+        view.endEditing(true)
 
         if !self.checkConfirmButtonAvailable() {
             return

@@ -13,28 +13,33 @@ import platonWeb3
 
 class WithDrawViewController: BaseViewController {
 
-    var currentNode: Node?
+    var delegateDetail: DelegateDetail?
+
+    var currentNode: Node? {
+        return delegateDetail?.delegateToNode()
+    }
+    
     var walletStyle: WalletsCellStyle?
     var balanceStyle: BalancesCellStyle?
     var currentAddress: String?
     var currentAmount: BigUInt = BigUInt.zero
     var delegation: Delegation?
+    var currentDelegationValue: DelegationValue?
 
     var listData: [DelegateTableViewCellStyle] = []
-    var remoteGas: RemoteGas?
     var generateQrCode: QrcodeData<[TransactionQrcode]>?
     var pollingTimer : Timer?
 
     var gasLimit: BigUInt? {
-        return remoteGas?.gasLimitBInt
+        return currentDelegationValue?.gasLimitBInt
     }
 
     var gasPrice: BigUInt? {
-        return remoteGas?.gasPriceBInt
+        return currentDelegationValue?.gasPriceBInt
     }
 
     var estimateUseGas: BigUInt {
-        return remoteGas?.gasUsedBInt ?? BigUInt.zero
+        return currentDelegationValue?.gasUsedBInt ?? BigUInt.zero
     }
 
     var minDelegateAmountLimit: BigUInt {
@@ -77,6 +82,13 @@ class WithDrawViewController: BaseViewController {
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
+        }
+
+        tableView.emptyDataSetView { [weak self] view in
+            let holder = self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, nil,"img-No network") as? TableViewNoDataPlaceHolder
+            holder?.descriptionLabel.text = Localized("empty_view_no_network_title")
+            view.customView(holder)
+            view.isScrollAllowed(true)
         }
 
         tableView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(cancelFirstResponser)))
@@ -154,7 +166,13 @@ class WithDrawViewController: BaseViewController {
 
         let bStyle = BalancesCellStyle(balances: balances, stakingBlockNums: stakingBlockNums, selectedIndex: selectedIndex, isExpand: false)
         balanceStyle = bStyle
+        if let deleList = delegation?.deleList, let selectedIndex = balanceStyle?.selectedIndex {
+            currentDelegationValue = deleList[selectedIndex]
+        }
 
+        if bStyle.currentBalance.2 == true {
+            currentAmount = BigUInt(bStyle.currentBalance.1) ?? BigUInt.zero
+        }
         initListData()
     }
 
@@ -164,10 +182,6 @@ class WithDrawViewController: BaseViewController {
             let node = currentNode,
             let bStyle = balanceStyle,
             let wallet = localWallet else { return }
-
-        if let nodeId = node.nodeId {
-            getGas(walletAddr: wallet.address, nodeId: nodeId, stakingBlockNum: String(bStyle.currentBlockNum))
-        }
 
         let item1 = DelegateTableViewCellStyle.nodeInfo(node: node)
         walletStyle = WalletsCellStyle(wallets: [wallet], selectedIndex: 0, isExpand: false)
@@ -187,6 +201,10 @@ class WithDrawViewController: BaseViewController {
         listData = [item1, item2, item3, item4, item5, item6]
 
         tableView.reloadData()
+        if currentAmount != .zero {
+            let cell = tableView.cellForRow(at: IndexPath(row: 0, section: 3)) as? SendInputTableViewCell
+            cell?.amountView.checkInvalidNow(showErrorMsg: true)
+        }
     }
 }
 
@@ -237,12 +255,12 @@ extension WithDrawViewController: UITableViewDelegate, UITableViewDataSource {
             cell.shadowView.isHidden = indexPath.row != 0
             cell.setupBalanceData(balanceStyle.currentBalance)
             cell.bottomlineV.isHidden = true
-            cell.isSelectedCell = true
-            cell.rightImageView.image = UIImage(named: "3.icon_ drop-down")
+            cell.isSelectedCell = balanceStyle.balances.count > 1
+            cell.rightImageView.image = balanceStyle.balances.count > 1 ? UIImage(named: "3.icon_ drop-down") : nil
             cell.isTopCell = true
 
             cell.cellDidHandle = { [weak self] (_ cell: WalletBalanceTableViewCell) in
-                guard let self = self else { return }
+                guard let self = self, balanceStyle.balances.count > 1 else { return }
                 self.balanceCellDidHandle(cell)
             }
             cell.isUserInteractionEnabled = true
@@ -558,6 +576,10 @@ extension WithDrawViewController {
             currentAmount = BigUInt.zero
         }
 
+        if let deleList = delegation?.deleList, let selectedIndex = balanceStyle?.selectedIndex {
+            currentDelegationValue = deleList[selectedIndex]
+        }
+
         listData[indexSection] = DelegateTableViewCellStyle.walletBalances(balanceStyle: bStyle)
         tableView.reloadSections(IndexSet([indexSection, indexSection+1, indexSection+2]), with: .fade)
 
@@ -565,21 +587,13 @@ extension WithDrawViewController {
             let cell = tableView.cellForRow(at: IndexPath(row: 0, section: indexSection+1)) as? SendInputTableViewCell
             cell?.amountView.checkInvalidNow(showErrorMsg: true)
         }
-
-        guard
-            let nodeId = currentNode?.nodeId,
-            let address = walletStyle?.currentWallet.address,
-            let stakingBlockNum = balanceStyle?.currentBlockNum
-            else { return }
-
-        getGas(walletAddr: address, nodeId: nodeId, stakingBlockNum: String(stakingBlockNum))
     }
 
     func balanceCellDidHandle(_ cell: WalletBalanceTableViewCell) {
         view.endEditing(true)
         guard
             let balances = balanceStyle?.balances,
-            let selected = balanceStyle?.currentBalance,
+            let selected = balanceStyle?.selectedIndex,
             let indexPath = tableView.indexPath(for: cell)
         else { return }
 
@@ -592,8 +606,8 @@ extension WithDrawViewController {
                 guard selected != newSelected else {
                     return
                 }
-                guard let index = balances.firstIndex(where: { $0 == newSelected }) else { return }
-                self?.balanceStyle?.selectedIndex = index
+
+                self?.balanceStyle?.selectedIndex = newSelected
                 self?.refreshBalanceAndInputAmountCell(indexPath)
             default:
                 break
@@ -621,25 +635,6 @@ extension WithDrawViewController {
             controller.transaction = transaction
             controller.backToViewController = self.navigationController?.viewController(self.indexOfViewControllers - 1)
             self.navigationController?.pushViewController(controller, animated: true)
-        }
-    }
-}
-
-extension WithDrawViewController {
-    private func getGas(walletAddr: String, nodeId: String, stakingBlockNum: String) {
-        TransactionService.service.getContractGas(from: walletAddr, txType: TxType.delegateWithdraw, nodeId: nodeId, stakingBlockNum: stakingBlockNum) { [weak self] (result, remoteGas) in
-            self?.hideLoadingHUD()
-            switch result {
-            case .success:
-                guard let gas = remoteGas else {
-                    self?.showErrorMessage(text: "get gas api error", delay: 2.0)
-                    return
-                }
-                self?.remoteGas = gas
-                self?.tableView.reloadData()
-            case .fail(_, let errMsg):
-                self?.showErrorMessage(text: errMsg ?? "get gas api error", delay: 2.0)
-            }
         }
     }
 }

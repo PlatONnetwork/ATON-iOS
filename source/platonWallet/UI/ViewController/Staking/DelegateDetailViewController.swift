@@ -105,7 +105,7 @@ extension DelegateDetailViewController {
 
     private func gotoWithdrawController(_ dDetail: DelegateDetail) {
         let controller = WithDrawViewController()
-        controller.currentNode = dDetail.delegateToNode()
+        controller.delegateDetail = dDetail
         controller.currentAddress = delegate?.walletAddress
         navigationController?.pushViewController(controller, animated: true)
     }
