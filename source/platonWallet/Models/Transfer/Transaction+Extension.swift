@@ -75,6 +75,13 @@ extension Transaction {
             return (topValueDescription, UIColor(rgb: 0xb6bbd0))
         }
 
+        if let type = txType, type == .claimReward {
+            guard let string = topValueDescription else {
+                return (nil, nil)
+            }
+            return ("+" + string, UIColor(rgb: 0x19a20e))
+        }
+
         switch direction {
         case .Sent:
             guard let string = topValueDescription else {
@@ -118,6 +125,10 @@ extension Transaction {
             return topValueDescription!
         }
 
+        if let type = txType, type == .claimReward {
+            return "+" + topValueDescription!
+        }
+
         switch direction {
         case .Sent:
             return "-" + topValueDescription!
@@ -133,9 +144,15 @@ extension Transaction {
             return UIColor(rgb: 0xb6bbd0)
         }
 
-        if txReceiptStatus == TransactionReceiptStatus.businessCodeError.rawValue {
+        if (txReceiptStatus == TransactionReceiptStatus.businessCodeError.rawValue) {
             return UIColor(rgb: 0xb6bbd0)
         }
+
+
+
+//        if let type = txType, type == .claimReward {
+//            return UIColor(rgb: 0x19a20e)
+//        }
 
         switch direction {
         case .Receive:

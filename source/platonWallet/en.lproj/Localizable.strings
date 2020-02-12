@@ -694,6 +694,8 @@
 
 "Send_transaction_alert_title" = "Send transaction";
 
+"confirm_send_from" = "Sender：";
+
 "addressbook_wallet_name_with_Colon" = "Wallet Name:";
 "addressbook_wallet_address_with_Colon" = "Wallet Address:";
 

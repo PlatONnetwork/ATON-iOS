@@ -67,7 +67,12 @@ class TransactionDetailViewController: BaseViewController {
                 }
             }
 
+            if let totalRewardBInt = BigUInt(txStatus.totalReward ?? "0"), totalRewardBInt > BigUInt.zero {
+                currentTx.totalReward = txStatus.totalReward
+            }
+
             currentTx.txReceiptStatus = status.rawValue
+
             self?.transferDetailView.updateContent(tx: currentTx)
             self?.tableView.tableHeaderView = self?.transferDetailView
             self?.transferDetailView.setNeedsLayout()
@@ -75,8 +80,13 @@ class TransactionDetailViewController: BaseViewController {
             self?.transferDetailView.frame.size = self?.transferDetailView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize) ?? CGSize(width: UIScreen.main.bounds.width, height: 250)
             self?.tableView.tableHeaderView = self?.transferDetailView
 
-            self?.transaction?.totalReward = txStatus.totalReward
-            self?.tableView.reloadData()
+
+            if let totalRewardBInt = BigUInt(txStatus.totalReward ?? "0"), totalRewardBInt > BigUInt.zero {
+                self?.transaction?.totalReward = txStatus.totalReward
+                self?.listData = []
+                self?.initData()
+                self?.tableView.reloadData()
+            }
         }
     }
 
@@ -176,6 +186,7 @@ class TransactionDetailViewController: BaseViewController {
         }
         listData.append((title: Localized("TransactionDetailVC_energon_price"), value: tx.actualTxCostDescription?.displayForMicrometerLevel(maxRound: 8).ATPSuffix() ?? "0", copy: false))
         listData.append((title: Localized("TransactionDetailVC_transaction_hash"), value: tx.txhash ?? "--", copy: true))
+        tableView.reloadData()
     }
 
     func initSubViews() {

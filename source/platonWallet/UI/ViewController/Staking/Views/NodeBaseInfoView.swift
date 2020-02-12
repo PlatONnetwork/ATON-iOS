@@ -95,6 +95,14 @@ class NodeBaseInfoView: UIView {
             make.leading.equalTo(nodeAvatarIV.snp.trailing).offset(5)
         }
 
+        nodeNameButton.addTarget(self, action: #selector(link), for: .touchUpInside)
+        nodeNameButton.setImage(UIImage(named: "3.icon_link2"), for: .normal)
+        nodeBackgroundView.addSubview(nodeNameButton)
+        nodeNameButton.snp.makeConstraints { make in
+            make.leading.equalTo(nodeNameLabel.snp.trailing).offset(4)
+            make.centerY.equalTo(nodeNameLabel)
+        }
+
         statusButton.setTitle("--", for: .normal)
         statusButton.setTitleColor(.white, for: .normal)
         statusButton.layer.cornerRadius = 3.0
@@ -105,15 +113,7 @@ class NodeBaseInfoView: UIView {
         statusButton.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .horizontal)
         nodeBackgroundView.addSubview(statusButton)
         statusButton.snp.makeConstraints { make in
-            make.leading.equalTo(nodeNameLabel.snp.trailing).offset(4)
-            make.centerY.equalTo(nodeNameLabel)
-        }
-
-        nodeNameButton.addTarget(self, action: #selector(link), for: .touchUpInside)
-        nodeNameButton.setImage(UIImage(named: "3.icon_link2"), for: .normal)
-        nodeBackgroundView.addSubview(nodeNameButton)
-        nodeNameButton.snp.makeConstraints { make in
-            make.leading.equalTo(statusButton.snp.trailing).offset(6)
+            make.leading.equalTo(nodeNameButton.snp.trailing).offset(6)
             make.height.equalTo(16)
             make.centerY.equalTo(nodeNameLabel)
         }
@@ -133,7 +133,7 @@ class NodeBaseInfoView: UIView {
 
         rateView.snp.makeConstraints { make in
             make.top.equalTo(nodeNameLabel)
-            make.leading.greaterThanOrEqualTo(nodeNameButton.snp.trailing).offset(5)
+            make.leading.greaterThanOrEqualTo(statusButton.snp.trailing).offset(5)
             make.trailing.equalToSuperview().offset(-10)
         }
 
@@ -142,7 +142,7 @@ class NodeBaseInfoView: UIView {
         trendIV.snp.makeConstraints { make in
             make.centerY.equalTo(rateView.snp.centerY).offset(-3)
             make.trailing.equalTo(rateView.snp.leading).offset(-2)
-            make.leading.greaterThanOrEqualTo(nodeNameButton.snp.trailing).offset(5)
+            make.leading.greaterThanOrEqualTo(statusButton.snp.trailing).offset(5)
         }
 
         rateLabel.textAlignment = .center

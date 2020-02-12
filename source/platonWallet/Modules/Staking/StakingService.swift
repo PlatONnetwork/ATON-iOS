@@ -64,6 +64,7 @@ final class StakingService: BaseService {
                     transaction.to = PlatonConfig.ContractAddress.rewardContractAddress
                     transaction.gasPrice = gas.gasPrice
                     transaction.gas = gas.gasLimit
+                    transaction.gasUsed = gas.gasUsed
                     DispatchQueue.main.async {
                         completion?(PlatonCommonResult.success, transaction)
                     }
@@ -440,6 +441,7 @@ extension StakingService {
                     transaction.toType = .contract
                     transaction.txReceiptStatus = -1
                     transaction.value = amount.description
+                    transaction.unDelegation = amount.description
                     transaction.nodeId = nodeId
                     transaction.confirmTimes = Int(Date().timeIntervalSince1970 * 1000)
                     transaction.direction = .Receive

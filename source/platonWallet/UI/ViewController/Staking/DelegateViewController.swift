@@ -131,19 +131,20 @@ class DelegateViewController: BaseViewController {
                         newData.free = (BigUInt(newData.free ?? "0") ?? BigUInt.zero).convertBalanceDecimalPlaceToZero().description
                         newData.lock = (BigUInt(newData.lock ?? "0") ?? BigUInt.zero).convertBalanceDecimalPlaceToZero().description
 
-                        var walletBalance = AssetService.sharedInstace.balances.first(where: { $0.addr.lowercased() == walletAddr.lowercased() })
-                        walletBalance?.free = newData.free
-                        walletBalance?.lock = newData.lock
-
+                        if let index = AssetService.sharedInstace.balances.firstIndex(where: { $0.addr.lowercased() == walletAddr.lowercased() }) {
+                            var oldBalance = AssetService.sharedInstace.balances[index]
+                            oldBalance.free = newData.free
+                            oldBalance.lock = newData.lock
+                            AssetService.sharedInstace.balances[index] = oldBalance
+                        }
                         self?.canDelegation = newData
+                        self?.initBalanceStyle()
 
                         if self?.currentAmount == .zero {
                             let cell = self?.tableView.cellForRow(at: IndexPath(row: 0, section: 3)) as? SendInputTableViewCell
                             cell?.amountView.textField.text = nil
                             cell?.amountView.cleanErrorState()
                         }
-
-                        self?.tableView.reloadData()
 
                         guard let address = self?.walletStyle?.currentWallet.address else { return }
                         self?.getGas(walletAddr: address, nodeId: nodeId)
@@ -153,6 +154,21 @@ class DelegateViewController: BaseViewController {
                     completion?()
                 }
         }
+    }
+
+    func initBalanceStyle() {
+        let balance = AssetService.sharedInstace.balances.first { (item) -> Bool in
+            return item.addr.lowercased() == walletStyle!.currentWallet.address.lowercased()
+        }
+        var balances: [(String, String, Bool)] = []
+        balances.append((Localized("staking_balance_can_used"), (BigUInt(balance?.free ?? "0") ?? BigUInt.zero).convertBalanceDecimalPlaceToZero().description, false))
+        if let lock = balance?.lock, let convertLock = BigUInt(lock)?.convertBalanceDecimalPlaceToZero(), convertLock > BigUInt.zero {
+            balances.append((Localized("staking_balance_locked_position"), convertLock.description, true))
+        }
+
+        balanceStyle = BalancesCellStyle(balances: balances, stakingBlockNums: [], selectedIndex: 0, isExpand: false)
+        listData[2] = DelegateTableViewCellStyle.walletBalances(balanceStyle: balanceStyle!)
+        tableView.reloadData()
     }
 
     private func initListData() {
@@ -674,6 +690,7 @@ extension DelegateViewController {
 
 extension DelegateViewController {
     private func getGas(walletAddr: String, nodeId: String) {
+        showLoadingHUD()
         TransactionService.service.getContractGas(from: walletAddr, txType: TxType.delegateCreate, nodeId: nodeId) { [weak self] (result, remoteGas) in
             self?.hideLoadingHUD()
             switch result {

@@ -164,8 +164,9 @@ class MyDelegateViewCell: UITableViewCell {
             make.trailing.equalToSuperview().offset(-10)
         }
 
-        let delegateBackgroundView = UIView()
+        let delegateBackgroundView = UIButton()
 //        delegateBackgroundView.isUserInteractionEnabled = false
+        delegateBackgroundView.addTarget(self, action: #selector(containerTapAction), for: .touchUpInside)
         delegateBackgroundView.backgroundColor = .white
         containerView.addSubview(delegateBackgroundView)
         delegateBackgroundView.snp.makeConstraints { make in

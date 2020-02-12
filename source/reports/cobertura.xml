@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">
-<coverage line-rate="0.0000000000000000" branch-rate="1.0000000000000000" lines-covered="0" lines-valid="4506" branches-covered="0" branches-valid="0" complexity="0.0" timestamp="1581318332" version="Slather 2.4.7">
+<coverage line-rate="0.0000000000000000" branch-rate="1.0000000000000000" lines-covered="0" lines-valid="4499" branches-covered="0" branches-valid="0" complexity="0.0" timestamp="1581519981" version="Slather 2.4.7">
   <sources>
     <source>/Users/ned/Documents/yuham/ios/platon/ATON-iOS/source</source>
   </sources>
@@ -3403,13 +3403,6 @@
             <line number="114" branch="false" hits="0"/>
             <line number="115" branch="false" hits="0"/>
             <line number="116" branch="false" hits="0"/>
-            <line number="117" branch="false" hits="0"/>
-            <line number="118" branch="false" hits="0"/>
-            <line number="119" branch="false" hits="0"/>
-            <line number="120" branch="false" hits="0"/>
-            <line number="121" branch="false" hits="0"/>
-            <line number="122" branch="false" hits="0"/>
-            <line number="123" branch="false" hits="0"/>
           </lines>
         </class>
       </classes>
