@@ -74,6 +74,9 @@ class TransactionDetailViewController: BaseViewController {
             self?.transferDetailView.layoutIfNeeded()
             self?.transferDetailView.frame.size = self?.transferDetailView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize) ?? CGSize(width: UIScreen.main.bounds.width, height: 250)
             self?.tableView.tableHeaderView = self?.transferDetailView
+
+            self?.transaction?.totalReward = txStatus.totalReward
+            self?.tableView.reloadData()
         }
     }
 

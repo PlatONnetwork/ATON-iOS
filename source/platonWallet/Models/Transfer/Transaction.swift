@@ -551,6 +551,7 @@ enum TransactionDirection: String, Decodable {
 struct TransactionsStatusByHash: Decodable {
     var hash: String?
     var status: Int?
+    var totalReward: String?
 }
 
 extension TransactionsStatusByHash {

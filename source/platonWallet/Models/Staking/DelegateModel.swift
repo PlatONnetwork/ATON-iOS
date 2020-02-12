@@ -80,6 +80,24 @@ struct DelegationValue: Decodable {
     var stakingBlockNum: String?
     var delegated: String?
     var released: String?
+    var gasLimit: String?
+    var gasPrice: String?
+
+    var gasLimitBInt: BigUInt {
+        return BigUInt(gasLimit ?? "0") ?? BigUInt.zero
+    }
+
+    var gasPriceBInt: BigUInt {
+        return BigUInt(gasPrice ?? "0") ?? BigUInt.zero
+    }
+
+    var gasUsedBInt: BigUInt {
+        return gasLimitBInt.multiplied(by: gasPriceBInt)
+    }
+
+    var gasUsed: String {
+        return gasUsedBInt.description
+    }
 }
 
 extension DelegationValue {

@@ -601,7 +601,7 @@ extension DelegateViewController {
         view.endEditing(true)
         guard
             let balances = balanceStyle?.balances,
-            let selected = balanceStyle?.currentBalance,
+            let selected = balanceStyle?.selectedIndex,
             let indexPath = tableView.indexPath(for: cell)
             else { return }
 
@@ -614,8 +614,7 @@ extension DelegateViewController {
                 guard selected != newSelected else {
                     return
                 }
-                guard let index = balances.firstIndex(where: { $0 == newSelected }) else { return }
-                self?.balanceStyle?.selectedIndex = index
+                self?.balanceStyle?.selectedIndex = newSelected
                 self?.refreshBalanceAndInputAmountCell(indexPath)
             default:
                 break
