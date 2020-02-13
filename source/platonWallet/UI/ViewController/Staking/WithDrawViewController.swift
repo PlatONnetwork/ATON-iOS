@@ -535,6 +535,7 @@ extension WithDrawViewController {
                         tx.txhash = result.bytes.toHexString().add0x()
                         tx.txReceiptStatus = -1
                         tx.value = amount
+                        tx.unDelegation = amount
                         tx.transactionType = Int(type)
                         tx.toType = .contract
                         tx.nodeName = self.currentNode?.name

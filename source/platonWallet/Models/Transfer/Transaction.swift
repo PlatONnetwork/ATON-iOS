@@ -217,7 +217,7 @@ class Transaction : Object, Decodable {
 
     @objc dynamic var chainId: String = ""
 
-    var totalReward: String?
+    @objc dynamic var totalReward: String? = ""
 
     var sequence: Int64?
 
@@ -251,7 +251,7 @@ class Transaction : Object, Decodable {
     var proposalType: ProposalType?
     var proposalId: String?
     var vote: VoteResultType?
-    var unDelegation: String?
+    @objc dynamic var unDelegation: String? = ""
 
     override public static func ignoredProperties() -> [String] {
         return ["sharedWalletOwners",
@@ -267,9 +267,7 @@ class Transaction : Object, Decodable {
                 "piDID",
                 "proposalType",
                 "proposalId",
-                "vote",
-                "unDelegation",
-                "totalReward"
+                "vote"
         ]
     }
 
@@ -377,7 +375,16 @@ extension Transaction {
     }
 
     var topValueDescription : String? {
-        get {
+        guard let type = txType else { return BigUInt(value ?? "0")?.divide(by: ETHToWeiMultiplier, round: 8).displayForMicrometerLevel(maxRound: 8) }
+        switch type {
+        case .claimReward:
+            let rewardBInt = BigUInt(totalReward ?? "0") ?? BigUInt.zero
+            return rewardBInt.divide(by: ETHToWeiMultiplier, round: 8).displayForMicrometerLevel(maxRound: 8)
+        case .delegateWithdraw:
+            let unDelegationBInt = BigUInt(unDelegation ?? "0") ?? BigUInt.zero
+            let rewardBInt = BigUInt(totalReward ?? "0") ?? BigUInt.zero
+            return (unDelegationBInt + rewardBInt).divide(by: ETHToWeiMultiplier, round: 8).displayForMicrometerLevel(maxRound: 8)
+        default:
             return BigUInt(value ?? "0")?.divide(by: ETHToWeiMultiplier, round: 8).displayForMicrometerLevel(maxRound: 8)
         }
     }
@@ -441,7 +448,9 @@ extension Transaction {
                 } else {
                     return .Receive
                 }
-            case .otherReceive:
+            case .otherReceive,
+                 .claimReward,
+                 .delegateWithdraw:
                 return .Receive
             case .contractCreate,
                  .contractExecute,
@@ -452,7 +461,6 @@ extension Transaction {
                  .stakingEdit,
                  .stakingWithdraw,
                  .delegateCreate,
-                 .delegateWithdraw,
                  .submitText,
                  .submitVersion,
                  .submitParam,

@@ -619,6 +619,9 @@ extension AssetViewControllerV060 {
                             if type == 1004 || type == 1005 {
                                 tx.value = (resultDetail.2 ?? BigUInt.zero).description
                             }
+                            if type == 1005 {
+                                tx.unDelegation = (resultDetail.2 ?? BigUInt.zero).description
+                            }
                         }
                         if type == 5000 {
                             tx.totalReward = qrcode.rn ?? "0"
