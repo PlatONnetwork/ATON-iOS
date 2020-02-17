@@ -138,16 +138,6 @@ class DelegateViewController: BaseViewController {
                             AssetService.sharedInstace.balances[index] = oldBalance
                         }
                         self?.canDelegation = newData
-                        self?.initBalanceStyle()
-
-                        if self?.currentAmount == .zero {
-                            let cell = self?.tableView.cellForRow(at: IndexPath(row: 0, section: 3)) as? SendInputTableViewCell
-                            cell?.amountView.textField.text = nil
-                            cell?.amountView.cleanErrorState()
-                        }
-
-                        guard let address = self?.walletStyle?.currentWallet.address else { return }
-                        self?.getGas(walletAddr: address, nodeId: nodeId)
                     }
                     completion?()
                 case .fail:
@@ -216,7 +206,22 @@ class DelegateViewController: BaseViewController {
         listData = [item1, item2, item3, item4, item5, item6]
         tableView.reloadData()
 
-        fetchCanDelegation()
+        fetchData()
+    }
+
+    func fetchData() {
+        fetchCanDelegation { [weak self] in
+            self?.initBalanceStyle()
+
+            if self?.currentAmount == .zero {
+                let cell = self?.tableView.cellForRow(at: IndexPath(row: 0, section: 3)) as? SendInputTableViewCell
+                cell?.amountView.textField.text = nil
+                cell?.amountView.cleanErrorState()
+            }
+
+            guard let address = self?.walletStyle?.currentWallet.address, let nodeId = self?.currentNode?.nodeId else { return }
+            self?.getGas(walletAddr: address, nodeId: nodeId)
+        }
     }
 
 }
@@ -591,7 +596,7 @@ extension DelegateViewController {
         tableView.reloadSections(IndexSet([indexSection, indexSection+1, indexSection+2, indexSection+3]), with: .fade)
         guard indexRow != 0 else { return }
 
-        fetchCanDelegation()
+        fetchData()
     }
 
     func balanceCellDidHandle(_ cell: WalletBalanceTableViewCell) {
@@ -725,7 +730,7 @@ extension DelegateViewController {
             return
         }
 
-        fetchCanDelegation()
+        fetchData()
     }
 
     func stopTimer() {

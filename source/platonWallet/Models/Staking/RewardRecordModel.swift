@@ -65,8 +65,8 @@ extension RewardModel {
         return "(" + address.addressForDisplayShort() + ")"
     }
 
-    var amountForDisplay: String {
-        return "+" + (totalReward.vonToLATString ?? "0").balanceFixToDisplay(maxRound: 8).ATPSuffix()
+    var amountForDisplay: String? {
+        return "+" + (totalReward.vonToLATWith12DecimalString ?? "0.00").ATPSuffix()
     }
 
     var recordTime: String? {
@@ -84,8 +84,8 @@ extension RewardModel {
 extension RewardRecordModel {
     var amountForDisplay: String {
         if let rewardBInt = BigInt(reward ?? "0"), rewardBInt > BigUInt.zero {
-            return "+" + (reward?.vonToLATString ?? "0").balanceFixToDisplay(maxRound: 8).ATPSuffix()
+            return "+" + (reward?.vonToLATWith12DecimalString ?? "0.00").ATPSuffix()
         }
-        return (reward?.vonToLATString ?? "0").balanceFixToDisplay(maxRound: 8).ATPSuffix()
+        return (reward?.vonToLATWith12DecimalString ?? "0.00").ATPSuffix()
     }
 }

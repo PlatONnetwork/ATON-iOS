@@ -152,7 +152,12 @@ class WithDrawViewController: BaseViewController {
                 balances.append((Localized("staking_balance_Delegated"), delegatedBInt.description, false))
                 stakingBlockNums.append(UInt64(deleItem.stakingBlockNum ?? "0") ?? 0)
             } else if let released = deleItem.released, let releasedBInt = BigUInt(released), releasedBInt > BigUInt.zero {
-                balances.append((Localized("staking_balance_release_Delegated") + "(" + Localized("staking_balance_release_Delegated_index", arguments: releasedIndex) + ")" , releasedBInt.description, true))
+                if dele.releasedItemGreaterOne {
+                    balances.append((Localized("staking_balance_release_Delegated") + "(" + Localized("staking_balance_release_Delegated_index", arguments: releasedIndex) + ")" , releasedBInt.description, true))
+                } else {
+                    balances.append((Localized("staking_balance_release_Delegated"), releasedBInt.description, true))
+                }
+
                 stakingBlockNums.append(UInt64(deleItem.stakingBlockNum ?? "0") ?? 0)
                 releasedIndex += 1
             }

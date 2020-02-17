@@ -99,7 +99,7 @@ struct AppConfig {
 
     struct ServerURL {
         struct HOST {
-            static let UATNET = "https://aton.uatnet.platon.network"
+            static let UATNET = "https://aton.uat.platon.network"
             static let MAINTESTNET = "https://aton.test.platon.network"
             static let MAINNET = "https://aton.main.platon.network"
 //            static let TESTNET = "http://192.168.9.190:1000"

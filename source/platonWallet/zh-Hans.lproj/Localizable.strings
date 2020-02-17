@@ -179,7 +179,7 @@
 
 "createWalletSuccessVC_title" = "备份钱包";
 
-"importKeystoreVC_tips" = "使用（.json）导入的同时需要输入钱包密码进行解密，同时未来需要通过密码验证才能进行LAT发送、备份等操作。";
+"importKeystoreVC_tips" = "直接复制粘贴您之前生成的钱包文件(.json)内容至输入框，或者扫描钱包文件内容生成的二维码录入。";
 "importKeystoreVC_keystoreInput_placeholder" = "请输入钱包文件（.json）内容";
 "importKeystoreVC_nameInput_placeholder" = "输入钱包名称";
 "importKeystoreVC_pswInput_placeholder" = "输入钱包密码";
@@ -195,10 +195,10 @@
 "importWalletVC_tab_mnemonic" = "助记词";
 "importWalletVC_tab_privateKey" = "私钥";
 "importWalletVC_tab_observedWallet" = "观察钱包";
-"importWalletVC_mnemonic_tips" = "请将记下的助记词按顺序填入以下表格中，在每个助记词输入完成后按“空格”键可以跳转到下个单词，使用助记词导入的同时需要设定钱包密码，未来需要通过密码验证才能够进行能量发送、备份等操作。";
+"importWalletVC_mnemonic_tips" = "请将记下的助记词按顺序填入以下表格中，在每个助记词输入完成后按“空格”键可以跳转到下个单词，使用助记词导入的同时需要设定钱包密码。";
 "importWalletVC_mnemonic_textView_placeholder" = "请输入助记词，用空格分割";
 
-"importWalletVC_privateKey_tips" = "使用私钥导入的同时需要设置钱包密码，未来需要通过密码验证才能够进行LAT发送、备份等操作。";
+"importWalletVC_privateKey_tips" = "输入私钥内容至输入框，或者通过扫描私钥内容生成的二维码录入。请留意字符大小写。使用私钥导入的同时需要设定钱包密码。";
 "importWalletVC_privateKey_textView_placeholder" = "请输入私钥";
 "importWalletVC_importBtn_title" = "开始导入";
 "importWalletVC_success_tips" = "导入成功";
@@ -857,10 +857,10 @@
 
 "node_quit_consensus_tip" = "节点已退出共识，投票失败！";
 
-"delegate_error_result_amountzero" = "解除委托金额大于0";
 "delegate_error_result_nodeexit" = "委托节点已退出，无法委托";
 "delegate_error_result_associate" = "节点关联的钱包地址，不可参与委托";
-"delegate_error_result_balancezero" = "可用余额为0，无法委托";
+"delegate_error_result_balancezero" = "余额不足，无法委托";
+"delegate_error_result_nodeInit" = "基金会资助的节点不接受委托";
 
 "empty_string_my_delegates_left" = "查看验证节点, ";
 "empty_string_my_delegates_right" = "参与委托";

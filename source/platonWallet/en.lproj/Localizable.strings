@@ -180,7 +180,7 @@
 "createWalletSuccessVC_title" = "Backup Wallet";
 
 //importKeystoreVC
-"importKeystoreVC_tips" = "Copy and paste PlatON official wallet's Keystore to the input field, or scan the QR Code generated with Keystore's information to import.";
+"importKeystoreVC_tips" = "Copy and paste ATON official wallet`s Keystore to the input field, or scan the QR Code generated with Keystore`s information to import.";
 "importKeystoreVC_keystoreInput_placeholder" = "Keystore content";
 "importKeystoreVC_nameInput_placeholder" = "Name of wallet";
 "importKeystoreVC_pswInput_placeholder" = "Wallet password";
@@ -850,10 +850,10 @@
 
 "node_quit_consensus_tip" = "Node has exited consensus,voting failed";
 
-"delegate_error_result_amountzero" = "amount must greater 0.";
 "delegate_error_result_nodeexit" = "The Validator has Exited and cannot be delegated.";
 "delegate_error_result_associate" = "The wallet associated with the validator is not allowed for delegation.";
 "delegate_error_result_balancezero" = "Wallet balance is 0, unable to delegate.";
+"delegate_error_result_nodeInit" = "Foundation-funded nodes do not accept delegations";
 
 "empty_string_my_delegates_left" = "View all validators, ";
 "empty_string_my_delegates_right" = "Delegate";
