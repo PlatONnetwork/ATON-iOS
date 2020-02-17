@@ -4427,41 +4427,41 @@
 		<average label="CCN" value="2.175771971496437"/>
 		<item name="viewDidLoad(...) at ./platonWallet/UI/ViewController/Transfer/ATPWallet/TransactionDetailViewController.swift:41">
 			<value>843</value>
-			<value>9</value>
+			<value>7</value>
 			<value>1</value>
 		</item>
-		<item name="didReceiveTransactionUpdate(...) at ./platonWallet/UI/ViewController/Transfer/ATPWallet/TransactionDetailViewController.swift:51">
+		<item name="didReceiveTransactionUpdate(...) at ./platonWallet/UI/ViewController/Transfer/ATPWallet/TransactionDetailViewController.swift:49">
 			<value>844</value>
-			<value>35</value>
-			<value>9</value>
+			<value>37</value>
+			<value>11</value>
 		</item>
-		<item name="initObserver(...) at ./platonWallet/UI/ViewController/Transfer/ATPWallet/TransactionDetailViewController.swift:90">
+		<item name="initObserver(...) at ./platonWallet/UI/ViewController/Transfer/ATPWallet/TransactionDetailViewController.swift:93">
 			<value>845</value>
 			<value>3</value>
 			<value>1</value>
 		</item>
-		<item name="initData(...) at ./platonWallet/UI/ViewController/Transfer/ATPWallet/TransactionDetailViewController.swift:94">
+		<item name="initData(...) at ./platonWallet/UI/ViewController/Transfer/ATPWallet/TransactionDetailViewController.swift:97">
 			<value>846</value>
-			<value>84</value>
+			<value>85</value>
 			<value>38</value>
 		</item>
-		<item name="initSubViews(...) at ./platonWallet/UI/ViewController/Transfer/ATPWallet/TransactionDetailViewController.swift:188">
+		<item name="initSubViews(...) at ./platonWallet/UI/ViewController/Transfer/ATPWallet/TransactionDetailViewController.swift:192">
 			<value>847</value>
 			<value>12</value>
 			<value>1</value>
 		</item>
-		<item name="tableView(...) at ./platonWallet/UI/ViewController/Transfer/ATPWallet/TransactionDetailViewController.swift:205">
+		<item name="tableView(...) at ./platonWallet/UI/ViewController/Transfer/ATPWallet/TransactionDetailViewController.swift:209">
 			<value>848</value>
 			<value>3</value>
 			<value>1</value>
 		</item>
-		<item name="tableView(...) at ./platonWallet/UI/ViewController/Transfer/ATPWallet/TransactionDetailViewController.swift:209">
+		<item name="tableView(...) at ./platonWallet/UI/ViewController/Transfer/ATPWallet/TransactionDetailViewController.swift:213">
 			<value>849</value>
 			<value>15</value>
 			<value>2</value>
 		</item>
-		<average label="NCSS" value="9.911660777385158"/>
-		<average label="CCN" value="2.2202591283863367"/>
+		<average label="NCSS" value="9.91283863368669"/>
+		<average label="CCN" value="2.222614840989399"/>
 		<item name="didSet(...) at ./platonWallet/UI/ViewController/Transfer/views/layout.swift:20">
 			<value>850</value>
 			<value>3</value>
@@ -4492,15 +4492,15 @@
 			<value>34</value>
 			<value>7</value>
 		</item>
-		<average label="NCSS" value="9.943859649122807"/>
-		<average label="CCN" value="2.231578947368421"/>
+		<average label="NCSS" value="9.945029239766082"/>
+		<average label="CCN" value="2.2339181286549707"/>
 		<item name="awakeFromNib(...) at ./platonWallet/UI/ViewController/QRCode/views/SharedQRView.swift:21">
 			<value>856</value>
 			<value>4</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="9.936915887850468"/>
-		<average label="CCN" value="2.2301401869158877"/>
+		<average label="NCSS" value="9.938084112149532"/>
+		<average label="CCN" value="2.232476635514019"/>
 		<item name="awakeFromNib(...) at ./platonWallet/UI/ViewController/QRCode/views/SharedCollectionViewCell.swift:15">
 			<value>857</value>
 			<value>6</value>
@@ -4511,8 +4511,8 @@
 			<value>9</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="9.93123543123543"/>
-		<average label="CCN" value="2.227272727272727"/>
+		<average label="NCSS" value="9.932400932400933"/>
+		<average label="CCN" value="2.2296037296037294"/>
 		<item name="awakeFromNib(...) at ./platonWallet/UI/ViewController/QRCode/views/QRCodeView.swift:22">
 			<value>859</value>
 			<value>7</value>
@@ -4523,8 +4523,8 @@
 			<value>7</value>
 			<value>2</value>
 		</item>
-		<average label="NCSS" value="9.924418604651162"/>
-		<average label="CCN" value="2.2255813953488373"/>
+		<average label="NCSS" value="9.925581395348837"/>
+		<average label="CCN" value="2.227906976744186"/>
 		<item name="getSharedViewHeight(...) at ./platonWallet/UI/ViewController/QRCode/views/SharedView.swift:41">
 			<value>861</value>
 			<value>3</value>
@@ -4570,8 +4570,8 @@
 			<value>6</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="9.957422324510931"/>
-		<average label="CCN" value="2.2186421173762945"/>
+		<average label="NCSS" value="9.958573072497122"/>
+		<average label="CCN" value="2.220943613348677"/>
 		<item name="viewDidLoad(...) at ./platonWallet/UI/ViewController/QRCode/QRDisplayViewController.swift:20">
 			<value>870</value>
 			<value>20</value>
@@ -4622,15 +4622,15 @@
 			<value>9</value>
 			<value>2</value>
 		</item>
-		<average label="NCSS" value="9.957906712172925"/>
-		<average label="CCN" value="2.210466439135381"/>
+		<average label="NCSS" value="9.959044368600683"/>
+		<average label="CCN" value="2.2127417519908987"/>
 		<item name="viewDidLoad(...) at ./platonWallet/UI/ViewController/QRCode/SharedPresentedVC.swift:16">
 			<value>880</value>
 			<value>8</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="9.955681818181818"/>
-		<average label="CCN" value="2.209090909090909"/>
+		<average label="NCSS" value="9.956818181818182"/>
+		<average label="CCN" value="2.2113636363636364"/>
 		<item name="init(...) at ./platonWallet/UI/ViewController/QRCode/QRScannerViewController.swift:49">
 			<value>881</value>
 			<value>4</value>
@@ -4761,8 +4761,8 @@
 			<value>25</value>
 			<value>4</value>
 		</item>
-		<average label="NCSS" value="10.045253863134658"/>
-		<average label="CCN" value="2.2240618101545255"/>
+		<average label="NCSS" value="10.04635761589404"/>
+		<average label="CCN" value="2.226269315673289"/>
 		<item name="balance(...) at ./platonWallet/UI/ViewController/Staking/Styles/DelegateTableStyle.swift:42">
 			<value>907</value>
 			<value>7</value>
@@ -4773,8 +4773,8 @@
 			<value>7</value>
 			<value>4</value>
 		</item>
-		<average label="NCSS" value="10.038546255506608"/>
-		<average label="CCN" value="2.2279735682819384"/>
+		<average label="NCSS" value="10.039647577092511"/>
+		<average label="CCN" value="2.2301762114537445"/>
 		<item name="didSet(...) at ./platonWallet/UI/ViewController/Staking/Views/NodeTableViewCell.swift:28">
 			<value>909</value>
 			<value>11</value>
@@ -4790,15 +4790,15 @@
 			<value>3</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="10.161361141602635"/>
-		<average label="CCN" value="2.2239297475301867"/>
+		<average label="NCSS" value="10.162458836443468"/>
+		<average label="CCN" value="2.226125137211855"/>
 		<item name="init(...) at ./platonWallet/UI/ViewController/Staking/Views/DoubtTableViewCell.swift:16">
 			<value>912</value>
 			<value>31</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="10.18421052631579"/>
-		<average label="CCN" value="2.2225877192982457"/>
+		<average label="NCSS" value="10.18530701754386"/>
+		<average label="CCN" value="2.224780701754386"/>
 		<item name="didSet(...) at ./platonWallet/UI/ViewController/Staking/Views/SingleButtonTableViewCell.swift:18">
 			<value>913</value>
 			<value>24</value>
@@ -4819,8 +4819,8 @@
 			<value>3</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="10.206331877729257"/>
-		<average label="CCN" value="2.2216157205240177"/>
+		<average label="NCSS" value="10.207423580786026"/>
+		<average label="CCN" value="2.2237991266375547"/>
 		<item name="didSet(...) at ./platonWallet/UI/ViewController/Staking/Views/MyDelegateViewCell.swift:27">
 			<value>917</value>
 			<value>28</value>
@@ -4841,8 +4841,8 @@
 			<value>3</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="10.367391304347827"/>
-		<average label="CCN" value="2.222826086956522"/>
+		<average label="NCSS" value="10.368478260869566"/>
+		<average label="CCN" value="2.225"/>
 		<item name="init(...) at ./platonWallet/UI/ViewController/Staking/Views/NodeSearchBarView.swift:16">
 			<value>921</value>
 			<value>4</value>
@@ -4853,8 +4853,8 @@
 			<value>23</value>
 			<value>3</value>
 		</item>
-		<average label="NCSS" value="10.37418655097614"/>
-		<average label="CCN" value="2.22234273318872"/>
+		<average label="NCSS" value="10.37527114967462"/>
+		<average label="CCN" value="2.2245119305856833"/>
 		<item name="didSet(...) at ./platonWallet/UI/ViewController/Staking/Views/NodeInfoTableViewCell.swift:18">
 			<value>923</value>
 			<value>4</value>
@@ -4865,8 +4865,8 @@
 			<value>42</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="10.401515151515152"/>
-		<average label="CCN" value="2.2196969696969697"/>
+		<average label="NCSS" value="10.402597402597403"/>
+		<average label="CCN" value="2.2218614718614718"/>
 		<item name="setupCellData(...) at ./platonWallet/UI/ViewController/Staking/Views/WalletTableViewCell.swift:24">
 			<value>925</value>
 			<value>15</value>
@@ -4887,8 +4887,8 @@
 			<value>3</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="10.452586206896552"/>
-		<average label="CCN" value="2.220905172413793"/>
+		<average label="NCSS" value="10.453663793103448"/>
+		<average label="CCN" value="2.2230603448275863"/>
 		<item name="didSet(...) at ./platonWallet/UI/ViewController/Staking/Views/NodeAboutDelegateTableViewCell.swift:38">
 			<value>929</value>
 			<value>18</value>
@@ -4919,8 +4919,8 @@
 			<value>3</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="10.642398286937901"/>
-		<average label="CCN" value="2.215203426124197"/>
+		<average label="NCSS" value="10.643468950749465"/>
+		<average label="CCN" value="2.2173447537473234"/>
 		<item name="init(...) at ./platonWallet/UI/ViewController/Staking/Views/MyDelegateHeaderView.swift:23">
 			<value>935</value>
 			<value>119</value>
@@ -4936,8 +4936,8 @@
 			<value>3</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="10.741728922091783"/>
-		<average label="CCN" value="2.2113127001067236"/>
+		<average label="NCSS" value="10.742796157950908"/>
+		<average label="CCN" value="2.2134471718249733"/>
 		<item name="init(...) at ./platonWallet/UI/ViewController/Staking/Views/RewardClaimComfirmView.swift:22">
 			<value>938</value>
 			<value>4</value>
@@ -4953,22 +4953,22 @@
 			<value>3</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="10.824468085106384"/>
-		<average label="CCN" value="2.2074468085106385"/>
+		<average label="NCSS" value="10.825531914893617"/>
+		<average label="CCN" value="2.2095744680851066"/>
 		<item name="init(...) at ./platonWallet/UI/ViewController/Staking/Views/MyDelegateNoDataView.swift:16">
 			<value>941</value>
 			<value>3</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="10.816153028692879"/>
-		<average label="CCN" value="2.206163655685441"/>
+		<average label="NCSS" value="10.817215727948991"/>
+		<average label="CCN" value="2.208289054197662"/>
 		<item name="init(...) at ./platonWallet/UI/ViewController/Staking/Views/NodeDetailCell.swift:16">
 			<value>942</value>
 			<value>22</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="10.828025477707007"/>
-		<average label="CCN" value="2.2048832271762207"/>
+		<average label="NCSS" value="10.829087048832271"/>
+		<average label="CCN" value="2.2070063694267517"/>
 		<item name="didSet(...) at ./platonWallet/UI/ViewController/Staking/Views/NodeBaseInfoView.swift:35">
 			<value>943</value>
 			<value>13</value>
@@ -4999,15 +4999,15 @@
 			<value>3</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="10.974683544303797"/>
-		<average label="CCN" value="2.201476793248945"/>
+		<average label="NCSS" value="10.975738396624472"/>
+		<average label="CCN" value="2.2035864978902953"/>
 		<item name="init(...) at ./platonWallet/UI/ViewController/Staking/Views/WalletBaseInfoView.swift:21">
 			<value>949</value>
 			<value>87</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.054794520547945"/>
-		<average label="CCN" value="2.200210748155954"/>
+		<average label="NCSS" value="11.055848261327714"/>
+		<average label="CCN" value="2.20231822971549"/>
 		<item name="didSet(...) at ./platonWallet/UI/ViewController/Staking/Views/RewardRecordCell.swift:26">
 			<value>950</value>
 			<value>30</value>
@@ -5033,8 +5033,8 @@
 			<value>21</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.174004192872117"/>
-		<average label="CCN" value="2.20020964360587"/>
+		<average label="NCSS" value="11.175052410901468"/>
+		<average label="CCN" value="2.20230607966457"/>
 		<item name="setupBalanceData(...) at ./platonWallet/UI/ViewController/Staking/Views/WalletBalanceTableViewCell.swift:24">
 			<value>955</value>
 			<value>4</value>
@@ -5060,8 +5060,8 @@
 			<value>3</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.196037539103232"/>
-		<average label="CCN" value="2.1960375391032327"/>
+		<average label="NCSS" value="11.197080291970803"/>
+		<average label="CCN" value="2.1981230448383733"/>
 		<item name="init(...) at ./platonWallet/UI/ViewController/Staking/Views/SendInputTableViewCell.swift:62">
 			<value>960</value>
 			<value>12</value>
@@ -5082,8 +5082,8 @@
 			<value>14</value>
 			<value>3</value>
 		</item>
-		<average label="NCSS" value="11.215991692627206"/>
-		<average label="CCN" value="2.1983385254413292"/>
+		<average label="NCSS" value="11.217030114226375"/>
+		<average label="CCN" value="2.2004153686396677"/>
 		<item name="init(...) at ./platonWallet/UI/ViewController/Staking/Views/MyDelegateFooterView.swift:17">
 			<value>964</value>
 			<value>19</value>
@@ -5094,15 +5094,15 @@
 			<value>7</value>
 			<value>3</value>
 		</item>
-		<average label="NCSS" value="11.219689119170985"/>
-		<average label="CCN" value="2.1979274611398965"/>
+		<average label="NCSS" value="11.220725388601036"/>
+		<average label="CCN" value="2.2"/>
 		<item name="init(...) at ./platonWallet/UI/ViewController/Staking/Views/NodeDetailFooterView.swift:17">
 			<value>966</value>
 			<value>48</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.25776397515528"/>
-		<average label="CCN" value="2.196687370600414"/>
+		<average label="NCSS" value="11.25879917184265"/>
+		<average label="CCN" value="2.198757763975155"/>
 		<item name="didSet(...) at ./platonWallet/UI/ViewController/Staking/Views/DelegateRecordTableViewCell.swift:28">
 			<value>967</value>
 			<value>16</value>
@@ -5118,8 +5118,8 @@
 			<value>3</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.369453044375645"/>
-		<average label="CCN" value="2.195046439628483"/>
+		<average label="NCSS" value="11.37048503611971"/>
+		<average label="CCN" value="2.197110423116615"/>
 		<item name="didSet(...) at ./platonWallet/UI/ViewController/Staking/RewardRecordViewController.swift:16">
 			<value>970</value>
 			<value>3</value>
@@ -5155,8 +5155,8 @@
 			<value>11</value>
 			<value>2</value>
 		</item>
-		<average label="NCSS" value="11.362704918032787"/>
-		<average label="CCN" value="2.1936475409836067"/>
+		<average label="NCSS" value="11.363729508196721"/>
+		<average label="CCN" value="2.1956967213114753"/>
 		<item name="viewDidLoad(...) at ./platonWallet/UI/ViewController/Staking/StakingPageTabStripViewController.swift:13">
 			<value>977</value>
 			<value>35</value>
@@ -5182,8 +5182,8 @@
 			<value>3</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.361875637104994"/>
-		<average label="CCN" value="2.1957186544342506"/>
+		<average label="NCSS" value="11.36289500509684"/>
+		<average label="CCN" value="2.197757390417941"/>
 		<item name="indicatorInfo(...) at ./platonWallet/UI/ViewController/Staking/MyDelegatesViewController.swift:48">
 			<value>982</value>
 			<value>3</value>
@@ -5261,61 +5261,61 @@
 		</item>
 		<item name="sendClaimTransaction(...) at ./platonWallet/UI/ViewController/Staking/MyDelegatesViewController.swift:266">
 			<value>997</value>
-			<value>19</value>
+			<value>18</value>
 			<value>4</value>
 		</item>
-		<item name="showOfflineConfirmView(...) at ./platonWallet/UI/ViewController/Staking/MyDelegatesViewController.swift:286">
+		<item name="showOfflineConfirmView(...) at ./platonWallet/UI/ViewController/Staking/MyDelegatesViewController.swift:285">
 			<value>998</value>
 			<value>17</value>
 			<value>1</value>
 		</item>
-		<item name="showQrcodeScan(...) at ./platonWallet/UI/ViewController/Staking/MyDelegatesViewController.swift:306">
+		<item name="showQrcodeScan(...) at ./platonWallet/UI/ViewController/Staking/MyDelegatesViewController.swift:305">
 			<value>999</value>
 			<value>27</value>
 			<value>4</value>
 		</item>
-		<item name="doShowScanController(...) at ./platonWallet/UI/ViewController/Staking/MyDelegatesViewController.swift:335">
+		<item name="doShowScanController(...) at ./platonWallet/UI/ViewController/Staking/MyDelegatesViewController.swift:334">
 			<value>1000</value>
 			<value>15</value>
 			<value>6</value>
 		</item>
-		<item name="sendSignatureTransaction(...) at ./platonWallet/UI/ViewController/Staking/MyDelegatesViewController.swift:352">
+		<item name="sendSignatureTransaction(...) at ./platonWallet/UI/ViewController/Staking/MyDelegatesViewController.swift:351">
 			<value>1001</value>
-			<value>47</value>
+			<value>46</value>
 			<value>8</value>
 		</item>
-		<item name="didReceiveTransactionUpdate(...) at ./platonWallet/UI/ViewController/Staking/MyDelegatesViewController.swift:404">
+		<item name="didReceiveTransactionUpdate(...) at ./platonWallet/UI/ViewController/Staking/MyDelegatesViewController.swift:402">
 			<value>1002</value>
 			<value>4</value>
 			<value>2</value>
 		</item>
-		<item name="tableView(...) at ./platonWallet/UI/ViewController/Staking/MyDelegatesViewController.swift:413">
+		<item name="tableView(...) at ./platonWallet/UI/ViewController/Staking/MyDelegatesViewController.swift:411">
 			<value>1003</value>
 			<value>3</value>
 			<value>1</value>
 		</item>
-		<item name="tableView(...) at ./platonWallet/UI/ViewController/Staking/MyDelegatesViewController.swift:417">
+		<item name="tableView(...) at ./platonWallet/UI/ViewController/Staking/MyDelegatesViewController.swift:415">
 			<value>1004</value>
 			<value>12</value>
 			<value>1</value>
 		</item>
-		<item name="fetchData(...) at ./platonWallet/UI/ViewController/Staking/MyDelegatesViewController.swift:432">
+		<item name="fetchData(...) at ./platonWallet/UI/ViewController/Staking/MyDelegatesViewController.swift:430">
 			<value>1005</value>
 			<value>22</value>
 			<value>5</value>
 		</item>
-		<item name="reloadData(...) at ./platonWallet/UI/ViewController/Staking/MyDelegatesViewController.swift:459">
+		<item name="reloadData(...) at ./platonWallet/UI/ViewController/Staking/MyDelegatesViewController.swift:457">
 			<value>1006</value>
 			<value>4</value>
 			<value>1</value>
 		</item>
-		<item name="adjustTableFooterView(...) at ./platonWallet/UI/ViewController/Staking/MyDelegatesViewController.swift:464">
+		<item name="adjustTableFooterView(...) at ./platonWallet/UI/ViewController/Staking/MyDelegatesViewController.swift:462">
 			<value>1007</value>
 			<value>25</value>
 			<value>7</value>
 		</item>
-		<average label="NCSS" value="11.445878848063556"/>
-		<average label="CCN" value="2.2144985104270107"/>
+		<average label="NCSS" value="11.44488579940417"/>
+		<average label="CCN" value="2.2164846077457794"/>
 		<item name="viewDidLoad(...) at ./platonWallet/UI/ViewController/Staking/StakingMainViewController.swift:13">
 			<value>1008</value>
 			<value>5</value>
@@ -5326,8 +5326,8 @@
 			<value>4</value>
 			<value>2</value>
 		</item>
-		<average label="NCSS" value="11.43211100099108"/>
-		<average label="CCN" value="2.2140733399405352"/>
+		<average label="NCSS" value="11.431119920713577"/>
+		<average label="CCN" value="2.21605550049554"/>
 		<item name="viewDidLoad(...) at ./platonWallet/UI/ViewController/Staking/WithDrawViewController.swift:77">
 			<value>1010</value>
 			<value>15</value>
@@ -5448,8 +5448,8 @@
 			<value>4</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.645692158760891"/>
-		<average label="CCN" value="2.270087124878993"/>
+		<average label="NCSS" value="11.644724104549855"/>
+		<average label="CCN" value="2.272023233301065"/>
 		<item name="viewDidLoad(...) at ./platonWallet/UI/ViewController/Staking/DelegateDetailViewController.swift:49">
 			<value>1034</value>
 			<value>24</value>
@@ -5500,8 +5500,8 @@
 			<value>15</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.653883029721955"/>
-		<average label="CCN" value="2.277085330776606"/>
+		<average label="NCSS" value="11.652924256951103"/>
+		<average label="CCN" value="2.2790028763183128"/>
 		<item name="didSet(...) at ./platonWallet/UI/ViewController/Staking/DelegateRecordViewController.swift:23">
 			<value>1044</value>
 			<value>3</value>
@@ -5547,8 +5547,8 @@
 			<value>11</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.645437262357415"/>
-		<average label="CCN" value="2.273764258555133"/>
+		<average label="NCSS" value="11.644486692015208"/>
+		<average label="CCN" value="2.2756653992395437"/>
 		<item name="indicatorInfo(...) at ./platonWallet/UI/ViewController/Staking/ValidatorNodeListViewController.swift:21">
 			<value>1053</value>
 			<value>3</value>
@@ -5654,15 +5654,15 @@
 			<value>6</value>
 			<value>2</value>
 		</item>
-		<average label="NCSS" value="11.568499534016775"/>
-		<average label="CCN" value="2.27027027027027"/>
+		<average label="NCSS" value="11.567567567567568"/>
+		<average label="CCN" value="2.2721342031686858"/>
 		<item name="init(...) at ./platonWallet/UI/ViewController/Staking/StakingLabelViewCell.swift:16">
 			<value>1074</value>
 			<value>12</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.568901303538174"/>
-		<average label="CCN" value="2.2690875232774674"/>
+		<average label="NCSS" value="11.567970204841712"/>
+		<average label="CCN" value="2.2709497206703912"/>
 		<item name="viewDidLoad(...) at ./platonWallet/UI/ViewController/Staking/DelegateRecordMainViewController.swift:14">
 			<value>1075</value>
 			<value>18</value>
@@ -5688,8 +5688,8 @@
 			<value>3</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.561631139944392"/>
-		<average label="CCN" value="2.2650602409638556"/>
+		<average label="NCSS" value="11.560704355885079"/>
+		<average label="CCN" value="2.266913809082484"/>
 		<item name="indicatorInfo(...) at ./platonWallet/UI/ViewController/Staking/ValidatorNodesViewController.swift:18">
 			<value>1080</value>
 			<value>3</value>
@@ -5740,8 +5740,8 @@
 			<value>9</value>
 			<value>2</value>
 		</item>
-		<average label="NCSS" value="11.538108356290174"/>
-		<average label="CCN" value="2.2598714416896235"/>
+		<average label="NCSS" value="11.537190082644628"/>
+		<average label="CCN" value="2.2617079889807163"/>
 		<item name="get(...) at ./platonWallet/UI/ViewController/Staking/DelegateViewController.swift:29">
 			<value>1090</value>
 			<value>4</value>
@@ -5882,8 +5882,8 @@
 			<value>4</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.726947179946285"/>
-		<average label="CCN" value="2.3142345568487017"/>
+		<average label="NCSS" value="11.726051924798568"/>
+		<average label="CCN" value="2.3160250671441363"/>
 		<item name="viewDidLoad(...) at ./platonWallet/UI/ViewController/Staking/NodeDetailViewController.swift:63">
 			<value>1118</value>
 			<value>5</value>
@@ -5959,8 +5959,8 @@
 			<value>3</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.77826855123675"/>
-		<average label="CCN" value="2.3074204946996466"/>
+		<average label="NCSS" value="11.777385159010601"/>
+		<average label="CCN" value="2.3091872791519434"/>
 		<item name="awakeFromNib(...) at ./platonWallet/UI/ViewController/LocalAuth/views/WalletSelectionTableViewCell.swift:21">
 			<value>1133</value>
 			<value>3</value>
@@ -5976,8 +5976,8 @@
 			<value>3</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.757709251101321"/>
-		<average label="CCN" value="2.3048458149779734"/>
+		<average label="NCSS" value="11.756828193832598"/>
+		<average label="CCN" value="2.3066079295154185"/>
 		<item name="init(...) at ./platonWallet/UI/ViewController/LocalAuth/BiometricsAuthViewController.swift:29">
 			<value>1136</value>
 			<value>5</value>
@@ -6008,8 +6008,8 @@
 			<value>15</value>
 			<value>4</value>
 		</item>
-		<average label="NCSS" value="11.741454864154251"/>
-		<average label="CCN" value="2.3023663453111305"/>
+		<average label="NCSS" value="11.740578439964944"/>
+		<average label="CCN" value="2.304119193689746"/>
 		<item name="didSet(...) at ./platonWallet/UI/ViewController/LocalAuth/PasswordAuthViewController.swift:31">
 			<value>1142</value>
 			<value>5</value>
@@ -6040,8 +6040,8 @@
 			<value>10</value>
 			<value>2</value>
 		</item>
-		<average label="NCSS" value="11.735832606800349"/>
-		<average label="CCN" value="2.298169136878814"/>
+		<average label="NCSS" value="11.734960767218832"/>
+		<average label="CCN" value="2.2999128160418483"/>
 		<item name="awakeFromNib(...) at ./platonWallet/UI/ViewController/Wallet/ImportWallet/views/MnemonicGridView.swift:20">
 			<value>1148</value>
 			<value>5</value>
@@ -6102,8 +6102,8 @@
 			<value>13</value>
 			<value>3</value>
 		</item>
-		<average label="NCSS" value="11.698015530629853"/>
-		<average label="CCN" value="2.293356341673857"/>
+		<average label="NCSS" value="11.697152717860224"/>
+		<average label="CCN" value="2.2950819672131146"/>
 		<item name="awakeFromNib(...) at ./platonWallet/UI/ViewController/Wallet/ImportWallet/views/MnemonicTextField.swift:12">
 			<value>1160</value>
 			<value>3</value>
@@ -6129,8 +6129,8 @@
 			<value>5</value>
 			<value>2</value>
 		</item>
-		<average label="NCSS" value="11.668384879725085"/>
-		<average label="CCN" value="2.2895189003436425"/>
+		<average label="NCSS" value="11.667525773195877"/>
+		<average label="CCN" value="2.2912371134020617"/>
 		<item name="viewDidLoad(...) at ./platonWallet/UI/ViewController/Wallet/ImportWallet/ImportObservedWalletViewController.swift:27">
 			<value>1165</value>
 			<value>91</value>
@@ -6201,8 +6201,8 @@
 			<value>3</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.70797962648557"/>
-		<average label="CCN" value="2.289473684210526"/>
+		<average label="NCSS" value="11.707130730050935"/>
+		<average label="CCN" value="2.2911714770797964"/>
 		<item name="didSet(...) at ./platonWallet/UI/ViewController/Wallet/ImportWallet/ImportWalletHeaderView.swift:20">
 			<value>1179</value>
 			<value>15</value>
@@ -6223,8 +6223,8 @@
 			<value>8</value>
 			<value>3</value>
 		</item>
-		<average label="NCSS" value="11.720812182741117"/>
-		<average label="CCN" value="2.290186125211506"/>
+		<average label="NCSS" value="11.719966159052454"/>
+		<average label="CCN" value="2.2918781725888326"/>
 		<item name="init(...) at ./platonWallet/UI/ViewController/Wallet/ImportWallet/ImportMnemonicOrPrivateKeyViewController.swift:48">
 			<value>1183</value>
 			<value>4</value>
@@ -6325,8 +6325,8 @@
 			<value>6</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.712146422628951"/>
-		<average label="CCN" value="2.301164725457571"/>
+		<average label="NCSS" value="11.711314475873545"/>
+		<average label="CCN" value="2.302828618968386"/>
 		<item name="viewDidAppear(...) at ./platonWallet/UI/ViewController/Wallet/ImportWallet/MainImportWalletViewController.swift:28">
 			<value>1203</value>
 			<value>4</value>
@@ -6387,8 +6387,8 @@
 			<value>6</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.69028006589786"/>
-		<average label="CCN" value="2.298187808896211"/>
+		<average label="NCSS" value="11.689456342668864"/>
+		<average label="CCN" value="2.299835255354201"/>
 		<item name="viewDidLoad(...) at ./platonWallet/UI/ViewController/Wallet/ImportWallet/ImportKeystoreViewController.swift:33">
 			<value>1215</value>
 			<value>11</value>
@@ -6474,8 +6474,8 @@
 			<value>6</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.650690495532087"/>
-		<average label="CCN" value="2.298943948009748"/>
+		<average label="NCSS" value="11.649878147847279"/>
+		<average label="CCN" value="2.3005686433793664"/>
 		<item name="init(...) at ./platonWallet/UI/ViewController/Wallet/ImportWallet/BaseImportWalletViewController.swift:15">
 			<value>1232</value>
 			<value>4</value>
@@ -6486,8 +6486,8 @@
 			<value>3</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.637469586374696"/>
-		<average label="CCN" value="2.2968369829683697"/>
+		<average label="NCSS" value="11.636658556366585"/>
+		<average label="CCN" value="2.2984590429845904"/>
 		<item name="viewDidLoad(...) at ./platonWallet/UI/ViewController/Wallet/TSL/TSLXIBViewController.swift:14">
 			<value>1234</value>
 			<value>3</value>
@@ -6498,8 +6498,8 @@
 			<value>3</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.623481781376519"/>
-		<average label="CCN" value="2.294736842105263"/>
+		<average label="NCSS" value="11.622672064777328"/>
+		<average label="CCN" value="2.2963562753036437"/>
 		<item name="viewDidLoad(...) at ./platonWallet/UI/ViewController/Wallet/TSL/TSLViewController.swift:13">
 			<value>1236</value>
 			<value>11</value>
@@ -6515,8 +6515,8 @@
 			<value>3</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.609046849757673"/>
-		<average label="CCN" value="2.291599353796446"/>
+		<average label="NCSS" value="11.608239095315025"/>
+		<average label="CCN" value="2.2932148626817446"/>
 		<item name="viewDidLoad(...) at ./platonWallet/UI/ViewController/Wallet/WalletCreateOrImportViewController/WalletCreateOrImportViewController.swift:18">
 			<value>1239</value>
 			<value>5</value>
@@ -6557,8 +6557,8 @@
 			<value>3</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.557784911717496"/>
-		<average label="CCN" value="2.28330658105939"/>
+		<average label="NCSS" value="11.556982343499197"/>
+		<average label="CCN" value="2.284911717495987"/>
 		<item name="awakeFromNib(...) at ./platonWallet/UI/ViewController/Wallet/CreateWalletViewController/views/CustomPickerView.swift:23">
 			<value>1247</value>
 			<value>6</value>
@@ -6604,8 +6604,8 @@
 			<value>14</value>
 			<value>3</value>
 		</item>
-		<average label="NCSS" value="11.518725099601594"/>
-		<average label="CCN" value="2.2772908366533864"/>
+		<average label="NCSS" value="11.51792828685259"/>
+		<average label="CCN" value="2.2788844621513946"/>
 		<item name="viewDidLoad(...) at ./platonWallet/UI/ViewController/Wallet/CreateWalletViewController/CreateIndividualWalletViewController.swift:36">
 			<value>1256</value>
 			<value>5</value>
@@ -6686,8 +6686,8 @@
 			<value>10</value>
 			<value>4</value>
 		</item>
-		<average label="NCSS" value="11.491738788355626"/>
-		<average label="CCN" value="2.2840283241542094"/>
+		<average label="NCSS" value="11.490952006294256"/>
+		<average label="CCN" value="2.2856018882769473"/>
 		<item name="viewDidLoad(...) at ./platonWallet/UI/ViewController/Wallet/ExportWallet/ExportToPlainTextViewController.swift:23">
 			<value>1272</value>
 			<value>6</value>
@@ -6698,8 +6698,8 @@
 			<value>5</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.482325216025137"/>
-		<average label="CCN" value="2.2820109976433622"/>
+		<average label="NCSS" value="11.481539670070699"/>
+		<average label="CCN" value="2.283582089552239"/>
 		<item name="viewDidLoad(...) at ./platonWallet/UI/ViewController/Wallet/ExportWallet/ExportToQRCodeViewController.swift:21">
 			<value>1274</value>
 			<value>7</value>
@@ -6710,8 +6710,8 @@
 			<value>5</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.47372549019608"/>
-		<average label="CCN" value="2.28"/>
+		<average label="NCSS" value="11.472941176470588"/>
+		<average label="CCN" value="2.2815686274509805"/>
 		<item name="didSet(...) at ./platonWallet/UI/ViewController/Wallet/ExportWallet/ExportPrivateKeyOrKeystoreViewController.swift:55">
 			<value>1276</value>
 			<value>6</value>
@@ -6762,8 +6762,8 @@
 			<value>8</value>
 			<value>2</value>
 		</item>
-		<average label="NCSS" value="11.455252918287938"/>
-		<average label="CCN" value="2.2747081712062256"/>
+		<average label="NCSS" value="11.454474708171206"/>
+		<average label="CCN" value="2.2762645914396886"/>
 		<item name="viewDidLoad(...) at ./platonWallet/UI/ViewController/Wallet/CreateWalletSuccessViewController/CreateWalletSuccessViewController.swift:21">
 			<value>1286</value>
 			<value>5</value>
@@ -6794,8 +6794,8 @@
 			<value>3</value>
 			<value>2</value>
 		</item>
-		<average label="NCSS" value="11.422153369481023"/>
-		<average label="CCN" value="2.2703330751355537"/>
+		<average label="NCSS" value="11.421378776142525"/>
+		<average label="CCN" value="2.2718822618125483"/>
 		<item name="desc(...) at ./platonWallet/UI/ViewController/Wallet/views/PasswordStrengthView.swift:17">
 			<value>1292</value>
 			<value>3</value>
@@ -6821,8 +6821,8 @@
 			<value>36</value>
 			<value>15</value>
 		</item>
-		<average label="NCSS" value="11.443672839506172"/>
-		<average label="CCN" value="2.2839506172839505"/>
+		<average label="NCSS" value="11.442901234567902"/>
+		<average label="CCN" value="2.2854938271604937"/>
 		<item name="init(...) at ./platonWallet/UI/ViewController/Wallet/BackupWallet/VerifyMnemonicViewController.swift:22">
 			<value>1297</value>
 			<value>4</value>
@@ -6928,8 +6928,8 @@
 			<value>11</value>
 			<value>3</value>
 		</item>
-		<average label="NCSS" value="11.424449506454062"/>
-		<average label="CCN" value="2.277904328018223"/>
+		<average label="NCSS" value="11.42369020501139"/>
+		<average label="CCN" value="2.2794229309035687"/>
 		<item name="viewDidLoad(...) at ./platonWallet/UI/ViewController/Wallet/BackupWallet/BackupMnemonicViewController.swift:23">
 			<value>1318</value>
 			<value>13</value>
@@ -6985,8 +6985,8 @@
 			<value>3</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.387048192771084"/>
-		<average label="CCN" value="2.269578313253012"/>
+		<average label="NCSS" value="11.386295180722891"/>
+		<average label="CCN" value="2.2710843373493974"/>
 		<item name="didSet(...) at ./platonWallet/UI/ViewController/Wallet/BackupWallet/LeftAlignLayout.swift:14">
 			<value>1329</value>
 			<value>3</value>
@@ -7012,8 +7012,8 @@
 			<value>10</value>
 			<value>2</value>
 		</item>
-		<average label="NCSS" value="11.387846961740435"/>
-		<average label="CCN" value="2.2738184546136533"/>
+		<average label="NCSS" value="11.387096774193548"/>
+		<average label="CCN" value="2.2753188297074267"/>
 		<item name="loadView(...) at ./platonWallet/UI/ViewController/Wallet/AddWalletMenuViewController.swift:31">
 			<value>1334</value>
 			<value>6</value>
@@ -7064,8 +7064,8 @@
 			<value>3</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.354430379746836"/>
-		<average label="CCN" value="2.267311988086374"/>
+		<average label="NCSS" value="11.353685778108712"/>
+		<average label="CCN" value="2.268801191362621"/>
 		<item name="viewDidLoad(...) at ./platonWallet/UI/ViewController/Setting/About/AboutViewController.swift:17">
 			<value>1344</value>
 			<value>9</value>
@@ -7091,10 +7091,10 @@
 			<value>7</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.336795252225519"/>
-		<average label="CCN" value="2.264094955489614"/>
-		<average label="NCSS" value="11.336795252225519"/>
-		<average label="CCN" value="2.264094955489614"/>
+		<average label="NCSS" value="11.336053412462908"/>
+		<average label="CCN" value="2.265578635014837"/>
+		<average label="NCSS" value="11.336053412462908"/>
+		<average label="CCN" value="2.265578635014837"/>
 		<item name="viewDidLoad(...) at ./platonWallet/UI/ViewController/Setting/SettingViewController/NodeSettingViewControllerV2.swift:34">
 			<value>1349</value>
 			<value>6</value>
@@ -7135,8 +7135,8 @@
 			<value>18</value>
 			<value>3</value>
 		</item>
-		<average label="NCSS" value="11.311209439528023"/>
-		<average label="CCN" value="2.2588495575221237"/>
+		<average label="NCSS" value="11.31047197640118"/>
+		<average label="CCN" value="2.260324483775811"/>
 		<item name="viewDidLoad(...) at ./platonWallet/UI/ViewController/Setting/SettingViewController/SettingTableViewController.swift:45">
 			<value>1357</value>
 			<value>8</value>
@@ -7192,8 +7192,8 @@
 			<value>3</value>
 			<value>2</value>
 		</item>
-		<average label="NCSS" value="11.339429407461594"/>
-		<average label="CCN" value="2.2589612289685443"/>
+		<average label="NCSS" value="11.338697878566203"/>
+		<average label="CCN" value="2.260424286759327"/>
 		<item name="init(...) at ./platonWallet/UI/ViewController/Setting/SettingViewController/NodeStoreService.swift:28">
 			<value>1368</value>
 			<value>2</value>
@@ -7209,8 +7209,8 @@
 			<value>6</value>
 			<value>3</value>
 		</item>
-		<average label="NCSS" value="11.324087591240875"/>
-		<average label="CCN" value="2.257664233576642"/>
+		<average label="NCSS" value="11.323357664233576"/>
+		<average label="CCN" value="2.259124087591241"/>
 		<item name="viewDidLoad(...) at ./platonWallet/UI/ViewController/Setting/WalletManagement/ATPWalletDetail/WalletManagerDetailViewController.swift:36">
 			<value>1371</value>
 			<value>4</value>
@@ -7311,8 +7311,8 @@
 			<value>13</value>
 			<value>2</value>
 		</item>
-		<average label="NCSS" value="11.288489208633093"/>
-		<average label="CCN" value="2.2503597122302157"/>
+		<average label="NCSS" value="11.287769784172662"/>
+		<average label="CCN" value="2.2517985611510793"/>
 		<item name="awakeFromNib(...) at ./platonWallet/UI/ViewController/Setting/WalletManagement/SharedWalletDetail/views/SharedWalletMemberCell.swift:17">
 			<value>1391</value>
 			<value>4</value>
@@ -7328,8 +7328,8 @@
 			<value>4</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.272074659009332"/>
-		<average label="CCN" value="2.247666905958363"/>
+		<average label="NCSS" value="11.271356783919598"/>
+		<average label="CCN" value="2.2491026561378322"/>
 		<item name="awakeFromNib(...) at ./platonWallet/UI/ViewController/Setting/views/AddressBookTableViewCell.swift:23">
 			<value>1394</value>
 			<value>5</value>
@@ -7340,8 +7340,8 @@
 			<value>10</value>
 			<value>3</value>
 		</item>
-		<average label="NCSS" value="11.266666666666667"/>
-		<average label="CCN" value="2.247311827956989"/>
+		<average label="NCSS" value="11.26594982078853"/>
+		<average label="CCN" value="2.2487455197132618"/>
 		<item name="didSet(...) at ./platonWallet/UI/ViewController/Setting/views/CommunityContentTableViewCell.swift:27">
 			<value>1396</value>
 			<value>6</value>
@@ -7362,8 +7362,8 @@
 			<value>3</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.278770550393139"/>
-		<average label="CCN" value="2.2444603288062903"/>
+		<average label="NCSS" value="11.27805575411008"/>
+		<average label="CCN" value="2.245889921372409"/>
 		<item name="awakeFromNib(...) at ./platonWallet/UI/ViewController/Setting/views/TransactionCell.swift:20">
 			<value>1400</value>
 			<value>7</value>
@@ -7379,8 +7379,8 @@
 			<value>3</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.271754636233952"/>
-		<average label="CCN" value="2.2439372325249645"/>
+		<average label="NCSS" value="11.271041369472183"/>
+		<average label="CCN" value="2.245363766048502"/>
 		<item name="init(...) at ./platonWallet/UI/ViewController/Setting/views/NodeSettingCell.swift:18">
 			<value>1403</value>
 			<value>34</value>
@@ -7391,8 +7391,8 @@
 			<value>5</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.283475783475783"/>
-		<average label="CCN" value="2.242165242165242"/>
+		<average label="NCSS" value="11.282763532763532"/>
+		<average label="CCN" value="2.2435897435897436"/>
 		<item name="drawText(...) at ./platonWallet/UI/ViewController/Setting/views/WalletManagerTableViewCell.swift:18">
 			<value>1405</value>
 			<value>4</value>
@@ -7413,8 +7413,8 @@
 			<value>3</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.279829545454545"/>
-		<average label="CCN" value="2.242897727272727"/>
+		<average label="NCSS" value="11.279119318181818"/>
+		<average label="CCN" value="2.2443181818181817"/>
 		<item name="awakeFromNib(...) at ./platonWallet/UI/ViewController/Setting/views/AddAddressInfoView.swift:33">
 			<value>1409</value>
 			<value>8</value>
@@ -7445,8 +7445,8 @@
 			<value>6</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.264497878359265"/>
-		<average label="CCN" value="2.239038189533239"/>
+		<average label="NCSS" value="11.263790664780764"/>
+		<average label="CCN" value="2.2404526166902405"/>
 		<item name="awakeFromNib(...) at ./platonWallet/UI/ViewController/Setting/views/SettingFooter.swift:20">
 			<value>1415</value>
 			<value>8</value>
@@ -7457,8 +7457,8 @@
 			<value>36</value>
 			<value>8</value>
 		</item>
-		<average label="NCSS" value="11.279661016949152"/>
-		<average label="CCN" value="2.242231638418079"/>
+		<average label="NCSS" value="11.278954802259888"/>
+		<average label="CCN" value="2.2436440677966103"/>
 		<item name="awakeFromNib(...) at ./platonWallet/UI/ViewController/Setting/views/SettingTableViewCell.swift:19">
 			<value>1417</value>
 			<value>5</value>
@@ -7474,15 +7474,15 @@
 			<value>41</value>
 			<value>8</value>
 		</item>
-		<average label="NCSS" value="11.290345313601128"/>
-		<average label="CCN" value="2.244538407329105"/>
+		<average label="NCSS" value="11.289640591966174"/>
+		<average label="CCN" value="2.2459478505990136"/>
 		<item name="init(...) at ./platonWallet/UI/ViewController/Setting/views/CommunityNameTableViewCell.swift:16">
 			<value>1420</value>
 			<value>21</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.29718309859155"/>
-		<average label="CCN" value="2.243661971830986"/>
+		<average label="NCSS" value="11.296478873239437"/>
+		<average label="CCN" value="2.2450704225352114"/>
 		<item name="init(...) at ./platonWallet/UI/ViewController/Setting/views/ThresholdValueSelectView.swift:65">
 			<value>1421</value>
 			<value>5</value>
@@ -7538,8 +7538,8 @@
 			<value>28</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.348008385744235"/>
-		<average label="CCN" value="2.2424877707896576"/>
+		<average label="NCSS" value="11.347309573724669"/>
+		<average label="CCN" value="2.243885394828791"/>
 		<item name="awakeFromNib(...) at ./platonWallet/UI/ViewController/Setting/views/LanguageSettingTableViewCell.swift:16">
 			<value>1432</value>
 			<value>5</value>
@@ -7550,8 +7550,8 @@
 			<value>3</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.337752965806"/>
-		<average label="CCN" value="2.2407536636427077"/>
+		<average label="NCSS" value="11.33705512909979"/>
+		<average label="CCN" value="2.242149337055129"/>
 		<item name="viewDidLoad(...) at ./platonWallet/UI/ViewController/Setting/WalletListViewController.swift:34">
 			<value>1434</value>
 			<value>5</value>
@@ -7627,8 +7627,8 @@
 			<value>20</value>
 			<value>4</value>
 		</item>
-		<average label="NCSS" value="11.295580110497237"/>
-		<average label="CCN" value="2.2327348066298343"/>
+		<average label="NCSS" value="11.29488950276243"/>
+		<average label="CCN" value="2.2341160220994474"/>
 		<item name="viewDidLoad(...) at ./platonWallet/UI/ViewController/Setting/PersonalViewController.swift:16">
 			<value>1449</value>
 			<value>5</value>
@@ -7679,8 +7679,8 @@
 			<value>42</value>
 			<value>11</value>
 		</item>
-		<average label="NCSS" value="11.287379972565157"/>
-		<average label="CCN" value="2.231824417009602"/>
+		<average label="NCSS" value="11.286694101508916"/>
+		<average label="CCN" value="2.2331961591220852"/>
 		<item name="viewDidLoad(...) at ./platonWallet/UI/ViewController/Setting/LanguageSettingVC.swift:30">
 			<value>1459</value>
 			<value>6</value>
@@ -7731,8 +7731,8 @@
 			<value>4</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.264986376021799"/>
-		<average label="CCN" value="2.2268392370572205"/>
+		<average label="NCSS" value="11.264305177111716"/>
+		<average label="CCN" value="2.2282016348773843"/>
 		<item name="viewDidLoad(...) at ./platonWallet/UI/ViewController/Setting/CommunityViewController.swift:33">
 			<value>1469</value>
 			<value>42</value>
@@ -7753,8 +7753,8 @@
 			<value>42</value>
 			<value>7</value>
 		</item>
-		<average label="NCSS" value="11.295516304347826"/>
-		<average label="CCN" value="2.2275815217391304"/>
+		<average label="NCSS" value="11.294836956521738"/>
+		<average label="CCN" value="2.228940217391304"/>
 		<item name="viewDidLoad(...) at ./platonWallet/UI/ViewController/Setting/NewAddressInfoViewController.swift:27">
 			<value>1473</value>
 			<value>16</value>
@@ -7800,8 +7800,8 @@
 			<value>10</value>
 			<value>3</value>
 		</item>
-		<average label="NCSS" value="11.316677920324105"/>
-		<average label="CCN" value="2.2336259284267386"/>
+		<average label="NCSS" value="11.316002700877785"/>
+		<average label="CCN" value="2.234976367319379"/>
 		<item name="viewDidLoad(...) at ./platonWallet/UI/ViewController/Setting/TransactionListViewController.swift:48">
 			<value>1482</value>
 			<value>6</value>
@@ -7842,8 +7842,8 @@
 			<value>6</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.365345869711216"/>
-		<average label="CCN" value="2.242444593687038"/>
+		<average label="NCSS" value="11.364674278038953"/>
+		<average label="CCN" value="2.2437877770315646"/>
 		<item name="viewDidLoad(...) at ./platonWallet/UI/ViewController/Setting/AddressBookViewController.swift:25">
 			<value>1490</value>
 			<value>5</value>
@@ -7909,8 +7909,8 @@
 			<value>3</value>
 			<value>2</value>
 		</item>
-		<average label="NCSS" value="11.344873501997338"/>
-		<average label="CCN" value="2.237683089214381"/>
+		<average label="NCSS" value="11.344207723035952"/>
+		<average label="CCN" value="2.2390146471371506"/>
 		<item name="get(...) at ./platonWallet/UI/ViewController/MainTabbar/MainTabBarViewController.swift:22">
 			<value>1503</value>
 			<value>1</value>
@@ -7981,8 +7981,8 @@
 			<value>10</value>
 			<value>2</value>
 		</item>
-		<average label="NCSS" value="11.310686015831134"/>
-		<average label="CCN" value="2.232189973614776"/>
+		<average label="NCSS" value="11.310026385224274"/>
+		<average label="CCN" value="2.233509234828496"/>
 		<item name="init(...) at ./platonWallet/Vendors/BytesHelper/ByteHelper.swift:32">
 			<value>1517</value>
 			<value>6</value>
@@ -8038,8 +8038,8 @@
 			<value>3</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.26588081204977"/>
-		<average label="CCN" value="2.22920759659463"/>
+		<average label="NCSS" value="11.265225933202357"/>
+		<average label="CCN" value="2.2305173542894563"/>
 		<item name="getConfig(...) at ./platonWallet/Config/RemoteService.swift:16">
 			<value>1528</value>
 			<value>21</value>
@@ -8050,10 +8050,10 @@
 			<value>26</value>
 			<value>4</value>
 		</item>
-		<average label="NCSS" value="11.281883584041857"/>
-		<average label="CCN" value="2.2315238718116417"/>
-		<average label="NCSS" value="11.281883584041857"/>
-		<average label="CCN" value="2.2315238718116417"/>
+		<average label="NCSS" value="11.281229561805102"/>
+		<average label="CCN" value="2.2328319162851535"/>
+		<average label="NCSS" value="11.281229561805102"/>
+		<average label="CCN" value="2.2328319162851535"/>
 		<item name="isValidContractAddress(...) at ./platonWallet/Config/CommonService.swift:16">
 			<value>1530</value>
 			<value>9</value>
@@ -8099,19 +8099,19 @@
 			<value>16</value>
 			<value>5</value>
 		</item>
-		<average label="NCSS" value="11.328348504551366"/>
-		<average label="CCN" value="2.254226267880364"/>
-		<average label="NCSS" value="11.328348504551366"/>
-		<average label="CCN" value="2.254226267880364"/>
-		<average label="NCSS" value="11.328348504551366"/>
-		<average label="CCN" value="2.254226267880364"/>
+		<average label="NCSS" value="11.327698309492847"/>
+		<average label="CCN" value="2.2555266579973994"/>
+		<average label="NCSS" value="11.327698309492847"/>
+		<average label="CCN" value="2.2555266579973994"/>
+		<average label="NCSS" value="11.327698309492847"/>
+		<average label="CCN" value="2.2555266579973994"/>
 		<item name="CandidateList(...) at ./platonWallet/Models/Vote/VoteManager.swift:17">
 			<value>1539</value>
 			<value>10</value>
 			<value>3</value>
 		</item>
-		<average label="NCSS" value="11.32748538011696"/>
-		<average label="CCN" value="2.2547108512020793"/>
+		<average label="NCSS" value="11.326835607537362"/>
+		<average label="CCN" value="2.2560103963612734"/>
 		<item name="batchQueryIPs(...) at ./platonWallet/Models/Vote/IPQuery.swift:31">
 			<value>1540</value>
 			<value>38</value>
@@ -8132,21 +8132,21 @@
 			<value>24</value>
 			<value>15</value>
 		</item>
-		<average label="NCSS" value="11.36552171095269"/>
-		<average label="CCN" value="2.269604666234608"/>
-		<average label="NCSS" value="11.36552171095269"/>
-		<average label="CCN" value="2.269604666234608"/>
-		<average label="NCSS" value="11.36552171095269"/>
-		<average label="CCN" value="2.269604666234608"/>
-		<average label="NCSS" value="11.36552171095269"/>
-		<average label="CCN" value="2.269604666234608"/>
-		<item name="getTxTypeIconByDirection(...) at ./platonWallet/Models/Transfer/Transaction+Extension.swift:150">
+		<average label="NCSS" value="11.364873622812702"/>
+		<average label="CCN" value="2.270900842514582"/>
+		<average label="NCSS" value="11.364873622812702"/>
+		<average label="CCN" value="2.270900842514582"/>
+		<average label="NCSS" value="11.364873622812702"/>
+		<average label="CCN" value="2.270900842514582"/>
+		<average label="NCSS" value="11.364873622812702"/>
+		<average label="CCN" value="2.270900842514582"/>
+		<item name="getTxTypeIconByDirection(...) at ./platonWallet/Models/Transfer/Transaction+Extension.swift:167">
 			<value>1544</value>
 			<value>6</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.362046632124352"/>
-		<average label="CCN" value="2.268782383419689"/>
+		<average label="NCSS" value="11.36139896373057"/>
+		<average label="CCN" value="2.270077720207254"/>
 		<item name="get(...) at ./platonWallet/Models/Transfer/Transaction.swift:225">
 			<value>1545</value>
 			<value>3</value>
@@ -8182,1270 +8182,1265 @@
 			<value>11</value>
 			<value>4</value>
 		</item>
-		<item name="get(...) at ./platonWallet/Models/Transfer/Transaction.swift:378">
+		<item name="get(...) at ./platonWallet/Models/Transfer/Transaction.swift:393">
 			<value>1552</value>
-			<value>8</value>
-			<value>3</value>
-		</item>
-		<item name="get(...) at ./platonWallet/Models/Transfer/Transaction.swift:390">
-			<value>1553</value>
 			<value>16</value>
 			<value>9</value>
 		</item>
-		<item name="get(...) at ./platonWallet/Models/Transfer/Transaction.swift:409">
-			<value>1554</value>
+		<item name="get(...) at ./platonWallet/Models/Transfer/Transaction.swift:412">
+			<value>1553</value>
 			<value>28</value>
 			<value>10</value>
 		</item>
-		<item name="get(...) at ./platonWallet/Models/Transfer/Transaction.swift:440">
-			<value>1555</value>
-			<value>42</value>
+		<item name="get(...) at ./platonWallet/Models/Transfer/Transaction.swift:443">
+			<value>1554</value>
+			<value>43</value>
 			<value>9</value>
 		</item>
-		<average label="NCSS" value="11.394212218649518"/>
-		<average label="CCN" value="2.2810289389067524"/>
+		<average label="NCSS" value="11.396396396396396"/>
+		<average label="CCN" value="2.281853281853282"/>
 		<item name="newTx(...) at ./platonWallet/Models/Transfer/TransactionQrcode.swift:142">
-			<value>1556</value>
+			<value>1555</value>
 			<value>20</value>
 			<value>2</value>
 		</item>
 		<item name="rlp(...) at ./platonWallet/Models/Transfer/TransactionQrcode.swift:168">
-			<value>1557</value>
+			<value>1556</value>
 			<value>15</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.402055234425177"/>
-		<average label="CCN" value="2.280025690430315"/>
+		<average label="NCSS" value="11.404241645244216"/>
+		<average label="CCN" value="2.280848329048843"/>
 		<item name="init(...) at ./platonWallet/Models/Staking/NodeModel.swift:57">
-			<value>1558</value>
+			<value>1557</value>
 			<value>3</value>
 			<value>1</value>
 		</item>
 		<item name="init(...) at ./platonWallet/Models/Staking/NodeModel.swift:61">
-			<value>1559</value>
+			<value>1558</value>
 			<value>3</value>
 			<value>1</value>
 		</item>
 		<item name="init(...) at ./platonWallet/Models/Staking/NodeModel.swift:65">
-			<value>1560</value>
+			<value>1559</value>
 			<value>3</value>
 			<value>1</value>
 		</item>
 		<item name="primaryKey(...) at ./platonWallet/Models/Staking/NodeModel.swift:69">
-			<value>1561</value>
+			<value>1560</value>
 			<value>3</value>
 			<value>1</value>
 		</item>
 		<item name="init(...) at ./platonWallet/Models/Staking/NodeModel.swift:73">
-			<value>1562</value>
+			<value>1561</value>
 			<value>26</value>
 			<value>1</value>
 		</item>
 		<item name="init(...) at ./platonWallet/Models/Staking/NodeModel.swift:137">
-			<value>1563</value>
+			<value>1562</value>
 			<value>24</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.397952655150352"/>
-		<average label="CCN" value="2.275111964171465"/>
+		<average label="NCSS" value="11.400128040973112"/>
+		<average label="CCN" value="2.275928297055058"/>
 		<item name="getDelegationValueAmount(...) at ./platonWallet/Models/Staking/DelegateModel.swift:104">
-			<value>1564</value>
+			<value>1563</value>
 			<value>10</value>
 			<value>3</value>
 		</item>
-		<average label="NCSS" value="11.397058823529411"/>
-		<average label="CCN" value="2.2755754475703327"/>
-		<average label="NCSS" value="11.397058823529411"/>
-		<average label="CCN" value="2.2755754475703327"/>
+		<average label="NCSS" value="11.399232245681382"/>
+		<average label="CCN" value="2.2763915547024953"/>
+		<average label="NCSS" value="11.399232245681382"/>
+		<average label="CCN" value="2.2763915547024953"/>
 		<item name="isExistWallet(...) at ./platonWallet/Models/Staking/DelegateModel+Extension.swift:104">
-			<value>1565</value>
+			<value>1564</value>
 			<value>4</value>
 			<value>1</value>
 		</item>
 		<item name="delegateToNode(...) at ./platonWallet/Models/Staking/DelegateModel+Extension.swift:113">
-			<value>1566</value>
+			<value>1565</value>
 			<value>3</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.386973180076629"/>
-		<average label="CCN" value="2.2739463601532566"/>
-		<average label="NCSS" value="11.386973180076629"/>
-		<average label="CCN" value="2.2739463601532566"/>
+		<average label="NCSS" value="11.389137380191693"/>
+		<average label="CCN" value="2.2747603833865813"/>
+		<average label="NCSS" value="11.389137380191693"/>
+		<average label="CCN" value="2.2747603833865813"/>
 		<item name="init(...) at ./platonWallet/Models/Staking/RewardRecordModel.swift:20">
-			<value>1567</value>
+			<value>1566</value>
 			<value>8</value>
 			<value>1</value>
 		</item>
 		<item name="init(...) at ./platonWallet/Models/Staking/RewardRecordModel.swift:43">
-			<value>1568</value>
+			<value>1567</value>
 			<value>5</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.380739795918368"/>
-		<average label="CCN" value="2.2723214285714284"/>
+		<average label="NCSS" value="11.382897255903"/>
+		<average label="CCN" value="2.2731333758774728"/>
 		<item name="lockedBalanceAttrForDisplayAsset(...) at ./platonWallet/Models/Wallet/Wallet+extension.swift:21">
-			<value>1569</value>
+			<value>1568</value>
 			<value>14</value>
 			<value>3</value>
 		</item>
 		<item name="lockedBalanceDescription(...) at ./platonWallet/Models/Wallet/Wallet+extension.swift:40">
-			<value>1570</value>
+			<value>1569</value>
 			<value>8</value>
 			<value>2</value>
 		</item>
 		<item name="balanceDescriptionForDisplayAsset(...) at ./platonWallet/Models/Wallet/Wallet+extension.swift:50">
-			<value>1571</value>
+			<value>1570</value>
 			<value>4</value>
 			<value>2</value>
 		</item>
 		<item name="balanceDescription(...) at ./platonWallet/Models/Wallet/Wallet+extension.swift:55">
-			<value>1572</value>
+			<value>1571</value>
 			<value>7</value>
 			<value>2</value>
 		</item>
 		<item name="image(...) at ./platonWallet/Models/Wallet/Wallet+extension.swift:64">
-			<value>1573</value>
+			<value>1572</value>
 			<value>3</value>
 			<value>1</value>
 		</item>
 		<item name="WalletBalanceStatus(...) at ./platonWallet/Models/Wallet/Wallet+extension.swift:68">
-			<value>1574</value>
+			<value>1573</value>
 			<value>6</value>
 			<value>3</value>
 		</item>
-		<average label="NCSS" value="11.364040660736975"/>
-		<average label="CCN" value="2.271918678526048"/>
+		<average label="NCSS" value="11.366179275270184"/>
+		<average label="CCN" value="2.272727272727273"/>
 		<item name="init(...) at ./platonWallet/Models/Wallet/Keystore.swift:27">
-			<value>1575</value>
+			<value>1574</value>
 			<value>10</value>
 			<value>2</value>
 		</item>
 		<item name="init(...) at ./platonWallet/Models/Wallet/Keystore.swift:42">
-			<value>1576</value>
+			<value>1575</value>
 			<value>4</value>
 			<value>1</value>
 		</item>
 		<item name="init(...) at ./platonWallet/Models/Wallet/Keystore.swift:47">
-			<value>1577</value>
+			<value>1576</value>
 			<value>12</value>
 			<value>2</value>
 		</item>
 		<item name="init(...) at ./platonWallet/Models/Wallet/Keystore.swift:66">
-			<value>1578</value>
+			<value>1577</value>
 			<value>12</value>
 			<value>2</value>
 		</item>
 		<item name="decrypt(...) at ./platonWallet/Models/Wallet/Keystore.swift:83">
-			<value>1579</value>
+			<value>1578</value>
 			<value>15</value>
 			<value>3</value>
 		</item>
 		<item name="geneDecryptionKey(...) at ./platonWallet/Models/Wallet/Keystore.swift:100">
-			<value>1580</value>
+			<value>1579</value>
 			<value>27</value>
 			<value>7</value>
 		</item>
 		<item name="encrypt(...) at ./platonWallet/Models/Wallet/Keystore.swift:132">
-			<value>1581</value>
+			<value>1580</value>
 			<value>15</value>
 			<value>3</value>
 		</item>
 		<item name="decrypt(...) at ./platonWallet/Models/Wallet/Keystore.swift:151">
-			<value>1582</value>
+			<value>1581</value>
 			<value>15</value>
 			<value>3</value>
 		</item>
 		<item name="computeMAC(...) at ./platonWallet/Models/Wallet/Keystore.swift:169">
-			<value>1583</value>
+			<value>1582</value>
 			<value>6</value>
 			<value>1</value>
 		</item>
 		<item name="init(...) at ./platonWallet/Models/Wallet/Keystore.swift:205">
-			<value>1584</value>
+			<value>1583</value>
 			<value>13</value>
 			<value>2</value>
 		</item>
 		<item name="encode(...) at ./platonWallet/Models/Wallet/Keystore.swift:220">
-			<value>1585</value>
+			<value>1584</value>
 			<value>8</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.37160883280757"/>
-		<average label="CCN" value="2.273186119873817"/>
+		<average label="NCSS" value="11.373737373737374"/>
+		<average label="CCN" value="2.273989898989899"/>
 		<item name="generateMnemonic(...) at ./platonWallet/Models/Wallet/WalletUtil.swift:18">
-			<value>1586</value>
+			<value>1585</value>
 			<value>9</value>
 			<value>3</value>
 		</item>
 		<item name="seedFromMnemonic(...) at ./platonWallet/Models/Wallet/WalletUtil.swift:32">
-			<value>1587</value>
+			<value>1586</value>
 			<value>11</value>
 			<value>1</value>
 		</item>
 		<item name="hdNodeFromSeed(...) at ./platonWallet/Models/Wallet/WalletUtil.swift:47">
-			<value>1588</value>
+			<value>1587</value>
 			<value>8</value>
 			<value>1</value>
 		</item>
 		<item name="privateKeyFromHDNode(...) at ./platonWallet/Models/Wallet/WalletUtil.swift:58">
-			<value>1589</value>
+			<value>1588</value>
 			<value>12</value>
 			<value>3</value>
 		</item>
 		<item name="publicKeyFromPrivateKey(...) at ./platonWallet/Models/Wallet/WalletUtil.swift:76">
-			<value>1590</value>
+			<value>1589</value>
 			<value>12</value>
 			<value>1</value>
 		</item>
 		<item name="addressFromPublicKey(...) at ./platonWallet/Models/Wallet/WalletUtil.swift:91">
-			<value>1591</value>
+			<value>1590</value>
 			<value>19</value>
 			<value>3</value>
 		</item>
 		<item name="isValidMnemonic(...) at ./platonWallet/Models/Wallet/WalletUtil.swift:115">
-			<value>1592</value>
+			<value>1591</value>
 			<value>4</value>
 			<value>1</value>
 		</item>
 		<item name="isValidPrivateKeyData(...) at ./platonWallet/Models/Wallet/WalletUtil.swift:122">
-			<value>1593</value>
+			<value>1592</value>
 			<value>9</value>
 			<value>3</value>
 		</item>
 		<item name="isValidPrivateKeyHexStr(...) at ./platonWallet/Models/Wallet/WalletUtil.swift:134">
-			<value>1594</value>
+			<value>1593</value>
 			<value>6</value>
 			<value>2</value>
 		</item>
 		<item name="isValidPublicKeyHexStr(...) at ./platonWallet/Models/Wallet/WalletUtil.swift:142">
-			<value>1595</value>
+			<value>1594</value>
 			<value>6</value>
 			<value>2</value>
 		</item>
 		<item name="isValidAddress(...) at ./platonWallet/Models/Wallet/WalletUtil.swift:150">
-			<value>1596</value>
+			<value>1595</value>
 			<value>3</value>
 			<value>1</value>
 		</item>
 		<item name="generateNewObservedWalletName(...) at ./platonWallet/Models/Wallet/WalletUtil.swift:154">
-			<value>1597</value>
+			<value>1596</value>
 			<value>9</value>
 			<value>3</value>
 		</item>
-		<average label="NCSS" value="11.353788353162178"/>
-		<average label="CCN" value="2.271133375078272"/>
+		<average label="NCSS" value="11.355889724310776"/>
+		<average label="CCN" value="2.2719298245614037"/>
 		<item name="init(...) at ./platonWallet/Models/Wallet/Scrypt.swift:26">
-			<value>1598</value>
+			<value>1597</value>
 			<value>3</value>
 			<value>1</value>
 		</item>
 		<item name="calculate(...) at ./platonWallet/Models/Wallet/Scrypt.swift:31">
-			<value>1599</value>
+			<value>1598</value>
 			<value>10</value>
 			<value>3</value>
 		</item>
 		<item name="scrypt(...) at ./platonWallet/Models/Wallet/Scrypt.swift:45">
-			<value>1600</value>
+			<value>1599</value>
 			<value>21</value>
 			<value>2</value>
 		</item>
 		<item name="smix(...) at ./platonWallet/Models/Wallet/Scrypt.swift:82">
-			<value>1601</value>
+			<value>1600</value>
 			<value>25</value>
 			<value>5</value>
 		</item>
 		<item name="integerify(...) at ./platonWallet/Models/Wallet/Scrypt.swift:131">
-			<value>1602</value>
+			<value>1601</value>
 			<value>4</value>
 			<value>1</value>
 		</item>
 		<item name="blockMixSalsa8(...) at ./platonWallet/Models/Wallet/Scrypt.swift:140">
-			<value>1603</value>
+			<value>1602</value>
 			<value>11</value>
 			<value>2</value>
 		</item>
 		<item name="salsa20_8(...) at ./platonWallet/Models/Wallet/Scrypt.swift:165">
-			<value>1604</value>
+			<value>1603</value>
 			<value>45</value>
 			<value>3</value>
 		</item>
 		<item name="blockXor(...) at ./platonWallet/Models/Wallet/Scrypt.swift:224">
-			<value>1605</value>
+			<value>1604</value>
 			<value>8</value>
 			<value>2</value>
 		</item>
-		<average label="NCSS" value="11.37632398753894"/>
-		<average label="CCN" value="2.271651090342679"/>
+		<average label="NCSS" value="11.378428927680797"/>
+		<average label="CCN" value="2.2724438902743143"/>
 		<item name="init(...) at ./platonWallet/Models/Wallet/ScryptParams.swift:49">
-			<value>1606</value>
+			<value>1605</value>
 			<value>9</value>
 			<value>1</value>
 		</item>
 		<item name="init(...) at ./platonWallet/Models/Wallet/ScryptParams.swift:60">
-			<value>1607</value>
+			<value>1606</value>
 			<value>10</value>
 			<value>2</value>
 		</item>
 		<item name="validate(...) at ./platonWallet/Models/Wallet/ScryptParams.swift:74">
-			<value>1608</value>
+			<value>1607</value>
 			<value>15</value>
 			<value>7</value>
 		</item>
 		<item name="init(...) at ./platonWallet/Models/Wallet/ScryptParams.swift:107">
-			<value>1609</value>
+			<value>1608</value>
 			<value>9</value>
 			<value>1</value>
 		</item>
 		<item name="encode(...) at ./platonWallet/Models/Wallet/ScryptParams.swift:118">
-			<value>1610</value>
+			<value>1609</value>
 			<value>8</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.372670807453416"/>
-		<average label="CCN" value="2.2720496894409936"/>
-		<average label="NCSS" value="11.372670807453416"/>
-		<average label="CCN" value="2.2720496894409936"/>
-		<average label="NCSS" value="11.372670807453416"/>
-		<average label="CCN" value="2.2720496894409936"/>
+		<average label="NCSS" value="11.374766935985084"/>
+		<average label="CCN" value="2.2728402734617776"/>
+		<average label="NCSS" value="11.374766935985084"/>
+		<average label="CCN" value="2.2728402734617776"/>
+		<average label="NCSS" value="11.374766935985084"/>
+		<average label="CCN" value="2.2728402734617776"/>
 		<item name="init(...) at ./platonWallet/Models/Wallet/Keystore.Crypto.swift:35">
-			<value>1611</value>
+			<value>1610</value>
 			<value>6</value>
 			<value>1</value>
 		</item>
 		<item name="init(...) at ./platonWallet/Models/Wallet/Keystore.Crypto.swift:42">
-			<value>1612</value>
+			<value>1611</value>
 			<value>14</value>
 			<value>1</value>
 		</item>
 		<item name="init(...) at ./platonWallet/Models/Wallet/Keystore.Crypto.swift:73">
-			<value>1613</value>
+			<value>1612</value>
 			<value>17</value>
 			<value>3</value>
 		</item>
 		<item name="encode(...) at ./platonWallet/Models/Wallet/Keystore.Crypto.swift:94">
-			<value>1614</value>
+			<value>1613</value>
 			<value>15</value>
 			<value>3</value>
 		</item>
 		<item name="init(...) at ./platonWallet/Models/Wallet/Keystore.Crypto.swift:119">
-			<value>1615</value>
+			<value>1614</value>
 			<value>7</value>
 			<value>1</value>
 		</item>
 		<item name="init(...) at ./platonWallet/Models/Wallet/Keystore.Crypto.swift:135">
-			<value>1616</value>
+			<value>1615</value>
 			<value>5</value>
 			<value>1</value>
 		</item>
 		<item name="encode(...) at ./platonWallet/Models/Wallet/Keystore.Crypto.swift:141">
-			<value>1617</value>
+			<value>1616</value>
 			<value>4</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.365491651205938"/>
-		<average label="CCN" value="2.269016697588126"/>
+		<average label="NCSS" value="11.367574257425742"/>
+		<average label="CCN" value="2.26980198019802"/>
 		<item name="get(...) at ./platonWallet/Models/Wallet/Wallet.swift:85">
-			<value>1618</value>
+			<value>1617</value>
 			<value>6</value>
 			<value>2</value>
 		</item>
 		<item name="init(...) at ./platonWallet/Models/Wallet/Wallet.swift:94">
-			<value>1619</value>
+			<value>1618</value>
 			<value>7</value>
 			<value>1</value>
 		</item>
 		<item name="init(...) at ./platonWallet/Models/Wallet/Wallet.swift:102">
-			<value>1620</value>
+			<value>1619</value>
 			<value>10</value>
 			<value>1</value>
 		</item>
 		<item name="ignoredProperties(...) at ./platonWallet/Models/Wallet/Wallet.swift:114">
-			<value>1621</value>
+			<value>1620</value>
 			<value>3</value>
 			<value>1</value>
 		</item>
 		<item name="primaryKey(...) at ./platonWallet/Models/Wallet/Wallet.swift:118">
-			<value>1622</value>
+			<value>1621</value>
 			<value>3</value>
 			<value>1</value>
 		</item>
 		<item name="==(...) at ./platonWallet/Models/Wallet/Wallet.swift:122">
-			<value>1623</value>
+			<value>1622</value>
 			<value>3</value>
 			<value>1</value>
 		</item>
 		<item name="updateInfoFromPrivateKey(...) at ./platonWallet/Models/Wallet/Wallet.swift:126">
-			<value>1624</value>
+			<value>1623</value>
 			<value>6</value>
 			<value>1</value>
 		</item>
 		<item name="&lt;(...) at ./platonWallet/Models/Wallet/Wallet.swift:138">
-			<value>1625</value>
+			<value>1624</value>
 			<value>13</value>
 			<value>3</value>
 		</item>
-		<average label="NCSS" value="11.340923076923078"/>
-		<average label="CCN" value="2.2646153846153845"/>
+		<average label="NCSS" value="11.342980295566502"/>
+		<average label="CCN" value="2.2653940886699506"/>
 		<item name="init(...) at ./platonWallet/Models/Wallet/PBKDF2Params.swift:18">
-			<value>1626</value>
+			<value>1625</value>
 			<value>12</value>
 			<value>1</value>
 		</item>
 		<item name="init(...) at ./platonWallet/Models/Wallet/PBKDF2Params.swift:42">
-			<value>1627</value>
+			<value>1626</value>
 			<value>9</value>
 			<value>1</value>
 		</item>
 		<item name="encode(...) at ./platonWallet/Models/Wallet/PBKDF2Params.swift:53">
-			<value>1628</value>
+			<value>1627</value>
 			<value>8</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.337837837837839"/>
-		<average label="CCN" value="2.2622850122850124"/>
+		<average label="NCSS" value="11.339889366933006"/>
+		<average label="CCN" value="2.263060848186847"/>
 		<item name="primaryKey(...) at ./platonWallet/Models/Wallet/AddressInfo.swift:26">
-			<value>1629</value>
+			<value>1628</value>
 			<value>3</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.332719459791283"/>
-		<average label="CCN" value="2.261510128913444"/>
-		<average label="NCSS" value="11.332719459791283"/>
-		<average label="CCN" value="2.261510128913444"/>
-		<average label="NCSS" value="11.332719459791283"/>
-		<average label="CCN" value="2.261510128913444"/>
+		<average label="NCSS" value="11.334766584766585"/>
+		<average label="CCN" value="2.2622850122850124"/>
+		<average label="NCSS" value="11.334766584766585"/>
+		<average label="CCN" value="2.2622850122850124"/>
+		<average label="NCSS" value="11.334766584766585"/>
+		<average label="CCN" value="2.2622850122850124"/>
 		<item name="timeOutCompletionOnMainThread(...) at ./platonWallet/Models/BaseService.swift:27">
-			<value>1630</value>
+			<value>1629</value>
 			<value>17</value>
 			<value>3</value>
 		</item>
 		<item name="failCompletionOnMainThread(...) at ./platonWallet/Models/BaseService.swift:46">
-			<value>1631</value>
+			<value>1630</value>
 			<value>17</value>
 			<value>3</value>
 		</item>
 		<item name="failWithEmptyResponseCompletionOnMainThread(...) at ./platonWallet/Models/BaseService.swift:67">
-			<value>1632</value>
+			<value>1631</value>
 			<value>17</value>
 			<value>3</value>
 		</item>
 		<item name="successCompletionOnMain(...) at ./platonWallet/Models/BaseService.swift:86">
-			<value>1633</value>
+			<value>1632</value>
 			<value>17</value>
 			<value>3</value>
 		</item>
-		<average label="NCSS" value="11.346601347213717"/>
-		<average label="CCN" value="2.2633190447030005"/>
+		<average label="NCSS" value="11.348651960784315"/>
+		<average label="CCN" value="2.264093137254902"/>
 		<item name="initialize(...) at ./platonWallet/Models/AppFramework.swift:19">
-			<value>1634</value>
+			<value>1633</value>
 			<value>13</value>
 			<value>2</value>
 		</item>
 		<item name="initweb3(...) at ./platonWallet/Models/AppFramework.swift:35">
-			<value>1635</value>
+			<value>1634</value>
 			<value>3</value>
 			<value>1</value>
 		</item>
 		<item name="initNetworkObserver(...) at ./platonWallet/Models/AppFramework.swift:39">
-			<value>1636</value>
+			<value>1635</value>
 			<value>3</value>
 			<value>1</value>
 		</item>
 		<item name="initUShare(...) at ./platonWallet/Models/AppFramework.swift:43">
-			<value>1637</value>
+			<value>1636</value>
 			<value>4</value>
 			<value>3</value>
 		</item>
 		<item name="initUMeng(...) at ./platonWallet/Models/AppFramework.swift:49">
-			<value>1638</value>
+			<value>1637</value>
 			<value>5</value>
 			<value>1</value>
 		</item>
 		<item name="modulesConfigure(...) at ./platonWallet/Models/AppFramework.swift:55">
-			<value>1639</value>
+			<value>1638</value>
 			<value>4</value>
 			<value>1</value>
 		</item>
 		<item name="RealmConfiguration(...) at ./platonWallet/Models/AppFramework.swift:60">
-			<value>1640</value>
+			<value>1639</value>
 			<value>12</value>
 			<value>3</value>
 		</item>
 		<item name="doSwizzle(...) at ./platonWallet/Models/AppFramework.swift:75">
-			<value>1641</value>
+			<value>1640</value>
 			<value>3</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.319926873857405"/>
-		<average label="CCN" value="2.260207190737355"/>
+		<average label="NCSS" value="11.321951219512195"/>
+		<average label="CCN" value="2.2609756097560973"/>
 		<item name="handleEvent(...) at ./platonWallet/Modules/Analysis/AnalysisHelper.swift:25">
-			<value>1642</value>
+			<value>1641</value>
 			<value>22</value>
 			<value>8</value>
 		</item>
 		<item name="handleEvent(...) at ./platonWallet/Modules/Analysis/AnalysisHelper.swift:51">
-			<value>1643</value>
+			<value>1642</value>
 			<value>3</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.321363359707851"/>
-		<average label="CCN" value="2.2629336579427877"/>
+		<average label="NCSS" value="11.323386114494518"/>
+		<average label="CCN" value="2.263702801461632"/>
 		<item name="getBatchTransaction(...) at ./platonWallet/Modules/TransferService/TransactionService+Centralization.swift:17">
-			<value>1644</value>
+			<value>1643</value>
 			<value>34</value>
 			<value>4</value>
 		</item>
 		<item name="getDelegateRecord(...) at ./platonWallet/Modules/TransferService/TransactionService+Centralization.swift:56">
-			<value>1645</value>
+			<value>1644</value>
 			<value>35</value>
 			<value>4</value>
 		</item>
 		<item name="getTransactionStatus(...) at ./platonWallet/Modules/TransferService/TransactionService+Centralization.swift:96">
-			<value>1646</value>
+			<value>1645</value>
 			<value>27</value>
 			<value>4</value>
 		</item>
 		<item name="getContractGas(...) at ./platonWallet/Modules/TransferService/TransactionService+Centralization.swift:127">
-			<value>1647</value>
+			<value>1646</value>
 			<value>31</value>
 			<value>7</value>
 		</item>
-		<average label="NCSS" value="11.370977534911962"/>
-		<average label="CCN" value="2.2689738919247118"/>
+		<average label="NCSS" value="11.373025516403402"/>
+		<average label="CCN" value="2.269744835965978"/>
 		<item name="startTimerFire(...) at ./platonWallet/Modules/TransferService/TransactionService.swift:37">
-			<value>1648</value>
+			<value>1647</value>
 			<value>6</value>
 			<value>2</value>
 		</item>
 		<item name="getGasPrice(...) at ./platonWallet/Modules/TransferService/TransactionService.swift:44">
-			<value>1649</value>
+			<value>1648</value>
 			<value>3</value>
 			<value>1</value>
 		</item>
 		<item name="onPendingTxPolling(...) at ./platonWallet/Modules/TransferService/TransactionService.swift:48">
-			<value>1650</value>
+			<value>1649</value>
 			<value>3</value>
 			<value>1</value>
 		</item>
 		<item name="getEthGasPrice(...) at ./platonWallet/Modules/TransferService/TransactionService.swift:52">
-			<value>1651</value>
+			<value>1650</value>
 			<value>19</value>
 			<value>5</value>
 		</item>
 		<item name="transactionStatusPooling(...) at ./platonWallet/Modules/TransferService/TransactionService.swift:73">
-			<value>1652</value>
+			<value>1651</value>
 			<value>32</value>
 			<value>13</value>
 		</item>
 		<item name="sendAPTTransfer(...) at ./platonWallet/Modules/TransferService/TransactionService.swift:117">
-			<value>1653</value>
+			<value>1652</value>
 			<value>79</value>
 			<value>7</value>
 		</item>
-		<average label="NCSS" value="11.415607985480944"/>
-		<average label="CCN" value="2.278281911675741"/>
+		<average label="NCSS" value="11.41767554479419"/>
+		<average label="CCN" value="2.279055690072639"/>
 		<item name="init(...) at ./platonWallet/Modules/TransferService/TransferService.swift:21">
-			<value>1654</value>
+			<value>1653</value>
 			<value>7</value>
 			<value>2</value>
 		</item>
 		<item name="timerFirer(...) at ./platonWallet/Modules/TransferService/TransferService.swift:29">
-			<value>1655</value>
+			<value>1654</value>
 			<value>10</value>
 			<value>2</value>
 		</item>
 		<item name="ATPTransactionsPool(...) at ./platonWallet/Modules/TransferService/TransferService.swift:45">
-			<value>1656</value>
+			<value>1655</value>
 			<value>31</value>
 			<value>12</value>
 		</item>
 		<item name="sharedWalletTransactionsPool(...) at ./platonWallet/Modules/TransferService/TransferService.swift:81">
-			<value>1657</value>
+			<value>1656</value>
 			<value>28</value>
 			<value>9</value>
 		</item>
 		<item name="sendAPTTransfer(...) at ./platonWallet/Modules/TransferService/TransferService.swift:114">
-			<value>1658</value>
+			<value>1657</value>
 			<value>74</value>
 			<value>8</value>
 		</item>
 		<item name="getEstimateGas(...) at ./platonWallet/Modules/TransferService/TransferService.swift:207">
-			<value>1659</value>
+			<value>1658</value>
 			<value>20</value>
 			<value>4</value>
 		</item>
-		<average label="NCSS" value="11.476793248945148"/>
-		<average label="CCN" value="2.292344786015672"/>
+		<average label="NCSS" value="11.478890229191798"/>
+		<average label="CCN" value="2.293124246079614"/>
 		<item name="switchRpcURL(...) at ./platonWallet/Modules/Web3/Web3Helper.swift:16">
-			<value>1660</value>
+			<value>1659</value>
 			<value>25</value>
 			<value>4</value>
 		</item>
 		<item name="switchRpcURL(...) at ./platonWallet/Modules/Web3/Web3Helper.swift:48">
-			<value>1661</value>
+			<value>1660</value>
 			<value>25</value>
 			<value>4</value>
 		</item>
 		<item name="getRpcURL(...) at ./platonWallet/Modules/Web3/Web3Helper.swift:82">
-			<value>1662</value>
+			<value>1661</value>
 			<value>4</value>
 			<value>2</value>
 		</item>
-		<average label="NCSS" value="11.488567990373044"/>
-		<average label="CCN" value="2.2942238267148016"/>
+		<average label="NCSS" value="11.490668272125225"/>
+		<average label="CCN" value="2.2950030102347982"/>
 		<item name="init(...) at ./platonWallet/Modules/WalletService/WalletService.swift:25">
-			<value>1663</value>
+			<value>1662</value>
 			<value>8</value>
 			<value>2</value>
 		</item>
 		<item name="refreshDB(...) at ./platonWallet/Modules/WalletService/WalletService.swift:40">
-			<value>1664</value>
+			<value>1663</value>
 			<value>4</value>
 			<value>1</value>
 		</item>
 		<item name="getWalletByAddress(...) at ./platonWallet/Modules/WalletService/WalletService.swift:45">
-			<value>1665</value>
+			<value>1664</value>
 			<value>8</value>
 			<value>3</value>
 		</item>
 		<item name="createWallet(...) at ./platonWallet/Modules/WalletService/WalletService.swift:62">
-			<value>1666</value>
+			<value>1665</value>
 			<value>19</value>
 			<value>3</value>
 		</item>
 		<item name="import(...) at ./platonWallet/Modules/WalletService/WalletService.swift:90">
-			<value>1667</value>
+			<value>1666</value>
 			<value>22</value>
 			<value>4</value>
 		</item>
 		<item name="import(...) at ./platonWallet/Modules/WalletService/WalletService.swift:122">
-			<value>1668</value>
+			<value>1667</value>
 			<value>27</value>
 			<value>5</value>
 		</item>
 		<item name="import(...) at ./platonWallet/Modules/WalletService/WalletService.swift:167">
-			<value>1669</value>
+			<value>1668</value>
 			<value>36</value>
 			<value>7</value>
 		</item>
 		<item name="import(...) at ./platonWallet/Modules/WalletService/WalletService.swift:225">
-			<value>1670</value>
+			<value>1669</value>
 			<value>40</value>
 			<value>9</value>
 		</item>
 		<item name="exportPrivateKey(...) at ./platonWallet/Modules/WalletService/WalletService.swift:288">
-			<value>1671</value>
+			<value>1670</value>
 			<value>23</value>
 			<value>4</value>
 		</item>
 		<item name="exportKeystore(...) at ./platonWallet/Modules/WalletService/WalletService.swift:327">
-			<value>1672</value>
+			<value>1671</value>
 			<value>10</value>
 			<value>3</value>
 		</item>
 		<item name="exportMnemonic(...) at ./platonWallet/Modules/WalletService/WalletService.swift:353">
-			<value>1673</value>
+			<value>1672</value>
 			<value>20</value>
 			<value>4</value>
 		</item>
 		<item name="afterBackupMnemonic(...) at ./platonWallet/Modules/WalletService/WalletService.swift:376">
-			<value>1674</value>
+			<value>1673</value>
 			<value>4</value>
 			<value>1</value>
 		</item>
 		<item name="deleteWallet(...) at ./platonWallet/Modules/WalletService/WalletService.swift:396">
-			<value>1675</value>
+			<value>1674</value>
 			<value>7</value>
 			<value>2</value>
 		</item>
 		<item name="updateWalletName(...) at ./platonWallet/Modules/WalletService/WalletService.swift:410">
-			<value>1676</value>
+			<value>1675</value>
 			<value>3</value>
 			<value>1</value>
 		</item>
 		<item name="updateWalletBalance(...) at ./platonWallet/Modules/WalletService/WalletService.swift:414">
-			<value>1677</value>
+			<value>1676</value>
 			<value>3</value>
 			<value>1</value>
 		</item>
 		<item name="updateWalletLockedBalance(...) at ./platonWallet/Modules/WalletService/WalletService.swift:418">
-			<value>1678</value>
+			<value>1677</value>
 			<value>3</value>
 			<value>1</value>
 		</item>
 		<item name="generateFileName(...) at ./platonWallet/Modules/WalletService/WalletService.swift:423">
-			<value>1679</value>
+			<value>1678</value>
 			<value>3</value>
 			<value>1</value>
 		</item>
 		<item name="filenameTimestamp(...) at ./platonWallet/Modules/WalletService/WalletService.swift:429">
-			<value>1680</value>
+			<value>1679</value>
 			<value>11</value>
 			<value>3</value>
 		</item>
 		<item name="saveObservedWalletToDB(...) at ./platonWallet/Modules/WalletService/WalletService.swift:442">
-			<value>1681</value>
+			<value>1680</value>
 			<value>14</value>
 			<value>4</value>
 		</item>
 		<item name="saveToDB(...) at ./platonWallet/Modules/WalletService/WalletService.swift:462">
-			<value>1682</value>
+			<value>1681</value>
 			<value>27</value>
 			<value>8</value>
 		</item>
-		<average label="NCSS" value="11.525564803804993"/>
-		<average label="CCN" value="2.3067776456599285"/>
+		<average label="NCSS" value="11.527662105889352"/>
+		<average label="CCN" value="2.30755502676978"/>
 		<item name="init(...) at ./platonWallet/Modules/Common/QRCodeDecoder.swift:23">
-			<value>1683</value>
+			<value>1682</value>
 			<value>1</value>
 			<value>1</value>
 		</item>
 		<item name="decode(...) at ./platonWallet/Modules/Common/QRCodeDecoder.swift:42">
-			<value>1684</value>
+			<value>1683</value>
 			<value>17</value>
 			<value>6</value>
 		</item>
-		<average label="NCSS" value="11.522565320665084"/>
-		<average label="CCN" value="2.308194774346793"/>
-		<average label="NCSS" value="11.522565320665084"/>
-		<average label="CCN" value="2.308194774346793"/>
-		<average label="NCSS" value="11.522565320665084"/>
-		<average label="CCN" value="2.308194774346793"/>
+		<average label="NCSS" value="11.52465834818776"/>
+		<average label="CCN" value="2.308972073677956"/>
+		<average label="NCSS" value="11.52465834818776"/>
+		<average label="CCN" value="2.308972073677956"/>
+		<average label="NCSS" value="11.52465834818776"/>
+		<average label="CCN" value="2.308972073677956"/>
 		<item name="startNetworkReachabilityObserver(...) at ./platonWallet/Modules/Common/NetworkManager.swift:16">
-			<value>1685</value>
+			<value>1684</value>
 			<value>6</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.519287833827892"/>
-		<average label="CCN" value="2.3074183976261127"/>
-		<average label="NCSS" value="11.519287833827892"/>
-		<average label="CCN" value="2.3074183976261127"/>
-		<average label="NCSS" value="11.519287833827892"/>
-		<average label="CCN" value="2.3074183976261127"/>
+		<average label="NCSS" value="11.521377672209026"/>
+		<average label="CCN" value="2.308194774346793"/>
+		<average label="NCSS" value="11.521377672209026"/>
+		<average label="CCN" value="2.308194774346793"/>
+		<average label="NCSS" value="11.521377672209026"/>
+		<average label="CCN" value="2.308194774346793"/>
 		<item name="init(...) at ./platonWallet/Modules/Common/QRCodeRLPDecoder.swift:13">
-			<value>1686</value>
+			<value>1685</value>
 			<value>1</value>
 			<value>1</value>
 		</item>
 		<item name="decode(...) at ./platonWallet/Modules/Common/QRCodeRLPDecoder.swift:16">
-			<value>1687</value>
+			<value>1686</value>
 			<value>25</value>
 			<value>5</value>
 		</item>
-		<average label="NCSS" value="11.521043272080616"/>
-		<average label="CCN" value="2.3082394783639595"/>
+		<average label="NCSS" value="11.523131672597865"/>
+		<average label="CCN" value="2.309015421115065"/>
 		<item name="getWalletBalances(...) at ./platonWallet/Modules/AssetService/AssetService+Centralization.swift:14">
-			<value>1688</value>
+			<value>1687</value>
 			<value>25</value>
 			<value>4</value>
 		</item>
-		<average label="NCSS" value="11.529028436018958"/>
-		<average label="CCN" value="2.309241706161137"/>
+		<average label="NCSS" value="11.531120331950207"/>
+		<average label="CCN" value="2.3100177830468285"/>
 		<item name="init(...) at ./platonWallet/Modules/AssetService/AssetService.swift:24">
-			<value>1689</value>
+			<value>1688</value>
 			<value>5</value>
 			<value>1</value>
 		</item>
 		<item name="fetchWalletBalanceForV7(...) at ./platonWallet/Modules/AssetService/AssetService.swift:31">
-			<value>1690</value>
+			<value>1689</value>
 			<value>32</value>
 			<value>9</value>
 		</item>
 		<item name="onDidSwitchNode(...) at ./platonWallet/Modules/AssetService/AssetService.swift:69">
-			<value>1691</value>
+			<value>1690</value>
 			<value>2</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.53163808397398"/>
-		<average label="CCN" value="2.3116499112950915"/>
+		<average label="NCSS" value="11.533727810650888"/>
+		<average label="CCN" value="2.3124260355029587"/>
 		<item name="getRewardDelegate(...) at ./platonWallet/Modules/Staking/StakingService.swift:18">
-			<value>1692</value>
+			<value>1691</value>
 			<value>29</value>
 			<value>4</value>
 		</item>
 		<item name="rewardClaim(...) at ./platonWallet/Modules/Staking/StakingService.swift:51">
-			<value>1693</value>
-			<value>31</value>
+			<value>1692</value>
+			<value>32</value>
 			<value>5</value>
 		</item>
-		<item name="searchNodes(...) at ./platonWallet/Modules/Staking/StakingService.swift:83">
-			<value>1694</value>
+		<item name="searchNodes(...) at ./platonWallet/Modules/Staking/StakingService.swift:84">
+			<value>1693</value>
 			<value>4</value>
 			<value>1</value>
 		</item>
-		<item name="getMyDelegate(...) at ./platonWallet/Modules/Staking/StakingService.swift:88">
-			<value>1695</value>
+		<item name="getMyDelegate(...) at ./platonWallet/Modules/Staking/StakingService.swift:89">
+			<value>1694</value>
 			<value>26</value>
 			<value>4</value>
 		</item>
-		<item name="updateNodeListData(...) at ./platonWallet/Modules/Staking/StakingService.swift:118">
-			<value>1696</value>
+		<item name="updateNodeListData(...) at ./platonWallet/Modules/Staking/StakingService.swift:119">
+			<value>1695</value>
 			<value>73</value>
 			<value>21</value>
 		</item>
-		<item name="getNodeList(...) at ./platonWallet/Modules/Staking/StakingService.swift:207">
-			<value>1697</value>
+		<item name="getNodeList(...) at ./platonWallet/Modules/Staking/StakingService.swift:208">
+			<value>1696</value>
 			<value>40</value>
 			<value>9</value>
 		</item>
-		<item name="getNodeDetail(...) at ./platonWallet/Modules/Staking/StakingService.swift:252">
-			<value>1698</value>
+		<item name="getNodeDetail(...) at ./platonWallet/Modules/Staking/StakingService.swift:253">
+			<value>1697</value>
 			<value>25</value>
 			<value>4</value>
 		</item>
-		<item name="getDelegateDetail(...) at ./platonWallet/Modules/Staking/StakingService.swift:281">
-			<value>1699</value>
+		<item name="getDelegateDetail(...) at ./platonWallet/Modules/Staking/StakingService.swift:282">
+			<value>1698</value>
 			<value>27</value>
 			<value>4</value>
 		</item>
-		<item name="getDelegationValue(...) at ./platonWallet/Modules/Staking/StakingService.swift:313">
+		<item name="getDelegationValue(...) at ./platonWallet/Modules/Staking/StakingService.swift:314">
+			<value>1699</value>
+			<value>29</value>
+			<value>4</value>
+		</item>
+		<item name="getCanDelegation(...) at ./platonWallet/Modules/Staking/StakingService.swift:348">
 			<value>1700</value>
 			<value>29</value>
 			<value>4</value>
 		</item>
-		<item name="getCanDelegation(...) at ./platonWallet/Modules/Staking/StakingService.swift:347">
+		<item name="createDelgate(...) at ./platonWallet/Modules/Staking/StakingService.swift:383">
 			<value>1701</value>
-			<value>29</value>
-			<value>4</value>
-		</item>
-		<item name="createDelgate(...) at ./platonWallet/Modules/Staking/StakingService.swift:382">
-			<value>1702</value>
 			<value>38</value>
 			<value>4</value>
 		</item>
-		<item name="withdrawDelegate(...) at ./platonWallet/Modules/Staking/StakingService.swift:424">
-			<value>1703</value>
+		<item name="withdrawDelegate(...) at ./platonWallet/Modules/Staking/StakingService.swift:425">
+			<value>1702</value>
 			<value>39</value>
 			<value>4</value>
 		</item>
-		<average label="NCSS" value="11.679389312977099"/>
-		<average label="CCN" value="2.335290663534938"/>
+		<average label="NCSS" value="11.68213866039953"/>
+		<average label="CCN" value="2.336075205640423"/>
 		<item name="migrationBelow076(...) at ./platonWallet/Modules/Persistence/Migration/RealmHelper+Migration.swift:13">
-			<value>1704</value>
+			<value>1703</value>
 			<value>3</value>
 			<value>1</value>
 		</item>
 		<item name="migrationBelow080(...) at ./platonWallet/Modules/Persistence/Migration/RealmHelper+Migration.swift:18">
-			<value>1705</value>
+			<value>1704</value>
 			<value>11</value>
 			<value>5</value>
 		</item>
 		<item name="migrationBelow0741(...) at ./platonWallet/Modules/Persistence/Migration/RealmHelper+Migration.swift:30">
-			<value>1706</value>
+			<value>1705</value>
 			<value>21</value>
 			<value>7</value>
 		</item>
 		<item name="migrationBelow073(...) at ./platonWallet/Modules/Persistence/Migration/RealmHelper+Migration.swift:54">
-			<value>1707</value>
+			<value>1706</value>
 			<value>20</value>
 			<value>4</value>
 		</item>
 		<item name="migrationBelow0731(...) at ./platonWallet/Modules/Persistence/Migration/RealmHelper+Migration.swift:81">
-			<value>1708</value>
+			<value>1707</value>
 			<value>3</value>
 			<value>1</value>
 		</item>
 		<item name="migrationBelow0732(...) at ./platonWallet/Modules/Persistence/Migration/RealmHelper+Migration.swift:85">
-			<value>1709</value>
+			<value>1708</value>
 			<value>3</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.67407840842598"/>
-		<average label="CCN" value="2.3382094792276185"/>
+		<average label="NCSS" value="11.676814988290397"/>
+		<average label="CCN" value="2.338992974238876"/>
 		<item name="add(...) at ./platonWallet/Modules/Persistence/TransferPersistence.swift:14">
-			<value>1710</value>
+			<value>1709</value>
 			<value>12</value>
 			<value>1</value>
 		</item>
 		<item name="update(...) at ./platonWallet/Modules/Persistence/TransferPersistence.swift:28">
-			<value>1711</value>
+			<value>1710</value>
 			<value>14</value>
 			<value>2</value>
 		</item>
 		<item name="update(...) at ./platonWallet/Modules/Persistence/TransferPersistence.swift:44">
-			<value>1712</value>
+			<value>1711</value>
 			<value>27</value>
 			<value>4</value>
 		</item>
 		<item name="getAll(...) at ./platonWallet/Modules/Persistence/TransferPersistence.swift:76">
-			<value>1713</value>
+			<value>1712</value>
 			<value>14</value>
 			<value>1</value>
 		</item>
 		<item name="getTransactionsByAddress(...) at ./platonWallet/Modules/Persistence/TransferPersistence.swift:92">
-			<value>1714</value>
+			<value>1713</value>
 			<value>18</value>
 			<value>2</value>
 		</item>
 		<item name="getUnConfirmedTransactions(...) at ./platonWallet/Modules/Persistence/TransferPersistence.swift:111">
-			<value>1715</value>
+			<value>1714</value>
 			<value>7</value>
 			<value>1</value>
 		</item>
 		<item name="getByTxhash(...) at ./platonWallet/Modules/Persistence/TransferPersistence.swift:120">
-			<value>1716</value>
+			<value>1715</value>
 			<value>11</value>
 			<value>2</value>
 		</item>
 		<item name="delete(...) at ./platonWallet/Modules/Persistence/TransferPersistence.swift:134">
-			<value>1717</value>
+			<value>1716</value>
 			<value>11</value>
 			<value>1</value>
 		</item>
 		<item name="deleteConfirmedTransaction(...) at ./platonWallet/Modules/Persistence/TransferPersistence.swift:146">
-			<value>1718</value>
+			<value>1717</value>
 			<value>11</value>
 			<value>1</value>
 		</item>
 		<item name="getRewardPendingTransaction(...) at ./platonWallet/Modules/Persistence/TransferPersistence.swift:158">
-			<value>1719</value>
+			<value>1718</value>
 			<value>8</value>
 			<value>1</value>
 		</item>
 		<item name="getDelegateCreatePendingTransaction(...) at ./platonWallet/Modules/Persistence/TransferPersistence.swift:167">
-			<value>1720</value>
+			<value>1719</value>
 			<value>8</value>
 			<value>1</value>
 		</item>
 		<item name="getDelegateWithdrawPendingTransaction(...) at ./platonWallet/Modules/Persistence/TransferPersistence.swift:176">
-			<value>1721</value>
+			<value>1720</value>
 			<value>8</value>
 			<value>1</value>
 		</item>
 		<item name="getTransferPendingTransaction(...) at ./platonWallet/Modules/Persistence/TransferPersistence.swift:185">
-			<value>1722</value>
+			<value>1721</value>
 			<value>8</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.67711962833914"/>
-		<average label="CCN" value="2.3315911730545875"/>
+		<average label="NCSS" value="11.679837303893086"/>
+		<average label="CCN" value="2.3323649041255083"/>
 		<item name="initWriteRealm(...) at ./platonWallet/Modules/Persistence/RealmHelper.swift:18">
-			<value>1723</value>
+			<value>1722</value>
 			<value>4</value>
 			<value>1</value>
 		</item>
 		<item name="getConfig(...) at ./platonWallet/Modules/Persistence/RealmHelper.swift:36">
-			<value>1724</value>
+			<value>1723</value>
 			<value>27</value>
 			<value>8</value>
 		</item>
 		<item name="detached(...) at ./platonWallet/Modules/Persistence/RealmHelper.swift:76">
-			<value>1725</value>
+			<value>1724</value>
 			<value>12</value>
 			<value>4</value>
 		</item>
-		<average label="NCSS" value="11.681739130434783"/>
-		<average label="CCN" value="2.3350724637681157"/>
+		<average label="NCSS" value="11.68445475638051"/>
+		<average label="CCN" value="2.33584686774942"/>
 		<item name="add(...) at ./platonWallet/Modules/Persistence/TwoHourTransactionPersistence.swift:13">
-			<value>1726</value>
+			<value>1725</value>
 			<value>12</value>
 			<value>1</value>
 		</item>
 		<item name="getTwoHourTransactions(...) at ./platonWallet/Modules/Persistence/TwoHourTransactionPersistence.swift:27">
-			<value>1727</value>
+			<value>1726</value>
 			<value>7</value>
 			<value>1</value>
 		</item>
 		<item name="deleteOverTwoHourTransaction(...) at ./platonWallet/Modules/Persistence/TwoHourTransactionPersistence.swift:36">
-			<value>1728</value>
+			<value>1727</value>
 			<value>12</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.679398148148149"/>
-		<average label="CCN" value="2.3327546296296298"/>
+		<average label="NCSS" value="11.682107701215982"/>
+		<average label="CCN" value="2.3335263462651996"/>
 		<item name="add(...) at ./platonWallet/Modules/Persistence/AssetPersistence.swift:13">
-			<value>1729</value>
+			<value>1728</value>
 			<value>11</value>
 			<value>1</value>
 		</item>
 		<item name="getAll(...) at ./platonWallet/Modules/Persistence/AssetPersistence.swift:26">
-			<value>1730</value>
+			<value>1729</value>
 			<value>6</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.6757225433526"/>
-		<average label="CCN" value="2.33121387283237"/>
+		<average label="NCSS" value="11.678426836321574"/>
+		<average label="CCN" value="2.331983805668016"/>
 		<item name="save(...) at ./platonWallet/Modules/Persistence/WallletPersistence.swift:16">
-			<value>1731</value>
+			<value>1730</value>
 			<value>12</value>
 			<value>1</value>
 		</item>
 		<item name="delete(...) at ./platonWallet/Modules/Persistence/WallletPersistence.swift:30">
-			<value>1732</value>
+			<value>1731</value>
 			<value>11</value>
 			<value>1</value>
 		</item>
 		<item name="updateWalletName(...) at ./platonWallet/Modules/Persistence/WallletPersistence.swift:43">
-			<value>1733</value>
+			<value>1732</value>
 			<value>14</value>
 			<value>2</value>
 		</item>
 		<item name="updateWalletBackupStatus(...) at ./platonWallet/Modules/Persistence/WallletPersistence.swift:59">
-			<value>1734</value>
+			<value>1733</value>
 			<value>14</value>
 			<value>2</value>
 		</item>
 		<item name="updateWalletUserArrangementIndex(...) at ./platonWallet/Modules/Persistence/WallletPersistence.swift:74">
-			<value>1735</value>
+			<value>1734</value>
 			<value>14</value>
 			<value>2</value>
 		</item>
 		<item name="updateWalletBalance(...) at ./platonWallet/Modules/Persistence/WallletPersistence.swift:91">
-			<value>1736</value>
+			<value>1735</value>
 			<value>14</value>
 			<value>2</value>
 		</item>
 		<item name="updateWalletLockedBalance(...) at ./platonWallet/Modules/Persistence/WallletPersistence.swift:107">
-			<value>1737</value>
+			<value>1736</value>
 			<value>14</value>
 			<value>2</value>
 		</item>
 		<item name="getAll(...) at ./platonWallet/Modules/Persistence/WallletPersistence.swift:124">
-			<value>1738</value>
+			<value>1737</value>
 			<value>20</value>
 			<value>4</value>
 		</item>
-		<average label="NCSS" value="11.686996547756042"/>
-		<average label="CCN" value="2.3296892980437285"/>
+		<average label="NCSS" value="11.689694876223374"/>
+		<average label="CCN" value="2.3304548071387448"/>
 		<item name="add(...) at ./platonWallet/Modules/Persistence/AddressInfoPersistence.swift:14">
-			<value>1739</value>
+			<value>1738</value>
 			<value>14</value>
 			<value>2</value>
 		</item>
 		<item name="replaceInto(...) at ./platonWallet/Modules/Persistence/AddressInfoPersistence.swift:30">
-			<value>1740</value>
+			<value>1739</value>
 			<value>24</value>
 			<value>4</value>
 		</item>
 		<item name="getAll(...) at ./platonWallet/Modules/Persistence/AddressInfoPersistence.swift:55">
-			<value>1741</value>
+			<value>1740</value>
 			<value>7</value>
 			<value>1</value>
 		</item>
 		<item name="delete(...) at ./platonWallet/Modules/Persistence/AddressInfoPersistence.swift:63">
-			<value>1742</value>
+			<value>1741</value>
 			<value>11</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.692307692307692"/>
-		<average label="CCN" value="2.3289322617680828"/>
+		<average label="NCSS" value="11.695002871912694"/>
+		<average label="CCN" value="2.3296955772544514"/>
 		<item name="add(...) at ./platonWallet/Modules/Persistence/NodePersistence.swift:14">
-			<value>1743</value>
+			<value>1742</value>
 			<value>14</value>
 			<value>2</value>
 		</item>
 		<item name="getAll(...) at ./platonWallet/Modules/Persistence/NodePersistence.swift:31">
-			<value>1744</value>
+			<value>1743</value>
 			<value>6</value>
 			<value>1</value>
 		</item>
 		<item name="getActiveNode(...) at ./platonWallet/Modules/Persistence/NodePersistence.swift:38">
-			<value>1745</value>
+			<value>1744</value>
 			<value>7</value>
 			<value>1</value>
 		</item>
 		<item name="getCandiateNode(...) at ./platonWallet/Modules/Persistence/NodePersistence.swift:46">
-			<value>1746</value>
+			<value>1745</value>
 			<value>7</value>
 			<value>1</value>
 		</item>
 		<item name="searchNodes(...) at ./platonWallet/Modules/Persistence/NodePersistence.swift:54">
-			<value>1747</value>
+			<value>1746</value>
 			<value>12</value>
 			<value>3</value>
 		</item>
-		<average label="NCSS" value="11.685174585002862"/>
-		<average label="CCN" value="2.326846021751574"/>
+		<average label="NCSS" value="11.687857961053837"/>
+		<average label="CCN" value="2.327605956471936"/>
 		<item name="add(...) at ./platonWallet/Modules/AddressBook/AddressBookService.swift:14">
-			<value>1748</value>
+			<value>1747</value>
 			<value>3</value>
 			<value>1</value>
 		</item>
 		<item name="replaceInto(...) at ./platonWallet/Modules/AddressBook/AddressBookService.swift:18">
-			<value>1749</value>
+			<value>1748</value>
 			<value>3</value>
 			<value>2</value>
 		</item>
 		<item name="getAll(...) at ./platonWallet/Modules/AddressBook/AddressBookService.swift:22">
-			<value>1750</value>
+			<value>1749</value>
 			<value>3</value>
 			<value>1</value>
 		</item>
 		<item name="delete(...) at ./platonWallet/Modules/AddressBook/AddressBookService.swift:26">
-			<value>1751</value>
+			<value>1750</value>
 			<value>3</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.66533409480297"/>
-		<average label="CCN" value="2.324386065105654"/>
+		<average label="NCSS" value="11.668"/>
+		<average label="CCN" value="2.325142857142857"/>
 		<item name="set(...) at ./platonWallet/Modules/SettingService.swift:22">
-			<value>1752</value>
+			<value>1751</value>
 			<value>9</value>
 			<value>1</value>
 		</item>
 		<item name="getCentralizationHost(...) at ./platonWallet/Modules/SettingService.swift:52">
-			<value>1753</value>
+			<value>1752</value>
 			<value>18</value>
 			<value>3</value>
 		</item>
 		<item name="getCentralizationURL(...) at ./platonWallet/Modules/SettingService.swift:71">
-			<value>1754</value>
+			<value>1753</value>
 			<value>3</value>
 			<value>1</value>
 		</item>
 		<item name="setCurrentNodeChainId(...) at ./platonWallet/Modules/SettingService.swift:75">
-			<value>1755</value>
+			<value>1754</value>
 			<value>11</value>
 			<value>2</value>
 		</item>
 		<item name="get(...) at ./platonWallet/Modules/SettingService.swift:88">
-			<value>1756</value>
+			<value>1755</value>
 			<value>8</value>
 			<value>2</value>
 		</item>
 		<item name="set(...) at ./platonWallet/Modules/SettingService.swift:96">
-			<value>1757</value>
+			<value>1756</value>
 			<value>4</value>
 			<value>1</value>
 		</item>
 		<item name="get(...) at ./platonWallet/Modules/SettingService.swift:103">
-			<value>1758</value>
+			<value>1757</value>
 			<value>8</value>
 			<value>2</value>
 		</item>
 		<item name="set(...) at ./platonWallet/Modules/SettingService.swift:111">
+			<value>1758</value>
+			<value>4</value>
+			<value>1</value>
+		</item>
+		<average label="NCSS" value="11.651877133105803"/>
+		<average label="CCN" value="2.321956769055745"/>
+		<item name="viewDidLoad(...) at ./platonWallet/ViewController.swift:13">
 			<value>1759</value>
 			<value>4</value>
 			<value>1</value>
 		</item>
-		<average label="NCSS" value="11.649232518476406"/>
+		<average label="NCSS" value="11.647527003979533"/>
 		<average label="CCN" value="2.3212052302444572"/>
-		<item name="viewDidLoad(...) at ./platonWallet/ViewController.swift:13">
-			<value>1760</value>
-			<value>4</value>
-			<value>1</value>
-		</item>
-		<average label="NCSS" value="11.644886363636363"/>
-		<average label="CCN" value="2.3204545454545453"/>
 		<item name="setupMonkeyTest(...) at ./platonWallet/AppDelegate+MonkeyTest.swift:16">
-			<value>1761</value>
+			<value>1760</value>
 			<value>7</value>
 			<value>2</value>
 		</item>
-		<average label="NCSS" value="11.642248722316866"/>
-		<average label="CCN" value="2.320272572402044"/>
+		<average label="NCSS" value="11.644886363636363"/>
+		<average label="CCN" value="2.321022727272727"/>
 		<item name="didSet(...) at ./platonWallet/AppDelegate.swift:21">
-			<value>1762</value>
+			<value>1761</value>
 			<value>3</value>
 			<value>1</value>
 		</item>
 		<item name="application(...) at ./platonWallet/AppDelegate.swift:31">
-			<value>1763</value>
+			<value>1762</value>
 			<value>11</value>
 			<value>2</value>
 		</item>
 		<item name="initStatusBar(...) at ./platonWallet/AppDelegate.swift:47">
-			<value>1764</value>
+			<value>1763</value>
 			<value>3</value>
 			<value>2</value>
 		</item>
 		<item name="initUI(...) at ./platonWallet/AppDelegate.swift:51">
-			<value>1765</value>
+			<value>1764</value>
 			<value>6</value>
 			<value>1</value>
 		</item>
 		<item name="checkIsOpenLocalAuth(...) at ./platonWallet/AppDelegate.swift:61">
-			<value>1766</value>
+			<value>1765</value>
 			<value>16</value>
 			<value>5</value>
 		</item>
 		<item name="completion(...) at ./platonWallet/AppDelegate.swift:88">
-			<value>1767</value>
+			<value>1766</value>
 			<value>7</value>
 			<value>2</value>
 		</item>
 		<item name="gotoNextVC(...) at ./platonWallet/AppDelegate.swift:101">
-			<value>1768</value>
+			<value>1767</value>
 			<value>10</value>
 			<value>3</value>
 		</item>
 		<item name="gotoAtonController(...) at ./platonWallet/AppDelegate.swift:113">
-			<value>1769</value>
+			<value>1768</value>
 			<value>9</value>
 			<value>2</value>
 		</item>
 		<item name="gotoAgreementController(...) at ./platonWallet/AppDelegate.swift:123">
-			<value>1770</value>
+			<value>1769</value>
 			<value>10</value>
 			<value>1</value>
 		</item>
 		<item name="gotoMainTab(...) at ./platonWallet/AppDelegate.swift:134">
-			<value>1771</value>
+			<value>1770</value>
 			<value>3</value>
 			<value>1</value>
 		</item>
 		<item name="gotoWalletCreateVC(...) at ./platonWallet/AppDelegate.swift:138">
-			<value>1772</value>
+			<value>1771</value>
 			<value>4</value>
 			<value>1</value>
 		</item>
 		<item name="gotoWalletCreateSuccessVC(...) at ./platonWallet/AppDelegate.swift:143">
-			<value>1773</value>
+			<value>1772</value>
 			<value>3</value>
 			<value>1</value>
 		</item>
 		<item name="localAuthStateSwitch(...) at ./platonWallet/AppDelegate.swift:147">
-			<value>1774</value>
+			<value>1773</value>
 			<value>4</value>
 			<value>1</value>
 		</item>
 		<item name="isOpenLocalAuthState(...) at ./platonWallet/AppDelegate.swift:152">
-			<value>1775</value>
+			<value>1774</value>
 			<value>3</value>
 			<value>1</value>
 		</item>
 		<item name="applicationWillResignActive(...) at ./platonWallet/AppDelegate.swift:156">
-			<value>1776</value>
+			<value>1775</value>
 			<value>2</value>
 			<value>1</value>
 		</item>
 		<item name="applicationDidEnterBackground(...) at ./platonWallet/AppDelegate.swift:161">
-			<value>1777</value>
+			<value>1776</value>
 			<value>2</value>
 			<value>1</value>
 		</item>
 		<item name="applicationWillEnterForeground(...) at ./platonWallet/AppDelegate.swift:166">
-			<value>1778</value>
+			<value>1777</value>
 			<value>2</value>
 			<value>1</value>
 		</item>
 		<item name="applicationDidBecomeActive(...) at ./platonWallet/AppDelegate.swift:170">
-			<value>1779</value>
+			<value>1778</value>
 			<value>3</value>
 			<value>1</value>
 		</item>
 		<item name="applicationWillTerminate(...) at ./platonWallet/AppDelegate.swift:175">
-			<value>1780</value>
+			<value>1779</value>
 			<value>2</value>
 			<value>1</value>
 		</item>
 		<item name="getRemoteConfig(...) at ./platonWallet/AppDelegate.swift:182">
-			<value>1781</value>
+			<value>1780</value>
 			<value>12</value>
 			<value>4</value>
 		</item>
 		<item name="getRemoteVersion(...) at ./platonWallet/AppDelegate.swift:195">
-			<value>1782</value>
+			<value>1781</value>
 			<value>29</value>
 			<value>9</value>
 		</item>
 		<item name="showShouldUpdateVersionAlert(...) at ./platonWallet/AppDelegate.swift:229">
-			<value>1783</value>
+			<value>1782</value>
 			<value>12</value>
 			<value>2</value>
 		</item>
-		<average label="NCSS" value="11.586090858104319"/>
-		<average label="CCN" value="2.316320807627594"/>
+		<average label="NCSS" value="11.588664421997755"/>
+		<average label="CCN" value="2.3170594837261502"/>
 	</measure>
 	<measure type="File">
 		<labels>
@@ -10086,8 +10081,8 @@
 		</item>
 		<item name="./platonWallet/UI/ViewController/Transfer/ATPWallet/TransactionDetailViewController.swift">
 			<value>106</value>
-			<value>199</value>
-			<value>53</value>
+			<value>200</value>
+			<value>55</value>
 			<value>7</value>
 		</item>
 		<item name="./platonWallet/UI/ViewController/Transfer/views/layout.swift">
@@ -10278,7 +10273,7 @@
 		</item>
 		<item name="./platonWallet/UI/ViewController/Staking/MyDelegatesViewController.swift">
 			<value>138</value>
-			<value>423</value>
+			<value>421</value>
 			<value>76</value>
 			<value>26</value>
 		</item>
@@ -10716,15 +10711,15 @@
 		</item>
 		<item name="./platonWallet/Models/Transfer/Transaction+Extension.swift">
 			<value>211</value>
-			<value>240</value>
+			<value>249</value>
 			<value>1</value>
 			<value>1</value>
 		</item>
 		<item name="./platonWallet/Models/Transfer/Transaction.swift">
 			<value>212</value>
-			<value>497</value>
-			<value>44</value>
-			<value>11</value>
+			<value>502</value>
+			<value>41</value>
+			<value>10</value>
 		</item>
 		<item name="./platonWallet/Models/Transfer/TransactionQrcode.swift">
 			<value>213</value>
@@ -10950,7 +10945,7 @@
 		</item>
 		<item name="./platonWallet/Modules/Staking/StakingService.swift">
 			<value>250</value>
-			<value>399</value>
+			<value>400</value>
 			<value>68</value>
 			<value>12</value>
 		</item>
@@ -11032,14 +11027,14 @@
 			<value>44</value>
 			<value>22</value>
 		</item>
-		<average label="NCSS" value="101.73764258555133"/>
-		<average label="CCN" value="15.70342205323194"/>
-		<average label="Functions" value="6.779467680608365"/>
-		<sum label="NCSS" value="26757"/>
-		<sum label="CCN" value="4130"/>
-		<sum label="Functions" value="1783"/>
-		<average label="NCSS" value="11.586090858104319"/>
-		<average label="CCN" value="2.316320807627594"/>
+		<average label="NCSS" value="101.79087452471482"/>
+		<average label="CCN" value="15.699619771863118"/>
+		<average label="Functions" value="6.775665399239544"/>
+		<sum label="NCSS" value="26771"/>
+		<sum label="CCN" value="4129"/>
+		<sum label="Functions" value="1782"/>
+		<average label="NCSS" value="11.588664421997755"/>
+		<average label="CCN" value="2.3170594837261502"/>
 	</measure>
 </cppncss>
 

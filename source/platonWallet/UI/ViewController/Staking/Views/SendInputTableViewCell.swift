@@ -129,7 +129,7 @@ class SendInputTableViewCell: UITableViewCell {
             amountView.resetErrorState(errMsg: Localized("staking_delegateall_keep_balance_error"))
             return
         }
-        let newAmount = maxAmount - LAT0_1
+        let newAmount = maxAmount - LAT0_1 - gasBInt
 
         amountView.textField.text = newAmount.divide(by: ETHToWeiMultiplier, round: 8)
         cellDidContentEditingHandler?(maxAmount, true)

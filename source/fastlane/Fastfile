@@ -32,7 +32,7 @@ platform :ios do
     #   )
     slather(
       cobertura_xml: true, 
-      scheme: "platonWalletTests", 
+      scheme: "platonWallet", 
       build_directory: "./DerivedData", 
       output_directory: "./reports", 
       proj: "./platonWallet.xcodeproj", 

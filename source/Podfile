@@ -64,6 +64,12 @@ target 'platonWalletUAT' do
 #    end
 end
 
+target 'platonWalletParallelNet' do
+  use_frameworks!
+  target_pods
+
+end
+
 
 
 target 'platonWallet' do

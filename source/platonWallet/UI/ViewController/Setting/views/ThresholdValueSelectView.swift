@@ -172,7 +172,7 @@ class ThresholdValueSelectView: UIView, UITableViewDelegate, UITableViewDataSour
         case .threshold(let datasource, let selectedValue):
             let cell = tableView.dequeueReusableCell(withIdentifier: "thresholdCellIdentifier") as! ThresholdSelectCell
             let itemBigUint = datasource[indexPath.row]
-            cell.titleLabel.text = (itemBigUint/PlatonConfig.VON.LAT).description.displayForMicrometerLevel(maxRound: 8).ATPSuffix()
+            cell.titleLabel.text = (itemBigUint/PlatonConfig.VON.LAT).description.ATPSuffix()
             cell.selectedIV.isHidden = itemBigUint != selectedValue
             return cell
         default:

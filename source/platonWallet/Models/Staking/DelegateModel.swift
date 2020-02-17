@@ -74,6 +74,11 @@ extension Delegation {
         guard let minDelegationString = minDelegation else { return BigUInt(10).multiplied(by: PlatonConfig.VON.LAT) }
         return BigUInt(minDelegationString) ?? BigUInt(10).multiplied(by: PlatonConfig.VON.LAT)
     }
+
+    var releasedItemGreaterOne: Bool {
+        let result = deleList.filter { (BigUInt($0.released ?? "0") ?? BigUInt.zero) > BigUInt.zero }
+        return result.count > 1
+    }
 }
 
 struct DelegationValue: Decodable {
@@ -122,15 +127,15 @@ public struct CanDelegation: Decodable {
     var minDelegation: String?
 
     public enum Message: String, Decodable {
-        case amountGreaterZero = "1"
         case nodeExitingOrExited = "2"
         case nodeAssociationWallet = "3"
         case balanceZero = "4"
+        case nodeInit = "5"
 
         public var localizedDesciption: String? {
             switch self {
-            case .amountGreaterZero:
-                return Localized("delegate_error_result_amountzero")
+            case .nodeInit:
+                return Localized("delegate_error_result_nodeInit")
             case .nodeExitingOrExited:
                 return Localized("delegate_error_result_nodeexit")
             case .nodeAssociationWallet:

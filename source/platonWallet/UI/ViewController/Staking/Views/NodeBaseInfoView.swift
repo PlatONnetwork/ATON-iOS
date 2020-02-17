@@ -130,19 +130,20 @@ class NodeBaseInfoView: UIView {
         rateView.backgroundColor = .clear
         rateView.addTarget(self, action: #selector(tipsShowYield), for: .touchUpInside)
         nodeBackgroundView.addSubview(rateView)
-
         rateView.snp.makeConstraints { make in
             make.top.equalTo(nodeNameLabel)
             make.leading.greaterThanOrEqualTo(statusButton.snp.trailing).offset(5)
-            make.trailing.equalToSuperview().offset(-10)
+            make.trailing.equalToSuperview().offset(-10).priorityRequired()
         }
 
         trendIV.image = nil
-        nodeBackgroundView.addSubview(trendIV)
+        rateView.addSubview(trendIV)
         trendIV.snp.makeConstraints { make in
-            make.centerY.equalTo(rateView.snp.centerY).offset(-3)
-            make.trailing.equalTo(rateView.snp.leading).offset(-2)
-            make.leading.greaterThanOrEqualTo(statusButton.snp.trailing).offset(5)
+            make.height.width.equalTo(13)
+            make.top.equalToSuperview()
+            make.leading.lessThanOrEqualToSuperview()
+//            make.trailing.equalTo(rateView.snp.leading).offset(-2)
+//            make.leading.greaterThanOrEqualTo(statusButton.snp.trailing).offset(5)
         }
 
         rateLabel.textAlignment = .center
@@ -150,11 +151,14 @@ class NodeBaseInfoView: UIView {
         rateLabel.textColor = .white
         rateLabel.text = "0.00%"
         rateLabel.adjustsFontSizeToFitWidth = true
-//        rateLabel.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: .horizontal)
+        rateLabel.setContentHuggingPriority(.required, for: .horizontal)
+        rateLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
         rateView.addSubview(rateLabel)
         rateLabel.snp.makeConstraints { make in
-            make.trailing.leading.equalToSuperview()
-            make.top.equalToSuperview()
+            make.centerY.equalTo(trendIV.snp.centerY)
+            make.leading.equalTo(trendIV.snp.trailing).offset(3)
+            make.trailing.lessThanOrEqualToSuperview()
+            make.centerX.equalToSuperview()
         }
 
         let rateTitleLabel = UILabel()
@@ -162,13 +166,13 @@ class NodeBaseInfoView: UIView {
         rateTitleLabel.font = .systemFont(ofSize: 11)
         rateTitleLabel.textColor = .white
         rateTitleLabel.text = Localized("staking_validator_detail_delegate_rate_about")
+        rateTitleLabel.setContentHuggingPriority(.required, for: .horizontal)
         rateView.addSubview(rateTitleLabel)
         rateTitleLabel.snp.makeConstraints { make in
-            make.trailing.leading.lessThanOrEqualToSuperview().priorityLow()
+            make.leading.lessThanOrEqualToSuperview().priorityLow()
             make.top.equalTo(rateLabel.snp.bottom).offset(4)
             make.bottom.equalToSuperview()
             make.centerX.equalToSuperview().offset(-7)
-//            make.leading.equalTo(nodeAddressLabel.snp.trailing)
         }
 
         let rateTitleIV = UIImageView()
@@ -178,6 +182,7 @@ class NodeBaseInfoView: UIView {
             make.width.height.equalTo(12)
             make.centerY.equalTo(rateTitleLabel)
             make.leading.equalTo(rateTitleLabel.snp.trailing).offset(3)
+            make.trailing.equalToSuperview().priorityMedium()
         }
 
         rewardContentView.backgroundColor = .clear

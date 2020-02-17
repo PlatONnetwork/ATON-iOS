@@ -416,4 +416,24 @@ class platon071Tests: XCTestCase {
         let result = content.displayForMicrometerLevel(maxRound: 12)
         XCTAssertEqual("1,234,567.123456789012", result, "the result should be 12 decimal")
     }
+
+    func testCommonService() {
+        let result = CommonService.isValidContractAddress("0x1000000000000000000000000000000000000002")
+        XCTAssert(result.0 == true, "the address is not contract address")
+
+        let result1 = CommonService.isValidWalletName("newname")
+        XCTAssert(result1.0 == true, "wallet name is existed")
+
+        let result2 = CommonService.checkNewAddressName("fakjdfajdfklajkfjakfja")
+        XCTAssert(result2.0 == false, "address name is over length")
+
+        let result3 = CommonService.checkNewAddressString("0x17464a4f4d0696c93ea61ebf97c6e9f27147f3ac")
+        XCTAssert(result3.0 == true, "address length have error")
+
+        let result4 = CommonService.isValidWalletPassword("123456", confirmPsw: "1234567")
+        XCTAssert(result4.0 == false, "password should not be same")
+
+        let result5 = CommonService.checkTransferAddress(text: "0x17464a4f4d0696c93ea61ebf97c6e9f27147f3ac3")
+        XCTAssert(result5.0 == false, "address should not be right")
+    }
 }

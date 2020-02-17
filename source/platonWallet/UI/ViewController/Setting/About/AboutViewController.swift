@@ -24,7 +24,7 @@ class AboutViewController: BaseViewController {
         versionIcon.backgroundColor = .red
         versionIcon.layer.cornerRadius = 5.0
 
-        versionLabel.text = ((SettingService.shareInstance.remoteVersion?.isNeed == true) ? Localized("about_latest_version") : Localized("about_current_version")) + "V" + appVersion!
+        versionLabel.text = (SettingService.shareInstance.remoteVersion?.isNeed == true) ? (Localized("about_latest_version") + (SettingService.shareInstance.remoteVersion?.newVersion ?? "")): (Localized("about_current_version") + "V" + appVersion!)
         versionIcon.isHidden = !(SettingService.shareInstance.remoteVersion?.isNeed == true)
     }
 

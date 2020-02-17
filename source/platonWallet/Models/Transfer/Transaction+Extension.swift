@@ -20,6 +20,8 @@ extension Transaction {
                 return UIImage(named: "walletAvatar_1")
             }
             return UIImage(named: wallet.avatar)
+        case .claimReward:
+            return UIImage(named: "2.icon_Shared")
         default:
             if toType == .contract {
                 return UIImage(named: "2.icon_node")
