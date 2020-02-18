@@ -416,7 +416,7 @@
 "SettingsVC_nodeSet_addBtn_title" = "Add";
 "SettingsVC_nodeSet_defaultTestNetwork_test_des" = "Test Network";
 "SettingsVC_nodeSet_defaultTestNetwork_develop_des" = "Develop Network";
-"SettingsVC_nodeSet_NewBaleyworld_des" = "NewBaleyworld";
+"SettingsVC_nodeSet_NewBaleyworld_des" = "New Baleyworld";
 "SettingsVC_nodeSet_parallel_des" = "UAT";
 "SettingsVC_nodeSet_switchSuccess_tips" = "Node switch Succeed";
 "SettingsVC_nodeSet_switchFail_tips" = "Node switch Failed";
