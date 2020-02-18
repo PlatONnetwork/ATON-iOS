@@ -23,11 +23,8 @@ public final class WalletService {
     let walletQueue = DispatchQueue(label: "com.ju.walletServiceQueue", qos: .userInitiated, attributes: .concurrent)
 
     private init() {
-
         keystoreFolderURL = URL(fileURLWithPath: keystoreFolderPath)
-
         print("📁keystoreFloderURL:\(keystoreFolderURL.absoluteString)")
-
         let fileManager = FileManager.default
         if !fileManager.fileExists(atPath: keystoreFolderPath) {
             try! fileManager.createDirectory(at: keystoreFolderURL, withIntermediateDirectories: false, attributes: nil)
@@ -43,10 +40,8 @@ public final class WalletService {
     }
 
     func getWalletByAddress(address: String) -> Wallet? {
-
         for item in wallets {
             if item.address.ishexStringEqual(other: address) {
-
                 return item
             }
         }
@@ -69,22 +64,17 @@ public final class WalletService {
                 }
                 return
             }
-
             let wallet = Wallet(name: name, keystoreObject: keystore)
 
             DispatchQueue.main.async {
-
                 do {
                     try self.saveToDB(wallet: wallet)
                 } catch {
                     completion(nil, Error.keystoreFileSaveFailed)
                 }
-
                 completion(wallet, nil)
             }
-
         }
-
     }
 
     public func `import`(address: String, completion: @escaping (Wallet?, Error?) -> Void) {
@@ -136,9 +126,9 @@ public final class WalletService {
             }
 
             let wallet = Wallet(name: walletName, keystoreObject: keystore)
+            wallet.isBackup = true
 
             DispatchQueue.main.async {
-
                 do {
                     try self.saveToDB(wallet: wallet)
                 } catch Error.walletAlreadyExists {
@@ -151,9 +141,7 @@ public final class WalletService {
 
                 completion(wallet, nil)
             }
-
         }
-
     }
 
     /// importWalletFromPrivateKey
