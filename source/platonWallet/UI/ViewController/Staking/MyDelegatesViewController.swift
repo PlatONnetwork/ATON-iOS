@@ -151,9 +151,22 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
         let totalUnClaim = listData.reduce(BigUInt(0)) { (result, delegate) -> BigUInt in
             return result + BigUInt(delegate.withdrawReward ?? "0")!
         }
-        headerView.totalDelegateLabel.text = (total.description.vonToLATString ?? "0").ATPSuffix()
+
         headerView.totalRewardLabel.text = (totalReward.description.vonToLATString ?? "0").ATPSuffix()
-        headerView.unclaimedRewardLabel.text = (totalUnClaim.description.vonToLATString ?? "0").ATPSuffix()
+        headerView.unclaimedRewardLabel.text = (totalUnClaim.description.vonToLATString ?? "0.00").ATPSuffix()
+
+        let contents = (total.description.vonToLATWith12DecimalString ?? "0.00").split(separator: ".")
+        guard contents.count == 2 else {
+            headerView.totalDelegateLabel.text = (total.description.vonToLATString ?? "0").ATPSuffix()
+            return
+        }
+
+        let firstValue = contents[0]
+        let secondValue = contents[1]
+        let secondAttributed = NSAttributedString(string: "." + String(secondValue), attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 14, weight: .medium)])
+        let mutableAttributed = NSMutableAttributedString(string: String(firstValue))
+        mutableAttributed.append(secondAttributed)
+        headerView.totalDelegateLabel.attributedText = mutableAttributed
     }
 
     private func gotoDelegateRecordVC() {
@@ -363,7 +376,9 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
             if
                 let signedTransactionRLP = rlpItem,
                 let signedTransaction = try? EthereumSignedTransaction(rlp: signedTransactionRLP) {
+                self.showLoadingHUD()
                 web3.platon.sendRawTransaction(transaction: signedTransaction) { (response) in
+                    self.hideLoadingHUD()
                     switch response.status {
                     case .success(let result):
                         guard

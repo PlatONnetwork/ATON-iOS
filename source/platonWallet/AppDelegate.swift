@@ -56,6 +56,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         gotoNextVC(initSuccess:initSuccess)
 
         checkIsOpenLocalAuth()
+
+        TimerService.shared.startObserver { [weak self] (result) in
+            guard result else { return }
+            self?.checkIsOpenLocalAuth()
+        }
     }
 
     private func checkIsOpenLocalAuth() {

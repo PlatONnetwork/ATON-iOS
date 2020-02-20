@@ -701,6 +701,7 @@ extension AssetSendViewControllerV060 {
 
         AnalysisHelper.handleEvent(id: event_send, operation: .end)
 
+        AssetViewControllerV060.getInstance()?.showLoadingHUD()
         let from = AssetVCSharedData.sharedData.cWallet?.address
         let to = self.walletAddressView.textField.text!
         guard let amount = self.amountView.textField.text, amount.count > 0 else {

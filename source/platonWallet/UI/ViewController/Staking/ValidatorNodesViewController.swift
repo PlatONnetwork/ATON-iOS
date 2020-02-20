@@ -58,7 +58,7 @@ class ValidatorNodesViewController: ButtonBarPagerTabStripViewController, Indica
     func startToRefreshData() {
         guard
             let controllers = viewControllers as? [ValidatorNodeListViewController] else { return }
-        _ = controllers.map { $0.fetchDataLastest() }
+        _ = controllers.map { $0.selectedSortToReload() }
     }
 
     func showNodeSortView() {

@@ -523,7 +523,9 @@ extension WithDrawViewController {
             if
                 let signedTransactionRLP = rlpItem,
                 let signedTransaction = try? EthereumSignedTransaction(rlp: signedTransactionRLP) {
+                self.showLoadingHUD()
                 web3.platon.sendRawTransaction(transaction: signedTransaction) { (response) in
+                    self.hideLoadingHUD()
                     switch response.status {
                     case .success(let result):
                         guard

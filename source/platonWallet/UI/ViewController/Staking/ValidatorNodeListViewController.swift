@@ -30,16 +30,17 @@ class ValidatorNodeListViewController: BaseViewController, IndicatorInfoProvider
     }
 
     var isSearching: Bool = false
+    var isNeedFetch: Bool = false
     var isShowSearch: Bool = false {
         didSet {
             if isShowSearch {
-                tableView.mj_header = nil
-                tableView.mj_footer = nil
+//                tableView.mj_header = nil
+//                tableView.mj_footer = nil
                 tableView.tableHeaderView = searchView
                 searchView.searchBar.becomeFirstResponder()
             } else {
-                tableView.mj_footer = refreshFooter
-                tableView.mj_header = refreshHeader
+//                tableView.mj_footer = refreshFooter
+//                tableView.mj_header = refreshHeader
                 tableView.tableHeaderView = nil
             }
             guard let controller = parent as? ValidatorNodesViewController else { return }
@@ -124,7 +125,8 @@ class ValidatorNodeListViewController: BaseViewController, IndicatorInfoProvider
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if isViewLoaded && !isShowSearch {
-            fetchData(isFetch: controllerType == .all, nil)
+            isNeedFetch = (controllerType == .all)
+            tableView.mj_header.beginRefreshing()
         }
 
         guard let controller = parent as? ValidatorNodesViewController else { return }
@@ -163,6 +165,7 @@ extension ValidatorNodeListViewController {
         StakingService.sharedInstance.getNodeList(controllerType: controllerType, sort: currentSort, isFetch: isFetch) { [weak self] (result, data) in
             self?.tableView.mj_header.endRefreshing()
             self?.tableView.mj_footer.endRefreshing()
+            self?.isNeedFetch = true
 
             switch result {
             case .success:
@@ -197,15 +200,25 @@ extension ValidatorNodeListViewController {
     }
 
     @objc func fetchDataLastest() {
+        fetchData(isFetch: isNeedFetch, nil)
+    }
+
+    @objc func selectedSortToReload() {
+        isNeedFetch = false
+
         if isShowSearch {
+            tableView.mj_header.beginRefreshing()
             guard let text = searchView.searchBar.text else {
+                tableView.mj_header.endRefreshing()
                 return
             }
             searchResults = StakingService.sharedInstance.searchNodes(text: text, type: controllerType, sort: currentSort)
+            tableView.mj_header.endRefreshing()
             tableView.reloadData()
             return
         }
-        fetchData(isFetch: true, nil)
+
+        tableView.mj_header.beginRefreshing()
     }
 
     @objc func fetchDataMore() {
