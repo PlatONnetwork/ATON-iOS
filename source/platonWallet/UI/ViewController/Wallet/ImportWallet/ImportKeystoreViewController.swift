@@ -36,7 +36,7 @@ class ImportKeystoreViewController: BaseImportWalletViewController,UIScrollViewD
         endEditingWhileTapBackgroundView = true
 
         keystoreTextView.text = defaultText
-        keystoreTextView.tintColor = keystoreTextView.textColor
+//        keystoreTextView.tintColor = keystoreTextView.textColor
         scrollView.keyboardDismissMode = .interactive
 
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame(_:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)

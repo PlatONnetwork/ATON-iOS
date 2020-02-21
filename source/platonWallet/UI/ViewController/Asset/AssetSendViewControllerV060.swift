@@ -387,7 +387,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
         }
 
         let transactions = TransferPersistence.getTransferPendingTransaction(address: wallet.address)
-        guard transactions.count == 0 else {
+        if transactions.count >= 0 && (Date().millisecondsSince1970 - (transactions.first?.createTime ?? 0) < 300 * 1000) {
             showErrorMessage(text: Localized("transaction_warning_wait_for_previous"))
             return
         }
@@ -701,6 +701,7 @@ extension AssetSendViewControllerV060 {
 
         AnalysisHelper.handleEvent(id: event_send, operation: .end)
 
+        AssetViewControllerV060.getInstance()?.showLoadingHUD()
         let from = AssetVCSharedData.sharedData.cWallet?.address
         let to = self.walletAddressView.textField.text!
         guard let amount = self.amountView.textField.text, amount.count > 0 else {

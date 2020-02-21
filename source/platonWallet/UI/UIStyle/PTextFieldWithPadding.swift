@@ -89,7 +89,7 @@ class PTextFieldWithPadding: UITextField {
     func restyle() {
         backgroundColor = UIColor.white
         textColor = UIColor.black
-        tintColor = textColor
+//        tintColor = textColor
 
         self.bottomSeplineView = UIView(frame: .zero)
         self.addSubview(bottomSeplineView!)

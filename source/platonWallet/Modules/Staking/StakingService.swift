@@ -28,10 +28,10 @@ final class StakingService: BaseService {
         var request = URLRequest(url: try! url.asURL())
         request.httpBody = try! JSONSerialization.data(withJSONObject: parameters)
         request.httpMethod = "POST"
-        request.timeoutInterval = requestTimeout
+//        request.timeoutInterval = requestTimeout
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
-        Alamofire.request(request).responseData { response in
+        NetworkService.sessionManager.request(request).responseData { response in
             switch response.result {
             case .success(let data):
                 do {
@@ -43,7 +43,6 @@ final class StakingService: BaseService {
                 }
             case .failure(let error):
                 self.failCompletionOnMainThread(code: -1, errorMsg: error.localizedDescription, completion: &completion)
-                break
             }
         }
     }
@@ -83,7 +82,8 @@ final class StakingService: BaseService {
 
     func searchNodes(text: String, type: NodeControllerType, sort: NodeSort) -> [Node] {
         let nodes = NodePersistence.searchNodes(text: text, type: type, sort: sort)
-        return nodes
+        let sortData = self.nodeSorted(nodes, sort: sort)
+        return sortData
     }
 
     func getMyDelegate(adddresses: [String], completion: PlatonCommonCompletion?) {
@@ -96,10 +96,10 @@ final class StakingService: BaseService {
         var request = URLRequest(url: try! url.asURL())
         request.httpBody = try! JSONSerialization.data(withJSONObject: parameters)
         request.httpMethod = "POST"
-        request.timeoutInterval = requestTimeout
+//        request.timeoutInterval = requestTimeout
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
-        Alamofire.request(request).responseData { response in
+        NetworkService.sessionManager.request(request).responseData { response in
             switch response.result {
             case .success(let data):
                 do {
@@ -111,7 +111,6 @@ final class StakingService: BaseService {
                 }
             case .failure(let error):
                 self.failCompletionOnMainThread(code: -1, errorMsg: error.localizedDescription, completion: &completion)
-                break
             }
         }
     }
@@ -121,76 +120,17 @@ final class StakingService: BaseService {
 
         var request = URLRequest(url: try! url.asURL())
         request.httpMethod = "POST"
-        request.timeoutInterval = requestTimeout
+//        request.timeoutInterval = requestTimeout
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
-        Alamofire.request(request).responseData { response in
+        NetworkService.sessionManager.request(request).responseData { response in
             switch response.result {
             case .success(let data):
                 do {
                     let decoder = JSONDecoder()
                     let response = try decoder.decode(JSONResponse<[Node]>.self, from: data)
                     let copyData = response.data.detached
-                    let sortData = copyData.sorted(by: { (lhs, rhs) -> Bool in
-                        switch sort {
-                        case .rank:
-                            if lhs.ranking != rhs.ranking {
-                                return lhs.ranking < rhs.ranking
-                            }
-
-                            if lhs.delegateSum != rhs.delegateSum {
-                                return (BigUInt(lhs.delegateSum ?? "0") ?? BigUInt.zero) > (BigUInt(rhs.delegateSum ?? "0") ?? BigUInt.zero)
-                            }
-
-                            if lhs.delegate != rhs.delegate {
-                                return (Int(lhs.delegate ?? "0") ?? 0) > (Int(rhs.delegate ?? "0") ?? 0)
-                            }
-
-                            return (Int(lhs.delegatedRatePA ?? "0") ?? 0) > (Int(rhs.delegatedRatePA ?? "0") ?? 0)
-                        case .delegated:
-                            if lhs.delegateSum != lhs.delegateSum {
-                                return (BigUInt(lhs.delegateSum ?? "0") ?? BigUInt.zero) > (BigUInt(rhs.delegateSum ?? "0") ?? BigUInt.zero)
-                            }
-
-                            if lhs.ranking != rhs.ranking {
-                                return lhs.ranking < rhs.ranking
-                            }
-
-                            if lhs.delegate != rhs.delegate {
-                                return (Int(lhs.delegate ?? "0") ?? 0) > (Int(rhs.delegate ?? "0") ?? 0)
-                            }
-
-                            return (Int(lhs.delegatedRatePA ?? "0") ?? 0) > (Int(rhs.delegatedRatePA ?? "0") ?? 0)
-                        case .delegator:
-                            if lhs.delegate != rhs.delegate {
-                                return (Int(lhs.delegate ?? "0") ?? 0) > (Int(rhs.delegate ?? "0") ?? 0)
-                            }
-
-                            if lhs.ranking != rhs.ranking {
-                                return lhs.ranking < rhs.ranking
-                            }
-
-                            if lhs.delegateSum != rhs.delegateSum {
-                                return (BigUInt(lhs.delegateSum ?? "0") ?? BigUInt.zero) > (BigUInt(rhs.delegateSum ?? "0") ?? BigUInt.zero)
-                            }
-
-                            return (Int(lhs.delegatedRatePA ?? "0") ?? 0) > (Int(rhs.delegatedRatePA ?? "0") ?? 0)
-                        case .yield:
-                            if lhs.delegatedRatePA != rhs.delegatedRatePA {
-                                return (Int(lhs.delegatedRatePA ?? "0") ?? 0) > (Int(rhs.delegatedRatePA ?? "0") ?? 0)
-                            }
-
-                            if lhs.ranking != rhs.ranking {
-                                return lhs.ranking < rhs.ranking
-                            }
-
-                            if lhs.delegateSum != rhs.delegateSum {
-                                return (BigUInt(lhs.delegateSum ?? "0") ?? BigUInt.zero) > (BigUInt(rhs.delegateSum ?? "0") ?? BigUInt.zero)
-                            }
-
-                            return (Int(lhs.delegate ?? "0") ?? 0) > (Int(rhs.delegate ?? "0") ?? 0)
-                        }
-                    })
+                    let sortData = self.nodeSorted(copyData, sort: sort)
 
                     DispatchQueue.main.async {
                         completion?(.success, sortData)
@@ -213,16 +153,26 @@ final class StakingService: BaseService {
 
         if controllerType == .active && isFetch == false {
             let copyData = NodePersistence.getActiveNode(sort: sort).detached
+            let sortData = self.nodeSorted(copyData, sort: sort)
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                completion?(.success, copyData as AnyObject)
+                completion?(.success, sortData as AnyObject)
             }
         } else if controllerType == .candidate && isFetch == false {
             let copyData = NodePersistence.getCandiateNode(sort: sort).detached
+            let sortData = self.nodeSorted(copyData, sort: sort)
             // 不延时回调的话，会发生下拉刷新顶部出现位移偏差
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                completion?(.success, copyData as AnyObject)
+                completion?(.success, sortData as AnyObject)
             }
         } else {
+            if isFetch == false {
+                let copyData = NodePersistence.getAll(sort: sort).detached
+                let sortData = self.nodeSorted(copyData, sort: sort)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    completion?(.success, sortData as AnyObject)
+                }
+                return
+            }
             // 这里本身访问网络请求，存在延时，并不需要设置延时回调
             updateNodeListData(sort: sort) { (result, data) in
                 switch result {
@@ -260,10 +210,10 @@ final class StakingService: BaseService {
         var request = URLRequest(url: try! url.asURL())
         request.httpBody = try! JSONSerialization.data(withJSONObject: parameters)
         request.httpMethod = "POST"
-        request.timeoutInterval = requestTimeout
+//        request.timeoutInterval = requestTimeout
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
-        Alamofire.request(request).responseData { response in
+        NetworkService.sessionManager.request(request).responseData { response in
             switch response.result {
             case .success(let data):
                 do {
@@ -292,10 +242,10 @@ final class StakingService: BaseService {
         var request = URLRequest(url: try! url.asURL())
         request.httpBody = try! JSONSerialization.data(withJSONObject: parameters)
         request.httpMethod = "POST"
-        request.timeoutInterval = requestTimeout
+//        request.timeoutInterval = requestTimeout
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
-        Alamofire.request(request).responseData { response in
+        NetworkService.sessionManager.request(request).responseData { response in
             switch response.result {
             case .success(let data):
                 do {
@@ -326,10 +276,10 @@ final class StakingService: BaseService {
         var request = URLRequest(url: try! url.asURL())
         request.httpBody = try! JSONSerialization.data(withJSONObject: parameters)
         request.httpMethod = "POST"
-        request.timeoutInterval = requestTimeout
+//        request.timeoutInterval = requestTimeout
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
-        Alamofire.request(request).responseData { response in
+        NetworkService.sessionManager.request(request).responseData { response in
             switch response.result {
             case .success(let data):
                 do {
@@ -359,10 +309,10 @@ final class StakingService: BaseService {
         var request = URLRequest(url: try! url.asURL())
         request.httpBody = try! JSONSerialization.data(withJSONObject: parameters)
         request.httpMethod = "POST"
-        request.timeoutInterval = requestTimeout
+//        request.timeoutInterval = requestTimeout
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
-        Alamofire.request(request).responseData { response in
+        NetworkService.sessionManager.request(request).responseData { response in
             switch response.result {
             case .success(let data):
                 do {
@@ -460,5 +410,70 @@ extension StakingService {
                 }
             }
         }
+    }
+
+    func nodeSorted(_ array: [Node], sort: NodeSort) -> [Node] {
+        var copyData = array
+        let sortData = copyData.sorted(by: { (lhs, rhs) -> Bool in
+            switch sort {
+            case .rank:
+                if lhs.ranking != rhs.ranking {
+                    return lhs.ranking < rhs.ranking
+                }
+
+                if lhs.delegateSum != rhs.delegateSum {
+                    return (BigUInt(lhs.delegateSum ?? "0") ?? BigUInt.zero) > (BigUInt(rhs.delegateSum ?? "0") ?? BigUInt.zero)
+                }
+
+                if lhs.delegate != rhs.delegate {
+                    return (Int(lhs.delegate ?? "0") ?? 0) > (Int(rhs.delegate ?? "0") ?? 0)
+                }
+
+                return (Int(lhs.delegatedRatePA ?? "0") ?? 0) > (Int(rhs.delegatedRatePA ?? "0") ?? 0)
+            case .delegated:
+                if lhs.delegateSum != lhs.delegateSum {
+                    return (BigUInt(lhs.delegateSum ?? "0") ?? BigUInt.zero) > (BigUInt(rhs.delegateSum ?? "0") ?? BigUInt.zero)
+                }
+
+                if lhs.ranking != rhs.ranking {
+                    return lhs.ranking < rhs.ranking
+                }
+
+                if lhs.delegate != rhs.delegate {
+                    return (Int(lhs.delegate ?? "0") ?? 0) > (Int(rhs.delegate ?? "0") ?? 0)
+                }
+
+                return (Int(lhs.delegatedRatePA ?? "0") ?? 0) > (Int(rhs.delegatedRatePA ?? "0") ?? 0)
+            case .delegator:
+                if lhs.delegate != rhs.delegate {
+                    return (Int(lhs.delegate ?? "0") ?? 0) > (Int(rhs.delegate ?? "0") ?? 0)
+                }
+
+                if lhs.ranking != rhs.ranking {
+                    return lhs.ranking < rhs.ranking
+                }
+
+                if lhs.delegateSum != rhs.delegateSum {
+                    return (BigUInt(lhs.delegateSum ?? "0") ?? BigUInt.zero) > (BigUInt(rhs.delegateSum ?? "0") ?? BigUInt.zero)
+                }
+
+                return (Int(lhs.delegatedRatePA ?? "0") ?? 0) > (Int(rhs.delegatedRatePA ?? "0") ?? 0)
+            case .yield:
+                if lhs.delegatedRatePA != rhs.delegatedRatePA {
+                    return (Int(lhs.delegatedRatePA ?? "0") ?? 0) > (Int(rhs.delegatedRatePA ?? "0") ?? 0)
+                }
+
+                if lhs.ranking != rhs.ranking {
+                    return lhs.ranking < rhs.ranking
+                }
+
+                if lhs.delegateSum != rhs.delegateSum {
+                    return (BigUInt(lhs.delegateSum ?? "0") ?? BigUInt.zero) > (BigUInt(rhs.delegateSum ?? "0") ?? BigUInt.zero)
+                }
+
+                return (Int(lhs.delegate ?? "0") ?? 0) > (Int(rhs.delegate ?? "0") ?? 0)
+            }
+        })
+        return sortData
     }
 }

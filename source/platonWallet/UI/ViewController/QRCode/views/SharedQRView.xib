@@ -27,15 +27,15 @@
                     </constraints>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kfn-L8-6bq">
-                    <rect key="frame" x="25" y="140" width="325" height="19.5"/>
+                    <rect key="frame" x="25" y="135" width="325" height="19.5"/>
                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0x--" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K16-oX-koP">
-                    <rect key="frame" x="45" y="164.5" width="285" height="30"/>
+                    <rect key="frame" x="45" y="159.5" width="285" height="35"/>
                     <constraints>
-                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="uf7-mE-rLG"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="35" id="uf7-mE-rLG"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                     <nil key="highlightedColor"/>
@@ -85,7 +85,7 @@
                 <constraint firstItem="K16-oX-koP" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="lVO-so-OBr"/>
                 <constraint firstItem="Kfn-L8-6bq" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="25" id="mm2-rk-ncf"/>
                 <constraint firstItem="6Dg-Ri-mAE" firstAttribute="centerX" secondItem="vUN-kp-3ea" secondAttribute="centerX" id="mns-He-RHe"/>
-                <constraint firstItem="Kfn-L8-6bq" firstAttribute="top" secondItem="89g-G0-ZBK" secondAttribute="bottom" id="xOk-Qe-f1Z"/>
+                <constraint firstItem="Kfn-L8-6bq" firstAttribute="top" secondItem="89g-G0-ZBK" secondAttribute="bottom" constant="-5" id="xOk-Qe-f1Z"/>
                 <constraint firstItem="6Dg-Ri-mAE" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="10" id="xvF-Xb-2dG"/>
                 <constraint firstItem="K16-oX-koP" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="45" id="zWl-87-v22"/>
             </constraints>

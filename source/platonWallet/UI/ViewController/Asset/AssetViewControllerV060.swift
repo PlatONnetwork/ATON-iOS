@@ -157,7 +157,7 @@ class AssetViewControllerV060: BaseViewController, PopupMenuTableDelegate {
             make.width.equalTo(view)
             make.height.equalTo(kUIScreenHeight - 70 - tabbarHeight - CGFloat(AssetSectionViewH))
         }
-//        self.updatePageViewConstraint(headerHide: false)
+        //        self.updatePageViewConstraint(headerHide: false)
 
         pageVC.didScrolling = { offset in
             //self?.sectionView.changingOffset(offset: offset, currentIndex: (self?.pageViewCurrentIndex)!,draging: (self?.pageVC.pagesScrollview?.isDragging)!)
@@ -205,24 +205,24 @@ class AssetViewControllerV060: BaseViewController, PopupMenuTableDelegate {
 
     // MARK: - Constraint
 
-//    func updatePageViewConstraint(headerHide: Bool){
-//        let tabbarHeight = (navigationController?.tabBarController?.tabBar.frame.size.height ?? 0)
-//        if headerHide{
-//            pageVC.view.snp.remakeConstraints { (make) in
-//                make.leading.trailing.bottom.equalToSuperview()
-//                make.width.equalTo(view)
-//                make.top.equalTo(sectionView.snp.bottom).offset(0)
-//                make.height.equalTo(kUIScreenHeight - 70 - tabbarHeight - CGFloat(AssetSectionViewH))
-//            }
-//        }else{
-//            pageVC.view.snp.remakeConstraints { (make) in
-//                make.leading.trailing.bottom.equalToSuperview()
-//                make.width.equalTo(view)
-//                make.top.equalTo(sectionView.snp.bottom).offset(0)
-//                make.height.equalTo(kUIScreenHeight - 0 - tabbarHeight - CGFloat(AssetSectionViewH))
-//            }
-//        }
-//    }
+    //    func updatePageViewConstraint(headerHide: Bool){
+    //        let tabbarHeight = (navigationController?.tabBarController?.tabBar.frame.size.height ?? 0)
+    //        if headerHide{
+    //            pageVC.view.snp.remakeConstraints { (make) in
+    //                make.leading.trailing.bottom.equalToSuperview()
+    //                make.width.equalTo(view)
+    //                make.top.equalTo(sectionView.snp.bottom).offset(0)
+    //                make.height.equalTo(kUIScreenHeight - 70 - tabbarHeight - CGFloat(AssetSectionViewH))
+    //            }
+    //        }else{
+    //            pageVC.view.snp.remakeConstraints { (make) in
+    //                make.leading.trailing.bottom.equalToSuperview()
+    //                make.width.equalTo(view)
+    //                make.top.equalTo(sectionView.snp.bottom).offset(0)
+    //                make.height.equalTo(kUIScreenHeight - 0 - tabbarHeight - CGFloat(AssetSectionViewH))
+    //            }
+    //        }
+    //    }
 
     @objc func shouldUpdateWalletStatus() {
         headerView.updateWalletStatus()
@@ -248,7 +248,7 @@ class AssetViewControllerV060: BaseViewController, PopupMenuTableDelegate {
 
     @objc func fetchData() {
         updateWalletList()
-//        transactionVC.fetchTransactionLastest()
+        //        transactionVC.fetchTransactionLastest()
     }
 
     func endFetchData() {
@@ -287,7 +287,7 @@ class AssetViewControllerV060: BaseViewController, PopupMenuTableDelegate {
             let hide = assetHeaderStyle?.0 ?? false
 
             if hide {
-//                scrollView.setContentOffset(CGPoint(x: 0, y: AssetHeaderViewH), animated: animated)
+                //                scrollView.setContentOffset(CGPoint(x: 0, y: AssetHeaderViewH), animated: animated)
                 sectionView.backgroundColor = .white
                 DispatchQueue.main.async {
                     self.scrollView.isScrollEnabled = true
@@ -300,7 +300,7 @@ class AssetViewControllerV060: BaseViewController, PopupMenuTableDelegate {
             } else {
                 sectionView.backgroundColor = UIColor(red: 247, green: 250, blue: 255, alpha: 1)
 
-//                scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: animated)
+                //                scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: animated)
                 DispatchQueue.main.async {
                     self.scrollView.isScrollEnabled = true
                 }
@@ -311,7 +311,7 @@ class AssetViewControllerV060: BaseViewController, PopupMenuTableDelegate {
             }
 
             transactionVC.setHeaderStyle(hide: hide)
-//            self.updatePageViewConstraint(headerHide: hide)
+            //            self.updatePageViewConstraint(headerHide: hide)
 
         }
     }
@@ -410,10 +410,10 @@ extension AssetViewControllerV060: UIScrollViewDelegate, ChildScrollViewDidScrol
             if scrollEnable && rec.origin.y > 0 && !(self.assetHeaderStyle?.hide)! {
                 childScrollView.setContentOffset(.zero, animated: false)
             } else {
-//                scrollEnable = false
+                //                scrollEnable = false
             }
         }
-//        scrollView.contentSize = CGSize(width: scrollView.contentSize.width, height: childScrollView.contentSize.height + CGFloat(AssetHeaderViewH) + CGFloat(AssetSectionViewH))
+        //        scrollView.contentSize = CGSize(width: scrollView.contentSize.width, height: childScrollView.contentSize.height + CGFloat(AssetHeaderViewH) + CGFloat(AssetSectionViewH))
     }
 
     // MARK: - User Interaction
@@ -591,7 +591,9 @@ extension AssetViewControllerV060 {
             if
                 let signedTransactionRLP = rlpItem,
                 let signedTransaction = try? EthereumSignedTransaction(rlp: signedTransactionRLP) {
+                AssetViewControllerV060.getInstance()?.showLoadingHUD()
                 web3.platon.sendRawTransaction(transaction: signedTransaction) { (response) in
+                    AssetViewControllerV060.getInstance()?.hideLoadingHUD()
                     switch response.status {
                     case .success(let result):
                         guard
@@ -656,7 +658,7 @@ extension AssetViewControllerV060 {
             let tabNav = UIApplication.shared.keyWindow?.rootViewController as? BaseNavigationController,
             let tabvc = tabNav.rt_topViewController as? MainTabBarViewController,
             let nav = tabvc.viewControllers?.first as? BaseNavigationController else {
-            return
+                return
         }
         viewController.hidesBottomBarWhenPushed = true
         nav.pushViewController(viewController, animated: true)
@@ -767,7 +769,7 @@ extension AssetViewControllerV060 {
         guard
             let responderView = scrollView.firstResponder,
             let rect = responderView.superview?.convert(responderView.frame, to: view)
-        else { return }
+            else { return }
 
         let endFrame = notify.userInfo!["UIKeyboardFrameEndUserInfoKey"] as! CGRect
         if rect.maxY > endFrame.origin.y {

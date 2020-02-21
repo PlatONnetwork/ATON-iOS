@@ -163,3 +163,17 @@ struct NodeDetail: Decodable {
         node = Node(nodeId: nodeId, ranking: ranking, name: name, deposit: deposit, url: url, delegatedRatePA: delegatedRatePA, nStatus: nodeStatus, isInit: isInit, isConsensus: isConsensus, delegateSum: delegateSum, delegate: delegate)
     }
 }
+
+extension String: Comparable {
+    static func < (lhs: String, rhs: String) -> Bool {
+        guard lhs.count != rhs.count else {
+            return lhs.count < rhs.count
+        }
+
+        guard let lhsInt = Int(lhs), let rhsInt = Int(rhs) else {
+            return true
+        }
+
+        return lhsInt < rhsInt
+    }
+}

@@ -377,6 +377,12 @@
 		812A7ED9219EA6A900BE9C1C /* WalletManagerDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812A7ED1219EA6A800BE9C1C /* WalletManagerDetailViewController.swift */; };
 		812A7EDC219EA6A900BE9C1C /* SharedWalletMemberCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812A7ED6219EA6A800BE9C1C /* SharedWalletMemberCell.swift */; };
 		812A7EDD219EA6A900BE9C1C /* SharedWalletMemberCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 812A7ED7219EA6A800BE9C1C /* SharedWalletMemberCell.xib */; };
+		812CECCE23FD05A8006129B8 /* TimerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812CECCD23FD05A8006129B8 /* TimerService.swift */; };
+		812CECCF23FD05A8006129B8 /* TimerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812CECCD23FD05A8006129B8 /* TimerService.swift */; };
+		812CECD023FD05A8006129B8 /* TimerService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812CECCD23FD05A8006129B8 /* TimerService.swift */; };
+		812CECDC23FFCE6D006129B8 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812CECDB23FFCE6D006129B8 /* NetworkService.swift */; };
+		812CECDD23FFCE6D006129B8 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812CECDB23FFCE6D006129B8 /* NetworkService.swift */; };
+		812CECDE23FFCE6D006129B8 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812CECDB23FFCE6D006129B8 /* NetworkService.swift */; };
 		812D94B0218C3169002A48B0 /* PlatonTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812D94AF218C3168002A48B0 /* PlatonTableView.swift */; };
 		812D94B2218C3221002A48B0 /* TableViewNoDataPlaceHolder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 812D94B1218C3221002A48B0 /* TableViewNoDataPlaceHolder.swift */; };
 		812D94B4218C3229002A48B0 /* TableViewNoDataPlaceHolder.xib in Resources */ = {isa = PBXBuildFile; fileRef = 812D94B3218C3229002A48B0 /* TableViewNoDataPlaceHolder.xib */; };
@@ -1093,6 +1099,8 @@
 		812A7ED4219EA6A800BE9C1C /* SWalletManagerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SWalletManagerViewController.swift; sourceTree = "<group>"; };
 		812A7ED6219EA6A800BE9C1C /* SharedWalletMemberCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedWalletMemberCell.swift; sourceTree = "<group>"; };
 		812A7ED7219EA6A800BE9C1C /* SharedWalletMemberCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SharedWalletMemberCell.xib; sourceTree = "<group>"; };
+		812CECCD23FD05A8006129B8 /* TimerService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerService.swift; sourceTree = "<group>"; };
+		812CECDB23FFCE6D006129B8 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		812D94AF218C3168002A48B0 /* PlatonTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlatonTableView.swift; sourceTree = "<group>"; };
 		812D94B1218C3221002A48B0 /* TableViewNoDataPlaceHolder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewNoDataPlaceHolder.swift; sourceTree = "<group>"; };
 		812D94B3218C3229002A48B0 /* TableViewNoDataPlaceHolder.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TableViewNoDataPlaceHolder.xib; sourceTree = "<group>"; };
@@ -1631,6 +1639,8 @@
 				9AD11DDC21806C2D002CD905 /* CommonService.swift */,
 				813A005923692F33001CEE32 /* RemoteConfig.swift */,
 				813A005C23692F76001CEE32 /* RemoteService.swift */,
+				812CECCD23FD05A8006129B8 /* TimerService.swift */,
+				812CECDB23FFCE6D006129B8 /* NetworkService.swift */,
 			);
 			path = Config;
 			sourceTree = "<group>";
@@ -3165,6 +3175,7 @@
 				8118864F23B7590C00CAE5BA /* CreateIndividualWalletViewController.swift in Sources */,
 				8118865023B7590C00CAE5BA /* NodeStoreService.swift in Sources */,
 				8118865123B7590C00CAE5BA /* PresentationManager.swift in Sources */,
+				812CECD023FD05A8006129B8 /* TimerService.swift in Sources */,
 				8118865223B7590C00CAE5BA /* GuidanceViewMgr.swift in Sources */,
 				8118865323B7590C00CAE5BA /* CommunityContentTableViewCell.swift in Sources */,
 				8118865423B7590C00CAE5BA /* ValidatorNodeListViewController.swift in Sources */,
@@ -3365,6 +3376,7 @@
 				8118870D23B7590C00CAE5BA /* UINavigationController+Extensions.swift in Sources */,
 				8118870E23B7590C00CAE5BA /* UIColor+Extenstions.swift in Sources */,
 				8118870F23B7590C00CAE5BA /* BackupMnemonicViewController.swift in Sources */,
+				812CECDE23FFCE6D006129B8 /* NetworkService.swift in Sources */,
 				8118871023B7590C00CAE5BA /* PTSBarPagerTabStripViewController.swift in Sources */,
 				8118871123B7590C00CAE5BA /* UIImageView+Calculations.swift in Sources */,
 				8118871223B7590C00CAE5BA /* AboutViewController.swift in Sources */,
@@ -3441,6 +3453,7 @@
 				81B58987235DA1FC00816B4E /* CreateIndividualWalletViewController.swift in Sources */,
 				81B58988235DA1FC00816B4E /* NodeStoreService.swift in Sources */,
 				81B58989235DA1FC00816B4E /* PresentationManager.swift in Sources */,
+				812CECCF23FD05A8006129B8 /* TimerService.swift in Sources */,
 				81B5898A235DA1FC00816B4E /* GuidanceViewMgr.swift in Sources */,
 				81B5898B235DA1FC00816B4E /* CommunityContentTableViewCell.swift in Sources */,
 				81B5898C235DA1FC00816B4E /* ValidatorNodeListViewController.swift in Sources */,
@@ -3641,6 +3654,7 @@
 				81B58A3D235DA1FC00816B4E /* UINavigationController+Extensions.swift in Sources */,
 				81B58A3E235DA1FC00816B4E /* UIColor+Extenstions.swift in Sources */,
 				81B58A3F235DA1FC00816B4E /* BackupMnemonicViewController.swift in Sources */,
+				812CECDD23FFCE6D006129B8 /* NetworkService.swift in Sources */,
 				81B58A40235DA1FC00816B4E /* PTSBarPagerTabStripViewController.swift in Sources */,
 				81B58A41235DA1FC00816B4E /* UIImageView+Calculations.swift in Sources */,
 				81B58A42235DA1FC00816B4E /* AboutViewController.swift in Sources */,
@@ -3717,6 +3731,7 @@
 				9AF9AC212182E04000E97F07 /* PresentationManager.swift in Sources */,
 				9A6A7C05233F5A9F003DBEF1 /* GuidanceViewMgr.swift in Sources */,
 				811AB2D722F1894B00284F1A /* CommunityContentTableViewCell.swift in Sources */,
+				812CECCE23FD05A8006129B8 /* TimerService.swift in Sources */,
 				8101BDAF22ED6104004A009E /* ValidatorNodeListViewController.swift in Sources */,
 				81FCCD162179EA0F0052FC29 /* RealmHelper.swift in Sources */,
 				81D7E24222E7F5610069CDED /* PTSButtonCell.swift in Sources */,
@@ -3917,6 +3932,7 @@
 				814CB8162310E0BF0029B2E4 /* UINavigationController+Extensions.swift in Sources */,
 				81EE99CB2175E6B8008DF8CB /* UIColor+Extenstions.swift in Sources */,
 				9AD11DE1218171CA002CD905 /* BackupMnemonicViewController.swift in Sources */,
+				812CECDC23FFCE6D006129B8 /* NetworkService.swift in Sources */,
 				81D7E25322E7F6CD0069CDED /* PTSBarPagerTabStripViewController.swift in Sources */,
 				9AF9AC152182E04000E97F07 /* UIImageView+Calculations.swift in Sources */,
 				8156664721C1ECA3000E02D4 /* AboutViewController.swift in Sources */,

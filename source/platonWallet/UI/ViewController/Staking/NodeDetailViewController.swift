@@ -78,6 +78,12 @@ class NodeDetailViewController: BaseViewController {
     func setupView() {
 
         view.addSubview(delegateButton)
+        delegateButton.snp.makeConstraints { make in
+            make.height.equalTo(40)
+            make.leading.equalToSuperview().offset(16)
+            make.trailing.equalToSuperview().offset(-16)
+            make.bottom.equalTo(bottomLayoutGuide.snp.top).offset(-30)
+        }
 
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in

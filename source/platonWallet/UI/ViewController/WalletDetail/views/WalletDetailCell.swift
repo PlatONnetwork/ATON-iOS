@@ -82,8 +82,13 @@ class WalletDetailCell: UITableViewCell {
         }
 
         transferAmoutLabel.textColor = tx.amountTextColor
-        txIcon.image = tx.txTypeIcon
-        pendingLayer.isHidden = tx.txTypeIcon != nil
+        if tx.txReceiptStatus == TransactionReceiptStatus.pending.rawValue {
+            txIcon.image = nil
+            pendingLayer.isHidden = false
+        } else {
+            txIcon.image = tx.txTypeIcon
+            pendingLayer.isHidden = true
+        }
 
         //最后处理超时状态
         if tx.txReceiptStatus == TransactionReceiptStatus.timeout.rawValue {
