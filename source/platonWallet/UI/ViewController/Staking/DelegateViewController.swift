@@ -380,7 +380,7 @@ extension DelegateViewController {
             let selectedGasLimit = gasLimit else { return }
 
         let transactions = TransferPersistence.getDelegateCreatePendingTransaction(address: walletObject.currentWallet.address, nodeId: nodeId)
-        guard transactions.count == 0 else {
+        if transactions.count >= 0 && (Date().millisecondsSince1970 - (transactions.first?.createTime ?? 0) < 300 * 1000) {
             showErrorMessage(text: Localized("transaction_warning_wait_for_previous"))
             return
         }

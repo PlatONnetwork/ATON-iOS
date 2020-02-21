@@ -22,10 +22,10 @@ extension AssetService {
         var request = URLRequest(url: try! url.asURL())
         request.httpBody = try! JSONSerialization.data(withJSONObject: parameters)
         request.httpMethod = "POST"
-        request.timeoutInterval = requestTimeout
+//        request.timeoutInterval = requestTimeout
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 
-        Alamofire.request(request).responseData { response in
+        NetworkService.sessionManager.request(request).responseData { response in
             switch response.result {
             case .success(let data):
                 do {
