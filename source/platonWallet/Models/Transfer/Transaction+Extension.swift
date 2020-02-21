@@ -11,6 +11,29 @@ import UIKit
 import Localize_Swift
 
 extension Transaction {
+    func getTransactionDirection(_ currentAddress: String? = nil) -> TransactionDirection {
+        guard let type = txType else { return .unknown }
+        switch type {
+        case .delegateWithdraw,
+             .stakingWithdraw,
+             .claimReward:
+            return .Receive
+        case .unknown:
+            return .unknown
+        case .transfer:
+            guard let address = currentAddress else { return .Sent }
+            if address.add0x().lowercased() == from?.add0x().lowercased() {
+                return .Sent
+            } else if address.add0x().lowercased() == to?.add0x().lowercased() {
+                return .Receive
+            } else {
+                return .unknown
+            }
+        default:
+            return .Sent
+        }
+    }
+
     var toAvatarImage: UIImage? {
         switch txType! {
         case .transfer,
@@ -155,7 +178,6 @@ extension Transaction {
 //        if let type = txType, type == .claimReward {
 //            return UIColor(rgb: 0x19a20e)
 //        }
-
         switch direction {
         case .Receive:
             return UIColor(rgb: 0x19a20e)

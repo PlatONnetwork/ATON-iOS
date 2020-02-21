@@ -150,6 +150,9 @@ extension AssetTransactionViewControllerV060 {
 
         var pendingTxsInDB = TransferPersistence.getTransactionsByAddress(from: selectedAddress, status: TransactionReceiptStatus.pending)
         pendingTxsInDB.txSort()
+        for tx in pendingTxsInDB {
+            tx.direction = tx.getTransactionDirection(selectedAddress)
+        }
         return pendingTxsInDB
     }
 
@@ -157,6 +160,9 @@ extension AssetTransactionViewControllerV060 {
         guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return [] }
         var transactions = TransferPersistence.getTransactionsByAddress(from: selectedAddress, status: TransactionReceiptStatus.timeout, detached: true)
         transactions.txSort()
+        for tx in transactions {
+            tx.direction = tx.getTransactionDirection(selectedAddress)
+        }
         return transactions
     }
 
@@ -202,21 +208,9 @@ extension AssetTransactionViewControllerV060 {
                     return
                 }
 
-                _ = remoteTransactions.map({ (tx) -> Transaction in
-                    switch tx.txType! {
-                    case .transfer:
-                        tx.direction = (selectedAddress.lowercased() == tx.from?.lowercased() ? .Sent : selectedAddress.lowercased() == tx.to?.lowercased() ? .Receive : .unknown)
-                        return tx
-                    case .delegateWithdraw,
-                         .stakingWithdraw,
-                         .claimReward:
-                        tx.direction = .Receive
-                        return tx
-                    default:
-                        tx.direction = .Sent
-                        return tx
-                    }
-                })
+                for tx in remoteTransactions {
+                    tx.direction = tx.getTransactionDirection(selectedAddress)
+                }
 
                 var pendingexcludedTxs: [Transaction] = []
                 pendingexcludedTxs.append(contentsOf: remoteTransactions)

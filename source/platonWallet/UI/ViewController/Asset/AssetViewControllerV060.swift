@@ -629,7 +629,8 @@ extension AssetViewControllerV060 {
                             tx.totalReward = qrcode.rn ?? "0"
                         }
                         tx.nodeName = qrcode.nodeName ?? ""
-                        tx.direction = (type == 1005 || type == 5000) ? .Receive : .Sent
+                        tx.direction = tx.getTransactionDirection()
+//                        tx.direction = (type == 1005 || type == 5000) ? .Receive : .Sent
                         tx.txType = TxType(rawValue: String(type))
                         TransferPersistence.add(tx: tx)
 

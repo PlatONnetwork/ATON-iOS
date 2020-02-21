@@ -88,6 +88,7 @@ class TransactionService : BaseService {
                     let cdata = Date(milliseconds: UInt64(localTx.createTime))
 
                     let expiredDate = Date(timeInterval: SettingService.shareInstance.remoteConfig?.timeoutSecond ?? TimeInterval(24 * 3600), since: cdata)
+                    print(expiredDate)
                     if Date().compare(expiredDate) == .orderedDescending && localTx.createTime != 0 {
                         getReceiptTimeout = true
                     }
@@ -96,7 +97,6 @@ class TransactionService : BaseService {
                     if status == .pending && getReceiptTimeout {
                         status = .timeout
                     }
-
 
                     // 发现获取交易状态接口的虽然发生改变，但是交易记录列表接口不一定更新的，延时删除这条数据
                     if status != .pending {

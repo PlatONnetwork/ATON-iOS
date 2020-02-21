@@ -54,19 +54,7 @@ class TransactionDetailViewController: BaseViewController {
         }
 
         DispatchQueue.main.async { [weak self] in
-            if let senderAddress = self?.txSendAddress {
-                switch currentTx.txType! {
-                case .transfer:
-                    currentTx.direction = (senderAddress.lowercased() == currentTx.from?.lowercased() ? .Sent : senderAddress.lowercased() == currentTx.to?.lowercased() ? .Receive : .unknown)
-                case .delegateWithdraw,
-                     .stakingWithdraw,
-                     .claimReward:
-                    currentTx.direction = .Receive
-                default:
-                    currentTx.direction = .Sent
-                }
-            }
-
+            currentTx.direction = currentTx.getTransactionDirection(self?.txSendAddress)
             if let totalRewardBInt = BigUInt(txStatus.totalReward ?? "0"), totalRewardBInt > BigUInt.zero {
                 currentTx.totalReward = txStatus.totalReward
             }
@@ -79,7 +67,6 @@ class TransactionDetailViewController: BaseViewController {
             self?.transferDetailView.layoutIfNeeded()
             self?.transferDetailView.frame.size = self?.transferDetailView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize) ?? CGSize(width: UIScreen.main.bounds.width, height: 250)
             self?.tableView.tableHeaderView = self?.transferDetailView
-
 
             if let totalRewardBInt = BigUInt(txStatus.totalReward ?? "0"), totalRewardBInt > BigUInt.zero {
                 self?.transaction?.totalReward = txStatus.totalReward

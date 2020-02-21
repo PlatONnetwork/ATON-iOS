@@ -130,19 +130,10 @@ extension DelegateRecordViewController {
                     }
 
                     if let newData = data as? [Transaction], newData.count > 0 {
-                        
-                        _ = newData.map({ (tx) -> Transaction in
-                            switch tx.txType! {
-                            case .delegateWithdraw,
-                                 .stakingWithdraw,
-                                 .claimReward:
-                                tx.direction = .Receive
-                                return tx
-                            default:
-                                tx.direction = .Sent
-                                return tx
-                            }
-                        })
+
+                        for tx in newData {
+                            tx.direction = tx.getTransactionDirection()
+                        }
 
                         self?.listData.append(contentsOf: newData)
                         self?.tableView.mj_footer.resetNoMoreData()
