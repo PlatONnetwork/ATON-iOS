@@ -76,6 +76,8 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
     lazy var walletAddressView = { () -> PTextFieldView in
         let walletView = PTextFieldView.create(title: "send_wallet_colon")
         walletView.textField.LocalizePlaceholder = "send_address_placeholder"
+        walletView.textField.adjustsFontSizeToFitWidth = true
+        walletView.textField.minimumFontSize = 10.0
         walletView.checkInput(mode: .endEdit, check: {[weak self] (text) -> (Bool, String) in
             self?.checkQuickAddAddress()
             return CommonService.checkTransferAddress(text: text)
@@ -386,7 +388,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
             return
         }
 
-        let transactions = TransferPersistence.getTransferPendingTransaction(address: wallet.address)
+        let transactions = TransferPersistence.getPendingTransaction(address: wallet.address)
         if transactions.count >= 0 && (Date().millisecondsSince1970 - (transactions.first?.createTime ?? 0) < 300 * 1000) {
             showErrorMessage(text: Localized("transaction_warning_wait_for_previous"))
             return
@@ -501,8 +503,8 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
                     DispatchQueue.main.async {
                         self.showOfflineConfirmView(content: content)
                     }
-                case .fail:
-                    break
+                case .fail(_, let message):
+                    self.showErrorMessage(text: message ?? "get nonce error")
                 }
             }
         } else {
@@ -716,7 +718,6 @@ extension AssetSendViewControllerV060 {
             switch result {
             case .success:
                 self?.didTransferSuccess()
-                UIApplication.rootViewController().showMessage(text: Localized("transferVC_transfer_success_tip"))
                 self?.navigationController?.popViewController(animated: true)
             case .fail(let code, let des):
                 self?.showMessageWithCodeAndMsg(code: code!, text: des!)

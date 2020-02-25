@@ -49,17 +49,16 @@ class TransactionDetailViewController: BaseViewController {
     @objc func didReceiveTransactionUpdate(_ notification: Notification) {
         guard let txStatus = notification.object as? TransactionsStatusByHash else { return }
         guard let currentTx = transaction else { return }
-        guard let txhash = txStatus.hash, txhash.ishexStringEqual(other: currentTx.txhash), let status = txStatus.localStatus else {
+        guard let txhash = txStatus.hash, txhash.ishexStringEqual(other: currentTx.txhash), let status = txStatus.txReceiptStatus else {
             return
         }
 
         DispatchQueue.main.async { [weak self] in
             currentTx.direction = currentTx.getTransactionDirection(self?.txSendAddress)
-            if let totalRewardBInt = BigUInt(txStatus.totalReward ?? "0"), totalRewardBInt > BigUInt.zero {
+            currentTx.txReceiptStatus = status.rawValue
+            if let totalRewardBInt = BigUInt(txStatus.totalReward ?? "0"), totalRewardBInt > BigUInt.zero, currentTx.txReceiptStatus == TransactionReceiptStatus.sucess.rawValue {
                 currentTx.totalReward = txStatus.totalReward
             }
-
-            currentTx.txReceiptStatus = status.rawValue
 
             self?.transferDetailView.updateContent(tx: currentTx)
             self?.tableView.tableHeaderView = self?.transferDetailView

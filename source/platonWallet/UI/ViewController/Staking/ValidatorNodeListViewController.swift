@@ -126,7 +126,11 @@ class ValidatorNodeListViewController: BaseViewController, IndicatorInfoProvider
         super.viewDidAppear(animated)
         if isViewLoaded && !isShowSearch {
             isNeedFetch = (controllerType == .all)
-            tableView.mj_header.beginRefreshing()
+            if controllerType == .all {
+                tableView.mj_header.beginRefreshing()
+            } else {
+                fetchDataLastest()
+            }
         }
 
         guard let controller = parent as? ValidatorNodesViewController else { return }
@@ -207,18 +211,15 @@ extension ValidatorNodeListViewController {
         isNeedFetch = false
 
         if isShowSearch {
-            tableView.mj_header.beginRefreshing()
+            fetchDataLastest()
             guard let text = searchView.searchBar.text else {
-                tableView.mj_header.endRefreshing()
                 return
             }
             searchResults = StakingService.sharedInstance.searchNodes(text: text, type: controllerType, sort: currentSort)
-            tableView.mj_header.endRefreshing()
             tableView.reloadData()
             return
         }
-
-        tableView.mj_header.beginRefreshing()
+        fetchDataLastest()
     }
 
     @objc func fetchDataMore() {

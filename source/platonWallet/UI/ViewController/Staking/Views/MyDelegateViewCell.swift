@@ -48,7 +48,7 @@ class MyDelegateViewCell: UITableViewCell {
                 claimButton.setTitle(nil, for: .normal)
                 claimButton.isHidden = false
                 pendingLayer.isHidden = false
-                claimButton.isEnabled = false
+                claimButton.isEnabled = true
             case .none:
                 claimButton.localizedNormalTitle = "mydelegates_claim"
                 claimButton.isHidden = true

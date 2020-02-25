@@ -190,4 +190,12 @@ class TransferPersistence {
         let array = Array(r).detached
         return array
     }
+
+    public class func getPendingTransaction(address: String) -> [Transaction] {
+        let realm = try! Realm(configuration: RealmHelper.getConfig())
+        let predicate = NSPredicate(format: "from CONTAINS[cd] %@ AND chainId == %@ AND txReceiptStatus == %@", address, SettingService.shareInstance.currentNodeChainId, NSNumber(value: TransactionReceiptStatus.pending.rawValue))
+        let r = realm.objects(Transaction.self).filter(predicate).sorted(byKeyPath: "createTime", ascending: false)
+        let array = Array(r).detached
+        return array
+    }
 }

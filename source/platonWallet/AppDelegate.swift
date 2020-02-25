@@ -13,6 +13,7 @@ import BigInt
 import LocalAuthentication
 import platonWeb3
 import Localize_Swift
+import CryptoSwift
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {

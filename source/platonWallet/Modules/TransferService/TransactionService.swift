@@ -82,20 +82,21 @@ class TransactionService : BaseService {
 
                 for tx in newData {
                     guard let localTx = txs.first(where: { $0.txhash?.lowercased() == tx.hash?.lowercased() }) else { break }
-                    guard let txhash = tx.hash, var status = tx.localStatus else { break }
+                    guard let txhash = tx.hash, var status = tx.txReceiptStatus else { break }
 
+                    var notificateTx = tx
                     var getReceiptTimeout = false
-                    let cdata = Date(milliseconds: UInt64(localTx.createTime))
+                    let cdata = Date(milliseconds: UInt64(localTx.createTime > 0 ? localTx.createTime : localTx.confirmTimes))
 
                     let expiredDate = Date(timeInterval: SettingService.shareInstance.remoteConfig?.timeoutSecond ?? TimeInterval(24 * 3600), since: cdata)
-                    print(expiredDate)
-                    if Date().compare(expiredDate) == .orderedDescending && localTx.createTime != 0 {
+                    if Date().compare(expiredDate) == .orderedDescending && (localTx.createTime != 0 || localTx.confirmTimes != 0) {
                         getReceiptTimeout = true
                     }
 
                     //超过24小时后通过hash取回执返回pending，就认为是超时
                     if status == .pending && getReceiptTimeout {
                         status = .timeout
+                        notificateTx.txReceiptStatus = .timeout
                     }
 
                     // 发现获取交易状态接口的虽然发生改变，但是交易记录列表接口不一定更新的，延时删除这条数据
@@ -104,9 +105,9 @@ class TransactionService : BaseService {
 //                        TransferPersistence.delete(txhash)
                     }
 
-                    DispatchQueue.main.async {
-                        NotificationCenter.default.post(name: Notification.Name.ATON.DidUpdateTransactionByHash, object: tx)
-                    }
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+                         NotificationCenter.default.post(name: Notification.Name.ATON.DidUpdateTransactionByHash, object: notificateTx)
+                    })
                 }
             case .fail:
                 break
@@ -173,29 +174,37 @@ class TransactionService : BaseService {
             let signedTx = try? tx.sign(with: pk!, chainId: chainID) as EthereumSignedTransaction
 
             web3.platon.sendRawTransaction(transaction: signedTx!, response: { (resp) in
+                ptx.txhash = signedTx?.hash?.add0x()
+                ptx.createTime = Date().millisecondsSince1970
+                ptx.value = String(value.quantity)
+                ptx.gasUsed = (gasPrice.quantity * txgas.quantity).description
+                ptx.gas = String(txgas.quantity)
+                ptx.memo = memo
+                ptx.transactionType = 0
+                ptx.direction = .Sent
+
+                let thTx = TwoHourTransaction()
+                thTx.createTime = Date().millisecondsSince1970
+                thTx.to = toAddr?.hex(eip55: true).lowercased()
+                thTx.from = walletAddr?.hex(eip55: true).lowercased()
+                thTx.value = String(value.quantity)
+
                 switch resp.status {
                 case .success:
-                    DispatchQueue.main.async {
-                        ptx.txhash = resp.result?.hex()
-                        ptx.createTime = Date().millisecondsSince1970
-                        ptx.value = String(value.quantity)
-                        ptx.gasUsed = (gasPrice.quantity * txgas.quantity).description
-                        ptx.gas = String(txgas.quantity)
-                        ptx.memo = memo
-                        ptx.transactionType = 0
-                        ptx.direction = .Sent
-                        TransferPersistence.add(tx: ptx)
-
-                        let thTx = TwoHourTransaction()
-                        thTx.createTime = Date().millisecondsSince1970
-                        thTx.to = toAddr?.hex(eip55: true).lowercased()
-                        thTx.from = walletAddr?.hex(eip55: true).lowercased()
-                        thTx.value = String(value.quantity)
-                        TwoHourTransactionPersistence.add(tx: thTx)
-                    }
+                    TransferPersistence.add(tx: ptx)
+                    TwoHourTransactionPersistence.add(tx: thTx)
                     self.successCompletionOnMain(obj: nil, completion: &completion)
-                case .failure(let error):
-                    self.failCompletionOnMainThread(code: error.code, errorMsg: error.message, completion: &completion)
+                case .failure(let err):
+                    switch err {
+                    case .reponseTimeout:
+                        TransferPersistence.add(tx: ptx)
+                        TwoHourTransactionPersistence.add(tx: thTx)
+                        self.successCompletionOnMain(obj: nil, completion: &completion)
+                    case .requestTimeout:
+                        self.failCompletionOnMainThread(code: err.code, errorMsg: err.message, completion: &completion)
+                    default:
+                        self.failCompletionOnMainThread(code: err.code, errorMsg: err.message, completion: &completion)
+                    }
                 }
             })
         }

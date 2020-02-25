@@ -322,6 +322,9 @@ class Transaction : Object, Decodable {
         let timeStampString = try? container.decode(String.self, forKey: .confirmTimes)
         if let ts = Int(timeStampString ?? "0") {
             confirmTimes = ts
+            if confirmTimes <= 0 {
+                confirmTimes = ts
+            }
         }
         actualTxCost = try? container.decode(String.self, forKey: .actualTxCost)
         let indexString = try? container.decode(String.self, forKey: .transactionIndex)
@@ -560,20 +563,31 @@ struct TransactionsStatusByHash: Decodable {
     var hash: String?
     var status: Int?
     var totalReward: String?
-}
 
-extension TransactionsStatusByHash {
-    var localStatus: TransactionReceiptStatus? {
-        guard let st = status else { return nil }
+    var txReceiptStatus: TransactionReceiptStatus?
+
+    enum CodingKeys: String, CodingKey {
+        case hash
+        case status
+        case totalReward
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        hash = try? container.decode(String.self, forKey: .hash)
+        status = try? container.decode(Int.self, forKey: .status)
+        totalReward = try? container.decode(String.self, forKey: .totalReward)
+
+        guard let st = status else { return }
         switch st {
         case 0:
-            return .businessCodeError
+            txReceiptStatus = .businessCodeError
         case 1:
-            return .sucess
+            txReceiptStatus = .sucess
         case 2:
-            return .pending
+            txReceiptStatus = .pending
         default:
-            return nil
+            return
         }
     }
 }

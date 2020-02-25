@@ -381,7 +381,7 @@ extension WithDrawViewController {
             let stakingBlockNum = balanceStyle?.currentBlockNum else { return }
         let currentAddress = walletObject.currentWallet.address
 
-        let transactions = TransferPersistence.getDelegateWithdrawPendingTransaction(address: walletObject.currentWallet.address, nodeId: nodeId)
+        let transactions = TransferPersistence.getPendingTransaction(address: walletObject.currentWallet.address)
         if transactions.count >= 0 && (Date().millisecondsSince1970 - (transactions.first?.createTime ?? 0) < 300 * 1000) {
             showErrorMessage(text: Localized("transaction_warning_wait_for_previous"))
             return
@@ -406,8 +406,8 @@ extension WithDrawViewController {
                     DispatchQueue.main.async {
                         self.showOfflineConfirmView(content: content)
                     }
-                case .fail:
-                    break
+                case .fail(_, let message):
+                    self.showErrorMessage(text: message ?? "get nonce error")
                 }
             }
             return
@@ -524,38 +524,50 @@ extension WithDrawViewController {
                 let signedTransactionRLP = rlpItem,
                 let signedTransaction = try? EthereumSignedTransaction(rlp: signedTransactionRLP) {
                 self.showLoadingHUD()
+                guard
+                    let to = signedTransaction.to?.rawAddress.toHexString().add0x() else { return }
+                let gasPrice = signedTransaction.gasPrice.quantity
+                let gasLimit = signedTransaction.gasLimit.quantity
+                let gasUsed = gasPrice.multiplied(by: gasLimit).description
+                let amount = self.currentAmount.description
+                let tx = Transaction()
+                tx.from = from
+                tx.to = to
+                tx.gasUsed = gasUsed
+                tx.createTime = Int(Date().timeIntervalSince1970 * 1000)
+                tx.txReceiptStatus = -1
+                tx.value = amount
+                tx.unDelegation = amount
+                tx.transactionType = Int(type)
+                tx.toType = .contract
+                tx.nodeName = self.currentNode?.name
+                tx.txType = .delegateWithdraw
+                tx.direction = .Receive
+                tx.nodeId = self.currentNode?.nodeId
+                tx.txhash = signedTransaction.hash?.add0x()
+                
                 web3.platon.sendRawTransaction(transaction: signedTransaction) { (response) in
                     self.hideLoadingHUD()
                     switch response.status {
-                    case .success(let result):
-                        guard
-                            let to = signedTransaction.to?.rawAddress.toHexString().add0x() else { return }
-                        let gasPrice = signedTransaction.gasPrice.quantity
-                        let gasLimit = signedTransaction.gasLimit.quantity
-                        let gasUsed = gasPrice.multiplied(by: gasLimit).description
-                        let amount = self.currentAmount.description
-                        let tx = Transaction()
-                        tx.from = from
-                        tx.to = to
-                        tx.gasUsed = gasUsed
-                        tx.createTime = Int(Date().timeIntervalSince1970 * 1000)
-                        tx.txhash = result.bytes.toHexString().add0x()
-                        tx.txReceiptStatus = -1
-                        tx.value = amount
-                        tx.unDelegation = amount
-                        tx.transactionType = Int(type)
-                        tx.toType = .contract
-                        tx.nodeName = self.currentNode?.name
-                        tx.txType = .delegateWithdraw
-                        tx.direction = .Receive
-                        tx.nodeId = self.currentNode?.nodeId
+                    case .success:
                         TransferPersistence.add(tx: tx)
 
                         if index == signatureArr.count - 1 {
                             self.doShowTransactionDetail(tx)
                         }
-                    case .failure:
-                        break
+                    case .failure(let err):
+                        switch err {
+                        case .reponseTimeout:
+                            TransferPersistence.add(tx: tx)
+
+                            if index == signatureArr.count - 1 {
+                                self.doShowTransactionDetail(tx)
+                            }
+                        case .requestTimeout:
+                            self.showErrorMessage(text: Localized("RPC_Response_connectionTimeout"), delay: 2.0)
+                        default:
+                            self.showErrorMessage(text: err.message, delay: 2.0)
+                        }
                     }
                 }
             }

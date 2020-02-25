@@ -194,8 +194,18 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
     }
 
     func claimRewardAction(_ indexPath: IndexPath) {
-        showLoadingHUD()
         let delegate = listData[indexPath.row]
+        guard delegate.status == .unclaim else {
+            return
+        }
+
+        let transactions = TransferPersistence.getPendingTransaction(address: delegate.walletAddress)
+        if transactions.count >= 0 && (Date().millisecondsSince1970 - (transactions.first?.createTime ?? 0) < 300 * 1000) {
+            showErrorMessage(text: Localized("transaction_warning_wait_for_previous"))
+            return
+        }
+
+        showLoadingHUD()
         TransactionService.service.getContractGas(from: delegate.walletAddress, txType: TxType.claimReward) { [weak self] (result, remoteGas) in
             self?.hideLoadingHUD()
             switch result {
@@ -257,8 +267,8 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
                     DispatchQueue.main.async {
                         self.showOfflineConfirmView(content: content)
                     }
-                case .fail:
-                    break
+                case .fail(_, let message):
+                    self.showErrorMessage(text: message ?? "get nonce error")
                 }
             }
             return
@@ -379,35 +389,48 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
                 self.showLoadingHUD()
                 web3.platon.sendRawTransaction(transaction: signedTransaction) { (response) in
                     self.hideLoadingHUD()
+                    guard
+                        let to = signedTransaction.to?.rawAddress.toHexString().add0x() else { return }
+                    let gasPrice = signedTransaction.gasPrice.quantity
+                    let gasLimit = signedTransaction.gasLimit.quantity
+                    let gasUsed = gasPrice.multiplied(by: gasLimit).description
+
+                    let tx = Transaction()
+                    tx.from = from
+                    tx.to = to
+                    tx.gasUsed = gasUsed
+                    tx.createTime = Int(Date().timeIntervalSince1970 * 1000)
+                    tx.txReceiptStatus = -1
+                    tx.totalReward = amount
+                    tx.transactionType = Int(type)
+                    tx.toType = .contract
+                    tx.txType = .claimReward
+                    tx.direction = .Receive
+                    tx.txhash = signedTransaction.hash?.add0x()
+
                     switch response.status {
-                    case .success(let result):
-                        guard
-                            let to = signedTransaction.to?.rawAddress.toHexString().add0x() else { return }
-                        let gasPrice = signedTransaction.gasPrice.quantity
-                        let gasLimit = signedTransaction.gasLimit.quantity
-                        let gasUsed = gasPrice.multiplied(by: gasLimit).description
-
-                        let tx = Transaction()
-                        tx.from = from
-                        tx.to = to
-                        tx.gasUsed = gasUsed
-                        tx.createTime = Int(Date().timeIntervalSince1970 * 1000)
-                        tx.txhash = result.bytes.toHexString().add0x()
-                        tx.txReceiptStatus = -1
-                        tx.totalReward = amount
-                        tx.transactionType = Int(type)
-                        tx.toType = .contract
-                        tx.txType = .claimReward
-                        tx.direction = .Receive
+                    case .success:
                         TransferPersistence.add(tx: tx)
-
                         if index == signatureArr.count - 1 {
                             DispatchQueue.main.async {
                                 self.tableView.mj_header.beginRefreshing()
                             }
                         }
-                    case .failure:
-                        break
+                    case .failure(let err):
+                        switch err {
+                        case .reponseTimeout:
+                            TransferPersistence.add(tx: tx)
+                            if index == signatureArr.count - 1 {
+                                DispatchQueue.main.async {
+                                    self.tableView.mj_header.beginRefreshing()
+                                }
+                            }
+                        case .requestTimeout:
+                            self.showErrorMessage(text: Localized("RPC_Response_connectionTimeout"), delay: 2.0)
+                        default:
+                            self.showErrorMessage(text: err.message, delay: 2.0)
+                        }
+
                     }
                 }
             }
@@ -417,7 +440,7 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
     @objc func didReceiveTransactionUpdate(_ notification: Notification) {
         // 由于余额发生变化时会更新交易记录，因此，这里并需要再次更新
 
-        guard let txStatus = notification.object as? TransactionsStatusByHash, let status = txStatus.localStatus, status != .pending else { return }
+        guard let txStatus = notification.object as? TransactionsStatusByHash, let status = txStatus.txReceiptStatus, status != .pending else { return }
         tableView.mj_header.beginRefreshing()
     }
 }

@@ -77,7 +77,7 @@ DEPENDENCIES:
   - MBProgressHUD (~> 1.1.0)
   - MJRefresh
   - OHHTTPStubs/Swift
-  - platonWeb3 (~> 0.7.6)
+  - platonWeb3 (from `../../SDK/client-sdk-ios/`)
   - RealmSwift (= 3.13.1)
   - RTRootNavigationController (= 0.7.1)
   - ScryptSwift (= 0.0.1)
@@ -112,7 +112,6 @@ SPEC REPOS:
     - MBProgressHUD
     - MJRefresh
     - OHHTTPStubs
-    - platonWeb3
     - Realm
     - RealmSwift
     - RTRootNavigationController
@@ -134,6 +133,8 @@ SPEC REPOS:
     - ZXingObjC
 
 EXTERNAL SOURCES:
+  platonWeb3:
+    :path: "../../SDK/client-sdk-ios/"
   Spring:
     :git: https://github.com/MengTo/Spring.git
 
@@ -175,6 +176,6 @@ SPEC CHECKSUMS:
   UMCShare: 552b29753f1b4da87b51d96545ed19e6263df397
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: 1951bd06c663543b4c5fba52f3510fe2909bf781
+PODFILE CHECKSUM: fdd31a218f867612d2806ab656ea37d8ba78a0de
 
 COCOAPODS: 1.8.4

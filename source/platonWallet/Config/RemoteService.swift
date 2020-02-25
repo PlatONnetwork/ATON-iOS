@@ -18,6 +18,7 @@ class RemoteService {
 
         var request = URLRequest(url: try! url.asURL())
         request.httpMethod = "GET"
+        request.addValue("no-cache", forHTTPHeaderField: "cache-control")
 //        request.timeoutInterval = requestTimeout
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 

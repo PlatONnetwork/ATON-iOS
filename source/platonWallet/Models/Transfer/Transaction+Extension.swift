@@ -146,7 +146,8 @@ extension Transaction {
             return topValueDescription!
         }
 
-        if txReceiptStatus == TransactionReceiptStatus.businessCodeError.rawValue {
+        if txReceiptStatus == TransactionReceiptStatus.businessCodeError.rawValue
+            || txReceiptStatus == TransactionReceiptStatus.timeout.rawValue {
             return topValueDescription!
         }
 
@@ -164,16 +165,23 @@ extension Transaction {
         }
     }
 
+    var typeTextColor: UIColor {
+        if txReceiptStatus == TransactionReceiptStatus.businessCodeError.rawValue
+            || txReceiptStatus == TransactionReceiptStatus.timeout.rawValue {
+            return UIColor(white: 0.0, alpha: 0.5)
+        }
+        return UIColor.black
+    }
+
     var amountTextColor: UIColor {
         if let valueStr = value, Int(valueStr) == 0 {
             return UIColor(rgb: 0xb6bbd0)
         }
 
-        if (txReceiptStatus == TransactionReceiptStatus.businessCodeError.rawValue) {
+        if (txReceiptStatus == TransactionReceiptStatus.businessCodeError.rawValue
+            || txReceiptStatus == TransactionReceiptStatus.timeout.rawValue) {
             return UIColor(rgb: 0xb6bbd0)
         }
-
-
 
 //        if let type = txType, type == .claimReward {
 //            return UIColor(rgb: 0x19a20e)

@@ -81,8 +81,7 @@ class WalletDetailCell: UITableViewCell {
             txTypeLabel.text = tx.txType?.localizeTitle
         }
 
-        txTypeLabel.textColor = (tx.txReceiptStatus == TransactionReceiptStatus.businessCodeError.rawValue) ? UIColor(white: 0.0, alpha: 0.5) : .black
-
+        txTypeLabel.textColor = tx.typeTextColor
         transferAmoutLabel.textColor = tx.amountTextColor
         if tx.txReceiptStatus == TransactionReceiptStatus.pending.rawValue {
             txIcon.image = nil

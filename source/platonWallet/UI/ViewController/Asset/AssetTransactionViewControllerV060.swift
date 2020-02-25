@@ -149,7 +149,7 @@ extension AssetTransactionViewControllerV060 {
         guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return [] }
 
         var pendingTxsInDB = TransferPersistence.getTransactionsByAddress(from: selectedAddress, status: TransactionReceiptStatus.pending)
-        pendingTxsInDB.txSort()
+//        pendingTxsInDB.txSort()
         for tx in pendingTxsInDB {
             tx.direction = tx.getTransactionDirection(selectedAddress)
         }
@@ -256,7 +256,7 @@ extension AssetTransactionViewControllerV060 {
     @objc func didReceiveTransactionUpdate(_ notification: Notification) {
         // 由于余额发生变化时会更新交易记录，因此，这里并需要再次更新
 
-        guard let txStatus = notification.object as? TransactionsStatusByHash, let status = txStatus.localStatus else { return }
+        guard let txStatus = notification.object as? TransactionsStatusByHash, let status = txStatus.txReceiptStatus else { return }
         fetchTransaction(beginSequence: -1) { [weak self] in
             guard let self = self else { return }
             for txObj in self.dataSource {
