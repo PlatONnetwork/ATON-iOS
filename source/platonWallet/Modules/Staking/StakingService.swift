@@ -58,7 +58,7 @@ final class StakingService: BaseService {
                     transaction.txType = .claimReward
                     transaction.toType = .contract
                     transaction.txReceiptStatus = -1
-                    transaction.confirmTimes = Int(Date().timeIntervalSince1970 * 1000)
+                    transaction.createTime = Int(Date().timeIntervalSince1970 * 1000)
                     transaction.direction = .Receive
                     transaction.to = PlatonConfig.ContractAddress.rewardContractAddress
                     transaction.gasPrice = gas.gasPrice
@@ -352,7 +352,7 @@ extension StakingService {
                     transaction.value = amount.description
                     transaction.nodeId = nodeId
                     transaction.direction = .Sent
-                    transaction.confirmTimes = Int(Date().timeIntervalSince1970 * 1000)
+                    transaction.createTime = Int(Date().timeIntervalSince1970 * 1000)
                     transaction.to = PlatonConfig.ContractAddress.stakingContractAddress
                     DispatchQueue.main.async {
                         completion?(PlatonCommonResult.success, transaction as AnyObject)
@@ -393,7 +393,7 @@ extension StakingService {
                     transaction.value = amount.description
                     transaction.unDelegation = amount.description
                     transaction.nodeId = nodeId
-                    transaction.confirmTimes = Int(Date().timeIntervalSince1970 * 1000)
+                    transaction.createTime = Int(Date().timeIntervalSince1970 * 1000)
                     transaction.direction = .Receive
                     transaction.to = PlatonConfig.ContractAddress.stakingContractAddress
                     DispatchQueue.main.async {

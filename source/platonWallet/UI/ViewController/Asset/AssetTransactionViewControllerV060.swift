@@ -149,7 +149,10 @@ extension AssetTransactionViewControllerV060 {
         guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return [] }
 
         var pendingTxsInDB = TransferPersistence.getTransactionsByAddress(from: selectedAddress, status: TransactionReceiptStatus.pending)
-        pendingTxsInDB.txSort()
+//        pendingTxsInDB.txSort()
+        for tx in pendingTxsInDB {
+            tx.direction = tx.getTransactionDirection(selectedAddress)
+        }
         return pendingTxsInDB
     }
 
@@ -157,6 +160,9 @@ extension AssetTransactionViewControllerV060 {
         guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return [] }
         var transactions = TransferPersistence.getTransactionsByAddress(from: selectedAddress, status: TransactionReceiptStatus.timeout, detached: true)
         transactions.txSort()
+        for tx in transactions {
+            tx.direction = tx.getTransactionDirection(selectedAddress)
+        }
         return transactions
     }
 
@@ -202,21 +208,9 @@ extension AssetTransactionViewControllerV060 {
                     return
                 }
 
-                _ = remoteTransactions.map({ (tx) -> Transaction in
-                    switch tx.txType! {
-                    case .transfer:
-                        tx.direction = (selectedAddress.lowercased() == tx.from?.lowercased() ? .Sent : selectedAddress.lowercased() == tx.to?.lowercased() ? .Receive : .unknown)
-                        return tx
-                    case .delegateWithdraw,
-                         .stakingWithdraw,
-                         .claimReward:
-                        tx.direction = .Receive
-                        return tx
-                    default:
-                        tx.direction = .Sent
-                        return tx
-                    }
-                })
+                for tx in remoteTransactions {
+                    tx.direction = tx.getTransactionDirection(selectedAddress)
+                }
 
                 var pendingexcludedTxs: [Transaction] = []
                 pendingexcludedTxs.append(contentsOf: remoteTransactions)
@@ -262,7 +256,7 @@ extension AssetTransactionViewControllerV060 {
     @objc func didReceiveTransactionUpdate(_ notification: Notification) {
         // 由于余额发生变化时会更新交易记录，因此，这里并需要再次更新
 
-        guard let txStatus = notification.object as? TransactionsStatusByHash, let status = txStatus.localStatus else { return }
+        guard let txStatus = notification.object as? TransactionsStatusByHash, let status = txStatus.txReceiptStatus else { return }
         fetchTransaction(beginSequence: -1) { [weak self] in
             guard let self = self else { return }
             for txObj in self.dataSource {

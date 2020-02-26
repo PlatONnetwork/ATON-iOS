@@ -594,59 +594,72 @@ extension AssetViewControllerV060 {
                 AssetViewControllerV060.getInstance()?.showLoadingHUD()
                 web3.platon.sendRawTransaction(transaction: signedTransaction) { (response) in
                     AssetViewControllerV060.getInstance()?.hideLoadingHUD()
+                    guard
+                        let to = signedTransaction.to?.rawAddress.toHexString() else { return }
+                    let gasPrice = signedTransaction.gasPrice.quantity
+                    let gasLimit = signedTransaction.gasLimit.quantity
+                    let gasUsed = gasPrice.multiplied(by: gasLimit).description
+                    let amount = signedTransaction.value.quantity.description
+
+                    let rlpResult = try? QRCodeRLPDecoder().decode(signedTransaction.data.bytes)
+
+                    let tx = Transaction()
+                    tx.senderAddress = from
+                    tx.from = from.add0x()
+                    tx.to = to.add0x()
+                    tx.gasUsed = gasUsed
+                    tx.createTime = Int(Date().timeIntervalSince1970 * 1000)
+                    tx.txhash = signedTransaction.hash?.add0x()
+                    tx.txReceiptStatus = -1
+                    tx.value = (type == 5000) ? qrcode.rn ?? "0" : amount
+                    tx.transactionType = Int(type)
+                    tx.toType = (type != 0) ? .contract : .address
+                    if let resultDetail = rlpResult {
+                        tx.nodeId = resultDetail.1 ?? ""
+                        if type == 1004 || type == 1005 {
+                            tx.value = (resultDetail.2 ?? BigUInt.zero).description
+                        }
+                        if type == 1005 {
+                            tx.unDelegation = (resultDetail.2 ?? BigUInt.zero).description
+                        }
+                    }
+                    if type == 5000 {
+                        tx.totalReward = qrcode.rn ?? "0"
+                    }
+                    tx.nodeName = qrcode.nodeName ?? ""
+                    tx.direction = tx.getTransactionDirection()
+                    tx.txType = TxType(rawValue: String(type))
+
+                    let thTx = TwoHourTransaction()
+                    thTx.createTime = Int(Date().timeIntervalSince1970 * 1000)
+                    thTx.to = to.add0x().lowercased()
+                    thTx.from = from.add0x().lowercased()
+                    thTx.value = amount
+                    
                     switch response.status {
-                    case .success(let result):
-                        guard
-                            let to = signedTransaction.to?.rawAddress.toHexString() else { return }
-                        let gasPrice = signedTransaction.gasPrice.quantity
-                        let gasLimit = signedTransaction.gasLimit.quantity
-                        let gasUsed = gasPrice.multiplied(by: gasLimit).description
-                        let amount = signedTransaction.value.quantity.description
-
-                        let rlpResult = try? QRCodeRLPDecoder().decode(signedTransaction.data.bytes)
-
-                        let tx = Transaction()
-                        tx.senderAddress = from
-                        tx.from = from.add0x()
-                        tx.to = to.add0x()
-                        tx.gasUsed = gasUsed
-                        tx.createTime = Int(Date().timeIntervalSince1970 * 1000)
-                        tx.txhash = result.bytes.toHexString().add0x()
-                        tx.txReceiptStatus = -1
-                        tx.value = (type == 5000) ? qrcode.rn ?? "0" : amount
-                        tx.transactionType = Int(type)
-                        tx.toType = (type != 0) ? .contract : .address
-                        if let resultDetail = rlpResult {
-                            tx.nodeId = resultDetail.1 ?? ""
-                            if type == 1004 || type == 1005 {
-                                tx.value = (resultDetail.2 ?? BigUInt.zero).description
-                            }
-                            if type == 1005 {
-                                tx.unDelegation = (resultDetail.2 ?? BigUInt.zero).description
-                            }
-                        }
-                        if type == 5000 {
-                            tx.totalReward = qrcode.rn ?? "0"
-                        }
-                        tx.nodeName = qrcode.nodeName ?? ""
-                        tx.direction = (type == 1005 || type == 5000) ? .Receive : .Sent
-                        tx.txType = TxType(rawValue: String(type))
+                    case .success:
                         TransferPersistence.add(tx: tx)
-
-                        let thTx = TwoHourTransaction()
-                        thTx.createTime = Int(Date().timeIntervalSince1970 * 1000)
-                        thTx.to = to.add0x().lowercased()
-                        thTx.from = from.add0x().lowercased()
-                        thTx.value = amount
                         TwoHourTransactionPersistence.add(tx: thTx)
-
                         if index == signatureArr.count - 1 {
                             DispatchQueue.main.async {
                                 getInstance()?.doShowTransactionDetail(tx)
                             }
                         }
-                    case .failure(_):
-                        break
+                    case .failure(let err):
+                        switch err {
+                        case .reponseTimeout:
+                            TransferPersistence.add(tx: tx)
+                            TwoHourTransactionPersistence.add(tx: thTx)
+                            if index == signatureArr.count - 1 {
+                                DispatchQueue.main.async {
+                                    getInstance()?.doShowTransactionDetail(tx)
+                                }
+                            }
+                        case .requestTimeout:
+                            getInstance()?.showErrorMessage(text: Localized("RPC_Response_connectionTimeout"), delay: 2.0)
+                        default:
+                            getInstance()?.showErrorMessage(text: err.message)
+                        }
                     }
                 }
             }

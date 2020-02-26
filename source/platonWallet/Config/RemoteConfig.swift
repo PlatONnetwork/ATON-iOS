@@ -22,10 +22,12 @@ extension RemoteConfig {
         return BigUInt(gasPrice)
     }
 
+
+    // 毫秒
     var timeoutSecond: TimeInterval {
         guard
             let timeoutStr = timeout,
             let timeInterval = TimeInterval(timeoutStr) else { return TimeInterval(24 * 3600) }
-        return timeInterval
+        return timeInterval/1000
     }
 }

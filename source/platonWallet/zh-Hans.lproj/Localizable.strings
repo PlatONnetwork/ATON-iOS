@@ -582,7 +582,10 @@
 "RPC_Response_connectionFailed" = "网络连接失败";
 "RPC_Response_serverError" = "网络连接失败";
 "RPC_Response_decodingError" = "解码失败";
+"RPC_Response_connectionTimeout" = "请求超时";
+
 "Request_timeout" = "请求超时";
+
 
 "Save" = "保存";
 
@@ -978,7 +981,7 @@
 
 "mydelegates_search_cancel" = "隐藏";
 
-"transaction_warning_wait_for_previous" = "请等待上笔交易完成后方可继续交易！";
+"transaction_warning_wait_for_previous" = "有待处理的交易，等待5分钟或交易完成方可继续新的交易";
 "withdraw_detail_balance" = "余额：";
 
 "delegate_all_warnings" = "建议保留少量余额，以支持委托赎回和奖励领取操作。";

@@ -13,7 +13,6 @@ import BigInt
 class NodeDetailViewController: BaseViewController {
 
     let nodeInfoView = NodeBaseInfoView()
-    let footerView = NodeDetailFooterView()
     let doubtLabel = UILabel()
 
     var listData: [(String, String)] = []
@@ -23,6 +22,7 @@ class NodeDetailViewController: BaseViewController {
         tbView.delegate = self
         tbView.dataSource = self
         tbView.register(NodeDetailCell.self, forCellReuseIdentifier: "NodeDetailCell")
+        tbView.register(NodeDetailGroupCell.self, forCellReuseIdentifier: "NodeDetailGroupCell")
         tbView.separatorStyle = .none
         tbView.backgroundColor = .white
         tbView.tableFooterView = UIView()
@@ -82,7 +82,7 @@ class NodeDetailViewController: BaseViewController {
             make.height.equalTo(40)
             make.leading.equalToSuperview().offset(16)
             make.trailing.equalToSuperview().offset(-16)
-            make.bottom.equalTo(bottomLayoutGuide.snp.top).offset(-30)
+            make.bottom.equalTo(bottomLayoutGuide.snp.top).offset(-40)
         }
 
         view.addSubview(tableView)
@@ -107,13 +107,6 @@ class NodeDetailViewController: BaseViewController {
             self?.doubtTapAction()
         }
 
-        footerView.websiteLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openWebSiteController)))
-        tableView.tableFooterView = footerView
-        footerView.setNeedsLayout()
-        footerView.layoutIfNeeded()
-        footerView.frame.size = footerView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
-        tableView.tableFooterView = footerView
-
         let attachment = NSTextAttachment()
         attachment.bounds = CGRect(x: 0, y: -2, width: 10, height: 10)
         attachment.image = UIImage(named: "3.icon_warning")
@@ -128,12 +121,13 @@ class NodeDetailViewController: BaseViewController {
         doubtLabel.textAlignment = .center
         doubtLabel.font = .systemFont(ofSize: 12)
         doubtLabel.numberOfLines = 0
+        doubtLabel.isHidden = true
         view.addSubview(doubtLabel)
         doubtLabel.snp.makeConstraints { make in
             make.width.equalTo(238)
             make.centerX.equalTo(delegateButton.snp.centerX)
 //            make.leading.trailing.equalTo(delegateButton)
-            make.bottom.equalTo(bottomLayoutGuide.snp.top).offset(-30)
+//            make.bottom.equalTo(bottomLayoutGuide.snp.top).offset(-30)
             make.top.equalTo(delegateButton.snp.bottom).offset(15)
         }
 
@@ -156,9 +150,6 @@ class NodeDetailViewController: BaseViewController {
         nodeInfoView.statusButton.setTitle(nodeDetail?.node.status.0 ?? "--", for: .normal)
         nodeInfoView.ratePATrend = nodeDetail?.delegatedRatePATrend
 
-        footerView.institutionalLabel.text = nodeDetail?.institutionalForDisplay ?? "--"
-        footerView.websiteLabel.text = nodeDetail?.websiteForDisplay ?? "--"
-
         if nodeDetail?.node.isInit == true {
             delegateButton.snp.makeConstraints { make in
                 make.height.equalTo(40)
@@ -167,15 +158,17 @@ class NodeDetailViewController: BaseViewController {
             }
             view.layoutIfNeeded()
             delegateButton.style = .disable
+            doubtLabel.isHidden = false
         } else {
             delegateButton.snp.makeConstraints { make in
                 make.height.equalTo(40)
                 make.leading.equalToSuperview().offset(16)
                 make.trailing.equalToSuperview().offset(-16)
-                make.bottom.equalTo(bottomLayoutGuide.snp.top).offset(-30)
+                make.bottom.equalTo(bottomLayoutGuide.snp.top).offset(-40)
             }
             view.layoutIfNeeded()
             delegateButton.style = AssetVCSharedData.sharedData.walletList.count == 0 ? .disable : .blue
+            doubtLabel.isHidden = true
         }
         doubtLabel.isHidden = (nodeDetail?.node.isInit == false)
         nodeInfoView.isInitNode = nodeDetail?.node.isInit ?? false
@@ -184,6 +177,12 @@ class NodeDetailViewController: BaseViewController {
         nodeInfoView.frame.size = nodeInfoView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
         tableView.tableHeaderView = nodeInfoView
 
+//        tableView.tableFooterView = footerView
+//        footerView.setNeedsLayout()
+//        footerView.layoutIfNeeded()
+//        footerView.frame.size = footerView.systemLayoutSizeFitting(UIView.layoutFittingExpandedSize)
+//        tableView.tableFooterView = footerView
+
         var details: [(String, String)] = []
         details.append((Localized("statking_validator_total_staked"), nodeDetail?.totalStaked ?? "--"))
         details.append((Localized("statking_validator_delegations"), nodeDetail?.delegations ?? "--"))
@@ -191,7 +190,8 @@ class NodeDetailViewController: BaseViewController {
         details.append((Localized("statking_validator_blocks"), nodeDetail?.blockOut ?? "--"))
         details.append((Localized("statking_validator_blocks_rate"), nodeDetail?.bRate ?? "--"))
         details.append((Localized("statking_validator_slash"), nodeDetail?.slash ?? "--"))
-
+        details.append((Localized("statking_validator_slash"), nodeDetail?.slash ?? "--"))
+        details.append((nodeDetail?.websiteForDisplay ?? "--", nodeDetail?.institutionalForDisplay ?? "--"))
         listData = details
         tableView.reloadData()
 
@@ -291,6 +291,14 @@ extension NodeDetailViewController: UITableViewDelegate, UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.row == listData.count - 1 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "NodeDetailGroupCell") as! NodeDetailGroupCell
+            let item = listData[indexPath.row]
+            cell.websiteLabel.text = item.0
+            cell.institutionalLabel.text = item.1
+            cell.websiteLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openWebSiteController)))
+            return cell
+        }
         let cell = tableView.dequeueReusableCell(withIdentifier: "NodeDetailCell") as! NodeDetailCell
         let item = listData[indexPath.row]
         cell.titleLabel.text = item.0

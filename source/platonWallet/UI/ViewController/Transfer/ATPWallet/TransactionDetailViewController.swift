@@ -49,29 +49,16 @@ class TransactionDetailViewController: BaseViewController {
     @objc func didReceiveTransactionUpdate(_ notification: Notification) {
         guard let txStatus = notification.object as? TransactionsStatusByHash else { return }
         guard let currentTx = transaction else { return }
-        guard let txhash = txStatus.hash, txhash.ishexStringEqual(other: currentTx.txhash), let status = txStatus.localStatus else {
+        guard let txhash = txStatus.hash, txhash.ishexStringEqual(other: currentTx.txhash), let status = txStatus.txReceiptStatus else {
             return
         }
 
         DispatchQueue.main.async { [weak self] in
-            if let senderAddress = self?.txSendAddress {
-                switch currentTx.txType! {
-                case .transfer:
-                    currentTx.direction = (senderAddress.lowercased() == currentTx.from?.lowercased() ? .Sent : senderAddress.lowercased() == currentTx.to?.lowercased() ? .Receive : .unknown)
-                case .delegateWithdraw,
-                     .stakingWithdraw,
-                     .claimReward:
-                    currentTx.direction = .Receive
-                default:
-                    currentTx.direction = .Sent
-                }
-            }
-
-            if let totalRewardBInt = BigUInt(txStatus.totalReward ?? "0"), totalRewardBInt > BigUInt.zero {
+            currentTx.direction = currentTx.getTransactionDirection(self?.txSendAddress)
+            currentTx.txReceiptStatus = status.rawValue
+            if let totalRewardBInt = BigUInt(txStatus.totalReward ?? "0"), totalRewardBInt > BigUInt.zero, currentTx.txReceiptStatus == TransactionReceiptStatus.sucess.rawValue {
                 currentTx.totalReward = txStatus.totalReward
             }
-
-            currentTx.txReceiptStatus = status.rawValue
 
             self?.transferDetailView.updateContent(tx: currentTx)
             self?.tableView.tableHeaderView = self?.transferDetailView
@@ -79,7 +66,6 @@ class TransactionDetailViewController: BaseViewController {
             self?.transferDetailView.layoutIfNeeded()
             self?.transferDetailView.frame.size = self?.transferDetailView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize) ?? CGSize(width: UIScreen.main.bounds.width, height: 250)
             self?.tableView.tableHeaderView = self?.transferDetailView
-
 
             if let totalRewardBInt = BigUInt(txStatus.totalReward ?? "0"), totalRewardBInt > BigUInt.zero {
                 self?.transaction?.totalReward = txStatus.totalReward

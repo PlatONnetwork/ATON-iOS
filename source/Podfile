@@ -28,8 +28,8 @@ def target_pods
 
     # Pods for platonWallet
 
-#    pod 'platonWeb3', :path => '../../SDK/client-sdk-ios/'
-    pod 'platonWeb3', '~> 0.7.6'
+    pod 'platonWeb3', :path => '../../SDK/client-sdk-ios/'
+#    pod 'platonWeb3', '~> 0.7.6'
     pod 'MJRefresh'
     pod 'Kingfisher'
 

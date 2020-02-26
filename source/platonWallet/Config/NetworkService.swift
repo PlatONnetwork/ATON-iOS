@@ -16,4 +16,5 @@ class NetworkService {
         configuration.timeoutIntervalForResource = 50.0
         return SessionManager(configuration: configuration)
     }()
+
 }

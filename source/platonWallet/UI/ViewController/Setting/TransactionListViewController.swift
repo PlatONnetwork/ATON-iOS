@@ -117,50 +117,8 @@ class TransactionListViewController: BaseViewController,UITableViewDelegate,UITa
                     return
                 }
 
-                if let currentAddress = self.selectedWallet?.address {
-                    _ = transactions.map({ (tx) -> Transaction in
-                        switch tx.txType! {
-                        case .transfer:
-                            tx.direction = (currentAddress.lowercased() == tx.from?.lowercased() ? .Sent : currentAddress.lowercased() == tx.to?.lowercased() ? .Receive : .unknown)
-                            return tx
-                        case .delegateWithdraw,
-                             .stakingWithdraw,
-                             .claimReward:
-                            tx.direction = .Receive
-                            return tx
-                        default:
-                            tx.direction = .Sent
-                            return tx
-                        }
-                    })
-                } else {
-                    let addresses = (AssetVCSharedData.sharedData.walletList as! [Wallet]).map { return $0.address.lowercased() }
-                    _ = transactions.map({ (tx) -> Transaction in
-                        switch tx.txType! {
-                        case .transfer:
-                            if
-                                let from = tx.from?.lowercased(),
-                                let to = tx.to?.lowercased(),
-                                (addresses.contains(from) && addresses.contains(to)) {
-                                tx.direction = .unknown
-                            } else {
-                                if let from = tx.from?.lowercased(), addresses.contains(from) {
-                                    tx.direction = .Sent
-                                } else if let to = tx.to?.lowercased(), addresses.contains(to) {
-                                    tx.direction = .Receive
-                                }
-                            }
-                            return tx
-                        case .delegateWithdraw,
-                             .stakingWithdraw,
-                             .claimReward:
-                            tx.direction = .Receive
-                            return tx
-                        default:
-                            tx.direction = .Sent
-                            return tx
-                        }
-                    })
+                for tx in transactions {
+                    tx.direction = tx.getTransactionDirection(self.selectedWallet?.address)
                 }
 
                 if transactions.count >= self.listSize {

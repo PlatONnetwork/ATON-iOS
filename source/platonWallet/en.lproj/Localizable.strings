@@ -577,6 +577,7 @@
 "RPC_Response_connectionFailed" = "Connection failed";
 "RPC_Response_serverError" = "Connection failed";
 "RPC_Response_decodingError" = "Decoding error";
+"RPC_Response_connectionTimeout" = "connect timeout";
 
 "Request_timeout" = "Request timeout";
 
@@ -969,7 +970,7 @@
 
 "mydelegates_search_cancel" = "Hide";
 
-"transaction_warning_wait_for_previous" = "Please wait for the transaction to complete before continuing！";
+"transaction_warning_wait_for_previous" = "Having a pending transaction,wait 5 minutes or the transaction is completed before continuing new transactions.";
 
 "withdraw_detail_balance" = "Balance：";
 
