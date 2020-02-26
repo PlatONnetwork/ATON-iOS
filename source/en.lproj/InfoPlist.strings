@@ -1,0 +1,14 @@
+/* 
+  InfoPlist.strings
+  platonWallet
+
+  Created by Admin on 26/2/2020.
+  Copyright © 2020 ju. All rights reserved.
+*/
+
+
+"NSCameraUsageDescription" = "uses your camera to scan QR code.";
+"NSFaceIDUsageDescription" = "Use Face ID to unlock apps";
+"NSLocationWhenInUseUsageDescription" = "Allow access to locations to provide a better service experience";
+"NSPhotoLibraryAddUsageDescription" = "Allow access to save photo in you photo library";
+"NSPhotoLibraryUsageDescription" = "Allow access to albums to scan QR code pictures";
