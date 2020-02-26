@@ -215,7 +215,11 @@ extension AssetTransactionViewControllerV060 {
                 var pendingexcludedTxs: [Transaction] = []
                 pendingexcludedTxs.append(contentsOf: remoteTransactions)
 
-                let timeouttxs = self.getTimeoutTransaction()
+                let txHashes = remoteTransactions.map { $0.txhash!.add0x() }
+
+                var timeouttxs = self.getTimeoutTransaction()
+                timeouttxs = timeouttxs.filter { !txHashes.contains($0.txhash!.add0x()) }
+
                 if timeouttxs.count > 0 {
                     let mappedTimeoutTxs = timeouttxs.map({ (t) -> Transaction in
                         //交易时间临时赋值给确认时间，仅用于交易的排序
@@ -230,7 +234,6 @@ extension AssetTransactionViewControllerV060 {
                     pendingexcludedTxs.sortByConfirmTimes()
                 }
                 var pendingTransaction = self.getPendingTransation()
-                let txHashes = remoteTransactions.map { $0.txhash!.add0x() }
                 pendingTransaction = pendingTransaction.filter { !txHashes.contains($0.txhash!.add0x()) }
                 pendingTransaction.append(contentsOf: pendingexcludedTxs)
                 self.dataSource[selectedAddress] = pendingTransaction
