@@ -461,6 +461,9 @@
 		818D74EC2184349000EB1402 /* QRCodeView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 818D74EB2184349000EB1402 /* QRCodeView.xib */; };
 		818D74EE21843A8900EB1402 /* QRDisplayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818D74ED21843A8900EB1402 /* QRDisplayViewController.swift */; };
 		818D74F521845D2500EB1402 /* PopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 818D74F421845D2500EB1402 /* PopUpViewController.swift */; };
+		818F4137240659210082CE98 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 818F413B240659210082CE98 /* InfoPlist.strings */; };
+		818F4138240659210082CE98 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 818F413B240659210082CE98 /* InfoPlist.strings */; };
+		818F4139240659210082CE98 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 818F413B240659210082CE98 /* InfoPlist.strings */; };
 		81926A07231DFEC500CAF498 /* RemoteVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81926A06231DFEC500CAF498 /* RemoteVersion.swift */; };
 		819333FF223FD08600DCFD93 /* AssetPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 819333FE223FD08600DCFD93 /* AssetPageViewController.swift */; };
 		8193340122408DDC00DCFD93 /* AssetVCSharedData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8193340022408DDC00DCFD93 /* AssetVCSharedData.swift */; };
@@ -1172,6 +1175,8 @@
 		818D74EB2184349000EB1402 /* QRCodeView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = QRCodeView.xib; sourceTree = "<group>"; };
 		818D74ED21843A8900EB1402 /* QRDisplayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRDisplayViewController.swift; sourceTree = "<group>"; };
 		818D74F421845D2500EB1402 /* PopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpViewController.swift; sourceTree = "<group>"; };
+		818F413A240659210082CE98 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		818F413C2406592D0082CE98 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
 		81926A06231DFEC500CAF498 /* RemoteVersion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteVersion.swift; sourceTree = "<group>"; };
 		819333FE223FD08600DCFD93 /* AssetPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPageViewController.swift; sourceTree = "<group>"; };
 		8193340022408DDC00DCFD93 /* AssetVCSharedData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetVCSharedData.swift; sourceTree = "<group>"; };
@@ -1754,6 +1759,7 @@
 		81C88DF821746B39005F17F7 = {
 			isa = PBXGroup;
 			children = (
+				818F413B240659210082CE98 /* InfoPlist.strings */,
 				81C88E0321746B39005F17F7 /* platonWallet */,
 				81C88E1821746B3B005F17F7 /* platonWalletUITests */,
 				9ADE44DD217B1C64006F1C81 /* platonWalletTests */,
@@ -2647,6 +2653,7 @@
 				8118874323B7590C00CAE5BA /* QRCodeView.xib in Resources */,
 				8118874423B7590C00CAE5BA /* CustomPickerView.xib in Resources */,
 				8118874523B7590C00CAE5BA /* LanguageSettingTableViewCell.xib in Resources */,
+				818F4139240659210082CE98 /* InfoPlist.strings in Resources */,
 				8118874623B7590C00CAE5BA /* LanguageSettingTableViewCell.xib in Resources */,
 				8118874723B7590C00CAE5BA /* AddressBookTableViewCell.xib in Resources */,
 				8118874823B7590C00CAE5BA /* AssetSectionViewV060.xib in Resources */,
@@ -2714,6 +2721,7 @@
 				81B58A70235DA1FC00816B4E /* QRCodeView.xib in Resources */,
 				81B58A71235DA1FC00816B4E /* CustomPickerView.xib in Resources */,
 				81DD58E1238BA24D007844ED /* LanguageSettingTableViewCell.xib in Resources */,
+				818F4138240659210082CE98 /* InfoPlist.strings in Resources */,
 				81B58A72235DA1FC00816B4E /* LanguageSettingTableViewCell.xib in Resources */,
 				81DD58DD238BA24D007844ED /* AddressBookTableViewCell.xib in Resources */,
 				81B58A73235DA1FC00816B4E /* AssetSectionViewV060.xib in Resources */,
@@ -2781,6 +2789,7 @@
 				818D74EC2184349000EB1402 /* QRCodeView.xib in Resources */,
 				9A79A08E219BCA89000EB4C5 /* CustomPickerView.xib in Resources */,
 				81DD58E0238BA24D007844ED /* LanguageSettingTableViewCell.xib in Resources */,
+				818F4137240659210082CE98 /* InfoPlist.strings in Resources */,
 				812D94BE218FCFF4002A48B0 /* LanguageSettingTableViewCell.xib in Resources */,
 				81DD58DC238BA24D007844ED /* AddressBookTableViewCell.xib in Resources */,
 				9ADB60AE222E72260044918D /* AssetSectionViewV060.xib in Resources */,
@@ -3986,6 +3995,15 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		818F413B240659210082CE98 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				818F413A240659210082CE98 /* en */,
+				818F413C2406592D0082CE98 /* zh-Hans */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		81C88E0821746B39005F17F7 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -4262,7 +4280,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 066997A993A7BD843316E036 /* Pods-platonWallet.debug.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconBeta;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
@@ -4294,7 +4312,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = B6C6C66ABA19AFA1DEE6933E /* Pods-platonWallet.release.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIconBeta;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
