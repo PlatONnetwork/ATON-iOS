@@ -97,6 +97,36 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
 
     }()
 
+    lazy var remarkView = { () -> RemarkTextView in
+        let remarkView = RemarkTextView()
+        remarkView.textField.LocalizePlaceholder = "send_remark_placeholder"
+        return remarkView
+    }()
+
+//    lazy var remarkView = { () -> PTextFieldView in
+//        let rView = PTextFieldView.create(title: "kkkkkkkk")dd
+//        rView.textField.LocalizePlaceholder = "send_remark_placeholder"
+//        rView.textField.adjustsFontSizeToFitWidth = true
+//        rView.textField.minimumFontSize = 10.0
+//        rView.checkInput(mode: .endEdit, check: {[weak self] (text) -> (Bool, String) in
+//            self?.checkQuickAddAddress()
+//            return CommonService.checkTransferAddress(text: text)
+//            }, heightChange: { [weak self](view) in
+//                self?.textFieldViewUpdateHeight(view: view)
+//        })
+//        //walletView.textField.textAlignment = .center
+//
+//        rView.shouldChangeCharactersCompletion = { (concatenated, replacement) in
+//            return true
+//        }
+//        rView.endEditCompletion = {[weak self] text in
+//            _ = self?.checkConfirmButtonAvailable()
+//            _ = self?.amountView.checkInvalidNow(showErrorMsg: false)
+//        }
+//        return rView
+//
+//    }()
+
     lazy var quickSaveAddrBtn = { () -> QuickSaveAddressButton in
         let button = QuickSaveAddressButton(type: .custom)
         button.localizedNormalTitle = "savetoaddressbook"
@@ -234,13 +264,20 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
 
         view.addSubview(balanceLabel)
         balanceLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(amountView.snp.bottom).offset(8)
+            make.top.equalTo(amountView.snp.top).offset(2)
             make.right.equalToSuperview().offset(-16)
+        }
+
+        view.addSubview(remarkView)
+        remarkView.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(16)
+            make.trailing.equalToSuperview().offset(-16)
+            make.top.equalTo(amountView.snp.bottom).offset(10)
         }
 
         view.addSubview(feeView)
         feeView.snp.makeConstraints { (make) in
-            make.top.equalTo(balanceLabel.snp.bottom).offset(16)
+            make.top.equalTo(remarkView.snp.bottom).offset(16)
             make.left.right.equalToSuperview()
             make.height.equalTo(72)
         }

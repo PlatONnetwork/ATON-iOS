@@ -20,6 +20,12 @@ extension String {
         return valueLAT.displayForMicrometerLevel(maxRound: 8)
     }
 
+    var vonToLATWith2DecimalString: String? {
+        guard let von = BigUInt(self) else { return nil }
+        let valueLAT = von.divide(by: ETHToWeiMultiplier, round: 2)
+        return valueLAT.displayForMicrometerLevel(maxRound: 2)
+    }
+
     var LATToVon: BigUInt {
         let lat = BigUInt.safeInit(str: self)
         return lat.multiplied(by: BigUInt(ETHToWeiMultiplier)!)

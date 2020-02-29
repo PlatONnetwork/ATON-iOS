@@ -720,6 +720,7 @@
 "send_amount_placeholder" = "Input Amount";
 "vote_confirm_from" = "From:";
 "staking_amount_placeholder" = "Input Amount (not less than %@ LAT)";
+"send_remark_placeholder" = "Memo(optional-less than 50 characters)";
 
 
 "createOrImport_guide_text" = "Have a wallet? Import using keystore(json),mnemonic phrase, private key.";

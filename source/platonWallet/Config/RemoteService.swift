@@ -13,28 +13,14 @@ class RemoteService {
 
     static let sharedInstance = RemoteService()
 
-    func getConfig(completion: PlatonCommonCompletion?) {
-        let url = SettingService.shareInstance.getCentralizationHost() + "/config/config.json"
-
-        var request = URLRequest(url: try! url.asURL())
-        request.httpMethod = "GET"
-        request.addValue("no-cache", forHTTPHeaderField: "cache-control")
-//        request.timeoutInterval = requestTimeout
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-
-        NetworkService.sessionManager.request(request).responseData { response in
-            switch response.result {
-            case .success(let data):
-                do {
-                    let decoder = JSONDecoder()
-                    let response = try decoder.decode(RemoteConfig.self, from: data)
-
-                    completion?(.success, response as AnyObject)
-                } catch let err {
-                    completion?(.fail(-1, err.localizedDescription), nil)
-                }
+    func getConfig(completion: NetworkCompletion<RemoteConfig>?) {
+        let headers: HTTPHeaders = ["cache-control": "no-cache"]
+        NetworkService<RemoteConfig>.request("/config/config.json", headers: headers, method: .Get) { (result, data) in
+            switch result {
+            case .success:
+                completion?(.success, data)
             case .failure(let error):
-                completion?(.fail(-1, error.localizedDescription), nil)
+                completion?(.failure(error))
             }
         }
     }

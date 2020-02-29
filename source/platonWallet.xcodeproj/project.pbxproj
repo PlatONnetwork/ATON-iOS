@@ -776,6 +776,9 @@
 		81B58A95235DA1FC00816B4E /* SwitchWalletTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8120029621A3EB390050E1B0 /* SwitchWalletTableViewCell.xib */; };
 		81B58A96235DA1FC00816B4E /* CreateIndividualWalletViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9ADE44FE217DD591006F1C81 /* CreateIndividualWalletViewController.xib */; };
 		81B5CE71224332C500ACFE96 /* UITextFieldWithSearch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B5CE70224332C500ACFE96 /* UITextFieldWithSearch.swift */; };
+		81C3DD12240910DC0014E59F /* RemarkTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C3DD11240910DC0014E59F /* RemarkTextView.swift */; };
+		81C3DD13240910DC0014E59F /* RemarkTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C3DD11240910DC0014E59F /* RemarkTextView.swift */; };
+		81C3DD14240910DC0014E59F /* RemarkTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C3DD11240910DC0014E59F /* RemarkTextView.swift */; };
 		81C88E0521746B39005F17F7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C88E0421746B39005F17F7 /* AppDelegate.swift */; };
 		81C88E0721746B39005F17F7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81C88E0621746B39005F17F7 /* ViewController.swift */; };
 		81C88E0A21746B39005F17F7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81C88E0821746B39005F17F7 /* Main.storyboard */; };
@@ -1204,6 +1207,7 @@
 		81B58A9D235DA1FC00816B4E /* platonWalletUAT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = platonWalletUAT.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		81B58A9E235DA1FD00816B4E /* platonWalletUAT-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "platonWalletUAT-Info.plist"; path = "/Users/ned/Documents/yuham/ios/platon/ATON-iOS/source/platonWalletUAT-Info.plist"; sourceTree = "<absolute>"; };
 		81B5CE70224332C500ACFE96 /* UITextFieldWithSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldWithSearch.swift; sourceTree = "<group>"; };
+		81C3DD11240910DC0014E59F /* RemarkTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemarkTextView.swift; sourceTree = "<group>"; };
 		81C88E0121746B39005F17F7 /* platonWallet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = platonWallet.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		81C88E0421746B39005F17F7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		81C88E0621746B39005F17F7 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -2151,6 +2155,7 @@
 				815968E322E5DABF0085195C /* MJExtensionLoadMoreFooterView.swift */,
 				8141E66F2339C80F001A9351 /* OfflineSignatureConfirmView.swift */,
 				81B58960235AE2CC00816B4E /* UIScrollView+GestureConflict.swift */,
+				81C3DD11240910DC0014E59F /* RemarkTextView.swift */,
 			);
 			path = views;
 			sourceTree = "<group>";
@@ -3386,6 +3391,7 @@
 				8118870E23B7590C00CAE5BA /* UIColor+Extenstions.swift in Sources */,
 				8118870F23B7590C00CAE5BA /* BackupMnemonicViewController.swift in Sources */,
 				812CECDE23FFCE6D006129B8 /* NetworkService.swift in Sources */,
+				81C3DD14240910DC0014E59F /* RemarkTextView.swift in Sources */,
 				8118871023B7590C00CAE5BA /* PTSBarPagerTabStripViewController.swift in Sources */,
 				8118871123B7590C00CAE5BA /* UIImageView+Calculations.swift in Sources */,
 				8118871223B7590C00CAE5BA /* AboutViewController.swift in Sources */,
@@ -3664,6 +3670,7 @@
 				81B58A3E235DA1FC00816B4E /* UIColor+Extenstions.swift in Sources */,
 				81B58A3F235DA1FC00816B4E /* BackupMnemonicViewController.swift in Sources */,
 				812CECDD23FFCE6D006129B8 /* NetworkService.swift in Sources */,
+				81C3DD13240910DC0014E59F /* RemarkTextView.swift in Sources */,
 				81B58A40235DA1FC00816B4E /* PTSBarPagerTabStripViewController.swift in Sources */,
 				81B58A41235DA1FC00816B4E /* UIImageView+Calculations.swift in Sources */,
 				81B58A42235DA1FC00816B4E /* AboutViewController.swift in Sources */,
@@ -3942,6 +3949,7 @@
 				81EE99CB2175E6B8008DF8CB /* UIColor+Extenstions.swift in Sources */,
 				9AD11DE1218171CA002CD905 /* BackupMnemonicViewController.swift in Sources */,
 				812CECDC23FFCE6D006129B8 /* NetworkService.swift in Sources */,
+				81C3DD12240910DC0014E59F /* RemarkTextView.swift in Sources */,
 				81D7E25322E7F6CD0069CDED /* PTSBarPagerTabStripViewController.swift in Sources */,
 				9AF9AC152182E04000E97F07 /* UIImageView+Calculations.swift in Sources */,
 				8156664721C1ECA3000E02D4 /* AboutViewController.swift in Sources */,

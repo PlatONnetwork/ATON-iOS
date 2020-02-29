@@ -177,12 +177,6 @@ class NodeDetailViewController: BaseViewController {
         nodeInfoView.frame.size = nodeInfoView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
         tableView.tableHeaderView = nodeInfoView
 
-//        tableView.tableFooterView = footerView
-//        footerView.setNeedsLayout()
-//        footerView.layoutIfNeeded()
-//        footerView.frame.size = footerView.systemLayoutSizeFitting(UIView.layoutFittingExpandedSize)
-//        tableView.tableFooterView = footerView
-
         var details: [(String, String)] = []
         details.append((Localized("statking_validator_total_staked"), nodeDetail?.totalStaked ?? "--"))
         details.append((Localized("statking_validator_delegations"), nodeDetail?.delegations ?? "--"))
@@ -190,11 +184,9 @@ class NodeDetailViewController: BaseViewController {
         details.append((Localized("statking_validator_blocks"), nodeDetail?.blockOut ?? "--"))
         details.append((Localized("statking_validator_blocks_rate"), nodeDetail?.bRate ?? "--"))
         details.append((Localized("statking_validator_slash"), nodeDetail?.slash ?? "--"))
-        details.append((Localized("statking_validator_slash"), nodeDetail?.slash ?? "--"))
         details.append((nodeDetail?.websiteForDisplay ?? "--", nodeDetail?.institutionalForDisplay ?? "--"))
         listData = details
         tableView.reloadData()
-
     }
 
     func refreshData() {

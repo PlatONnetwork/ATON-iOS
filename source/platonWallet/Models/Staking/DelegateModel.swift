@@ -14,6 +14,7 @@ import BigInt
 import platonWeb3
 
 struct JSONResponse<T: Decodable>: Decodable {
+    var code: Int
     var data: T
 }
 

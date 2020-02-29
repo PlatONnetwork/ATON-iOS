@@ -24,7 +24,6 @@ class NodeBaseInfoView: UIView {
     public let rewardRatioLabel = UILabel()
     public let totalRewardLabel = UILabel()
     let rewardContentView = UIView()
-    let rateView = UIButton()
     var bottomConstraint: Constraint?
 
     var nodeLinkHandler: (() -> Void)?
@@ -37,12 +36,10 @@ class NodeBaseInfoView: UIView {
                 nodeBackgroundView.image = UIImage(named: "bj3")
                 bottomConstraint?.update(priority: .required)
                 rewardContentView.isHidden = true
-                rateView.isHidden = true
             } else {
                 nodeBackgroundView.image = UIImage(named: "bj2")
                 bottomConstraint?.update(priority: .low)
                 rewardContentView.isHidden = false
-                rateView.isHidden = false
             }
         }
     }
@@ -127,64 +124,6 @@ class NodeBaseInfoView: UIView {
             make.leading.equalTo(nodeNameLabel.snp.leading)
         }
 
-        rateView.backgroundColor = .clear
-        rateView.addTarget(self, action: #selector(tipsShowYield), for: .touchUpInside)
-        nodeBackgroundView.addSubview(rateView)
-        rateView.snp.makeConstraints { make in
-            make.top.equalTo(nodeNameLabel)
-            make.leading.greaterThanOrEqualTo(statusButton.snp.trailing).offset(5)
-            make.trailing.equalToSuperview().offset(-10).priorityRequired()
-        }
-
-        trendIV.image = nil
-        rateView.addSubview(trendIV)
-        trendIV.snp.makeConstraints { make in
-            make.height.width.equalTo(13)
-            make.top.equalToSuperview()
-            make.leading.lessThanOrEqualToSuperview()
-//            make.trailing.equalTo(rateView.snp.leading).offset(-2)
-//            make.leading.greaterThanOrEqualTo(statusButton.snp.trailing).offset(5)
-        }
-
-        rateLabel.textAlignment = .center
-        rateLabel.font = UIFont.systemFont(ofSize: 17, weight: UIFont.Weight.medium)
-        rateLabel.textColor = .white
-        rateLabel.text = "0.00%"
-        rateLabel.adjustsFontSizeToFitWidth = true
-        rateLabel.setContentHuggingPriority(.required, for: .horizontal)
-        rateLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
-        rateView.addSubview(rateLabel)
-        rateLabel.snp.makeConstraints { make in
-            make.centerY.equalTo(trendIV.snp.centerY)
-            make.leading.equalTo(trendIV.snp.trailing).offset(3)
-            make.trailing.lessThanOrEqualToSuperview()
-            make.centerX.equalToSuperview()
-        }
-
-        let rateTitleLabel = UILabel()
-        rateTitleLabel.textAlignment = .center
-        rateTitleLabel.font = .systemFont(ofSize: 11)
-        rateTitleLabel.textColor = .white
-        rateTitleLabel.text = Localized("staking_validator_detail_delegate_rate_about")
-        rateTitleLabel.setContentHuggingPriority(.required, for: .horizontal)
-        rateView.addSubview(rateTitleLabel)
-        rateTitleLabel.snp.makeConstraints { make in
-            make.leading.lessThanOrEqualToSuperview().priorityLow()
-            make.top.equalTo(rateLabel.snp.bottom).offset(4)
-            make.bottom.equalToSuperview()
-            make.centerX.equalToSuperview().offset(-7)
-        }
-
-        let rateTitleIV = UIImageView()
-        rateTitleIV.image = UIImage(named: "3.icon_doubt2")
-        rateView.addSubview(rateTitleIV)
-        rateTitleIV.snp.makeConstraints { make in
-            make.width.height.equalTo(12)
-            make.centerY.equalTo(rateTitleLabel)
-            make.leading.equalTo(rateTitleLabel.snp.trailing).offset(3)
-            make.trailing.equalToSuperview().priorityMedium()
-        }
-
         rewardContentView.backgroundColor = .clear
         nodeBackgroundView.addSubview(rewardContentView)
         rewardContentView.snp.makeConstraints { make in
@@ -193,13 +132,62 @@ class NodeBaseInfoView: UIView {
             make.bottom.equalToSuperview().priorityMedium()
         }
 
+        let rateContainer = UIButton()
+        rateContainer.addTarget(self, action: #selector(tipsShowYield), for: .touchUpInside)
+        rewardContentView.addSubview(rateContainer)
+        rateContainer.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(20)
+            make.top.equalToSuperview().offset(14)
+            make.trailing.lessThanOrEqualTo(rewardContentView.snp.centerX).offset(-5)
+        }
+
+        let rateTitleLabel = UILabel()
+        rateTitleLabel.text = Localized("staking_validator_detail_delegate_rate_about")
+        rateTitleLabel.textColor = .white
+        rateTitleLabel.font = UIFont.systemFont(ofSize: 13)
+        rateContainer.addSubview(rateTitleLabel)
+        rateTitleLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview()
+            make.top.equalToSuperview()
+            make.height.equalTo(14)
+        }
+
+        let rateTitleIV = UIImageView()
+        rateTitleIV.image = UIImage(named: "3.icon_doubt2")
+        rateContainer.addSubview(rateTitleIV)
+        rateTitleIV.snp.makeConstraints { make in
+            make.width.height.equalTo(12)
+            make.centerY.equalTo(rateTitleLabel)
+            make.leading.equalTo(rateTitleLabel.snp.trailing).offset(3)
+        }
+
+        rateLabel.adjustsFontSizeToFitWidth = true
+        rateLabel.textColor = .white
+        rateLabel.font = UIFont.systemFont(ofSize: 14)
+        rateLabel.text = "0.00%"
+        rateContainer.addSubview(rateLabel)
+        rateLabel.snp.makeConstraints { make in
+            make.leading.equalTo(rateTitleLabel)
+            make.top.equalTo(rateTitleLabel.snp.bottom).offset(9)
+            make.trailing.equalToSuperview()
+            make.height.equalTo(14)
+        }
+
+        trendIV.image = nil
+        rateContainer.addSubview(trendIV)
+        trendIV.snp.makeConstraints { make in
+            make.leading.equalTo(rateLabel.snp.trailing).offset(2)
+            make.centerY.equalTo(rateLabel.snp.centerY)
+            make.height.width.equalTo(13)
+        }
+
         let rewardRatioContainer = UIButton()
         rewardRatioContainer.addTarget(self, action: #selector(tipsShow), for: .touchUpInside)
         rewardContentView.addSubview(rewardRatioContainer)
         rewardRatioContainer.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(20)
-            make.top.equalToSuperview().offset(14)
-            make.trailing.lessThanOrEqualTo(rewardContentView.snp.centerX).offset(-5)
+            make.leading.equalTo(rewardContentView.snp.centerX).offset(5)
+            make.trailing.equalToSuperview().offset(-20)
+            make.top.equalTo(rateContainer.snp.top)
         }
 
         let rewardRatioTipLabel = UILabel()
@@ -211,7 +199,6 @@ class NodeBaseInfoView: UIView {
             make.leading.equalToSuperview()
             make.top.equalToSuperview()
             make.height.equalTo(14)
-            make.trailing.equalToSuperview()
         }
 
         let rewardRatioIV = UIImageView()
@@ -231,33 +218,42 @@ class NodeBaseInfoView: UIView {
         rewardRatioLabel.snp.makeConstraints { make in
             make.leading.equalTo(rewardRatioTipLabel)
             make.top.equalTo(rewardRatioTipLabel.snp.bottom).offset(9)
-            make.trailing.equalTo(rewardContentView.snp.centerX).offset(-5)
+            make.trailing.equalToSuperview()
             make.height.equalTo(14)
-            make.bottom.equalToSuperview()
+        }
+
+        let lineV = UIView()
+        lineV.backgroundColor = .white
+        nodeBackgroundView.addSubview(lineV)
+        lineV.snp.makeConstraints { make in
+            make.height.equalTo(1/UIScreen.main.scale)
+            make.top.equalTo(rateContainer.snp.bottom).offset(20)
+            make.leading.equalTo(rateContainer.snp.leading)
+            make.trailing.equalTo(rewardRatioContainer.snp.trailing)
         }
 
         let totalRewardTipLabel = UILabel()
         totalRewardTipLabel.text = Localized("reward_total")
         totalRewardTipLabel.textColor = .white
         totalRewardTipLabel.font = UIFont.systemFont(ofSize: 13)
+        totalRewardTipLabel.setContentHuggingPriority(.required, for: .horizontal)
+        totalRewardTipLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
         rewardContentView.addSubview(totalRewardTipLabel)
         totalRewardTipLabel.snp.makeConstraints { make in
-            make.leading.equalTo(rewardContentView.snp.centerX).offset(5)
-            make.trailing.equalToSuperview().offset(-20)
-//            make.leading.equalTo(rewardRatioTipLabel.snp.trailing)
-            make.top.equalTo(rewardRatioTipLabel.snp.top)
+            make.leading.equalTo(lineV.snp.leading)
+            make.top.equalTo(lineV.snp.bottom).offset(14)
+            make.bottom.equalToSuperview().offset(-14)
         }
 
         totalRewardLabel.adjustsFontSizeToFitWidth = true
         totalRewardLabel.textColor = .white
-        totalRewardLabel.font = UIFont.systemFont(ofSize: 14)
+        totalRewardLabel.font = .systemFont(ofSize: 14, weight: .medium)
         totalRewardLabel.text = "0.00"
         rewardContentView.addSubview(totalRewardLabel)
         totalRewardLabel.snp.makeConstraints { make in
-            make.leading.equalTo(totalRewardTipLabel)
-            make.top.equalTo(totalRewardTipLabel.snp.bottom).offset(9)
-            make.width.equalTo(totalRewardTipLabel.snp.width)
-            make.height.equalTo(14)
+            make.leading.equalTo(totalRewardTipLabel.snp.trailing).offset(5)
+            make.centerY.equalTo(totalRewardTipLabel.snp.centerY)
+            make.trailing.equalTo(lineV.snp.trailing)
         }
     }
 
