@@ -21,7 +21,13 @@ extension Transaction {
         case .unknown:
             return .unknown
         case .transfer:
-            guard let address = currentAddress else { return .Sent }
+            guard let address = currentAddress else {
+                let addresses = (AssetVCSharedData.sharedData.walletList as! [Wallet]).map { return $0.address.add0x().lowercased() }
+                if let fromAddress = to?.add0x().lowercased(), addresses.contains(fromAddress) {
+                    return .Receive
+                }
+                return .Sent
+            }
             if address.add0x().lowercased() == from?.add0x().lowercased() {
                 return .Sent
             } else if address.add0x().lowercased() == to?.add0x().lowercased() {
