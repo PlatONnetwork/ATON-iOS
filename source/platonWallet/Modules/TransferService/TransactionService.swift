@@ -74,13 +74,13 @@ class TransactionService : BaseService {
         let txs = TransferPersistence.getUnConfirmedTransactions()
         guard txs.count > 0 else { return }
 
-        let hashes = txs.filter { $0.txhash != nil }.map { $0.txhash!.lowercased() }
+        let hashes = txs.filter { $0.txhash != nil }.map { $0.txhash!.add0x().lowercased() }
         getTransactionStatus(hashes: hashes) { (result, data) in
             switch result {
             case .success:
                 guard let newData = data, newData.count > 0 else { return }
                 for tx in newData {
-                    guard let localTx = txs.first(where: { $0.txhash?.lowercased() == tx.hash?.lowercased() }) else { break }
+                    guard let localTx = txs.first(where: { $0.txhash?.add0x().lowercased() == tx.hash?.add0x().lowercased() }) else { break }
                     guard let txhash = tx.hash, var status = tx.txReceiptStatus else { break }
 
                     var notificateTx = tx
@@ -102,11 +102,10 @@ class TransactionService : BaseService {
                     if status != .pending {
                         TransferPersistence.update(txhash: txhash, status: status.rawValue)
 //                        TransferPersistence.delete(txhash)
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+                            NotificationCenter.default.post(name: Notification.Name.ATON.DidUpdateTransactionByHash, object: notificateTx)
+                        })
                     }
-
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
-                         NotificationCenter.default.post(name: Notification.Name.ATON.DidUpdateTransactionByHash, object: notificateTx)
-                    })
                 }
             case .failure:
                 do {}
@@ -256,7 +255,7 @@ class TransactionService : BaseService {
                 switch result {
                 case .success:
                     let transaction = Transaction()
-                    transaction.txhash = txSigned?.hash
+                    transaction.txhash = txSigned?.hash?.add0x()
                     transaction.from = sender
                     transaction.txType = .delegateCreate
                     transaction.toType = .contract
@@ -325,7 +324,7 @@ class TransactionService : BaseService {
                 switch result {
                 case .success:
                     let transaction = Transaction()
-                    transaction.txhash = txSigned?.hash
+                    transaction.txhash = txSigned?.hash?.add0x()
                     transaction.from = sender
                     transaction.txType = .delegateWithdraw
                     transaction.toType = .contract
@@ -388,7 +387,7 @@ class TransactionService : BaseService {
                 switch result {
                 case .success:
                     let transaction = Transaction()
-                    transaction.txhash = txSigned?.hash
+                    transaction.txhash = txSigned?.hash?.add0x()
                     transaction.from = from
                     transaction.txType = .claimReward
                     transaction.toType = .contract

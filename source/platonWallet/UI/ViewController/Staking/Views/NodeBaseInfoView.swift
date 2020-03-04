@@ -34,7 +34,7 @@ class NodeBaseInfoView: UIView {
         didSet {
             if isInitNode {
                 nodeBackgroundView.image = UIImage(named: "bj3")
-                bottomConstraint?.update(priority: .required)
+                bottomConstraint?.update(priority: .high)
                 rewardContentView.isHidden = true
             } else {
                 nodeBackgroundView.image = UIImage(named: "bj2")

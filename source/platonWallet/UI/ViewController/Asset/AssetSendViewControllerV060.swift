@@ -103,30 +103,6 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
         return remarkView
     }()
 
-//    lazy var remarkView = { () -> PTextFieldView in
-//        let rView = PTextFieldView.create(title: "kkkkkkkk")dd
-//        rView.textField.LocalizePlaceholder = "send_remark_placeholder"
-//        rView.textField.adjustsFontSizeToFitWidth = true
-//        rView.textField.minimumFontSize = 10.0
-//        rView.checkInput(mode: .endEdit, check: {[weak self] (text) -> (Bool, String) in
-//            self?.checkQuickAddAddress()
-//            return CommonService.checkTransferAddress(text: text)
-//            }, heightChange: { [weak self](view) in
-//                self?.textFieldViewUpdateHeight(view: view)
-//        })
-//        //walletView.textField.textAlignment = .center
-//
-//        rView.shouldChangeCharactersCompletion = { (concatenated, replacement) in
-//            return true
-//        }
-//        rView.endEditCompletion = {[weak self] text in
-//            _ = self?.checkConfirmButtonAvailable()
-//            _ = self?.amountView.checkInvalidNow(showErrorMsg: false)
-//        }
-//        return rView
-//
-//    }()
-
     lazy var quickSaveAddrBtn = { () -> QuickSaveAddressButton in
         let button = QuickSaveAddressButton(type: .custom)
         button.localizedNormalTitle = "savetoaddressbook"
@@ -606,6 +582,9 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
         }
         if self.walletAddressView.textField.isFirstResponder {
             self.walletAddressView.textField.resignFirstResponder()
+        }
+        if self.remarkView.textField.isFirstResponder {
+            self.remarkView.textField.resignFirstResponder()
         }
     }
 

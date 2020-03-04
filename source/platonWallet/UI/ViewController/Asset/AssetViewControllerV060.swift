@@ -389,6 +389,7 @@ extension AssetViewControllerV060: UIScrollViewDelegate, ChildScrollViewDidScrol
 
         //let rec = sectionView.convert(sectionView.bounds, to: view)
         //print("sectionView y:\(rec.origin.y)")
+
         if (!scrollEnable || scrollView.contentOffset.y >= CGFloat(AssetHeaderViewH)) {
             //scrollView.setContentOffset(CGPoint(x: 0, y: AssetHeaderViewH - 20), animated: false)
             DispatchQueue.main.async {

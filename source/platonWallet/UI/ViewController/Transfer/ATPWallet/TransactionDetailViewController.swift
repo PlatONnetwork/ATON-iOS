@@ -112,7 +112,7 @@ class TransactionDetailViewController: BaseViewController {
         } else if txType == .delegateCreate ||
                   txType == .delegateWithdraw {
             listData.append((title:  txType == .delegateCreate ? Localized("TransactionDetailVC_delegated_to") : Localized("TransactionDetailVC_withdraw_to"), value: tx.toNameString ?? "--", copy: false))
-            listData.append((title: Localized("TransactionDetailVC_nodeId"), value: tx.nodeId ?? "--", copy: false))
+            listData.append((title: Localized("TransactionDetailVC_nodeId"), value: tx.nodeId ?? "--", copy: tx.nodeId != nil ? true : false))
             listData.append((title: txType == .delegateCreate ? Localized("TransactionDetailVC_delegated_amount") : Localized("TransactionDetailVC_withdrawal_amount"), value: tx.valueDescription?.displayForMicrometerLevel(maxRound: 8).ATPSuffix() ?? "--", copy: false))
             if let totalRewardBInt = BigUInt(tx.totalReward ?? "0"), totalRewardBInt > BigUInt.zero {
                 listData.append((title: Localized("TransactionDetailVC_reward_amount"), value: tx.totalReward?.vonToLATString?.ATPSuffix() ?? "--", copy: false))
@@ -130,7 +130,7 @@ class TransactionDetailViewController: BaseViewController {
                 listData.append((title: Localized("TransactionDetailVC_voteFor"), value: tx.nodeName ?? "--", copy: false))
             }
 
-            listData.append((title: Localized("TransactionDetailVC_nodeId"), value: tx.nodeId ?? "--", copy: false))
+            listData.append((title: Localized("TransactionDetailVC_nodeId"), value: tx.nodeId ?? "--", copy: tx.nodeId != nil ? true : false))
 
             if txType == .stakingCreate ||
                txType == .declareVersion {
@@ -156,7 +156,7 @@ class TransactionDetailViewController: BaseViewController {
                   txType == .submitCancel ||
                   txType == .voteForProposal {
             listData.append((title: Localized("TransactionDetailVC_voteFor"), value: tx.nodeName ?? "--", copy: false))
-            listData.append((title: Localized("TransactionDetailVC_nodeId"), value: tx.nodeId ?? "--", copy: false))
+            listData.append((title: Localized("TransactionDetailVC_nodeId"), value: tx.nodeId ?? "--", copy: tx.nodeId != nil ? true : false))
             listData.append((title: Localized("TransactionDetailVC_proposal_id"), value: tx.proposalId ?? "--", copy: false))
             listData.append((title: Localized("TransactionDetailVC_proposal_pip"), value: tx.pipString, copy: false))
 
