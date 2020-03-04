@@ -37,7 +37,7 @@ struct CommonService {
             return (false, Localized("wallet_nameInput_empty_tips"))
         }
 
-        guard name!.length <= 12 else {
+        guard name!.length <= 20 else {
             return (false, Localized("wallet_nameInput_lengthIllegal_tips"))
         }
         if checkDuplicate {

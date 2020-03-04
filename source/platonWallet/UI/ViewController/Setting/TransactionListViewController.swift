@@ -112,7 +112,7 @@ class TransactionListViewController: BaseViewController,UITableViewDelegate,UITa
                     self.txnTableView.reloadData()
                 }
 
-                guard let transactions = response as? [Transaction], transactions.count > 0 else {
+                guard let transactions = response, transactions.count > 0 else {
                     self.txnTableView.mj_footer.isHidden = self.dataSource.count == 0
                     return
                 }
@@ -130,8 +130,8 @@ class TransactionListViewController: BaseViewController,UITableViewDelegate,UITa
                 self.dataSource.append(contentsOf: transactions)
                 self.txnTableView.reloadData()
                 self.txnTableView.mj_footer.isHidden = self.dataSource.count == 0
-            case .fail:
-                break
+            case .failure(let error):
+                self.showErrorMessage(text: error?.message ?? "server error")
             }
         }
     }

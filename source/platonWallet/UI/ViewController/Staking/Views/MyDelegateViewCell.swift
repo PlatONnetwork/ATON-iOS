@@ -216,6 +216,7 @@ class MyDelegateViewCell: UITableViewCell {
         totalRewardLabel.adjustsFontSizeToFitWidth = true
         delegateBackgroundView.addSubview(totalRewardLabel)
         totalRewardLabel.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().offset(-12)
             make.leading.equalTo(totalRewardTipLabel)
             make.top.equalTo(totalRewardTipLabel.snp.bottom).offset(9)
             make.height.equalTo(14)

@@ -129,14 +129,14 @@ extension DelegateDetailViewController {
             return
         }
 
-        StakingService.sharedInstance.getDelegateDetail(address: del.walletAddress) { [weak self] (result, data) in
+        StakingService.getDelegateDetail(address: del.walletAddress) { [weak self] (result, data) in
             self?.tableView.mj_header.endRefreshing()
 
             switch result {
             case .success:
                 self?.listData.removeAll()
 
-                if let tDelegate = data as? TotalDelegate {
+                if let tDelegate = data {
                     self?.totalDelegate = tDelegate
 
                     self?.walletHeaderView.rewardRatioLabel.text = tDelegate.availableDelegationBalanceValue
@@ -147,8 +147,8 @@ extension DelegateDetailViewController {
                     }
                 }
                 self?.tableView.reloadData()
-            case .fail:
-                break
+            case .failure(let error):
+                self?.showErrorMessage(text: error?.message ?? "server error")
             }
         }
     }

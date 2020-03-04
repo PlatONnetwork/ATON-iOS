@@ -20,6 +20,12 @@ extension String {
         return valueLAT.displayForMicrometerLevel(maxRound: 8)
     }
 
+    var vonToLATWith2DecimalString: String? {
+        guard let von = BigUInt(self) else { return nil }
+        let valueLAT = von.divide(by: ETHToWeiMultiplier, round: 2)
+        return valueLAT.displayForMicrometerLevel(maxRound: 2)
+    }
+
     var LATToVon: BigUInt {
         let lat = BigUInt.safeInit(str: self)
         return lat.multiplied(by: BigUInt(ETHToWeiMultiplier)!)
@@ -346,6 +352,15 @@ extension String {
 
     func ATPSuffix() -> String {
         return self + " LAT"
+    }
+
+    func front8Back10Fordisplay() -> String {
+        guard self.count >= 20 else { return self }
+        if !self.hasPrefix("0x") {
+            return "0x" + self.prefix(8) + "......" + self.suffix(10)
+        } else {
+            return self.prefix(10) + "......" + self.suffix(10)
+        }
     }
 
     func nodeIdForDisplayShort() -> String {

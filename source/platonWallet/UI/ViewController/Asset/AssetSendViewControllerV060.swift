@@ -97,6 +97,12 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
 
     }()
 
+    lazy var remarkView = { () -> RemarkTextView in
+        let remarkView = RemarkTextView()
+        remarkView.textField.LocalizePlaceholder = "send_remark_placeholder"
+        return remarkView
+    }()
+
     lazy var quickSaveAddrBtn = { () -> QuickSaveAddressButton in
         let button = QuickSaveAddressButton(type: .custom)
         button.localizedNormalTitle = "savetoaddressbook"
@@ -234,13 +240,20 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
 
         view.addSubview(balanceLabel)
         balanceLabel.snp.makeConstraints { (make) in
-            make.top.equalTo(amountView.snp.bottom).offset(8)
+            make.top.equalTo(amountView.snp.top).offset(2)
             make.right.equalToSuperview().offset(-16)
+        }
+
+        view.addSubview(remarkView)
+        remarkView.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(16)
+            make.trailing.equalToSuperview().offset(-16)
+            make.top.equalTo(amountView.snp.bottom).offset(10)
         }
 
         view.addSubview(feeView)
         feeView.snp.makeConstraints { (make) in
-            make.top.equalTo(balanceLabel.snp.bottom).offset(16)
+            make.top.equalTo(remarkView.snp.bottom).offset(16)
             make.left.right.equalToSuperview()
             make.height.equalTo(72)
         }
@@ -494,8 +507,8 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
                     guard let nonce = blockNonce else { return }
                     let nonceString = nonce.quantity.description
 
-                    let transactionData = TransactionQrcode(amount: amount, chainId: web3.properties.chainId, from: wallet.address, to: to, gasLimit: gasLimit, gasPrice: gasPrice, nonce: nonceString, typ: nil, nodeId: nil, nodeName: nil, stakingBlockNum: nil, functionType: 0)
-                    let qrcodeData = QrcodeData(qrCodeType: 0, qrCodeData: [transactionData], chainId: web3.chainId, functionType: nil, from: nil, nodeName: nil, rn: nil, timestamp: Int(Date().timeIntervalSince1970 * 1000))
+                    let transactionData = TransactionQrcode(amount: amount, chainId: web3.properties.chainId, from: wallet.address, to: to, gasLimit: gasLimit, gasPrice: gasPrice, nonce: nonceString, typ: nil, nodeId: nil, nodeName: nil, stakingBlockNum: nil, functionType: 0, rk: self.remarkView.textField.text)
+                    let qrcodeData = QrcodeData(qrCodeType: 0, qrCodeData: [transactionData], chainId: web3.chainId, functionType: nil, from: nil, nodeName: nil, rn: nil, timestamp: Int(Date().timeIntervalSince1970 * 1000), rk: nil, si: nil, v: 1)
                     guard
                         let data = try? JSONEncoder().encode(qrcodeData),
                         let content = String(data: data, encoding: .utf8) else { return }
@@ -569,6 +582,9 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
         }
         if self.walletAddressView.textField.isFirstResponder {
             self.walletAddressView.textField.resignFirstResponder()
+        }
+        if self.remarkView.textField.isFirstResponder {
+            self.remarkView.textField.resignFirstResponder()
         }
     }
 
@@ -706,14 +722,14 @@ extension AssetSendViewControllerV060 {
         AssetViewControllerV060.getInstance()?.showLoadingHUD()
         let from = AssetVCSharedData.sharedData.cWallet?.address
         let to = self.walletAddressView.textField.text!
+        let remark = remarkView.textField.text
+
         guard let amount = self.amountView.textField.text, amount.count > 0 else {
             showErrorMessage(text: "amount value is nil")
             return
         }
 
-        let memo = ""
-
-        _ = TransactionService.service.sendAPTTransfer(from: from!, to: to, amount: amount, InputGasPrice: self.gasPrice!, estimatedGas: String(self.estimatedGas), memo: memo, pri: pri, completion: {[weak self] (result, _) in
+        _ = TransactionService.service.sendAPTTransfer(from: from!, to: to, amount: amount, InputGasPrice: self.gasPrice!, estimatedGas: String(self.estimatedGas), remark: remark, pri: pri, completion: {[weak self] (result, _) in
             AssetViewControllerV060.getInstance()?.hideLoadingHUD(delay: 0.2)
             switch result {
             case .success:

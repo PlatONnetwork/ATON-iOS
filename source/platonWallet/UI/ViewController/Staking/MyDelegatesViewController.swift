@@ -215,8 +215,8 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
                     return
                 }
                 self?.showClaimConfirmView(delegate: delegate, gas: gas)
-            case .fail(_, let errMsg):
-                self?.showErrorMessage(text: errMsg ?? "get gas api error", delay: 2.0)
+            case .failure(let error):
+                self?.showErrorMessage(text: error?.message ?? "get gas api error", delay: 2.0)
             }
         }
     }
@@ -257,9 +257,9 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
                     guard let nonce = blockNonce else { return }
                     let nonceString = nonce.quantity.description
 
-                    let transactionData = TransactionQrcode(amount: amount, chainId: web3.properties.chainId, from: wallet.address, to: PlatonConfig.ContractAddress.rewardContractAddress, gasLimit: gas.gasLimit, gasPrice: gas.gasPrice, nonce: nonceString, typ: nil, nodeId: nil, nodeName: nil, stakingBlockNum: nil, functionType: funcType.typeValue)
+                    let transactionData = TransactionQrcode(amount: amount, chainId: web3.properties.chainId, from: wallet.address, to: PlatonConfig.ContractAddress.rewardContractAddress, gasLimit: gas.gasLimit, gasPrice: gas.gasPrice, nonce: nonceString, typ: nil, nodeId: nil, nodeName: nil, stakingBlockNum: nil, functionType: funcType.typeValue, rk: nil)
 
-                    let qrcodeData = QrcodeData(qrCodeType: 0, qrCodeData: [transactionData], chainId: web3.chainId, functionType: 5000, from: wallet.address, nodeName: nil, rn: amount, timestamp: Int(Date().timeIntervalSince1970 * 1000))
+                    let qrcodeData = QrcodeData(qrCodeType: 0, qrCodeData: [transactionData], chainId: web3.chainId, functionType: 5000, from: wallet.address, nodeName: nil, rn: amount, timestamp: Int(Date().timeIntervalSince1970 * 1000), rk: nil, si: nil, v: 1)
                     guard
                         let data = try? JSONEncoder().encode(qrcodeData),
                         let content = String(data: data, encoding: .utf8) else { return }
@@ -288,7 +288,7 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
 
     func sendClaimTransaction(delegate: Delegate, gas: RemoteGas, privateKey: String) {
         showLoadingHUD()
-        StakingService.sharedInstance.rewardClaim(from: delegate.walletAddress, privateKey: privateKey, gas: gas) { [weak self] (result, transaction) in
+        TransactionService.service.rewardClaim(from: delegate.walletAddress, privateKey: privateKey, gas: gas) { [weak self] (result, transaction) in
             self?.hideLoadingHUD()
             switch result {
             case .success:
@@ -377,64 +377,82 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
             let signatureArr = qrcode.qrCodeData,
             let type = qrcode.functionType,
             let from = qrcode.from,
-            let amount = currentDelegate?.withdrawReward
+            let amount = currentDelegate?.withdrawReward,
+            let sign = qrcode.si
         else { return }
-        for (index, signature) in signatureArr.enumerated() {
+        for (_, signature) in signatureArr.enumerated() {
             let bytes = signature.hexToBytes()
             let rlpItem = try? RLPDecoder().decode(bytes)
 
             if
                 let signedTransactionRLP = rlpItem,
                 let signedTransaction = try? EthereumSignedTransaction(rlp: signedTransactionRLP) {
+
+                guard
+                    let to = signedTransaction.to?.rawAddress.toHexString().add0x() else { return }
+                let gasPrice = signedTransaction.gasPrice.quantity
+                let gasLimit = signedTransaction.gasLimit.quantity
+                let gasUsed = gasPrice.multiplied(by: gasLimit).description
+
+                let tx = Transaction()
+                tx.from = from
+                tx.to = to
+                tx.gasUsed = gasUsed
+                tx.createTime = Int(Date().timeIntervalSince1970 * 1000)
+                tx.txReceiptStatus = -1
+                tx.totalReward = amount
+                tx.transactionType = Int(type)
+                tx.toType = .contract
+                tx.txType = .claimReward
+                tx.direction = .Receive
+                tx.txhash = signedTransaction.hash?.add0x()
+
                 self.showLoadingHUD()
-                web3.platon.sendRawTransaction(transaction: signedTransaction) { (response) in
-                    self.hideLoadingHUD()
+                if (qrcode.v ?? 0) >= 1 {
+                    let signedTx = SignedTransaction(signedData: signature, remark: qrcode.rk ?? "")
                     guard
-                        let to = signedTransaction.to?.rawAddress.toHexString().add0x() else { return }
-                    let gasPrice = signedTransaction.gasPrice.quantity
-                    let gasLimit = signedTransaction.gasLimit.quantity
-                    let gasUsed = gasPrice.multiplied(by: gasLimit).description
-
-                    let tx = Transaction()
-                    tx.from = from
-                    tx.to = to
-                    tx.gasUsed = gasUsed
-                    tx.createTime = Int(Date().timeIntervalSince1970 * 1000)
-                    tx.txReceiptStatus = -1
-                    tx.totalReward = amount
-                    tx.transactionType = Int(type)
-                    tx.toType = .contract
-                    tx.txType = .claimReward
-                    tx.direction = .Receive
-                    tx.txhash = signedTransaction.hash?.add0x()
-
-                    switch response.status {
-                    case .success:
-                        TransferPersistence.add(tx: tx)
-                        if index == signatureArr.count - 1 {
-                            DispatchQueue.main.async {
-                                self.tableView.mj_header.beginRefreshing()
+                        let signedTxJsonString = signedTx.jsonString
+                        else { break }
+                    TransactionService.service.sendSignedTransactionToServer(data: signedTxJsonString, sign: sign) { (result, response) in
+                        switch result {
+                        case .success:
+                            self.sendTransactionSuccess(tx: tx)
+                        case .failure(let error):
+                            self.sendTransactionFailure(message: error?.message ?? "server error")
+                        }
+                    }
+                } else {
+                    web3.platon.sendRawTransaction(transaction: signedTransaction) { (response) in
+                        switch response.status {
+                        case .success:
+                            self.sendTransactionSuccess(tx: tx)
+                        case .failure(let err):
+                            switch err {
+                            case .reponseTimeout:
+                                self.sendTransactionSuccess(tx: tx)
+                            case .requestTimeout:
+                                self.sendTransactionFailure(message: Localized("RPC_Response_connectionTimeout"))
+                            default:
+                                self.sendTransactionFailure(message: err.message)
                             }
                         }
-                    case .failure(let err):
-                        switch err {
-                        case .reponseTimeout:
-                            TransferPersistence.add(tx: tx)
-                            if index == signatureArr.count - 1 {
-                                DispatchQueue.main.async {
-                                    self.tableView.mj_header.beginRefreshing()
-                                }
-                            }
-                        case .requestTimeout:
-                            self.showErrorMessage(text: Localized("RPC_Response_connectionTimeout"), delay: 2.0)
-                        default:
-                            self.showErrorMessage(text: err.message, delay: 2.0)
-                        }
-
                     }
                 }
             }
         }
+    }
+
+    func sendTransactionSuccess(tx: Transaction) {
+        hideLoadingHUD()
+        TransferPersistence.add(tx: tx)
+        DispatchQueue.main.async {
+            self.tableView.mj_header.beginRefreshing()
+        }
+    }
+
+    func sendTransactionFailure(message: String) {
+        hideLoadingHUD()
+        showErrorMessage(text: message)
     }
 
     @objc func didReceiveTransactionUpdate(_ notification: Notification) {
@@ -472,20 +490,20 @@ extension MyDelegatesViewController {
             return
         }
 
-        StakingService.sharedInstance.getMyDelegate(adddresses: addresses) { [weak self] (result, data) in
+        StakingService.getMyDelegate(adddresses: addresses) { [weak self] (result, response) in
             self?.tableView.mj_header.endRefreshing()
 
             switch result {
             case .success:
                 self?.listData.removeAll()
-                if let newData = data as? [Delegate] {
+                if let newData = response {
                     self?.listData.append(contentsOf: newData)
                     self?.tableView.reloadData()
                     self?.updateDelagateHeader()
                 }
                 self?.tableView.reloadData()
-            case .fail:
-                break
+            case .failure(let error):
+                self?.showErrorMessage(text: error?.message ?? "server error")
             }
         }
     }

@@ -166,7 +166,7 @@ class ValidatorNodeListViewController: BaseViewController, IndicatorInfoProvider
 extension ValidatorNodeListViewController {
 
     private func fetchData(isFetch: Bool, _ nodeId: String?) {
-        StakingService.sharedInstance.getNodeList(controllerType: controllerType, sort: currentSort, isFetch: isFetch) { [weak self] (result, data) in
+        StakingService.getNodeList(controllerType: controllerType, sort: currentSort, isFetch: isFetch) { [weak self] (result, data) in
             self?.tableView.mj_header.endRefreshing()
             self?.tableView.mj_footer.endRefreshing()
             self?.isNeedFetch = true
@@ -177,15 +177,16 @@ extension ValidatorNodeListViewController {
                     self?.listData.removeAll()
                 }
 
-                if let newData = data as? [Node], newData.count > 0 {
+                if let newData = data, newData.count > 0 {
                     self?.tableView.mj_footer.resetNoMoreData()
                     self?.listData.append(contentsOf: newData)
                 } else {
                     self?.tableView.mj_footer.endRefreshingWithNoMoreData()
                 }
                 self?.tableView.reloadData()
-            case .fail:
+            case .failure(let error):
                 self?.tableView.mj_footer.isHidden = true
+                self?.showErrorMessage(text: error?.message ?? "server error")
             }
         }
     }
@@ -215,7 +216,7 @@ extension ValidatorNodeListViewController {
             guard let text = searchView.searchBar.text else {
                 return
             }
-            searchResults = StakingService.sharedInstance.searchNodes(text: text, type: controllerType, sort: currentSort)
+            searchResults = StakingService.searchNodes(text: text, type: controllerType, sort: currentSort)
             tableView.reloadData()
             return
         }
@@ -279,7 +280,7 @@ extension ValidatorNodeListViewController: UISearchBarDelegate {
         guard let text = searchBar.text else { return }
         searchBar.resignFirstResponder()
         isSearching = true
-        searchResults = StakingService.sharedInstance.searchNodes(text: text, type: controllerType, sort: currentSort)
+        searchResults = StakingService.searchNodes(text: text, type: controllerType, sort: currentSort)
         tableView.reloadData()
     }
 

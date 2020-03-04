@@ -14,7 +14,22 @@ import BigInt
 import platonWeb3
 
 struct JSONResponse<T: Decodable>: Decodable {
-    var data: T
+    var errMsg: String?
+    var code: Int
+    var data: T?
+
+    enum CodingKeys: String, CodingKey {
+        case code
+        case errMsg
+        case data
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        code = try container.decode(Int.self, forKey: .code)
+        errMsg = try? container.decode(String.self, forKey: .errMsg)
+        data = try? container.decode(T.self, forKey: .data)
+    }
 }
 
 struct Delegate: Decodable {

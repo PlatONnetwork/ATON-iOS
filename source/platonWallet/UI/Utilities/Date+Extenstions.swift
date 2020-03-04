@@ -29,7 +29,7 @@ extension Date {
          */
         dateFormatterInExtension.timeZone = localZone
         dateFormatterInExtension.locale = NSLocale.current
-        dateFormatterInExtension.dateFormat = "yyyy-MM-dd HH:mm"
+        dateFormatterInExtension.dateFormat = "yyyy-MM-dd HH:mm:ss"
         let strDate = dateFormatterInExtension.string(from: date)
         return strDate
     }

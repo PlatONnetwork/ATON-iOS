@@ -177,12 +177,6 @@ class NodeDetailViewController: BaseViewController {
         nodeInfoView.frame.size = nodeInfoView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
         tableView.tableHeaderView = nodeInfoView
 
-//        tableView.tableFooterView = footerView
-//        footerView.setNeedsLayout()
-//        footerView.layoutIfNeeded()
-//        footerView.frame.size = footerView.systemLayoutSizeFitting(UIView.layoutFittingExpandedSize)
-//        tableView.tableFooterView = footerView
-
         var details: [(String, String)] = []
         details.append((Localized("statking_validator_total_staked"), nodeDetail?.totalStaked ?? "--"))
         details.append((Localized("statking_validator_delegations"), nodeDetail?.delegations ?? "--"))
@@ -190,11 +184,9 @@ class NodeDetailViewController: BaseViewController {
         details.append((Localized("statking_validator_blocks"), nodeDetail?.blockOut ?? "--"))
         details.append((Localized("statking_validator_blocks_rate"), nodeDetail?.bRate ?? "--"))
         details.append((Localized("statking_validator_slash"), nodeDetail?.slash ?? "--"))
-        details.append((Localized("statking_validator_slash"), nodeDetail?.slash ?? "--"))
         details.append((nodeDetail?.websiteForDisplay ?? "--", nodeDetail?.institutionalForDisplay ?? "--"))
         listData = details
         tableView.reloadData()
-
     }
 
     func refreshData() {
@@ -204,17 +196,18 @@ class NodeDetailViewController: BaseViewController {
     private func fetchData() {
         guard let nId = nodeId else { return }
         showLoadingHUD()
-        StakingService.sharedInstance.getNodeDetail(nodeId: nId) { [weak self] (result, data) in
+        StakingService.getNodeDetail(nodeId: nId) { [weak self] (result, data) in
             self?.hideLoadingHUD()
             switch result {
             case .success:
-                if let newData = data as? NodeDetail {
+                if let newData = data {
                     self?.nodeDetail = newData
                     self?.setupData()
                     self?.noNetworkEmptyView.isHidden = true
                 }
-            case .fail:
+            case .failure(let error):
                 self?.noNetworkEmptyView.isHidden = false
+                self?.showErrorMessage(text: error?.message ?? "server error")
             }
         }
     }
@@ -235,6 +228,7 @@ class NodeDetailViewController: BaseViewController {
         guard let node = nodeDetail?.node else { return }
         let controller = DelegateViewController()
         controller.currentNode = node
+        controller.currentAddress = (AssetVCSharedData.sharedData.selectedWallet as? Wallet)?.address
         navigationController?.pushViewController(controller, animated: true)
     }
 

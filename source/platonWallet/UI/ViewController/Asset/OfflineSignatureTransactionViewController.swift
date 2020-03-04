@@ -185,8 +185,12 @@ class OfflineSignatureTransactionViewController: BaseViewController {
             guard
                 let code = codes.first,
                 let from = code.from,
-                let type = code.functionType else { return }
-            let qrcodeData = QrcodeData(qrCodeType: 1, qrCodeData: signedStrings, chainId: web3.chainId, functionType: type, from: from, nodeName: code.nodeName, rn: self.qrcode?.rn ?? code.amount, timestamp: self.qrcode?.timestamp)
+                let type = code.functionType,
+                let signedData = signedStrings.first
+            else { return }
+
+            let signedResult = TransactionService.service.signQrcodeData(signedData: signedData, remark: code.rk ?? "", privateKey: pri)
+            let qrcodeData = QrcodeData(qrCodeType: 1, qrCodeData: signedStrings, chainId: web3.chainId, functionType: type, from: from, nodeName: code.nodeName, rn: self.qrcode?.rn ?? code.amount, timestamp: self.qrcode?.timestamp, rk: code.rk ?? "", si: signedResult, v: 1)
 
             guard
                 let jsonData = try? JSONEncoder().encode(qrcodeData),
@@ -209,6 +213,11 @@ class OfflineSignatureTransactionViewController: BaseViewController {
         let txSigned = web3.platon.platonSignTransaction(to: to, nonce: nonce, data: [], sender: sender, privateKey: pri, gasPrice: gasPrice, gas: gasLimit, value: amount, estimated: true)
         guard
             let transactionSigned = txSigned else { return nil }
+
+        if (qrcode?.v ?? 0) >= 1 {
+            let signedString = transactionSigned.rlp().ethereumValue().string
+            return signedString
+        }
 
         let bytes = try? RLPEncoder().encode(transactionSigned.rlp())
 
@@ -233,6 +242,12 @@ class OfflineSignatureTransactionViewController: BaseViewController {
         let txSigned = web3.platon.platonSignTransaction(to: PlatonConfig.ContractAddress.stakingContractAddress, nonce: nonce, data: funcType.rlpData.bytes, sender: sender, privateKey: pri, gasPrice: gasPrice, gas: gasLimit, value: nil, estimated: true)
         guard
             let transactionSigned = txSigned else { return nil }
+
+        if (qrcode?.v ?? 0) >= 1 {
+            let signedString = transactionSigned.rlp().ethereumValue().string
+            return signedString
+        }
+
         let bytes = try? RLPEncoder().encode(transactionSigned.rlp())
 
         guard
@@ -260,6 +275,12 @@ class OfflineSignatureTransactionViewController: BaseViewController {
 
         guard
             let transactionSigned = txSigned else { return nil }
+
+        if (qrcode?.v ?? 0) >= 1 {
+            let signedString = transactionSigned.rlp().ethereumValue().string
+            return signedString
+        }
+
         let bytes = try? RLPEncoder().encode(transactionSigned.rlp())
 
         guard
@@ -284,6 +305,12 @@ class OfflineSignatureTransactionViewController: BaseViewController {
 
         guard
             let transactionSigned = txSigned else { return nil }
+        
+        if (qrcode?.v ?? 0) >= 1 {
+            let signedString = transactionSigned.rlp().ethereumValue().string
+            return signedString
+        }
+
         let bytes = try? RLPEncoder().encode(transactionSigned.rlp())
 
         guard

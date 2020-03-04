@@ -9,6 +9,8 @@
 import Foundation
 import Alamofire
 import Localize_Swift
+import CryptoSwift
+import platonWeb3
 
 //public let requestTimeout = TimeInterval(30.0)
 
@@ -19,38 +21,13 @@ extension TransactionService {
         beginSequence: Int64,
         listSize: Int,
         direction: String,
-        completion: PlatonCommonCompletion?) {
-        var completion = completion
-        var parameters : Dictionary<String,Any> = [:]
-
+        completion: NetworkCompletion<[Transaction]>?) {
+        var parameters: Parameters = [:]
         parameters["walletAddrs"] = addresses
         parameters["beginSequence"] = beginSequence
         parameters["listSize"] = listSize
         parameters["direction"] = direction
-
-        let url = SettingService.getCentralizationURL() + "/transaction/list"
-
-        var request = URLRequest(url: try! url.asURL())
-        request.httpBody = try! JSONSerialization.data(withJSONObject: parameters)
-        request.httpMethod = "POST"
-//        request.timeoutInterval = requestTimeout
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-
-        NetworkService.sessionManager.request(request).responseData { response in
-            switch response.result {
-            case .success(let data):
-                do {
-                    let decoder = JSONDecoder()
-                    let response = try decoder.decode(TransactionResponse.self, from: data)
-                    self.successCompletionOnMain(obj: response.data as AnyObject, completion: &completion)
-                } catch let err {
-                    print("Err", err)
-                    self.failCompletionOnMainThread(code: -1, errorMsg: err.localizedDescription, completion: &completion)
-                }
-            case .failure(let error):
-                self.failCompletionOnMainThread(code: -1, errorMsg: error.localizedDescription, completion: &completion)
-            }
-        }
+        NetworkService.request("/transaction/list", parameters: parameters, completion: completion)
     }
 
     public func getDelegateRecord(
@@ -59,9 +36,8 @@ extension TransactionService {
         listSize: Int,
         direction: String,
         type: String,
-        completion: PlatonCommonCompletion?) {
-        var completion = completion
-        var parameters : Dictionary<String,Any> = [:]
+        completion: NetworkCompletion<[Transaction]>?) {
+        var parameters: Parameters = [:]
 
         parameters["walletAddrs"] = addresses
         parameters["beginSequence"] = beginSequence
@@ -69,63 +45,19 @@ extension TransactionService {
         parameters["direction"] = direction
         parameters["type"] = type
 
-        let url = SettingService.getCentralizationURL() + "/transaction/delegateRecord"
-
-        var request = URLRequest(url: try! url.asURL())
-        request.httpBody = try! JSONSerialization.data(withJSONObject: parameters)
-        request.httpMethod = "POST"
-//        request.timeoutInterval = requestTimeout
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-
-        NetworkService.sessionManager.request(request).responseData { response in
-            switch response.result {
-            case .success(let data):
-                do {
-                    let decoder = JSONDecoder()
-                    let response = try decoder.decode(JSONResponse<[Transaction]>.self, from: data)
-                    self.successCompletionOnMain(obj: response.data as AnyObject, completion: &completion)
-                } catch let err {
-                    self.failCompletionOnMainThread(code: -1, errorMsg: err.localizedDescription, completion: &completion)
-                }
-            case .failure(let error):
-                self.failCompletionOnMainThread(code: -1, errorMsg: error.localizedDescription, completion: &completion)
-            }
-        }
+        NetworkService.request("/transaction/delegateRecord", parameters: parameters, completion: completion)
     }
 
     func getTransactionStatus(
         hashes: [String],
-        completion: PlatonCommonCompletion?) {
-        var completion = completion
-        var parameters : Dictionary<String,Any> = [:]
+        completion: NetworkCompletion<[TransactionsStatusByHash]>?) {
+        var parameters: Parameters = [:]
         parameters["hash"] = hashes
-
-        let url = SettingService.getCentralizationURL() + "/transaction/getTransactionsStatus"
-
-        var request = URLRequest(url: try! url.asURL())
-        request.httpBody = try! JSONSerialization.data(withJSONObject: parameters)
-        request.httpMethod = "POST"
-//        request.timeoutInterval = requestTimeout
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-
-        NetworkService.sessionManager.request(request).responseData { response in
-            switch response.result {
-            case .success(let data):
-                do {
-                    let decoder = JSONDecoder()
-                    let response = try decoder.decode(JSONResponse<[TransactionsStatusByHash]>.self, from: data)
-                    self.successCompletionOnMain(obj: response.data as AnyObject, completion: &completion)
-                } catch let err {
-                    self.failCompletionOnMainThread(code: -1, errorMsg: err.localizedDescription, completion: &completion)
-                }
-            case .failure(let error):
-                self.failCompletionOnMainThread(code: -1, errorMsg: error.localizedDescription, completion: &completion)
-            }
-        }
+        NetworkService.request("/transaction/getTransactionsStatus", parameters: parameters, completion: completion)
     }
 
-    func getContractGas(from: String, txType: TxType, nodeId: String? = nil, stakingBlockNum: String? = nil, completion: CommonCompletion<RemoteGas>?) {
-        var parameters : Dictionary<String,Any> = [:]
+    func getContractGas(from: String, txType: TxType, nodeId: String? = nil, stakingBlockNum: String? = nil, completion: NetworkCompletion<RemoteGas>?) {
+        var parameters: Parameters = [:]
         parameters["from"] = from
         parameters["txType"] = txType.rawValue
         if let nid = nodeId {
@@ -136,27 +68,65 @@ extension TransactionService {
             parameters["stakingBlockNum"] = sBlockNum
         }
 
-        let url = SettingService.getCentralizationURL() + "/transaction/estimateGas"
+        NetworkService.request("/transaction/estimateGas", parameters: parameters, completion: completion)
+    }
 
-        var request = URLRequest(url: try! url.asURL())
-        request.httpBody = try! JSONSerialization.data(withJSONObject: parameters)
-        request.httpMethod = "POST"
-//        request.timeoutInterval = requestTimeout
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+    func sendSignedTransactionToServer(data: String, sign: String, completion: NetworkCompletion<String>?) {
+        var parameters: Parameters = [:]
+        parameters["data"] = data
+        parameters["sign"] = sign
 
-        NetworkService.sessionManager.request(request).responseData { response in
-            switch response.result {
-            case .success(let data):
-                do {
-                    let decoder = JSONDecoder()
-                    let response = try decoder.decode(JSONResponse<RemoteGas>.self, from: data)
-                    completion?(.success, response.data)
-                } catch let err {
-                    completion?(.fail(-1, err.localizedDescription), nil)
-                }
+        NetworkService.request("/transaction/submitSignedTransaction", parameters: parameters, completion: completion)
+    }
+
+    func sendRawTransaction(data: SignedTransaction, privateKey: String, completion: NetworkCompletion<String>?) {
+        guard
+            let jsonData = try? JSONEncoder().encode(data),
+            let jsonString = String(data: jsonData, encoding: .utf8) else {
+            completion?(.failure(NetworkError.jsonEncodeError), nil)
+            return
+        }
+
+        guard let signResult = signQrcodeData(signedData: data.signedData, remark: data.remark ?? "", privateKey: privateKey) else {
+            completion?(.failure(NetworkError.signError), nil)
+            return
+        }
+
+        sendSignedTransactionToServer(data: jsonString, sign: signResult) { (result, response) in
+            switch result {
+            case .success:
+                completion?(.success, response)
             case .failure(let error):
-                completion?(.fail(-1, error.localizedDescription), nil)
+                guard let error = error else { return }
+                switch error {
+                case .responeTimeoutError:
+                    completion?(.success, "")
+                default:
+                    completion?(.failure(error), nil)
+                }
             }
         }
+    }
+
+    func signQrcodeData(signedData: String, remark: String, privateKey: String) -> String? {
+        guard let pk = try? EthereumPrivateKey(hexPrivateKey: privateKey) else {
+            return nil
+        }
+
+        var signedDataBytes = signedData.hexToBytes()
+        let remarkBytes = remark.bytes
+        signedDataBytes.append(contentsOf: remarkBytes)
+
+        guard
+            let sign = try? pk.sign(message: signedDataBytes) else {
+                return nil
+        }
+
+        var signBytes = Bytes()
+        let vBytes = UInt8(sign.v + 27).makeBytes()
+        signBytes.append(contentsOf: vBytes)
+        signBytes.append(contentsOf: sign.r)
+        signBytes.append(contentsOf: sign.s)
+        return signBytes.toHexString().add0x()
     }
 }

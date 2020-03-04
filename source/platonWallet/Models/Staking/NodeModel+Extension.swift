@@ -27,7 +27,7 @@ extension Node {
     }
 
     var delegateAmount: String {
-        return (delegateSum?.vonToLATString ?? "0.00").ATPSuffix()
+        return (delegateSum?.vonToLATWith2DecimalString ?? "0.00").ATPSuffix()
     }
 
     var delegators: String {

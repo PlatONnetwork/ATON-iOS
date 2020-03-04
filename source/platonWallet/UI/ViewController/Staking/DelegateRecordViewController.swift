@@ -129,8 +129,7 @@ extension DelegateRecordViewController {
                         self?.listData.removeAll()
                     }
 
-                    if let newData = data as? [Transaction], newData.count > 0 {
-
+                    if let newData = data, newData.count > 0 {
                         for tx in newData {
                             tx.direction = tx.getTransactionDirection()
                         }
@@ -143,9 +142,9 @@ extension DelegateRecordViewController {
 
                     self?.tableView.reloadData()
 
-                case .fail:
+                case .failure(let error):
                     self?.tableView.mj_footer.isHidden = true
-                    break
+                    self?.showErrorMessage(text: error?.message ?? "server error")
                 }
         }
     }

@@ -27,7 +27,7 @@
 
 ///wallet common input illegal tips
 "wallet_nameInput_empty_tips" = "钱包名称不能为空！";
-"wallet_nameInput_lengthIllegal_tips" = "请输入1~12位钱包名称！";
+"wallet_nameInput_lengthIllegal_tips" = "请输入1~20位钱包名称！";
 "wallet_pswInput_empty_tips" = "密码不能为空！";
 "wallet_pswInput_lengthIllegal_tips" = "密码长度至少6个字符！";
 "wallet_pswConfirmInput_empty_tips" = "确认密码不能为空！";
@@ -729,6 +729,7 @@
 "send_amount_placeholder" = "输入发送数量";
 "vote_confirm_from" = "支付钱包：";
 "staking_amount_placeholder" = "输入数量（不少于%@LAT）";
+"send_remark_placeholder" = "备注（可选-50以内）";
 
 
 "createOrImport_guide_text" = "已有钱包？使用钱包文件(json)、助记词、私钥导入";
@@ -991,3 +992,5 @@
 
 "pop_selection_title_withdraw" = "选择赎回项";
 "pop_selection_title_delegate" = "选择可用的LAT";
+
+"transaction_detail_note" = "备注：";

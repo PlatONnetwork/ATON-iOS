@@ -19,6 +19,9 @@ struct QrcodeData<QRData: Codable>: Codable {
     var nodeName: String?
     var rn: String?
     var timestamp: Int?
+    var rk: String?
+    var si: String?
+    var v: Int? = 1
 }
 
 //extension QrcodeData {
@@ -86,6 +89,7 @@ struct TransactionQrcode: Codable {
     var nodeName: String?
     var stakingBlockNum: String?
     var functionType: UInt16?
+    var rk: String?
 }
 
 extension RLPItem {
@@ -139,49 +143,49 @@ extension RLPItem {
 //        return QrcodeData(qrCodeType: Int(qrCodeType), qrCodeData: qrCodeDatas, timestamp: Int(timestamp), chainId: chainId, functionType: functionType, from: from)
 //    }
 
-    func newTx() -> TransactionQrcode? {
-        let rlp = self
-        guard let array = rlp.array, array.count == 12 else {
-            return nil
-        }
-
-        let amount = array[0].bytes?.makeString()
-        let chainId = array[1].bytes?.makeString()
-        let from = array[2].bytes?.makeString()
-        let to = array[3].bytes?.makeString()
-        let gasLimit = array[4].bytes?.makeString()
-        let gasPrice = array[5].bytes?.makeString()
-        let nonce = array[6].bytes?.makeString()
-        let typ = UInt16(bytes: array[7].bytes ?? Bytes())
-        let nodeId = array[8].bytes?.makeString()
-        let nodeName = array[9].bytes?.makeString()
-        let stakingBlockNum = array[10].bytes?.makeString()
-        let functionType = UInt16(bytes: array[11].bytes ?? Bytes())
-
-        let tx = TransactionQrcode(amount: amount, chainId: chainId, from: from, to: to, gasLimit: gasLimit, gasPrice: gasPrice, nonce: nonce, typ: typ, nodeId: nodeId, nodeName: nodeName, stakingBlockNum: stakingBlockNum, functionType: functionType)
-        return tx
-    }
+//    func newTx() -> TransactionQrcode? {
+//        let rlp = self
+//        guard let array = rlp.array, array.count == 12 else {
+//            return nil
+//        }
+//
+//        let amount = array[0].bytes?.makeString()
+//        let chainId = array[1].bytes?.makeString()
+//        let from = array[2].bytes?.makeString()
+//        let to = array[3].bytes?.makeString()
+//        let gasLimit = array[4].bytes?.makeString()
+//        let gasPrice = array[5].bytes?.makeString()
+//        let nonce = array[6].bytes?.makeString()
+//        let typ = UInt16(bytes: array[7].bytes ?? Bytes())
+//        let nodeId = array[8].bytes?.makeString()
+//        let nodeName = array[9].bytes?.makeString()
+//        let stakingBlockNum = array[10].bytes?.makeString()
+//        let functionType = UInt16(bytes: array[11].bytes ?? Bytes())
+//
+//        let tx = TransactionQrcode(amount: amount, chainId: chainId, from: from, to: to, gasLimit: gasLimit, gasPrice: gasPrice, nonce: nonce, typ: typ, nodeId: nodeId, nodeName: nodeName, stakingBlockNum: stakingBlockNum, functionType: functionType)
+//        return tx
+//    }
 }
 
-extension TransactionQrcode {
-
-    func rlp() -> RLPItem {
-        let amountRLP = RLPItem(stringLiteral: amount ?? "")
-        let chainIdRLP = RLPItem(stringLiteral: chainId ?? "")
-        let fromRLP = RLPItem(stringLiteral: from ?? "")
-        let toRLP = RLPItem(stringLiteral: to ?? "")
-        let gasLimitRLP = RLPItem(stringLiteral: gasLimit ?? "")
-        let gasPriceRLP = RLPItem(stringLiteral: gasPrice ?? "")
-        let nonceRLP = RLPItem(stringLiteral: nonce ?? "")
-        let typRLP = RLPItem(bytes: typ?.makeBytes() ?? Bytes())
-        let nodeIdRLP = RLPItem(stringLiteral: nodeId ?? "")
-        let nodeNameRLP = RLPItem(stringLiteral: nodeName ?? "")
-        let stakingBlockNumRLP = RLPItem(stringLiteral: stakingBlockNum ?? "")
-        let functionTypeRLP = RLPItem(bytes: functionType?.makeBytes() ?? Bytes())
-
-        return RLPItem.array([amountRLP, chainIdRLP, fromRLP, toRLP, gasLimitRLP, gasPriceRLP, nonceRLP, typRLP, nodeIdRLP, nodeNameRLP, stakingBlockNumRLP, functionTypeRLP])
-    }
-}
+//extension TransactionQrcode {
+//
+//    func rlp() -> RLPItem {
+//        let amountRLP = RLPItem(stringLiteral: amount ?? "")
+//        let chainIdRLP = RLPItem(stringLiteral: chainId ?? "")
+//        let fromRLP = RLPItem(stringLiteral: from ?? "")
+//        let toRLP = RLPItem(stringLiteral: to ?? "")
+//        let gasLimitRLP = RLPItem(stringLiteral: gasLimit ?? "")
+//        let gasPriceRLP = RLPItem(stringLiteral: gasPrice ?? "")
+//        let nonceRLP = RLPItem(stringLiteral: nonce ?? "")
+//        let typRLP = RLPItem(bytes: typ?.makeBytes() ?? Bytes())
+//        let nodeIdRLP = RLPItem(stringLiteral: nodeId ?? "")
+//        let nodeNameRLP = RLPItem(stringLiteral: nodeName ?? "")
+//        let stakingBlockNumRLP = RLPItem(stringLiteral: stakingBlockNum ?? "")
+//        let functionTypeRLP = RLPItem(bytes: functionType?.makeBytes() ?? Bytes())
+//
+//        return RLPItem.array([amountRLP, chainIdRLP, fromRLP, toRLP, gasLimitRLP, gasPriceRLP, nonceRLP, typRLP, nodeIdRLP, nodeNameRLP, stakingBlockNumRLP, functionTypeRLP])
+//    }
+//}
 
 
 

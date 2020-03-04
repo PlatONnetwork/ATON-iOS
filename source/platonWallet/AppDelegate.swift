@@ -186,14 +186,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 extension AppDelegate {
     func getRemoteConfig() {
-        RemoteService.sharedInstance.getConfig { (result, data) in
+        RemoteService.getConfig { (result, remoteConfig) in
             switch result {
             case .success:
-                if let remoteConfig = data as? RemoteConfig {
-                    SettingService.shareInstance.remoteConfig = remoteConfig
-                }
-            case .fail(_, _):
-                break
+                SettingService.shareInstance.remoteConfig = remoteConfig
+            case .failure(let error):
+                UIApplication.shared.keyWindow?.rootViewController?.showErrorMessage(text: error?.message ?? "server error")
             }
         }
     }
@@ -203,16 +201,10 @@ extension AppDelegate {
             return
         }
 
-        guard
-            let buildVersionString = Bundle.main.infoDictionary!["CFBundleVersion"] as? String,
-            let buildVersion = Int(buildVersionString) else { return }
-
-        RemoteService.sharedInstance.getRemoteVersion(versionCode: buildVersion) { (result, data) in
+        RemoteService.getRemoteVersion { (result, response) in
             switch result {
             case .success:
-                if let remoteVersion = data as? RemoteVersion {
-                    SettingService.shareInstance.remoteVersion = remoteVersion
-                }
+                SettingService.shareInstance.remoteVersion = response
 
                 guard SettingService.shareInstance.remoteVersion?.isNeed == true else { return }
                 guard
@@ -226,8 +218,8 @@ extension AppDelegate {
                 guard SettingService.shareInstance.remoteVersion?.isForce == true else { return }
                 self.showShouldUpdateVersionAlert()
                 UserDefaults.standard.set(Date(), forKey: "UpdateVersionAlertDate")
-            case .fail:
-                break
+            case .failure(let error):
+                UIApplication.shared.keyWindow?.rootViewController?.showErrorMessage(text: error?.message ?? "server error")
             }
         }
     }

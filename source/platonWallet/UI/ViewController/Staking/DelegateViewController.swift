@@ -123,11 +123,11 @@ class DelegateViewController: BaseViewController {
             let walletAddr = walletStyle?.currentWallet.address else { return }
 
         showLoadingHUD()
-        StakingService.sharedInstance.getCanDelegation(addr: walletAddr, nodeId: nodeId) { [weak self] (result, data) in
+        StakingService.getCanDelegation(addr: walletAddr, nodeId: nodeId) { [weak self] (result, data) in
                 self?.hideLoadingHUD()
                 switch result {
                 case .success:
-                    if var newData = data as? CanDelegation {
+                    if var newData = data {
                         newData.free = (BigUInt(newData.free ?? "0") ?? BigUInt.zero).convertBalanceDecimalPlaceToZero().description
                         newData.lock = (BigUInt(newData.lock ?? "0") ?? BigUInt.zero).convertBalanceDecimalPlaceToZero().description
 
@@ -140,7 +140,8 @@ class DelegateViewController: BaseViewController {
                         self?.canDelegation = newData
                     }
                     completion?()
-                case .fail:
+                case .failure(let error):
+                    self?.showErrorMessage(text: error?.message ?? "server error")
                     completion?()
                 }
         }
@@ -399,9 +400,9 @@ extension DelegateViewController {
                     guard let nonce = blockNonce else { return }
                     let nonceString = nonce.quantity.description
 
-                    let transactionData = TransactionQrcode(amount: self.currentAmount.description, chainId: web3.properties.chainId, from: walletObject.currentWallet.address, to: PlatonConfig.ContractAddress.stakingContractAddress, gasLimit: selectedGasLimit.description, gasPrice: selectedGasPrice.description, nonce: nonceString, typ: typ, nodeId: nodeId, nodeName: self.currentNode?.name, stakingBlockNum: nil, functionType: funcType.typeValue)
+                    let transactionData = TransactionQrcode(amount: self.currentAmount.description, chainId: web3.properties.chainId, from: walletObject.currentWallet.address, to: PlatonConfig.ContractAddress.stakingContractAddress, gasLimit: selectedGasLimit.description, gasPrice: selectedGasPrice.description, nonce: nonceString, typ: typ, nodeId: nodeId, nodeName: self.currentNode?.name, stakingBlockNum: nil, functionType: funcType.typeValue, rk: nil)
 
-                    let qrcodeData = QrcodeData(qrCodeType: 0, qrCodeData: [transactionData], chainId: web3.chainId, functionType: 1004, from: walletObject.currentWallet.address, nodeName: self.currentNode?.name, rn: nil, timestamp: Int(Date().timeIntervalSince1970 * 1000))
+                    let qrcodeData = QrcodeData(qrCodeType: 0, qrCodeData: [transactionData], chainId: web3.chainId, functionType: 1004, from: walletObject.currentWallet.address, nodeName: self.currentNode?.name, rn: nil, timestamp: Int(Date().timeIntervalSince1970 * 1000), rk: nil, si: nil, v: 1)
                     guard
                         let data = try? JSONEncoder().encode(qrcodeData),
                         let content = String(data: data, encoding: .utf8) else { return }
@@ -427,7 +428,7 @@ extension DelegateViewController {
             }
             self.showLoadingHUD()
 
-            StakingService.sharedInstance.createDelgate(typ: typ, nodeId: nodeId, amount: self.currentAmount, sender: currentAddress, privateKey: pri, gas: selectedGasLimit, gasPrice: selectedGasPrice, { [weak self] (result, data) in
+            TransactionService.service.createDelgate(typ: typ, nodeId: nodeId, amount: self.currentAmount, sender: currentAddress, privateKey: pri, gas: selectedGasLimit, gasPrice: selectedGasPrice, completion: { [weak self] (result, data) in
                 guard let self = self else { return }
                 self.hideLoadingHUD()
 
@@ -522,62 +523,82 @@ extension DelegateViewController {
         guard
             let signatureArr = qrcode.qrCodeData,
             let type = qrcode.functionType,
-            let from = qrcode.from else { return }
-        for (index, signature) in signatureArr.enumerated() {
+            let from = qrcode.from,
+            let sign = qrcode.si else { return }
+        for (_, signature) in signatureArr.enumerated() {
             let bytes = signature.hexToBytes()
             let rlpItem = try? RLPDecoder().decode(bytes)
 
             if
                 let signedTransactionRLP = rlpItem,
                 let signedTransaction = try? EthereumSignedTransaction(rlp: signedTransactionRLP) {
+
+                guard
+                    let to = signedTransaction.to?.rawAddress.toHexString().add0x() else { return }
+                let gasPrice = signedTransaction.gasPrice.quantity
+                let gasLimit = signedTransaction.gasLimit.quantity
+                let gasUsed = gasPrice.multiplied(by: gasLimit).description
+                let amount = self.currentAmount.description
+                let tx = Transaction()
+                tx.from = from
+                tx.to = to
+                tx.gasUsed = gasUsed
+                tx.createTime = Int(Date().timeIntervalSince1970 * 1000)
+                tx.txReceiptStatus = -1
+                tx.value = amount
+                tx.transactionType = Int(type)
+                tx.toType = .contract
+                tx.nodeName = self.currentNode?.name
+                tx.txType = .delegateCreate
+                tx.direction = .Sent
+                tx.nodeId = self.currentNode?.nodeId
+                tx.txhash = signedTransaction.hash?.add0x()
+
                 self.showLoadingHUD()
-                web3.platon.sendRawTransaction(transaction: signedTransaction) { (response) in
-                    self.hideLoadingHUD()
+                if (qrcode.v ?? 0) >= 1 {
+                    let signedTx = SignedTransaction(signedData: signature, remark: qrcode.rk ?? "")
                     guard
-                        let to = signedTransaction.to?.rawAddress.toHexString().add0x() else { return }
-                    let gasPrice = signedTransaction.gasPrice.quantity
-                    let gasLimit = signedTransaction.gasLimit.quantity
-                    let gasUsed = gasPrice.multiplied(by: gasLimit).description
-                    let amount = self.currentAmount.description
-                    let tx = Transaction()
-                    tx.from = from
-                    tx.to = to
-                    tx.gasUsed = gasUsed
-                    tx.createTime = Int(Date().timeIntervalSince1970 * 1000)
-                    tx.txReceiptStatus = -1
-                    tx.value = amount
-                    tx.transactionType = Int(type)
-                    tx.toType = .contract
-                    tx.nodeName = self.currentNode?.name
-                    tx.txType = .delegateCreate
-                    tx.direction = .Sent
-                    tx.nodeId = self.currentNode?.nodeId
-                    tx.txhash = signedTransaction.hash?.add0x()
-
-                    switch response.status {
-                    case .success:
-                        TransferPersistence.add(tx: tx)
-
-                        if index == signatureArr.count - 1 {
-                            self.doShowTransactionDetail(tx)
+                        let signedTxJsonString = signedTx.jsonString
+                        else { break }
+                    TransactionService.service.sendSignedTransactionToServer(data: signedTxJsonString, sign: sign) { (result, response) in
+                        switch result {
+                        case .success:
+                            self.sendTransactionSuccess(tx: tx)
+                        case .failure(let error):
+                            self.sendTransactionFailure(message: error?.message ?? "server error")
                         }
-                    case .failure(let err):
-                        switch err {
-                        case .reponseTimeout:
-                            TransferPersistence.add(tx: tx)
-                            if index == signatureArr.count - 1 {
-                                self.doShowTransactionDetail(tx)
+                    }
+                } else {
+                    web3.platon.sendRawTransaction(transaction: signedTransaction) { (response) in
+                        switch response.status {
+                        case .success:
+                            self.sendTransactionSuccess(tx: tx)
+                        case .failure(let err):
+                            switch err {
+                            case .reponseTimeout:
+                                self.sendTransactionSuccess(tx: tx)
+                            case .requestTimeout:
+                                self.sendTransactionFailure(message: Localized("RPC_Response_connectionTimeout"))
+                            default:
+                                self.sendTransactionFailure(message: err.message)
                             }
-                        case .requestTimeout:
-                            self.showErrorMessage(text: Localized("RPC_Response_connectionTimeout"), delay: 2.0)
-                        default:
-                            self.showErrorMessage(text: err.message, delay: 2.0)
-                        }
 
+                        }
                     }
                 }
             }
         }
+    }
+
+    func sendTransactionSuccess(tx: Transaction) {
+        hideLoadingHUD()
+        TransferPersistence.add(tx: tx)
+        doShowTransactionDetail(tx)
+    }
+
+    func sendTransactionFailure(message: String) {
+        hideLoadingHUD()
+        showErrorMessage(text: message)
     }
 
     func walletCellDidHandle(_ cell: WalletTableViewCell) {
@@ -720,8 +741,8 @@ extension DelegateViewController {
                 }
                 self?.remoteGas = gas
                 self?.tableView.reloadData()
-            case .fail(_, let errMsg):
-                self?.showErrorMessage(text: errMsg ?? "get gas api error", delay: 2.0)
+            case .failure(let error):
+                self?.showErrorMessage(text: error?.message ?? "get gas api error")
             }
         }
     }
