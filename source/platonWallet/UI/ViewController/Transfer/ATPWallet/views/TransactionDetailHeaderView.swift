@@ -150,6 +150,7 @@ class TransactionDetailHeaderView: UIView {
             make.top.equalTo(baseInfoView.snp.bottom).offset(16)
         }
 
+        remarkLabel.numberOfLines = 0
         remarkLabel.font = .systemFont(ofSize: 13)
         remarkLabel.textColor = .black
         remarkContainer.addSubview(remarkLabel)

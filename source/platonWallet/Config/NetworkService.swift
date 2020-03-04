@@ -14,13 +14,14 @@ enum NetworkError: Error {
     case `default`(Error)
     case jsonDecodeError(Error)
     case jsonEncodeError
-    case queryParameterError
-    case serverError
     case privateKeyError
     case signError
     case requestTimeoutError(Error)
     case responeTimeoutError(Error)
-    case serviceError(String?)
+    case serviceError(Int)
+    case knownTransactionError(Int)
+    case nonceError(Int)
+    case qrcodeExpiredError(Int)
 
     var code: Int {
         switch self {
@@ -30,10 +31,6 @@ enum NetworkError: Error {
             return -2
         case .jsonEncodeError:
             return -3
-        case .queryParameterError:
-            return -1
-        case .serverError:
-            return -100
         case .privateKeyError:
             return -101
         case .signError:
@@ -42,8 +39,14 @@ enum NetworkError: Error {
             return -103
         case .responeTimeoutError:
             return -104
-        case .serviceError:
-            return 1
+        case .serviceError(let c):
+            return c
+        case .knownTransactionError(let c):
+            return c
+        case .nonceError(let c):
+            return c
+        case .qrcodeExpiredError(let c):
+            return c
         }
     }
 
@@ -55,10 +58,6 @@ enum NetworkError: Error {
             return "json to model error"
         case .jsonEncodeError:
             return "model to json error"
-        case .queryParameterError:
-            return "query parameters error"
-        case .serverError:
-            return "server error"
         case .privateKeyError:
             return "privatekey error"
         case .signError:
@@ -67,8 +66,14 @@ enum NetworkError: Error {
             return Localized("RPC_Response_connectionTimeout")
         case .responeTimeoutError(let error):
             return error.localizedDescription
-        case .serviceError(let string):
-            return string ?? "service error"
+        case .serviceError(let c):
+            return Localized("network_error_default", arguments: c)
+        case .knownTransactionError:
+            return Localized("network_error_knowntransaction")
+        case .nonceError(let c):
+            return Localized("network_error_nonce_too_low", arguments: c)
+        case .qrcodeExpiredError:
+            return Localized("network_error_expired")
         }
     }
 }
@@ -116,7 +121,7 @@ class NetworkService {
 
         sessionManager.request(request).responseData { response in
             guard let statusCode = response.response?.statusCode, statusCode < 400 else {
-                completion?(.failure(NetworkError.serverError), nil)
+                completion?(.failure(NetworkError.serviceError(1)), nil)
                 return
             }
 
@@ -128,12 +133,15 @@ class NetworkService {
                     if result.code == 0 {
                         completion?(.success, result.data)
                     } else {
-                        if result.code == NetworkError.queryParameterError.code {
-                            completion?(.failure(NetworkError.queryParameterError), nil)
-                        } else if result.code == NetworkError.serverError.code {
-                            completion?(.failure(NetworkError.serverError), nil)
-                        } else {
-                            completion?(.failure(NetworkError.serviceError(result.errMsg)), nil)
+                        switch result.code {
+                        case 301:
+                            completion?(.failure(NetworkError.knownTransactionError(result.code)), nil)
+                        case 302:
+                            completion?(.failure(NetworkError.nonceError(result.code)), nil)
+                        case 303:
+                            completion?(.failure(NetworkError.qrcodeExpiredError(result.code)), nil)
+                        default:
+                            completion?(.failure(NetworkError.serviceError(result.code)), nil)
                         }
                     }
                 } catch let error {

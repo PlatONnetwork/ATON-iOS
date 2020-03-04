@@ -14,7 +14,7 @@ class RemarkTextView: UIView {
     public let lineView = UIView()
     public let tipsLabel = UILabel()
 
-    var maxTextCount: Int = 50
+    var maxTextCount: Int = 30
 
     var textFieldShouldReturnCompletion : ((_ textField: UITextField) -> (Bool))?
 
