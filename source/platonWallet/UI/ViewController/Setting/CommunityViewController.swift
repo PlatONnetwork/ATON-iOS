@@ -43,7 +43,7 @@ class CommunityViewController: BaseViewController {
             CommunityContactStyle(contact: Localized("community_contact_wechat_open") + "PlatON_network", qrcodeImage: UIImage(named: "PlatON_network.jpg"), action: .scan, isSelected: false)]
         )
         let item2 = CommunityCellStyle(avatar: "4.icon-Telegram", name: Localized("community_contact_telegram"), contacts: [
-            CommunityContactStyle(contact: "https://t.me/PlatONHK", qrcodeImage: nil, action: .link, isSelected: false)]
+            CommunityContactStyle(contact: "https://t.me/PlatONNetwork", qrcodeImage: nil, action: .link, isSelected: false)]
         )
         let item3 = CommunityCellStyle(avatar: "4.icon-GitHub", name: Localized("community_contact_gitHub"), contacts: [
             CommunityContactStyle(contact: "https://github.com/PlatONnetwork", qrcodeImage: nil, action: .link, isSelected: false)]

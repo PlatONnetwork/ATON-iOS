@@ -481,5 +481,4 @@ extension String {
             return addressName + "(\(self.addressForDisplayShort()))"
         }
     }
-
 }

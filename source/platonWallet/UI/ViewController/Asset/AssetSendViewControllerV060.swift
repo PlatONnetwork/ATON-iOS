@@ -623,6 +623,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
     func resetTextFieldAndButton() {
         walletAddressView.textField.text = ""
         amountView.textField.text = ""
+        remarkView.textField.text = ""
         _ = checkConfirmButtonAvailable()
     }
 
