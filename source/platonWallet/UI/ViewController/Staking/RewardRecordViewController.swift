@@ -80,7 +80,7 @@ extension RewardRecordViewController {
             return
         }
 
-        StakingService.sharedInstance.getRewardDelegate(adddresses: addresses, beginSequence: sequence, listSize: listSize, direction: direction.rawValue) { [weak self] (result, data) in
+        StakingService.getRewardDelegate(adddresses: addresses, beginSequence: sequence, listSize: listSize, direction: direction.rawValue) { [weak self] (result, response) in
             self?.tableView.mj_header.endRefreshing()
             self?.tableView.mj_footer.endRefreshing()
 
@@ -90,7 +90,7 @@ extension RewardRecordViewController {
                     self?.listData.removeAll()
                 }
 
-                if let rewards = data as? [RewardModel], rewards.count > 0 {
+                if let rewards = response, rewards.count > 0 {
                     self?.listData.append(contentsOf: rewards)
 
                     self?.tableView.mj_footer.resetNoMoreData()
@@ -98,9 +98,9 @@ extension RewardRecordViewController {
                     self?.tableView.mj_footer.endRefreshingWithNoMoreData()
                 }
                 self?.tableView.reloadData()
-            case .fail(_, let errMsg):
+            case .failure(let error):
                 self?.tableView.mj_footer.isHidden = true
-                self?.showErrorMessage(text: errMsg ?? "get data error")
+                self?.showErrorMessage(text: error?.message ?? "server error")
             }
         }
     }

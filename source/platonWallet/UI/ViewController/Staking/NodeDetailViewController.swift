@@ -196,17 +196,18 @@ class NodeDetailViewController: BaseViewController {
     private func fetchData() {
         guard let nId = nodeId else { return }
         showLoadingHUD()
-        StakingService.sharedInstance.getNodeDetail(nodeId: nId) { [weak self] (result, data) in
+        StakingService.getNodeDetail(nodeId: nId) { [weak self] (result, data) in
             self?.hideLoadingHUD()
             switch result {
             case .success:
-                if let newData = data as? NodeDetail {
+                if let newData = data {
                     self?.nodeDetail = newData
                     self?.setupData()
                     self?.noNetworkEmptyView.isHidden = true
                 }
-            case .fail:
+            case .failure(let error):
                 self?.noNetworkEmptyView.isHidden = false
+                self?.showErrorMessage(text: error?.message ?? "server error")
             }
         }
     }
@@ -227,6 +228,7 @@ class NodeDetailViewController: BaseViewController {
         guard let node = nodeDetail?.node else { return }
         let controller = DelegateViewController()
         controller.currentNode = node
+        controller.currentAddress = (AssetVCSharedData.sharedData.selectedWallet as? Wallet)?.address
         navigationController?.pushViewController(controller, animated: true)
     }
 

@@ -12,6 +12,7 @@ import Localize_Swift
 class CopyButton: UIButton {
 
     var attachTextView: UIView?
+    var copyValue: String?
 
     override init(frame: CGRect) {
         super.init(frame: .zero)
@@ -28,6 +29,13 @@ class CopyButton: UIButton {
     }
 
     @objc func onCopy() {
+        if let string = copyValue {
+            let pasteboard = UIPasteboard.general
+            pasteboard.string = string
+            UIApplication.shared.keyWindow?.rootViewController?.showMessage(text: Localized("ExportVC_copy_success"))
+            return
+        }
+
         if let label = attachTextView as? UILabel {
             if (label.text?.length)! > 0 {
                 let pasteboard = UIPasteboard.general

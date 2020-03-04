@@ -39,8 +39,7 @@ class AssetService : BaseService {
         getWalletBalances(addrs: addresses) { [weak self] (result, data) in
             switch result {
             case .success:
-                if let newData = data as? [Balance] {
-
+                if let newData = data {
                     for bal in newData {
                         let oriBalance = self?.balances.first(where: { $0.addr.lowercased() == bal.addr.lowercased() })
                         if oriBalance == nil {
@@ -59,8 +58,8 @@ class AssetService : BaseService {
                 } else {
                     completion?(PlatonCommonResult.success, nil)
                 }
-            case .fail:
-                completion?(PlatonCommonResult.fail(nil, nil), nil)
+            case .failure(let error):
+                completion?(PlatonCommonResult.fail(error?.code, error?.message), nil)
             }
         }
     }

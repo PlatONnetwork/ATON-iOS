@@ -8,12 +8,19 @@
 
 import Foundation
 import Alamofire
+import Localize_Swift
 
 enum NetworkError: Error {
     case `default`(Error)
     case jsonDecodeError(Error)
+    case jsonEncodeError
     case queryParameterError
     case serverError
+    case privateKeyError
+    case signError
+    case requestTimeoutError(Error)
+    case responeTimeoutError(Error)
+    case serviceError(String?)
 
     var code: Int {
         switch self {
@@ -21,10 +28,47 @@ enum NetworkError: Error {
             return error._code
         case .jsonDecodeError:
             return -2
+        case .jsonEncodeError:
+            return -3
         case .queryParameterError:
             return -1
         case .serverError:
             return -100
+        case .privateKeyError:
+            return -101
+        case .signError:
+            return -102
+        case .requestTimeoutError:
+            return -103
+        case .responeTimeoutError:
+            return -104
+        case .serviceError:
+            return 1
+        }
+    }
+
+    var message: String {
+        switch self {
+        case .default(let error):
+            return error.localizedDescription
+        case .jsonDecodeError:
+            return "json to model error"
+        case .jsonEncodeError:
+            return "model to json error"
+        case .queryParameterError:
+            return "query parameters error"
+        case .serverError:
+            return "server error"
+        case .privateKeyError:
+            return "privatekey error"
+        case .signError:
+            return "sign error"
+        case .requestTimeoutError:
+            return Localized("RPC_Response_connectionTimeout")
+        case .responeTimeoutError(let error):
+            return error.localizedDescription
+        case .serviceError(let string):
+            return string ?? "service error"
         }
     }
 }
@@ -58,7 +102,7 @@ class NetworkService {
         return newHeaders
     }
 
-    static func request<T: Codable>(_ url: String, parameters: Parameters? = nil, headers: HTTPHeaders? = nil, method: NetHTTPMethod = .Post, completion: NetworkCompletion<T>?) {
+    static func request<T: Decodable>(_ url: String, parameters: Parameters? = nil, headers: HTTPHeaders? = nil, method: NetHTTPMethod = .Post, completion: NetworkCompletion<T>?) {
         let requestUrl = SettingService.getCentralizationURL() + url
         var request = URLRequest(url: try! requestUrl.asURL())
 
@@ -71,23 +115,38 @@ class NetworkService {
         request.httpMethod = method.rawValue
 
         sessionManager.request(request).responseData { response in
+            guard let statusCode = response.response?.statusCode, statusCode < 400 else {
+                completion?(.failure(NetworkError.serverError), nil)
+                return
+            }
+
             switch response.result {
             case .success(let data):
                 do {
                     let decoder = JSONDecoder()
                     let result = try decoder.decode(JSONResponse<T>.self, from: data)
-                    if result.code == NetworkError.queryParameterError.code {
-                        completion?(.failure(NetworkError.queryParameterError), nil)
-                    } else if result.code == NetworkError.serverError.code {
-                        completion?(.failure(NetworkError.serverError), nil)
-                    } else {
+                    if result.code == 0 {
                         completion?(.success, result.data)
+                    } else {
+                        if result.code == NetworkError.queryParameterError.code {
+                            completion?(.failure(NetworkError.queryParameterError), nil)
+                        } else if result.code == NetworkError.serverError.code {
+                            completion?(.failure(NetworkError.serverError), nil)
+                        } else {
+                            completion?(.failure(NetworkError.serviceError(result.errMsg)), nil)
+                        }
                     }
                 } catch let error {
                     completion?(.failure(NetworkError.jsonDecodeError(error)), nil)
                 }
             case .failure(let error):
-                completion?(.failure(NetworkError.default(error)), nil)
+                if error._code == NSURLErrorTimedOut {
+                    completion?(.failure(NetworkError.responeTimeoutError(error)), nil)
+                } else if error._code == NSURLErrorCannotConnectToHost {
+                    completion?(.failure(NetworkError.requestTimeoutError(error)), nil)
+                } else {
+                    completion?(.failure(NetworkError.default(error)), nil)
+                }
             }
         }
     }

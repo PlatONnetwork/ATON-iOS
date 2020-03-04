@@ -121,18 +121,18 @@ class WithDrawViewController: BaseViewController {
             let node = currentNode,
             let nodeId = node.nodeId,
             let addr = currentAddress else { return }
-        StakingService.sharedInstance.getDelegationValue(addr: addr, nodeId: nodeId) { [weak self] (result, data) in
+        StakingService.getDelegationValue(addr: addr, nodeId: nodeId) { [weak self] (result, data) in
             self?.hideLoadingHUD()
 
             switch result {
             case .success:
-                if let newData = data as? Delegation {
+                if let newData = data {
                     self?.delegation = newData
                     self?.initBalanceStyle()
                 }
 
-            case .fail(_, let errMsg):
-                self?.showMessage(text: errMsg ?? "error")
+            case .failure(let error):
+                self?.showErrorMessage(text: error?.message ?? "server error")
             }
         }
     }
@@ -396,9 +396,9 @@ extension WithDrawViewController {
                     guard let nonce = blockNonce else { return }
                     let nonceString = nonce.quantity.description
 
-                    let transactionData = TransactionQrcode(amount: self.currentAmount.description, chainId: web3.properties.chainId, from: walletObject.currentWallet.address, to: PlatonConfig.ContractAddress.stakingContractAddress, gasLimit: selectedGasLimit.description, gasPrice: selectedGasPrice.description, nonce: nonceString, typ: nil, nodeId: nodeId, nodeName: self.currentNode?.name, stakingBlockNum: String(stakingBlockNum), functionType: funcType.typeValue)
+                    let transactionData = TransactionQrcode(amount: self.currentAmount.description, chainId: web3.properties.chainId, from: walletObject.currentWallet.address, to: PlatonConfig.ContractAddress.stakingContractAddress, gasLimit: selectedGasLimit.description, gasPrice: selectedGasPrice.description, nonce: nonceString, typ: nil, nodeId: nodeId, nodeName: self.currentNode?.name, stakingBlockNum: String(stakingBlockNum), functionType: funcType.typeValue, rk: nil)
 
-                    let qrcodeData = QrcodeData(qrCodeType: 0, qrCodeData: [transactionData], chainId: web3.chainId, functionType: 1005, from: walletObject.currentWallet.address, nodeName: self.currentNode?.name, rn: nil, timestamp: Int(Date().timeIntervalSince1970 * 1000))
+                    let qrcodeData = QrcodeData(qrCodeType: 0, qrCodeData: [transactionData], chainId: web3.chainId, functionType: 1005, from: walletObject.currentWallet.address, nodeName: self.currentNode?.name, rn: nil, timestamp: Int(Date().timeIntervalSince1970 * 1000), rk: nil, si: nil, v: 1)
                     guard
                         let data = try? JSONEncoder().encode(qrcodeData),
                         let content = String(data: data, encoding: .utf8) else { return }
@@ -423,7 +423,7 @@ extension WithDrawViewController {
             }
 
             self.showLoadingHUD()
-            StakingService.sharedInstance.withdrawDelegate(stakingBlockNum: stakingBlockNum, nodeId: nodeId, amount: self.currentAmount, sender: currentAddress, privateKey: pri, gas: selectedGasLimit, gasPrice: selectedGasPrice) { [weak self] (result, data) in
+            TransactionService.service.withdrawDelegate(stakingBlockNum: stakingBlockNum, nodeId: nodeId, amount: self.currentAmount, sender: currentAddress, privateKey: pri, gas: selectedGasLimit, gasPrice: selectedGasPrice) { [weak self] (result, data) in
                 self?.hideLoadingHUD()
                 switch result {
                 case .success:
@@ -511,19 +511,19 @@ extension WithDrawViewController {
     }
 
     func sendSignatureTransaction(qrcode: QrcodeData<[String]>) {
-
         guard
             let signatureArr = qrcode.qrCodeData,
             let type = qrcode.functionType,
-            let from = qrcode.from else { return }
-        for (index, signature) in signatureArr.enumerated() {
+            let from = qrcode.from,
+            let sign = qrcode.si else { return }
+        for (_, signature) in signatureArr.enumerated() {
             let bytes = signature.hexToBytes()
             let rlpItem = try? RLPDecoder().decode(bytes)
 
             if
                 let signedTransactionRLP = rlpItem,
                 let signedTransaction = try? EthereumSignedTransaction(rlp: signedTransactionRLP) {
-                self.showLoadingHUD()
+
                 guard
                     let to = signedTransaction.to?.rawAddress.toHexString().add0x() else { return }
                 let gasPrice = signedTransaction.gasPrice.quantity
@@ -545,33 +545,51 @@ extension WithDrawViewController {
                 tx.direction = .Receive
                 tx.nodeId = self.currentNode?.nodeId
                 tx.txhash = signedTransaction.hash?.add0x()
-                
-                web3.platon.sendRawTransaction(transaction: signedTransaction) { (response) in
-                    self.hideLoadingHUD()
-                    switch response.status {
-                    case .success:
-                        TransferPersistence.add(tx: tx)
 
-                        if index == signatureArr.count - 1 {
-                            self.doShowTransactionDetail(tx)
+                self.showLoadingHUD()
+                if (qrcode.v ?? 0) >= 1 {
+                    let signedTx = SignedTransaction(signedData: signature, remark: qrcode.rk ?? "")
+                    guard
+                        let signedTxJsonString = signedTx.jsonString
+                        else { break }
+                    TransactionService.service.sendSignedTransactionToServer(data: signedTxJsonString, sign: sign) { (result, response) in
+                        switch result {
+                        case .success:
+                            self.sendTransactionSuccess(tx: tx)
+                        case .failure(let error):
+                            self.sendTransactionFailure(message: error?.message ?? "server error")
                         }
-                    case .failure(let err):
-                        switch err {
-                        case .reponseTimeout:
-                            TransferPersistence.add(tx: tx)
-
-                            if index == signatureArr.count - 1 {
-                                self.doShowTransactionDetail(tx)
+                    }
+                } else {
+                    web3.platon.sendRawTransaction(transaction: signedTransaction) { (response) in
+                        switch response.status {
+                        case .success:
+                            self.sendTransactionSuccess(tx: tx)
+                        case .failure(let err):
+                            switch err {
+                            case .reponseTimeout:
+                                self.sendTransactionSuccess(tx: tx)
+                            case .requestTimeout:
+                                self.sendTransactionFailure(message: Localized("RPC_Response_connectionTimeout"))
+                            default:
+                                self.sendTransactionFailure(message: err.message)
                             }
-                        case .requestTimeout:
-                            self.showErrorMessage(text: Localized("RPC_Response_connectionTimeout"), delay: 2.0)
-                        default:
-                            self.showErrorMessage(text: err.message, delay: 2.0)
                         }
                     }
                 }
             }
         }
+    }
+
+    func sendTransactionSuccess(tx: Transaction) {
+        hideLoadingHUD()
+        TransferPersistence.add(tx: tx)
+        doShowTransactionDetail(tx)
+    }
+
+    func sendTransactionFailure(message: String) {
+        hideLoadingHUD()
+        showErrorMessage(text: message)
     }
 
     func walletCellDidHandle(_ cell: WalletTableViewCell) {

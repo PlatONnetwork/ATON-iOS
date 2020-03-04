@@ -27,7 +27,7 @@
 
 ///wallet common input illegal tips
 "wallet_nameInput_empty_tips" = "钱包名称不能为空！";
-"wallet_nameInput_lengthIllegal_tips" = "请输入1~12位钱包名称！";
+"wallet_nameInput_lengthIllegal_tips" = "请输入1~20位钱包名称！";
 "wallet_pswInput_empty_tips" = "密码不能为空！";
 "wallet_pswInput_lengthIllegal_tips" = "密码长度至少6个字符！";
 "wallet_pswConfirmInput_empty_tips" = "确认密码不能为空！";
@@ -992,3 +992,5 @@
 
 "pop_selection_title_withdraw" = "选择赎回项";
 "pop_selection_title_delegate" = "选择可用的LAT";
+
+"transaction_detail_note" = "备注：";

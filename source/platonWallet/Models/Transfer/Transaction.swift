@@ -203,7 +203,7 @@ class Transaction : Object, Decodable {
 
     @objc dynamic var gasUsed : String? = ""
 
-    @objc dynamic var memo : String? = ""
+    @objc dynamic var memo : String? = "" // 备注
 
     @objc dynamic var input : String? = ""
 
@@ -303,6 +303,7 @@ class Transaction : Object, Decodable {
         case version
         case reportType
         case totalReward
+        case memo = "remark"
     }
 
     required convenience init(from decoder: Decoder) throws {
@@ -346,6 +347,7 @@ class Transaction : Object, Decodable {
         version = try? container.decode(String.self, forKey: .version)
         reportType = try? container.decode(ReportType.self, forKey: .reportType)
         totalReward = try? container.decode(String.self, forKey: .totalReward)
+        memo = try? container.decode(String.self, forKey: .memo)
     }
 }
 

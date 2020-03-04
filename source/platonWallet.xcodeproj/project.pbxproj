@@ -198,7 +198,6 @@
 		811886D923B7590C00CAE5BA /* DelegateRecordMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D7E26C22E85B4C0069CDED /* DelegateRecordMainViewController.swift */; };
 		811886DA23B7590C00CAE5BA /* NodeSettingViewControllerV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1F87B822014FD70002BE67 /* NodeSettingViewControllerV2.swift */; };
 		811886DB23B7590C00CAE5BA /* AddWalletMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A25B9B4218850B600B9433A /* AddWalletMenuViewController.swift */; };
-		811886DC23B7590C00CAE5BA /* TransactionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CB8ADC228EA99B009E8AA0 /* TransactionResponse.swift */; };
 		811886DD23B7590C00CAE5BA /* DropDownVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813C3411223A327300DE92F1 /* DropDownVIew.swift */; };
 		811886DE23B7590C00CAE5BA /* MainImportWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ADE4516217F0801006F1C81 /* MainImportWalletViewController.swift */; };
 		811886DF23B7590C00CAE5BA /* TransferPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FCCD062179E9F10052FC29 /* TransferPersistence.swift */; };
@@ -403,6 +402,9 @@
 		813191482235FAC1002D4A72 /* TSLViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813191472235FAC0002D4A72 /* TSLViewController.swift */; };
 		8131914F2235FB48002D4A72 /* TSLXIBViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8131914D2235FB48002D4A72 /* TSLXIBViewController.swift */; };
 		813191502235FB48002D4A72 /* TSLXIBViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8131914E2235FB48002D4A72 /* TSLXIBViewController.xib */; };
+		8136E148240D606C000C35F3 /* SignedTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8136E147240D606B000C35F3 /* SignedTransaction.swift */; };
+		8136E149240D606D000C35F3 /* SignedTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8136E147240D606B000C35F3 /* SignedTransaction.swift */; };
+		8136E14A240D606D000C35F3 /* SignedTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8136E147240D606B000C35F3 /* SignedTransaction.swift */; };
 		813A005A23692F33001CEE32 /* RemoteConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813A005923692F33001CEE32 /* RemoteConfig.swift */; };
 		813A005B23692F33001CEE32 /* RemoteConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813A005923692F33001CEE32 /* RemoteConfig.swift */; };
 		813A005D23692F76001CEE32 /* RemoteService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813A005C23692F76001CEE32 /* RemoteService.swift */; };
@@ -651,7 +653,6 @@
 		81B58A0F235DA1FC00816B4E /* DelegateRecordMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D7E26C22E85B4C0069CDED /* DelegateRecordMainViewController.swift */; };
 		81B58A10235DA1FC00816B4E /* NodeSettingViewControllerV2.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A1F87B822014FD70002BE67 /* NodeSettingViewControllerV2.swift */; };
 		81B58A11235DA1FC00816B4E /* AddWalletMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A25B9B4218850B600B9433A /* AddWalletMenuViewController.swift */; };
-		81B58A14235DA1FC00816B4E /* TransactionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CB8ADC228EA99B009E8AA0 /* TransactionResponse.swift */; };
 		81B58A15235DA1FC00816B4E /* DropDownVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813C3411223A327300DE92F1 /* DropDownVIew.swift */; };
 		81B58A16235DA1FC00816B4E /* MainImportWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ADE4516217F0801006F1C81 /* MainImportWalletViewController.swift */; };
 		81B58A17235DA1FC00816B4E /* TransferPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FCCD062179E9F10052FC29 /* TransferPersistence.swift */; };
@@ -789,7 +790,6 @@
 		81C98FC822A5279E004B1668 /* NSBundle+Hook_MJ.m in Sources */ = {isa = PBXBuildFile; fileRef = 81C98FC722A5279E004B1668 /* NSBundle+Hook_MJ.m */; };
 		81C98FCB22A529E7004B1668 /* MJRefreshAutoStateFooter+Localize.m in Sources */ = {isa = PBXBuildFile; fileRef = 81C98FCA22A529E7004B1668 /* MJRefreshAutoStateFooter+Localize.m */; };
 		81CB8ADB228A9564009E8AA0 /* TransactionService+Centralization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CB8ADA228A9564009E8AA0 /* TransactionService+Centralization.swift */; };
-		81CB8ADD228EA99C009E8AA0 /* TransactionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CB8ADC228EA99B009E8AA0 /* TransactionResponse.swift */; };
 		81D16B5A21832AE200A283AF /* QRScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D16B5921832AE200A283AF /* QRScannerViewController.swift */; };
 		81D7E24222E7F5610069CDED /* PTSButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81D7E24022E7F5610069CDED /* PTSButtonCell.swift */; };
 		81D7E24322E7F5610069CDED /* PTSButtonCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 81D7E24122E7F5610069CDED /* PTSButtonCell.xib */; };
@@ -1122,6 +1122,7 @@
 		813191472235FAC0002D4A72 /* TSLViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TSLViewController.swift; sourceTree = "<group>"; };
 		8131914D2235FB48002D4A72 /* TSLXIBViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TSLXIBViewController.swift; sourceTree = "<group>"; };
 		8131914E2235FB48002D4A72 /* TSLXIBViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TSLXIBViewController.xib; sourceTree = "<group>"; };
+		8136E147240D606B000C35F3 /* SignedTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignedTransaction.swift; sourceTree = "<group>"; };
 		813A005923692F33001CEE32 /* RemoteConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfig.swift; sourceTree = "<group>"; };
 		813A005C23692F76001CEE32 /* RemoteService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteService.swift; sourceTree = "<group>"; };
 		813C340F223A03A800DE92F1 /* Wallet+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Wallet+extension.swift"; sourceTree = "<group>"; };
@@ -1225,7 +1226,6 @@
 		81C98FC922A529E7004B1668 /* MJRefreshAutoStateFooter+Localize.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MJRefreshAutoStateFooter+Localize.h"; sourceTree = "<group>"; };
 		81C98FCA22A529E7004B1668 /* MJRefreshAutoStateFooter+Localize.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "MJRefreshAutoStateFooter+Localize.m"; sourceTree = "<group>"; };
 		81CB8ADA228A9564009E8AA0 /* TransactionService+Centralization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TransactionService+Centralization.swift"; sourceTree = "<group>"; };
-		81CB8ADC228EA99B009E8AA0 /* TransactionResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionResponse.swift; sourceTree = "<group>"; };
 		81D16B5921832AE200A283AF /* QRScannerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRScannerViewController.swift; sourceTree = "<group>"; };
 		81D7E24022E7F5610069CDED /* PTSButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PTSButtonCell.swift; sourceTree = "<group>"; };
 		81D7E24122E7F5610069CDED /* PTSButtonCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PTSButtonCell.xib; sourceTree = "<group>"; };
@@ -2069,9 +2069,9 @@
 			isa = PBXGroup;
 			children = (
 				81FCCCFD2179C5FB0052FC29 /* Transaction.swift */,
+				8136E147240D606B000C35F3 /* SignedTransaction.swift */,
 				81EEE6F12397C14F001AE249 /* TwoHourTransaction.swift */,
 				81ACB9CD2302A59300BB460B /* Transaction+Extension.swift */,
-				81CB8ADC228EA99B009E8AA0 /* TransactionResponse.swift */,
 				8141E673233A1C7D001A9351 /* TransactionQrcode.swift */,
 				81F1F07C23C84D02000D687C /* RemoteGas.swift */,
 			);
@@ -3224,6 +3224,7 @@
 				81F1F00623C30FA9000D687C /* RewardClaimComfirmView.swift in Sources */,
 				8118866E23B7590C00CAE5BA /* PopupDialog+Keyboard.swift in Sources */,
 				8118866F23B7590C00CAE5BA /* UIViewController+Extenstions.swift in Sources */,
+				8136E14A240D606D000C35F3 /* SignedTransaction.swift in Sources */,
 				81F1F07F23C84D02000D687C /* RemoteGas.swift in Sources */,
 				8118867023B7590C00CAE5BA /* NodePersistence.swift in Sources */,
 				8118867123B7590C00CAE5BA /* PTSButtonBarView.swift in Sources */,
@@ -3336,7 +3337,6 @@
 				811886DA23B7590C00CAE5BA /* NodeSettingViewControllerV2.swift in Sources */,
 				81FF583823EAFAF80064A471 /* QRCodeRLPDecoder.swift in Sources */,
 				811886DB23B7590C00CAE5BA /* AddWalletMenuViewController.swift in Sources */,
-				811886DC23B7590C00CAE5BA /* TransactionResponse.swift in Sources */,
 				811886DD23B7590C00CAE5BA /* DropDownVIew.swift in Sources */,
 				811886DE23B7590C00CAE5BA /* MainImportWalletViewController.swift in Sources */,
 				811886DF23B7590C00CAE5BA /* TransferPersistence.swift in Sources */,
@@ -3503,6 +3503,7 @@
 				81F1F00523C30FA9000D687C /* RewardClaimComfirmView.swift in Sources */,
 				81B589A4235DA1FC00816B4E /* PopupDialog+Keyboard.swift in Sources */,
 				81B589A5235DA1FC00816B4E /* UIViewController+Extenstions.swift in Sources */,
+				8136E149240D606D000C35F3 /* SignedTransaction.swift in Sources */,
 				81F1F07E23C84D02000D687C /* RemoteGas.swift in Sources */,
 				81B589A6235DA1FC00816B4E /* NodePersistence.swift in Sources */,
 				81B589A7235DA1FC00816B4E /* PTSButtonBarView.swift in Sources */,
@@ -3615,7 +3616,6 @@
 				81B58A10235DA1FC00816B4E /* NodeSettingViewControllerV2.swift in Sources */,
 				81FF583723EAFAF80064A471 /* QRCodeRLPDecoder.swift in Sources */,
 				81B58A11235DA1FC00816B4E /* AddWalletMenuViewController.swift in Sources */,
-				81B58A14235DA1FC00816B4E /* TransactionResponse.swift in Sources */,
 				81B58A15235DA1FC00816B4E /* DropDownVIew.swift in Sources */,
 				81B58A16235DA1FC00816B4E /* MainImportWalletViewController.swift in Sources */,
 				81B58A17235DA1FC00816B4E /* TransferPersistence.swift in Sources */,
@@ -3782,6 +3782,7 @@
 				81F1F00423C30FA9000D687C /* RewardClaimComfirmView.swift in Sources */,
 				81E64A59230400F3000F2E7C /* NodePersistence.swift in Sources */,
 				81D7E24922E7F6270069CDED /* PTSButtonBarView.swift in Sources */,
+				8136E148240D606C000C35F3 /* SignedTransaction.swift in Sources */,
 				81F1F07D23C84D02000D687C /* RemoteGas.swift in Sources */,
 				81D7E26B22E85A370069CDED /* DelegateRecordViewController.swift in Sources */,
 				9ADE4523218009DB006F1C81 /* PPasswordTextField.swift in Sources */,
@@ -3890,7 +3891,6 @@
 				81D7E26D22E85B4C0069CDED /* DelegateRecordMainViewController.swift in Sources */,
 				9A1F87B922014FD70002BE67 /* NodeSettingViewControllerV2.swift in Sources */,
 				9A25B9B6218850B600B9433A /* AddWalletMenuViewController.swift in Sources */,
-				81CB8ADD228EA99C009E8AA0 /* TransactionResponse.swift in Sources */,
 				813C3412223A327300DE92F1 /* DropDownVIew.swift in Sources */,
 				81FF583623EAFAF70064A471 /* QRCodeRLPDecoder.swift in Sources */,
 				9ADE4517217F0801006F1C81 /* MainImportWalletViewController.swift in Sources */,

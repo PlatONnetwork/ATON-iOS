@@ -203,7 +203,7 @@ extension AssetTransactionViewControllerV060 {
             switch result {
             case .success:
                 // 返回的交易数据条数为0，则显示无加载更多
-                guard let remoteTransactions = response as? [Transaction], remoteTransactions.count > 0 else {
+                guard let remoteTransactions = response, remoteTransactions.count > 0 else {
                     self.tableView.mj_footer.isHidden = (self.dataSource[selectedAddress]?.count ?? 0 < self.listSize)
                     return
                 }
@@ -242,7 +242,7 @@ extension AssetTransactionViewControllerV060 {
                 self.tableView.mj_footer.isHidden = (self.dataSource[selectedAddress]?.count ?? 0 < self.listSize)
                 self.tableView.reloadData()
                 completion?()
-            case .fail:
+            case .failure(let error):
                 completion?()
             }
         }

@@ -354,6 +354,15 @@ extension String {
         return self + " LAT"
     }
 
+    func front8Back10Fordisplay() -> String {
+        guard self.count >= 20 else { return self }
+        if !self.hasPrefix("0x") {
+            return "0x" + self.prefix(8) + "......" + self.suffix(10)
+        } else {
+            return self.prefix(10) + "......" + self.suffix(10)
+        }
+    }
+
     func nodeIdForDisplayShort() -> String {
         if !self.hasPrefix("0x") {
             return "0x" + self.substr(0, 2)! + "...." + self.substr(124, 4)!

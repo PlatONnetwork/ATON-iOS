@@ -78,8 +78,7 @@ class TransactionService : BaseService {
         getTransactionStatus(hashes: hashes) { (result, data) in
             switch result {
             case .success:
-                guard let newData = data as? [TransactionsStatusByHash], newData.count > 0 else { return }
-
+                guard let newData = data, newData.count > 0 else { return }
                 for tx in newData {
                     guard let localTx = txs.first(where: { $0.txhash?.lowercased() == tx.hash?.lowercased() }) else { break }
                     guard let txhash = tx.hash, var status = tx.txReceiptStatus else { break }
@@ -109,13 +108,13 @@ class TransactionService : BaseService {
                          NotificationCenter.default.post(name: Notification.Name.ATON.DidUpdateTransactionByHash, object: notificateTx)
                     })
                 }
-            case .fail:
-                break
+            case .failure:
+                do {}
             }
         }
     }
 
-    func sendAPTTransfer(from : String,to : String, amount : String, InputGasPrice : BigUInt, estimatedGas : String, memo : String, pri : String,completion : PlatonCommonCompletion?) -> Transaction {
+    func sendAPTTransfer(from: String, to: String, amount: String, InputGasPrice: BigUInt, estimatedGas: String, remark: String? = nil, pri : String, completion : PlatonCommonCompletion?) -> Transaction {
         var completion = completion
         let ptx = Transaction()
         var walletAddr : EthereumAddress?
@@ -139,7 +138,6 @@ class TransactionService : BaseService {
             web3.platon.getTransactionCount(address: walletAddr!, block: EthereumQuantityTag(tagType: .latest)) { resp in
 
                 switch resp.status {
-
                 case .success:
                     nonce = resp.result
                     semaphore.signal()
@@ -173,41 +171,243 @@ class TransactionService : BaseService {
             let chainID = EthereumQuantity(quantity: BigUInt(web3.chainId)!)
             let signedTx = try? tx.sign(with: pk!, chainId: chainID) as EthereumSignedTransaction
 
-            web3.platon.sendRawTransaction(transaction: signedTx!, response: { (resp) in
-                ptx.txhash = signedTx?.hash?.add0x()
-                ptx.createTime = Date().millisecondsSince1970
-                ptx.value = String(value.quantity)
-                ptx.gasUsed = (gasPrice.quantity * txgas.quantity).description
-                ptx.gas = String(txgas.quantity)
-                ptx.memo = memo
-                ptx.transactionType = 0
-                ptx.direction = .Sent
+            guard let signedData = signedTx?.rlp().ethereumValue().string else {
+                self.failCompletionOnMainThread(code: -1, errorMsg: "sign error", completion: &completion)
+                return
+            }
 
-                let thTx = TwoHourTransaction()
-                thTx.createTime = Date().millisecondsSince1970
-                thTx.to = toAddr?.hex(eip55: true).lowercased()
-                thTx.from = walletAddr?.hex(eip55: true).lowercased()
-                thTx.value = String(value.quantity)
-
-                switch resp.status {
+            let signedTxWithRemark = SignedTransaction(signedData: signedData, remark: remark)
+            self.sendRawTransaction(data: signedTxWithRemark, privateKey: pri, completion: { (result, response) in
+                switch result {
                 case .success:
+                    ptx.txhash = signedTx?.hash?.add0x()
+                    ptx.createTime = Date().millisecondsSince1970
+                    ptx.value = String(value.quantity)
+                    ptx.gasUsed = (gasPrice.quantity * txgas.quantity).description
+                    ptx.gas = String(txgas.quantity)
+                    ptx.memo = remark
+                    ptx.transactionType = 0
+                    ptx.direction = .Sent
+                    ptx.memo = remark
+
+                    let thTx = TwoHourTransaction()
+                    thTx.createTime = Date().millisecondsSince1970
+                    thTx.to = toAddr?.hex(eip55: true).lowercased()
+                    thTx.from = walletAddr?.hex(eip55: true).lowercased()
+                    thTx.value = String(value.quantity)
+
                     TransferPersistence.add(tx: ptx)
                     TwoHourTransactionPersistence.add(tx: thTx)
                     self.successCompletionOnMain(obj: nil, completion: &completion)
-                case .failure(let err):
-                    switch err {
-                    case .reponseTimeout:
-                        TransferPersistence.add(tx: ptx)
-                        TwoHourTransactionPersistence.add(tx: thTx)
-                        self.successCompletionOnMain(obj: nil, completion: &completion)
-                    case .requestTimeout:
-                        self.failCompletionOnMainThread(code: err.code, errorMsg: err.message, completion: &completion)
-                    default:
-                        self.failCompletionOnMainThread(code: err.code, errorMsg: err.message, completion: &completion)
-                    }
+                case .failure(let error):
+                    guard let err = error else { return }
+                    self.failCompletionOnMainThread(code: err.code, errorMsg: err.message, completion: &completion)
                 }
             })
         }
         return ptx
+    }
+
+    func createDelgate(typ: UInt16,
+                       nodeId: String,
+                       amount: BigUInt,
+                       sender: String,
+                       privateKey: String,
+                       gas: BigUInt,
+                       gasPrice: BigUInt,
+                       completion: PlatonCommonCompletion?) {
+
+        let semaphore = DispatchSemaphore(value: 0)
+        let queue = DispatchQueue(label: "sendAPTTransfer")
+
+        queue.async {
+            var nonce: EthereumQuantity?
+            web3.platon.platonGetNonce(sender: sender) { (result, blockNonce) in
+                switch result {
+                case .success:
+                    nonce = blockNonce
+                    semaphore.signal()
+                case .fail(_, let message):
+                    completion?(PlatonCommonResult.fail(-1, message), nil)
+                    semaphore.signal()
+                }
+            }
+
+            if semaphore.wait(timeout: .now() + DefaultRPCTimeOut) == .timedOut {
+                completion?(PlatonCommonResult.fail(-1, "nonce timeout"), nil)
+                return
+            }
+
+            guard let nonceQuantity = nonce else {
+                completion?(PlatonCommonResult.fail(-1, "nonce empty"), nil)
+                return
+            }
+
+            let funcType = FuncType.createDelegate(typ: typ, nodeId: nodeId, amount: amount)
+            let txSigned = web3.platon.platonSignTransaction(to: PlatonConfig.ContractAddress.stakingContractAddress, nonce: nonceQuantity, data: funcType.rlpData.bytes, sender: sender, privateKey: privateKey, gasPrice: gasPrice, gas: gas, value: nil, estimated: true)
+
+            guard let signedData = txSigned?.rlp().ethereumValue().string else {
+                completion?(PlatonCommonResult.fail(-1, "sign error"), nil)
+                return
+            }
+
+            let signedTxWithRemark = SignedTransaction(signedData: signedData, remark: "")
+            self.sendRawTransaction(data: signedTxWithRemark, privateKey: privateKey, completion: { (result, response) in
+                switch result {
+                case .success:
+                    let transaction = Transaction()
+                    transaction.txhash = txSigned?.hash
+                    transaction.from = sender
+                    transaction.txType = .delegateCreate
+                    transaction.toType = .contract
+                    transaction.txReceiptStatus = -1
+                    transaction.value = amount.description
+                    transaction.nodeId = nodeId
+                    transaction.direction = .Sent
+                    transaction.createTime = Int(Date().timeIntervalSince1970 * 1000)
+                    transaction.to = PlatonConfig.ContractAddress.stakingContractAddress
+                    DispatchQueue.main.async {
+                        completion?(PlatonCommonResult.success, transaction as AnyObject)
+                    }
+                case .failure(let error):
+                    DispatchQueue.main.async {
+                        completion?(PlatonCommonResult.fail(error?.code, error?.message), nil)
+                    }
+                }
+            })
+        }
+    }
+
+    func withdrawDelegate(stakingBlockNum: UInt64,
+                          nodeId: String,
+                          amount: BigUInt,
+                          sender: String,
+                          privateKey: String,
+                          gas: BigUInt?,
+                          gasPrice: BigUInt?,
+                          _ completion: PlatonCommonCompletion?) {
+        let semaphore = DispatchSemaphore(value: 0)
+        let queue = DispatchQueue(label: "sendAPTTransfer")
+
+        queue.async {
+            var nonce: EthereumQuantity?
+            web3.platon.platonGetNonce(sender: sender) { (result, blockNonce) in
+                switch result {
+                case .success:
+                    nonce = blockNonce
+                    semaphore.signal()
+                case .fail(_, let message):
+                    completion?(PlatonCommonResult.fail(-1, message), nil)
+                    semaphore.signal()
+                }
+            }
+
+            if semaphore.wait(timeout: .now() + DefaultRPCTimeOut) == .timedOut {
+                completion?(PlatonCommonResult.fail(-1, "nonce timeout"), nil)
+                return
+            }
+
+            guard let nonceQuantity = nonce else {
+                completion?(PlatonCommonResult.fail(-1, "nonce empty"), nil)
+                return
+            }
+
+            let funcType = FuncType.withdrewDelegate(stakingBlockNum: stakingBlockNum, nodeId: nodeId, amount: amount)
+            let txSigned = web3.platon.platonSignTransaction(to: PlatonConfig.ContractAddress.stakingContractAddress, nonce: nonceQuantity, data: funcType.rlpData.bytes, sender: sender, privateKey: privateKey, gasPrice: gasPrice, gas: gas, value: nil, estimated: true)
+
+            guard let signedData = txSigned?.rlp().ethereumValue().string else {
+                completion?(PlatonCommonResult.fail(-1, "sign error"), nil)
+                return
+            }
+
+            let signedTxWithRemark = SignedTransaction(signedData: signedData, remark: "")
+            self.sendRawTransaction(data: signedTxWithRemark, privateKey: privateKey, completion: { (result, response) in
+                switch result {
+                case .success:
+                    let transaction = Transaction()
+                    transaction.txhash = txSigned?.hash
+                    transaction.from = sender
+                    transaction.txType = .delegateWithdraw
+                    transaction.toType = .contract
+                    transaction.txReceiptStatus = -1
+                    transaction.value = amount.description
+                    transaction.unDelegation = amount.description
+                    transaction.nodeId = nodeId
+                    transaction.createTime = Int(Date().timeIntervalSince1970 * 1000)
+                    transaction.direction = .Receive
+                    transaction.to = PlatonConfig.ContractAddress.stakingContractAddress
+                    DispatchQueue.main.async {
+                        completion?(PlatonCommonResult.success, transaction as AnyObject)
+                    }
+                case .failure(let error):
+                    DispatchQueue.main.async {
+                        completion?(PlatonCommonResult.fail(error?.code, error?.message), nil)
+                    }
+                }
+            })
+        }
+    }
+
+    func rewardClaim(from: String, privateKey: String, gas: RemoteGas, completion: CommonCompletion<Transaction>?) {
+        let semaphore = DispatchSemaphore(value: 0)
+        let queue = DispatchQueue(label: "sendAPTTransfer")
+
+        queue.async {
+            var nonce: EthereumQuantity?
+            web3.platon.platonGetNonce(sender: from) { (result, blockNonce) in
+                switch result {
+                case .success:
+                    nonce = blockNonce
+                    semaphore.signal()
+                case .fail(_, let message):
+                    completion?(PlatonCommonResult.fail(-1, message), nil)
+                    semaphore.signal()
+                }
+            }
+
+            if semaphore.wait(timeout: .now() + DefaultRPCTimeOut) == .timedOut {
+                completion?(PlatonCommonResult.fail(-1, "nonce timeout"), nil)
+                return
+            }
+
+            guard let nonceQuantity = nonce else {
+                completion?(PlatonCommonResult.fail(-1, "nonce empty"), nil)
+                return
+            }
+
+            let funcType = FuncType.withdrawDelegateReward
+            let txSigned = web3.platon.platonSignTransaction(to: PlatonConfig.ContractAddress.rewardContractAddress, nonce: nonceQuantity, data: funcType.rlpData.bytes, sender: from, privateKey: privateKey, gasPrice: gas.gasPriceBInt, gas: gas.gasLimitBInt, value: nil, estimated: true)
+
+            guard let signedData = txSigned?.rlp().ethereumValue().string else {
+                completion?(PlatonCommonResult.fail(-1, "sign error"), nil)
+                return
+            }
+
+            let signedTxWithRemark = SignedTransaction(signedData: signedData, remark: "")
+            self.sendRawTransaction(data: signedTxWithRemark, privateKey: privateKey, completion: { (result, response) in
+                switch result {
+                case .success:
+                    let transaction = Transaction()
+                    transaction.txhash = txSigned?.hash
+                    transaction.from = from
+                    transaction.txType = .claimReward
+                    transaction.toType = .contract
+                    transaction.txReceiptStatus = -1
+                    transaction.createTime = Int(Date().timeIntervalSince1970 * 1000)
+                    transaction.direction = .Receive
+                    transaction.to = PlatonConfig.ContractAddress.rewardContractAddress
+                    transaction.gasPrice = gas.gasPrice
+                    transaction.gas = gas.gasLimit
+                    transaction.gasUsed = gas.gasUsed
+                    DispatchQueue.main.async {
+                        completion?(PlatonCommonResult.success, transaction)
+                    }
+                case .failure(let error):
+                    DispatchQueue.main.async {
+                        completion?(PlatonCommonResult.fail(error?.code, error?.message), nil)
+                    }
+                }
+            })
+        }
     }
 }

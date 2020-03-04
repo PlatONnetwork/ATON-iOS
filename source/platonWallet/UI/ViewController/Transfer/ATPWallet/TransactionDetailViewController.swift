@@ -201,7 +201,8 @@ extension TransactionDetailViewController: UITableViewDelegate, UITableViewDataS
             let cell = tableView.dequeueReusableCell(withIdentifier: "TransactionDetailHashTableViewCell") as! TransactionDetailHashTableViewCell
             cell.selectionStyle = .none
             cell.titleLabel.text = listData[indexPath.row].title
-            cell.valueLabel.text = listData[indexPath.row].value
+            cell.valueLabel.text = (listData[indexPath.row].value.isHexString() && listData[indexPath.row].value.hexToBytes().count >= 20) ? listData[indexPath.row].value.front8Back10Fordisplay() : listData[indexPath.row].value
+            cell.button.copyValue = listData[indexPath.row].value
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "TransactionDetailTableViewCell") as! TransactionDetailTableViewCell

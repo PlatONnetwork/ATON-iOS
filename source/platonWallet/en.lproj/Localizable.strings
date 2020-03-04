@@ -27,7 +27,7 @@
 
 ///wallet common input illegal tips
 "wallet_nameInput_empty_tips" = "Name can't be empty !";
-"wallet_nameInput_lengthIllegal_tips" = "Name's length should be 1~12 characters";
+"wallet_nameInput_lengthIllegal_tips" = "Name's length should be 1~20 characters";
 "wallet_pswInput_empty_tips" = "Confirm password can't be empty";
 "wallet_pswInput_lengthIllegal_tips" = "6 characters at least";
 "wallet_pswConfirmInput_empty_tips" = "Confirm password can't be empty";
@@ -981,3 +981,5 @@
 
 "pop_selection_title_withdraw" = "Select Delegations";
 "pop_selection_title_delegate" = "Select Delegations";
+
+"transaction_detail_note" = "Note: ";
