@@ -46,20 +46,20 @@ PODS:
   - SwipeCellKit (2.5.4)
   - TrezorCrypto (0.0.9)
   - "UITextView+Placeholder (1.2.1)"
-  - UMCAnalytics (6.0.3):
+  - UMCAnalytics (6.0.5):
     - UMCCommon
-  - UMCCommon (2.0.1)
+  - UMCCommon (2.1.1)
   - UMCCommonLog (1.0.0)
   - UMCSecurityPlugins (1.0.6)
-  - UMCShare/Core (6.9.5):
+  - UMCShare/Core (6.9.6):
     - UMCCommon
-  - UMCShare/Social/Facebook (6.9.5):
-    - UMCCommon
-    - UMCShare/Core
-  - UMCShare/Social/ReducedSina (6.9.5):
+  - UMCShare/Social/Facebook (6.9.6):
     - UMCCommon
     - UMCShare/Core
-  - UMCShare/Social/Twitter (6.9.5):
+  - UMCShare/Social/ReducedSina (6.9.6):
+    - UMCCommon
+    - UMCShare/Core
+  - UMCShare/Social/Twitter (6.9.6):
     - UMCCommon
     - UMCShare/Core
   - ZXingObjC (3.6.5):
@@ -77,7 +77,7 @@ DEPENDENCIES:
   - MBProgressHUD (~> 1.1.0)
   - MJRefresh
   - OHHTTPStubs/Swift
-  - platonWeb3 (~> 0.7.6)
+  - platonWeb3 (from `../../SDK/client-sdk-ios/`)
   - RealmSwift (~> 4.3.0)
   - RTRootNavigationController (= 0.7.1)
   - ScryptSwift (= 0.0.1)
@@ -112,7 +112,6 @@ SPEC REPOS:
     - MBProgressHUD
     - MJRefresh
     - OHHTTPStubs
-    - platonWeb3
     - Realm
     - RealmSwift
     - RTRootNavigationController
@@ -134,6 +133,8 @@ SPEC REPOS:
     - ZXingObjC
 
 EXTERNAL SOURCES:
+  platonWeb3:
+    :path: "../../SDK/client-sdk-ios/"
   Spring:
     :git: https://github.com/MengTo/Spring.git
 
@@ -168,13 +169,13 @@ SPEC CHECKSUMS:
   SwipeCellKit: 4eada3884ab1bbae5e8d2fb9030c242aa23d7f42
   TrezorCrypto: bfeea47a052dca2c77d4a39e1e183865e52de14d
   "UITextView+Placeholder": 0c3efd97f37ea64bde7f34cc6e90fe02e87b3909
-  UMCAnalytics: ff58714ada407682c4a07548156f94bcec92f055
-  UMCCommon: 0263a057a2e1ae1da4c8308541e56904a493ce13
+  UMCAnalytics: 045be2cd1ec05aa95ad62405a850757f932e2d59
+  UMCCommon: 971f324a5a99c9d662ae040a815e7e3d7ef8b2a8
   UMCCommonLog: 05a2d5de21858e3d870551562cff405c1366d244
   UMCSecurityPlugins: 0831a08f3988f3cea9f1d3a7626cd9bee4fef150
-  UMCShare: 552b29753f1b4da87b51d96545ed19e6263df397
+  UMCShare: e0cef55c0fd6051254c8cda1d0630eb578b27bad
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: 0b77c4a878de49c46dcf18132db8b662ddee3527
+PODFILE CHECKSUM: 3cee72382953b48ef412e462e164d8429e58b663
 
 COCOAPODS: 1.8.4
