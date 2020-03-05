@@ -32,6 +32,10 @@ class ATextFieldView: UIView {
 
     var appendText = ""
 
+    var isValidUInt: Bool = false
+
+    var isValidMagitude: Bool = true
+
     private var mode: TextFieldCheckMode = .endEdit
 
     private var check: ((String, Bool) -> (correct: Bool, errMsg: String))?
@@ -208,9 +212,11 @@ class ATextFieldView: UIView {
 //        }
 
         // 展示数量级
-        let magnitude = text.inputAmountForMagnitude()
-        magnitudeLabel.text = magnitude
-        tipLabelLeadingV.isHidden = magnitude == nil
+        if isValidMagitude {
+            let magnitude = text.inputAmountForMagnitude()
+            magnitudeLabel.text = magnitude
+            tipLabelLeadingV.isHidden = magnitude == nil
+        }
 
         // 校验数量是否符合
         let res = check!(text, isDelete)
@@ -262,8 +268,14 @@ extension ATextFieldView: UITextFieldDelegate {
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if string != "" {
-            if !string.validFloatNumber() {
-                return false
+            if isValidUInt {
+                if !string.isPureInt() {
+                    return false
+                }
+            } else {
+                if !string.validFloatNumber() {
+                    return false
+                }
             }
 
             if let text = textField.text, let textRange = Range(range, in: text) {

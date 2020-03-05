@@ -991,3 +991,6 @@
 
 "pop_selection_title_withdraw" = "选择赎回项";
 "pop_selection_title_delegate" = "选择可用的LAT";
+
+"gaslimit_note" = "关于特殊合约转账，建议在默认GasLimit基础上增加2倍或更多，GasLimit太低可能导致您的交易失败。";
+"gaslimit_less_than" = "Gas Limit不能小于21000";

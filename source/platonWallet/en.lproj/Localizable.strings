@@ -980,3 +980,6 @@
 
 "pop_selection_title_withdraw" = "Select Delegations";
 "pop_selection_title_delegate" = "Select Delegations";
+
+"gaslimit_note" = "For contract transfers, increase the default GasLimit by a factor of 2 or more. Too low a Gaslimit may cause your transaction to fail.";
+"gaslimit_less_than" = "Gas Limit cannot be less than 21000";

@@ -12,6 +12,13 @@ import BigInt
 import platonWeb3
 
 struct CommonService {
+    static func checkGasLimit(value: String, minGasLimit: BigUInt) -> (Bool, String?) {
+        guard
+            let valueBInt = BigUInt(value),
+            valueBInt >= minGasLimit && value.isPureInt()
+        else { return (false, Localized("gaslimit_less_than")) }
+        return (true, "")
+    }
 
     static func isValidContractAddress(_ address: String?) -> (Bool,String?) {
 
