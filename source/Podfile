@@ -13,7 +13,7 @@ def target_pods
     pod 'SnapKit', '~> 4.0.0'
 
     pod 'Localize-Swift', '~> 2.0'
-    pod 'UITextView+Placeholder', '1.2.1'
+    pod 'UITextView+Placeholder'
     pod 'MBProgressHUD', '~> 1.1.0'
     pod 'ScryptSwift', '0.0.1'
     pod 'SwipeCellKit', '2.5.4'

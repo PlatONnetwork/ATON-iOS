@@ -45,7 +45,7 @@ PODS:
   - SwiftReorder (6.0.2)
   - SwipeCellKit (2.5.4)
   - TrezorCrypto (0.0.9)
-  - "UITextView+Placeholder (1.2.1)"
+  - "UITextView+Placeholder (1.3.3)"
   - UMCAnalytics (6.0.5):
     - UMCCommon
   - UMCCommon (2.1.1)
@@ -90,7 +90,7 @@ DEPENDENCIES:
   - SwiftReorder (~> 6.0)
   - SwipeCellKit (= 2.5.4)
   - TrezorCrypto (= 0.0.9)
-  - "UITextView+Placeholder (= 1.2.1)"
+  - "UITextView+Placeholder"
   - UMCAnalytics
   - UMCCommon
   - UMCCommonLog
@@ -168,7 +168,7 @@ SPEC CHECKSUMS:
   SwiftReorder: 60ef1faf6446cf68f9a647cb975530db8efd6620
   SwipeCellKit: 4eada3884ab1bbae5e8d2fb9030c242aa23d7f42
   TrezorCrypto: bfeea47a052dca2c77d4a39e1e183865e52de14d
-  "UITextView+Placeholder": 0c3efd97f37ea64bde7f34cc6e90fe02e87b3909
+  "UITextView+Placeholder": c407b27599ea23cca425946fee3cf1db5d547008
   UMCAnalytics: 045be2cd1ec05aa95ad62405a850757f932e2d59
   UMCCommon: 971f324a5a99c9d662ae040a815e7e3d7ef8b2a8
   UMCCommonLog: 05a2d5de21858e3d870551562cff405c1366d244
@@ -176,6 +176,6 @@ SPEC CHECKSUMS:
   UMCShare: e0cef55c0fd6051254c8cda1d0630eb578b27bad
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: 3cee72382953b48ef412e462e164d8429e58b663
+PODFILE CHECKSUM: b40618b070226ca0cf9464879732ac8d52d4b05a
 
 COCOAPODS: 1.8.4
