@@ -18,6 +18,7 @@ class AssetFeeViewV060: UIView {
     }
     */
 
+    @IBOutlet weak var gasLimitButton: UIButton!
     @IBOutlet weak var feeTip: UILabel!
     @IBOutlet weak var fee: UILabel!
 

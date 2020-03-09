@@ -190,7 +190,6 @@ class NodeDetailViewController: BaseViewController {
         details.append((Localized("statking_validator_blocks"), nodeDetail?.blockOut ?? "--"))
         details.append((Localized("statking_validator_blocks_rate"), nodeDetail?.bRate ?? "--"))
         details.append((Localized("statking_validator_slash"), nodeDetail?.slash ?? "--"))
-        details.append((Localized("statking_validator_slash"), nodeDetail?.slash ?? "--"))
         details.append((nodeDetail?.websiteForDisplay ?? "--", nodeDetail?.institutionalForDisplay ?? "--"))
         listData = details
         tableView.reloadData()
