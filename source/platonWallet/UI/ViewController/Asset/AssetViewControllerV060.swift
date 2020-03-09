@@ -121,7 +121,8 @@ class AssetViewControllerV060: BaseViewController, PopupMenuTableDelegate {
                     make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
                     make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
                 } else {
-                    make.bottom.equalToSuperview()
+                    make.bottom.equalTo(bottomLayoutGuide.snp.top)
+//                    make.bottom.equalToSuperview()
                     make.top.equalTo(topLayoutGuide.snp.bottom)
                 }
             } else {
@@ -164,6 +165,7 @@ class AssetViewControllerV060: BaseViewController, PopupMenuTableDelegate {
 
         }
 
+        sendVC.delegate = self
         transactionVC.delegate = self
         sectionView.onSelectItem = { [weak self] (index) -> Bool in
             if index == 1 && NetworkManager.shared.reachabilityManager?.isReachable == false {
@@ -398,6 +400,10 @@ extension AssetViewControllerV060: UIScrollViewDelegate, ChildScrollViewDidScrol
                 self.assetHeaderStyle = (true, false)
             }
         }
+    }
+
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        view.endEditing(true)
     }
 
     func childScrollViewDidScroll(childScrollView: UIScrollView) {

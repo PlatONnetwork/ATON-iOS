@@ -9,6 +9,7 @@
 import UIKit
 import Localize_Swift
 import SnapKit
+import BigInt
 
 class ATextFieldView: UIView {
 
@@ -33,8 +34,29 @@ class ATextFieldView: UIView {
     var appendText = ""
 
     var isValidUInt: Bool = false
+    var maxBinUIntValue: BigUInt?
 
     var isValidMagitude: Bool = true
+    var isOnlyShowFeeTip: Bool = false {
+        didSet {
+            if isOnlyShowFeeTip {
+                feeTopConstraint?.update(priority: .high)
+                titleLabel.isHidden = true
+                magnitudeLabel.isHidden = true
+                textField.isHidden = true
+                lineView.isHidden = true
+                feeLabel.isHidden = true
+            } else {
+                feeTopConstraint?.update(priority: .low)
+                titleLabel.isHidden = false
+                magnitudeLabel.isHidden = false
+                textField.isHidden = false
+                lineView.isHidden = false
+                feeLabel.isHidden = false
+            }
+        }
+    }
+    var feeTopConstraint: Constraint?
 
     private var mode: TextFieldCheckMode = .endEdit
 
@@ -50,7 +72,8 @@ class ATextFieldView: UIView {
         titleLabel.text = Localized("ATextFieldView_title")
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
-            make.leading.top.equalToSuperview()
+            make.top.equalToSuperview().priorityMedium()
+            make.leading.equalToSuperview()
         }
 
         textField.textColor = .black
@@ -97,8 +120,10 @@ class ATextFieldView: UIView {
         tipsLabel.numberOfLines = 2
         addSubview(tipsLabel)
         tipsLabel.snp.makeConstraints { make in
-            make.top.equalTo(textField.snp.bottom).offset(8)
+            make.top.equalTo(textField.snp.bottom).offset(8).priorityMedium()
+            feeTopConstraint = make.top.equalToSuperview().offset(8).priorityLow().constraint
             make.leading.equalToSuperview()
+            make.bottom.equalToSuperview()
         }
 
         feeLabel.textColor = common_darkGray_color
@@ -109,7 +134,6 @@ class ATextFieldView: UIView {
         feeLabel.snp.makeConstraints { make in
             make.trailing.equalToSuperview()
             make.top.equalTo(textField.snp.bottom).offset(8)
-            make.bottom.equalToSuperview()
             make.leading.equalTo(tipsLabel.snp.trailing).offset(5)
         }
 
@@ -289,6 +313,11 @@ extension ATextFieldView: UITextFieldDelegate {
         if mode == .textChange || mode == .all {
             if let text = textField.text, let textRange = Range(range, in: text) {
                 let appendtext = text.replacingCharacters(in: textRange, with: string)
+                if let maxBInt = maxBinUIntValue, let inputBInt = BigUInt(appendtext) {
+                    if inputBInt > maxBInt {
+                        return false
+                    }
+                }
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                     _ = self.startCheck(text: appendtext, isDelete: string == "", isEditing: true)
                 }

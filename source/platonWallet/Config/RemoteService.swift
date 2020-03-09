@@ -45,7 +45,8 @@ class RemoteService {
         var parameters: [String: Any] = [:]
         parameters["versionCode"] = versionCode
         parameters["deviceType"] = "ios"
-        parameters["channelCode"] = "AppStore"
+//        parameters["channelCode"] = "AppStore"
+        parameters["channelCode"] = "Testflight"
 
         var request = URLRequest(url: try! url.asURL())
         request.httpBody = try! JSONSerialization.data(withJSONObject: parameters)

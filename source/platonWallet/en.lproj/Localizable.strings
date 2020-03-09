@@ -550,7 +550,7 @@
 "AddSharedWallet_address_duplicated" = "duplicated addrss";
 
 
-"Transaction.Fail" = "Fail";
+"Transaction.Fail" = "Transaction failed";
 
 "insufficient funds for gas * price + value" = "insufficient funds for gas * price + value";
 

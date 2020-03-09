@@ -18,7 +18,6 @@ class AppFramework {
 
     func initialize() -> Bool {
         initUMeng()
-        initNetworkObserver()
 
         initUShare()
         doSwizzle()
@@ -34,10 +33,6 @@ class AppFramework {
 
     func initweb3() {
         Debugger.enableDebug(true)
-    }
-
-    func initNetworkObserver() {
-        NetworkManager.shared.startNetworkReachabilityObserver()
     }
 
     func initUShare() {

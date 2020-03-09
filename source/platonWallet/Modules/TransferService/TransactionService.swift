@@ -9,6 +9,7 @@
 import Foundation
 import BigInt
 import platonWeb3
+import Localize_Swift
 
 public let DefaultRPCTimeOut = 30.0
 public let DefaultAddress = "0x0000000000000000000000000000000000000000"
@@ -203,7 +204,11 @@ class TransactionService : BaseService {
                     case .requestTimeout:
                         self.failCompletionOnMainThread(code: err.code, errorMsg: err.message, completion: &completion)
                     default:
-                        self.failCompletionOnMainThread(code: err.code, errorMsg: err.message, completion: &completion)
+                        if err.code == -32000 {
+                            self.failCompletionOnMainThread(code: err.code, errorMsg: Localized("Transaction.Fail"), completion: &completion)
+                        } else {
+                            self.failCompletionOnMainThread(code: err.code, errorMsg: err.message, completion: &completion)
+                        }
                     }
                 }
             })
