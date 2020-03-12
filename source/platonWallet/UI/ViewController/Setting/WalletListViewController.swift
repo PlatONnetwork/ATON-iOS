@@ -123,9 +123,9 @@ extension WalletListViewController: UITableViewDelegate, UITableViewDataSource {
 
     }
 
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 70
-    }
+//    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+//        return 70
+//    }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let wallet = dataSource[indexPath.row]

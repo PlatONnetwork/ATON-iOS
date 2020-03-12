@@ -141,6 +141,7 @@
 "TransactionDetailVC_proposal_voteno" = "VoteNo";
 "TransactionDetailVC_proposal_voteabstain" = "VoteAbstain";
 "TransactionDetailVC_doublesign" = "区块双签";
+"TransactionDetailVC_block_number" = "确认区块:";
 "TransactionDetailVC_transaction_hash" = "交易哈希:";
 "TransactionDetailVC_claim_wallet" = "领取钱包:";
 "TransactionDetailVC_reward_amount" = "领取数量:";
@@ -314,7 +315,7 @@
 "AddAddressVC_add_button_title" = "添加";
 
 "NewAddress_name_empty_tip" = "名称不能为空";
-"NewAddress_name_Incorrect_tip" = "请输入 1～12位地址名称";
+"NewAddress_name_Incorrect_tip" = "请输入 1～20 位地址名称";
 "NewAddress_address_empty_tip" = "地址不能为空";
 "NewAddress_address_Incorrect_tip" = "地址格式不正确";
 
@@ -729,7 +730,7 @@
 "send_amount_placeholder" = "输入发送数量";
 "vote_confirm_from" = "支付钱包：";
 "staking_amount_placeholder" = "输入数量（不少于%@LAT）";
-"send_remark_placeholder" = "备注（可选-50以内）";
+"send_remark_placeholder" = "备注（可选-30以内）";
 
 
 "createOrImport_guide_text" = "已有钱包？使用钱包文件(json)、助记词、私钥导入";
@@ -999,3 +1000,6 @@
 "network_error_knowntransaction" = "请勿重复提交!";
 "network_error_nonce_too_low" = "交易异常，请重试（%d）";
 "network_error_expired" = "二维码已失效";
+
+"gaslimit_note" = "关于特殊合约转账，建议在默认GasLimit基础上增加2倍或更多，GasLimit太低可能导致您的交易失败。";
+"gaslimit_less_than" = "Gas Limit不能小于21000";

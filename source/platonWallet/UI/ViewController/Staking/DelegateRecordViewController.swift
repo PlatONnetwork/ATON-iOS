@@ -87,9 +87,6 @@ class DelegateRecordViewController: BaseViewController, IndicatorInfoProvider {
         tableView.mj_header = refreshHeader
         tableView.mj_footer = refreshFooter
         tableView.mj_header.beginRefreshing()
-
-
-
     }
 
     /*

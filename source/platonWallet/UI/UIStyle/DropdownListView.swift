@@ -58,7 +58,6 @@ class DropdownListView: UIView {
         walletLabel.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.leading.equalTo(walletIconIV.snp.trailing).offset(8)
-            make.trailing.equalToSuperview().offset(-20)
         }
 
         let arrowIV = UIImageView()
@@ -67,7 +66,8 @@ class DropdownListView: UIView {
         arrowIV.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.width.height.equalTo(14)
-            make.trailing.equalToSuperview().offset(-20)
+            make.leading.equalTo(walletLabel.snp.trailing).offset(10)
+            make.trailing.equalToSuperview().offset(-16)
         }
         return button
     }()

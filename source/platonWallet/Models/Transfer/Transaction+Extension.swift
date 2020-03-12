@@ -315,7 +315,7 @@ extension Transaction {
         let localZone = NSTimeZone.local
         format.timeZone = localZone
         format.locale = NSLocale.current
-        format.dateFormat = "#yyyy/MMdd HH:mm"
+        format.dateFormat = "#yyyy/MMdd HH:mm:ss"
         let strDate = format.string(from: date)
         return strDate
     }

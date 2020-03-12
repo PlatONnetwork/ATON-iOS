@@ -62,7 +62,7 @@ extension RewardModel {
     }
 
     var walletAddress: String? {
-        return "(" + address.addressForDisplayShort() + ")"
+        return "(" + address.addressForDisplayLeading4Trailing8() + ")"
     }
 
     var amountForDisplay: String? {
@@ -75,7 +75,7 @@ extension RewardModel {
         let localZone = NSTimeZone.local
         format.timeZone = localZone
         format.locale = NSLocale.current
-        format.dateFormat = "#yyyy/MMdd HH:mm"
+        format.dateFormat = "#yyyy/MMdd HH:mm:ss"
         let strDate = format.string(from: date)
         return strDate
     }

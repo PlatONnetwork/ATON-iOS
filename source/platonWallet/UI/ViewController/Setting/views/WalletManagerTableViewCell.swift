@@ -51,6 +51,7 @@ class WalletManagerTableViewCell: UITableViewCell {
         container.layer.cornerRadius = 4
         container.layer.masksToBounds = true
         walletName.font = .systemFont(ofSize: 14.0, weight: .medium)
+        walletName.numberOfLines = 0
     }
 
     func feedData(_ wallet:AnyObject) {

@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -28,7 +26,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wD2-P5-xU5" userLabel="walletInfo">
-                    <rect key="frame" x="0.0" y="30" width="375" height="88"/>
+                    <rect key="frame" x="0.0" y="10" width="375" height="88"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="wallet_address" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eNS-7Z-32A">
                             <rect key="frame" x="16" y="16" width="107" height="20"/>
@@ -93,7 +91,7 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sbg-hK-o6n" userLabel="rename">
-                    <rect key="frame" x="0.0" y="118" width="375" height="68"/>
+                    <rect key="frame" x="0.0" y="98" width="375" height="68"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="19M-sY-2lG">
                             <rect key="frame" x="16" y="24.5" width="39.5" height="19.5"/>
@@ -143,10 +141,11 @@
                         <constraint firstItem="5kz-ZX-4ZP" firstAttribute="leading" secondItem="sbg-hK-o6n" secondAttribute="leading" constant="16" id="lQq-Bk-H8Z"/>
                         <constraint firstItem="Ahi-jw-BpJ" firstAttribute="centerY" secondItem="19M-sY-2lG" secondAttribute="centerY" id="ovM-cF-B3k"/>
                         <constraint firstItem="19M-sY-2lG" firstAttribute="centerY" secondItem="sbg-hK-o6n" secondAttribute="centerY" id="pAG-OE-813"/>
+                        <constraint firstItem="gDM-Be-xxa" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="19M-sY-2lG" secondAttribute="trailing" constant="10" id="zJf-sQ-NDE"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kau-gz-wyk" userLabel="ExportPri">
-                    <rect key="frame" x="0.0" y="186" width="375" height="68"/>
+                    <rect key="frame" x="0.0" y="166" width="375" height="68"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RI5-Zd-cE2">
                             <rect key="frame" x="18" y="24.5" width="39.5" height="19.5"/>
@@ -191,7 +190,7 @@
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="azg-Ua-yhT" userLabel="ExportKeystore">
-                    <rect key="frame" x="0.0" y="255" width="375" height="68"/>
+                    <rect key="frame" x="0.0" y="235" width="375" height="68"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EMV-ss-79S">
                             <rect key="frame" x="18" y="24.5" width="39.5" height="19.5"/>
@@ -249,7 +248,7 @@
                     </connections>
                 </button>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0Fp-MQ-Iyw" userLabel="ExportMnemonics">
-                    <rect key="frame" x="0.0" y="323" width="375" height="68"/>
+                    <rect key="frame" x="0.0" y="303" width="375" height="68"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FQH-nm-JlV">
                             <rect key="frame" x="18" y="24.5" width="39.5" height="19.5"/>

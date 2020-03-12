@@ -118,6 +118,9 @@ class OfflineSignatureTransactionViewController: BaseViewController {
         }
 
         listData.append((title: Localized("confirm_authorize_fee"), value: (totalGas.description.vonToLATString ?? "0.00").ATPSuffix()))
+        if let memo = codes.first?.rk, memo.count > 0 {
+            listData.append((title: Localized("TransactionDetailVC_memo"), value: memo))
+        }
     }
 
     func generateQrcodeForSignedTx(content: String) {

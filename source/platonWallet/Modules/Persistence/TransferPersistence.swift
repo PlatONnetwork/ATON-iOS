@@ -25,7 +25,7 @@ class TransferPersistence {
         }
     }
 
-    public class func update(txhash: String, status: Int) {
+    public class func update(txhash: String, status: Int, blockNumber: String) {
         RealmWriteQueue.async {
             autoreleasepool(invoking: {
                 let realm = try! Realm(configuration: RealmHelper.getConfig())
@@ -34,6 +34,7 @@ class TransferPersistence {
                 try? realm.write {
                     let r = realm.objects(Transaction.self).filter(predicate)
                     for tx in r {
+                        tx.blockNumber = blockNumber
                         tx.txReceiptStatus = status
                     }
                 }
