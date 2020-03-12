@@ -162,7 +162,7 @@ class MyDelegateViewCell: UITableViewCell {
         detailButton.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.trailing.equalToSuperview().offset(-10)
-            make.leading.equalTo(walletNameLabel.snp.trailing).offset(5)
+            make.leading.greaterThanOrEqualTo(walletNameLabel.snp.trailing).offset(5)
         }
 
         let delegateBackgroundView = UIButton()
