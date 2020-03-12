@@ -21,7 +21,7 @@ class AddressInfoPersistence {
             autoreleasepool(invoking: {
                 let realm = try! Realm(configuration: RealmHelper.getConfig())
                 try? realm.write {
-                    realm.add(addrInfo, update: true)
+                    realm.add(addrInfo, update: .all)
                 }
             })
         }
@@ -44,7 +44,7 @@ class AddressInfoPersistence {
                     }
                 } else {
                     try? realm.write {
-                        realm.add(addrInfo, update: true)
+                        realm.add(addrInfo, update: .all)
                         completion?()
                     }
                 }

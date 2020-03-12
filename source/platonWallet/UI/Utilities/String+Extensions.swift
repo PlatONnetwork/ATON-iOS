@@ -107,6 +107,12 @@ extension String {
         return scan.scanFloat(&val) && scan.isAtEnd
     }
 
+    func isPureInt() -> Bool {
+        let scan: Scanner = Scanner(string: self)
+        var val: Int = 0
+        return scan.scanInt(&val) && scan.isAtEnd
+    }
+
     func ispureUint() -> Bool {
         let regex = "([1-9]{1}\\d*)"
         let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
@@ -377,6 +383,16 @@ extension String {
         return self.substr(0, 10)! + "......" + self.substr(120, 10)!
     }
 
+    func addressForDisplayLeading4Trailing8() -> String {
+        guard self.is40ByteAddress() else {
+            return self
+        }
+        if !self.hasPrefix("0x") {
+            return "0x" + self.substr(0, 4)! + "...." + self.substr(32, 8)!
+        }
+        return self.substr(0, 6)! + "...." + self.substr(34, 8)!
+    }
+
     func addressForDisplayShort() -> String {
         guard self.is40ByteAddress() else {
             return self
@@ -442,7 +458,7 @@ extension String {
             integerPart = segmentationArray.first
         }
 
-        guard let inte = integerPart, inte.count > 2 else {
+        guard let inte = integerPart, inte.count > 2, !inte.hasPrefix("0") else {
             return nil
         }
 

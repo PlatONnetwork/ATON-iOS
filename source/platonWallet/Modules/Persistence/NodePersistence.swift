@@ -21,7 +21,7 @@ class NodePersistence {
 
                 try? realm.write {
                     realm.delete(realm.objects(Node.self))
-                    realm.add(nodes, update: true)
+                    realm.add(nodes, update: .all)
                     completion?()
                 }
             })

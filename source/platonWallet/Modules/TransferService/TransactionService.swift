@@ -9,6 +9,7 @@
 import Foundation
 import BigInt
 import platonWeb3
+import Localize_Swift
 
 public let DefaultRPCTimeOut = 30.0
 public let DefaultAddress = "0x0000000000000000000000000000000000000000"
@@ -100,7 +101,7 @@ class TransactionService : BaseService {
 
                     // 发现获取交易状态接口的虽然发生改变，但是交易记录列表接口不一定更新的，延时删除这条数据
                     if status != .pending {
-                        TransferPersistence.update(txhash: txhash, status: status.rawValue)
+                        TransferPersistence.update(txhash: txhash, status: status.rawValue, blockNumber: (tx.blockNumber ?? ""))
 //                        TransferPersistence.delete(txhash)
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
                             NotificationCenter.default.post(name: Notification.Name.ATON.DidUpdateTransactionByHash, object: notificateTx)

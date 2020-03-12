@@ -4,7 +4,7 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 def target_pods
     pod 'Spring', :git => 'https://github.com/MengTo/Spring.git'
-    pod 'RealmSwift', '3.13.1'
+    pod 'RealmSwift', '~> 4.3.0'
     pod 'BigInt', '4.0', inhibit_warnings: true
     pod 'CryptoSwift', '~> 0.10.0'
     pod 'TrezorCrypto', '0.0.9', inhibit_warnings: true
@@ -13,7 +13,7 @@ def target_pods
     pod 'SnapKit', '~> 4.0.0'
 
     pod 'Localize-Swift', '~> 2.0'
-    pod 'UITextView+Placeholder', '1.2.1'
+    pod 'UITextView+Placeholder'
     pod 'MBProgressHUD', '~> 1.1.0'
     pod 'ScryptSwift', '0.0.1'
     pod 'SwipeCellKit', '2.5.4'

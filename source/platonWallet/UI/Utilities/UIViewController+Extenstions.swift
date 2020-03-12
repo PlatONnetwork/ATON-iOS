@@ -176,7 +176,7 @@ extension UIViewController {
 
     func showCommonRenameInput(completion: ((_ text: String?) -> Void)?,checkDuplicate: Bool = false) {
         let alertVC = AlertStylePopViewController.initFromNib()
-        let style = PAlertStyle.commonInput(title: "alert_modifyWalletName_title", placeHoder: "Wallet name", preInputText: "")
+        let style = PAlertStyle.commonInput(title: "alert_modifyWalletName_title", placeHoder: "Wallet name", preInputText: "", maxTextCount: 20)
         alertVC.textFieldInput.checkInput(mode: CheckMode.textChange, check: { (input) -> (Bool, String) in
             let ret = CommonService.isValidWalletName(input,checkDuplicate: true)
             return (ret.0,ret.1 ?? "")

@@ -60,15 +60,20 @@ class TransactionDetailViewController: BaseViewController {
                 currentTx.totalReward = txStatus.totalReward
             }
 
-            self?.transferDetailView.updateContent(tx: currentTx)
-            self?.tableView.tableHeaderView = self?.transferDetailView
-            self?.transferDetailView.setNeedsLayout()
-            self?.transferDetailView.layoutIfNeeded()
-            self?.transferDetailView.frame.size = self?.transferDetailView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize) ?? CGSize(width: UIScreen.main.bounds.width, height: 250)
-            self?.tableView.tableHeaderView = self?.transferDetailView
+            if let tableHeaderView = self?.tableView.tableHeaderView as? TransactionDetailHeaderView {
+                tableHeaderView.updateContent(tx: currentTx)
+                tableHeaderView.frame.size = tableHeaderView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+                tableHeaderView.layoutIfNeeded()
+                tableHeaderView.setNeedsLayout()
+                self?.tableView.tableHeaderView = tableHeaderView
+            }
 
-            if let totalRewardBInt = BigUInt(txStatus.totalReward ?? "0"), totalRewardBInt > BigUInt.zero {
-                self?.transaction?.totalReward = txStatus.totalReward
+            if txStatus.status != TransactionReceiptStatus.pending.rawValue {
+                if
+                    let totalRewardBInt = BigUInt(txStatus.totalReward ?? "0"), totalRewardBInt > BigUInt.zero {
+                    self?.transaction?.totalReward = txStatus.totalReward
+                }
+                self?.transaction?.blockNumber = txStatus.blockNumber
                 self?.listData = []
                 self?.initData()
                 self?.tableView.reloadData()
@@ -171,6 +176,9 @@ class TransactionDetailViewController: BaseViewController {
             listData.append((title: Localized("TransactionDetailVC_reward_amount"), value: (tx.totalReward?.vonToLATString ?? "0.00").ATPSuffix(), copy: false))
         }
         listData.append((title: Localized("TransactionDetailVC_energon_price"), value: tx.actualTxCostDescription?.displayForMicrometerLevel(maxRound: 8).ATPSuffix() ?? "0", copy: false))
+        if tx.txReceiptStatus == TransactionReceiptStatus.sucess.rawValue || tx.txReceiptStatus == TransactionReceiptStatus.businessCodeError.rawValue {
+            listData.append((title: Localized("TransactionDetailVC_block_number"), value: tx.blockNumber ?? "--", copy: true))
+        }
         listData.append((title: Localized("TransactionDetailVC_transaction_hash"), value: tx.txhash ?? "--", copy: true))
         tableView.reloadData()
     }

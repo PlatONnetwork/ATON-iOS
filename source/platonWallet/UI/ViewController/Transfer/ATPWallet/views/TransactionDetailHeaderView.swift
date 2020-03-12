@@ -333,7 +333,7 @@ class TransactionDetailHeaderView: UIView {
         //最后判断超时
         if tx.txReceiptStatus == TransactionReceiptStatus.timeout.rawValue {
             statusIconImageVIew.image = UIImage(named: "txTimeout")
-            self.pendingLoadingImage.isHidden = true
+            pendingLoadingImage.isHidden = true
             statusLabel.text = Localized("TransactionStatus_timeout_title")
         }
     }

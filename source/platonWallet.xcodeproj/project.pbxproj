@@ -2503,7 +2503,7 @@
 				8118873023B7590C00CAE5BA /* Resources */,
 				8118876D23B7590C00CAE5BA /* ShellScript */,
 				57CF1FBE522AEF84FFB66F45 /* [CP] Embed Pods Frameworks */,
-				1C9E51DAA4E56E839CB7B259 /* [CP] Copy Pods Resources */,
+				09FADF7418ADED20BC3B151E /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2524,7 +2524,7 @@
 				81B58A5F235DA1FC00816B4E /* Resources */,
 				81B58A99235DA1FC00816B4E /* ShellScript */,
 				35FBAFB08F1575F7C3319B03 /* [CP] Embed Pods Frameworks */,
-				C6C37333E660557997861BE7 /* [CP] Copy Pods Resources */,
+				BC830F461A92B55CA7945018 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2544,8 +2544,8 @@
 				81C88DFE21746B39005F17F7 /* Frameworks */,
 				81C88DFF21746B39005F17F7 /* Resources */,
 				349B196BEEC64C0A8876028D /* [CP] Embed Pods Frameworks */,
-				76E5E3065DA7F32FC368B7AC /* [CP] Copy Pods Resources */,
 				81F420FD2351CC540054628E /* ShellScript */,
+				2B2C0E649FB8DAD73DC464D5 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -2875,7 +2875,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		1C9E51DAA4E56E839CB7B259 /* [CP] Copy Pods Resources */ = {
+		09FADF7418ADED20BC3B151E /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -2912,6 +2912,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		2B2C0E649FB8DAD73DC464D5 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-platonWallet/Pods-platonWallet-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-platonWallet/Pods-platonWallet-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-platonWallet/Pods-platonWallet-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		349B196BEEC64C0A8876028D /* [CP] Embed Pods Frameworks */ = {
@@ -2963,23 +2980,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-platonWalletParallelNet/Pods-platonWalletParallelNet-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		76E5E3065DA7F32FC368B7AC /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-platonWallet/Pods-platonWallet-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-platonWallet/Pods-platonWallet-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-platonWallet/Pods-platonWallet-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		796ED4F4A47F21746ACC7FC8 /* [CP] Check Pods Manifest.lock */ = {
@@ -3090,6 +3090,23 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-platonWalletUITests/Pods-platonWalletUITests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		BC830F461A92B55CA7945018 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-platonWalletUAT/Pods-platonWalletUAT-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-platonWalletUAT/Pods-platonWalletUAT-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-platonWalletUAT/Pods-platonWalletUAT-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		C31AF10F43E8BB7D8E3F3589 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -3106,23 +3123,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C6C37333E660557997861BE7 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-platonWalletUAT/Pods-platonWalletUAT-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-platonWalletUAT/Pods-platonWalletUAT-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-platonWalletUAT/Pods-platonWalletUAT-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		D6C98B0A581158714ACAC66D /* [CP] Check Pods Manifest.lock */ = {
@@ -4064,6 +4064,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 52;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = JL97B8WL3X;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -4076,6 +4077,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 0.10.1;
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-DPARALLELNET\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.platon.atonuat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4096,6 +4098,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 52;
 				DEVELOPMENT_TEAM = JL97B8WL3X;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -4107,6 +4110,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 0.10.1;
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-DPARALLELNET\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.platon.atonuat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4126,6 +4130,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 52;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = JL97B8WL3X;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -4138,6 +4143,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 0.10.1;
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-DUAT\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.platon.aton;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4158,6 +4164,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 52;
 				DEVELOPMENT_TEAM = JL97B8WL3X;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -4169,6 +4176,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 0.10.1;
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-DUAT\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.platon.aton;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4308,6 +4316,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 52;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = JL97B8WL3X;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -4320,6 +4329,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 0.10.1;
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.platon.aton;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4340,6 +4350,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 52;
 				DEVELOPMENT_TEAM = JL97B8WL3X;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -4351,6 +4362,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MARKETING_VERSION = 0.10.1;
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.platon.aton;
 				PRODUCT_NAME = "$(TARGET_NAME)";

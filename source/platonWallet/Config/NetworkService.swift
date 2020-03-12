@@ -22,6 +22,7 @@ enum NetworkError: Error {
     case knownTransactionError(Int)
     case nonceError(Int)
     case qrcodeExpiredError(Int)
+    case transactionFailError
 
     var code: Int {
         switch self {
@@ -47,6 +48,8 @@ enum NetworkError: Error {
             return c
         case .qrcodeExpiredError(let c):
             return c
+        case .transactionFailError:
+            return -32000
         }
     }
 
@@ -74,6 +77,8 @@ enum NetworkError: Error {
             return Localized("network_error_nonce_too_low", arguments: c)
         case .qrcodeExpiredError:
             return Localized("network_error_expired")
+        case .transactionFailError:
+            return Localized("Transaction.Fail")
         }
     }
 }
@@ -140,6 +145,8 @@ class NetworkService {
                             completion?(.failure(NetworkError.nonceError(result.code)), nil)
                         case 303:
                             completion?(.failure(NetworkError.qrcodeExpiredError(result.code)), nil)
+                        case -32000:
+                            completion?(.failure(NetworkError.transactionFailError), nil)
                         default:
                             completion?(.failure(NetworkError.serviceError(result.code)), nil)
                         }

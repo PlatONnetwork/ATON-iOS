@@ -15,6 +15,13 @@ extension RealmHelper {
         migration.renameProperty(onType: Node.className(), from: "ratePA", to: "delegatedRatePA")
     }
 
+    public static func migrationBelow091(migration: Migration, schemaVersion:UInt64, oldSchemaVersion: UInt64) {
+        migration.enumerateObjects(ofType: Wallet.className()) { (oldObject, newObject) in
+            guard oldObject != nil, newObject != nil else { return }
+            newObject!["version"] = 0
+        }
+    }
+
     public static func migrationBelow080(migration: Migration, schemaVersion:UInt64, oldSchemaVersion: UInt64) {
         #if UAT
         #elseif PARALLELNET

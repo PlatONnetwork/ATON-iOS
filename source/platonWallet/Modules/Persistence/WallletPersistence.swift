@@ -21,7 +21,7 @@ class WallletPersistence {
                 let realm = try! Realm(configuration: RealmHelper.getConfig())
                 wallet.chainId = SettingService.shareInstance.currentNodeChainId
                 try? realm.write {
-                    realm.add(wallet, update: true)
+                    realm.add(wallet, update: .all)
                 }
             })
         }
