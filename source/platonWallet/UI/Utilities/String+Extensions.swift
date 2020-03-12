@@ -101,6 +101,12 @@ extension String {
         return scan.scanFloat(&val) && scan.isAtEnd
     }
 
+    func isPureInt() -> Bool {
+        let scan: Scanner = Scanner(string: self)
+        var val: Int = 0
+        return scan.scanInt(&val) && scan.isAtEnd
+    }
+
     func ispureUint() -> Bool {
         let regex = "([1-9]{1}\\d*)"
         let predicate = NSPredicate(format: "SELF MATCHES %@", regex)

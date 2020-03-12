@@ -10,13 +10,23 @@ import UIKit
 import Localize_Swift
 import BigInt
 import platonWeb3
+import SnapKit
 
 // MARK: - UI
 
+class MultiGestureScrollView: UIScrollView {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        return true
+    }
+}
+
 class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
 
+    weak var delegate: ChildScrollViewDidScrollDelegate?
     var estimatedGas = BigUInt("21000")
+    let maxGasLimit = BigUInt(999999999)
     var gasPriceLevel: Float?
+    var gasLimitViewConstraint: Constraint?
 
     var gasPrice: BigUInt? {
         get {
@@ -35,6 +45,12 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
     }
 
     var generateQrCode: QrcodeData<[TransactionQrcode]>?
+
+    lazy var scrollView = { () -> MultiGestureScrollView in
+        let view = MultiGestureScrollView(frame: .zero)
+        view.delegate = self
+        return view
+    }()
 
     lazy var amountView = { () -> ATextFieldView in
         let amountView = ATextFieldView.create(title: "send_amout_colon")
@@ -97,6 +113,51 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
 
     }()
 
+    lazy var gasLimitNoteLabel = { () -> UILabel in
+        let label = UILabel()
+        label.textColor = UIColor(rgb: 0x61646e)
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.numberOfLines = 0
+        label.lineBreakMode = NSLineBreakMode.byClipping
+        label.localizedText = "gaslimit_note"
+        return label
+    }()
+
+    lazy var gasLimitNoteView = { () -> UIView in
+        let noteView = UIView()
+        noteView.backgroundColor = UIColor.white
+        noteView.layer.borderWidth = 1/UIScreen.main.scale
+        noteView.layer.borderColor = UIColor(rgb: 0xd5d8df).cgColor
+        noteView.layer.cornerRadius = 4.0
+        return noteView
+    }()
+
+    lazy var gasLimitView = { () -> ATextFieldView in
+        let gasLimitView = ATextFieldView.create(title: "Gas Limit:")
+        gasLimitView.textField.keyboardType = .numberPad
+        gasLimitView.isValidUInt = true
+        gasLimitView.isValidMagitude = false
+        gasLimitView.maxBinUIntValue = self.maxGasLimit
+        gasLimitView.checkInput(mode: .all, check: { [weak self] (text, _) -> (Bool, String) in
+            let result = CommonService.checkGasLimit(value: text, minGasLimit: PlatonConfig.FuncGas.defaultGas, maxGasLimit: self?.maxGasLimit ?? BigUInt(999999999))
+            self?.estimatedGas = BigUInt(text) ?? BigUInt.zero
+            self?.DidNodeGasPriceUpdate()
+            _ = self?.amountView.checkInvalidNow(showErrorMsg: true)
+            _ = self?.checkConfirmButtonAvailable()
+
+            return (result.0, result.1 ?? "")
+            }, heightChange: { _ in
+
+        })
+
+        gasLimitView.endEditCompletion = { [weak self] text in
+            _ = self?.checkConfirmButtonAvailable()
+            _ = gasLimitView.checkInvalidNow(showErrorMsg: false)
+        }
+
+        return gasLimitView
+    }()
+
     lazy var quickSaveAddrBtn = { () -> QuickSaveAddressButton in
         let button = QuickSaveAddressButton(type: .custom)
         button.localizedNormalTitle = "savetoaddressbook"
@@ -116,6 +177,9 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
 
     lazy var feeView = { () -> AssetFeeViewV060 in
         let view = AssetFeeViewV060(frame: .zero)
+        view.gasLimitButton.addTarget(self, action: #selector(showGasLimitAction), for: .touchUpInside)
+        view.feeTip.isUserInteractionEnabled = true
+        view.feeTip.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(showGasLimitAction)))
         return view
     }()
 
@@ -154,6 +218,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
         self.walletAddressView.backgroundColor = commonbgcolor
         self.feeView.backgroundColor = commonbgcolor
         self.feeView.levelView.backgroundColor = commonbgcolor
+        scrollView.backgroundColor = commonbgcolor
 
         NotificationCenter.default.addObserver(self, selector: #selector(DidNodeGasPriceUpdate), name: Notification.Name.ATON.DidNodeGasPriceUpdate, object: nil)
         TransactionService.service.getGasPrice()
@@ -174,6 +239,34 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
         self.cleanInputEmptyErrorState()
 
         AnalysisHelper.handleEvent(id: event_send, operation: .cancel)
+    }
+
+    func reloadGasLimitView(isSelected: Bool) {
+        if !isSelected {
+            gasLimitView.isOnlyShowFeeTip = true
+            gasLimitViewConstraint?.update(priority: .high)
+        } else {
+            gasLimitView.isOnlyShowFeeTip = false
+            gasLimitViewConstraint?.update(priority: .low)
+        }
+
+        view.layoutIfNeeded()
+        gasLimitNoteView.isHidden = !isSelected
+    }
+
+    func hideGasLimitView() {
+        guard feeView.gasLimitButton.isSelected != false else {
+            return
+        }
+
+        feeView.gasLimitButton.isSelected = false
+        reloadGasLimitView(isSelected: false)
+
+    }
+
+    @objc func showGasLimitAction() {
+        feeView.gasLimitButton.isSelected = !feeView.gasLimitButton.isSelected
+        reloadGasLimitView(isSelected: feeView.gasLimitButton.isSelected)
     }
 
     func cleanInputEmptyErrorState() {
@@ -210,21 +303,34 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
     }
 
     func initSubViews() {
-        view.addSubview(walletAddressView)
+        view.addSubview(scrollView)
+        let containerView = UIView()
+        scrollView.addSubview(containerView)
+
+        scrollView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+
+        containerView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+            make.width.equalTo(view)
+        }
+
+        containerView.addSubview(walletAddressView)
         walletAddressView.snp.makeConstraints { (make) in
             make.left.right.equalToSuperview()
-            make.top.equalTo(20)
+            make.top.equalToSuperview().offset(20)
             make.height.equalTo(walletAddressView.internalHeight)
         }
 
         walletAddressView.addSubview(quickSaveAddrBtn)
         quickSaveAddrBtn.snp.makeConstraints { (make) in
             make.right.equalToSuperview().offset(-16)
-            make.top.equalTo(0)
+            make.top.equalToSuperview()
         }
         quickSaveAddrBtn.addTarget(self, action: #selector(onQuickAddAddress), for: .touchUpInside)
 
-        view.addSubview(amountView)
+        containerView.addSubview(amountView)
         amountView.snp.makeConstraints { (make) in
             make.leading.equalToSuperview().offset(16)
             make.trailing.equalToSuperview().offset(-16)
@@ -232,25 +338,49 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
 //            make.height.equalTo(amountView.internalHeight)
         }
 
-        view.addSubview(balanceLabel)
+        containerView.addSubview(balanceLabel)
         balanceLabel.snp.makeConstraints { (make) in
             make.top.equalTo(amountView.snp.bottom).offset(8)
             make.right.equalToSuperview().offset(-16)
         }
 
-        view.addSubview(feeView)
+        containerView.addSubview(feeView)
         feeView.snp.makeConstraints { (make) in
             make.top.equalTo(balanceLabel.snp.bottom).offset(16)
             make.left.right.equalToSuperview()
             make.height.equalTo(72)
         }
 
-        view.addSubview(sendBtn)
+        gasLimitNoteView.isHidden = true
+        containerView.addSubview(gasLimitNoteView)
+        gasLimitNoteView.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(16)
+            make.trailing.equalToSuperview().offset(-16)
+            make.top.equalTo(feeView.snp.bottom).offset(16)
+        }
+
+        gasLimitNoteView.addSubview(gasLimitNoteLabel)
+        gasLimitNoteLabel.snp.makeConstraints { make in
+            make.edges.equalToSuperview().inset(14)
+        }
+
+//        gasLimitView.isHidden = true
+        gasLimitView.textField.text = PlatonConfig.FuncGas.defaultGas.description
+        containerView.addSubview(gasLimitView)
+        gasLimitView.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(16)
+            make.trailing.equalToSuperview().offset(-16)
+            gasLimitViewConstraint = make.top.equalTo(feeView.snp.bottom).offset(16).priorityHigh().constraint
+            make.top.equalTo(gasLimitNoteView.snp.bottom).offset(16).priorityMedium()
+        }
+
+        containerView.addSubview(sendBtn)
         sendBtn.snp.makeConstraints { (make) in
-            make.top.equalTo(feeView.snp.bottom).offset(32)
+            make.top.equalTo(gasLimitView.snp.bottom).offset(20)
             make.left.equalToSuperview().offset(16)
             make.right.equalToSuperview().offset(-16)
             make.height.equalTo(44)
+            make.bottom.equalToSuperview().offset(-30)
         }
 
         walletAddressView.addAction(icon: UIImage(named: "textField_icon_addressBook"), action: {
@@ -269,7 +399,6 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
 
         })
         walletAddressView.addAction(icon: UIImage(named: "textField_icon_scan"), action: {
-
             let scanner = QRScannerViewController()
             scanner.hidesBottomBarWhenPushed = true
             scanner.scanCompletion = { [weak self] result in
@@ -305,9 +434,14 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
             return true
         }
         amountView.textFieldShouldReturnCompletion = {[weak self] textField in
-            self?.amountView.textField.resignFirstResponder()
+            self?.gasLimitView.textField.becomeFirstResponder()
             return true
         }
+        gasLimitView.textFieldShouldReturnCompletion = {[weak self] textField in
+            self?.gasLimitView.textField.resignFirstResponder()
+            return true
+        }
+        gasLimitView.isOnlyShowFeeTip = true
     }
 
     // MARK: - User Interaction
@@ -548,14 +682,15 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
     // MARK: - Check method
 
     func checkConfirmButtonAvailable() -> Bool {
-        self.checkQuickAddAddress()
+        checkQuickAddAddress()
 
-        if self.amountView.textField.text?.count == 0 {
-            self.sendBtn.style = .disable
+        if amountView.textField.text?.count == 0 {
+            sendBtn.style = .disable
             return false
         }
 
-        if self.amountView.checkInvalidNow(showErrorMsg: false)!.0 && self.walletAddressView.checkInvalidNow(showErrorMsg: false)!.0 {
+        if amountView.checkInvalidNow(showErrorMsg: false)!.0 && walletAddressView.checkInvalidNow(showErrorMsg: false)!.0 && CommonService.checkGasLimit(value: gasLimitView.textField.text ?? "", minGasLimit: PlatonConfig.FuncGas.defaultGas, maxGasLimit: maxGasLimit).0
+            {
             self.sendBtn.style = .blue
             return true
         }
@@ -564,11 +699,14 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
     }
 
     @objc func onTap(gesture: UITapGestureRecognizer) {
-        if self.amountView.textField.isFirstResponder {
-            self.amountView.textField.resignFirstResponder()
+        if amountView.textField.isFirstResponder {
+            amountView.textField.resignFirstResponder()
         }
-        if self.walletAddressView.textField.isFirstResponder {
-            self.walletAddressView.textField.resignFirstResponder()
+        if walletAddressView.textField.isFirstResponder {
+            walletAddressView.textField.resignFirstResponder()
+        }
+        if gasLimitView.textField.isFirstResponder {
+            gasLimitView.textField.resignFirstResponder()
         }
     }
 
@@ -607,6 +745,8 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
     func resetTextFieldAndButton() {
         walletAddressView.textField.text = ""
         amountView.textField.text = ""
+        gasLimitView.textField.text = PlatonConfig.FuncGas.defaultGas.description
+        hideGasLimitView()
         _ = checkConfirmButtonAvailable()
     }
 
@@ -724,5 +864,11 @@ extension AssetSendViewControllerV060 {
             }
 
         })
+    }
+}
+
+extension AssetSendViewControllerV060 : UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        delegate?.childScrollViewDidScroll(childScrollView: scrollView)
     }
 }
