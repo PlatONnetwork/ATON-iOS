@@ -60,7 +60,11 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
 
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(UIApplication.shared.statusBarFrame.height)
+            if #available(iOS 13.0, *) {
+                make.top.equalToSuperview().offset(UIApplication.shared.statusBarFrame.height + 20.0)
+            } else {
+                make.top.equalToSuperview().offset(UIApplication.shared.statusBarFrame.height)
+            }
             make.bottom.leading.trailing.equalToSuperview()
         }
 
