@@ -22,7 +22,7 @@ class MultiGestureTableView: UITableView {
 
 class AssetTransactionViewControllerV060: BaseViewController, EmptyDataSetDelegate, EmptyDataSetSource {
 
-    @IBOutlet weak var tableView: MultiGestureTableView!
+    var tableView: MultiGestureTableView = MultiGestureTableView(frame: .zero, style: .plain)
 
     weak var delegate: ChildScrollViewDidScrollDelegate?
 
@@ -69,6 +69,11 @@ class AssetTransactionViewControllerV060: BaseViewController, EmptyDataSetDelega
         tableView.emptyDataSetDelegate = self
         tableView.emptyDataSetSource = self
         tableView.registerCell(cellTypes: [WalletDetailCell.self])
+        view.addSubview(tableView)
+        tableView.snp.makeConstraints { make in
+            make.bottom.equalToSuperview().offset(-49)
+            make.leading.trailing.top.equalToSuperview()
+        }
 
         self.walletAddress = AssetVCSharedData.sharedData.selectedWalletAddress
         AssetVCSharedData.sharedData.registerHandler(object: self) {[weak self] in
