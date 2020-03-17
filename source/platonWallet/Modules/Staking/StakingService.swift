@@ -51,6 +51,10 @@ final class StakingService: BaseService {
                     completion?(.success, [])
                     return
                 }
+                // save to database
+                NodePersistence.add(nodes: data) {
+                }
+
                 let sortData = StakingService.nodeSorted(data, sort: sort)
                 completion?(.success, sortData)
             case .failure(let error):
