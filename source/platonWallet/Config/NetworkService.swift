@@ -112,8 +112,12 @@ class NetworkService {
         return newHeaders
     }
 
-    static func request<T: Decodable>(_ url: String, parameters: Parameters? = nil, headers: HTTPHeaders? = nil, method: NetHTTPMethod = .Post, completion: NetworkCompletion<T>?) {
-        let requestUrl = SettingService.getCentralizationURL() + url
+    static func request<T: Decodable>(_ url: String, parameters: Parameters? = nil, headers: HTTPHeaders? = nil, isConfig: Bool = false, method: NetHTTPMethod = .Post, completion: NetworkCompletion<T>?) {
+        var requestUrl = url
+        if !url.hasPrefix("http") {
+            requestUrl = SettingService.getCentralizationURL() + url
+        }
+
         var request = URLRequest(url: try! requestUrl.asURL())
 
         if let param = parameters {
@@ -133,6 +137,13 @@ class NetworkService {
             switch response.result {
             case .success(let data):
                 do {
+                    if isConfig {
+                        let decoder = JSONDecoder()
+                        let result = try decoder.decode(T.self, from: data)
+                        completion?(.success, result)
+                        return
+                    }
+
                     let decoder = JSONDecoder()
                     let result = try decoder.decode(JSONResponse<T>.self, from: data)
                     if result.code == 0 {

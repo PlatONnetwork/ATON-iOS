@@ -13,7 +13,8 @@ class RemoteService {
 
     static func getConfig(completion: NetworkCompletion<RemoteConfig>?) {
         let headers: HTTPHeaders = ["cache-control": "no-cache"]
-        NetworkService.request("/config/config.json", headers: headers, method: .Get, completion: completion)
+        let url = SettingService.shareInstance.getCentralizationHost() + "/config/config.json"
+        NetworkService.request(url, headers: headers, isConfig: true, method: .Get, completion: completion)
     }
 
     static func getRemoteVersion(completion: NetworkCompletion<RemoteVersion>?) {
