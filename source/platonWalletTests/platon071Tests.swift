@@ -137,13 +137,12 @@ class platon071Tests: XCTestCase {
         }
         
         let expectaion = self.expectation(description: "testNodeListAPI")
-        StakingService.sharedInstance.updateNodeListData(sort: .rank) { (result, data) in
+        StakingService.updateNodeListData(sort: .rank) { (result, response) in
             switch result {
             case .success:
-                let result = NodePersistence.getAll(sort: .rank)
-                XCTAssertTrue(result.count == 2, "get node list success")
+                XCTAssertTrue(response != nil, "get node list success")
                 expectaion.fulfill()
-            case .fail(_, _):
+            case .failure:
                 XCTAssert(false, "get node list failure")
             }
         }
@@ -161,15 +160,16 @@ class platon071Tests: XCTestCase {
         let expectaion = self.expectation(description: "testMyDelegateAPI")
         let addresses = ["0x0772fd8e5126C01b98D3a93C64546306149202ED"]
 
-        StakingService.sharedInstance.getMyDelegate(adddresses: addresses) { (result, data) in
+        StakingService.getMyDelegate(adddresses: addresses) { (result, response) in
             switch result {
             case .success:
-                XCTAssertTrue((data as? [Delegate]) != nil, "response should be decode Delegate Type")
+                XCTAssertTrue(response != nil, "response should be decode Delegate Type")
                 expectaion.fulfill()
-            case .fail(_, _):
+            case .failure:
                 XCTAssert(false, "get my delegate failure")
             }
         }
+
         waitForExpectations(timeout: 10) { (error) in
             print(error?.localizedDescription ?? "")
         }
@@ -185,12 +185,12 @@ class platon071Tests: XCTestCase {
         let expectaion = self.expectation(description: "testNodeDetailAPI")
         let nid = "0x81f4ab0012303bff59c35cead6c2487909cbf59bb0b2b677c2ff36d7009b39a572b2f73214d8590022d20410cbf92631844a7ce8a7d5b840c0e25cd93dc234d5"
 
-        StakingService.sharedInstance.getNodeDetail(nodeId: nid) { (result, data) in
+        StakingService.getNodeDetail(nodeId: nid) { (result, data) in
             switch result {
             case .success:
-                XCTAssertTrue((data as? NodeDetail) != nil, "response should be decode NodeDetail Type")
+                XCTAssertTrue(data != nil, "response should be decode NodeDetail Type")
                 expectaion.fulfill()
-            case .fail(_, _):
+            case .failure:
                 XCTAssert(false, "get node detail failure")
             }
         }
@@ -208,12 +208,12 @@ class platon071Tests: XCTestCase {
         let expectaion = self.expectation(description: "testDelegateDetailAPI")
         let walletAddress = "0x0772fd8e5126C01b98D3a93C64546306149202ED"
 
-        StakingService.sharedInstance.getDelegateDetail(address: walletAddress) { (result, data) in
+        StakingService.getDelegateDetail(address: walletAddress) { (result, data) in
             switch result {
             case .success:
-                XCTAssertTrue((data as? TotalDelegate) != nil, "response should be decode TotalDelegate Type")
+                XCTAssertTrue(data != nil, "response should be decode TotalDelegate Type")
                 expectaion.fulfill()
-            case .fail(_, _):
+            case .failure:
                 XCTAssert(false, "get delegate detail failure")
             }
         }
@@ -232,12 +232,12 @@ class platon071Tests: XCTestCase {
         let walletAddress = "0x0772fd8e5126C01b98D3a93C64546306149202ED"
         let nid = "0x81f4ab0012303bff59c35cead6c2487909cbf59bb0b2b677c2ff36d7009b39a572b2f73214d8590022d20410cbf92631844a7ce8a7d5b840c0e25cd93dc234d5"
         
-        StakingService.sharedInstance.getDelegationValue(addr: walletAddress, nodeId: nid) { (result, data) in
+        StakingService.getDelegationValue(addr: walletAddress, nodeId: nid) { (result, data) in
             switch result {
             case .success:
-                XCTAssertTrue((data as? Delegation) != nil, "response should be decode DelegationValue Type")
+                XCTAssertTrue(data != nil, "response should be decode DelegationValue Type")
                 expectaion.fulfill()
-            case .fail(_, _):
+            case .failure:
                 XCTAssert(false, "get delegate detail failure")
             }
         }
@@ -257,12 +257,12 @@ class platon071Tests: XCTestCase {
         let walletAddress = "0x0772fd8e5126C01b98D3a93C64546306149202ED"
         let nid = "0x81f4ab0012303bff59c35cead6c2487909cbf59bb0b2b677c2ff36d7009b39a572b2f73214d8590022d20410cbf92631844a7ce8a7d5b840c0e25cd93dc234d5"
         
-        StakingService.sharedInstance.getCanDelegation(addr: walletAddress, nodeId: nid) { (result, data) in
+        StakingService.getCanDelegation(addr: walletAddress, nodeId: nid) { (result, data) in
             switch result {
             case .success:
-                XCTAssertTrue((data as? CanDelegation) != nil, "response should be decode CanDelegation Type")
+                XCTAssertTrue(data != nil, "response should be decode CanDelegation Type")
                 expectaion.fulfill()
-            case .fail(_, _):
+            case .failure:
                 XCTAssert(false, "get can delegate failure")
             }
         }
@@ -284,9 +284,9 @@ class platon071Tests: XCTestCase {
         AssetService.sharedInstace.getWalletBalances(addrs: [walletAddress]) { (result, data) in
             switch result {
             case .success:
-                XCTAssertTrue((data as? [Balance]) != nil, "response should be decode Balance Type")
+                XCTAssertTrue(data != nil, "response should be decode Balance Type")
                 expectaion.fulfill()
-            case .fail(_, _):
+            case .failure:
                 XCTAssert(false, "get balance failure")
             }
         }
@@ -311,7 +311,7 @@ class platon071Tests: XCTestCase {
             case .success:
                 XCTAssertTrue((data as? [Transaction]) != nil, "response should be decode Transaction Type")
                 expectaion.fulfill()
-            case .fail(_, _):
+            case .failure:
                 XCTAssert(false, "get transaction list failure")
             }
         }
@@ -341,7 +341,7 @@ class platon071Tests: XCTestCase {
                 case .success:
                     XCTAssertTrue((data as? [Transaction]) != nil, "response should be decode DelegateRecord Type")
                     expectaion.fulfill()
-                case .fail(_, _):
+                case .failure:
                     XCTAssert(false, "get delegate record failure")
                 }
         }
@@ -373,7 +373,7 @@ class platon071Tests: XCTestCase {
             case .success:
                 XCTAssert(data != nil, "response should be decode RemoteGas Type")
                 expectaion.fulfill()
-            case .fail(_, _):
+            case .failure:
                 XCTAssert(false, "get gas failure")
             }
         }
@@ -391,12 +391,12 @@ class platon071Tests: XCTestCase {
         let expectaion = self.expectation(description: "testRewardRecordsAPI")
         let addresses = ["0x9C893e9fC6Da77e91555437Fdb6AEf28E1D1Eb13", "0xbd89e39a8D44d8e2448ae93Ad07F5636e9cF4c05", "0x9a5B1bC394125160FE64d2617F1C545340ceAbaB"]
 
-        StakingService.sharedInstance.getRewardDelegate(adddresses: addresses, beginSequence: -1, listSize: 20, direction: "new") { (result, data) in
+        StakingService.getRewardDelegate(adddresses: addresses, beginSequence: -1, listSize: 20, direction: "new") { (result, data) in
             switch result {
             case .success:
-                XCTAssertTrue((data as? [RewardModel]) != nil, "response should be decode RewardModel Type")
+                XCTAssertTrue(data != nil, "response should be decode RewardModel Type")
                 expectaion.fulfill()
-            case .fail(_, _):
+            case .failure:
                 XCTAssert(false, "get RewardRecords failure")
             }
         }

@@ -1,22 +1,15 @@
 //
-//  RemoteService.swift
+//  RemoteServices.swift
 //  platonWallet
 //
-//  Created by Admin on 30/10/2019.
-//  Copyright © 2019 ju. All rights reserved.
+//  Created by Admin on 19/3/2020.
+//  Copyright © 2020 ju. All rights reserved.
 //
 
 import Foundation
 import Alamofire
 
-class RemoteService {
-
-    static func getConfig(completion: NetworkCompletion<RemoteConfig>?) {
-        let headers: HTTPHeaders = ["cache-control": "no-cache"]
-        let url = SettingService.shareInstance.getCentralizationHost() + "/config/config.json"
-        NetworkService.request(url, headers: headers, isConfig: true, method: .Get, completion: completion)
-    }
-
+class RemoteServices {
     static func getRemoteVersion(completion: NetworkCompletion<RemoteVersion>?) {
         guard
             let buildVersionString = Bundle.main.infoDictionary!["CFBundleVersion"] as? String,
@@ -27,5 +20,11 @@ class RemoteService {
         parameters["deviceType"] = "ios"
         parameters["channelCode"] = "AppStore"
         NetworkService.request("/config/checkUpdate", parameters: parameters, completion: completion)
+    }
+
+    static func getConfig(completion: NetworkCompletion<RemoteConfig>?) {
+        let headers: HTTPHeaders = ["cache-control": "no-cache"]
+        let url = SettingService.shareInstance.getCentralizationHost() + "/config/config.json"
+        NetworkService.request(url, headers: headers, isConfig: true, method: .Get, completion: completion)
     }
 }

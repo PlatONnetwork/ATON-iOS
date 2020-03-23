@@ -26,7 +26,7 @@ platform :ios do
     #   code_coverage: true, 
     #   derived_data_path: "./DerivedData", 
     #   output_directory: "./reports", 
-    #   device: "iPhone X",
+    #   device: "iPhone 11",
     #   reinstall_app: true,
     #   app_identifier: "com.platon.aton"
     #   )

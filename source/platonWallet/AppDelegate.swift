@@ -199,7 +199,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 extension AppDelegate {
     func getRemoteConfig() {
-        RemoteService.getConfig { (result, remoteConfig) in
+        RemoteServices.getConfig { (result, remoteConfig) in
             switch result {
             case .success:
                 SettingService.shareInstance.remoteConfig = remoteConfig
@@ -214,7 +214,7 @@ extension AppDelegate {
             return
         }
 
-        RemoteService.getRemoteVersion { (result, response) in
+        RemoteServices.getRemoteVersion { (result, response) in
             switch result {
             case .success:
                 SettingService.shareInstance.remoteVersion = response

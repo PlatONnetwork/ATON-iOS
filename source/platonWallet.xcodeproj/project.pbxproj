@@ -73,7 +73,6 @@
 		8118865C23B7590C00CAE5BA /* AssetPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FCCD072179E9F10052FC29 /* AssetPersistence.swift */; };
 		8118865D23B7590C00CAE5BA /* TransactionService+Centralization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CB8ADA228A9564009E8AA0 /* TransactionService+Centralization.swift */; };
 		8118865E23B7590C00CAE5BA /* AssetTransactionViewControllerV060.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ADB60B1222E801C0044918D /* AssetTransactionViewControllerV060.swift */; };
-		8118865F23B7590C00CAE5BA /* AppFramework.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FCCCDA2179B3F10052FC29 /* AppFramework.swift */; };
 		8118866023B7590C00CAE5BA /* LeftAlignLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A11FC472181E90C002D9A96 /* LeftAlignLayout.swift */; };
 		8118866123B7590C00CAE5BA /* RemoteVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81926A06231DFEC500CAF498 /* RemoteVersion.swift */; };
 		8118866223B7590C00CAE5BA /* AppDelegate+MonkeyTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81466834232F3B4E00A141D9 /* AppDelegate+MonkeyTest.swift */; };
@@ -234,7 +233,6 @@
 		811886FE23B7590C00CAE5BA /* UIView+Extenstions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FCCCD8217970580052FC29 /* UIView+Extenstions.swift */; };
 		811886FF23B7590C00CAE5BA /* BaseNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81EE9A0521773B7F008DF8CB /* BaseNavigationController.swift */; };
 		8118870023B7590C00CAE5BA /* TransferConfirmView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8120029521A3EB390050E1B0 /* TransferConfirmView.swift */; };
-		8118870123B7590C00CAE5BA /* RemoteService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813A005C23692F76001CEE32 /* RemoteService.swift */; };
 		8118870223B7590C00CAE5BA /* CommonService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AD11DDC21806C2D002CD905 /* CommonService.swift */; };
 		8118870323B7590C00CAE5BA /* UIScrollView+GestureConflict.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81B58960235AE2CC00816B4E /* UIScrollView+GestureConflict.swift */; };
 		8118870423B7590C00CAE5BA /* NodeSettingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81DD58C7238BA24D007844ED /* NodeSettingCell.swift */; };
@@ -407,8 +405,6 @@
 		8136E14A240D606D000C35F3 /* SignedTransaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8136E147240D606B000C35F3 /* SignedTransaction.swift */; };
 		813A005A23692F33001CEE32 /* RemoteConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813A005923692F33001CEE32 /* RemoteConfig.swift */; };
 		813A005B23692F33001CEE32 /* RemoteConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813A005923692F33001CEE32 /* RemoteConfig.swift */; };
-		813A005D23692F76001CEE32 /* RemoteService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813A005C23692F76001CEE32 /* RemoteService.swift */; };
-		813A005E23692F76001CEE32 /* RemoteService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813A005C23692F76001CEE32 /* RemoteService.swift */; };
 		813C3410223A03A800DE92F1 /* Wallet+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813C340F223A03A800DE92F1 /* Wallet+extension.swift */; };
 		813C3412223A327300DE92F1 /* DropDownVIew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813C3411223A327300DE92F1 /* DropDownVIew.swift */; };
 		813D1FF82306A7AF00EFA397 /* AssetService+Centralization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813D1FF72306A7AF00EFA397 /* AssetService+Centralization.swift */; };
@@ -533,7 +529,6 @@
 		81B58992235DA1FC00816B4E /* AssetPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FCCD072179E9F10052FC29 /* AssetPersistence.swift */; };
 		81B58993235DA1FC00816B4E /* TransactionService+Centralization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81CB8ADA228A9564009E8AA0 /* TransactionService+Centralization.swift */; };
 		81B58994235DA1FC00816B4E /* AssetTransactionViewControllerV060.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ADB60B1222E801C0044918D /* AssetTransactionViewControllerV060.swift */; };
-		81B58995235DA1FC00816B4E /* AppFramework.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FCCCDA2179B3F10052FC29 /* AppFramework.swift */; };
 		81B58996235DA1FC00816B4E /* LeftAlignLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A11FC472181E90C002D9A96 /* LeftAlignLayout.swift */; };
 		81B58997235DA1FC00816B4E /* RemoteVersion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81926A06231DFEC500CAF498 /* RemoteVersion.swift */; };
 		81B58998235DA1FC00816B4E /* AppDelegate+MonkeyTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81466834232F3B4E00A141D9 /* AppDelegate+MonkeyTest.swift */; };
@@ -910,8 +905,13 @@
 		81F1F07E23C84D02000D687C /* RemoteGas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F1F07C23C84D02000D687C /* RemoteGas.swift */; };
 		81F1F07F23C84D02000D687C /* RemoteGas.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F1F07C23C84D02000D687C /* RemoteGas.swift */; };
 		81F5123D22FEE812005F3BDF /* DelegateModel+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F5123C22FEE811005F3BDF /* DelegateModel+Extension.swift */; };
+		81F9B35B242364B700CA0E51 /* RemoteServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F9B35A242364B700CA0E51 /* RemoteServices.swift */; };
+		81F9B35C242364B700CA0E51 /* RemoteServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F9B35A242364B700CA0E51 /* RemoteServices.swift */; };
+		81F9B35D242364B700CA0E51 /* RemoteServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F9B35A242364B700CA0E51 /* RemoteServices.swift */; };
+		81F9B35F24238FCC00CA0E51 /* AppFramework.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F9B35E24238FCC00CA0E51 /* AppFramework.swift */; };
+		81F9B36024238FCC00CA0E51 /* AppFramework.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F9B35E24238FCC00CA0E51 /* AppFramework.swift */; };
+		81F9B36124238FCC00CA0E51 /* AppFramework.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81F9B35E24238FCC00CA0E51 /* AppFramework.swift */; };
 		81FCCCD9217970580052FC29 /* UIView+Extenstions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FCCCD8217970580052FC29 /* UIView+Extenstions.swift */; };
-		81FCCCDB2179B3F10052FC29 /* AppFramework.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FCCCDA2179B3F10052FC29 /* AppFramework.swift */; };
 		81FCCCF22179B6710052FC29 /* AssetNavigationBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FCCCE02179B6710052FC29 /* AssetNavigationBarView.swift */; };
 		81FCCCF32179B6710052FC29 /* AssetTableHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 81FCCCE12179B6710052FC29 /* AssetTableHeader.swift */; };
 		81FCCCF42179B6710052FC29 /* AssetNavigationBarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 81FCCCE22179B6710052FC29 /* AssetNavigationBarView.xib */; };
@@ -1124,7 +1124,6 @@
 		8131914E2235FB48002D4A72 /* TSLXIBViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TSLXIBViewController.xib; sourceTree = "<group>"; };
 		8136E147240D606B000C35F3 /* SignedTransaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignedTransaction.swift; sourceTree = "<group>"; };
 		813A005923692F33001CEE32 /* RemoteConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfig.swift; sourceTree = "<group>"; };
-		813A005C23692F76001CEE32 /* RemoteService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteService.swift; sourceTree = "<group>"; };
 		813C340F223A03A800DE92F1 /* Wallet+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Wallet+extension.swift"; sourceTree = "<group>"; };
 		813C3411223A327300DE92F1 /* DropDownVIew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropDownVIew.swift; sourceTree = "<group>"; };
 		813D1FF72306A7AF00EFA397 /* AssetService+Centralization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AssetService+Centralization.swift"; sourceTree = "<group>"; };
@@ -1311,8 +1310,9 @@
 		81F1F00323C30FA9000D687C /* RewardClaimComfirmView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardClaimComfirmView.swift; sourceTree = "<group>"; };
 		81F1F07C23C84D02000D687C /* RemoteGas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteGas.swift; sourceTree = "<group>"; };
 		81F5123C22FEE811005F3BDF /* DelegateModel+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DelegateModel+Extension.swift"; sourceTree = "<group>"; };
+		81F9B35A242364B700CA0E51 /* RemoteServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteServices.swift; sourceTree = "<group>"; };
+		81F9B35E24238FCC00CA0E51 /* AppFramework.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppFramework.swift; sourceTree = "<group>"; };
 		81FCCCD8217970580052FC29 /* UIView+Extenstions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extenstions.swift"; sourceTree = "<group>"; };
-		81FCCCDA2179B3F10052FC29 /* AppFramework.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFramework.swift; sourceTree = "<group>"; };
 		81FCCCE02179B6710052FC29 /* AssetNavigationBarView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetNavigationBarView.swift; sourceTree = "<group>"; };
 		81FCCCE12179B6710052FC29 /* AssetTableHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AssetTableHeader.swift; sourceTree = "<group>"; };
 		81FCCCE22179B6710052FC29 /* AssetNavigationBarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AssetNavigationBarView.xib; sourceTree = "<group>"; };
@@ -1647,7 +1647,7 @@
 				81F0DC91234B162C00325858 /* CommonConfig.swift */,
 				9AD11DDC21806C2D002CD905 /* CommonService.swift */,
 				813A005923692F33001CEE32 /* RemoteConfig.swift */,
-				813A005C23692F76001CEE32 /* RemoteService.swift */,
+				81F9B35A242364B700CA0E51 /* RemoteServices.swift */,
 				812CECCD23FD05A8006129B8 /* TimerService.swift */,
 				812CECDB23FFCE6D006129B8 /* NetworkService.swift */,
 			);
@@ -2042,8 +2042,8 @@
 				9AE31427218D981D00B5433F /* Setting */,
 				81EE99F221770A58008DF8CB /* Transfer */,
 				81EE99F321770A58008DF8CB /* Wallet */,
-				81FCCCDA2179B3F10052FC29 /* AppFramework.swift */,
 				8148F01421BA0E1600045546 /* BaseService.swift */,
+				81F9B35E24238FCC00CA0E51 /* AppFramework.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -3203,7 +3203,6 @@
 				8118865C23B7590C00CAE5BA /* AssetPersistence.swift in Sources */,
 				8118865D23B7590C00CAE5BA /* TransactionService+Centralization.swift in Sources */,
 				8118865E23B7590C00CAE5BA /* AssetTransactionViewControllerV060.swift in Sources */,
-				8118865F23B7590C00CAE5BA /* AppFramework.swift in Sources */,
 				8118866023B7590C00CAE5BA /* LeftAlignLayout.swift in Sources */,
 				8118866123B7590C00CAE5BA /* RemoteVersion.swift in Sources */,
 				81F1EFEA23BDF8F1000D687C /* NodeSort.swift in Sources */,
@@ -3271,6 +3270,7 @@
 				8118869923B7590C00CAE5BA /* NodeInfoTableViewCell.swift in Sources */,
 				8118869A23B7590C00CAE5BA /* BiometricsAuthViewController.swift in Sources */,
 				8118869B23B7590C00CAE5BA /* SharedWalletMemberCell.swift in Sources */,
+				81F9B35D242364B700CA0E51 /* RemoteServices.swift in Sources */,
 				8118869C23B7590C00CAE5BA /* SwitchWalletTableViewCell.swift in Sources */,
 				8118869D23B7590C00CAE5BA /* PersonalViewController.swift in Sources */,
 				8118869E23B7590C00CAE5BA /* PopupDialog.swift in Sources */,
@@ -3354,6 +3354,7 @@
 				811886EA23B7590C00CAE5BA /* WalletBalanceTableViewCell.swift in Sources */,
 				811886EB23B7590C00CAE5BA /* RealmHelper+Migration.swift in Sources */,
 				811886EC23B7590C00CAE5BA /* SettingTableViewCell.swift in Sources */,
+				81F9B36124238FCC00CA0E51 /* AppFramework.swift in Sources */,
 				811886ED23B7590C00CAE5BA /* PlatonTableView.swift in Sources */,
 				811886EE23B7590C00CAE5BA /* PButton.swift in Sources */,
 				811886EF23B7590C00CAE5BA /* PLevelSlider.swift in Sources */,
@@ -3374,7 +3375,6 @@
 				811886FE23B7590C00CAE5BA /* UIView+Extenstions.swift in Sources */,
 				811886FF23B7590C00CAE5BA /* BaseNavigationController.swift in Sources */,
 				8118870023B7590C00CAE5BA /* TransferConfirmView.swift in Sources */,
-				8118870123B7590C00CAE5BA /* RemoteService.swift in Sources */,
 				8118870223B7590C00CAE5BA /* CommonService.swift in Sources */,
 				8118870323B7590C00CAE5BA /* UIScrollView+GestureConflict.swift in Sources */,
 				8118870423B7590C00CAE5BA /* NodeSettingCell.swift in Sources */,
@@ -3482,7 +3482,6 @@
 				81B58992235DA1FC00816B4E /* AssetPersistence.swift in Sources */,
 				81B58993235DA1FC00816B4E /* TransactionService+Centralization.swift in Sources */,
 				81B58994235DA1FC00816B4E /* AssetTransactionViewControllerV060.swift in Sources */,
-				81B58995235DA1FC00816B4E /* AppFramework.swift in Sources */,
 				81B58996235DA1FC00816B4E /* LeftAlignLayout.swift in Sources */,
 				81B58997235DA1FC00816B4E /* RemoteVersion.swift in Sources */,
 				81F1EFE923BDF8F1000D687C /* NodeSort.swift in Sources */,
@@ -3550,6 +3549,7 @@
 				81B589CF235DA1FC00816B4E /* NodeInfoTableViewCell.swift in Sources */,
 				81B589D0235DA1FC00816B4E /* BiometricsAuthViewController.swift in Sources */,
 				81B589D1235DA1FC00816B4E /* SharedWalletMemberCell.swift in Sources */,
+				81F9B35C242364B700CA0E51 /* RemoteServices.swift in Sources */,
 				81B589D2235DA1FC00816B4E /* SwitchWalletTableViewCell.swift in Sources */,
 				81B589D3235DA1FC00816B4E /* PersonalViewController.swift in Sources */,
 				81B589D4235DA1FC00816B4E /* PopupDialog.swift in Sources */,
@@ -3633,6 +3633,7 @@
 				81B58A20235DA1FC00816B4E /* WalletBalanceTableViewCell.swift in Sources */,
 				81B58A21235DA1FC00816B4E /* RealmHelper+Migration.swift in Sources */,
 				81B58A22235DA1FC00816B4E /* SettingTableViewCell.swift in Sources */,
+				81F9B36024238FCC00CA0E51 /* AppFramework.swift in Sources */,
 				81B58A23235DA1FC00816B4E /* PlatonTableView.swift in Sources */,
 				81B58A24235DA1FC00816B4E /* PButton.swift in Sources */,
 				81B58A25235DA1FC00816B4E /* PLevelSlider.swift in Sources */,
@@ -3653,7 +3654,6 @@
 				81B58A32235DA1FC00816B4E /* UIView+Extenstions.swift in Sources */,
 				81B58A33235DA1FC00816B4E /* BaseNavigationController.swift in Sources */,
 				81B58A34235DA1FC00816B4E /* TransferConfirmView.swift in Sources */,
-				813A005E23692F76001CEE32 /* RemoteService.swift in Sources */,
 				81B58A35235DA1FC00816B4E /* CommonService.swift in Sources */,
 				81B58A36235DA1FC00816B4E /* UIScrollView+GestureConflict.swift in Sources */,
 				81DD58E3238BA24D007844ED /* NodeSettingCell.swift in Sources */,
@@ -3759,7 +3759,6 @@
 				81FCCD102179E9F20052FC29 /* AssetPersistence.swift in Sources */,
 				81CB8ADB228A9564009E8AA0 /* TransactionService+Centralization.swift in Sources */,
 				9ADB60B3222E801C0044918D /* AssetTransactionViewControllerV060.swift in Sources */,
-				81FCCCDB2179B3F10052FC29 /* AppFramework.swift in Sources */,
 				9A11FC482181E90C002D9A96 /* LeftAlignLayout.swift in Sources */,
 				81926A07231DFEC500CAF498 /* RemoteVersion.swift in Sources */,
 				81466835232F3B4E00A141D9 /* AppDelegate+MonkeyTest.swift in Sources */,
@@ -3829,6 +3828,7 @@
 				812002AC21A3EB390050E1B0 /* SwitchWalletTableViewCell.swift in Sources */,
 				81FCCCFB2179B6710052FC29 /* PersonalViewController.swift in Sources */,
 				9AF9AC182182E04000E97F07 /* PopupDialog.swift in Sources */,
+				81F9B35B242364B700CA0E51 /* RemoteServices.swift in Sources */,
 				81718D8D22312F9C00DB04F6 /* MnemonicGridView.swift in Sources */,
 				81FCCCF22179B6710052FC29 /* AssetNavigationBarView.swift in Sources */,
 				8115BEAC218B1DDA009FFE3B /* TransactionListViewController.swift in Sources */,
@@ -3912,6 +3912,7 @@
 				81DD58F6238BA24D007844ED /* LanguageSettingTableViewCell.swift in Sources */,
 				81B58964235D92FD00816B4E /* RealmHelper+Migration.swift in Sources */,
 				81E2E84621869D1F008B7504 /* SettingTableViewCell.swift in Sources */,
+				81F9B35F24238FCC00CA0E51 /* AppFramework.swift in Sources */,
 				812D94B0218C3169002A48B0 /* PlatonTableView.swift in Sources */,
 				81EE99CF2175F4E1008DF8CB /* PButton.swift in Sources */,
 				9ADB60C2222F95C40044918D /* PLevelSlider.swift in Sources */,
@@ -3931,7 +3932,6 @@
 				81FCCCD9217970580052FC29 /* UIView+Extenstions.swift in Sources */,
 				81EE9A0621773B7F008DF8CB /* BaseNavigationController.swift in Sources */,
 				812002B221A3EB390050E1B0 /* TransferConfirmView.swift in Sources */,
-				813A005D23692F76001CEE32 /* RemoteService.swift in Sources */,
 				9AD11DDD21806C2D002CD905 /* CommonService.swift in Sources */,
 				81B58961235AE2CC00816B4E /* UIScrollView+GestureConflict.swift in Sources */,
 				81E2E84C2186A811008B7504 /* AddressBookTableViewCell.swift in Sources */,
