@@ -281,6 +281,14 @@ extension ImportMnemonicOrPrivateKeyViewController :UITextFieldDelegate, UITextV
 
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
 
+        if textField == self.nameTF && string != "" {
+            if let text = textField.text, let textRange = Range(range, in: text) {
+                let appendtext = text.replacingCharacters(in: textRange, with: string)
+                let result = CommonService.isValidWalletName(appendtext, checkDuplicate: true)
+                return result.0
+            }
+        }
+
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.2) {
             if textField == self.pswTF {
                 self.passwordStrengthView.updateFor( password: self.pswTF.text ?? "")

@@ -17,6 +17,8 @@ class QRCodeView: UIView {
 
     @IBOutlet weak var addressLabel: UILabel!
 
+    @IBOutlet weak var tipsLabel: UILabel!
+
     override func awakeFromNib() {
         saveImgAndShreadBtn.style = .blue
         let tap = UITapGestureRecognizer(target: self, action: #selector(onTap))

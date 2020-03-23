@@ -123,7 +123,6 @@ class ImportObservedWalletViewController: BaseImportWalletViewController {
         endEditingWhileTapBackgroundView = true
 
         addresstextView.text = defaultText
-        addresstextView.tintColor = addresstextView.textColor
         scrollView.keyboardDismissMode = .interactive
 
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame(_:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)

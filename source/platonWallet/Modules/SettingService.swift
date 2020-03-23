@@ -32,35 +32,38 @@ class SettingService {
         return chainId
     }
 
+    var currentNetworkDesc: String {
+        let currentNode = AppConfig.NodeURL.defaultNodesURL.first(where: { $0.chainId == currentNodeChainId })
+        guard let desc = currentNode?.desc else {
+            return ""
+        }
+        return desc
+    }
+
+    var currentNetworkName: String {
+        return Localized(currentNetworkDesc)
+    }
+
     var remoteVersion: RemoteVersion?
     var remoteConfig: RemoteConfig?
 
     static let shareInstance = SettingService()
 
     func getCentralizationHost() -> String {
-        let testHost =  AppConfig.ServerURL.HOST.TESTNET
-        let devHost = AppConfig.ServerURL.HOST.DEVNET
-        let uatHost =  AppConfig.ServerURL.HOST.UATNET
-        let proHost =  AppConfig.ServerURL.HOST.PRODUCTNET
-
         let chainId = SettingService.shareInstance.currentNodeChainId
         #if UAT
-        if chainId == AppConfig.ChainID.PRODUCT {
-            return testHost
+        if chainId == AppConfig.ChainID.TEST1 {
+            return AppConfig.ServerURL.HOST.TESTNET
         } else {
-            return devHost
+            return AppConfig.ServerURL.HOST.DEVNET
         }
         #elseif PARALLELNET
-        if chainId == AppConfig.ChainID.PRODUCT {
-            return uatHost
-        } else {
-            return uatHost // 暂无用到
-        }
+        return AppConfig.ServerURL.HOST.UATNET
         #else
-        if chainId == AppConfig.ChainID.PRODUCT {
-            return proHost
+        if chainId == AppConfig.ChainID.VERSION_MAINTESTNET {
+            return AppConfig.ServerURL.HOST.MAINTESTNET
         } else {
-            return proHost // 暂无用到
+            return AppConfig.ServerURL.HOST.MAINNET
         }
         #endif
     }

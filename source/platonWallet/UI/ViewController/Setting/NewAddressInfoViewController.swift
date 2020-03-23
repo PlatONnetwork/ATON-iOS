@@ -24,6 +24,8 @@ class NewAddressInfoViewController: BaseViewController , UITextFieldDelegate {
 
     let contentView = UIView.viewFromXib(theClass: AddAddressInfoView.self) as! AddAddressInfoView
 
+    static let maxTextCount = 20
+
     override func viewDidLoad() {
         super.viewDidLoad()
         initSubViews()
@@ -49,8 +51,7 @@ class NewAddressInfoViewController: BaseViewController , UITextFieldDelegate {
 
         view.addSubview(contentView)
         contentView.snp.makeConstraints { (make) in
-            make.leading.trailing.bottom.equalTo(view)
-            make.top.equalToSuperview().offset(UIDevice.notchHeight)
+            make.edges.equalToSuperview()
         }
         contentView.confirmButton.addTarget(self, action: #selector(onConfirm), for: .touchUpInside)
     }
@@ -87,19 +88,6 @@ class NewAddressInfoViewController: BaseViewController , UITextFieldDelegate {
             }
         }
 
-//        let scanner = QRScannerViewController {[weak self] (res) in
-//
-//            if res.isValidAddress() {
-//                self?.showMessage(text: Localized("QRScan_success_tips"))
-//                self?.contentView.addressField.text = res
-//                _ = self?.checkConfirmButtonEnable(showTip: false)
-//            } else {
-//                self?.showMessage(text: Localized("QRScan_failed_tips"))
-//            }
-//
-////            self?.navigationController?.popViewController(animated: true)
-//
-//        }
         scanner.rescan()
         scanner.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(scanner, animated: true)
@@ -112,7 +100,7 @@ class NewAddressInfoViewController: BaseViewController , UITextFieldDelegate {
             return
         }
 
-        if (contentView.nameTextField.text?.length)! > 12 {
+        if (contentView.nameTextField.text?.length)! > 20 {
             contentView.showWalletNameTipWithString(desciption: Localized("NewAddress_name_Incorrect_tip"))
             return
         }
@@ -164,6 +152,22 @@ class NewAddressInfoViewController: BaseViewController , UITextFieldDelegate {
         } else if textField == contentView.addressField {
             _ = self.checkAddress(showTip: true)
         }
+    }
+
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+
+        guard textField == contentView.nameTextField else {
+            return true
+        }
+        
+        if let text = textField.text, let textRange = Range(range, in: text) {
+            let appendtext = text.replacingCharacters(in: textRange, with: string)
+            if appendtext.count > NewAddressInfoViewController.maxTextCount {
+                return false
+            }
+        }
+
+        return true
     }
 
     func checkName(showTip :Bool) -> Bool {

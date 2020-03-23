@@ -10,26 +10,50 @@ import Foundation
 import RealmSwift
 
 extension RealmHelper {
+    public static func migrationBelow076(migration: Migration, schemaVersion: UInt64, oldSchemaVersion: UInt64) {
+
+        migration.renameProperty(onType: Node.className(), from: "ratePA", to: "delegatedRatePA")
+    }
+
+    public static func migrationBelow091(migration: Migration, schemaVersion:UInt64, oldSchemaVersion: UInt64) {
+        migration.enumerateObjects(ofType: Wallet.className()) { (oldObject, newObject) in
+            guard oldObject != nil, newObject != nil else { return }
+            newObject!["version"] = 0
+        }
+    }
+
+    public static func migrationBelow080(migration: Migration, schemaVersion:UInt64, oldSchemaVersion: UInt64) {
+        #if UAT
+        #elseif PARALLELNET
+        #else
+        migration.enumerateObjects(ofType: Wallet.className()) { (oldObject, newObject) in
+            guard oldObject != nil, newObject != nil else { return }
+            guard let chainId = oldObject!["chainId"] as? String, (chainId == AppConfig.ChainID.VERSION_074 || chainId == AppConfig.ChainID.VERSION_0741 || chainId == AppConfig.ChainID.VERSION_076) else { return }
+            newObject!["chainId"] = AppConfig.ChainID.VERSION_MAINTESTNET
+        }
+        #endif
+    }
+
     public static func migrationBelow0741(migration: Migration, schemaVersion:UInt64, oldSchemaVersion: UInt64) {
         #if UAT
         #elseif PARALLELNET
         #else
         migration.enumerateObjects(ofType: Wallet.className()) { (oldObject, newObject) in
             guard oldObject != nil, newObject != nil else { return }
-            guard let chainId = oldObject!["chainId"] as? String, (chainId == AppConfig.ChainID.VERSION_074 || chainId == AppConfig.ChainID.VERSION_MAINNET) else { return }
-            newObject!["chainId"] = AppConfig.ChainID.PRODUCT
+            guard let chainId = oldObject!["chainId"] as? String, (chainId == AppConfig.ChainID.VERSION_074) else { return }
+            newObject!["chainId"] = AppConfig.ChainID.VERSION_0741
         }
 
         migration.enumerateObjects(ofType: Transaction.className()) { (oldObject, newObject) in
             guard oldObject != nil, newObject != nil else { return }
-            guard let chainId = oldObject!["chainId"] as? String, (chainId == AppConfig.ChainID.VERSION_074 || chainId == AppConfig.ChainID.VERSION_MAINNET) else { return }
-            newObject!["chainId"] = AppConfig.ChainID.PRODUCT
+            guard let chainId = oldObject!["chainId"] as? String, (chainId == AppConfig.ChainID.VERSION_074) else { return }
+            newObject!["chainId"] = AppConfig.ChainID.VERSION_0741
         }
 
         migration.enumerateObjects(ofType: AddressInfo.className()) { (oldObject, newObject) in
             guard oldObject != nil, newObject != nil else { return }
-            guard let chainId = oldObject!["chainId"] as? String, (chainId == AppConfig.ChainID.VERSION_074 || chainId == AppConfig.ChainID.VERSION_MAINNET) else { return }
-            newObject!["chainId"] = AppConfig.ChainID.PRODUCT
+            guard let chainId = oldObject!["chainId"] as? String, (chainId == AppConfig.ChainID.VERSION_074) else { return }
+            newObject!["chainId"] = AppConfig.ChainID.VERSION_0741
         }
         #endif
     }
@@ -65,7 +89,6 @@ extension RealmHelper {
         migration.deleteData(forType: "DelegateDetailDel")
     }
 
-    
     public static func migrationBelow0732(migration: Migration, schemaVersion: UInt64, oldSchemaVersion: UInt64) {
         migration.deleteData(forType: "NodeInfo")
     }

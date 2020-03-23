@@ -60,9 +60,7 @@ class WalletCollectionViewCell: UICollectionViewCell {
             make.top.equalToSuperview().offset(19)
             make.width.height.equalTo(24)
         }
-
-        walletNameLabel.adjustsFontSizeToFitWidth = true
-
+        
         walletNameLabel.font = UIFont.systemFont(ofSize: 12)
         contentView.addSubview(walletNameLabel)
         walletNameLabel.snp.makeConstraints { make in

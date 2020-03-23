@@ -11,6 +11,35 @@ import UIKit
 import Localize_Swift
 
 extension Transaction {
+    func getTransactionDirection(_ currentAddress: String? = nil) -> TransactionDirection {
+        guard let type = txType else { return .unknown }
+        switch type {
+        case .delegateWithdraw,
+             .stakingWithdraw,
+             .claimReward:
+            return .Receive
+        case .unknown:
+            return .unknown
+        case .transfer:
+            guard let address = currentAddress else {
+                let addresses = (AssetVCSharedData.sharedData.walletList as! [Wallet]).map { return $0.address.add0x().lowercased() }
+                if let fromAddress = to?.add0x().lowercased(), addresses.contains(fromAddress) {
+                    return .Receive
+                }
+                return .Sent
+            }
+            if address.add0x().lowercased() == from?.add0x().lowercased() {
+                return .Sent
+            } else if address.add0x().lowercased() == to?.add0x().lowercased() {
+                return .Receive
+            } else {
+                return .unknown
+            }
+        default:
+            return .Sent
+        }
+    }
+
     var toAvatarImage: UIImage? {
         switch txType! {
         case .transfer,
@@ -20,6 +49,8 @@ extension Transaction {
                 return UIImage(named: "walletAvatar_1")
             }
             return UIImage(named: wallet.avatar)
+        case .claimReward:
+            return UIImage(named: "2.icon_Shared")
         default:
             if toType == .contract {
                 return UIImage(named: "2.icon_node")
@@ -72,17 +103,24 @@ extension Transaction {
         }
 
         if let valueStr = value, Int(valueStr) == 0 {
-            return (valueDescription, UIColor(rgb: 0xb6bbd0))
+            return (topValueDescription, UIColor(rgb: 0xb6bbd0))
+        }
+
+        if let type = txType, type == .claimReward {
+            guard let string = topValueDescription else {
+                return (nil, nil)
+            }
+            return ("+" + string, UIColor(rgb: 0x19a20e))
         }
 
         switch direction {
         case .Sent:
-            guard let string = valueDescription else {
+            guard let string = topValueDescription else {
                 return (nil, nil)
             }
             return ("-" + string, UIColor(rgb: 0xff3b3b))
         case .Receive:
-            guard let string = valueDescription else {
+            guard let string = topValueDescription else {
                 return (nil, nil)
             }
             return ("+" + string, UIColor(rgb: 0x19a20e))
@@ -111,21 +149,34 @@ extension Transaction {
 
     var amountTextString: String {
         if let valueStr = value, Int(valueStr) == 0 {
-            return valueDescription!
+            return topValueDescription!
         }
 
-        if txReceiptStatus == TransactionReceiptStatus.businessCodeError.rawValue {
-            return valueDescription!
+        if txReceiptStatus == TransactionReceiptStatus.businessCodeError.rawValue
+            || txReceiptStatus == TransactionReceiptStatus.timeout.rawValue {
+            return topValueDescription!
+        }
+
+        if let type = txType, type == .claimReward {
+            return "+" + topValueDescription!
         }
 
         switch direction {
         case .Sent:
-            return "-" + valueDescription!
+            return "-" + topValueDescription!
         case .Receive:
-            return "+" + valueDescription!
+            return "+" + topValueDescription!
         default:
-            return "-" + valueDescription!
+            return "-" + topValueDescription!
         }
+    }
+
+    var typeTextColor: UIColor {
+        if txReceiptStatus == TransactionReceiptStatus.businessCodeError.rawValue
+            || txReceiptStatus == TransactionReceiptStatus.timeout.rawValue {
+            return UIColor(white: 0.0, alpha: 0.5)
+        }
+        return UIColor.black
     }
 
     var amountTextColor: UIColor {
@@ -133,10 +184,14 @@ extension Transaction {
             return UIColor(rgb: 0xb6bbd0)
         }
 
-        if txReceiptStatus == TransactionReceiptStatus.businessCodeError.rawValue {
+        if (txReceiptStatus == TransactionReceiptStatus.businessCodeError.rawValue
+            || txReceiptStatus == TransactionReceiptStatus.timeout.rawValue) {
             return UIColor(rgb: 0xb6bbd0)
         }
 
+//        if let type = txType, type == .claimReward {
+//            return UIColor(rgb: 0x19a20e)
+//        }
         switch direction {
         case .Receive:
             return UIColor(rgb: 0x19a20e)
@@ -155,19 +210,21 @@ extension Transaction {
     }
 
     var txTypeIcon: UIImage? {
-        switch direction {
-        case .Receive:
-            if txType! == .transfer {
-                return UIImage(named: "txRecvSign")
-            }
+        switch txType! {
+        case .delegateCreate:
+            return UIImage(named: "1.icon_Delegate")
+        case .delegateWithdraw:
             return UIImage(named: "1.icon_Undelegate")
-        case .Sent:
-            if txType! == .transfer {
+        case .contractCreate:
+            return UIImage(named: "1.icon_Create a contract")
+        case .contractExecute:
+            return UIImage(named: "1.icon_Executing a contract")
+        default:
+            if direction == .Receive {
+                return UIImage(named: "txRecvSign")
+            } else {
                 return UIImage(named: "txSendSign")
             }
-            return UIImage(named: "1.icon_Delegate")
-        default:
-            return nil
         }
     }
 
@@ -258,7 +315,7 @@ extension Transaction {
         let localZone = NSTimeZone.local
         format.timeZone = localZone
         format.locale = NSLocale.current
-        format.dateFormat = "#yyyy/MMdd HH:mm"
+        format.dateFormat = "#yyyy/MMdd HH:mm:ss"
         let strDate = format.string(from: date)
         return strDate
     }

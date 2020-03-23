@@ -141,7 +141,7 @@ class SettingTableViewController: BaseViewController, UITableViewDelegate, UITab
             }
 
             let lanL = UILabel(frame: .zero)
-            lanL.text = (value/PlatonConfig.VON.LAT).description.displayForMicrometerLevel(maxRound: 8).ATPSuffix()
+            lanL.text = (value/PlatonConfig.VON.LAT).description.ATPSuffix()
             lanL.textColor = UIColor(rgb: 0x000000)
             lanL.font = UIFont.systemFont(ofSize: 15)
             cell.contentView.addSubview(lanL)
@@ -213,11 +213,17 @@ class SettingTableViewController: BaseViewController, UITableViewDelegate, UITab
             BigUInt(100000)*PlatonConfig.VON.LAT,
             BigUInt(1000000)*PlatonConfig.VON.LAT]
 
-        let contentView = ThresholdValueSelectView(listData: listData, selected: value)
+        let type = PopSelectedViewType.threshold(datasource: listData, selected: value)
+        let contentView = ThresholdValueSelectView(type: type)
         contentView.show(viewController: self)
-        contentView.valueChangedHandler = { [weak self] (value) in
-            SettingService.shareInstance.thresholdValue = value
-            self?.initData()
+        contentView.valueChangedHandler = { [weak self] value in
+            switch value {
+            case .threshold(_, let selected):
+                SettingService.shareInstance.thresholdValue = selected
+                self?.initData()
+            default:
+                break
+            }
         }
     }
 

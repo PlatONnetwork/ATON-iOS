@@ -19,36 +19,33 @@ struct AppConfig {
     struct ChainID {
         static let VERSION_074 = "97"
         static let VERSION_0741 = "96"
-        static let VERSION_MAINNET = "95"
+        static let VERSION_076 = "95"
+        static let VERSION_MAINTESTNET = "101"
+        static let VERSION_MAINNET = "100"
         static let VERSION_UATNET = "299"
-        static let TEST = "103"
-        #if UAT //测试网络
-        static let PRODUCT = "101"
-        #elseif PARALLELNET // 平行网络
-        static let PRODUCT = AppConfig.ChainID.VERSION_UATNET
-        #else
-        static let PRODUCT = AppConfig.ChainID.VERSION_MAINNET
-        #endif
+        static let DEV = "103"
+        static let TEST1 = "101"
     }
 
     struct NodeURL {
         static let DefaultNodeURL_Alpha_V071 = ServerURL.HOST.TESTNET + "/rpc"
         static let DefaultNodeURL_Alpha_V071_DEV = ServerURL.HOST.DEVNET + "/rpc"
         static let DefaultNodeURL_UAT = ServerURL.HOST.UATNET + "/rpc"
-        static let DefaultNodeURL_PRODUCT = ServerURL.HOST.PRODUCTNET + "/rpc"
+        static let DefaultNodeURL_MAINTEST = ServerURL.HOST.MAINTESTNET + "/rpc"
+        static let DefaultNodeURL_MAIN = ServerURL.HOST.MAINNET + "/rpc"
 
         #if UAT
         static let defaultNodesURL = [
-            (nodeURL: AppConfig.NodeURL.DefaultNodeURL_Alpha_V071, desc: "SettingsVC_nodeSet_defaultTestNetwork_test_des", chainId: AppConfig.ChainID.PRODUCT, isSelected: true),
-            (nodeURL: AppConfig.NodeURL.DefaultNodeURL_Alpha_V071_DEV, desc: "SettingsVC_nodeSet_defaultTestNetwork_develop_des", chainId: AppConfig.ChainID.TEST, isSelected: false)
+            (nodeURL: AppConfig.NodeURL.DefaultNodeURL_Alpha_V071, desc: "SettingsVC_nodeSet_defaultTestNetwork_test_des", chainId: AppConfig.ChainID.TEST1, isSelected: true),
+            (nodeURL: AppConfig.NodeURL.DefaultNodeURL_Alpha_V071_DEV, desc: "SettingsVC_nodeSet_defaultTestNetwork_develop_des", chainId: AppConfig.ChainID.DEV, isSelected: false)
         ]
         #elseif PARALLELNET
         static let defaultNodesURL = [
-            (nodeURL: DefaultNodeURL_UAT, desc: "SettingsVC_nodeSet_parallel_des", chainId: AppConfig.ChainID.PRODUCT, isSelected: false),
+            (nodeURL: DefaultNodeURL_UAT, desc: "SettingsVC_nodeSet_parallel_des", chainId: AppConfig.ChainID.VERSION_UATNET, isSelected: false),
         ]
         #else
         static let defaultNodesURL = [
-            (nodeURL: DefaultNodeURL_PRODUCT, desc: "SettingsVC_nodeSet_NewBaleyworld_des", chainId: AppConfig.ChainID.PRODUCT, isSelected: false),
+            (nodeURL: DefaultNodeURL_MAINTEST, desc: "SettingsVC_nodeSet_NewBaleyworld_des", chainId: AppConfig.ChainID.VERSION_MAINTESTNET, isSelected: false),
         ]
         #endif
     }
@@ -57,15 +54,13 @@ struct AppConfig {
         static let pendingTransactionPollingTimerEnable = true
         static let pendingTransactionPollingTimerInterval = 3
         static let balancePollingTimerInterval = 5
+        static let viewControllerUpdateInterval = 3
     }
 
     struct H5URL {
         struct LisenceURL {
-            static let serviceurl_en = SettingService.shareInstance.getCentralizationHost() + "/aton-agreement/en-us/agreement.html"
-            static let serviceurl_cn = SettingService.shareInstance.getCentralizationHost() + "/aton-agreement/zh-cn/agreement.html"
-
             static var serviceurl: String {
-                return Localize.currentLanguage() == "en" ? serviceurl_en : serviceurl_cn
+                return SettingService.shareInstance.getCentralizationHost() + (Localize.currentLanguage() == "en" ? "/aton-agreement/en-us/v0760/agreement.html" : "/aton-agreement/zh-cn/v0760/agreement.html")
             }
         }
 
@@ -97,25 +92,23 @@ struct AppConfig {
         }
 
         struct PrivacyPolicyURL {
-            static let policy_en = SettingService.shareInstance.getCentralizationHost() +  "/aton-agreement/en-us/privacyAgreement.html"
-            static let policy_cn = SettingService.shareInstance.getCentralizationHost() + "/aton-agreement/zh-cn/privacyAgreement.html"
-
             static var policyurl: String {
-                return Localize.currentLanguage() == "en" ? policy_en : policy_cn
-            }
-        }
+                return SettingService.shareInstance.getCentralizationHost() + (Localize.currentLanguage() == "en" ? "/aton-agreement/en-us/privacyAgreement.html" : "/aton-agreement/zh-cn/privacyAgreement.html")
+            }        }
     }
 
     struct ServerURL {
         struct HOST {
-            static let UATNET = "https://aton.uatnet.platon.network"
-            static let PRODUCTNET = "https://aton.main.platon.network"
+            static let UATNET = "https://aton.uat.platon.network"
+            static let MAINTESTNET = "https://aton.test.platon.network"
+            static let MAINNET = "https://aton.main.platon.network"
 //            static let TESTNET = "http://192.168.9.190:1000"
             static let TESTNET = "http://58.250.250.234:1000"
 //            static let TESTNET = "http://58.250.250.234:1000"
             static let DEVNET = "http://192.168.9.190:443"
+//            static let DEVNET = "http://192.168.120.141:6789"
         }
-        static let PATH = "/app/v0700"
+        static let PATH = "/app/v0760"
     }
 
     struct AppInfo {
@@ -129,11 +122,17 @@ struct AppConfig {
 
 extension String {
     var chainid: String {
+        #if UAT
         switch self {
         case AppConfig.NodeURL.DefaultNodeURL_Alpha_V071_DEV:
-            return AppConfig.ChainID.TEST
+            return AppConfig.ChainID.DEV
         default:
-            return AppConfig.ChainID.PRODUCT
+            return AppConfig.ChainID.TEST1
         }
+        #elseif PARALLELNET
+        return AppConfig.ChainID.VERSION_UATNET
+        #else
+        return AppConfig.ChainID.VERSION_MAINTESTNET
+        #endif
     }
 }

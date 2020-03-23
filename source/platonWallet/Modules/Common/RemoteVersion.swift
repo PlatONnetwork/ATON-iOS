@@ -14,7 +14,3 @@ struct RemoteVersion: Decodable {
     var newVersion: String?
     var url: String?
 }
-
-struct RemoteVersionResponse: Decodable {
-    var data: RemoteVersion
-}

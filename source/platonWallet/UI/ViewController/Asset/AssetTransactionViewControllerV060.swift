@@ -22,7 +22,7 @@ class MultiGestureTableView: UITableView {
 
 class AssetTransactionViewControllerV060: BaseViewController, EmptyDataSetDelegate, EmptyDataSetSource {
 
-    @IBOutlet weak var tableView: MultiGestureTableView!
+    var tableView: MultiGestureTableView = MultiGestureTableView(frame: .zero, style: .plain)
 
     weak var delegate: ChildScrollViewDidScrollDelegate?
 
@@ -69,6 +69,11 @@ class AssetTransactionViewControllerV060: BaseViewController, EmptyDataSetDelega
         tableView.emptyDataSetDelegate = self
         tableView.emptyDataSetSource = self
         tableView.registerCell(cellTypes: [WalletDetailCell.self])
+        view.addSubview(tableView)
+        tableView.snp.makeConstraints { make in
+            make.bottom.equalToSuperview().offset(-49)
+            make.leading.trailing.top.equalToSuperview()
+        }
 
         self.walletAddress = AssetVCSharedData.sharedData.selectedWalletAddress
         AssetVCSharedData.sharedData.registerHandler(object: self) {[weak self] in
@@ -149,7 +154,10 @@ extension AssetTransactionViewControllerV060 {
         guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return [] }
 
         var pendingTxsInDB = TransferPersistence.getTransactionsByAddress(from: selectedAddress, status: TransactionReceiptStatus.pending)
-        pendingTxsInDB.txSort()
+//        pendingTxsInDB.txSort()
+        for tx in pendingTxsInDB {
+            tx.direction = tx.getTransactionDirection(selectedAddress)
+        }
         return pendingTxsInDB
     }
 
@@ -157,6 +165,9 @@ extension AssetTransactionViewControllerV060 {
         guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return [] }
         var transactions = TransferPersistence.getTransactionsByAddress(from: selectedAddress, status: TransactionReceiptStatus.timeout, detached: true)
         transactions.txSort()
+        for tx in transactions {
+            tx.direction = tx.getTransactionDirection(selectedAddress)
+        }
         return transactions
     }
 
@@ -197,30 +208,23 @@ extension AssetTransactionViewControllerV060 {
             switch result {
             case .success:
                 // 返回的交易数据条数为0，则显示无加载更多
-                guard let remoteTransactions = response as? [Transaction], remoteTransactions.count > 0 else {
+                guard let remoteTransactions = response, remoteTransactions.count > 0 else {
                     self.tableView.mj_footer.isHidden = (self.dataSource[selectedAddress]?.count ?? 0 < self.listSize)
                     return
                 }
 
-                _ = remoteTransactions.map({ (tx) -> Transaction in
-                    switch tx.txType! {
-                    case .transfer:
-                        tx.direction = (selectedAddress.lowercased() == tx.from?.lowercased() ? .Sent : selectedAddress.lowercased() == tx.to?.lowercased() ? .Receive : .unknown)
-                        return tx
-                    case .delegateWithdraw,
-                         .stakingWithdraw:
-                        tx.direction = .Receive
-                        return tx
-                    default:
-                        tx.direction = .Sent
-                        return tx
-                    }
-                })
+                for tx in remoteTransactions {
+                    tx.direction = tx.getTransactionDirection(selectedAddress)
+                }
 
                 var pendingexcludedTxs: [Transaction] = []
                 pendingexcludedTxs.append(contentsOf: remoteTransactions)
 
-                let timeouttxs = self.getTimeoutTransaction()
+                let txHashes = remoteTransactions.map { $0.txhash!.add0x() }
+
+                var timeouttxs = self.getTimeoutTransaction()
+                timeouttxs = timeouttxs.filter { !txHashes.contains($0.txhash!.add0x()) }
+
                 if timeouttxs.count > 0 {
                     let mappedTimeoutTxs = timeouttxs.map({ (t) -> Transaction in
                         //交易时间临时赋值给确认时间，仅用于交易的排序
@@ -235,7 +239,6 @@ extension AssetTransactionViewControllerV060 {
                     pendingexcludedTxs.sortByConfirmTimes()
                 }
                 var pendingTransaction = self.getPendingTransation()
-                let txHashes = remoteTransactions.map { $0.txhash!.add0x() }
                 pendingTransaction = pendingTransaction.filter { !txHashes.contains($0.txhash!.add0x()) }
                 pendingTransaction.append(contentsOf: pendingexcludedTxs)
                 self.dataSource[selectedAddress] = pendingTransaction
@@ -244,7 +247,7 @@ extension AssetTransactionViewControllerV060 {
                 self.tableView.mj_footer.isHidden = (self.dataSource[selectedAddress]?.count ?? 0 < self.listSize)
                 self.tableView.reloadData()
                 completion?()
-            case .fail:
+            case .failure(let error):
                 completion?()
             }
         }
@@ -261,7 +264,7 @@ extension AssetTransactionViewControllerV060 {
     @objc func didReceiveTransactionUpdate(_ notification: Notification) {
         // 由于余额发生变化时会更新交易记录，因此，这里并需要再次更新
 
-        guard let txStatus = notification.object as? TransactionsStatusByHash, let status = txStatus.localStatus else { return }
+        guard let txStatus = notification.object as? TransactionsStatusByHash, let status = txStatus.txReceiptStatus else { return }
         fetchTransaction(beginSequence: -1) { [weak self] in
             guard let self = self else { return }
             for txObj in self.dataSource {

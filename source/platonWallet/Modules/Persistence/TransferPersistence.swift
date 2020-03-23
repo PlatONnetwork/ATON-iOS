@@ -19,13 +19,13 @@ class TransferPersistence {
             autoreleasepool(invoking: {
                 let realm = try! Realm(configuration: RealmHelper.getConfig())
                 try? realm.write {
-                    realm.add(tx, update: true)
+                    realm.add(tx, update: .all)
                 }
             })
         }
     }
 
-    public class func update(txhash: String, status: Int) {
+    public class func update(txhash: String, status: Int, blockNumber: String) {
         RealmWriteQueue.async {
             autoreleasepool(invoking: {
                 let realm = try! Realm(configuration: RealmHelper.getConfig())
@@ -34,6 +34,7 @@ class TransferPersistence {
                 try? realm.write {
                     let r = realm.objects(Transaction.self).filter(predicate)
                     for tx in r {
+                        tx.blockNumber = blockNumber
                         tx.txReceiptStatus = status
                     }
                 }
@@ -51,7 +52,7 @@ class TransferPersistence {
             autoreleasepool(invoking: {
                 let realm = try! Realm(configuration: RealmHelper.getConfig())
 
-                let predicate = NSPredicate(format: "txhash == %@ AND chainId == %@", txhash, SettingService.shareInstance.currentNodeChainId)
+                let predicate = NSPredicate(format: "txhash contains[cd] %@ AND chainId == %@", txhash, SettingService.shareInstance.currentNodeChainId)
 
                 guard let transaction = realm.objects(Transaction.self).filter(predicate).first else {
                     completion?()
@@ -153,5 +154,49 @@ class TransferPersistence {
                 }
             })
         }
+    }
+
+    public class func getRewardPendingTransaction(address: String) -> [Transaction] {
+        let realm = try! Realm(configuration: RealmHelper.getConfig())
+        let transactionType = Int(TxType.claimReward.rawValue) ?? 5000
+        let predicate = NSPredicate(format: "transactionType == %@ AND from CONTAINS[cd] %@ AND chainId == %@ AND txReceiptStatus == %@", NSNumber(value: transactionType), address, SettingService.shareInstance.currentNodeChainId, NSNumber(value: TransactionReceiptStatus.pending.rawValue))
+        let r = realm.objects(Transaction.self).filter(predicate)
+        let array = Array(r).detached
+        return array
+    }
+
+    public class func getDelegateCreatePendingTransaction(address: String, nodeId: String) -> [Transaction] {
+        let realm = try! Realm(configuration: RealmHelper.getConfig())
+        let transactionType = Int(TxType.delegateCreate.rawValue) ?? 1004
+        let predicate = NSPredicate(format: "transactionType == %@ AND from CONTAINS[cd] %@ AND nodeId == %@ AND chainId == %@ AND txReceiptStatus == %@", NSNumber(value: transactionType), address, nodeId, SettingService.shareInstance.currentNodeChainId, NSNumber(value: TransactionReceiptStatus.pending.rawValue))
+        let r = realm.objects(Transaction.self).filter(predicate)
+        let array = Array(r).detached
+        return array
+    }
+
+    public class func getDelegateWithdrawPendingTransaction(address: String, nodeId: String) -> [Transaction] {
+        let realm = try! Realm(configuration: RealmHelper.getConfig())
+        let transactionType = Int(TxType.delegateWithdraw.rawValue) ?? 1005
+        let predicate = NSPredicate(format: "transactionType == %@ AND from CONTAINS[cd] %@ AND nodeId == %@ AND chainId == %@ AND txReceiptStatus == %@", NSNumber(value: transactionType), address, nodeId, SettingService.shareInstance.currentNodeChainId, NSNumber(value: TransactionReceiptStatus.pending.rawValue))
+        let r = realm.objects(Transaction.self).filter(predicate)
+        let array = Array(r).detached
+        return array
+    }
+
+    public class func getTransferPendingTransaction(address: String) -> [Transaction] {
+        let realm = try! Realm(configuration: RealmHelper.getConfig())
+        let transactionType = Int(TxType.transfer.rawValue) ?? 0
+        let predicate = NSPredicate(format: "transactionType == %@ AND from CONTAINS[cd] %@ AND chainId == %@ AND txReceiptStatus == %@", NSNumber(value: transactionType), address, SettingService.shareInstance.currentNodeChainId, NSNumber(value: TransactionReceiptStatus.pending.rawValue))
+        let r = realm.objects(Transaction.self).filter(predicate)
+        let array = Array(r).detached
+        return array
+    }
+
+    public class func getPendingTransaction(address: String) -> [Transaction] {
+        let realm = try! Realm(configuration: RealmHelper.getConfig())
+        let predicate = NSPredicate(format: "from CONTAINS[cd] %@ AND chainId == %@ AND txReceiptStatus == %@", address, SettingService.shareInstance.currentNodeChainId, NSNumber(value: TransactionReceiptStatus.pending.rawValue))
+        let r = realm.objects(Transaction.self).filter(predicate).sorted(byKeyPath: "createTime", ascending: false)
+        let array = Array(r).detached
+        return array
     }
 }

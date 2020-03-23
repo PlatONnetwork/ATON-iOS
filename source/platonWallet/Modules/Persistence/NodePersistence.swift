@@ -21,45 +21,47 @@ class NodePersistence {
 
                 try? realm.write {
                     realm.delete(realm.objects(Node.self))
-                    realm.add(nodes, update: true)
+                    realm.add(nodes, update: .all)
                     completion?()
                 }
             })
         }
     }
 
-    public class func getAll(isRankingSorted: Bool = true) -> [Node] {
-        let sortPropertis = [
-            SortDescriptor(keyPath: isRankingSorted ? "ranking" : "ratePA", ascending: isRankingSorted ? true : false),
-            SortDescriptor(keyPath: isRankingSorted ? "ratePA" : "ranking", ascending: isRankingSorted ? true : false)
-        ]
+    public class func getAll(sort: NodeSort) -> [Node] {
         let realm = try! Realm(configuration: RealmHelper.getConfig())
-        let r = realm.objects(Node.self).sorted(by: sortPropertis)
-        let array = Array(r)
+        let r = realm.objects(Node.self).sorted(by: sort.sortArray)
+        let array = Array(r).detached
         return array
     }
 
-    public class func getActiveNode(isRankingSorted: Bool = true) -> [Node] {
+    public class func getActiveNode(sort: NodeSort) -> [Node] {
         let predicate = NSPredicate(format: "nodeStatus == 'Active'")
-        let sortPropertis = [
-            SortDescriptor(keyPath: isRankingSorted ? "ranking" : "ratePA", ascending: isRankingSorted ? true : false),
-            SortDescriptor(keyPath: isRankingSorted ? "ratePA" : "ranking", ascending: isRankingSorted ? true : false)
-        ]
         let realm = try! Realm(configuration: RealmHelper.getConfig())
-        let r = realm.objects(Node.self).filter(predicate).sorted(by: sortPropertis)
-        let array = Array(r)
+        let r = realm.objects(Node.self).filter(predicate).sorted(by: sort.sortArray)
+        let array = Array(r).detached
         return array
     }
 
-    public class func getCandiateNode(isRankingSorted: Bool = true) -> [Node] {
+    public class func getCandiateNode(sort: NodeSort) -> [Node] {
         let predicate = NSPredicate(format: "nodeStatus == 'Candidate'")
-        let sortPropertis = [
-            SortDescriptor(keyPath: isRankingSorted ? "ranking" : "ratePA", ascending: isRankingSorted ? true : false),
-            SortDescriptor(keyPath: isRankingSorted ? "ratePA" : "ranking", ascending: isRankingSorted ? true : false)
-        ]
         let realm = try! Realm(configuration: RealmHelper.getConfig())
-        let r = realm.objects(Node.self).filter(predicate).sorted(by: sortPropertis)
-        let array = Array(r)
+        let r = realm.objects(Node.self).filter(predicate).sorted(by: sort.sortArray)
+        let array = Array(r).detached
+        return array
+    }
+
+    class func searchNodes(text: String, type: NodeControllerType, sort: NodeSort) -> [Node] {
+        var predicate: NSPredicate!
+        if type == .all {
+            predicate = NSPredicate(format: "name CONTAINS[cd] %@", text)
+        } else {
+            predicate = NSPredicate(format: "nodeStatus == %@ AND name CONTAINS[cd] %@", type == .active ? "Active" : "Candidate", text)
+        }
+
+        let realm = try! Realm(configuration: RealmHelper.getConfig())
+        let r = realm.objects(Node.self).filter(predicate).sorted(by: sort.sortArray)
+        let array = Array(r).detached
         return array
     }
 }

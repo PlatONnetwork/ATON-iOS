@@ -8,6 +8,7 @@
 
 import UIKit
 import Localize_Swift
+import BigInt
 
 class TransactionDetailViewController: BaseViewController {
 
@@ -48,30 +49,35 @@ class TransactionDetailViewController: BaseViewController {
     @objc func didReceiveTransactionUpdate(_ notification: Notification) {
         guard let txStatus = notification.object as? TransactionsStatusByHash else { return }
         guard let currentTx = transaction else { return }
-        guard let txhash = txStatus.hash, txhash.ishexStringEqual(other: currentTx.txhash), let status = txStatus.localStatus else {
+        guard let txhash = txStatus.hash, txhash.ishexStringEqual(other: currentTx.txhash), let status = txStatus.txReceiptStatus else {
             return
         }
 
         DispatchQueue.main.async { [weak self] in
-            if let senderAddress = self?.txSendAddress {
-                switch currentTx.txType! {
-                case .transfer:
-                    currentTx.direction = (senderAddress.lowercased() == currentTx.from?.lowercased() ? .Sent : senderAddress.lowercased() == currentTx.to?.lowercased() ? .Receive : .unknown)
-                case .delegateWithdraw,
-                     .stakingWithdraw:
-                    currentTx.direction = .Receive
-                default:
-                    currentTx.direction = .Sent
-                }
+            currentTx.direction = currentTx.getTransactionDirection(self?.txSendAddress)
+            currentTx.txReceiptStatus = status.rawValue
+            if let totalRewardBInt = BigUInt(txStatus.totalReward ?? "0"), totalRewardBInt > BigUInt.zero, currentTx.txReceiptStatus == TransactionReceiptStatus.sucess.rawValue {
+                currentTx.totalReward = txStatus.totalReward
             }
 
-            currentTx.txReceiptStatus = status.rawValue
-            self?.transferDetailView.updateContent(tx: currentTx)
-            self?.tableView.tableHeaderView = self?.transferDetailView
-            self?.transferDetailView.setNeedsLayout()
-            self?.transferDetailView.layoutIfNeeded()
-            self?.transferDetailView.frame.size = self?.transferDetailView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize) ?? CGSize(width: UIScreen.main.bounds.width, height: 250)
-            self?.tableView.tableHeaderView = self?.transferDetailView
+            if let tableHeaderView = self?.tableView.tableHeaderView as? TransactionDetailHeaderView {
+                tableHeaderView.updateContent(tx: currentTx)
+                tableHeaderView.frame.size = tableHeaderView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+                tableHeaderView.layoutIfNeeded()
+                tableHeaderView.setNeedsLayout()
+                self?.tableView.tableHeaderView = tableHeaderView
+            }
+
+            if txStatus.status != TransactionReceiptStatus.pending.rawValue {
+                if
+                    let totalRewardBInt = BigUInt(txStatus.totalReward ?? "0"), totalRewardBInt > BigUInt.zero {
+                    self?.transaction?.totalReward = txStatus.totalReward
+                }
+                self?.transaction?.blockNumber = txStatus.blockNumber
+                self?.listData = []
+                self?.initData()
+                self?.tableView.reloadData()
+            }
         }
     }
 
@@ -111,8 +117,11 @@ class TransactionDetailViewController: BaseViewController {
         } else if txType == .delegateCreate ||
                   txType == .delegateWithdraw {
             listData.append((title:  txType == .delegateCreate ? Localized("TransactionDetailVC_delegated_to") : Localized("TransactionDetailVC_withdraw_to"), value: tx.toNameString ?? "--", copy: false))
-            listData.append((title: Localized("TransactionDetailVC_nodeId"), value: tx.nodeId ?? "--", copy: false))
+            listData.append((title: Localized("TransactionDetailVC_nodeId"), value: tx.nodeId ?? "--", copy: tx.nodeId != nil ? true : false))
             listData.append((title: txType == .delegateCreate ? Localized("TransactionDetailVC_delegated_amount") : Localized("TransactionDetailVC_withdrawal_amount"), value: tx.valueDescription?.displayForMicrometerLevel(maxRound: 8).ATPSuffix() ?? "--", copy: false))
+            if let totalRewardBInt = BigUInt(tx.totalReward ?? "0"), totalRewardBInt > BigUInt.zero {
+                listData.append((title: Localized("TransactionDetailVC_reward_amount"), value: tx.totalReward?.vonToLATString?.ATPSuffix() ?? "--", copy: false))
+            }
         } else if txType == .stakingCreate ||
                   txType == .stakingAdd ||
                   txType == .stakingEdit ||
@@ -126,7 +135,7 @@ class TransactionDetailViewController: BaseViewController {
                 listData.append((title: Localized("TransactionDetailVC_voteFor"), value: tx.nodeName ?? "--", copy: false))
             }
 
-            listData.append((title: Localized("TransactionDetailVC_nodeId"), value: tx.nodeId ?? "--", copy: false))
+            listData.append((title: Localized("TransactionDetailVC_nodeId"), value: tx.nodeId ?? "--", copy: tx.nodeId != nil ? true : false))
 
             if txType == .stakingCreate ||
                txType == .declareVersion {
@@ -152,7 +161,7 @@ class TransactionDetailViewController: BaseViewController {
                   txType == .submitCancel ||
                   txType == .voteForProposal {
             listData.append((title: Localized("TransactionDetailVC_voteFor"), value: tx.nodeName ?? "--", copy: false))
-            listData.append((title: Localized("TransactionDetailVC_nodeId"), value: tx.nodeId ?? "--", copy: false))
+            listData.append((title: Localized("TransactionDetailVC_nodeId"), value: tx.nodeId ?? "--", copy: tx.nodeId != nil ? true : false))
             listData.append((title: Localized("TransactionDetailVC_proposal_id"), value: tx.proposalId ?? "--", copy: false))
             listData.append((title: Localized("TransactionDetailVC_proposal_pip"), value: tx.pipString, copy: false))
 
@@ -162,9 +171,16 @@ class TransactionDetailViewController: BaseViewController {
             } else {
                 listData.append((title: Localized("TransactionDetailVC_proposal_type"), value: tx.proposalType?.localizedDesciption ?? "--", copy: false))
             }
+        } else if txType == .claimReward {
+            listData.append((title: Localized("TransactionDetailVC_claim_wallet"), value: tx.fromNameString ?? "--", copy: false))
+            listData.append((title: Localized("TransactionDetailVC_reward_amount"), value: (tx.totalReward?.vonToLATString ?? "0.00").ATPSuffix(), copy: false))
         }
         listData.append((title: Localized("TransactionDetailVC_energon_price"), value: tx.actualTxCostDescription?.displayForMicrometerLevel(maxRound: 8).ATPSuffix() ?? "0", copy: false))
+        if tx.txReceiptStatus == TransactionReceiptStatus.sucess.rawValue || tx.txReceiptStatus == TransactionReceiptStatus.businessCodeError.rawValue {
+            listData.append((title: Localized("TransactionDetailVC_block_number"), value: tx.blockNumber ?? "--", copy: true))
+        }
         listData.append((title: Localized("TransactionDetailVC_transaction_hash"), value: tx.txhash ?? "--", copy: true))
+        tableView.reloadData()
     }
 
     func initSubViews() {
@@ -193,7 +209,8 @@ extension TransactionDetailViewController: UITableViewDelegate, UITableViewDataS
             let cell = tableView.dequeueReusableCell(withIdentifier: "TransactionDetailHashTableViewCell") as! TransactionDetailHashTableViewCell
             cell.selectionStyle = .none
             cell.titleLabel.text = listData[indexPath.row].title
-            cell.valueLabel.text = listData[indexPath.row].value
+            cell.valueLabel.text = (listData[indexPath.row].value.isHexString() && listData[indexPath.row].value.hexToBytes().count >= 20) ? listData[indexPath.row].value.front8Back10Fordisplay() : listData[indexPath.row].value
+            cell.button.copyValue = listData[indexPath.row].value
             return cell
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "TransactionDetailTableViewCell") as! TransactionDetailTableViewCell

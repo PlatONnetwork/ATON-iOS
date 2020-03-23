@@ -83,6 +83,7 @@ class DelegateRecordViewController: BaseViewController, IndicatorInfoProvider {
             view.customView(holder)
             view.isScrollAllowed(true)
         }
+
         tableView.mj_header = refreshHeader
         tableView.mj_footer = refreshFooter
         tableView.mj_header.beginRefreshing()
@@ -125,19 +126,10 @@ extension DelegateRecordViewController {
                         self?.listData.removeAll()
                     }
 
-                    if let newData = data as? [Transaction], newData.count > 0 {
-                        
-                        _ = newData.map({ (tx) -> Transaction in
-                            switch tx.txType! {
-                            case .delegateWithdraw,
-                                 .stakingWithdraw:
-                                tx.direction = .Receive
-                                return tx
-                            default:
-                                tx.direction = .Sent
-                                return tx
-                            }
-                        })
+                    if let newData = data, newData.count > 0 {
+                        for tx in newData {
+                            tx.direction = tx.getTransactionDirection()
+                        }
 
                         self?.listData.append(contentsOf: newData)
                         self?.tableView.mj_footer.resetNoMoreData()
@@ -147,9 +139,9 @@ extension DelegateRecordViewController {
 
                     self?.tableView.reloadData()
 
-                case .fail:
+                case .failure(let error):
                     self?.tableView.mj_footer.isHidden = true
-                    break
+                    self?.showErrorMessage(text: error?.message ?? "server error")
                 }
         }
     }

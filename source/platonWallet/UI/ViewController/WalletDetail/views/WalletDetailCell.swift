@@ -81,23 +81,31 @@ class WalletDetailCell: UITableViewCell {
             txTypeLabel.text = tx.txType?.localizeTitle
         }
 
+        txTypeLabel.textColor = tx.typeTextColor
         transferAmoutLabel.textColor = tx.amountTextColor
-        txIcon.image = tx.txTypeIcon
-        pendingLayer.isHidden = tx.txTypeIcon != nil
+        if tx.txReceiptStatus == TransactionReceiptStatus.pending.rawValue {
+            txIcon.image = nil
+            pendingLayer.isHidden = false
+        } else {
+            txIcon.image = tx.txTypeIcon
+            pendingLayer.isHidden = true
+        }
 
         //最后处理超时状态
         if tx.txReceiptStatus == TransactionReceiptStatus.timeout.rawValue {
             guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return }
             var direction = TransactionDirection.unknown
-            switch tx.txType! {
-            case .transfer:
-                direction = (selectedAddress.lowercased() == tx.from?.lowercased() ? .Sent : selectedAddress.lowercased() == tx.to?.lowercased() ? .Receive : .unknown)
-            case .delegateWithdraw,
-                 .stakingWithdraw:
-                direction = .Receive
-            default:
-                direction = .Sent
-            }
+            direction = tx.getTransactionDirection(selectedAddress)
+//            switch tx.txType! {
+//            case .transfer:
+//                direction = (selectedAddress.lowercased() == tx.from?.lowercased() ? .Sent : selectedAddress.lowercased() == tx.to?.lowercased() ? .Receive : .unknown)
+//            case .delegateWithdraw,
+//                 .stakingWithdraw,
+//                 .claimReward:
+//                direction = .Receive
+//            default:
+//                direction = .Sent
+//            }
             txIcon.image = Transaction.getTxTypeIconByDirection(direction: direction, txType: tx.txType)
             pendingLayer.isHidden = true
         }

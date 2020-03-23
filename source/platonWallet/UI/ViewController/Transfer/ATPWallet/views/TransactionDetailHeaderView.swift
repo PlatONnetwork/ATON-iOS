@@ -29,9 +29,12 @@ class TransactionDetailHeaderView: UIView {
     public let toNameLabel = UILabel()
     public let topValueLabel = UILabel()
     public let toIconIV = UIImageView()
+    public let remarkLabel = UILabel()
+    let remarkContainer = UIView()
 
     var baseInfoTopConstraint: Constraint?
     var toLabelLeadingConstraint: Constraint?
+    var fromTipLabelTopConstraint: Constraint?
 
     init() {
         super.init(frame: .zero)
@@ -114,8 +117,6 @@ class TransactionDetailHeaderView: UIView {
             make.leading.greaterThanOrEqualToSuperview()
         }
 
-
-
         fromToContainerView.addSubview(toAvatarIV)
         toAvatarIV.snp.makeConstraints { make in
             make.leading.equalTo(arrowIV.snp.trailing).offset(6)
@@ -140,6 +141,23 @@ class TransactionDetailHeaderView: UIView {
             make.leading.bottom.trailing.equalToSuperview()
         }
 
+        remarkContainer.isHidden = true
+        remarkContainer.backgroundColor = UIColor(rgb: 0xf9fbff)
+        addSubview(remarkContainer)
+        remarkContainer.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(16)
+            make.trailing.equalToSuperview().offset(-16)
+            make.top.equalTo(baseInfoView.snp.bottom).offset(16)
+        }
+
+        remarkLabel.numberOfLines = 0
+        remarkLabel.font = .systemFont(ofSize: 13)
+        remarkLabel.textColor = .black
+        remarkContainer.addSubview(remarkLabel)
+        remarkLabel.snp.makeConstraints { make in
+            make.edges.equalToSuperview().inset(10)
+        }
+
         let fromTipLabel = UILabel()
         fromTipLabel.text = "From:"
         fromTipLabel.textColor = .black
@@ -147,7 +165,8 @@ class TransactionDetailHeaderView: UIView {
         addSubview(fromTipLabel)
         fromTipLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(16)
-            make.top.equalTo(baseInfoView.snp.bottom).offset(16)
+            make.top.equalTo(baseInfoView.snp.bottom).offset(16).priorityMedium()
+            fromTipLabelTopConstraint = make.top.equalTo(remarkContainer.snp.bottom).offset(16).priorityLow().constraint
         }
 
         let fromContainerView = UIView()
@@ -283,6 +302,16 @@ class TransactionDetailHeaderView: UIView {
         } else {
             toLabelLeadingConstraint?.update(offset: 8)
         }
+
+        if (tx.memo?.count ?? 0) > 0 {
+            fromTipLabelTopConstraint?.update(priority: .high)
+            remarkContainer.isHidden = false
+        } else {
+            fromTipLabelTopConstraint?.update(priority: .low)
+            remarkContainer.isHidden = true
+        }
+
+        remarkLabel.text = Localized("transaction_detail_note") + (tx.memo ?? "")
     }
 
     func updateStatus(tx: Transaction) {
@@ -304,7 +333,7 @@ class TransactionDetailHeaderView: UIView {
         //最后判断超时
         if tx.txReceiptStatus == TransactionReceiptStatus.timeout.rawValue {
             statusIconImageVIew.image = UIImage(named: "txTimeout")
-            self.pendingLoadingImage.isHidden = true
+            pendingLoadingImage.isHidden = true
             statusLabel.text = Localized("TransactionStatus_timeout_title")
         }
     }

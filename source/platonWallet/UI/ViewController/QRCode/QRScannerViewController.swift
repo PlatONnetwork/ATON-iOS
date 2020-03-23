@@ -475,12 +475,18 @@ extension QRScannerViewController: ZXCaptureDelegate {
             let gunzipData = try? isolatin1Data.gunzipped(),
             let utf8String = String(data: gunzipData, encoding: .utf8)
         else {
-            scanCompletion?(result.text)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                self.scanCompletion?(result.text)
+            }
+//            scanCompletion?(result.text)
             navigationController?.popViewController(animated: true)
             return
         }
 
-        scanCompletion?(utf8String)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            self.scanCompletion?(utf8String)
+        }
+//        scanCompletion?(utf8String)
         navigationController?.popViewController(animated: true)
     }
 }

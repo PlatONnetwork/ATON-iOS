@@ -132,6 +132,9 @@ extension WebCommonViewController: WKNavigationDelegate {
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         hideLoadingHUD()
+        guard navigationTitle == nil else {
+            return
+        }
         titleLabel?.localizedText = webView.title
     }
 

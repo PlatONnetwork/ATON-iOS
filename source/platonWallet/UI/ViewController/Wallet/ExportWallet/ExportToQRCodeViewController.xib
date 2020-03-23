@@ -38,11 +38,11 @@
                     </subviews>
                     <color key="backgroundColor" red="0.94117647058823528" green="0.94509803921568625" blue="0.96078431372549022" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
-                        <constraint firstItem="J4w-5W-foi" firstAttribute="centerY" secondItem="TBc-7h-95a" secondAttribute="centerY" id="7nQ-M3-mof"/>
+                        <constraint firstAttribute="trailing" secondItem="J4w-5W-foi" secondAttribute="trailing" constant="30" id="4FQ-AQ-QGa"/>
                         <constraint firstItem="J4w-5W-foi" firstAttribute="top" secondItem="TBc-7h-95a" secondAttribute="top" constant="30" id="Afj-1Z-Z1P"/>
-                        <constraint firstItem="J4w-5W-foi" firstAttribute="centerX" secondItem="TBc-7h-95a" secondAttribute="centerX" id="BND-2u-Bha"/>
                         <constraint firstItem="J4w-5W-foi" firstAttribute="leading" secondItem="TBc-7h-95a" secondAttribute="leading" constant="30" id="V9x-2D-REZ"/>
                         <constraint firstAttribute="width" secondItem="TBc-7h-95a" secondAttribute="height" multiplier="1:1" id="dm1-eZ-ADd"/>
+                        <constraint firstAttribute="bottom" secondItem="J4w-5W-foi" secondAttribute="bottom" constant="30" id="tVL-Xc-ZP0"/>
                     </constraints>
                 </view>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZsD-U2-d2n" customClass="PButton" customModule="platonWallet" customModuleProvider="target">
@@ -67,9 +67,9 @@
                 <constraint firstItem="ZsD-U2-d2n" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="MNH-ie-Yg7"/>
                 <constraint firstItem="852-Jq-T9a" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="23" id="Msv-mm-Tpl"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="852-Jq-T9a" secondAttribute="trailing" constant="20" id="OhC-wA-bRh"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="TBc-7h-95a" secondAttribute="trailing" constant="16" id="OsA-L6-P2S"/>
+                <constraint firstAttribute="trailing" secondItem="TBc-7h-95a" secondAttribute="trailing" constant="16" id="OsA-L6-P2S"/>
                 <constraint firstItem="852-Jq-T9a" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="fPy-nt-ORI"/>
-                <constraint firstItem="TBc-7h-95a" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="hbS-11-0SJ"/>
+                <constraint firstItem="TBc-7h-95a" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="16" id="hbS-11-0SJ"/>
                 <constraint firstItem="TBc-7h-95a" firstAttribute="top" secondItem="852-Jq-T9a" secondAttribute="bottom" constant="8" id="yAb-Kr-vxj"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>

@@ -14,13 +14,43 @@ import BigInt
 import platonWeb3
 
 struct JSONResponse<T: Decodable>: Decodable {
-    var data: T
+    var errMsg: String?
+    var code: Int
+    var data: T?
+
+    enum CodingKeys: String, CodingKey {
+        case code
+        case errMsg
+        case data
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        code = try container.decode(Int.self, forKey: .code)
+        errMsg = try? container.decode(String.self, forKey: .errMsg)
+        data = try? container.decode(T.self, forKey: .data)
+    }
 }
 
 struct Delegate: Decodable {
     var walletAddress: String
     var delegated: String?
+    var cumulativeReward: String?
+    var withdrawReward: String?
+}
+
+struct TotalDelegate: Decodable {
     var availableDelegationBalance: String?
+    var delegated: String?
+    var item: [DelegateDetail]?
+
+    var availableDelegationBalanceValue: String {
+        return availableDelegationBalance?.vonToLATString ?? "--"
+    }
+
+    var delegatedValue: String {
+        return delegated?.vonToLATString ?? "--"
+    }
 }
 
 struct DelegateDetail: Decodable {
@@ -34,6 +64,19 @@ struct DelegateDetail: Decodable {
     var sequence: String?
     var isInit: Bool = false
     var isConsensus: Bool = false
+    var withdrawReward: String?
+
+    var withdrawRewardValue: String {
+        return withdrawReward?.vonToLATString ?? "--"
+    }
+
+    var withdrawRewardBInt: BigUInt {
+        return BigUInt(withdrawReward ?? "0") ?? BigUInt.zero
+    }
+
+    var releasedBInt: BigUInt {
+        return BigUInt(released ?? "0") ?? BigUInt.zero
+    }
 }
 
 struct Delegation: Decodable {
@@ -46,12 +89,35 @@ extension Delegation {
         guard let minDelegationString = minDelegation else { return BigUInt(10).multiplied(by: PlatonConfig.VON.LAT) }
         return BigUInt(minDelegationString) ?? BigUInt(10).multiplied(by: PlatonConfig.VON.LAT)
     }
+
+    var releasedItemGreaterOne: Bool {
+        let result = deleList.filter { (BigUInt($0.released ?? "0") ?? BigUInt.zero) > BigUInt.zero }
+        return result.count > 1
+    }
 }
 
 struct DelegationValue: Decodable {
     var stakingBlockNum: String?
     var delegated: String?
     var released: String?
+    var gasLimit: String?
+    var gasPrice: String?
+
+    var gasLimitBInt: BigUInt {
+        return BigUInt(gasLimit ?? "0") ?? BigUInt.zero
+    }
+
+    var gasPriceBInt: BigUInt {
+        return BigUInt(gasPrice ?? "0") ?? BigUInt.zero
+    }
+
+    var gasUsedBInt: BigUInt {
+        return gasLimitBInt.multiplied(by: gasPriceBInt)
+    }
+
+    var gasUsed: String {
+        return gasUsedBInt.description
+    }
 }
 
 extension DelegationValue {
@@ -76,15 +142,15 @@ public struct CanDelegation: Decodable {
     var minDelegation: String?
 
     public enum Message: String, Decodable {
-        case amountGreaterZero = "1"
         case nodeExitingOrExited = "2"
         case nodeAssociationWallet = "3"
         case balanceZero = "4"
+        case nodeInit = "5"
 
         public var localizedDesciption: String? {
             switch self {
-            case .amountGreaterZero:
-                return Localized("delegate_error_result_amountzero")
+            case .nodeInit:
+                return Localized("delegate_error_result_nodeInit")
             case .nodeExitingOrExited:
                 return Localized("delegate_error_result_nodeexit")
             case .nodeAssociationWallet:
@@ -128,4 +194,10 @@ public enum DelegateStatus: String, Decodable {
     case redeem
     case redeemSucc
     case redeemFail
+}
+
+enum RewardStatus {
+    case none // 无可用领取
+    case unclaim // 待领取
+    case claiming // 领取中
 }

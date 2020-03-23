@@ -51,6 +51,7 @@ class WalletManagerTableViewCell: UITableViewCell {
         container.layer.cornerRadius = 4
         container.layer.masksToBounds = true
         walletName.font = .systemFont(ofSize: 14.0, weight: .medium)
+        walletName.numberOfLines = 0
     }
 
     func feedData(_ wallet:AnyObject) {
@@ -67,10 +68,13 @@ class WalletManagerTableViewCell: UITableViewCell {
             address.text = aptWallet.address
             walletIcon.image = UIImage(named: aptWallet.avatar)?.circleImage()
 
-            if (aptWallet.keystoreMnemonic.count > 0) {
-                self.backupContainer.isHidden = false
-                self.backupButton.isEnabled = true
-            }
+            backupContainer.isHidden = !aptWallet.canBackupMnemonic
+            backupButton.isEnabled = aptWallet.canBackupMnemonic
+
+//            if (aptWallet.keystoreMnemonic.count > 0) {
+//                self.backupContainer.isHidden = false
+//                self.backupButton.isEnabled = true
+//            }
 
             jointIcon.isHidden = true
         }

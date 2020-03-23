@@ -41,7 +41,7 @@ enum PAlertStyle {
     case AlertWithRedTitle(title: String?, message: String?) //no cancle button
     case AlertWithText(attributedStrings: [NSAttributedString]?)
     case ChoiceView(message: String?) //no cancle button
-    case commonInput(title: String?, placeHoder: String?, preInputText: String?)
+    case commonInput(title: String?, placeHoder: String?, preInputText: String?, maxTextCount: Int?)
     case commonInputWithItemDes(itemDes: String?, itemContent: String?, inputDes: String?, placeHoder: String?, preInputText: String?)
 }
 
@@ -109,6 +109,8 @@ class AlertStylePopViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet weak var touchTodisappear: UIView!
 
+    var maxTextCount: Int?
+
     var style: PAlertStyle? {
         didSet {
             self.styleInitilize()
@@ -117,6 +119,7 @@ class AlertStylePopViewController: UIViewController, UITextFieldDelegate {
 
     func styleInitilize() {
 
+        self.titleLabel.numberOfLines = 0
         self.titleLabel.localizedText  = ""
         self.textFieldInput.delegate = self
         self.textFieldInput.autocorrectionType = .no
@@ -141,9 +144,10 @@ class AlertStylePopViewController: UIViewController, UITextFieldDelegate {
             self.titleLabel.text = ""
             self.messageLabel.localizedText = message
             self.configChoiceView()
-        case .commonInput(let title, let placeHoder, let preInputText)?:
+        case .commonInput(let title, let placeHoder, let preInputText, let maxTextCount)?:
             self.titleLabel.localizedText = title
             self.textFieldInput.LocalizePlaceholder = placeHoder
+            self.maxTextCount = maxTextCount
             if preInputText != nil && (preInputText?.length)! > 0 {
                 self.textFieldInput.text = preInputText
             }
@@ -446,7 +450,7 @@ internal extension AlertStylePopViewController {
         let p2 = self.whiteContentView.convert(self.whiteContentView.bounds, to: self.view)
         let accurateCenter = kUIScreenHeight - (CGFloat(0.5) * p2.size.height + keyboardHeight)
         let offset = accurateCenter - kUIScreenHeight * CGFloat(0.5) - 10
-        self.contentCenterYConstraint.constant = offset
+        self.contentCenterYConstraint.constant = -66
         UIView.animate(withDuration: 0.35,
                        delay: 0,
                        usingSpringWithDamping: CGFloat(0.75),
@@ -455,7 +459,6 @@ internal extension AlertStylePopViewController {
                        animations: {
                         self.view.layoutIfNeeded()
         }, completion: nil)
-
     }
     // MARK: - Keyboard & orientation observers
 
@@ -514,7 +517,6 @@ internal extension AlertStylePopViewController {
     @objc fileprivate func keyboardDid(_ notification: Notification) {
         keyboardShown = true
         centerPopup()
-        print("keyboardHeight:\(keyboardHeight)")
     }
 
     /*!
@@ -545,6 +547,25 @@ internal extension AlertStylePopViewController {
 extension AlertStylePopViewController {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
+        return true
+    }
+
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        guard textField == textFieldInput else {
+            return true
+        }
+
+        guard let maxCount = maxTextCount else {
+            return true
+        }
+
+        if let text = textField.text, let textRange = Range(range, in: text) {
+            let appendtext = text.replacingCharacters(in: textRange, with: string)
+            if appendtext.count > maxCount {
+                return false
+            }
+        }
+
         return true
     }
 }

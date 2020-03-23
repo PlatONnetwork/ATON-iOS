@@ -21,7 +21,7 @@ class WalletTableViewCell: UITableViewCell {
 
     var cellDidHandle: ((_ cell: WalletTableViewCell) -> Void)?
 
-    func setupCellData(for wallet: Wallet?) {
+    func setupCellData(for wallet: Wallet?, isWithdraw: Bool = false) {
         guard let wal = wallet else {
             walletNameLabel.text = "--"
             walletAvatarIV.image = nil
@@ -31,7 +31,11 @@ class WalletTableViewCell: UITableViewCell {
 
         walletNameLabel.text = wal.name
         walletAvatarIV.image = UIImage(named: wal.avatar)
-        walletAddressLabel.text = wal.address.addressForDisplay()
+        if isWithdraw {
+            walletAddressLabel.text = Localized("withdraw_detail_balance") + wal.balanceDescription()
+        } else {
+            walletAddressLabel.text = wal.address.addressForDisplay()
+        }
     }
 
     var isTopCell: Bool = false {

@@ -12,7 +12,7 @@ import TrezorCrypto
 //import Web3
 import ScryptSwift
 
-let HDPATH = "m/44'/206'/0'/0/0"
+let HDPATH = "m/44'/486'/0'/0/0"
 
 public struct Keystore {
 
@@ -35,7 +35,6 @@ public struct Keystore {
         }
 
         try self.init(password: password, mnemonic: mnemonic, passphrase: "")
-
         self.mnemonic = try encrypt(mnemonic: mnemonic, password: password)
     }
 
@@ -47,20 +46,17 @@ public struct Keystore {
     public init(password: String, mnemonic: String, passphrase: String = "") throws {
 
         let seed = WalletUtil.seedFromMnemonic(mnemonic, passphrase: "")
-
         var hdNode = WalletUtil.hdNodeFromSeed(seed)
-
         var privateKey:Data
 
         do {
             privateKey = try WalletUtil.privateKeyFromHDNode(&hdNode, hdPath: HDPATH)
-            print("privateKey:\(privateKey.toHexString())")
         } catch WalletUtil.Error.hdPathInvalid {
             throw Error.initFailed
         }
 
         try self.init(password: password, privateKey: privateKey)
-
+        self.mnemonic = try encrypt(mnemonic: mnemonic, password: password)
     }
 
     public init(password: String, privateKey: Data) throws {
@@ -135,10 +131,8 @@ public struct Keystore {
         let encryptedData: [UInt8]
         switch crypto.cipher {
         case "aes-128-ctr":
-
             let aesCipher = try AES(key: decryptionKey.bytes, blockMode: CTR(iv: crypto.cipherParams.iv.bytes), padding: .noPadding)
             encryptedData = try aesCipher.encrypt(mnemonic.data(using: .utf8)!.bytes)
-
         case "aes-128-cbc":
             let aesCipher = try AES(key: decryptionKey.bytes, blockMode: CBC(iv: crypto.cipherParams.iv.bytes), padding: .noPadding)
             encryptedData = try aesCipher.encrypt(mnemonic.data(using: .utf8)!.bytes)
@@ -232,12 +226,3 @@ extension Keystore {
         case initFailed
     }
 }
-
-//private extension String {
-//    func drop0x() -> String {
-//        if hasPrefix("0x") {
-//            return String(dropFirst(2))
-//        }
-//        return self
-//    }
-//}

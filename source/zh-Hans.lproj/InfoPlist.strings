@@ -1,0 +1,13 @@
+/* 
+  InfoPlist.strings
+  platonWallet
+
+  Created by Admin on 26/2/2020.
+  Copyright © 2020 ju. All rights reserved.
+*/
+
+"NSCameraUsageDescription" = "使用您的相机扫描二维码。";
+"NSFaceIDUsageDescription" = "使用Face ID可用于解锁应用";
+"NSLocationWhenInUseUsageDescription" = "允许访问位置以提供更好的服务体验";
+"NSPhotoLibraryAddUsageDescription" = "允许将照片保存在您的照片库中";
+"NSPhotoLibraryUsageDescription" = "授权访问相册以扫描二维码图片";

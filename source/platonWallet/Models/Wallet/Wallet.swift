@@ -49,6 +49,9 @@ public final class Wallet: Object {
 
     @objc dynamic var isBackup: Bool = false
 
+    // 0.9.1新增i字段，用于解决HDPath从206改为486，关闭原有钱包助记词的导出功能，之前钱包的version初始化为0
+    @objc dynamic var version: Int = 1
+
     // 钱包类型
     var type: WalletType {
         if key == nil {
@@ -70,6 +73,10 @@ public final class Wallet: Object {
 
     // 0.7.5 修改助记词存放位置
     var keystoreMnemonic: String {
+        guard version >= 1 else {
+            return ""
+        }
+
         guard mnemonic.count > 0 else {
             if let mn = key?.mnemonic, mn.count > 0 {
                 return mn

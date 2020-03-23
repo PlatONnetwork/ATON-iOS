@@ -62,3 +62,5 @@ let status_lightgray_color = UIColor(rgb: 0x9EABBE)
 
 let wallet_orange_color = UIColor(rgb: 0xF5A623)
 let wallet_gray_color = UIColor(rgb: 0x61646E)
+
+let line_white_color = UIColor(rgb: 0xEBEEF4)

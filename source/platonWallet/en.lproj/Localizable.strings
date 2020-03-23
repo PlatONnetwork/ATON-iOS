@@ -27,7 +27,7 @@
 
 ///wallet common input illegal tips
 "wallet_nameInput_empty_tips" = "Name can't be empty !";
-"wallet_nameInput_lengthIllegal_tips" = "Name's length should be 1~12 characters";
+"wallet_nameInput_lengthIllegal_tips" = "Name's length should be 1~20 characters";
 "wallet_pswInput_empty_tips" = "Confirm password can't be empty";
 "wallet_pswInput_lengthIllegal_tips" = "6 characters at least";
 "wallet_pswConfirmInput_empty_tips" = "Confirm password can't be empty";
@@ -145,7 +145,10 @@
 "TransactionDetailVC_proposal_voteno" = "VoteNo";
 "TransactionDetailVC_proposal_voteabstain" = "VoteAbstain";
 "TransactionDetailVC_doublesign" = "Double Siging";
+"TransactionDetailVC_block_number" = "Confirmation block:";
 "TransactionDetailVC_transaction_hash" = "Tx Hash:";
+"TransactionDetailVC_claim_wallet" = "Claim Wallet:";
+"TransactionDetailVC_reward_amount" = "Reward amount:";
 
 //qr scan
 "QRScanerVC_nav_title" = "QR Scan";
@@ -178,7 +181,7 @@
 "createWalletSuccessVC_title" = "Backup Wallet";
 
 //importKeystoreVC
-"importKeystoreVC_tips" = "Copy and paste PlatON official wallet's Keystore to the input field, or scan the QR Code generated with Keystore's information to import.";
+"importKeystoreVC_tips" = "Copy and paste ATON official wallet`s Keystore to the input field, or scan the QR Code generated with Keystore`s information to import.";
 "importKeystoreVC_keystoreInput_placeholder" = "Keystore content";
 "importKeystoreVC_nameInput_placeholder" = "Name of wallet";
 "importKeystoreVC_pswInput_placeholder" = "Wallet password";
@@ -223,6 +226,7 @@
 
 //alert
 "alert_input_psw_title" = "Input wallet password";
+"alert_input_psw_for_delete_title" = "Enter wallet password to confirm deletion";
 "alert_input_psw_title_placeholder" = "Input the wallet's password";
 "alert_confirmBtn_title" = "Confirm";
 "alert_cancelBtn_title" = "Cancel";
@@ -267,6 +271,8 @@
 "PersonalVC_cell_wallet_About" = "About";
 "PersonalVC_cell_wallet_community" = "Official Community";
 "PersonalVC_cell_wallet_feedback" = "Support and feedback";
+"PersonalVC_service_agreement" = "Service Agreement";
+"PersonalVC_privacy_policy" = "Privacy Policy";
 
 
 //WalletManagerDetailViewController
@@ -312,7 +318,7 @@
 "AddAddressVC_add_button_title" = "Add";
 
 "NewAddress_name_empty_tip" = "Name is empty";
-"NewAddress_name_Incorrect_tip" = "Please enter 1-12 characters";
+"NewAddress_name_Incorrect_tip" = "Please enter 1-20 characters";
 "NewAddress_address_empty_tip" = "Address is empty";
 "NewAddress_address_Incorrect_tip" = "Address is incorrect ";
 
@@ -391,6 +397,7 @@
 "TransactionStatus_declareVersion_title" = "DeclareVersion";
 "TransactionStatus_reportDuplicateSign_title" = "ReportValidator";
 "TransactionStatus_createRestrictingPlan_title" = "CreateRestricting";
+"TransactionStatus_claimReward_title" = "ClaimRewards";
 "TransactionStatus_unknown_title" = "unknown";
 
 
@@ -410,8 +417,8 @@
 "SettingsVC_nodeSet_addBtn_title" = "Add";
 "SettingsVC_nodeSet_defaultTestNetwork_test_des" = "Test Network";
 "SettingsVC_nodeSet_defaultTestNetwork_develop_des" = "Develop Network";
-"SettingsVC_nodeSet_NewBaleyworld_des" = "NewBaleyworld";
-"SettingsVC_nodeSet_parallel_des" = "ParallelNet";
+"SettingsVC_nodeSet_NewBaleyworld_des" = "New Baleyworld";
+"SettingsVC_nodeSet_parallel_des" = "UAT";
 "SettingsVC_nodeSet_switchSuccess_tips" = "Node switch Succeed";
 "SettingsVC_nodeSet_switchFail_tips" = "Node switch Failed";
 "SettingsVC_nodeSet_recovery_tips" = "Node connect failed";
@@ -544,7 +551,7 @@
 "AddSharedWallet_address_duplicated" = "duplicated addrss";
 
 
-"Transaction.Fail" = "Fail";
+"Transaction.Fail" = "Transaction failed";
 
 "insufficient funds for gas * price + value" = "insufficient funds for gas * price + value";
 
@@ -571,6 +578,7 @@
 "RPC_Response_connectionFailed" = "Connection failed";
 "RPC_Response_serverError" = "Connection failed";
 "RPC_Response_decodingError" = "Decoding error";
+"RPC_Response_connectionTimeout" = "connect timeout";
 
 "Request_timeout" = "Request timeout";
 
@@ -584,6 +592,7 @@
 "AboutVC_Policy" = "Privacy Policy";
 "AboutVC_AboutUs" = "About us";
 "AboutVC_update" = "APP Update";
+"AboutVC_Service_Policy" = "Service Agreement";
 
 //Vote
 "CandidateListVC_title" = "Vote";
@@ -653,7 +662,7 @@
 //VoteConfirm
 "VoteConfirm_title" = "Voting Confirmation";
 "VoteConfirm_payment_info" = "Type:";
-"VoteConfirm_fee_colon" = "Fee:";
+"VoteConfirm_fee_colon" = "Estimated fee:";
 "VoteConfirm_submitBtn_title" = "Confirm";
 "VoteConfirm_vote" = "Vote";
 
@@ -687,6 +696,8 @@
 
 "Send_transaction_alert_title" = "Send transaction";
 
+"confirm_send_from" = "Sender：";
+
 "addressbook_wallet_name_with_Colon" = "Wallet Name:";
 "addressbook_wallet_address_with_Colon" = "Wallet Address:";
 
@@ -710,6 +721,7 @@
 "send_amount_placeholder" = "Input Amount";
 "vote_confirm_from" = "From:";
 "staking_amount_placeholder" = "Input Amount (not less than %@ LAT)";
+"send_remark_placeholder" = "Memo(optional-less than 30 characters)";
 
 
 "createOrImport_guide_text" = "Have a wallet? Import using keystore(json),mnemonic phrase, private key.";
@@ -722,10 +734,9 @@
 "staking_main_mydelegate_text" = "My Delegations";
 "staking_main_validator_text" = "Validators";
 "staking_main_wallet_name" = "Wallet Name";
-"staking_main_delegate_text" = "Available balance";
 "staking_main_undelegating_text" = "Delegated";
 "staking_main_delegate_detail" = "Details";
-"staking_main_delegate_total" = "Total Delegated";
+"staking_main_delegate_total" = "Total Delegated(LAT)";
 "staking_main_delegate_record" = "Record";
 "staking_main_delegate_faq" = "FAQ";
 "staking_main_delegate_tutorial" = "Tutorial";
@@ -747,17 +758,18 @@
 "staking_alert_unlocked_delegate_detail" = "Locked in about 6.1 hours, the unlocked delegate has no reward.Un-delegation (i.e. withdrawal) takes immediate effect.and,the delegated LAT immediately returns to the account.";
 "staking_alert_released_delegate" = "Invalid delegations";
 "staking_alert_released_detail" = "Validator exits, the delegations is automatically released,and need user to withdraw the delegations";
-"staking_alert_annualized_rate" = "Yield";
-"staking_alert_annualized_rate_detail" = "The expected annualized rate of the current validator, the Delegation rewards is distributed by the validator";
+"staking_alert_annualized_rate" = "Expected delegated annualized yield";
+"staking_alert_annualized_rate_detail" = "Annualized rate of return for each delegated net income in the last 4 epochs，For reference only！";
+"staking_alert_annualized_reward" = "Delegated reward ratio";
+"staking_alert_annualized_reward_detail" = "Proportion of rewards distributed by the node to the delegators";
 
 "staking_validator_node_all" = "All";
 "staking_validator_node_active" = "Active";
 "staking_validator_node_candidate" = "Candidate";
-"staking_validator_node_rank" = "Rank";
-"staking_validator_node_yield" = "Yield";
 
-"staking_validator_delegate_total" = "Staked";
+"staking_validator_delegate_total" = "Delegated";
 "staking_validator_delegate_rate_about" = "Yield";
+"staking_validator_detail_delegate_rate_about" = "Yield";
 
 "statking_validator_total_staked" = "Total Staked(LAT)";
 "statking_validator_delegations" = "Delegations(LAT)";
@@ -781,19 +793,19 @@
 "ATextFieldView_withdraw_title" = "Amount:";
 
 "staking_doubt_delegate" = "Delegations";
-"staking_doubt_delegate_detail" = "The user keeps the delegate's Token ownership forever, and the user can withdraw the delegated token at any time.\nThe Validator's operator address and reward receiving address are not allowed for delegation.";
+"staking_doubt_delegate_detail" = "The user can withdraw the delegated token at any time.\nThe Validator's operator address are not allowed for delegation.";
 "staking_doubt_reward" = "Rewards";
-"staking_doubt_reward_detail" = "Delegation rewards come from validation block reward, staking reward and transaction fees. Reward assigned by validator. For details on how to assign, please see the official website description of each validator.";
-"staking_doubt_risk" = "Risk";
-"staking_doubt_risk_detail" = "Validators would be punished for double signing or low block rate. It would indirectly affect your reward. Please select qualified validators.";
+"staking_doubt_reward_detail" = "The delegations will be locked for at least one epoch(10750 blocks) to gain. According to the delegated reward ratio set by the nodes, the profits obtained by the nodes are distributed. Node benefits include block rewards and staking rewards.";
 
 "staking_doubt_undelegate" = "Note";
 "staking_doubt_undelegate_detail" = "The transaction has been successfully submitted and the delegated LAT can return to your account immediately.\nThe Invalid delegations has to be withdrawal all at once;\nIf the remaining delegations has been less than %@LAT, it will be automatically returned all.";
+"staking_doubt_undelegate_note" = "Note: When withdrawing all delegations,Claim rewards automatically.";
 
 "staking_balance_can_used" = "Balance";
 "staking_balance_locked_position" = "Restricted balance";
 "staking_balance_Delegated" = "Delegated";
 "staking_balance_release_Delegated" = "Invalid delegations";
+"staking_balance_release_Delegated_index" = "%dst";
 
 "input_amount_hundred" = "hundred";
 "input_amount_thousand" = "thousand";
@@ -841,10 +853,10 @@
 
 "node_quit_consensus_tip" = "Node has exited consensus,voting failed";
 
-"delegate_error_result_amountzero" = "amount must greater 0.";
 "delegate_error_result_nodeexit" = "The Validator has Exited and cannot be delegated.";
 "delegate_error_result_associate" = "The wallet associated with the validator is not allowed for delegation.";
 "delegate_error_result_balancezero" = "Wallet balance is 0, unable to delegate.";
+"delegate_error_result_nodeInit" = "Foundation-funded nodes do not accept delegations";
 
 "empty_string_my_delegates_left" = "View all validators, ";
 "empty_string_my_delegates_right" = "Delegate";
@@ -866,6 +878,7 @@
 "staking_withdraw_input_amount_maxlimit_error" = "Exceeded the available amount and cannot be submitted";
 "staking_withdraw_balance_Insufficient_error" = "Insufficient balance payment fee";
 "staking_delegate_balance_Insufficient_error" = "Insufficient balance payment fee";
+"staking_delegateall_keep_balance_error" = "Cannot keep balance 0.1LAT";
 
 "error_no_wallet" = "No wallet available";
 "error_wallet_no_balance" = "insufficient wallet balance";
@@ -902,11 +915,13 @@
 "confirm_generate_qrcode_for_signed_tx_tip" = "Scan the OR code to finish your authorization for the observed wallet.";
 "confirm_button_signed_tx" = "Finish";
 "offline_signature_title" = "Details";
+"confirm_reward_wallet" = "Claim Wallet:";
+"confirm_reward_amount" = "Reward amount:";
 
 "offline_signature_invalid" = "Invalid Signature";
-"offline_signature_notmatch_wallet" = "Wallet Mismatch";
 "touchid_auth_text" = "Please verify your %@";
 "touchid_verify_fail" = "Fingerprint verification failed, please try again! !";
+"offline_signature_not_privatekey" = "Wallet keystore does not exist";
 
 "delete_observed_wallet_alert_title" = "Delete Wallet";
 "delete_observed_wallet_alert_message" = "Are you sure want to delete observed wallet?";
@@ -924,3 +939,57 @@
 "threshold_confirm_value" = "Send more than %@, Confirm sending?";
 "resend_transfer_confirm_value" = "Have the same send transaction within 2 hours, Confirm sending？";
 "about_version_update_latest" = "This is the latest version!";
+
+"mydelegates_delegate_record" = "Delegation Rec";
+"mydelegates_claim_record" = "Claim Rec";
+"mydelegates_unclaimed_reward" = "Unclaimed Reward";
+"mydelegates_total_reward" = "Total Reward";
+"mydelegates_claim" = "Claim";
+"mydelegates_search_placeholder" = "Search by validator name";
+
+"node_sort_title" = "Sort";
+"node_sort_rank" = "Rank";
+"node_sort_delegated" = "Delegated";
+"node_sort_delegator" = "Delegators";
+"node_sort_yield" = "Expected delegation annualized yield";
+
+"reward_ratio" = "Reward Ratio";
+"reward_total" = "Total Reward";
+
+"delegate_detail_balance" = "Available Balance";
+"delegate_detail_delegated" = "Total Delegated";
+"delegate_detail_unclaimed_reward" = "Unclaimed Reward：";
+
+"wallet_receive_qrcode_warning_1" = "You are on the ";
+"wallet_receive_qrcode_warning_2" = " Network. Never transfer other network LATs to this address.";
+
+"claim_comfirm_title" = "Claim Rewards";
+"claim_comfirm_desc" = "Estimated reward, subject to actual receipt";
+"claim_comfirm_fee" = "Fee";
+"claim_comfirm_wallet" = "Claim Wallet";
+"claim_comfirm_balance" = "Balance:";
+"claim_comfirm_comfirm" = "Confirm";
+
+"mydelegates_search_cancel" = "Hide";
+
+"transaction_warning_wait_for_previous" = "Having a pending transaction,wait 5 minutes or the transaction is completed before continuing new transactions.";
+
+"withdraw_detail_balance" = "Balance：";
+
+"delegate_all_warnings" = "Recommended to keep a small balance to support delegated withdrawal and reward claim operations.";
+"alert_delegate_all" = "Delegate All";
+"alert_delegate_all_without_01" = "Keep Balance";
+
+"pop_selection_title_withdraw" = "Select Delegations";
+"pop_selection_title_delegate" = "Select Delegations";
+
+
+"transaction_detail_note" = "Note: ";
+
+"network_error_default" = "Server took a break, please try again (%d)";
+"network_error_knowntransaction" = "Do not submit repeatedly!";
+"network_error_nonce_too_low" = "Transaction abnormal，please try again (%d)";
+"network_error_expired" = "Expired QR code";
+
+"gaslimit_note" = "For contract transfers, increase the default GasLimit by a factor of 2 or more. Too low a Gaslimit may cause your transaction to fail.";
+"gaslimit_less_than" = "Gas Limit cannot be less than 21000";

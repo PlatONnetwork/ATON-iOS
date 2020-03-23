@@ -113,8 +113,8 @@ class WalletServiceTests: XCTestCase {
     }
     
     func testKeystoreDecrypt() {
-        let mnemonic = "doctor fatigue shoe capable judge paper coyote buddy title verb sudden local"
-        let oriPrivatekey = "cbcaef89665e96a9d8b5fcc0c6184857ffd3cb443602ed243b5ca82dd8498be6"
+        let mnemonic = "talk offer depend curtain crisp gym cricket excuse jump mimic ask girl"
+        let oriPrivatekey = "56c97f05abd5ddcee5dd35ba69bc735e5159abd744e8bf884672e773022a340b"
         let keystore = try? Keystore(password: "", mnemonic: mnemonic)
         XCTAssertNotNil(keystore, "keystore should be not nil")
         

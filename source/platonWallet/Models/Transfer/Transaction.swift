@@ -41,6 +41,7 @@ enum TxType: String, Decodable {
     case submitCancel = "2005"
     case reportDuplicateSign = "3000"
     case createRestrictingPlan = "4000"
+    case claimReward = "5000"
     case unknown = "-1"
 
     var localizeTitle: String {
@@ -85,6 +86,8 @@ enum TxType: String, Decodable {
             return Localized("TransactionStatus_createRestrictingPlan_title")
         case .submitCancel:
             return Localized("TransactionStatus_submitCancel_title")
+        case .claimReward:
+            return Localized("TransactionStatus_claimReward_title")
         case .unknown:
             return Localized("TransactionStatus_unknown_title")
         }
@@ -200,7 +203,7 @@ class Transaction : Object, Decodable {
 
     @objc dynamic var gasUsed : String? = ""
 
-    @objc dynamic var memo : String? = ""
+    @objc dynamic var memo : String? = "" // 备注
 
     @objc dynamic var input : String? = ""
 
@@ -213,6 +216,8 @@ class Transaction : Object, Decodable {
     @objc dynamic var extra: String?
 
     @objc dynamic var chainId: String = ""
+
+    @objc dynamic var totalReward: String? = ""
 
     var sequence: Int64?
 
@@ -246,7 +251,7 @@ class Transaction : Object, Decodable {
     var proposalType: ProposalType?
     var proposalId: String?
     var vote: VoteResultType?
-    var unDelegation: String?
+    @objc dynamic var unDelegation: String? = ""
 
     override public static func ignoredProperties() -> [String] {
         return ["sharedWalletOwners",
@@ -262,8 +267,7 @@ class Transaction : Object, Decodable {
                 "piDID",
                 "proposalType",
                 "proposalId",
-                "vote",
-                "unDelegation"
+                "vote"
         ]
     }
 
@@ -298,6 +302,8 @@ class Transaction : Object, Decodable {
         case vote
         case version
         case reportType
+        case totalReward
+        case memo = "remark"
     }
 
     required convenience init(from decoder: Decoder) throws {
@@ -317,6 +323,9 @@ class Transaction : Object, Decodable {
         let timeStampString = try? container.decode(String.self, forKey: .confirmTimes)
         if let ts = Int(timeStampString ?? "0") {
             confirmTimes = ts
+            if confirmTimes <= 0 {
+                confirmTimes = ts
+            }
         }
         actualTxCost = try? container.decode(String.self, forKey: .actualTxCost)
         let indexString = try? container.decode(String.self, forKey: .transactionIndex)
@@ -337,6 +346,8 @@ class Transaction : Object, Decodable {
         proposalId = try? container.decode(String.self, forKey: .proposalId)
         version = try? container.decode(String.self, forKey: .version)
         reportType = try? container.decode(ReportType.self, forKey: .reportType)
+        totalReward = try? container.decode(String.self, forKey: .totalReward)
+        memo = try? container.decode(String.self, forKey: .memo)
     }
 }
 
@@ -368,12 +379,37 @@ extension Transaction {
         }
     }
 
+    var topValueDescription : String? {
+        guard let type = txType else { return BigUInt(value ?? "0")?.divide(by: ETHToWeiMultiplier, round: 8).displayForMicrometerLevel(maxRound: 8) }
+        switch type {
+        case .claimReward:
+            let rewardBInt = BigUInt(totalReward ?? "0") ?? BigUInt.zero
+            return rewardBInt.divide(by: ETHToWeiMultiplier, round: 8).displayForMicrometerLevel(maxRound: 8)
+        case .delegateWithdraw:
+            let unDelegationBInt = BigUInt(unDelegation ?? "0") ?? BigUInt.zero
+            let rewardBInt = BigUInt(totalReward ?? "0") ?? BigUInt.zero
+            return (unDelegationBInt + rewardBInt).divide(by: ETHToWeiMultiplier, round: 8).displayForMicrometerLevel(maxRound: 8)
+        default:
+            return BigUInt(value ?? "0")?.divide(by: ETHToWeiMultiplier, round: 8).displayForMicrometerLevel(maxRound: 8)
+        }
+    }
+
     var valueDescription : String? {
         get {
-            guard value != nil else {
-                return "0.00"
+            if let type = txType, type == .claimReward {
+                return BigUInt(totalReward ?? "0")?.divide(by: ETHToWeiMultiplier, round: 8).displayForMicrometerLevel(maxRound: 8)
+            } else if let type = txType, type == .delegateWithdraw {
+                if let withdrawValue = unDelegation {
+                    return BigUInt(withdrawValue)?.divide(by: ETHToWeiMultiplier, round: 8).displayForMicrometerLevel(maxRound: 8)
+                } else {
+                    return BigUInt(value ?? "0")?.divide(by: ETHToWeiMultiplier, round: 8).displayForMicrometerLevel(maxRound: 8)
+                }
+            } else {
+                guard value != nil else {
+                    return "0.00"
+                }
+                return BigUInt(value!)?.divide(by: ETHToWeiMultiplier, round: 8).displayForMicrometerLevel(maxRound: 8)
             }
-            return BigUInt(value!)?.divide(by: ETHToWeiMultiplier, round: 8).displayForMicrometerLevel(maxRound: 8)
         }
     }
 
@@ -417,7 +453,9 @@ extension Transaction {
                 } else {
                     return .Receive
                 }
-            case .otherReceive:
+            case .otherReceive,
+                 .claimReward,
+                 .delegateWithdraw:
                 return .Receive
             case .contractCreate,
                  .contractExecute,
@@ -428,7 +466,6 @@ extension Transaction {
                  .stakingEdit,
                  .stakingWithdraw,
                  .delegateCreate,
-                 .delegateWithdraw,
                  .submitText,
                  .submitVersion,
                  .submitParam,
@@ -527,20 +564,35 @@ enum TransactionDirection: String, Decodable {
 struct TransactionsStatusByHash: Decodable {
     var hash: String?
     var status: Int?
-}
+    var totalReward: String?
+    var blockNumber: String?
 
-extension TransactionsStatusByHash {
-    var localStatus: TransactionReceiptStatus? {
-        guard let st = status else { return nil }
+    var txReceiptStatus: TransactionReceiptStatus?
+
+    enum CodingKeys: String, CodingKey {
+        case hash
+        case status
+        case totalReward
+        case blockNumber
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        hash = try? container.decode(String.self, forKey: .hash)
+        status = try? container.decode(Int.self, forKey: .status)
+        totalReward = try? container.decode(String.self, forKey: .totalReward)
+        blockNumber = try? container.decode(String.self, forKey: .blockNumber)
+
+        guard let st = status else { return }
         switch st {
         case 0:
-            return .businessCodeError
+            txReceiptStatus = .businessCodeError
         case 1:
-            return .sucess
+            txReceiptStatus = .sucess
         case 2:
-            return .pending
+            txReceiptStatus = .pending
         default:
-            return nil
+            return
         }
     }
 }

@@ -35,6 +35,8 @@ class TransactionCell: UITableViewCell {
         } else {
             typeLabel.text = tx.txType?.localizeTitle
         }
+        typeLabel.textColor = (tx.txReceiptStatus == TransactionReceiptStatus.businessCodeError.rawValue) ? UIColor(white: 0.0, alpha: 0.5) : .black
+
         timeLabel.text = Date.toStanderTimeDescrition(millionSecondsTimeStamp: tx.confirmTimes)
 
         amoutLabel.text = tx.amountTextString

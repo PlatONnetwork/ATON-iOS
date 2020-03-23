@@ -27,7 +27,7 @@
 
 ///wallet common input illegal tips
 "wallet_nameInput_empty_tips" = "钱包名称不能为空！";
-"wallet_nameInput_lengthIllegal_tips" = "请输入1~12位钱包名称！";
+"wallet_nameInput_lengthIllegal_tips" = "请输入1~20位钱包名称！";
 "wallet_pswInput_empty_tips" = "密码不能为空！";
 "wallet_pswInput_lengthIllegal_tips" = "密码长度至少6个字符！";
 "wallet_pswConfirmInput_empty_tips" = "确认密码不能为空！";
@@ -141,7 +141,10 @@
 "TransactionDetailVC_proposal_voteno" = "VoteNo";
 "TransactionDetailVC_proposal_voteabstain" = "VoteAbstain";
 "TransactionDetailVC_doublesign" = "区块双签";
+"TransactionDetailVC_block_number" = "确认区块:";
 "TransactionDetailVC_transaction_hash" = "交易哈希:";
+"TransactionDetailVC_claim_wallet" = "领取钱包:";
+"TransactionDetailVC_reward_amount" = "领取数量:";
 
 //qr scan
 "QRScanerVC_nav_title" = "扫描";
@@ -177,7 +180,7 @@
 
 "createWalletSuccessVC_title" = "备份钱包";
 
-"importKeystoreVC_tips" = "使用（.json）导入的同时需要输入钱包密码进行解密，同时未来需要通过密码验证才能进行LAT发送、备份等操作。";
+"importKeystoreVC_tips" = "直接复制粘贴您之前生成的钱包文件(.json)内容至输入框，或者扫描钱包文件内容生成的二维码录入。";
 "importKeystoreVC_keystoreInput_placeholder" = "请输入钱包文件（.json）内容";
 "importKeystoreVC_nameInput_placeholder" = "输入钱包名称";
 "importKeystoreVC_pswInput_placeholder" = "输入钱包密码";
@@ -193,10 +196,10 @@
 "importWalletVC_tab_mnemonic" = "助记词";
 "importWalletVC_tab_privateKey" = "私钥";
 "importWalletVC_tab_observedWallet" = "观察钱包";
-"importWalletVC_mnemonic_tips" = "请将记下的助记词按顺序填入以下表格中，在每个助记词输入完成后按“空格”键可以跳转到下个单词，使用助记词导入的同时需要设定钱包密码，未来需要通过密码验证才能够进行能量发送、备份等操作。";
+"importWalletVC_mnemonic_tips" = "请将记下的助记词按顺序填入以下表格中，在每个助记词输入完成后按“空格”键可以跳转到下个单词，使用助记词导入的同时需要设定钱包密码。";
 "importWalletVC_mnemonic_textView_placeholder" = "请输入助记词，用空格分割";
 
-"importWalletVC_privateKey_tips" = "使用私钥导入的同时需要设置钱包密码，未来需要通过密码验证才能够进行LAT发送、备份等操作。";
+"importWalletVC_privateKey_tips" = "输入私钥内容至输入框，或者通过扫描私钥内容生成的二维码录入。请留意字符大小写。使用私钥导入的同时需要设定钱包密码。";
 "importWalletVC_privateKey_textView_placeholder" = "请输入私钥";
 "importWalletVC_importBtn_title" = "开始导入";
 "importWalletVC_success_tips" = "导入成功";
@@ -221,6 +224,7 @@
 
 //alert
 "alert_input_psw_title" = "请输入密码进行确认";
+"alert_input_psw_for_delete_title" = "请输入钱包密码进行删除确认";
 "alert_input_psw_title_placeholder" = "请输入钱包密码";
 "alert_confirmBtn_title" = "确认";
 "alert_cancelBtn_title" = "取消";
@@ -262,6 +266,8 @@
 "PersonalVC_cell_wallet_About" = "关于";
 "PersonalVC_cell_wallet_community" = "官方社区";
 "PersonalVC_cell_wallet_feedback" = "帮助和反馈";
+"PersonalVC_service_agreement" = "服务协议";
+"PersonalVC_privacy_policy" = "隐私政策";
 
 //WalletManagerDetailViewController
 "WalletManagerDetailVC_title" = "钱包管理";
@@ -309,7 +315,7 @@
 "AddAddressVC_add_button_title" = "添加";
 
 "NewAddress_name_empty_tip" = "名称不能为空";
-"NewAddress_name_Incorrect_tip" = "请输入 1～12位地址名称";
+"NewAddress_name_Incorrect_tip" = "请输入 1～20 位地址名称";
 "NewAddress_address_empty_tip" = "地址不能为空";
 "NewAddress_address_Incorrect_tip" = "地址格式不正确";
 
@@ -387,6 +393,7 @@
 "TransactionStatus_declareVersion_title" = "版本声明";
 "TransactionStatus_reportDuplicateSign_title" = "举报验证节点";
 "TransactionStatus_createRestrictingPlan_title" = "创建锁仓";
+"TransactionStatus_claimReward_title" = "领取奖励";
 "TransactionStatus_unknown_title" = "未知";
 
 
@@ -398,7 +405,7 @@
 "SettingsVC_languages_title" = "语言";
 "SettingsVC_faceId_openFailed_tips" = "Touch ID或Face ID已锁定，请至“系统-设置”解锁后重试";
 "SettingsVC_threshold_title" = "大额提醒";
-"SettingsVC_Resend_title" = "防重发提醒";
+"SettingsVC_Resend_title" = "重复交易提醒";
 
 "SettingsVC_nodeSet_editBtn_title" = "编辑";
 "SettingsVC_nodeSet_saveBtn_title" = "保存";
@@ -576,7 +583,10 @@
 "RPC_Response_connectionFailed" = "网络连接失败";
 "RPC_Response_serverError" = "网络连接失败";
 "RPC_Response_decodingError" = "解码失败";
+"RPC_Response_connectionTimeout" = "请求超时";
+
 "Request_timeout" = "请求超时";
+
 
 "Save" = "保存";
 
@@ -594,6 +604,7 @@
 "AboutVC_Policy" = "隐私政策";
 "AboutVC_AboutUs" = "关于我们";
 "AboutVC_update" = "版本更新";
+"AboutVC_Service_Policy" = "服务协议";
 
 //Vote
 "CandidateListVC_title" = "投票";
@@ -666,7 +677,7 @@
 //
 "VoteConfirm_title" = "投票确认";
 "VoteConfirm_payment_info" = "类型：";
-"VoteConfirm_fee_colon" = "手续费：";
+"VoteConfirm_fee_colon" = "预估手续费：";
 "VoteConfirm_submitBtn_title" = "确定";
 "VoteConfirm_vote" = "投票";
 
@@ -719,6 +730,7 @@
 "send_amount_placeholder" = "输入发送数量";
 "vote_confirm_from" = "支付钱包：";
 "staking_amount_placeholder" = "输入数量（不少于%@LAT）";
+"send_remark_placeholder" = "备注（可选-30以内）";
 
 
 "createOrImport_guide_text" = "已有钱包？使用钱包文件(json)、助记词、私钥导入";
@@ -731,10 +743,9 @@
 "staking_main_mydelegate_text" = "我的委托";
 "staking_main_validator_text" = "验证节点";
 "staking_main_wallet_name" = "钱包名称";
-"staking_main_delegate_text" = "可委托余额";
 "staking_main_undelegating_text" = "总委托";
 "staking_main_delegate_detail" = "详情";
-"staking_main_delegate_total" = "总计委托";
+"staking_main_delegate_total" = "总计委托(LAT)";
 "staking_main_delegate_record" = "委托记录";
 "staking_main_delegate_faq" = "常见问题";
 "staking_main_delegate_tutorial" = "使用教程";
@@ -756,21 +767,22 @@
 "staking_alert_unlocked_delegate_detail" = "委托大约在6.1小时内完成锁定，未锁定的委托没有收益，赎回的委托立即到账";
 "staking_alert_released_delegate" = "待赎回委托";
 "staking_alert_released_detail" = "一旦节点退出，原委托与节点解除关联，委托失效，需要主动赎回委托";
-"staking_alert_annualized_rate" = "预计年化率";
-"staking_alert_annualized_rate_detail" = "当前节点的预计年化率，具体委托收益由节点分配";
+"staking_alert_annualized_rate" = "预计委托年化收益率";
+"staking_alert_annualized_rate_detail" = "近4个结算周期每份额委托净收益折合成的年化收益率，仅做参考。";
+"staking_alert_annualized_reward" = "委托奖励比例";
+"staking_alert_annualized_reward_detail" = "节点收益(出块奖励，质押奖励)分配给委托者的奖励比例";
 
 "staking_validator_node_all" = "所有";
 "staking_validator_node_active" = "活跃中";
 "staking_validator_node_candidate" = "候选中";
-"staking_validator_node_rank" = "排名";
-"staking_validator_node_yield" = "年化率";
 
-"staking_validator_delegate_total" = "总质押";
-"staking_validator_delegate_rate_about" = "预计年化率";
+"staking_validator_delegate_total" = "委托";
+"staking_validator_delegate_rate_about" = "预计收益率";
+"staking_validator_detail_delegate_rate_about" = "预计委托收益率";
 
 "statking_validator_total_staked" = "总质押(LAT)";
 "statking_validator_delegations" = "接受委托(LAT)";
-"statking_validator_delegators" = "委托者";
+"statking_validator_delegators" = "委托者数";
 "statking_validator_slash" = "处罚次数";
 "statking_validator_blocks" = "已出块数";
 "statking_validator_blocks_rate" = "出块率";
@@ -790,19 +802,19 @@
 "ATextFieldView_withdraw_title" = "赎回数量:";
 
 "staking_doubt_delegate" = "委托";
-"staking_doubt_delegate_detail" = "委托的Token所有权永远归于委托人，用户可以随时赎回委托的Token。\n验证节点关联的操作地址和奖励接收地址不允许参与委托。";
+"staking_doubt_delegate_detail" = "委托的Token可以随时赎回。\n验证节点关联的操作地址不允许参与委托。";
 "staking_doubt_reward" = "收益";
-"staking_doubt_reward_detail" = "委托收益来自节点的收益分配，节点收益主要有出块奖励、质押奖励和区块手续费奖励。具体如何分配请查看各节点官网说明";
-"staking_doubt_risk" = "风险";
-"staking_doubt_risk_detail" = "节点双重签名、出块率低会被惩罚，从而间接影响您的收益。为规避风险，请认真选择合格的节点。";
+"staking_doubt_reward_detail" = "委托至少锁定一个周期（10750区块）才有收益。根据节点设置的委托奖励比例对节点获得的收益进行分配。节点收益包含出块奖励和质押奖励。";
 
 "staking_doubt_undelegate" = "说明";
 "staking_doubt_undelegate_detail" = "赎回交易提交成功，委托的Token可立即到账；\n待赎回委托必须一次性全部赎回；\n赎回数量扣除后，已委托剩余数量少于%@LAT时，自动赎回全部。";
+"staking_doubt_undelegate_note" = "注意：操作全部赎回时，将自动领取委托奖励。";
 
 "staking_balance_can_used" = "可用余额";
 "staking_balance_locked_position" = "锁仓余额";
 "staking_balance_Delegated" = "已委托";
 "staking_balance_release_Delegated" = "待赎回委托";
+"staking_balance_release_Delegated_index" = "第%d份";
 
 "input_amount_hundred" = "百";
 "input_amount_thousand" = "千";
@@ -850,10 +862,10 @@
 
 "node_quit_consensus_tip" = "节点已退出共识，投票失败！";
 
-"delegate_error_result_amountzero" = "解除委托金额大于0";
 "delegate_error_result_nodeexit" = "委托节点已退出，无法委托";
 "delegate_error_result_associate" = "节点关联的钱包地址，不可参与委托";
-"delegate_error_result_balancezero" = "可用余额为0，无法委托";
+"delegate_error_result_balancezero" = "余额不足，无法委托";
+"delegate_error_result_nodeInit" = "基金会资助的节点不接受委托";
 
 "empty_string_my_delegates_left" = "查看验证节点, ";
 "empty_string_my_delegates_right" = "参与委托";
@@ -875,6 +887,7 @@
 "staking_withdraw_input_amount_maxlimit_error" = "超出可赎回数量，无法提交";
 "staking_withdraw_balance_Insufficient_error" = "余额不足支付手续费，无法赎回委托";
 "staking_delegate_balance_Insufficient_error" = "余额不足支付手续费，无法委托";
+"staking_delegateall_keep_balance_error" = "余额不足保留0.1LAT";
 
 "error_no_wallet" = "无可用钱包";
 "error_wallet_no_balance" = "钱包余额不足";
@@ -887,7 +900,7 @@
 "about_version_update_alert_cancel" = "暂不更新";
 "about_version_update_alert_ok" = "立即更新";
 
-"delegate_detail_unable_alert" = "请先赎回 “已解除委托”";
+"delegate_detail_unable_alert" = "请先赎回 “已待赎回委托”";
 
 "import_observed_wallet_tip_1" = "存储大额资金建议使用观察钱包和冷钱包联动管理。";
 "import_observed_wallet_tip_2" = "交易时需要配合冷钱包进行操作。";
@@ -910,13 +923,15 @@
 "confirm_generate_qrcode_for_signed_tx" = "授权签名";
 "confirm_generate_qrcode_for_signed_tx_tip" = "使用对应观察钱包扫描下方二维码，完成授权";
 "confirm_button_signed_tx" = "完成";
+"confirm_reward_wallet" = "领取钱包:";
+"confirm_reward_amount" = "领取数量:";
 
 "offline_signature_title" = "交易预览";
 
 "offline_signature_invalid" = "无效签名";
-"offline_signature_notmatch_wallet" = "钱包不匹配";
 "touchid_auth_text" = "请验证%@";
 "touchid_verify_fail" = "指纹识别失败，请再试一次";
+"offline_signature_not_privatekey" = "签名钱包密钥不存在";
 
 "delete_observed_wallet_alert_title" = "删除观察钱包";
 "delete_observed_wallet_alert_message" = "请确认是否删除此观察钱包？";
@@ -934,3 +949,57 @@
 "threshold_confirm_value" = "发送数量超过%@，确认是否继续发送？";
 "resend_transfer_confirm_value" = "最近有一笔相同的发送记录，确认是否继续发送";
 "about_version_update_latest" = "当前已是最新版本！";
+
+"mydelegates_delegate_record" = "委托记录";
+"mydelegates_claim_record" = "领取记录";
+"mydelegates_unclaimed_reward" = "待领取奖励";
+"mydelegates_total_reward" = "累计奖励";
+"mydelegates_claim" = "领取";
+"mydelegates_search_placeholder" = "输入节点名称查询";
+
+"node_sort_title" = "排序";
+"node_sort_rank" = "节点排名";
+"node_sort_delegated" = "接受委托量";
+"node_sort_delegator" = "委托者数";
+"node_sort_yield" = "预计委托年化收益率";
+
+"reward_ratio" = "委托奖励比例";
+"reward_total" = "累计委托奖励";
+
+"delegate_detail_balance" = "可委托余额";
+"delegate_detail_delegated" = "总委托";
+
+"delegate_detail_unclaimed_reward" = "可领取奖励：";
+
+"wallet_receive_qrcode_warning_1" = "当前";
+"wallet_receive_qrcode_warning_2" = "网络，切勿将其他网络LAT转入到当前地址";
+
+"claim_comfirm_title" = "领取奖励";
+"claim_comfirm_desc" = "预估奖励，以实际到账为准";
+"claim_comfirm_fee" = "交易手续费";
+"claim_comfirm_wallet" = "领取钱包";
+"claim_comfirm_balance" = "可用余额：";
+"claim_comfirm_comfirm" = "确认";
+
+"mydelegates_search_cancel" = "隐藏";
+
+"transaction_warning_wait_for_previous" = "有待处理的交易，等待5分钟或交易完成方可继续新的交易";
+"withdraw_detail_balance" = "余额：";
+
+"delegate_all_warnings" = "建议保留少量余额，以支持委托赎回和奖励领取操作。";
+
+"alert_delegate_all" = "全部委托";
+"alert_delegate_all_without_01" = "保留余额";
+
+"pop_selection_title_withdraw" = "选择赎回项";
+"pop_selection_title_delegate" = "选择可用的LAT";
+
+"transaction_detail_note" = "备注：";
+
+"network_error_default" = "服务器开了小差，请重试（%d）";
+"network_error_knowntransaction" = "请勿重复提交!";
+"network_error_nonce_too_low" = "交易异常，请重试（%d）";
+"network_error_expired" = "二维码已失效";
+
+"gaslimit_note" = "关于特殊合约转账，建议在默认GasLimit基础上增加2倍或更多，GasLimit太低可能导致您的交易失败。";
+"gaslimit_less_than" = "Gas Limit不能小于21000";

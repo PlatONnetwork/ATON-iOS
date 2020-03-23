@@ -24,7 +24,7 @@ class AboutViewController: BaseViewController {
         versionIcon.backgroundColor = .red
         versionIcon.layer.cornerRadius = 5.0
 
-        versionLabel.text = ((SettingService.shareInstance.remoteVersion?.isNeed == true) ? Localized("about_latest_version") : Localized("about_current_version")) + "V" + appVersion!
+        versionLabel.text = (SettingService.shareInstance.remoteVersion?.isNeed == true) ? (Localized("about_latest_version") + (SettingService.shareInstance.remoteVersion?.newVersion ?? "")): (Localized("about_current_version") + "V" + appVersion!)
         versionIcon.isHidden = !(SettingService.shareInstance.remoteVersion?.isNeed == true)
     }
 
@@ -43,10 +43,17 @@ class AboutViewController: BaseViewController {
 
     @IBAction func privacyPolicy(_ sender: Any) {
         let controller = WebCommonViewController()
-//        controller.navigationTitle = Localized("delegate_faq_title")
+        controller.navigationTitle = Localized("PersonalVC_privacy_policy")
         controller.requestUrl = AppConfig.H5URL.PrivacyPolicyURL.policyurl
         controller.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(controller, animated: true)
-//        UIApplication.shared.openURL(URL(string: "https://www.platon.network")!)
+    }
+
+    @IBAction func servicePolicy(_ sender: Any) {
+        let controller = WebCommonViewController()
+         controller.navigationTitle = Localized("PersonalVC_service_agreement")
+        controller.requestUrl = AppConfig.H5URL.LisenceURL.serviceurl
+        controller.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(controller, animated: true)
     }
 }

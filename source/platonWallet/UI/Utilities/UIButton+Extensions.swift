@@ -99,7 +99,12 @@ extension UIButton {
     func setupSwitchWalletStyle() {
         self.addMaskView(corners: [.bottomRight,.topRight], cornerRadiiV: 5)
         let chooseWalletImgView = UIImageView(image: UIImage(named: "chooseWallet"))
+        chooseWalletImgView.isUserInteractionEnabled = true
         self.addSubview(chooseWalletImgView)
+        chooseWalletImgView.snp.makeConstraints { (make) in
+            make.size.equalTo(CGSize(width: 16, height: 16))
+            make.centerY.equalTo(self)
+        }
 
         let Label = UILabel()
         Label.localizedText = "transferVC_switch_des"
@@ -111,11 +116,6 @@ extension UIButton {
         Label.snp.makeConstraints { (make) in
             make.trailing.equalTo(self).offset(-16)
             make.leading.equalTo(chooseWalletImgView.snp.trailing).offset(5)
-            make.centerY.equalTo(self)
-        }
-
-        chooseWalletImgView.snp.makeConstraints { (make) in
-            make.size.equalTo(CGSize(width: 16, height: 16))
             make.centerY.equalTo(self)
         }
     }

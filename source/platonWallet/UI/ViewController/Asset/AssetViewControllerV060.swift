@@ -121,7 +121,8 @@ class AssetViewControllerV060: BaseViewController, PopupMenuTableDelegate {
                     make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
                     make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
                 } else {
-                    make.bottom.equalToSuperview()
+                    make.bottom.equalTo(bottomLayoutGuide.snp.top)
+//                    make.bottom.equalToSuperview()
                     make.top.equalTo(topLayoutGuide.snp.bottom)
                 }
             } else {
@@ -157,13 +158,14 @@ class AssetViewControllerV060: BaseViewController, PopupMenuTableDelegate {
             make.width.equalTo(view)
             make.height.equalTo(kUIScreenHeight - 70 - tabbarHeight - CGFloat(AssetSectionViewH))
         }
-//        self.updatePageViewConstraint(headerHide: false)
+        //        self.updatePageViewConstraint(headerHide: false)
 
         pageVC.didScrolling = { offset in
             //self?.sectionView.changingOffset(offset: offset, currentIndex: (self?.pageViewCurrentIndex)!,draging: (self?.pageVC.pagesScrollview?.isDragging)!)
 
         }
 
+        sendVC.delegate = self
         transactionVC.delegate = self
         sectionView.onSelectItem = { [weak self] (index) -> Bool in
             if index == 1 && NetworkManager.shared.reachabilityManager?.isReachable == false {
@@ -205,24 +207,24 @@ class AssetViewControllerV060: BaseViewController, PopupMenuTableDelegate {
 
     // MARK: - Constraint
 
-//    func updatePageViewConstraint(headerHide: Bool){
-//        let tabbarHeight = (navigationController?.tabBarController?.tabBar.frame.size.height ?? 0)
-//        if headerHide{
-//            pageVC.view.snp.remakeConstraints { (make) in
-//                make.leading.trailing.bottom.equalToSuperview()
-//                make.width.equalTo(view)
-//                make.top.equalTo(sectionView.snp.bottom).offset(0)
-//                make.height.equalTo(kUIScreenHeight - 70 - tabbarHeight - CGFloat(AssetSectionViewH))
-//            }
-//        }else{
-//            pageVC.view.snp.remakeConstraints { (make) in
-//                make.leading.trailing.bottom.equalToSuperview()
-//                make.width.equalTo(view)
-//                make.top.equalTo(sectionView.snp.bottom).offset(0)
-//                make.height.equalTo(kUIScreenHeight - 0 - tabbarHeight - CGFloat(AssetSectionViewH))
-//            }
-//        }
-//    }
+    //    func updatePageViewConstraint(headerHide: Bool){
+    //        let tabbarHeight = (navigationController?.tabBarController?.tabBar.frame.size.height ?? 0)
+    //        if headerHide{
+    //            pageVC.view.snp.remakeConstraints { (make) in
+    //                make.leading.trailing.bottom.equalToSuperview()
+    //                make.width.equalTo(view)
+    //                make.top.equalTo(sectionView.snp.bottom).offset(0)
+    //                make.height.equalTo(kUIScreenHeight - 70 - tabbarHeight - CGFloat(AssetSectionViewH))
+    //            }
+    //        }else{
+    //            pageVC.view.snp.remakeConstraints { (make) in
+    //                make.leading.trailing.bottom.equalToSuperview()
+    //                make.width.equalTo(view)
+    //                make.top.equalTo(sectionView.snp.bottom).offset(0)
+    //                make.height.equalTo(kUIScreenHeight - 0 - tabbarHeight - CGFloat(AssetSectionViewH))
+    //            }
+    //        }
+    //    }
 
     @objc func shouldUpdateWalletStatus() {
         headerView.updateWalletStatus()
@@ -232,14 +234,14 @@ class AssetViewControllerV060: BaseViewController, PopupMenuTableDelegate {
     }
 
     func resetCurrentTab() {
-        if NetworkManager.shared.reachabilityManager?.isReachable == false && pageViewCurrentIndex == 1 && (AssetVCSharedData.sharedData.selectedWallet as? Wallet)?.type == .cold {
+        if NetworkManager.shared.reachabilityManager?.isReachable == false && pageViewCurrentIndex == 1 {
             AssetViewControllerV060.setPageViewController(index: 0)
         }
     }
 
     // 禁用UIPageController 在离线状态下的拖动手势
     func updatePageControllerDataSource() {
-        if NetworkManager.shared.reachabilityManager?.isReachable == false && (AssetVCSharedData.sharedData.selectedWallet as? Wallet)?.type == .cold {
+        if NetworkManager.shared.reachabilityManager?.isReachable == false {
             pageVC.dataSource = nil
         } else {
             pageVC.dataSource = self
@@ -248,7 +250,7 @@ class AssetViewControllerV060: BaseViewController, PopupMenuTableDelegate {
 
     @objc func fetchData() {
         updateWalletList()
-//        transactionVC.fetchTransactionLastest()
+        //        transactionVC.fetchTransactionLastest()
     }
 
     func endFetchData() {
@@ -287,7 +289,7 @@ class AssetViewControllerV060: BaseViewController, PopupMenuTableDelegate {
             let hide = assetHeaderStyle?.0 ?? false
 
             if hide {
-//                scrollView.setContentOffset(CGPoint(x: 0, y: AssetHeaderViewH), animated: animated)
+                //                scrollView.setContentOffset(CGPoint(x: 0, y: AssetHeaderViewH), animated: animated)
                 sectionView.backgroundColor = .white
                 DispatchQueue.main.async {
                     self.scrollView.isScrollEnabled = true
@@ -300,7 +302,7 @@ class AssetViewControllerV060: BaseViewController, PopupMenuTableDelegate {
             } else {
                 sectionView.backgroundColor = UIColor(red: 247, green: 250, blue: 255, alpha: 1)
 
-//                scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: animated)
+                //                scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: animated)
                 DispatchQueue.main.async {
                     self.scrollView.isScrollEnabled = true
                 }
@@ -311,7 +313,7 @@ class AssetViewControllerV060: BaseViewController, PopupMenuTableDelegate {
             }
 
             transactionVC.setHeaderStyle(hide: hide)
-//            self.updatePageViewConstraint(headerHide: hide)
+            //            self.updatePageViewConstraint(headerHide: hide)
 
         }
     }
@@ -389,6 +391,7 @@ extension AssetViewControllerV060: UIScrollViewDelegate, ChildScrollViewDidScrol
 
         //let rec = sectionView.convert(sectionView.bounds, to: view)
         //print("sectionView y:\(rec.origin.y)")
+
         if (!scrollEnable || scrollView.contentOffset.y >= CGFloat(AssetHeaderViewH)) {
             //scrollView.setContentOffset(CGPoint(x: 0, y: AssetHeaderViewH - 20), animated: false)
             DispatchQueue.main.async {
@@ -398,6 +401,10 @@ extension AssetViewControllerV060: UIScrollViewDelegate, ChildScrollViewDidScrol
                 self.assetHeaderStyle = (true, false)
             }
         }
+    }
+
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        view.endEditing(true)
     }
 
     func childScrollViewDidScroll(childScrollView: UIScrollView) {
@@ -410,10 +417,10 @@ extension AssetViewControllerV060: UIScrollViewDelegate, ChildScrollViewDidScrol
             if scrollEnable && rec.origin.y > 0 && !(self.assetHeaderStyle?.hide)! {
                 childScrollView.setContentOffset(.zero, animated: false)
             } else {
-//                scrollEnable = false
+                //                scrollEnable = false
             }
         }
-//        scrollView.contentSize = CGSize(width: scrollView.contentSize.width, height: childScrollView.contentSize.height + CGFloat(AssetHeaderViewH) + CGFloat(AssetSectionViewH))
+        //        scrollView.contentSize = CGSize(width: scrollView.contentSize.width, height: childScrollView.contentSize.height + CGFloat(AssetHeaderViewH) + CGFloat(AssetSectionViewH))
     }
 
     // MARK: - User Interaction
@@ -431,7 +438,8 @@ extension AssetViewControllerV060: UIScrollViewDelegate, ChildScrollViewDidScrol
     @objc func onScan() {
         let controller = QRScannerViewController()
         controller.scanCompletion = { [weak self] (res) in
-            self?.handleScanResp(res)
+            guard let self = self else { return }
+            self.handleScanResp(res)
         }
         controller.hidesBottomBarWhenPushed = true
         (UIApplication.shared.keyWindow?.rootViewController as? BaseNavigationController)?.pushViewController(controller, animated: true)
@@ -451,6 +459,8 @@ extension AssetViewControllerV060: UIScrollViewDelegate, ChildScrollViewDidScrol
         switch qrcodeType {
         case .transaction(let data):
             doShowConfirmViewController(qrcode: data)
+        case .signedTransaction(let data):
+            showQrcodeScan(scanData: data)
         case .address(let data):
             sectionView.setSectionSelectedIndex(index: 1)
             sendVC.walletAddressView.textField.text = data
@@ -475,7 +485,7 @@ extension AssetViewControllerV060: UIScrollViewDelegate, ChildScrollViewDidScrol
 
         let wallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).first(where: { $0.address.lowercased() == codes.first?.from?.lowercased() })
         guard wallet != nil else {
-            showErrorMessage(text: Localized("offline_signature_notmatch_wallet"), delay: 2.0)
+            showErrorMessage(text: Localized("offline_signature_not_privatekey"), delay: 2.0)
             return
         }
 
@@ -485,28 +495,56 @@ extension AssetViewControllerV060: UIScrollViewDelegate, ChildScrollViewDidScrol
         navigationController?.pushViewController(controller, animated: true)
     }
 
-//    func doShowQrcodeScan(qrcode: QrcodeData<SignatureQrcode>) {
-//        guard
-//            let signedDatas = qrcode.qrCodeData?.signedData, signedDatas.count > 0
-//            else { return }
-//
-//        let signatureView = OfflineSignatureScanView()
-//        let contentString = signedDatas.joined(separator: ";")
-//        signatureView.textView.text = contentString
-//
-//        let type = ConfirmViewType.qrcodeScan(contentView: signatureView)
-//        let offlineConfirmView = OfflineSignatureConfirmView(confirmType: type)
-//        offlineConfirmView.titleLabel.localizedText = "confirm_scan_qrcode_for_read"
-//        offlineConfirmView.descriptionLabel.localizedText = "confirm_scan_qrcode_for_read_tip"
-//        offlineConfirmView.submitBtn.localizedNormalTitle = "confirm_button_send"
-//
-//        let controller = PopUpViewController()
-//        controller.setUpConfirmView(view: offlineConfirmView, width: PopUpContentWidth)
-//        controller.show(inViewController: self)
-//        controller.onCompletion = { [weak self] in
-//            AssetViewControllerV060.sendSignatureTransaction(qrcode: qrcode)
-//        }
-//    }
+    func showQrcodeScan(scanData: QrcodeData<[String]>? = nil) {
+        let scanView = OfflineSignatureScanView()
+        var qrcodeData: QrcodeData<[String]>? = scanData
+
+        if let data = qrcodeData, let signedString = data.qrCodeData  {
+            scanView.textView.text = signedString.joined(separator: ";")
+        }
+
+        scanView.scanCompletion = { [weak self] in
+            self?.doShowScanController(completion: { (data) in
+                guard
+                    let qrcode = data,
+                    let signedDatas = qrcode.qrCodeData, qrcode.chainId == web3.chainId else { return }
+                DispatchQueue.main.async {
+                    scanView.textView.text = signedDatas.joined(separator: ";")
+                }
+                qrcodeData = qrcode
+            })
+        }
+        let type = ConfirmViewType.qrcodeScan(contentView: scanView)
+        let offlineConfirmView = OfflineSignatureConfirmView(confirmType: type)
+        offlineConfirmView.titleLabel.localizedText = "confirm_scan_qrcode_for_read"
+        offlineConfirmView.descriptionLabel.localizedText = "confirm_scan_qrcode_for_read_tip"
+        offlineConfirmView.submitBtn.localizedNormalTitle = "confirm_button_send"
+
+        let controller = PopUpViewController()
+        controller.onCompletion = {
+            guard let qrcode = qrcodeData else { return }
+            AssetViewControllerV060.sendSignatureTransaction(qrcode: qrcode)
+        }
+        controller.setUpConfirmView(view: offlineConfirmView, width: PopUpContentWidth)
+        controller.show(inViewController: self)
+    }
+
+    func doShowScanController(completion: ((QrcodeData<[String]>?) -> Void)?) {
+        let controller = QRScannerViewController()
+        controller.hidesBottomBarWhenPushed = true
+        controller.scanCompletion = { result in
+            let qrcodeType = QRCodeDecoder().decode(result)
+            switch qrcodeType {
+            case .signedTransaction(let data):
+                completion?(data)
+            default:
+                AssetViewControllerV060.getInstance()?.showMessage(text: Localized("QRScan_failed_tips"))
+                completion?(nil)
+            }
+        }
+
+        (UIApplication.shared.keyWindow?.rootViewController as? BaseNavigationController)?.pushViewController(controller, animated: true)
+    }
 
     func doShowTransactionDetail(_ transaction: Transaction) {
         // 重置输入框
@@ -552,55 +590,99 @@ extension AssetViewControllerV060 {
         guard
             let signatureArr = qrcode.qrCodeData,
             let type = qrcode.functionType,
-            let from = qrcode.from else { return }
-        for (index, signature) in signatureArr.enumerated() {
+            let from = qrcode.from,
+            let sign = qrcode.si else { return }
+        for (_, signature) in signatureArr.enumerated() {
             let bytes = signature.hexToBytes()
             let rlpItem = try? RLPDecoder().decode(bytes)
 
             if
                 let signedTransactionRLP = rlpItem,
                 let signedTransaction = try? EthereumSignedTransaction(rlp: signedTransactionRLP) {
-                web3.platon.sendRawTransaction(transaction: signedTransaction) { (response) in
-                    switch response.status {
-                    case .success(let result):
-                        guard
-                            let to = signedTransaction.to?.rawAddress.toHexString() else { return }
-                        let gasPrice = signedTransaction.gasPrice.quantity
-                        let gasLimit = signedTransaction.gasLimit.quantity
-                        let gasUsed = gasPrice.multiplied(by: gasLimit).description
-                        let amount = signedTransaction.value.quantity.description
-                        let tx = Transaction()
-                        tx.senderAddress = from
-                        tx.from = from.add0x()
-                        tx.to = to.add0x()
-                        tx.gasUsed = gasUsed
-                        tx.createTime = Int(Date().timeIntervalSince1970 * 1000)
-                        tx.txhash = result.bytes.toHexString().add0x()
-                        tx.txReceiptStatus = -1
-                        tx.value = amount
-                        tx.transactionType = Int(type)
-                        tx.toType = (type != 0) ? .contract : .address
-                        tx.direction = .Sent
-                        TransferPersistence.add(tx: tx)
+                AssetViewControllerV060.getInstance()?.showLoadingHUD()
 
-                        let thTx = TwoHourTransaction()
-                        thTx.createTime = Int(Date().timeIntervalSince1970 * 1000)
-                        thTx.to = to.add0x().lowercased()
-                        thTx.from = from.add0x().lowercased()
-                        thTx.value = amount
-                        TwoHourTransactionPersistence.add(tx: thTx)
+                guard
+                    let to = signedTransaction.to?.rawAddress.toHexString() else { return }
+                let gasPrice = signedTransaction.gasPrice.quantity
+                let gasLimit = signedTransaction.gasLimit.quantity
+                let gasUsed = gasPrice.multiplied(by: gasLimit).description
+                let amount = signedTransaction.value.quantity.description
 
-                        if index == signatureArr.count - 1 {
-                            DispatchQueue.main.async {
-                                getInstance()?.doShowTransactionDetail(tx)
-                            }
+                let rlpResult = try? QRCodeRLPDecoder().decode(signedTransaction.data.bytes)
+
+                let tx = Transaction()
+                tx.senderAddress = from
+                tx.from = from.add0x()
+                tx.to = to.add0x()
+                tx.gasUsed = gasUsed
+                tx.createTime = Int(Date().timeIntervalSince1970 * 1000)
+                tx.txhash = signedTransaction.hash?.add0x()
+                tx.txReceiptStatus = -1
+                tx.value = (type == 5000) ? qrcode.rn ?? "0" : amount
+                tx.transactionType = Int(type)
+                tx.toType = (type != 0) ? .contract : .address
+                if let resultDetail = rlpResult {
+                    tx.nodeId = resultDetail.1 ?? ""
+                    if type == 1004 || type == 1005 {
+                        tx.value = (resultDetail.2 ?? BigUInt.zero).description
+                    }
+                    if type == 1005 {
+                        tx.unDelegation = (resultDetail.2 ?? BigUInt.zero).description
+                    }
+                }
+                if type == 5000 {
+                    tx.totalReward = qrcode.rn ?? "0"
+                }
+                tx.nodeName = qrcode.nodeName ?? ""
+                tx.direction = tx.getTransactionDirection()
+                tx.txType = TxType(rawValue: String(type))
+                tx.memo = qrcode.rk
+
+                let thTx = TwoHourTransaction()
+                thTx.createTime = Int(Date().timeIntervalSince1970 * 1000)
+                thTx.to = to.add0x().lowercased()
+                thTx.from = from.add0x().lowercased()
+                thTx.value = amount
+
+                if (qrcode.v ?? 0) >= 1 {
+                    let signedTx = SignedTransaction(signedData: signature, remark: qrcode.rk ?? "")
+                    guard
+                        let signedTxJsonString = signedTx.jsonString
+                        else { break }
+                    TransactionService.service.sendSignedTransactionToServer(data: signedTxJsonString, sign: sign) { (result, response) in
+                        switch result {
+                        case .success:
+                            sendTransactionSuccess(tx: tx, thTx: thTx)
+                        case .failure(let error):
+                            sendTransactionFailure(message: error?.message ?? "server error")
                         }
-                    case .failure(_):
-                        break
+                    }
+                } else {
+                    web3.platon.sendRawTransaction(transaction: signedTransaction) { (response) in
+                        switch response.status {
+                        case .success:
+                            sendTransactionSuccess(tx: tx, thTx: thTx)
+                        case .failure(let error):
+                            sendTransactionFailure(message: error.message)
+                        }
                     }
                 }
             }
         }
+    }
+
+    static func sendTransactionSuccess(tx: Transaction, thTx: TwoHourTransaction) {
+        getInstance()?.hideLoadingHUD()
+        TransferPersistence.add(tx: tx)
+        TwoHourTransactionPersistence.add(tx: thTx)
+        DispatchQueue.main.async {
+            getInstance()?.doShowTransactionDetail(tx)
+        }
+    }
+
+    static func sendTransactionFailure(message: String) {
+        getInstance()?.hideLoadingHUD()
+        getInstance()?.showErrorMessage(text: message)
     }
 
     static func pushViewController(viewController: UIViewController) {
@@ -608,7 +690,7 @@ extension AssetViewControllerV060 {
             let tabNav = UIApplication.shared.keyWindow?.rootViewController as? BaseNavigationController,
             let tabvc = tabNav.rt_topViewController as? MainTabBarViewController,
             let nav = tabvc.viewControllers?.first as? BaseNavigationController else {
-            return
+                return
         }
         viewController.hidesBottomBarWhenPushed = true
         nav.pushViewController(viewController, animated: true)
@@ -719,7 +801,7 @@ extension AssetViewControllerV060 {
         guard
             let responderView = scrollView.firstResponder,
             let rect = responderView.superview?.convert(responderView.frame, to: view)
-        else { return }
+            else { return }
 
         let endFrame = notify.userInfo!["UIKeyboardFrameEndUserInfoKey"] as! CGRect
         if rect.maxY > endFrame.origin.y {

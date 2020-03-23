@@ -176,7 +176,7 @@ extension UIViewController {
 
     func showCommonRenameInput(completion: ((_ text: String?) -> Void)?,checkDuplicate: Bool = false) {
         let alertVC = AlertStylePopViewController.initFromNib()
-        let style = PAlertStyle.commonInput(title: "alert_modifyWalletName_title", placeHoder: "Wallet name", preInputText: "")
+        let style = PAlertStyle.commonInput(title: "alert_modifyWalletName_title", placeHoder: "Wallet name", preInputText: "", maxTextCount: 20)
         alertVC.textFieldInput.checkInput(mode: CheckMode.textChange, check: { (input) -> (Bool, String) in
             let ret = CommonService.isValidWalletName(input,checkDuplicate: true)
             return (ret.0,ret.1 ?? "")
@@ -246,7 +246,7 @@ extension UIViewController {
 }
 
 extension UIViewController {
-    func showPasswordInputPswAlert(for wallet: Wallet, completion: ((String?, String?, Error?) -> Void)?) {
+    func showPasswordInputPswAlert(for wallet: Wallet, isForDelete: Bool? = false, completion: ((String?, String?, Error?) -> Void)?) {
 
         let alertVC = AlertStylePopViewController.initFromNib()
         let style = PAlertStyle.passwordInput(walletName: wallet.name)
@@ -282,6 +282,9 @@ extension UIViewController {
             return true
         }
         alertVC.style = style
+        if isForDelete == true {
+            alertVC.titleLabel.localizedText = "alert_input_psw_for_delete_title"
+        }
         alertVC.showInViewController(viewController: self)
 
         return

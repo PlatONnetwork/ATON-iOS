@@ -1,19 +1,20 @@
 {
-	"errMsg": "�ɹ�",
-	"code": 0,
-	"data": [{
-		"nodeId": "0x81f4ab0012303bff59c35cead6c2487909cbf59bb0b2b677c2ff36d7009b39a572b2f73214d8590022d20410cbf92631844a7ce8a7d5b840c0e25cd93dc234d5",
-		"stakingBlockNum": "1062",
-		"delegationBlockNum": "2244",
-		"nodeName": "节点1",
-		"website": "www.baidu.com",
-		"url": null,
-		"nodeStatus": "Exited",
-		"redeem": "0",
-		"locked": "0",
-		"unLocked": "0",
-		"released": "11000000000000000000",
-        "isInit": false,
-        "isConsensus": false
-	}]
+    "errMsg": "�ɹ�",
+    "code": 0,
+    "data": {
+        "availableDelegationBalance": "12653094370749644858000000000",
+        "delegated": "34000000000000000000",
+        "item": [{
+            "nodeId": "0x77fffc999d9f9403b65009f1eb27bae65774e2d8ea36f7b20a89f82642a5067557430e6edfe5320bb81c3666a19cf4a5172d6533117d7ebcd0f2c82055499050",
+            "nodeName": "chendai-node3",
+            "website": "www.baidu.com",
+            "url": "",
+            "nodeStatus": "Active",
+            "isConsensus": true,
+            "delegated": "34000000000000000000",
+            "released": "0",
+            "isInit": false,
+            "withdrawReward": "0"
+        }]
+    }
 }

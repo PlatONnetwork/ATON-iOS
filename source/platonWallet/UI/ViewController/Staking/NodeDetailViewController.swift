@@ -12,10 +12,27 @@ import BigInt
 
 class NodeDetailViewController: BaseViewController {
 
-    public let nodeInfoView = NodeBaseInfoView()
-    public let institutionalLabel = UILabel()
-    public let websiteLabel = UILabel()
-    public let doubtLabel = UILabel()
+    let nodeInfoView = NodeBaseInfoView()
+    let doubtLabel = UILabel()
+
+    var listData: [(String, String)] = []
+
+    lazy var tableView = { () -> UITableView in
+        let tbView = UITableView(frame: .zero)
+        tbView.delegate = self
+        tbView.dataSource = self
+        tbView.register(NodeDetailCell.self, forCellReuseIdentifier: "NodeDetailCell")
+        tbView.register(NodeDetailGroupCell.self, forCellReuseIdentifier: "NodeDetailGroupCell")
+        tbView.separatorStyle = .none
+        tbView.backgroundColor = .white
+        tbView.tableFooterView = UIView()
+        if #available(iOS 11, *) {
+            tbView.estimatedRowHeight = UITableView.automaticDimension
+        } else {
+            tbView.estimatedRowHeight = 100
+        }
+        return tbView
+    }()
 
     lazy var delegateButton = { () -> PButton in
         let button = PButton()
@@ -46,7 +63,6 @@ class NodeDetailViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         super.leftNavigationTitle = "delegate_validator_detail_title"
-        view.backgroundColor = normal_background_color
 
         // Do any additional setup after loading the view.
         setupView()
@@ -60,62 +76,36 @@ class NodeDetailViewController: BaseViewController {
     }
 
     func setupView() {
-        nodeInfoView.nodeNameButton.addTarget(self, action: #selector(openWebSiteController), for: .touchUpInside)
-
-        view.addSubview(nodeInfoView)
-        nodeInfoView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(10)
-            make.trailing.equalToSuperview().offset(-10)
-            make.top.equalToSuperview().offset(16)
-            make.height.equalTo(236)
-        }
-
-        nodeInfoView.layer.shadowColor = UIColor(rgb: 0x9ca7c2).cgColor
-        nodeInfoView.layer.shadowRadius = 4.0
-        nodeInfoView.layer.shadowOffset = CGSize(width: 2, height: 2)
-        nodeInfoView.layer.shadowOpacity = 0.2
-
-        let institutionalTipLabel = UILabel()
-        institutionalTipLabel.text = Localized("statking_validator_Institutional")
-        institutionalTipLabel.textColor = common_darkGray_color
-        institutionalTipLabel.font = UIFont.systemFont(ofSize: 14)
-        view.addSubview(institutionalTipLabel)
-        institutionalTipLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(16)
-            make.top.equalTo(nodeInfoView.snp.bottom).offset(20)
-        }
-
-        institutionalLabel.textColor = .black
-        institutionalLabel.font = .systemFont(ofSize: 14)
-        institutionalLabel.text = "--"
-        view.addSubview(institutionalLabel)
-        institutionalLabel.snp.makeConstraints { make in
-            make.leading.equalTo(institutionalTipLabel)
-            make.top.equalTo(institutionalTipLabel.snp.bottom).offset(10)
-        }
-
-        let websiteTipLabel = UILabel()
-        websiteTipLabel.text = Localized("statking_validator_Website")
-        websiteTipLabel.textColor = common_darkGray_color
-        websiteTipLabel.font = UIFont.systemFont(ofSize: 14)
-        view.addSubview(websiteTipLabel)
-        websiteTipLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(16)
-            make.top.equalTo(institutionalLabel.snp.bottom).offset(16)
-        }
-
-        websiteLabel.isUserInteractionEnabled = true
-        websiteLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openWebSiteController)))
-        websiteLabel.textColor = common_blue_color
-        websiteLabel.font = .systemFont(ofSize: 14)
-        websiteLabel.text = "--"
-        view.addSubview(websiteLabel)
-        websiteLabel.snp.makeConstraints { make in
-            make.leading.equalTo(websiteTipLabel)
-            make.top.equalTo(websiteTipLabel.snp.bottom).offset(10)
-        }
 
         view.addSubview(delegateButton)
+        delegateButton.snp.makeConstraints { make in
+            make.height.equalTo(40)
+            make.leading.equalToSuperview().offset(16)
+            make.trailing.equalToSuperview().offset(-16)
+            make.bottom.equalTo(bottomLayoutGuide.snp.top).offset(-40)
+        }
+
+        view.addSubview(tableView)
+        tableView.snp.makeConstraints { make in
+            make.top.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(delegateButton.snp.top)
+        }
+
+        nodeInfoView.nodeNameButton.addTarget(self, action: #selector(openWebSiteController), for: .touchUpInside)
+        tableView.tableHeaderView = nodeInfoView
+        nodeInfoView.setNeedsLayout()
+        nodeInfoView.layoutIfNeeded()
+        nodeInfoView.frame.size = nodeInfoView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+        tableView.tableHeaderView = nodeInfoView
+        nodeInfoView.nodeLinkHandler = { [weak self] in
+            self?.openWebSiteController()
+        }
+        nodeInfoView.tipsShowHandler = { [weak self] in
+            self?.rewardDoubtTapAction()
+        }
+        nodeInfoView.tipsShowYieldHandler = { [weak self] in
+            self?.doubtTapAction()
+        }
 
         let attachment = NSTextAttachment()
         attachment.bounds = CGRect(x: 0, y: -2, width: 10, height: 10)
@@ -127,14 +117,17 @@ class NodeDetailViewController: BaseViewController {
         attr.append(NSAttributedString(string: Localized("staking_validator_isInit_doubt")))
 
         doubtLabel.attributedText = attr
-        doubtLabel.textColor = common_darkGray_color
+        doubtLabel.textColor = UIColor(rgb: 0xFF6B00)
         doubtLabel.textAlignment = .center
         doubtLabel.font = .systemFont(ofSize: 12)
         doubtLabel.numberOfLines = 0
+        doubtLabel.isHidden = true
         view.addSubview(doubtLabel)
         doubtLabel.snp.makeConstraints { make in
-            make.leading.trailing.equalTo(delegateButton)
-            make.bottom.equalTo(bottomLayoutGuide.snp.top).offset(-30)
+            make.width.equalTo(238)
+            make.centerX.equalTo(delegateButton.snp.centerX)
+//            make.leading.trailing.equalTo(delegateButton)
+//            make.bottom.equalTo(bottomLayoutGuide.snp.top).offset(-30)
             make.top.equalTo(delegateButton.snp.bottom).offset(15)
         }
 
@@ -143,10 +136,6 @@ class NodeDetailViewController: BaseViewController {
         noNetworkEmptyView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-
-        let doubtButtonItem = UIBarButtonItem(image: UIImage(named: "3.icon_doubt"), style: .done, target: self, action: #selector(doubtTapAction))
-        doubtButtonItem.tintColor = .black
-        navigationItem.rightBarButtonItem = doubtButtonItem
     }
 
     private func setupData() {
@@ -154,21 +143,12 @@ class NodeDetailViewController: BaseViewController {
         nodeInfoView.nodeNameLabel.text = nodeDetail?.node.name ?? "--"
         nodeInfoView.nodeAddressLabel.text = nodeDetail?.node.nodeId?.nodeIdForDisplay() ?? "--"
         nodeInfoView.rateLabel.text = nodeDetail?.node.rate ?? "--"
-        nodeInfoView.totalStakedLabel.text = nodeDetail?.totalStaked ?? "--"
-        nodeInfoView.delegationsLabel.text = nodeDetail?.delegations ?? "--"
-        nodeInfoView.delegatorsLabel.text = nodeDetail?.delegate
-        nodeInfoView.slashLabel.text = nodeDetail?.slash ?? "--"
-        nodeInfoView.blocksLabel.text = nodeDetail?.blockOut ?? "--"
-        nodeInfoView.blocksRateLabel.text = nodeDetail?.bRate ?? "--"
-
-        nodeInfoView.statusButton.setTitle(nodeDetail?.node.status.0 ?? "--", for: .normal)
-        nodeInfoView.statusButton.setTitleColor(nodeDetail?.node.status.1 ?? status_blue_color, for: .normal)
-        nodeInfoView.statusButton.layer.borderColor = (nodeDetail?.node.status.1 ?? status_blue_color).cgColor
-
-        institutionalLabel.text = nodeDetail?.institutionalForDisplay ?? "--"
-        websiteLabel.text = nodeDetail?.websiteForDisplay ?? "--"
+        nodeInfoView.rewardRatioLabel.text = nodeDetail?.delegatedRewardPerValue
+        nodeInfoView.totalRewardLabel.text = nodeDetail?.cumulativeRewardValue
 
         nodeInfoView.nodeNameButton.isHidden = (nodeDetail?.website == nil || nodeDetail?.website?.count == 0)
+        nodeInfoView.statusButton.setTitle(nodeDetail?.node.status.0 ?? "--", for: .normal)
+        nodeInfoView.ratePATrend = nodeDetail?.delegatedRatePATrend
 
         if nodeDetail?.node.isInit == true {
             delegateButton.snp.makeConstraints { make in
@@ -178,17 +158,35 @@ class NodeDetailViewController: BaseViewController {
             }
             view.layoutIfNeeded()
             delegateButton.style = .disable
+            doubtLabel.isHidden = false
         } else {
             delegateButton.snp.makeConstraints { make in
                 make.height.equalTo(40)
                 make.leading.equalToSuperview().offset(16)
                 make.trailing.equalToSuperview().offset(-16)
-                make.bottom.equalTo(bottomLayoutGuide.snp.top).offset(-30)
+                make.bottom.equalTo(bottomLayoutGuide.snp.top).offset(-40)
             }
             view.layoutIfNeeded()
             delegateButton.style = AssetVCSharedData.sharedData.walletList.count == 0 ? .disable : .blue
+            doubtLabel.isHidden = true
         }
         doubtLabel.isHidden = (nodeDetail?.node.isInit == false)
+        nodeInfoView.isInitNode = nodeDetail?.node.isInit ?? false
+        nodeInfoView.setNeedsLayout()
+        nodeInfoView.layoutIfNeeded()
+        nodeInfoView.frame.size = nodeInfoView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+        tableView.tableHeaderView = nodeInfoView
+
+        var details: [(String, String)] = []
+        details.append((Localized("statking_validator_total_staked"), nodeDetail?.totalStaked ?? "--"))
+        details.append((Localized("statking_validator_delegations"), nodeDetail?.delegations ?? "--"))
+        details.append((Localized("statking_validator_delegators"), nodeDetail?.node.delegate ?? "--"))
+        details.append((Localized("statking_validator_blocks"), nodeDetail?.blockOut ?? "--"))
+        details.append((Localized("statking_validator_blocks_rate"), nodeDetail?.bRate ?? "--"))
+        details.append((Localized("statking_validator_slash"), nodeDetail?.slash ?? "--"))
+        details.append((nodeDetail?.websiteForDisplay ?? "--", nodeDetail?.institutionalForDisplay ?? "--"))
+        listData = details
+        tableView.reloadData()
     }
 
     func refreshData() {
@@ -198,17 +196,18 @@ class NodeDetailViewController: BaseViewController {
     private func fetchData() {
         guard let nId = nodeId else { return }
         showLoadingHUD()
-        StakingService.sharedInstance.getNodeDetail(nodeId: nId) { [weak self] (result, data) in
+        StakingService.getNodeDetail(nodeId: nId) { [weak self] (result, data) in
             self?.hideLoadingHUD()
             switch result {
             case .success:
-                if let newData = data as? NodeDetail {
+                if let newData = data {
                     self?.nodeDetail = newData
                     self?.setupData()
                     self?.noNetworkEmptyView.isHidden = true
                 }
-            case .fail:
+            case .failure(let error):
                 self?.noNetworkEmptyView.isHidden = false
+                self?.showErrorMessage(text: error?.message ?? "server error")
             }
         }
     }
@@ -229,6 +228,7 @@ class NodeDetailViewController: BaseViewController {
         guard let node = nodeDetail?.node else { return }
         let controller = DelegateViewController()
         controller.currentNode = node
+        controller.currentAddress = (AssetVCSharedData.sharedData.selectedWallet as? Wallet)?.address
         navigationController?.pushViewController(controller, animated: true)
     }
 
@@ -250,6 +250,24 @@ class NodeDetailViewController: BaseViewController {
         alertVC.showInViewController(viewController: self)
     }
 
+    @objc private func rewardDoubtTapAction() {
+        let paragraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.paragraphSpacing = 10
+
+        let titleAttr = NSAttributedString(string: Localized("staking_alert_annualized_reward") + "\n", attributes: [NSAttributedString.Key.foregroundColor: text_blue_color, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16, weight: .medium), NSAttributedString.Key.paragraphStyle: paragraphStyle])
+        let detailAttr = NSAttributedString(string: Localized("staking_alert_annualized_reward_detail") + "\n", attributes: [NSAttributedString.Key.foregroundColor: common_darkGray_color, NSAttributedString.Key.font: UIFont.systemFont(ofSize: 13), NSAttributedString.Key.paragraphStyle: paragraphStyle])
+
+        let alertVC = AlertStylePopViewController.initFromNib()
+        let style = PAlertStyle.AlertWithText(attributedStrings: [titleAttr, detailAttr])
+        alertVC.onAction(confirm: { (_, _) -> (Bool) in
+            return true
+        }) { (_, _) -> (Bool) in
+            return true
+        }
+        alertVC.style = style
+        alertVC.showInViewController(viewController: self)
+    }
+
     /*
     // MARK: - Navigation
 
@@ -259,6 +277,28 @@ class NodeDetailViewController: BaseViewController {
         // Pass the selected object to the new view controller.
     }
     */
+}
+
+extension NodeDetailViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return listData.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.row == listData.count - 1 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "NodeDetailGroupCell") as! NodeDetailGroupCell
+            let item = listData[indexPath.row]
+            cell.websiteLabel.text = item.0
+            cell.institutionalLabel.text = item.1
+            cell.websiteLabel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(openWebSiteController)))
+            return cell
+        }
+        let cell = tableView.dequeueReusableCell(withIdentifier: "NodeDetailCell") as! NodeDetailCell
+        let item = listData[indexPath.row]
+        cell.titleLabel.text = item.0
+        cell.valueLabel.text = item.1
+        return cell
+    }
 }
 
 class NoNetWorkView: UIView {
