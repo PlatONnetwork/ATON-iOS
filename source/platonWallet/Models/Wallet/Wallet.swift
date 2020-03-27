@@ -15,6 +15,17 @@ public enum WalletType {
     case classic
     case observed
     case cold
+
+    var localizeText: String? {
+        switch self {
+        case .observed:
+            return "asset_observer_wallet_title"
+        case .cold:
+            return "asset_cold_wallet_title"
+        default:
+            return nil
+        }
+    }
 }
 
 public enum WalletError: LocalizedError {

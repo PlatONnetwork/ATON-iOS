@@ -993,3 +993,10 @@
 
 "gaslimit_note" = "For contract transfers, increase the default GasLimit by a factor of 2 or more. Too low a Gaslimit may cause your transaction to fail.";
 "gaslimit_less_than" = "Gas Limit cannot be less than 21000";
+
+"asset_header_title" = "My Wallet";
+"asset_cold_wallet_title" = "Cold Wallet";
+"asset_observer_wallet_title" = "Observed Wallet";
+"asset_section_receive" = "Receive";
+"asset_section_send" = "Send";
+"asset_section_signature" = "Offline Signature";

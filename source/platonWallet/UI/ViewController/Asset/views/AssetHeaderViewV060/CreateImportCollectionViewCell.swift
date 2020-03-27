@@ -8,22 +8,32 @@
 
 import UIKit
 
-class CreateImportCollectionViewCell: UICollectionViewCell {
+class CreateImportCollectionViewCell: UICollectionViewCell, CellConfigurable {
 
     let bgView = UIView()
     let functionIcon = UIImageView()
     let functionLabel = UILabel()
 
-    var index: Int? {
-        didSet {
-            if index == 0 {
-                functionIcon.image = UIImage(named: "cellItemCreate")
-                functionLabel.localizedText = "AddWalletMenuVC_createIndividualWallet_title"
-            } else {
-                functionIcon.image = UIImage(named: "cellItemImport")
-                functionLabel.localizedText = "AddWalletMenuVC_importIndividualWallet_title"
-            }
-        }
+    var viewModel: AssetGenerateViewModel?
+
+    lazy var lineShapeLayer: CAShapeLayer = {
+        let color = UIColor(rgb: 0xE4E7F3).cgColor
+        let yourViewBorder = CAShapeLayer()
+        yourViewBorder.strokeColor = color
+        yourViewBorder.lineDashPattern = [6, 3]
+        yourViewBorder.lineWidth = 1.0
+        yourViewBorder.frame = self.bounds
+        yourViewBorder.fillColor = nil
+        yourViewBorder.lineJoin = CAShapeLayerLineJoin.round
+        return yourViewBorder
+    }()
+
+    func setup(viewModel: RowViewModel) {
+        guard let viewModel = viewModel as? AssetGenerateViewModel else { return }
+        self.viewModel = viewModel
+
+        functionIcon.image = viewModel.icon
+        functionLabel.localizedText = viewModel.title
     }
 
     override init(frame: CGRect) {
@@ -37,6 +47,7 @@ class CreateImportCollectionViewCell: UICollectionViewCell {
     }
 
     func setupUI() {
+        bgView.backgroundColor = .white
         contentView.addSubview(bgView)
         bgView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
@@ -44,37 +55,24 @@ class CreateImportCollectionViewCell: UICollectionViewCell {
 
         contentView.addSubview(functionIcon)
         functionIcon.snp.makeConstraints { make in
-            make.height.width.equalTo(26)
-            make.centerX.equalToSuperview()
-            make.top.equalToSuperview().offset(8)
+            make.height.width.equalTo(24)
+            make.centerY.equalToSuperview()
+            make.leading.equalToSuperview().offset(14)
         }
 
-        functionLabel.font = UIFont.systemFont(ofSize: 8)
-        functionLabel.textAlignment = .center
-        functionLabel.textColor = UIColor(rgb: 0xB6BBD0)
+        functionLabel.font = UIFont.systemFont(ofSize: 14, weight: .medium)
+        functionLabel.textColor = common_blue_color
         contentView.addSubview(functionLabel)
         functionLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(5)
-            make.trailing.equalToSuperview().offset(-5)
-            make.bottom.equalToSuperview().offset(-5)
-            make.top.equalTo(functionIcon.snp.bottom)
+            make.leading.equalTo(functionIcon.snp.trailing).offset(8)
+            make.centerY.equalToSuperview()
         }
 
-        bgView.addDashedBorder()
+        bgView.layer.addSublayer(lineShapeLayer)
     }
-}
 
-extension UIView {
-    func addDashedBorder() {
-        let color = UIColor(rgb: 0xE4E7F3).cgColor
-        let yourViewBorder = CAShapeLayer()
-        yourViewBorder.strokeColor = color
-        yourViewBorder.lineDashPattern = [6, 3]
-        yourViewBorder.lineWidth = 1.0
-        yourViewBorder.frame = self.bounds
-        yourViewBorder.fillColor = nil
-        yourViewBorder.lineJoin = CAShapeLayerLineJoin.round
-        yourViewBorder.path = UIBezierPath(rect: CGRect(x: 0, y: 0, width: 108, height: 52)).cgPath
-        layer.addSublayer(yourViewBorder)
+    override func layoutSubviews() {
+        lineShapeLayer.path = UIBezierPath(rect: bgView.bounds).cgPath
+        super.layoutSubviews()
     }
 }

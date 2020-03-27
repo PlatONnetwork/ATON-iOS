@@ -1003,3 +1003,11 @@
 
 "gaslimit_note" = "关于特殊合约转账，建议在默认GasLimit基础上增加2倍或更多，GasLimit太低可能导致您的交易失败。";
 "gaslimit_less_than" = "Gas Limit不能小于21000";
+
+"asset_header_title" = "我的钱包";
+
+"asset_cold_wallet_title" = "冷钱包";
+"asset_observer_wallet_title" = "观察钱包";
+"asset_section_receive" = "接收";
+"asset_section_send" = "发送";
+"asset_section_signature" = "离线签名";

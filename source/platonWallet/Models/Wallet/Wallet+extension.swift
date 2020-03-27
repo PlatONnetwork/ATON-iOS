@@ -47,6 +47,21 @@ extension Wallet {
         return balanceStr.ATPSuffix()
     }
 
+    var restrictBalanceString: String? {
+        guard
+        let balance = AssetService.sharedInstace.balances.first(where: { $0.addr.lowercased() == self.address.lowercased() }),
+        let lockValue = BigUInt(balance.lock ?? "0"), lockValue > BigUInt.zero,
+        let balanceStr = balance.lock?.vonToLATString else { return nil }
+        return balanceStr
+    }
+
+    var balanceString: String {
+        guard
+        let balance = AssetService.sharedInstace.balances.first(where: { $0.addr.lowercased() == self.address.lowercased() }),
+        let balanceStr = balance.free?.vonToLATString else { return "0.00" }
+        return balanceStr
+    }
+
     func balanceDescriptionForDisplayAsset() -> String {
         let balanceVisiable = UserDefaults.standard.object(forKey: AssetHidingStatus) as? Bool
         return balanceVisiable == true ? "***" : balanceDescription()
