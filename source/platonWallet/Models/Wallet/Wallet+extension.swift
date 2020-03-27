@@ -92,7 +92,7 @@ extension Wallet {
     var normalIcon: UIImage? {
         switch type {
         case .classic:
-            return UIImage(named: "home_classicWallet_icon_normal")
+            return UIImage(named: "icon_cold_unselected")
         case .cold:
             return UIImage(named: "icon_cold_unselected")
         case .observed:
@@ -136,7 +136,7 @@ extension Wallet {
     var walletNameTextColor: UIColor {
         switch type {
         case .classic:
-            return common_blue_color
+            return UIColor(rgb: 0x5E616B)
         case .cold:
             return wallet_gray_color
         case .observed:

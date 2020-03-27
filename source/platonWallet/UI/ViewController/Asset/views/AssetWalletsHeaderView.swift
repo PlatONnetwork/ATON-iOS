@@ -86,6 +86,7 @@ class AssetWalletsHeaderView: UIView {
 
         let bgImageView = UIImageView()
 //        bgImageView.image = UIImage(named: "asset_bj3")?.resizableImage(withCapInsets: UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 300))
+        bgImageView.isUserInteractionEnabled = true
         contentView.addSubview(bgImageView)
         bgImageView.snp.makeConstraints { make in
             make.edges.equalToSuperview()

@@ -23,6 +23,7 @@ class AssetViewControllerV060: BaseViewController, PopupMenuTableDelegate {
         tableView.dataSource = self
         tableView.separatorStyle = .none
         tableView.showsVerticalScrollIndicator = false
+        tableView.backgroundColor = .white
 //        tableView.emptyDataSetDelegate = self
 //        tableView.emptyDataSetSource = self
         tableView.registerCell(cellTypes: [WalletDetailCell.self])
@@ -35,14 +36,6 @@ class AssetViewControllerV060: BaseViewController, PopupMenuTableDelegate {
 
     let controller: AssetController = {
         return AssetController()
-    }()
-
-    lazy var scrollView = { () -> UIScrollView in
-        let view = UIScrollView(frame: .zero)
-        view.delegate = self
-        view.backgroundColor = .white
-        view.showsVerticalScrollIndicator = false
-        return view
     }()
 
     lazy var headerView: AssetWalletsHeaderView = {
@@ -59,6 +52,13 @@ class AssetViewControllerV060: BaseViewController, PopupMenuTableDelegate {
         let header = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(fetchData))!
         return header
     }()
+
+    lazy var refreshFooterView: MJExtensionLoadMoreFooterView = {
+        let view = MJExtensionLoadMoreFooterView(refreshingTarget: self, refreshingAction: nil)!
+        return view
+    }()
+
+    let tableHeaderView = UIView()
 
     var dataSource = [String: [Transaction]]() {
         didSet {
@@ -90,7 +90,6 @@ class AssetViewControllerV060: BaseViewController, PopupMenuTableDelegate {
         initBinding()
         shouldUpdateWalletStatus()
 
-        scrollView.mj_header = refreshHeader
         refreshHeader.beginRefreshing()
     }
 
@@ -115,18 +114,17 @@ class AssetViewControllerV060: BaseViewController, PopupMenuTableDelegate {
         statusBarNeedTruncate = true
         view.backgroundColor = .white
 
-//        tableView.emptyDataSetView { [weak self] view in
-//            let holder = self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, nil, "empty_no_data_img") as? TableViewNoDataPlaceHolder
-//            view.customView(holder)
-//            view.isScrollAllowed(true)
-//        }
+        refreshFooterView.loadMoreTapHandle = { [weak self] in
+            self?.goTransactionList()
+        }
+        tableView.mj_footer = refreshFooterView
         tableView.mj_header = refreshHeader
+
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
 
-        let tableHeaderView = UIView()
         tableHeaderView.backgroundColor = .white
         tableView.tableHeaderView = tableHeaderView
 
@@ -141,12 +139,22 @@ class AssetViewControllerV060: BaseViewController, PopupMenuTableDelegate {
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(headerView.snp.bottom)
             make.width.equalTo(view)
+            make.bottom.equalToSuperview()
         }
 
-        tableHeaderView.setNeedsLayout()
-        tableHeaderView.layoutIfNeeded()
-        tableHeaderView.frame.size = tableHeaderView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
-        tableView.tableHeaderView = tableHeaderView
+        if let tHeaderView = tableView.tableHeaderView {
+            tHeaderView.setNeedsLayout()
+            tHeaderView.layoutIfNeeded()
+            tHeaderView.frame.size = tHeaderView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+            tableView.tableHeaderView = tHeaderView
+        }
+
+        tableView.emptyDataSetView { [weak self] view in
+            let holder = self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, nil, "empty_no_data_img") as? TableViewNoDataPlaceHolder
+            view.customView(holder)
+            view.isScrollAllowed(true)
+        }
+
 
 //        view.addSubview(scrollView)
 //
@@ -236,7 +244,6 @@ class AssetViewControllerV060: BaseViewController, PopupMenuTableDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(OnBeginEditing(_:)), name: UITextField.textDidBeginEditingNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(updateWalletList), name: Notification.Name.ATON.updateWalletList, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(shouldUpdateWalletStatus), name: Notification.Name.ATON.DidNetworkStatusChange, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame(_:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
     }
 
     // MARK: - Constraint
@@ -271,26 +278,6 @@ class AssetViewControllerV060: BaseViewController, PopupMenuTableDelegate {
 
     func endFetchData() {
         refreshHeader.endRefreshing()
-    }
-
-    func checkAndSetNoWalletViewStyle() {
-
-        if AssetVCSharedData.sharedData.walletList.count == 0 {
-//            sectionView.snp.updateConstraints { (make) in
-//                make.height.equalTo(0)
-//            }
-////            sectionView.setSectionSelectedIndex(index: 0)
-//            sectionView.isHidden = true
-            scrollView.isScrollEnabled = false
-//            transactionVC.tableNodataHolderView.imageView.image = UIImage(named: "empty_no_wallet_icon")
-        } else {
-//            sectionView.snp.updateConstraints { (make) in
-//                make.height.equalTo(AssetSectionViewH)
-//            }
-//            sectionView.isHidden = false
-            scrollView.isScrollEnabled = true
-//            transactionVC.tableNodataHolderView.imageView.image = UIImage(named: "empty_no_data_img")
-        }
     }
 
     func initData() {
@@ -651,8 +638,6 @@ extension AssetViewControllerV060 {
         guard let vc = navofAssetV60.contentViewController as? AssetViewControllerV060 else {
             return
         }
-
-        vc.scrollView.isScrollEnabled = enable
     }
 
     static func getInstance() -> AssetViewControllerV060? {
@@ -720,28 +705,11 @@ extension AssetViewControllerV060 {
         }
     }
 
-    ///keyboard notification
-    @objc func keyboardWillChangeFrame(_ notify:Notification) {
-
-        guard
-            let responderView = scrollView.firstResponder,
-            let rect = responderView.superview?.convert(responderView.frame, to: view)
-            else { return }
-
-        let endFrame = notify.userInfo!["UIKeyboardFrameEndUserInfoKey"] as! CGRect
-        if rect.maxY > endFrame.origin.y {
-            view.transform = CGAffineTransform(translationX: 0, y: -(rect.maxY - endFrame.origin.y + rect.height))
-        } else {
-            view.transform = .identity
-        }
-    }
-
     @objc func updateWalletList() {
 //        headerView.shouldUpdateWalletList()
 
         AssetService.sharedInstace.fetchWalletBalanceForV7(nil)
         refreshData()
-        self.checkAndSetNoWalletViewStyle()
     }
 
 }
@@ -839,12 +807,15 @@ extension AssetViewControllerV060 {
     }
 
     func fetchTransaction(beginSequence: Int64, completion: (() -> Void)?) {
-        guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return }
+        guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else {
+            tableView.mj_header.endRefreshing()
+            return
+        }
         TransactionService.service.getBatchTransaction(addresses: [selectedAddress], beginSequence: beginSequence, listSize: 20, direction: "new") { [weak self] (result, response) in
             guard let self = self else {
                 return
             }
-
+            self.tableView.mj_header.endRefreshing()
             switch result {
             case .success:
                 // 返回的交易数据条数为0，则显示无加载更多

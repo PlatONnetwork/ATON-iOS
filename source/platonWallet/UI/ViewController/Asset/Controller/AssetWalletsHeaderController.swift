@@ -47,9 +47,7 @@ class AssetWalletsHeaderController {
         if let wallets = AssetVCSharedData.sharedData.walletList as? [Wallet] {
             for wallet in wallets {
                 let walletViewModel = AssetWalletViewModel(wallet: wallet)
-                walletViewModel.cellPressed = {
-
-                }
+                walletViewModel.cellPressed = handleWalletSelected(walletViewModel: walletViewModel)
                 viewModels.append(walletViewModel)
             }
         }
@@ -77,6 +75,12 @@ class AssetWalletsHeaderController {
 
     deinit {
         NotificationCenter.default.removeObserver(self)
+    }
+
+    func handleWalletSelected(walletViewModel: AssetWalletViewModel) -> (() -> Void) {
+        return { [weak self, weak walletViewModel] in
+
+        }
     }
 
     func cellIdentifier(for viewModel: RowViewModel) -> String {
