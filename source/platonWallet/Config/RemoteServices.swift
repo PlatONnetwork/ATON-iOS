@@ -18,7 +18,7 @@ class RemoteServices {
         var parameters: Parameters = [:]
         parameters["versionCode"] = buildVersion
         parameters["deviceType"] = "ios"
-        parameters["channelCode"] = "Testflight"
+        parameters["channelCode"] = "AppStore" // AppStore TestFlight
         NetworkService.request("/config/checkUpdate", parameters: parameters, completion: completion)
     }
 
