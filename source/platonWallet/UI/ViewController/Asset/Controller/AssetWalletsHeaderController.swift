@@ -11,6 +11,10 @@ import Foundation
 class AssetWalletsHeaderController {
     let viewModel: AssetHeaderViewModel
 
+    var onwalletsSelect: (() -> Void)?
+    var onImportPressed: (() -> Void)?
+    var onCreatePressed: (() -> Void)?
+
     init(viewModel: AssetHeaderViewModel = AssetHeaderViewModel()) {
         self.viewModel = viewModel
 
@@ -47,19 +51,22 @@ class AssetWalletsHeaderController {
         if let wallets = AssetVCSharedData.sharedData.walletList as? [Wallet] {
             for wallet in wallets {
                 let walletViewModel = AssetWalletViewModel(wallet: wallet)
-                walletViewModel.cellPressed = handleWalletSelected(walletViewModel: walletViewModel)
+                walletViewModel.cellPressed = { [weak self] in
+                    AssetVCSharedData.sharedData.currentWalletAddress = wallet.address
+                    self?.onwalletsSelect?()
+                }
                 viewModels.append(walletViewModel)
             }
         }
 
         let createWalletViewModel = AssetGenerateViewModel(title: "AddWalletMenuVC_createIndividualWallet_title", icon: UIImage(named: "cellItemCreate"))
-        createWalletViewModel.cellPressed = {
-
+        createWalletViewModel.cellPressed = { [weak self] in
+            self?.onCreatePressed?()
         }
 
         let importWalletViewModel = AssetGenerateViewModel(title: "AddWalletMenuVC_importIndividualWallet_title", icon: UIImage(named: "cellItemImport"))
-        importWalletViewModel.cellPressed = {
-
+        importWalletViewModel.cellPressed = { [weak self] in
+            self?.onImportPressed?()
         }
 
         viewModels.append(createWalletViewModel)
@@ -75,12 +82,6 @@ class AssetWalletsHeaderController {
 
     deinit {
         NotificationCenter.default.removeObserver(self)
-    }
-
-    func handleWalletSelected(walletViewModel: AssetWalletViewModel) -> (() -> Void) {
-        return { [weak self, weak walletViewModel] in
-
-        }
     }
 
     func cellIdentifier(for viewModel: RowViewModel) -> String {

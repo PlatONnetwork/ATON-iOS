@@ -71,6 +71,9 @@ class AssetWalletsHeaderView: UIView {
             self?.totalBalanceLabel.text = totalDes
         }
 
+        controller.onwalletsSelect = { [weak self] in
+            self?.collectionView.reloadData()
+        }
     }
 
 

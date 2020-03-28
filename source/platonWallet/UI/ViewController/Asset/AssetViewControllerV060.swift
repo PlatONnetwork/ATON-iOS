@@ -107,6 +107,14 @@ class AssetViewControllerV060: BaseViewController, PopupMenuTableDelegate {
         controller.headerController.viewModel.scanBtnPressed = { [weak self] in
             self?.onScan()
         }
+
+        controller.headerController.onCreatePressed = { [weak self] in
+            self?.createIndividualWallet()
+        }
+
+        controller.headerController.onImportPressed = { [weak self] in
+            self?.importIndividualWallet()
+        }
     }
 
     func initUI() {
@@ -854,7 +862,7 @@ extension AssetViewControllerV060 {
                 pendingTransaction.append(contentsOf: pendingexcludedTxs)
                 self.dataSource[selectedAddress] = pendingTransaction
                 AssetService.sharedInstace.fetchWalletBalanceForV7(nil)
-
+                print(self.dataSource)
                 self.tableView.mj_footer.isHidden = (self.dataSource[selectedAddress]?.count ?? 0 < 20)
                 self.tableView.reloadData()
                 completion?()
