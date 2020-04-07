@@ -53,7 +53,10 @@ class AssetWalletsSectionView: UIView {
 
     lazy var managerBtn: UIButton = {
         let button = UIButton()
+        button.setImage(UIImage(named: "icon-wallet-manager"), for: .normal)
+        button.addTarget(self, action: #selector(managerPressed), for: .touchUpInside)
         button.contentEdgeInsets = .zero
+        button.imageView?.contentMode = .scaleAspectFill
         return button
     }()
 
@@ -121,14 +124,15 @@ class AssetWalletsSectionView: UIView {
             }
 
             self.walletIV.image = UIImage(named: wallet?.avatar ?? "")
-            self.managerBtn.setImage(wallet?.selectedIcon, for: .normal)
 
             guard let wallet = wallet else { return }
 
             if wallet.type == .cold {
+                self.sendBtn.setTitleColor(.white, for: .normal)
                 self.sendBtn.localizedNormalTitle = "asset_section_signature"
                 self.sendBtn.backgroundColor = UIColor(rgb: 0xF59A23)
             } else {
+                self.sendBtn.setTitleColor(common_blue_color, for: .normal)
                 self.sendBtn.localizedNormalTitle = "asset_section_send"
                 self.sendBtn.backgroundColor = .white
             }
@@ -245,8 +249,6 @@ class AssetWalletsSectionView: UIView {
             make.height.equalTo(40)
         }
 
-//        walletTypeBtn.setContentCompressionResistancePriority(.required, for: .horizontal)
-//        walletTypeBtn.setContentHuggingPriority(.required, for: .horizontal)
         contentView.addSubview(typeContentView)
         typeContentView.snp.makeConstraints { make in
             make.trailing.equalToSuperview()
@@ -283,12 +285,10 @@ class AssetWalletsSectionView: UIView {
             make.centerY.equalTo(receiveBtn.snp.centerY)
         }
 
-        managerBtn.addTarget(self, action: #selector(managerPressed), for: .touchUpInside)
-        managerBtn.layer.cornerRadius = 17
         contentView.addSubview(managerBtn)
         managerBtn.snp.makeConstraints { make in
             make.trailing.equalTo(sendBtn.snp.leading).offset(-10)
-            make.height.width.equalTo(44)
+            make.height.width.equalTo(34)
             make.centerY.equalTo(sendBtn.snp.centerY)
         }
     }

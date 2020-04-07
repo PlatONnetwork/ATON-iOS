@@ -12,11 +12,12 @@ import RTRootNavigationController
 import MJRefresh
 import platonWeb3
 import SnapKit
+import EmptyDataSet_Swift
 
 let AssetHeaderViewH = 168 - 44 + 20
 let AssetSectionViewH: CGFloat = 124
 
-class AssetViewControllerV060: BaseViewController, PopupMenuTableDelegate {
+class AssetViewControllerV060: UIViewController, PopupMenuTableDelegate {
 
     lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
@@ -24,15 +25,14 @@ class AssetViewControllerV060: BaseViewController, PopupMenuTableDelegate {
         tableView.dataSource = self
         tableView.separatorStyle = .none
         tableView.showsVerticalScrollIndicator = false
-        tableView.backgroundColor = .white
-//        tableView.emptyDataSetDelegate = self
-//        tableView.emptyDataSetSource = self
+        tableView.backgroundColor = normal_background_color
         tableView.register(AssetTransactionCell.self, forCellReuseIdentifier: AssetTransactionCell.cellIdentifier())
         if #available(iOS 11, *) {
             tableView.estimatedRowHeight = UITableView.automaticDimension
         } else {
             tableView.estimatedRowHeight = 69
         }
+        tableView.emptyDataSetSource = self
         return tableView
     }()
 
@@ -72,10 +72,7 @@ class AssetViewControllerV060: BaseViewController, PopupMenuTableDelegate {
     var walletAddress: String? {
         return (AssetVCSharedData.sharedData.selectedWallet as? Wallet)?.address
     }
-
-    var observation: NSKeyValueObservation?
-    var frameObservation: NSKeyValueObservation?
-    var headerHeight: CGFloat?
+    var isShowNavigationBar: Bool = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -87,7 +84,6 @@ class AssetViewControllerV060: BaseViewController, PopupMenuTableDelegate {
         initData()
         initUI()
         initBinding()
-        initObserver()
         shouldUpdateWalletStatus()
 
         refreshHeader.beginRefreshing()
@@ -95,12 +91,8 @@ class AssetViewControllerV060: BaseViewController, PopupMenuTableDelegate {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-//        navigationController?.setNavigationBarHidden(true, animated: false)
+        navigationController?.setNavigationBarHidden(!isShowNavigationBar, animated: false)
 //        headerView.shouldUpdateWalletList()
-    }
-
-    deinit {
-        observation?.invalidate()
     }
 
     func initBinding() {
@@ -129,7 +121,7 @@ class AssetViewControllerV060: BaseViewController, PopupMenuTableDelegate {
         }
 
         controller.sectionController.onSignaturePressed = { [weak self] in
-            self?.onSignaturePressed()
+            self?.onScan()
         }
 
         controller.sectionController.onManagerPressed = { [weak self] in
@@ -149,6 +141,11 @@ class AssetViewControllerV060: BaseViewController, PopupMenuTableDelegate {
         viewModel.isShowFooterMore.addObserver { [weak self] (isShowMore) in
             self?.tableView.mj_footer.isHidden = !isShowMore
         }
+
+        viewModel.isHideSectionView.addObserver { [weak self] (isHide) in
+            self?.sectionView.isHidden = isHide
+            self?.tableView.reloadEmptyDataSet()
+        }
     }
 
     func onWalletManagerPressed() {
@@ -160,17 +157,15 @@ class AssetViewControllerV060: BaseViewController, PopupMenuTableDelegate {
     }
 
     func initUI() {
+        view.backgroundColor = normal_background_color
 
-        statusBarNeedTruncate = true
-        view.backgroundColor = .white
+        let barImage = UIImage(named: "asset_bj3")?.resizableImage(withCapInsets: UIEdgeInsets(top: 5, left: 5, bottom: 120, right: 300))
+            navigationController?.navigationBar.setBackgroundImage(barImage, for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
 
         let contentView = UIView()
         navigationController?.navigationBar.addSubview(contentView)
-
-        let bgImageView = UIImageView()
-        bgImageView.image = UIImage(named: "asset_bj3")?.resizableImage(withCapInsets: UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 300))
-        contentView.addSubview(bgImageView)
-        bgImageView.snp.makeConstraints { make in
+        contentView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
 
@@ -230,12 +225,10 @@ class AssetViewControllerV060: BaseViewController, PopupMenuTableDelegate {
 
         tableHeaderView.addSubview(assetWalletsView)
         assetWalletsView.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(UIApplication.shared.statusBarFrame.height + 18)
+            make.top.equalToSuperview()
             make.leading.trailing.equalToSuperview()
             make.width.equalTo(view)
         }
-        view.layoutIfNeeded()
-        headerHeight = assetWalletsView.frame.height
 
         tableHeaderView.addSubview(sectionView)
         sectionView.snp.makeConstraints { (make) in
@@ -253,9 +246,9 @@ class AssetViewControllerV060: BaseViewController, PopupMenuTableDelegate {
         }
 
         tableView.emptyDataSetView { [weak self] view in
-            let holder = self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, nil, "empty_no_data_img") as? TableViewNoDataPlaceHolder
-            view.customView(holder)
-            view.isScrollAllowed(true)
+            guard let self = self else { return }
+            let holderView = self.factoryEmptyHolderView()
+            view.customView(holderView)
         }
 
 
@@ -263,35 +256,6 @@ class AssetViewControllerV060: BaseViewController, PopupMenuTableDelegate {
 //            self?.showMessage(text: Localized("wallet_balance_restricted_doubt"), delay: 2.0)
 //        }
         NotificationCenter.default.addObserver(self, selector: #selector(updateWalletList), name: Notification.Name.ATON.updateWalletList, object: nil)
-    }
-
-    func initObserver() {
-        frameObservation = refreshHeader.observe(\.state, changeHandler: { (object, change) in
-            print(object.state.rawValue)
-            print(change.oldValue)
-        })
-        observation = tableView.observe(\.contentOffset) { [weak self] (object, _) in
-//            print(object.contentOffset.y)
-//            print(object.contentInset.top)
-
-            guard let self = self, let height = self.headerHeight else { return }
-            var newValue = height + object.contentOffset.y
-            print(newValue)
-            if newValue > 200 {
-//                self.assetWalletsView.willMove(toSuperview: self.headerForFixTop)
-                self.tableView.bringSubviewToFront(self.assetWalletsView)
-            } else {
-//                self.assetWalletsView.willMove(toSuperview: self.view)
-            }
-            if newValue < 42 {
-                newValue = 42
-            } else if newValue > height {
-                newValue = height
-            }
-//            self?.headerView.snp.updateConstraints({ make in
-//                make.height.equalTo(newValue)
-//            })
-        }
     }
 
     @objc func fetchData() {
@@ -346,10 +310,6 @@ extension AssetViewControllerV060 {
         let sendController = AssetSendViewControllerV060()
         sendController.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(sendController, animated: true)
-    }
-
-    func onSignaturePressed() {
-
     }
 
     @objc func onMenu() {
@@ -700,23 +660,11 @@ extension UIView {
 extension AssetViewControllerV060 {
 
     func refreshData() {
-        if AssetVCSharedData.sharedData.walletList.count == 0 {
-            self.tableNodataHolderView.descriptionLabel.localizedText = "IndividualWallet_EmptyView_tips"
-        } else {
-            self.tableNodataHolderView.descriptionLabel.localizedText = "walletDetailVC_no_transactions_text"
-        }
-    }
-
-    // MARK: - Notification
-
-    @objc func willDeleteWallet(_ notification: Notification) {
-        guard self.walletAddress != nil else { return }
-        if let cwallet = notification.object as? Wallet {
-            if (self.walletAddress?.ishexStringEqual(other: cwallet.address))! {
-                self.viewModel.transactionsData.value[self.walletAddress!]?.removeAll()
-                self.tableView.reloadData()
-            }
-        }
+//        if AssetVCSharedData.sharedData.walletList.count == 0 {
+//            self.tableNodataHolderView.descriptionLabel.localizedText = "IndividualWallet_EmptyView_tips"
+//        } else {
+//            self.tableNodataHolderView.descriptionLabel.localizedText = "walletDetailVC_no_transactions_text"
+//        }
     }
 
     private func goTransactionList() {
@@ -772,16 +720,34 @@ extension AssetViewControllerV060: UITableViewDelegate, UITableViewDataSource {
 
 extension AssetViewControllerV060: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        print(scrollView.contentOffset.y)
+        if scrollView.contentOffset.y <= 0 {
+            isShowNavigationBar = false
+            navigationController?.setNavigationBarHidden(true, animated: false)
+        } else {
+            isShowNavigationBar = true
+            navigationController?.setNavigationBarHidden(false, animated: false)
+        }
     }
 }
 
 // MARK: - Asset60
 
-extension AssetViewControllerV060 {
+extension AssetViewControllerV060: EmptyDataSetSource {
+
+    func factoryEmptyHolderView() -> UIView {
+        let holderView = UIView.viewFromXib(theClass: TableViewNoDataPlaceHolder.self) as! TableViewNoDataPlaceHolder
+        holderView.descriptionLabel.localizedText = "walletDetailVC_no_transactions_text"
+        holderView.imageView.image = UIImage(named: "empty_no_data_img")
+        return holderView
+    }
 
     func verticalOffset(forEmptyDataSet scrollView: UIScrollView) -> CGFloat {
-        let edgeToTop = (self.tableView.frame.size.height - self.tableNodataHolderView.frame.size.height) * 0.5
-        return -edgeToTop
+        if viewModel.isHideSectionView.value {
+            let edgeToTop = (assetWalletsView.frame.height)*0.5
+            return edgeToTop
+        } else {
+            let edgeToTop = (tableView.tableHeaderView?.frame.height ?? 0.00)*0.5
+            return edgeToTop
+        }
     }
 }

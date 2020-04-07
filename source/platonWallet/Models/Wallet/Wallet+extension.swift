@@ -106,55 +106,44 @@ extension Wallet {
     var normalIcon: UIImage? {
         switch type {
         case .classic:
-            return UIImage(named: "icon_cold_unselected")
+            return UIImage(named: "icon-nm-un")
         case .cold:
-            return UIImage(named: "icon_cold_unselected")
+            return UIImage(named: "icon-co-un")
         case .observed:
-            return UIImage(named: "icon_observer_unselected")
+            return UIImage(named: "icon-ob-un")
         }
     }
 
     var selectedIcon: UIImage? {
         switch type {
         case .classic:
-            return UIImage(named: "home_classicWallet_icon_selected")
+            return UIImage(named: "icon-nm-sl")
         case .cold:
-            return UIImage(named: "icon_cold_selected")
+            return UIImage(named: "icon-co-sl")
         case .observed:
-            return UIImage(named: "icon_observer_selected")
+            return UIImage(named: "icon-ob-sl")
         }
     }
 
-    var normalImg: UIImage? {
+    var normalNameTextColor: UIColor {
+        return UIColor(rgb: 0x5E616B)
+    }
+
+    var normalBackgroundColor: UIColor {
         switch type {
-        case .classic:
-            return UIImage(named: "img_normal_default")
         case .cold:
-            return UIImage(named: "img_cold_default")
-        case .observed:
-            return UIImage(named: "img_observed_default")
+            return UIColor(rgb: 0xDEE1E4)
+        default:
+            return UIColor(rgb: 0xE8EDF4)
         }
     }
 
-    var selectedImg: UIImage? {
+    var selectedBackgroundColor: UIColor {
         switch type {
-        case .classic:
-            return UIImage(named: "img_normal_selected")
         case .cold:
-            return UIImage(named: "img_cold_selected")
-        case .observed:
-            return UIImage(named: "img_observed_selected")
-        }
-    }
-
-    var walletNameTextColor: UIColor {
-        switch type {
-        case .classic:
-            return UIColor(rgb: 0x5E616B)
-        case .cold:
-            return wallet_gray_color
-        case .observed:
-            return wallet_orange_color
+            return UIColor(rgb: 0x2F364F)
+        default:
+            return UIColor(rgb: 0x0912D4)
         }
     }
 }

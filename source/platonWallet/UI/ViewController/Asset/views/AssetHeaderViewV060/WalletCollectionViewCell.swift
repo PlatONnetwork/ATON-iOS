@@ -20,13 +20,13 @@ class WalletCollectionViewCell: UICollectionViewCell, CellConfigurable {
 
         walletNameLabel.text = viewModel.wallet.name
         if viewModel.isWalletSelected {
-            contentView.backgroundColor = UIColor(rgb: 0x0912d4)
+            contentView.backgroundColor = viewModel.wallet.selectedBackgroundColor
             iconImgV.image = viewModel.wallet.selectedIcon
             walletNameLabel.textColor = .white
         } else {
-            contentView.backgroundColor = UIColor(rgb: 0xdee1e4)
+            contentView.backgroundColor = viewModel.wallet.normalBackgroundColor
             iconImgV.image = viewModel.wallet.normalIcon
-            walletNameLabel.textColor = viewModel.wallet.walletNameTextColor
+            walletNameLabel.textColor = viewModel.wallet.normalNameTextColor
         }
 
         contentView.layer.cornerRadius = 4.0

@@ -71,8 +71,12 @@ class AssetTransactionCell: UITableViewCell {
 
     func initialUI() {
         selectionStyle = .none
-        
         contentView.backgroundColor = UIColor(rgb: 0xF9FBFF)
+
+        let shadowView = UIView()
+        shadowView.backgroundColor = .white
+        contentView.addSubview(shadowView)
+
         let containerView = UIView()
         containerView.backgroundColor = .white
         contentView.addSubview(containerView)
@@ -82,6 +86,16 @@ class AssetTransactionCell: UITableViewCell {
             make.top.equalToSuperview().offset(12)
             make.bottom.equalToSuperview().offset(-12)
         }
+
+
+        
+        shadowView.snp.makeConstraints { make in
+            make.edges.equalTo(containerView)
+        }
+        shadowView.layer.shadowColor = UIColor(rgb: 0x9ca7c2).cgColor
+        shadowView.layer.shadowRadius = 4.0
+        shadowView.layer.shadowOffset = CGSize(width: 2, height: 2)
+        shadowView.layer.shadowOpacity = 0.2
 
         containerView.addSubview(txIcon)
         txIcon.snp.makeConstraints { make in

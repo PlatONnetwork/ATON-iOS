@@ -39,9 +39,12 @@ class AssetController {
         NotificationCenter.default.addObserver(self, selector: #selector(nodeDidSwitch), name: Notification.Name(NodeStoreService.didSwitchNodeNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didReceiveTransactionUpdate(_:)), name: Notification.Name.ATON.DidUpdateTransactionByHash, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(pollingWalletTransactions), name: Notification.Name.ATON.UpdateTransactionList, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(willDeleteWallet(_:)), name: Notification.Name.ATON.WillDeleateWallet, object: nil)
 
         AssetVCSharedData.sharedData.registerHandler(object: self) { [weak self] in
             guard let self = self else { return }
+            self.viewModel.isHideSectionView.value = (AssetVCSharedData.sharedData.walletList.count == 0)
+
             guard let wallet = AssetVCSharedData.sharedData.selectedWallet as? Wallet else { return }
 
             self.sectionController.viewModel.wallet.value = wallet
@@ -54,6 +57,12 @@ class AssetController {
         AssetCoreService.shared.registerHandler(object: self) { [weak self] in
             guard let self = self else { return }
             self.sectionController.viewModel.assetIsHide.value = AssetCoreService.shared.assetVisible
+        }
+
+        NetworkStatusService.shared.registerHandler(object: self) { [weak self] in
+            guard let self = self else { return }
+            self.sectionController.viewModel.wallet.active()
+            self.headerController.viewModel.walletViewModels.active()
         }
     }
 
@@ -205,6 +214,15 @@ class AssetController {
     @objc func pollingWalletTransactions() {
         guard AssetVCSharedData.sharedData.walletList.count > 0 else { return }
         fetchTransactionLastest()
+    }
+
+    @objc func willDeleteWallet(_ notification: Notification) {
+        guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return }
+        guard let wallet = notification.object as? Wallet else { return }
+        guard wallet.address.lowercased() == selectedAddress.lowercased() else { return }
+        var tempData = viewModel.transactionsData.value
+        tempData[selectedAddress]?.removeAll()
+        viewModel.transactionsData.value = tempData
     }
 
     func fetchLatestData() {

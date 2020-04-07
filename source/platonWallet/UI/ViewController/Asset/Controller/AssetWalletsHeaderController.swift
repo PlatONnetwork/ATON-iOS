@@ -32,6 +32,27 @@ class AssetWalletsHeaderController {
             NotificationCenter.default.post(name: Notification.Name.ATON.DidAssetBalanceVisiableChange, object: nil)
         }
 
+        updateWalletList()
+    }
+
+    func initialObserver() {
+        NotificationCenter.default.addObserver(self, selector: #selector(updateWalletList), name: Notification.Name.ATON.updateWalletList, object: nil)
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
+    func cellIdentifier(for viewModel: RowViewModel) -> String {
+        switch viewModel {
+        case is AssetWalletViewModel:
+            return WalletCollectionViewCell.cellIdentifier()
+        default:
+            return CreateImportCollectionViewCell.cellIdentifier()
+        }
+    }
+
+    @objc func updateWalletList() {
         var viewModels: [RowViewModel] = []
         if let wallets = AssetVCSharedData.sharedData.walletList as? [Wallet] {
             for wallet in wallets {
@@ -60,30 +81,7 @@ class AssetWalletsHeaderController {
         viewModel.walletViewModels.value = viewModels
     }
 
-    func initialObserver() {
-        NotificationCenter.default.addObserver(self, selector: #selector(shouldUpdateWalletList), name: Notification.Name.ATON.updateWalletList, object: nil)
-    }
-
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-
-    func cellIdentifier(for viewModel: RowViewModel) -> String {
-        switch viewModel {
-        case is AssetWalletViewModel:
-            return WalletCollectionViewCell.cellIdentifier()
-        default:
-            return CreateImportCollectionViewCell.cellIdentifier()
-        }
-    }
-
-    @objc func shouldUpdateWalletList() {
-
-    }
-
     func fetchLatestData() {
 
     }
-    
-
 }

@@ -26,6 +26,7 @@ class AssetWalletsHeaderView: UIView {
         collectionView.backgroundColor = UIColor(rgb: 0xf9fbff)
         collectionView.delegate = self
         collectionView.dataSource = self
+        collectionView.showsHorizontalScrollIndicator = false
         collectionView.register(WalletCollectionViewCell.self, forCellWithReuseIdentifier: WalletCollectionViewCell.cellIdentifier())
         collectionView.register(CreateImportCollectionViewCell.self, forCellWithReuseIdentifier: CreateImportCollectionViewCell.cellIdentifier())
         return collectionView
@@ -67,15 +68,18 @@ class AssetWalletsHeaderView: UIView {
         }
 
         viewModel.totalBalance.addObserver { [weak self] (balanceBInt) in
-            let totalDes = balanceBInt.divide(by: ETHToWeiMultiplier, round: 8).balanceFixToDisplay(maxRound: 8)
-            self?.totalBalanceLabel.text = totalDes
+            guard let self = self else { return }
+            if self.viewModel.assetIsHide.value {
+                self.totalBalanceLabel.text = "***"
+            } else {
+                let totalDes = balanceBInt.divide(by: ETHToWeiMultiplier, round: 8).balanceFixToDisplay(maxRound: 8)
+                self.totalBalanceLabel.text = totalDes
+            }
         }
-
         controller.onwalletsSelect = { [weak self] in
             self?.collectionView.reloadData()
         }
     }
-
 
     func initView() {
         backgroundColor = UIColor(rgb: 0xf9fbff)
@@ -88,7 +92,7 @@ class AssetWalletsHeaderView: UIView {
         }
 
         let bgImageView = UIImageView()
-//        bgImageView.image = UIImage(named: "asset_bj3")?.resizableImage(withCapInsets: UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 300))
+        bgImageView.image = UIImage(named: "asset_bj1")?.resizableImage(withCapInsets: UIEdgeInsets(top: 5, left: 5, bottom: 230, right: 370))
         bgImageView.isUserInteractionEnabled = true
         contentView.addSubview(bgImageView)
         bgImageView.snp.makeConstraints { make in
@@ -104,7 +108,7 @@ class AssetWalletsHeaderView: UIView {
         contentView.addSubview(walletNameLabel)
         walletNameLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(16)
-            make.top.equalToSuperview().offset(0)
+            make.top.equalToSuperview().offset(UIApplication.shared.statusBarFrame.height + 18)
         }
 
         menuButton.addTarget(self, action: #selector(onMenu), for: .touchUpInside)

@@ -14,5 +14,6 @@ class AssetViewModel {
     let transactionsData = Observable<[String: [Transaction]]>(value: [:])
     let isShowFooterMore = Observable<Bool>(value: false)
     let isFetching = Observable<Bool>(value: false)
+    let isHideSectionView = Observable<Bool>(value: false)
 
 }

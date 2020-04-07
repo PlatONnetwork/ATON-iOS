@@ -33,4 +33,8 @@ class Observable<T> {
     func removeObserver() {
         valueChanged = nil
     }
+
+    func active() {
+        valueChanged?(value)
+    }
 }
