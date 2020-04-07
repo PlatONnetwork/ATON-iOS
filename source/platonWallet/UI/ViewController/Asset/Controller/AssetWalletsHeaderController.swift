@@ -23,26 +23,11 @@ class AssetWalletsHeaderController {
     }
 
     func initialViewModel() {
-        guard let isHide = UserDefaults.standard.object(forKey: AssetHidingStatus) as? Bool else {
-            UserDefaults.standard.set(true, forKey: AssetHidingStatus)
-            UserDefaults.standard.synchronize()
-            viewModel.assetIsHide.value = true
-            return
-        }
-        viewModel.assetIsHide.value = isHide
+        viewModel.assetIsHide.value = AssetCoreService.shared.assetVisible
 
         viewModel.visibleBtnPressed = { [weak self] in
-            guard let isHide = UserDefaults.standard.object(forKey: AssetHidingStatus) as? Bool else {
-                UserDefaults.standard.set(true, forKey: AssetHidingStatus)
-                UserDefaults.standard.synchronize()
-                self?.viewModel.assetIsHide.value = true
-                return
-            }
-
-            UserDefaults.standard.set(!isHide, forKey: AssetHidingStatus)
-            UserDefaults.standard.synchronize()
-
-            self?.viewModel.assetIsHide.value = !isHide
+            AssetCoreService.shared.assetVisible = !AssetCoreService.shared.assetVisible
+            self?.viewModel.assetIsHide.value = AssetCoreService.shared.assetVisible
 
             NotificationCenter.default.post(name: Notification.Name.ATON.DidAssetBalanceVisiableChange, object: nil)
         }
@@ -76,7 +61,6 @@ class AssetWalletsHeaderController {
     }
 
     func initialObserver() {
-        NotificationCenter.default.addObserver(self, selector: #selector(didUpdateAllAsset), name: Notification.Name.ATON.DidUpdateAllAsset, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(shouldUpdateWalletList), name: Notification.Name.ATON.updateWalletList, object: nil)
     }
 
@@ -93,9 +77,13 @@ class AssetWalletsHeaderController {
         }
     }
 
-    @objc func didUpdateAllAsset() {}
+    @objc func shouldUpdateWalletList() {
 
-    @objc func shouldUpdateWalletList() {}
+    }
+
+    func fetchLatestData() {
+
+    }
     
 
 }

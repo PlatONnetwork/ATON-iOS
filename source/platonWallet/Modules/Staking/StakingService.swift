@@ -145,16 +145,6 @@ final class StakingService: BaseService {
         parameters["nodeId"] = nodeId
         NetworkService.request("/node/getDelegationValue", parameters: parameters, completion: completion)
     }
-
-    static func getCanDelegation(
-        addr: String,
-        nodeId: String,
-        completion: NetworkCompletion<CanDelegation>?) {
-        var parameters: [String: Any] = [:]
-        parameters["addr"] = addr
-        parameters["nodeId"] = nodeId
-        NetworkService.request("/node/canDelegation", parameters: parameters, completion: completion)
-    }
 }
 
 extension StakingService {

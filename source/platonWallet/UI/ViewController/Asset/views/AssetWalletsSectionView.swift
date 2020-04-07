@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import BigInt
 
 class AssetWalletsSectionView: UIView {
 
@@ -32,12 +33,17 @@ class AssetWalletsSectionView: UIView {
         return label
     }()
 
-    lazy var walletTypeBtn: UIButton = {
-        let button = UIButton()
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 14)
-        button.setTitleColor(.white, for: .normal)
-        button.backgroundColor = UIColor(rgb: 0xC0D5FF)
-        return button
+    lazy var typeLabel: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.textColor = .white
+        return label
+    }()
+
+    lazy var typeContentView: UIView = {
+        let typeView = UIView()
+        typeView.backgroundColor = UIColor(rgb: 0xC0D5FF)
+        return typeView
     }()
 
     lazy var walletIV: UIImageView = {
@@ -47,6 +53,7 @@ class AssetWalletsSectionView: UIView {
 
     lazy var managerBtn: UIButton = {
         let button = UIButton()
+        button.contentEdgeInsets = .zero
         return button
     }()
 
@@ -58,10 +65,18 @@ class AssetWalletsSectionView: UIView {
         button.setTitleColor(common_blue_color, for: .normal)
         button.contentEdgeInsets = UIEdgeInsets(top: 7, left: 15, bottom: 7, right: 15)
         button.localizedNormalTitle = "asset_section_send"
+        button.addTarget(self, action: #selector(sendPressed), for: .touchUpInside)
         return button
     }()
 
-    let typeShapeMask = CAShapeLayer()
+    lazy var sectionTitleLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 15)
+        label.textColor = .black
+        label.localizedText = "asset_section_title"
+        return label
+    }()
+
     let balanceTipLabel = UILabel()
 
     var viewModel: AssetSectionViewModel {
@@ -84,36 +99,55 @@ class AssetWalletsSectionView: UIView {
 
     func initBinding() {
         viewModel.wallet.addObserver { [weak self] (wallet) in
-            self?.walletNameLabel.text = wallet?.name
-            self?.balanceLabel.text = wallet?.balanceString
+            guard let self = self else { return }
+            self.walletNameLabel.text = wallet?.name
 
-            if let restrictString = wallet?.restrictBalanceString {
-                self?.restrictedLabel.localizedText = "staking_balance_locked_position" + ":" + restrictString
+            if self.viewModel.assetIsHide.value {
+                self.balanceLabel.text = "***"
             } else {
-                self?.restrictedLabel.text = nil
+                self.balanceLabel.text = self.viewModel.freeBalance.value.description.vonToLATString
             }
-            self?.walletIV.image = UIImage(named: wallet?.avatar ?? "")
-            self?.managerBtn.setImage(wallet?.selectedIcon, for: .normal)
+
+            if self.viewModel.lockBalance.value > BigUInt.zero {
+                let attribute_1 = NSAttributedString(string: "staking_balance_locked_position")
+                let attribute_2 = NSAttributedString(string: ":")
+                if self.viewModel.assetIsHide.value {
+                    self.restrictedLabel.localizedAttributedTexts = [attribute_1, attribute_2, NSAttributedString(string: "***")]
+                } else {
+                    self.restrictedLabel.localizedAttributedTexts = [attribute_1, attribute_2, NSAttributedString(string: self.viewModel.lockBalance.value.description.vonToLATString ?? "0.00")]
+                }
+            } else {
+                self.restrictedLabel.localizedAttributedTexts = nil
+            }
+
+            self.walletIV.image = UIImage(named: wallet?.avatar ?? "")
+            self.managerBtn.setImage(wallet?.selectedIcon, for: .normal)
 
             guard let wallet = wallet else { return }
 
             if wallet.type == .cold {
-                self?.sendBtn.localizedNormalTitle = "asset_section_signature"
-                self?.sendBtn.backgroundColor = UIColor(rgb: 0xF59A23)
+                self.sendBtn.localizedNormalTitle = "asset_section_signature"
+                self.sendBtn.backgroundColor = UIColor(rgb: 0xF59A23)
             } else {
-                self?.sendBtn.localizedNormalTitle = "asset_section_send"
-                self?.sendBtn.backgroundColor = .white
+                self.sendBtn.localizedNormalTitle = "asset_section_send"
+                self.sendBtn.backgroundColor = .white
             }
 
             if wallet.type == .classic {
-                self?.walletTypeBtn.isHidden = true
+                self.typeContentView.isHidden = true
             } else {
-                self?.walletTypeBtn.isHidden = false
-                self?.walletTypeBtn.localizedNormalTitle = wallet.type.localizeText
+                self.typeContentView.isHidden = false
+                self.typeLabel.localizedText = wallet.type.localizeText
+                self.layoutIfNeeded()
+
+                let path = UIBezierPath(roundedRect: self.typeContentView.bounds, byRoundingCorners: [.topLeft, .bottomLeft], cornerRadii: CGSize(width: 12, height: 0))
+                let typeShapeMask = CAShapeLayer()
+                typeShapeMask.path = path.cgPath
+                self.typeContentView.layer.mask = typeShapeMask
             }
         }
 
-        controller.headerViewModel?.assetIsHide.addObserver({ [weak self] (isHide) in
+        viewModel.assetIsHide.addObserver { [weak self] (isHide) in
             if isHide {
                 self?.balanceLabel.text = "***"
                 self?.balanceTipLabel.text = nil
@@ -121,67 +155,110 @@ class AssetWalletsSectionView: UIView {
                 self?.balanceLabel.text = self?.viewModel.wallet.value?.balanceString
                 self?.balanceTipLabel.text = "LAT"
             }
-        })
+        }
+
+        viewModel.freeBalance.addObserver { [weak self] (value) in
+            guard let self = self else { return }
+            if self.viewModel.assetIsHide.value {
+                self.balanceLabel.text = "***"
+            } else {
+                self.balanceLabel.text = value.description.vonToLATString
+            }
+        }
+
+        viewModel.lockBalance.addObserver { [weak self] (value) in
+            guard let self = self else { return }
+            if self.viewModel.lockBalance.value > BigUInt.zero {
+                let attribute_1 = NSAttributedString(string: "staking_balance_locked_position")
+                let attribute_2 = NSAttributedString(string: ":")
+                if self.viewModel.assetIsHide.value {
+                    self.restrictedLabel.localizedAttributedTexts = [attribute_1, attribute_2, NSAttributedString(string: "***")]
+                } else {
+                    self.restrictedLabel.localizedAttributedTexts = [attribute_1, attribute_2, NSAttributedString(string: value.description.vonToLATString ?? "0.00")]
+                }
+            } else {
+                self.restrictedLabel.localizedAttributedTexts = nil
+            }
+        }
     }
 
     func initView() {
         backgroundColor = UIColor(rgb: 0xf9fbff)
 
+        let contentView = UIView()
+        addSubview(contentView)
+        contentView.snp.makeConstraints { make in
+            make.top.trailing.leading.equalToSuperview()
+        }
+
         let bgImageView = UIImageView()
         bgImageView.image = UIImage(named: "asset_bj2")
-        addSubview(bgImageView)
+        contentView.addSubview(bgImageView)
         bgImageView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
 
-        addSubview(walletNameLabel)
+        addSubview(sectionTitleLabel)
+        sectionTitleLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(16)
+            make.top.equalTo(contentView.snp.bottom).offset(12)
+            make.bottom.equalToSuperview()
+        }
+
+        contentView.addSubview(walletNameLabel)
         walletNameLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(16)
-            make.trailing.equalToSuperview().offset(72)
+            make.trailing.equalToSuperview().offset(-72)
             make.top.equalToSuperview().offset(16)
         }
 
-        addSubview(balanceLabel)
+        contentView.addSubview(balanceLabel)
         balanceLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(16)
             make.top.equalTo(walletNameLabel.snp.bottom).offset(10)
-
         }
 
+        balanceTipLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        balanceTipLabel.setContentHuggingPriority(.required, for: .horizontal)
         balanceTipLabel.font = UIFont.systemFont(ofSize: 14)
         balanceTipLabel.textColor = .white
         balanceTipLabel.text = "LAT"
-        addSubview(balanceTipLabel)
+        contentView.addSubview(balanceTipLabel)
         balanceTipLabel.snp.makeConstraints { make in
             make.leading.equalTo(balanceLabel.snp.trailing).offset(6)
-            make.bottom.equalTo(balanceLabel.snp.bottom)
-            make.trailing.lessThanOrEqualToSuperview().offset(-16)
+            make.bottom.equalTo(balanceLabel.snp.bottom).offset(-5)
+            make.trailing.lessThanOrEqualToSuperview().offset(-16).priorityRequired()
         }
 
         walletIV.layer.cornerRadius = 20
-        addSubview(walletIV)
+        contentView.addSubview(walletIV)
         walletIV.snp.makeConstraints { make in
             make.height.width.equalTo(40)
             make.trailing.equalToSuperview().offset(-16)
             make.top.equalToSuperview().offset(10)
         }
 
-        addSubview(restrictedLabel)
+        contentView.addSubview(restrictedLabel)
         restrictedLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(16)
             make.top.equalTo(balanceLabel.snp.bottom).offset(7)
             make.height.equalTo(40)
         }
 
-        walletTypeBtn.setContentCompressionResistancePriority(.required, for: .horizontal)
-        walletTypeBtn.setContentHuggingPriority(.required, for: .horizontal)
-        addSubview(walletTypeBtn)
-        walletTypeBtn.snp.makeConstraints { make in
-            make.height.equalTo(24)
+//        walletTypeBtn.setContentCompressionResistancePriority(.required, for: .horizontal)
+//        walletTypeBtn.setContentHuggingPriority(.required, for: .horizontal)
+        contentView.addSubview(typeContentView)
+        typeContentView.snp.makeConstraints { make in
             make.trailing.equalToSuperview()
             make.top.equalTo(balanceLabel.snp.bottom).offset(4)
         }
-        walletTypeBtn.layer.mask = typeShapeMask
+        typeContentView.addSubview(typeLabel)
+        typeLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(10)
+            make.trailing.equalToSuperview().offset(-10)
+            make.top.equalToSuperview().offset(2)
+            make.bottom.equalToSuperview().offset(-2)
+        }
 
         let receiveBtn = UIButton()
         receiveBtn.layer.cornerRadius = 17.0
@@ -190,23 +267,25 @@ class AssetWalletsSectionView: UIView {
         receiveBtn.titleLabel?.font = UIFont.systemFont(ofSize: 14)
         receiveBtn.localizedNormalTitle = "asset_section_receive"
         receiveBtn.contentEdgeInsets = UIEdgeInsets(top: 7, left: 15, bottom: 7, right: 15)
-        addSubview(receiveBtn)
+        receiveBtn.addTarget(self, action: #selector(receivePressed), for: .touchUpInside)
+        contentView.addSubview(receiveBtn)
         receiveBtn.snp.makeConstraints { make in
-            make.top.equalTo(walletTypeBtn.snp.bottom).offset(17)
+            make.top.equalTo(typeContentView.snp.bottom).offset(17)
             make.trailing.equalToSuperview().offset(-16)
             make.height.equalTo(34)
             make.bottom.equalToSuperview().offset(-16)
         }
 
-        addSubview(sendBtn)
+        contentView.addSubview(sendBtn)
         sendBtn.snp.makeConstraints { make in
             make.height.equalTo(34)
             make.trailing.equalTo(receiveBtn.snp.leading).offset(-10)
             make.centerY.equalTo(receiveBtn.snp.centerY)
         }
 
+        managerBtn.addTarget(self, action: #selector(managerPressed), for: .touchUpInside)
         managerBtn.layer.cornerRadius = 17
-        addSubview(managerBtn)
+        contentView.addSubview(managerBtn)
         managerBtn.snp.makeConstraints { make in
             make.trailing.equalTo(sendBtn.snp.leading).offset(-10)
             make.height.width.equalTo(44)
@@ -215,8 +294,23 @@ class AssetWalletsSectionView: UIView {
     }
 
     override func layoutSubviews() {
-        let path = UIBezierPath(roundedRect: walletTypeBtn.bounds, byRoundingCorners: [.bottomLeft, .topLeft], cornerRadii: CGSize(width: 0, height: 12))
-        typeShapeMask.path = path.cgPath
         super.layoutSubviews()
+
+    }
+
+    @objc func sendPressed() {
+        if let type = viewModel.wallet.value?.type, type == .cold {
+            viewModel.onSignaturePressed?()
+        } else {
+            viewModel.onSendPressed?()
+        }
+    }
+
+    @objc func receivePressed() {
+        viewModel.onReceivePressed?()
+    }
+
+    @objc func managerPressed() {
+        viewModel.onManagerPressed?()
     }
 }

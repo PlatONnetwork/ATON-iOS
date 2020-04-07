@@ -69,3 +69,13 @@ class AssetService : BaseService {
 //        assets.removeAll()
     }
 }
+
+extension AssetService {
+    var totalFreeBalance: BigUInt {
+        let total = AssetService.sharedInstace.balances.reduce(BigUInt(0)) { (result, balance) -> BigUInt in
+            let freeString = balance.free ?? "0"
+            return result + (BigUInt(freeString) ?? BigUInt.zero)
+        }
+        return total
+    }
+}

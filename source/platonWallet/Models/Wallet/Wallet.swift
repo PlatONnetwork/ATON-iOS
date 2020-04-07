@@ -68,7 +68,7 @@ public final class Wallet: Object {
         if key == nil {
             return .observed
         } else {
-            if NetworkManager.shared.reachabilityManager?.isReachable == true {
+            if NetworkStatusService.shared.isConnecting == true {
                 return .classic
             } else {
                 return .cold

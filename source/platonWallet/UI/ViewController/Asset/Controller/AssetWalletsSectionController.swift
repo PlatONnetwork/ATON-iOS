@@ -7,22 +7,40 @@
 //
 
 import Foundation
+import BigInt
 
 class AssetWalletsSectionController {
     let viewModel: AssetSectionViewModel
-    weak var headerViewModel: AssetHeaderViewModel?
 
-    init(viewModel: AssetSectionViewModel = AssetSectionViewModel(), headerViewModel: AssetHeaderViewModel) {
+    var onSendPressed: (() -> Void)?
+    var onReceivePressed: (() -> Void)?
+    var onSignaturePressed: (() -> Void)?
+    var onManagerPressed: (() -> Void)?
+
+    init(viewModel: AssetSectionViewModel = AssetSectionViewModel()) {
         self.viewModel = viewModel
-        self.headerViewModel = headerViewModel
 
         initialViewModel()
     }
 
     func initialViewModel() {
         viewModel.wallet.value = (AssetVCSharedData.sharedData.selectedWallet as? Wallet)
-        headerViewModel?.assetIsHide.addObserver({ [weak self] isHide in
-            
-        })
+        viewModel.assetIsHide.value = AssetCoreService.shared.assetVisible
+
+        viewModel.onReceivePressed = { [weak self] in
+            self?.onReceivePressed?()
+        }
+
+        viewModel.onSendPressed = { [weak self] in
+            self?.onSendPressed?()
+        }
+
+        viewModel.onSignaturePressed = { [weak self] in
+            self?.onSignaturePressed?()
+        }
+
+        viewModel.onManagerPressed = { [weak self] in
+            self?.onManagerPressed?()
+        }
     }
 }

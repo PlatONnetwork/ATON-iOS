@@ -104,7 +104,7 @@ class AssetWalletsHeaderView: UIView {
         contentView.addSubview(walletNameLabel)
         walletNameLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(16)
-            make.top.equalToSuperview().offset(18)
+            make.top.equalToSuperview().offset(0)
         }
 
         menuButton.addTarget(self, action: #selector(onMenu), for: .touchUpInside)
@@ -203,55 +203,3 @@ extension AssetWalletsHeaderView: UICollectionViewDelegate, UICollectionViewData
         rowViewModel?.cellPressed?()
     }
 }
-
-//extension AssetWalletsHeaderView: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-//
-//
-//
-//    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-//
-//            return dataSource.count
-//        }
-//
-//        func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-//            let obj = dataSource[indexPath.row]
-//            if let cwallet = obj as? Wallet {
-//                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "WalletCollectionViewCell", for: indexPath) as! WalletCollectionViewCell
-//                cell.wallet = cwallet
-//                return cell
-//            }
-//
-//            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CreateImportCollectionViewCell", for: indexPath) as! CreateImportCollectionViewCell
-//            if let index = obj as? Int {
-//                cell.index = index
-//            }
-//
-//            return cell
-//
-//        }
-//
-//        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//            return CGSize(width: 108, height: 52)
-//        }
-//
-//        func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-//            return UIEdgeInsets(top: 0, left: 15, bottom: 0, right: 15)
-//        }
-//
-//        func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//            let obj = dataSource[indexPath.row]
-//
-//            if let i = obj as? Int {
-//                if i == 0 {
-//                    AssetViewControllerV060.gotoCreateClassicWallet()
-//                } else {
-//                    AssetViewControllerV060.gotoImportClassicWallet()
-//                }
-//                return
-//            }
-//
-//            AssetVCSharedData.sharedData.currentWalletAddress = (obj as? Wallet)?.address
-//    //        AssetVCSharedData.sharedData.selectedWallet = obj
-//            collectionView.reloadData()
-//        }
-//}

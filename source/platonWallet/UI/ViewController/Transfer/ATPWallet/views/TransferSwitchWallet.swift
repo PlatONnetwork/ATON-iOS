@@ -33,7 +33,6 @@ class TransferSwitchWallet: UIView, UITableViewDataSource, UITableViewDelegate {
 
     override func awakeFromNib() {
         initSubViews()
-        self.closeBtn.isHidden = true
     }
 
     func initSubViews() {

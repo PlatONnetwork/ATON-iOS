@@ -38,10 +38,11 @@ class ThresholdValueSelectView: UIView, UITableViewDelegate, UITableViewDataSour
         case .delegate:
             return 62.0
         default:
-            return 46.0
+            return 50.0
         }
     }
     var valueChangedHandler: ((PopSelectedViewType) -> Void)?
+    var onCompletion: (() -> Void)?
     private var tableviewBottomConstraint: Constraint?
 
     lazy var tableView = { () -> UITableView in
@@ -52,14 +53,19 @@ class ThresholdValueSelectView: UIView, UITableViewDelegate, UITableViewDataSour
         tbView.register(BalanceSelectCell.self, forCellReuseIdentifier: "balanceSelectCell")
         tbView.separatorStyle = .none
         tbView.backgroundColor = .white
-        if #available(iOS 11, *) {
-            tbView.estimatedRowHeight = UITableView.automaticDimension
-        } else {
-            tbView.estimatedRowHeight = cellHeight
-        }
-        tbView.layer.cornerRadius = 8.0
-        tbView.layer.masksToBounds = true
+        tbView.rowHeight = cellHeight
+//        if #available(iOS 11, *) {
+//            tbView.estimatedRowHeight = UITableView.automaticDimension
+//        } else {
+//            tbView.estimatedRowHeight = cellHeight
+//        }
         return tbView
+    }()
+
+    lazy var closeButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(named: "1.icon_shut down"), for: .normal)
+        return button
     }()
 
     convenience init(title: String? = nil, type: PopSelectedViewType) {
@@ -78,46 +84,52 @@ class ThresholdValueSelectView: UIView, UITableViewDelegate, UITableViewDataSour
     }
 
     func setupSubviews(title: String?) {
-        backgroundColor = UIColor(rgb: 0x000000, alpha: 0.65)
+
+        let headerView = UIView()
+        headerView.backgroundColor = .white
+        addSubview(headerView)
+        headerView.snp.makeConstraints { make in
+            make.leading.top.trailing.equalToSuperview()
+        }
+
+        let label = UILabel()
+        label.textAlignment = .center
+        label.textColor = .black
+        label.font = .systemFont(ofSize: 15, weight: .medium)
+        label.text = title
+        headerView.addSubview(label)
+        label.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalToSuperview().offset(20)
+            make.bottom.equalToSuperview().offset(-20)
+        }
+
+        let lineV = UIView()
+        lineV.backgroundColor = UIColor(rgb: 0xe4e7f3)
+        headerView.addSubview(lineV)
+        lineV.snp.makeConstraints { make in
+            make.height.equalTo(1/UIScreen.main.scale)
+            make.leading.equalToSuperview().offset(16)
+            make.trailing.equalToSuperview().offset(-16)
+            make.bottom.equalToSuperview()
+        }
+
+        headerView.addSubview(closeButton)
+        closeButton.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().offset(-20)
+            make.centerY.equalTo(label)
+            make.height.width.equalTo(32)
+        }
 
         addSubview(tableView)
         tableView.snp.makeConstraints { make in
-            tableviewBottomConstraint = make.bottom.equalToSuperview().offset(CGFloat(type.count) * cellHeight).constraint
-            make.leading.equalToSuperview().offset(24)
-            make.trailing.equalToSuperview().offset(-24)
-            if title == nil {
-                make.height.equalTo(CGFloat(type.count) * cellHeight)
-            } else {
-                make.height.equalTo(CGFloat(type.count + 1) * cellHeight)
-            }
-        }
-
-        if let string = title {
-            let headerView = UIView(frame: CGRect(x: 0, y: 0, width: self.bounds.width, height: cellHeight))
-            tableView.tableHeaderView = headerView
-            let label = UILabel()
-            label.textAlignment = .center
-            label.textColor = .black
-            label.font = .systemFont(ofSize: 15, weight: .medium)
-            label.text = string
-            headerView.addSubview(label)
-            label.snp.makeConstraints { make in
-                make.leading.trailing.equalToSuperview()
-                make.top.equalToSuperview().offset(13)
-                make.bottom.equalToSuperview().offset(-13)
-            }
-
-            let lineV = UIView()
-            lineV.backgroundColor = UIColor(rgb: 0xe4e7f3)
-            headerView.addSubview(lineV)
-            lineV.snp.makeConstraints { make in
-                make.height.equalTo(1/UIScreen.main.scale)
-                make.leading.equalToSuperview().offset(16)
-                make.trailing.equalToSuperview().offset(-16)
-                make.bottom.equalToSuperview()
-            }
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+            make.bottom.equalToSuperview()
+            make.top.equalTo(headerView.snp.bottom)
         }
     }
+
 
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesEnded(touches, with: event)
@@ -136,7 +148,7 @@ class ThresholdValueSelectView: UIView, UITableViewDelegate, UITableViewDataSour
         }
 
         layoutIfNeeded()
-        tableviewBottomConstraint?.update(offset: -16)
+        tableviewBottomConstraint?.update(offset: 0)
         UIView.animate(withDuration: 0.15) {
             self.layoutIfNeeded()
         }
@@ -190,7 +202,6 @@ class ThresholdValueSelectView: UIView, UITableViewDelegate, UITableViewDataSour
             selectedValue = indexPath.row
             tableView.reloadData()
             valueChangedHandler?(PopSelectedViewType.delegate(datasource: [], selected: selectedValue))
-            dismiss()
         case .sort(let datasource, var selectedValue):
             let item = datasource[indexPath.row]
             if item == selectedValue {
@@ -200,7 +211,6 @@ class ThresholdValueSelectView: UIView, UITableViewDelegate, UITableViewDataSour
             selectedValue = item
             tableView.reloadData()
             valueChangedHandler?(PopSelectedViewType.sort(datasource: [], selected: selectedValue))
-            dismiss()
         case .threshold(let datasource, var selectedValue):
             let item = datasource[indexPath.row]
             if item == selectedValue {
@@ -210,11 +220,10 @@ class ThresholdValueSelectView: UIView, UITableViewDelegate, UITableViewDataSour
             selectedValue = item
             tableView.reloadData()
             valueChangedHandler?(PopSelectedViewType.threshold(datasource: [], selected: selectedValue))
-            dismiss()
         default:
             break
         }
-
+        onCompletion?()
 
     }
 }
@@ -308,8 +317,8 @@ class ThresholdSelectCell: UITableViewCell {
         contentView.addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(16)
-            make.top.equalToSuperview().offset(12)
-            make.bottom.equalToSuperview().offset(-13)
+            make.top.equalToSuperview().offset(15)
+            make.bottom.equalToSuperview().offset(-15)
             make.trailing.equalToSuperview().offset(-52)
         }
 

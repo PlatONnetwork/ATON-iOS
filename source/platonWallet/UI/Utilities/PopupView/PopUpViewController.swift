@@ -31,7 +31,7 @@ class PopUpViewController: UIViewController {
         view.addSubview(bgView)
         bgView.backgroundColor = UIColor(rgb: 0x111111, alpha: 0.5)
         bgView.snp.makeConstraints { (make) in
-            make.leading.trailing.top.bottom.equalTo(view)
+            make.edges.equalToSuperview()
         }
 
         let tapGes = UITapGestureRecognizer(target: self, action: #selector(touchClose))
@@ -40,13 +40,13 @@ class PopUpViewController: UIViewController {
     }
 
     // 0.7版本新增适配发送交易确认页面自动布局
-    func setUpConfirmView(view: UIView, width: CGFloat) {
+    func setUpConfirmView(view: UIView) {
         contentView = view
         bgView.addSubview(contentView!)
         contentView?.snp.makeConstraints({ (make) in
             make.centerX.equalTo(bgView)
             make.bottom.equalTo(bgView.snp.bottom)
-            make.width.equalTo(width)
+            make.leading.trailing.equalToSuperview()
         })
 
         bgView.addSubview(dismissView)
@@ -54,10 +54,8 @@ class PopUpViewController: UIViewController {
             make.top.leading.trailing.equalTo(bgView)
             make.bottom.equalTo((contentView?.snp_topMargin)!)
         }
-        contentView?.layer.cornerRadius = 8
-        contentView?.layer.masksToBounds = true
 
-        if let confirmView = contentView as? TransferConfirmView {
+        if let confirmView = contentView as? TransferConfirmsView {
             confirmView.onCompletion = { [weak self] in
                 guard let self = self else { return }
                 self.onDismissViewController(animated: true, completion: {
@@ -76,6 +74,10 @@ class PopUpViewController: UIViewController {
                     self.onCompletion?()
                 })
             }
+            confirmView.onDismiss = { [weak self] in
+                guard let self = self else { return }
+                self.onDismissViewController()
+            }
         }
 
         if let confirmView = contentView as? RewardClaimComfirmView {
@@ -85,17 +87,21 @@ class PopUpViewController: UIViewController {
                     self.onCompletion?()
                 })
             }
+
+            confirmView.onDismiss = { [weak self] in
+                guard let self = self else { return }
+                self.onDismissViewController()
+            }
         }
     }
 
     func setUpContentView(view : UIView, size : CGSize) {
-
         contentView = view
         bgView.addSubview(contentView!)
         contentView?.snp.makeConstraints({ (make) in
             make.centerX.equalTo(bgView)
             make.bottom.equalTo(bgView.snp.bottom).offset(size.height)
-            make.width.equalTo(size.width)
+            make.width.equalToSuperview()
             make.height.equalTo(size.height + (ScreenDesignRatio == 1 ? 0 : 10))
         })
 
@@ -106,6 +112,12 @@ class PopUpViewController: UIViewController {
         }
         contentView?.layer.cornerRadius = 8
         contentView?.layer.masksToBounds = true
+
+        if let confirmView = contentView as? ThresholdValueSelectView {
+            confirmView.onCompletion = { [weak self] in
+                self?.onDismissViewController()
+            }
+        }
     }
 
     func setCloseEvent(button : UIButton) {
@@ -156,13 +168,21 @@ class PopUpViewController: UIViewController {
                            animations: {
 
                             self.contentView?.snp.updateConstraints({ (make) in
-                                make.bottom.equalTo(self.bgView.snp.bottom).offset(-16)
+                                make.bottom.equalTo(self.bgView.snp.bottom)
                             })
                             self.contentView!.superview!.layoutIfNeeded()
 
             },completion: { _ in()
             })
         })
+    }
+
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        let bezierPath = UIBezierPath(roundedRect: contentView?.bounds ?? .zero, byRoundingCorners: [.topLeft, .topRight], cornerRadii: CGSize(width: 35, height: 35))
+        let shapeLayer = CAShapeLayer()
+        shapeLayer.path = bezierPath.cgPath
+        contentView?.layer.mask = shapeLayer
     }
 
     deinit {

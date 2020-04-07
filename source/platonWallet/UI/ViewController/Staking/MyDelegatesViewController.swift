@@ -233,7 +233,7 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
         confirmView.balanceLabel.text = delegate.freeBalanceValue
         confirmView.feeLabel.text = (gas.gasUsed.vonToLATString ?? "0.00").ATPSuffix()
         confirmView.comfirmBtn.style = (delegate.freeBalanceBInt >= gas.gasUsedBInt) ? .blue : .disable
-        controller.setUpConfirmView(view: confirmView, width: PopUpContentWidth)
+        controller.setUpConfirmView(view: confirmView)
         controller.onCompletion = { [weak self] in
             self?.inputPasswordForClaimTransaction(delegate: delegate, gas: gas)
         }
@@ -252,14 +252,14 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
             return
         }
 
-        if wallet.type == .observed {
-            let funcType = FuncType.withdrawDelegateReward
-            web3.platon.platonGetNonce(sender: wallet.address) { [weak self] (result, blockNonce) in
-                guard let self = self else { return }
-                switch result {
-                case .success:
-                    guard let nonce = blockNonce else { return }
-                    let nonceString = nonce.quantity.description
+        TransactionService.service.getContractGas(from: wallet.address, txType: .claimReward) { [weak self] (result, remoteGas) in
+            guard let self = self else { return }
+            switch result {
+            case .success:
+                guard let gas = remoteGas else { return }
+                if wallet.type == .observed {
+                    let funcType = FuncType.withdrawDelegateReward
+                    let nonceString = gas.nonceBInt.description
 
                     let transactionData = TransactionQrcode(amount: amount, chainId: web3.properties.chainId, from: wallet.address, to: PlatonConfig.ContractAddress.rewardContractAddress, gasLimit: gas.gasLimit, gasPrice: gas.gasPrice, nonce: nonceString, typ: nil, nodeId: nil, nodeName: nil, stakingBlockNum: nil, functionType: funcType.typeValue, rk: nil)
 
@@ -271,28 +271,27 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
                     DispatchQueue.main.async {
                         self.showOfflineConfirmView(content: content)
                     }
-                case .fail(_, let message):
-                    self.showErrorMessage(text: message ?? "get nonce error")
+                } else {
+                    self.showPasswordInputPswAlert(for: wallet) { [weak self] (privateKey, _, error) in
+                        guard let self = self else { return }
+                        guard let pri = privateKey else {
+                            if let errorMsg = error?.localizedDescription {
+                                self.showErrorMessage(text: errorMsg, delay: 2.0)
+                            }
+                            return
+                        }
+                        self.sendClaimTransaction(delegate: delegate, gas: gas, privateKey: pri, nonce: gas.nonceBInt)
+                    }
                 }
+            case .failure(let error):
+                self.showErrorMessage(text: error?.message ?? "get nonce error")
             }
-            return
-        }
-
-        showPasswordInputPswAlert(for: wallet) { [weak self] (privateKey, _, error) in
-            guard let self = self else { return }
-            guard let pri = privateKey else {
-                if let errorMsg = error?.localizedDescription {
-                    self.showErrorMessage(text: errorMsg, delay: 2.0)
-                }
-                return
-            }
-            self.sendClaimTransaction(delegate: delegate, gas: gas, privateKey: pri)
         }
     }
 
-    func sendClaimTransaction(delegate: Delegate, gas: RemoteGas, privateKey: String) {
+    func sendClaimTransaction(delegate: Delegate, gas: RemoteGas, privateKey: String, nonce: BigUInt) {
         showLoadingHUD()
-        TransactionService.service.rewardClaim(from: delegate.walletAddress, privateKey: privateKey, gas: gas) { [weak self] (result, transaction) in
+        TransactionService.service.rewardClaim(from: delegate.walletAddress, privateKey: privateKey, gas: gas, nonce: nonce) { [weak self] (result, transaction) in
             self?.hideLoadingHUD()
             switch result {
             case .success:
@@ -325,7 +324,7 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
         controller.onCompletion = { [weak self] in
             self?.showQrcodeScan()
         }
-        controller.setUpConfirmView(view: offlineConfirmView, width: PopUpContentWidth)
+        controller.setUpConfirmView(view: offlineConfirmView)
         controller.show(inViewController: self)
     }
 
@@ -354,7 +353,7 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
             guard let qrcode = qrcodeData else { return }
             self.sendSignatureTransaction(qrcode: qrcode)
         }
-        controller.setUpConfirmView(view: offlineConfirmView, width: PopUpContentWidth)
+        controller.setUpConfirmView(view: offlineConfirmView)
         controller.show(inViewController: self)
     }
 
@@ -417,7 +416,7 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
                     guard
                         let signedTxJsonString = signedTx.jsonString
                         else { break }
-                    TransactionService.service.sendSignedTransactionToServer(data: signedTxJsonString, sign: sign) { (result, response) in
+                    TransactionService.service.sendSignedTransaction(txType: .claimReward, data: signedTxJsonString, sign: sign) { (result, response) in
                         switch result {
                         case .success:
                             self.sendTransactionSuccess(tx: tx)

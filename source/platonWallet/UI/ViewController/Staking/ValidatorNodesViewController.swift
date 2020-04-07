@@ -71,7 +71,7 @@ class ValidatorNodesViewController: ButtonBarPagerTabStripViewController, Indica
 
         let type = PopSelectedViewType.sort(datasource: listData, selected: currentSort)
         let contentView = ThresholdValueSelectView(title: Localized("node_sort_title"), type: type)
-        contentView.show(viewController: self)
+//        contentView.show(viewController: self)
         contentView.valueChangedHandler = { [weak self] value in
             switch value {
             case .sort(_, let selected):
@@ -83,7 +83,12 @@ class ValidatorNodesViewController: ButtonBarPagerTabStripViewController, Indica
             default:
                 break
             }
+            
         }
+        let popUpVC = PopUpViewController()
+        popUpVC.setUpContentView(view: contentView, size: CGSize(width: PopUpContentWidth, height: CGFloat(type.count) * contentView.cellHeight + 64.0))
+        popUpVC.setCloseEvent(button: contentView.closeButton)
+        popUpVC.show(inViewController: self)
     }
 
     override func viewDidLoad() {

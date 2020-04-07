@@ -10,23 +10,10 @@ import UIKit
 
 class AssetFeeViewV060: UIView {
 
-    /*
-    // Only override draw() if you perform custom drawing.
-    // An empty implementation adversely affects performance during animation.
-    override func draw(_ rect: CGRect) {
-        // Drawing code
-    }
-    */
-
-    @IBOutlet weak var gasLimitButton: UIButton!
-    @IBOutlet weak var feeTip: UILabel!
-    @IBOutlet weak var fee: UILabel!
-
     @IBOutlet weak var centerView: UIView!
 
     lazy var levelView = { () -> PLevelSlider in
         let levelView = PLevelSlider.create(levelChanged: { (_) in
-
         })
         return levelView
     }()
@@ -54,6 +41,5 @@ class AssetFeeViewV060: UIView {
         levelView.snp.makeConstraints { (make) in
             make.edges.equalToSuperview()
         }
-        feeTip.font = .systemFont(ofSize: 16)
     }
 }

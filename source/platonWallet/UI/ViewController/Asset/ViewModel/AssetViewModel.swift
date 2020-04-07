@@ -11,4 +11,8 @@ import BigInt
 
 class AssetViewModel {
     let headerViewModel = Observable<AssetHeaderViewModel>(value: AssetHeaderViewModel())
+    let transactionsData = Observable<[String: [Transaction]]>(value: [:])
+    let isShowFooterMore = Observable<Bool>(value: false)
+    let isFetching = Observable<Bool>(value: false)
+
 }

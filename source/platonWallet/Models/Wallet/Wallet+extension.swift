@@ -55,6 +55,20 @@ extension Wallet {
         return balanceStr
     }
 
+    var freeBalance: BigUInt {
+        guard
+            let balance = AssetService.sharedInstace.balances.first(where: { $0.addr.lowercased() == self.address.lowercased() }),
+            let free = BigUInt(balance.free ?? "0") else { return BigUInt.zero }
+        return free
+    }
+
+    var lockBalance: BigUInt {
+        guard
+            let balance = AssetService.sharedInstace.balances.first(where: { $0.addr.lowercased() == self.address.lowercased() }),
+            let lock = BigUInt(balance.lock ?? "0") else { return BigUInt.zero }
+        return lock
+    }
+
     var balanceString: String {
         guard
         let balance = AssetService.sharedInstace.balances.first(where: { $0.addr.lowercased() == self.address.lowercased() }),

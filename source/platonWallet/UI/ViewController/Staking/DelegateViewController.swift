@@ -19,7 +19,6 @@ class DelegateViewController: BaseViewController {
     var walletStyle: WalletsCellStyle?
     var balanceStyle: BalancesCellStyle?
     var currentAmount: BigUInt = BigUInt.zero
-    var canDelegation: CanDelegation?
     var isDelegateAll: Bool = false
     var generateQrCode: QrcodeData<[TransactionQrcode]>?
     var remoteGas: RemoteGas?
@@ -46,7 +45,7 @@ class DelegateViewController: BaseViewController {
 
     // min delgate amount
     var minDelegateAmountLimit: BigUInt {
-        return canDelegation?.minDelegationBInt ?? BigUInt(10).multiplied(by: PlatonConfig.VON.LAT)
+        return remoteGas?.minDelegationBInt ?? BigUInt(10).multiplied(by: PlatonConfig.VON.LAT)
     }
 
     // current account balance amount
@@ -117,36 +116,6 @@ class DelegateViewController: BaseViewController {
         view.endEditing(true)
     }
 
-    private func fetchCanDelegation(completion: (() -> Void)? = nil) {
-        guard
-            let nodeId = currentNode?.nodeId,
-            let walletAddr = walletStyle?.currentWallet.address else { return }
-
-        showLoadingHUD()
-        StakingService.getCanDelegation(addr: walletAddr, nodeId: nodeId) { [weak self] (result, data) in
-                self?.hideLoadingHUD()
-                switch result {
-                case .success:
-                    if var newData = data {
-                        newData.free = (BigUInt(newData.free ?? "0") ?? BigUInt.zero).convertBalanceDecimalPlaceToZero().description
-                        newData.lock = (BigUInt(newData.lock ?? "0") ?? BigUInt.zero).convertBalanceDecimalPlaceToZero().description
-
-                        if let index = AssetService.sharedInstace.balances.firstIndex(where: { $0.addr.lowercased() == walletAddr.lowercased() }) {
-                            var oldBalance = AssetService.sharedInstace.balances[index]
-                            oldBalance.free = newData.free
-                            oldBalance.lock = newData.lock
-                            AssetService.sharedInstace.balances[index] = oldBalance
-                        }
-                        self?.canDelegation = newData
-                    }
-                    completion?()
-                case .failure(let error):
-                    self?.showErrorMessage(text: error?.message ?? "server error")
-                    completion?()
-                }
-        }
-    }
-
     func initBalanceStyle() {
         let balance = AssetService.sharedInstace.balances.first { (item) -> Bool in
             return item.addr.lowercased() == walletStyle!.currentWallet.address.lowercased()
@@ -207,22 +176,12 @@ class DelegateViewController: BaseViewController {
         listData = [item1, item2, item3, item4, item5, item6]
         tableView.reloadData()
 
-        fetchData()
+        guard let address = currentAddress, let nodeId = node.nodeId else { return }
+        getGas(walletAddr: address, nodeId: nodeId)
     }
 
     func fetchData() {
-        fetchCanDelegation { [weak self] in
-            self?.initBalanceStyle()
 
-            if self?.currentAmount == .zero {
-                let cell = self?.tableView.cellForRow(at: IndexPath(row: 0, section: 3)) as? SendInputTableViewCell
-                cell?.amountView.textField.text = nil
-                cell?.amountView.cleanErrorState()
-            }
-
-            guard let address = self?.walletStyle?.currentWallet.address, let nodeId = self?.currentNode?.nodeId else { return }
-            self?.getGas(walletAddr: address, nodeId: nodeId)
-        }
     }
 
 }
@@ -289,7 +248,6 @@ extension DelegateViewController: UITableViewDelegate, UITableViewDataSource {
             cell.amountView.textField.LocalizePlaceholder = Localized("staking_amount_placeholder", arguments: (minDelegateAmountLimit/PlatonConfig.VON.LAT).description)
             cell.maxAmountLimit = maxDelegateAmountLimit
             cell.gas = estimateUseGas
-            cell.amountView.isUserInteractionEnabled = (canDelegation?.canDelegation == true)
             cell.amountView.feeLabel.text = estimateUseGas.description.vonToLATString?.displayFeeString
             cell.cellDidContentEditingHandler = { [weak self] (amountVON, _) in
 //                self?.isDelegateAll = (amountVON == cell.maxAmountLimit)
@@ -319,11 +277,10 @@ extension DelegateViewController: UITableViewDelegate, UITableViewDataSource {
             let cell = tableView.dequeueReusableCell(withIdentifier: "SingleButtonTableViewCell") as! SingleButtonTableViewCell
             cell.button.setTitle(title, for: .normal)
             if balanceStyle?.currentBalance.2 == true {
-                cell.disableTapAction = (currentAmount < minDelegateAmountLimit) || currentAmount > maxDelegateAmountLimit || estimateUseGas > canDelegation?.freeBigUInt ?? BigUInt.zero
+                cell.disableTapAction = (currentAmount < minDelegateAmountLimit) || currentAmount > maxDelegateAmountLimit || estimateUseGas > remoteGas?.freeBInt ?? BigUInt.zero
             } else {
                 cell.disableTapAction = (currentAmount < minDelegateAmountLimit) || currentAmount + estimateUseGas > maxDelegateAmountLimit
             }
-            cell.canDelegation = canDelegation
             cell.cellDidTapHandle = { [weak self] in
                 guard let self = self else { return }
                 if cell.button.style != .disable {
@@ -346,19 +303,10 @@ extension DelegateViewController: UITableViewDelegate, UITableViewDataSource {
 extension DelegateViewController {
     func nextButtonCellDidHandle() {
         view.endEditing(true)
-
-        fetchCanDelegation { [weak self] in
-            guard let self = self else { return }
-            self.submitDelgate()
-        }
+        submitDelgate()
     }
 
     func submitDelgate() {
-        if let canDet = canDelegation, canDet.canDelegation == false {
-            showMessage(text: canDet.message?.localizedDesciption ?? "can't delegate", delay: 2.0)
-            return
-        }
-
         guard currentAmount >= minDelegateAmountLimit else {
             showMessage(text: Localized("staking_input_amount_minlimit_error", arguments: minDelegateAmountLimit.description))
             return
@@ -390,32 +338,21 @@ extension DelegateViewController {
 
         let typ = balanceObject.selectedIndex == 0 ? UInt16(0) : UInt16(1) // 0：自由金额 1：锁仓金额
 
+        guard let nonce = remoteGas?.nonceBInt else { return }
         if walletObject.currentWallet.type == .observed {
             let funcType = FuncType.createDelegate(typ: typ, nodeId: nodeId, amount: self.currentAmount)
 
-            web3.platon.platonGetNonce(sender: walletObject.currentWallet.address) { [weak self] (result, blockNonce) in
-                guard let self = self else { return }
-                switch result {
-                case .success:
-                    guard let nonce = blockNonce else { return }
-                    let nonceString = nonce.quantity.description
+            let transactionData = TransactionQrcode(amount: self.currentAmount.description, chainId: web3.properties.chainId, from: walletObject.currentWallet.address, to: PlatonConfig.ContractAddress.stakingContractAddress, gasLimit: selectedGasLimit.description, gasPrice: selectedGasPrice.description, nonce: nonce.description, typ: typ, nodeId: nodeId, nodeName: self.currentNode?.name, stakingBlockNum: nil, functionType: funcType.typeValue, rk: nil)
 
-                    let transactionData = TransactionQrcode(amount: self.currentAmount.description, chainId: web3.properties.chainId, from: walletObject.currentWallet.address, to: PlatonConfig.ContractAddress.stakingContractAddress, gasLimit: selectedGasLimit.description, gasPrice: selectedGasPrice.description, nonce: nonceString, typ: typ, nodeId: nodeId, nodeName: self.currentNode?.name, stakingBlockNum: nil, functionType: funcType.typeValue, rk: nil)
+            let qrcodeData = QrcodeData(qrCodeType: 0, qrCodeData: [transactionData], chainId: web3.chainId, functionType: 1004, from: walletObject.currentWallet.address, nodeName: self.currentNode?.name, rn: nil, timestamp: Int(Date().timeIntervalSince1970 * 1000), rk: nil, si: nil, v: 1)
+            guard
+                let data = try? JSONEncoder().encode(qrcodeData),
+                let content = String(data: data, encoding: .utf8) else { return }
+            self.generateQrCode = qrcodeData
 
-                    let qrcodeData = QrcodeData(qrCodeType: 0, qrCodeData: [transactionData], chainId: web3.chainId, functionType: 1004, from: walletObject.currentWallet.address, nodeName: self.currentNode?.name, rn: nil, timestamp: Int(Date().timeIntervalSince1970 * 1000), rk: nil, si: nil, v: 1)
-                    guard
-                        let data = try? JSONEncoder().encode(qrcodeData),
-                        let content = String(data: data, encoding: .utf8) else { return }
-                    self.generateQrCode = qrcodeData
-
-                    DispatchQueue.main.async {
-                        self.showOfflineConfirmView(content: content)
-                    }
-                case .fail(_, let message):
-                    self.showErrorMessage(text: message ?? "get nonce error")
-                }
+            DispatchQueue.main.async {
+                self.showOfflineConfirmView(content: content)
             }
-            return
         }
 
         showPasswordInputPswAlert(for: walletObject.currentWallet) { [weak self] (privateKey, _, error) in
@@ -428,7 +365,7 @@ extension DelegateViewController {
             }
             self.showLoadingHUD()
 
-            TransactionService.service.createDelgate(typ: typ, nodeId: nodeId, amount: self.currentAmount, sender: currentAddress, privateKey: pri, gas: selectedGasLimit, gasPrice: selectedGasPrice, completion: { [weak self] (result, data) in
+            TransactionService.service.createDelgate(typ: typ, nodeId: nodeId, amount: self.currentAmount, sender: currentAddress, privateKey: pri, gas: selectedGasLimit, gasPrice: selectedGasPrice, nonce: nonce, minDelegate: self.minDelegateAmountLimit, completion: { [weak self] (result, data) in
                 guard let self = self else { return }
                 self.hideLoadingHUD()
 
@@ -468,7 +405,7 @@ extension DelegateViewController {
         controller.onCompletion = { [weak self] in
             self?.showQrcodeScan()
         }
-        controller.setUpConfirmView(view: offlineConfirmView, width: PopUpContentWidth)
+        controller.setUpConfirmView(view: offlineConfirmView)
         controller.show(inViewController: self)
     }
 
@@ -497,7 +434,7 @@ extension DelegateViewController {
             guard let qrcode = qrcodeData else { return }
             self.sendSignatureTransaction(qrcode: qrcode)
         }
-        controller.setUpConfirmView(view: offlineConfirmView, width: PopUpContentWidth)
+        controller.setUpConfirmView(view: offlineConfirmView)
         controller.show(inViewController: self)
     }
 
@@ -560,7 +497,7 @@ extension DelegateViewController {
                     guard
                         let signedTxJsonString = signedTx.jsonString
                         else { break }
-                    TransactionService.service.sendSignedTransactionToServer(data: signedTxJsonString, sign: sign) { (result, response) in
+                    TransactionService.service.sendSignedTransaction(txType: .delegateCreate, minDelgate: minDelegateAmountLimit.description, data: signedTxJsonString, sign: sign) { (result, response) in
                         switch result {
                         case .success:
                             self.sendTransactionSuccess(tx: tx)
@@ -663,7 +600,7 @@ extension DelegateViewController {
 
         let type = PopSelectedViewType.delegate(datasource: balances, selected: selected)
         let contentView = ThresholdValueSelectView(title: Localized("pop_selection_title_delegate"), type: type)
-        contentView.show(viewController: self)
+//        contentView.show(viewController: self)
         contentView.valueChangedHandler = { [weak self] value in
             switch value {
             case .delegate(_, let newSelected):
@@ -676,6 +613,10 @@ extension DelegateViewController {
                 break
             }
         }
+        let popUpVC = PopUpViewController()
+        popUpVC.setUpContentView(view: contentView, size: CGSize(width: PopUpContentWidth, height: CGFloat(type.count) * contentView.cellHeight + 64.0))
+        popUpVC.setCloseEvent(button: contentView.closeButton)
+        popUpVC.show(inViewController: self)
     }
 
     func refreshBalanceAndInputAmountCell(_ indexPath: IndexPath) {

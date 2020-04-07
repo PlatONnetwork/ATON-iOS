@@ -71,6 +71,30 @@ extension TransactionService {
         NetworkService.request("/transaction/estimateGas", parameters: parameters, completion: completion)
     }
 
+    func sendSignedTransaction(txType: TxType, minDelgate: String? = nil, data: String, sign: String, completion: NetworkCompletion<String>?) {
+        TransactionService.service.sendSignedTransactionToServer(data: data, sign: sign) { (result, txHash) in
+            switch result {
+            case .success:
+                completion?(.success, txHash)
+            case .failure(let error):
+                guard let error = error else { return }
+                switch error {
+                case .responeTimeoutError:
+                    completion?(.success, "")
+                case .serviceError(let code):
+                    switch code {
+                    case 3001...3009:
+                        completion?(.failure(NetworkError.sendSignedData(txType.rawValue, code, minDelgate ?? "0")), nil)
+                    default:
+                        completion?(.failure(error), nil)
+                    }
+                default:
+                    completion?(.failure(error), nil)
+                }
+            }
+        }
+    }
+
     func sendSignedTransactionToServer(data: String, sign: String, completion: NetworkCompletion<String>?) {
         var parameters: Parameters = [:]
         parameters["data"] = data
@@ -79,7 +103,7 @@ extension TransactionService {
         NetworkService.request("/transaction/submitSignedTransaction", parameters: parameters, completion: completion)
     }
 
-    func sendRawTransaction(data: SignedTransaction, privateKey: String, completion: NetworkCompletion<String>?) {
+    func sendRawTransaction(txType: TxType, minDelgate: String? = nil, data: SignedTransaction, privateKey: String, completion: NetworkCompletion<String>?) {
         guard
             let jsonData = try? JSONEncoder().encode(data),
             let jsonString = String(data: jsonData, encoding: .utf8) else {
@@ -92,20 +116,7 @@ extension TransactionService {
             return
         }
 
-        sendSignedTransactionToServer(data: jsonString, sign: signResult) { (result, response) in
-            switch result {
-            case .success:
-                completion?(.success, response)
-            case .failure(let error):
-                guard let error = error else { return }
-                switch error {
-                case .responeTimeoutError:
-                    completion?(.success, "")
-                default:
-                    completion?(.failure(error), nil)
-                }
-            }
-        }
+        sendSignedTransaction(txType: txType, minDelgate: minDelgate, data: jsonString, sign: signResult, completion: completion)
     }
 
     func signQrcodeData(signedData: String, remark: String, privateKey: String) -> String? {

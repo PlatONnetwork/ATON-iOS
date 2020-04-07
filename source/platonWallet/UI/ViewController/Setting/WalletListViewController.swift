@@ -34,7 +34,6 @@ class WalletListViewController: BaseViewController,TableViewReorderDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        NotificationCenter.default.addObserver(self, selector: #selector(shouldUpdateWalletStatus), name: Notification.Name.ATON.DidNetworkStatusChange, object: nil)
         initSubView()
     }
 
@@ -78,6 +77,10 @@ class WalletListViewController: BaseViewController,TableViewReorderDelegate {
             make.right.equalToSuperview().offset(0)
         }
         tableView.tableFooterView = UIView()
+
+        NetworkStatusService.shared.registerHandler(object: self) { [weak self] in
+            self?.shouldUpdateWalletStatus()
+        }
     }
 
     func createIndividualWallet() {

@@ -296,7 +296,7 @@ class AssetSectionViewV060: UIView {
     }
 
     func updateSendTabUIStatus() {
-        if NetworkManager.shared.reachabilityManager?.isReachable == false {
+        if !NetworkStatusService.shared.isConnecting {
             // offline
             sendLabel.localizedText = "Asset_segment_Send_offline"
         } else {

@@ -37,26 +37,6 @@ class ATextFieldView: UIView {
     var maxBinUIntValue: BigUInt?
 
     var isValidMagitude: Bool = true
-    var isOnlyShowFeeTip: Bool = false {
-        didSet {
-            if isOnlyShowFeeTip {
-                feeTopConstraint?.update(priority: .high)
-                titleLabel.isHidden = true
-                magnitudeLabel.isHidden = true
-                textField.isHidden = true
-                lineView.isHidden = true
-                feeLabel.isHidden = true
-            } else {
-                feeTopConstraint?.update(priority: .low)
-                titleLabel.isHidden = false
-                magnitudeLabel.isHidden = false
-                textField.isHidden = false
-                lineView.isHidden = false
-                feeLabel.isHidden = false
-            }
-        }
-    }
-    var feeTopConstraint: Constraint?
 
     private var mode: TextFieldCheckMode = .endEdit
 
@@ -72,7 +52,7 @@ class ATextFieldView: UIView {
         titleLabel.text = Localized("ATextFieldView_title")
         addSubview(titleLabel)
         titleLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().priorityMedium()
+            make.top.equalToSuperview()
             make.leading.equalToSuperview()
         }
 
@@ -120,8 +100,7 @@ class ATextFieldView: UIView {
         tipsLabel.numberOfLines = 2
         addSubview(tipsLabel)
         tipsLabel.snp.makeConstraints { make in
-            make.top.equalTo(textField.snp.bottom).offset(8).priorityMedium()
-            feeTopConstraint = make.top.equalToSuperview().offset(8).priorityLow().constraint
+            make.top.equalTo(textField.snp.bottom).offset(8)
             make.leading.equalToSuperview()
             make.bottom.equalToSuperview()
         }
@@ -135,6 +114,7 @@ class ATextFieldView: UIView {
             make.trailing.equalToSuperview()
             make.top.equalTo(textField.snp.bottom).offset(8)
             make.leading.equalTo(tipsLabel.snp.trailing).offset(5)
+            make.bottom.equalToSuperview()
         }
 
         NotificationCenter.default.addObserver(self, selector: #selector(textDidBeginEditing(_:)), name: UITextField.textDidBeginEditingNotification, object: nil)
