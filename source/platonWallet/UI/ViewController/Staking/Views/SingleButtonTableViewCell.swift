@@ -14,39 +14,6 @@ class SingleButtonTableViewCell: UITableViewCell {
     public let button = PButton()
     public let errorLabel = UILabel()
 
-    var canDelegation: CanDelegation? {
-        didSet {
-            if let canDel = canDelegation, canDel.canDelegation == true {
-                buttonToBottomConstaint?.update(priority: .high)
-                errorLabelToBottomConstaint?.update(priority: .medium)
-
-                errorLabel.isHidden = true
-                errorLabel.attributedText = nil
-                button.style = disableTapAction == true ? .disable : .blue
-            } else {
-                buttonToBottomConstaint?.update(priority: .medium)
-                errorLabelToBottomConstaint?.update(priority: .high)
-
-                errorLabel.isHidden = false
-
-                if let localizedDesciption = canDelegation?.message?.localizedDesciption {
-                    let attachment = NSTextAttachment()
-                    attachment.bounds = CGRect(x: 0, y: 0, width: 10, height: 10)
-                    attachment.image = UIImage(named: "3.icon_warning")
-
-                    let attr = NSMutableAttributedString()
-                    attr.append(NSAttributedString(attachment: attachment))
-                    attr.append(NSAttributedString(string: " "))
-                    attr.append(NSAttributedString(string: localizedDesciption))
-
-                    errorLabel.attributedText = attr
-                }
-
-                button.style = .disable
-            }
-        }
-    }
-
     var buttonToBottomConstaint: Constraint?
     var errorLabelToBottomConstaint: Constraint?
 
@@ -91,6 +58,12 @@ class SingleButtonTableViewCell: UITableViewCell {
         }
 
         button.style = .blue
+
+        buttonToBottomConstaint?.update(priority: .high)
+        errorLabelToBottomConstaint?.update(priority: .medium)
+
+        errorLabel.isHidden = true
+        errorLabel.attributedText = nil
     }
 
     required init?(coder aDecoder: NSCoder) {

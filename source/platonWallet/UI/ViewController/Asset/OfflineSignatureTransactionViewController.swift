@@ -137,7 +137,7 @@ class OfflineSignatureTransactionViewController: BaseViewController {
         offlineConfirmView.submitBtn.localizedNormalTitle = "confirm_button_signed_tx"
 
         let controller = PopUpViewController()
-        controller.setUpConfirmView(view: offlineConfirmView, width: PopUpContentWidth)
+        controller.setUpConfirmView(view: offlineConfirmView)
         controller.show(inViewController: self)
         controller.onCompletion = { [weak self] in
             self?.navigationController?.popViewController(animated: true)

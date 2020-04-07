@@ -22,16 +22,18 @@ class MultiGestureScrollView: UIScrollView {
 
 class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
 
-    weak var delegate: ChildScrollViewDidScrollDelegate?
-    var estimatedGas = BigUInt("21000")
+    weak var assetController: AssetController?
     let maxGasLimit = BigUInt(999999999)
     var gasPriceLevel: Float?
-    var gasLimitViewConstraint: Constraint?
+    var txfeeViewBottomConstraint: Constraint?
+    var inputGasLimit: BigUInt?
+
+    var gas: RemoteGas?
 
     var gasPrice: BigUInt? {
         get {
             //gas prise: 1gwei ~ 10gwei
-            let defaultGasPrice = TransactionService.service.defaultGasPrice
+            let defaultGasPrice = gas?.gasPriceBInt ?? TransactionService.service.defaultGasPrice
             let minGasPrice = TransactionService.service.minGasPrice
             let maxGasPrice = defaultGasPrice.multiplied(by: BigUInt(6))
 
@@ -44,10 +46,14 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
         }
     }
 
+    var useGasLimit: BigUInt {
+        return inputGasLimit ?? gas?.gasLimitBInt ?? PlatonConfig.FuncGas.defaultGas
+    }
+
     var generateQrCode: QrcodeData<[TransactionQrcode]>?
 
-    lazy var scrollView = { () -> MultiGestureScrollView in
-        let view = MultiGestureScrollView(frame: .zero)
+    lazy var scrollView = { () -> UIScrollView in
+        let view = UIScrollView(frame: .zero)
         view.delegate = self
         return view
     }()
@@ -94,8 +100,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
         walletView.textField.LocalizePlaceholder = "send_address_placeholder"
         walletView.textField.adjustsFontSizeToFitWidth = true
         walletView.textField.minimumFontSize = 10.0
-        walletView.checkInput(mode: .endEdit, check: {[weak self] (text) -> (Bool, String) in
-            self?.checkQuickAddAddress()
+        walletView.checkInput(mode: .endEdit, check: { (text) -> (Bool, String) in
             return CommonService.checkTransferAddress(text: text)
         }, heightChange: { [weak self](view) in
             self?.textFieldViewUpdateHeight(view: view)
@@ -121,7 +126,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
 
     lazy var gasLimitNoteLabel = { () -> UILabel in
         let label = UILabel()
-        label.textColor = UIColor(rgb: 0x61646e)
+        label.textColor = common_darkGray_color
         label.font = UIFont.systemFont(ofSize: 14)
         label.numberOfLines = 0
         label.lineBreakMode = NSLineBreakMode.byClipping
@@ -131,7 +136,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
 
     lazy var gasLimitNoteView = { () -> UIView in
         let noteView = UIView()
-        noteView.backgroundColor = UIColor.white
+        noteView.backgroundColor = UIColor(rgb: 0xF4F5FA)
         noteView.layer.borderWidth = 1/UIScreen.main.scale
         noteView.layer.borderColor = UIColor(rgb: 0xd5d8df).cgColor
         noteView.layer.cornerRadius = 4.0
@@ -146,14 +151,13 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
         gasLimitView.maxBinUIntValue = self.maxGasLimit
         gasLimitView.checkInput(mode: .all, check: { [weak self] (text, _) -> (Bool, String) in
             let result = CommonService.checkGasLimit(value: text, minGasLimit: PlatonConfig.FuncGas.defaultGas, maxGasLimit: self?.maxGasLimit ?? BigUInt(999999999))
-            self?.estimatedGas = BigUInt(text) ?? BigUInt.zero
+            self?.inputGasLimit = BigUInt(text) ?? BigUInt.zero
             self?.DidNodeGasPriceUpdate()
             _ = self?.amountView.checkInvalidNow(showErrorMsg: true)
             _ = self?.checkConfirmButtonAvailable()
 
             return (result.0, result.1 ?? "")
             }, heightChange: { _ in
-
         })
 
         gasLimitView.endEditCompletion = { [weak self] text in
@@ -162,14 +166,6 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
         }
 
         return gasLimitView
-    }()
-
-    lazy var quickSaveAddrBtn = { () -> QuickSaveAddressButton in
-        let button = QuickSaveAddressButton(type: .custom)
-        button.localizedNormalTitle = "savetoaddressbook"
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 13)
-        button.setTitleColor(UIColor(rgb: 0x105CFE ), for: .normal)
-        return button
     }()
 
     lazy var balanceLabel = { () -> UILabel in
@@ -183,10 +179,21 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
 
     lazy var feeView = { () -> AssetFeeViewV060 in
         let view = AssetFeeViewV060(frame: .zero)
-        view.gasLimitButton.addTarget(self, action: #selector(showGasLimitAction), for: .touchUpInside)
-        view.feeTip.isUserInteractionEnabled = true
-        view.feeTip.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(showGasLimitAction)))
         return view
+    }()
+
+    lazy var txFeeView: UIButton = {
+        let button = UIButton()
+        button.backgroundColor = .white
+        button.addTarget(self, action: #selector(showGasLimitAction), for: .touchUpInside)
+        return button
+    }()
+
+    lazy var txFeeLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .black
+        label.font = .systemFont(ofSize: 20, weight: .medium)
+        return label
     }()
 
     lazy var sendBtn = { () -> PButton in
@@ -197,14 +204,32 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
         return btn
     }()
 
+    lazy var arrowIV: UIButton = {
+        let button = UIButton()
+        button.addTarget(self, action: #selector(showGasLimitAction), for: .touchUpInside)
+        button.setImage(UIImage(named: "6.icon_under"), for: .normal)
+        button.setImage(UIImage(named: "7.icon_on"), for: .selected)
+        return button
+    }()
+
+    lazy var promptView: AssetPromptView = {
+        let view = AssetPromptView(type: AssetPromptType.notConnect) {
+
+        }
+        view.isHidden = true
+        return view
+    }()
+
     var popController: PopUpViewController?
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         NotificationCenter.default.addObserver(self, selector: #selector(DidUpdateAllAsset), name: Notification.Name.ATON.DidUpdateAllAsset, object: nil)
-        initSubViews()
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame(_:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
+
+        initialUI()
         initdata()
+        initialObserver()
     }
 
     override func viewDidLayoutSubviews() {
@@ -217,19 +242,14 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
     // MARK: - Data init
 
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         self.refreshData()
-        let commonbgcolor = UIColor(red: 247, green: 250, blue: 255, alpha: 1)
-        self.view.backgroundColor = commonbgcolor
-        self.amountView.backgroundColor = commonbgcolor
-        self.walletAddressView.backgroundColor = commonbgcolor
-        self.feeView.backgroundColor = commonbgcolor
-        self.feeView.levelView.backgroundColor = commonbgcolor
-        scrollView.backgroundColor = commonbgcolor
 
         NotificationCenter.default.addObserver(self, selector: #selector(DidNodeGasPriceUpdate), name: Notification.Name.ATON.DidNodeGasPriceUpdate, object: nil)
-        TransactionService.service.getGasPrice()
 
+        fetchGasData()
         _ = self.checkConfirmButtonAvailable()
+
 
         AnalysisHelper.handleEvent(id: event_send, operation: .begin)
 
@@ -247,32 +267,18 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
         AnalysisHelper.handleEvent(id: event_send, operation: .cancel)
     }
 
-    func reloadGasLimitView(isSelected: Bool) {
-        if !isSelected {
-            gasLimitView.isOnlyShowFeeTip = true
-            gasLimitViewConstraint?.update(priority: .high)
-        } else {
-            gasLimitView.isOnlyShowFeeTip = false
-            gasLimitViewConstraint?.update(priority: .low)
-        }
-
-        view.layoutIfNeeded()
-        gasLimitNoteView.isHidden = !isSelected
-    }
-
-    func hideGasLimitView() {
-        guard feeView.gasLimitButton.isSelected != false else {
-            return
-        }
-
-        feeView.gasLimitButton.isSelected = false
-        reloadGasLimitView(isSelected: false)
-
-    }
-
     @objc func showGasLimitAction() {
-        feeView.gasLimitButton.isSelected = !feeView.gasLimitButton.isSelected
-        reloadGasLimitView(isSelected: feeView.gasLimitButton.isSelected)
+        txFeeView.isSelected = !txFeeView.isSelected
+        if txFeeView.isSelected {
+            txfeeViewBottomConstraint?.update(priority: .high)
+        } else {
+            txfeeViewBottomConstraint?.update(priority: .low)
+        }
+        gasLimitView.isHidden = !txFeeView.isSelected
+        gasLimitNoteView.isHidden = !txFeeView.isSelected
+        feeView.isHidden = !txFeeView.isSelected
+        arrowIV.isSelected = txFeeView.isSelected
+        view.layoutIfNeeded()
     }
 
     func cleanInputEmptyErrorState() {
@@ -301,6 +307,17 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
         }
     }
 
+    func initialObserver() {
+        NetworkStatusService.shared.registerHandler(object: self) { [weak self] in
+            guard let self = self else { return }
+            if NetworkStatusService.shared.isConnecting == true {
+                self.promptView.isHidden = true
+            } else {
+                self.promptView.isHidden = false
+            }
+        }
+    }
+
     func refreshData() {
         guard AssetVCSharedData.sharedData.selectedWallet != nil else {
             return
@@ -317,15 +334,35 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
         self.refreshData()
     }
 
-    func initSubViews() {
-        view.addSubview(scrollView)
-        let containerView = UIView()
-        scrollView.addSubview(containerView)
+    func initialUI() {
+        leftNavigationTitle = "transferVC_nav_title"
 
-        scrollView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+        view.backgroundColor = .white
+
+        let scanButton = UIButton(type: .custom)
+        scanButton.setImage(UIImage(named: "1.icon_scanning"), for: .normal)
+        scanButton.addTarget(self, action: #selector(onNavRightBtnClick), for: .touchUpInside)
+        scanButton.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
+        let rightBarButtonItem = UIBarButtonItem(customView: scanButton)
+        navigationItem.rightBarButtonItem = rightBarButtonItem
+
+        view.addSubview(sendBtn)
+        sendBtn.snp.makeConstraints { (make) in
+            make.leading.equalToSuperview().offset(16)
+            make.trailing.equalToSuperview().offset(-16)
+            make.height.equalTo(44)
+            make.bottom.equalTo(bottomLayoutGuide.snp.top).offset(-20)
         }
 
+        view.addSubview(scrollView)
+        scrollView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalTo(topLayoutGuide.snp.bottom)
+            make.bottom.equalTo(sendBtn.snp.top).offset(-20)
+        }
+
+        let containerView = UIView()
+        scrollView.addSubview(containerView)
         containerView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
             make.width.equalTo(view)
@@ -338,19 +375,11 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
             make.height.equalTo(walletAddressView.internalHeight)
         }
 
-        walletAddressView.addSubview(quickSaveAddrBtn)
-        quickSaveAddrBtn.snp.makeConstraints { (make) in
-            make.right.equalToSuperview().offset(-16)
-            make.top.equalToSuperview()
-        }
-        quickSaveAddrBtn.addTarget(self, action: #selector(onQuickAddAddress), for: .touchUpInside)
-
         containerView.addSubview(amountView)
         amountView.snp.makeConstraints { (make) in
             make.leading.equalToSuperview().offset(16)
             make.trailing.equalToSuperview().offset(-16)
             make.top.equalTo(walletAddressView.snp.bottom).offset(20)
-//            make.height.equalTo(amountView.internalHeight)
         }
 
         containerView.addSubview(balanceLabel)
@@ -366,20 +395,50 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
             make.top.equalTo(amountView.snp.bottom).offset(10)
         }
 
-        view.addSubview(feeView)
-        containerView.addSubview(feeView)
-        feeView.snp.makeConstraints { (make) in
+        containerView.addSubview(txFeeView)
+        txFeeView.snp.makeConstraints { (make) in
             make.top.equalTo(remarkView.snp.bottom).offset(16)
-            make.left.right.equalToSuperview()
-            make.height.equalTo(72)
+            make.leading.trailing.equalTo(remarkView)
         }
 
-        gasLimitNoteView.isHidden = true
-        containerView.addSubview(gasLimitNoteView)
+        let txFeeTitleLabel = UILabel()
+        txFeeTitleLabel.text = Localized("asset_send_fee_title")
+        txFeeTitleLabel.textColor = common_darkGray_color
+        txFeeTitleLabel.font = .systemFont(ofSize: 14, weight: .medium)
+        txFeeView.addSubview(txFeeTitleLabel)
+        txFeeTitleLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(16)
+            make.top.equalToSuperview().offset(12)
+        }
+
+        txFeeView.addSubview(txFeeLabel)
+        txFeeLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(16)
+            make.top.equalTo(txFeeTitleLabel.snp.bottom).offset(6)
+            make.bottom.equalToSuperview().offset(-12).priorityMedium()
+        }
+
+        txFeeView.addSubview(arrowIV)
+        arrowIV.snp.makeConstraints { make in
+            make.width.equalTo(20)
+            make.height.equalTo(11)
+            make.trailing.equalToSuperview().offset(-16)
+            make.centerY.equalTo(txFeeTitleLabel.snp.bottom).offset(8)
+        }
+
+        feeView.backgroundColor = .white
+        txFeeView.addSubview(feeView)
+        feeView.snp.makeConstraints { (make) in
+            make.top.equalTo(txFeeLabel.snp.bottom).offset(16)
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+        }
+
+        txFeeView.addSubview(gasLimitNoteView)
         gasLimitNoteView.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(16)
             make.trailing.equalToSuperview().offset(-16)
-            make.top.equalTo(feeView.snp.bottom).offset(16)
+            make.top.equalTo(feeView.snp.bottom).offset(12)
         }
 
         gasLimitNoteView.addSubview(gasLimitNoteLabel)
@@ -387,27 +446,31 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
             make.edges.equalToSuperview().inset(14)
         }
 
-//        gasLimitView.isHidden = true
-        gasLimitView.textField.text = PlatonConfig.FuncGas.defaultGas.description
-        containerView.addSubview(gasLimitView)
+        gasLimitView.textField.text = gas?.gasLimitBInt.description ?? PlatonConfig.FuncGas.defaultGas.description
+        txFeeView.addSubview(gasLimitView)
         gasLimitView.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(16)
             make.trailing.equalToSuperview().offset(-16)
-            gasLimitViewConstraint = make.top.equalTo(feeView.snp.bottom).offset(16).priorityHigh().constraint
-            make.top.equalTo(gasLimitNoteView.snp.bottom).offset(16).priorityMedium()
+            make.top.equalTo(gasLimitNoteView.snp.bottom).offset(16)
+            txfeeViewBottomConstraint = make.bottom.equalToSuperview().offset(-12).priority(.low).constraint
         }
 
-        containerView.addSubview(sendBtn)
-        sendBtn.snp.makeConstraints { (make) in
-            make.top.equalTo(gasLimitView.snp.bottom).offset(20)
-            make.left.equalToSuperview().offset(16)
-            make.right.equalToSuperview().offset(-16)
-            make.height.equalTo(44)
-            make.bottom.equalToSuperview().offset(-30)
+        txFeeView.layer.shadowColor = UIColor(rgb: 0x9ca7c2).cgColor
+        txFeeView.layer.shadowRadius = 4.0
+        txFeeView.layer.shadowOffset = CGSize(width: 2, height: 2)
+        txFeeView.layer.shadowOpacity = 0.2
+
+        containerView.snp.makeConstraints { make in
+            make.bottom.equalTo(txFeeView.snp.bottom).offset(20)
+        }
+
+        view.addSubview(promptView)
+        promptView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalTo(sendBtn.snp.top).offset(-20)
         }
 
         walletAddressView.addAction(icon: UIImage(named: "textField_icon_addressBook"), action: {
-
             let addressBookVC = AddressBookViewController()
             addressBookVC.isHideAddButton = true
             addressBookVC.selectionCompletion = { [weak self](_ addressInfo: AddressInfo?) -> Void in
@@ -416,33 +479,15 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
                     weakSelf.walletAddressView.cleanErrorState()
                     _ = weakSelf.checkConfirmButtonAvailable()
                 }
-
             }
             AssetViewControllerV060.pushViewController(viewController: addressBookVC)
-
-        })
-        walletAddressView.addAction(icon: UIImage(named: "textField_icon_scan"), action: {
-            let scanner = QRScannerViewController()
-            scanner.hidesBottomBarWhenPushed = true
-            scanner.scanCompletion = { [weak self] result in
-                let qrcodeType = QRCodeDecoder().decode(result)
-                switch qrcodeType {
-                case .address(let data):
-                    self?.walletAddressView.textField.text = data
-                    self?.walletAddressView.cleanErrorState()
-                    _ = self?.checkConfirmButtonAvailable()
-                default:
-                    AssetViewControllerV060.getInstance()?.showMessage(text: Localized("QRScan_failed_tips"))
-                }
-            }
-            AssetViewControllerV060.pushViewController(viewController: scanner)
 
         })
 
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(onTap(gesture:)))
         self.view.addGestureRecognizer(tapGesture)
 
-        self.feeView.levelView.curLevel = gasPriceLevel ?? TransactionService.service.sliderDefaultValue
+        self.feeView.levelView.curLevel = gasPriceLevel ?? TransactionService.service.getSliderDefaultValue(min: TransactionService.service.minGasPrice, value: gas?.gasPriceBInt ?? TransactionService.service.defaultGasPrice)
         self.feeView.levelView.levelChanged = { [weak self] level in
             self?.gasPriceLevel = level
             self?.DidNodeGasPriceUpdate()
@@ -450,7 +495,6 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
             _ = self?.checkConfirmButtonAvailable()
         }
         self.DidNodeGasPriceUpdate()
-        self.checkQuickAddAddress()
 
         walletAddressView.textFieldShouldReturnCompletion = {[weak self] textField in
             self?.amountView.textField.becomeFirstResponder()
@@ -464,57 +508,28 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
             self?.gasLimitView.textField.resignFirstResponder()
             return true
         }
-        gasLimitView.isOnlyShowFeeTip = true
+//        gasLimitView.isOnlyShowFeeTip = false
+
+        gasLimitView.isHidden = true
+        gasLimitNoteView.isHidden = true
+        feeView.isHidden = true
     }
 
-    // MARK: - User Interaction
-    private func saveToAddressBook(addressText: String?, name: String?) {
-        quickSaveAddrBtn.quickSave(address: addressText, name: name)
-        quickSaveAddrBtn.checkAndUpdateStatus(address: addressText, name: name)
-    }
-
-    @objc func onQuickAddAddress() {
-        guard let addressText = walletAddressView.textField.text, addressText.is40ByteAddress() else {
-            return
-        }
-        if self.quickSaveAddrBtn.status == QuickSaveStatus.QuickSaveDisable {
-            return
-        }
-
-        // 改地址已存在客户端，则直接写入
-        if let wallet = AssetVCSharedData.sharedData.walletList.filter({ ($0 as! Wallet).address.ishexStringEqual(other: addressText)
-        }).first {
-            saveToAddressBook(addressText: addressText, name: (wallet as! Wallet).name)
-            return
-        }
-
-        let alertVC = AlertStylePopViewController.initFromNib()
-        let style = PAlertStyle.commonInputWithItemDes(itemDes: Localized("addressbook_wallet_address_with_Colon"),
-                                           itemContent: addressText.addressForDisplay(),
-                                           inputDes: Localized("addressbook_wallet_name_with_Colon"),
-                                           placeHoder: "",
-                                           preInputText: "")
-        alertVC.textFieldInput.checkInput(mode: CheckMode.textChange, check: { (input) -> (Bool, String) in
-            let ret = CommonService.isValidWalletName(input)
-            return (ret.0, ret.1 ?? "")
-        }) { _ in
-
-        }
-        alertVC.onAction(confirm: {[weak self] (text, _) -> (Bool) in
-
-            let ret = CommonService.isValidWalletName(text)
-            if !ret.0 {
-                alertVC.showInputErrorTip(string: ret.1)
-                return false
-            } else {
-                self?.saveToAddressBook(addressText: addressText, name: text)
-                return true
+    @objc func onNavRightBtnClick() {
+        let scanner = QRScannerViewController()
+        scanner.hidesBottomBarWhenPushed = true
+        scanner.scanCompletion = { [weak self] result in
+            let qrcodeType = QRCodeDecoder().decode(result)
+            switch qrcodeType {
+            case .address(let data):
+                self?.walletAddressView.textField.text = data
+                self?.walletAddressView.cleanErrorState()
+                _ = self?.checkConfirmButtonAvailable()
+            default:
+                AssetViewControllerV060.getInstance()?.showMessage(text: Localized("QRScan_failed_tips"))
             }
-        }) { (_, _) -> (Bool) in
-            return true
         }
-        alertVC.style = style
-        alertVC.showInViewController(viewController: self)
+        AssetViewControllerV060.pushViewController(viewController: scanner)
     }
 
     @objc func onSendButton(_ sender: UIButton) {
@@ -572,8 +587,8 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
         guard let wallet = AssetVCSharedData.sharedData.selectedWallet as? Wallet else { return }
 
         let controller = PopUpViewController()
-        let confirmView = UIView.viewFromXib(theClass: TransferConfirmView.self) as! TransferConfirmView
-        confirmView.hideExecutor()
+        let confirmView = TransferConfirmsView()
+        confirmView.titleLabel.text = Localized("Send_transaction_alert_title")
         let unionAttr = NSAttributedString(string: " LAT", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16)])
         let amountAttr = NSMutableAttributedString(string: amountView.textField.text!.displayForMicrometerLevel(maxRound: 8))
         amountAttr.append(unionAttr)
@@ -582,6 +597,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
         confirmView.walletName.text = wallet.address.addressDisplayInLocal() ?? "--"
         let feeString = self.totalFee().divide(by: ETHToWeiMultiplier, round: 8)
         confirmView.feeLabel.text = feeString.ATPSuffix()
+        confirmView.transactionTypeLabel.text = Localized("transferVC_confirm_ATP_send")
         if wallet.type == .observed {
             confirmView.submitBtn.localizedNormalTitle =  "confirm_button_next"
         }
@@ -589,7 +605,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
         controller.onCompletion = { [weak self] in
             self?.doInitTransferData()
         }
-        controller.setUpConfirmView(view: confirmView, width: PopUpContentWidth)
+        controller.setUpConfirmView(view: confirmView)
         controller.show(inViewController: self)
     }
 
@@ -626,7 +642,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
         controller.onCompletion = {
             AssetViewControllerV060.getInstance()?.showQrcodeScan()
         }
-        controller.setUpConfirmView(view: offlineConfirmView, width: PopUpContentWidth)
+        controller.setUpConfirmView(view: offlineConfirmView)
         controller.show(inViewController: self)
     }
 
@@ -641,7 +657,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
                 let inputGasPrice = gasPrice
                 else { return }
             let gasPrice = inputGasPrice.description
-            let gasLimit = estimatedGas.description
+            let gasLimit = useGasLimit.description
             let amount = (BigUInt.mutiply(a: amountLATString, by: ETHToWeiMultiplier) ?? BigUInt.zero).description
 
             web3.platon.platonGetNonce(sender: wallet.address) { [weak self] (result, blockNonce) in
@@ -705,8 +721,6 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
     // MARK: - Check method
 
     func checkConfirmButtonAvailable() -> Bool {
-        checkQuickAddAddress()
-
         if amountView.textField.text?.count == 0 {
             sendBtn.style = .disable
             return false
@@ -736,10 +750,6 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
         }
     }
 
-    func checkQuickAddAddress() {
-       self.quickSaveAddrBtn.checkAndUpdateStatus(address: walletAddressView.textField.text, name: "nametoinput")
-    }
-
     func textFieldViewUpdateHeight(view: PTextFieldView) {
         view.snp.updateConstraints { (make) in
             make.height.equalTo(view.internalHeight)
@@ -763,19 +773,32 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
     }
 
     func didTransferSuccess() {
+        assetController?.fetchLatestData()
         resetTextFieldAndButton()
-        AssetViewControllerV060.setPageViewController(index: 0)
-        AssetViewControllerV060.reloadTransactionList()
     }
 
     func resetTextFieldAndButton() {
         walletAddressView.textField.text = ""
         amountView.textField.text = ""
         remarkView.textField.text = ""
-        gasLimitView.textField.text = PlatonConfig.FuncGas.defaultGas.description
-        hideGasLimitView()
+        gasLimitView.textField.text = gas?.gasLimitBInt.description ?? PlatonConfig.FuncGas.defaultGas.description
 
         _ = checkConfirmButtonAvailable()
+    }
+
+    func fetchGasData() {
+        guard let address = AssetVCSharedData.sharedData.currentWalletAddress else { return }
+        showLoadingHUD()
+        TransactionService.service.getContractGas(from: address, txType: TxType.transfer) { [weak self] (result, remoteGas) in
+            self?.hideLoadingHUD()
+            switch result {
+            case .success:
+                self?.gas = remoteGas
+                self?.DidNodeGasPriceUpdate()
+            case .failure(let error):
+                self?.showErrorMessage(text: error?.message ?? "get gas api error", delay: 2.0)
+            }
+        }
     }
 
 }
@@ -790,11 +813,28 @@ extension AssetSendViewControllerV060 {
         DispatchQueue.global().async {
             let feeString = self.totalFee().divide(by: ETHToWeiMultiplier, round: 8)
             DispatchQueue.main.async {
-                self.feeView.fee.text = feeString.ATPSuffix()
-                if self.gasPriceLevel == nil {
-                    self.feeView.levelView.setSliderValue(value: TransactionService.service.sliderDefaultValue)
+                self.txFeeLabel.text = feeString
+                let value = self.gasPriceLevel ?? TransactionService.service.getSliderDefaultValue(min: TransactionService.service.minGasPrice, value: self.gas?.gasPriceBInt ?? TransactionService.service.defaultGasPrice)
+                self.feeView.levelView.setSliderValue(value: value)
+                if self.gasLimitView.textField.text == nil {
+                    self.gasLimitView.textField.text = self.gas?.gasLimitBInt.description ?? PlatonConfig.FuncGas.defaultGas.description
                 }
             }
+        }
+    }
+
+    @objc func keyboardWillChangeFrame(_ notify:Notification) {
+
+        guard
+            let responderView = scrollView.firstResponder,
+            let rect = responderView.superview?.convert(responderView.frame, to: view)
+            else { return }
+
+        let endFrame = notify.userInfo!["UIKeyboardFrameEndUserInfoKey"] as! CGRect
+        if rect.maxY > endFrame.origin.y {
+            view.transform = CGAffineTransform(translationX: 0, y: -(rect.maxY - endFrame.origin.y + rect.height))
+        } else {
+            view.transform = .identity
         }
     }
 
@@ -832,7 +872,7 @@ extension AssetSendViewControllerV060 {
         guard (AssetVCSharedData.sharedData.selectedWallet as? Wallet) != nil else {
             return BigUInt("0")!
         }
-        return (self.gasPrice?.multiplied(by: self.estimatedGas))!
+        return (self.gasPrice?.multiplied(by: self.useGasLimit))!
     }
 
     func onSendAll() {
@@ -881,7 +921,9 @@ extension AssetSendViewControllerV060 {
             return
         }
 
-        _ = TransactionService.service.sendAPTTransfer(from: from!, to: to, amount: amount, InputGasPrice: self.gasPrice!, estimatedGas: String(self.estimatedGas), remark: remark, pri: pri, completion: {[weak self] (result, _) in
+        guard let nonce = gas?.nonceBInt else { return }
+
+        _ = TransactionService.service.sendAPTTransfer(from: from!, to: to, amount: amount, InputGasPrice: self.gasPrice!, estimatedGas: String(self.useGasLimit), remark: remark, nonce: nonce, pri: pri, completion: {[weak self] (result, _) in
             AssetViewControllerV060.getInstance()?.hideLoadingHUD(delay: 0.2)
             switch result {
             case .success:
@@ -896,7 +938,7 @@ extension AssetSendViewControllerV060 {
 }
 
 extension AssetSendViewControllerV060 : UIScrollViewDelegate {
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        delegate?.childScrollViewDidScroll(childScrollView: scrollView)
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        view.endEditing(true)
     }
 }

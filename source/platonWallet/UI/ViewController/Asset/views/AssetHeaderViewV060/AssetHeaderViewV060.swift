@@ -100,14 +100,11 @@ extension AssetHeaderViewV060: UICollectionViewDelegate, UICollectionViewDataSou
         let obj = dataSource[indexPath.row]
         if let cwallet = obj as? Wallet {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "WalletCollectionViewCell", for: indexPath) as! WalletCollectionViewCell
-            cell.wallet = cwallet
+//            cell.wallet = cwallet
             return cell
         }
 
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CreateImportCollectionViewCell", for: indexPath) as! CreateImportCollectionViewCell
-        if let index = obj as? Int {
-            cell.index = index
-        }
 
         return cell
 

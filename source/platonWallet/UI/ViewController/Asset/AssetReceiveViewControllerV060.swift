@@ -11,28 +11,110 @@ import Localize_Swift
 
 class AssetReceiveViewControllerV060: BaseViewController {
 
-    let qrCodeView = UIView.viewFromXib(theClass: QRCodeView.self) as! QRCodeView
-
     let sharedQRView = UIView.viewFromXib(theClass: SharedQRView.self) as! SharedQRView
 
     var walletInstance: AnyObject?
 
+    lazy var saveImgAndShreadBtn: PButton = {
+        let button = PButton()
+        button.localizedNormalTitle = "QRViewSaveAndShared"
+        return button
+    }()
+
+    lazy var qrCodeIV: UIImageView = {
+        let imageView = UIImageView()
+        return imageView
+    }()
+
+    lazy var addressLabel: UILabel = {
+        let label = UILabel()
+        label.textColor = .black
+        label.font = .systemFont(ofSize: 14)
+        label.numberOfLines = 0
+        label.textAlignment = .center
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(onTap))
+        tap.numberOfTapsRequired = 1
+        label.isUserInteractionEnabled = true
+        label.addGestureRecognizer(tap)
+        return label
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        view.addSubview(qrCodeView)
-        qrCodeView.snp.makeConstraints { (make) in
-            make.leading.trailing.top.bottom.equalTo(view)
-        }
-        let qrImage = UIImage.geneQRCodeImageFor(AssetVCSharedData.sharedData.selectedWalletAddress!, size: 300.0)
-//        let qrImage = setupQRCodeImage(AssetVCSharedData.sharedData.selectedWalletAddress!, image: nil)
-        qrCodeView.qrCodeImageView.image = qrImage
-        qrCodeView.saveImgAndShreadBtn.addTarget(self, action: #selector(onSaveImgAndShared), for: .touchUpInside)
-        qrCodeView.addressLabel.text = AssetVCSharedData.sharedData.selectedWalletAddress
+        initialUI()
+    }
 
-        let attachment = NSTextAttachment()
-        attachment.bounds = CGRect(x: 0, y: -1, width: 10, height: 10)
-        attachment.image = UIImage(named: "3.icon_warning")
+    func initialUI() {
+        leftNavigationTitle = "ReceiveVC_nav_title"
+        
+        saveImgAndShreadBtn.style = .blue
+        view.addSubview(saveImgAndShreadBtn)
+        saveImgAndShreadBtn.snp.makeConstraints { make in
+            make.bottom.equalTo(bottomLayoutGuide.snp.top).offset(-20)
+            make.height.equalTo(44)
+            make.leading.equalToSuperview().offset(16)
+            make.trailing.equalToSuperview().offset(-16)
+        }
+
+        let fixedTopView = UIView()
+        fixedTopView.backgroundColor = UIColor(rgb: 0xFFE6D1)
+        view.addSubview(fixedTopView)
+        fixedTopView.snp.makeConstraints { make in
+            make.top.leading.trailing.equalToSuperview()
+        }
+
+        let tipsIcon = UIImageView()
+        tipsIcon.image = UIImage(named: "3.icon_warning")
+        fixedTopView.addSubview(tipsIcon)
+        tipsIcon.snp.makeConstraints { make in
+            make.height.width.equalTo(14)
+            make.leading.equalToSuperview().offset(16)
+            make.top.equalToSuperview().offset(16)
+        }
+
+        let tipsLabel = UILabel()
+        tipsLabel.textColor = UIColor(rgb: 0xFF6B00)
+        tipsLabel.font = .systemFont(ofSize: 14)
+        tipsLabel.numberOfLines = 0
+        fixedTopView.addSubview(tipsLabel)
+        tipsLabel.snp.makeConstraints { make in
+            make.leading.equalTo(tipsIcon.snp.trailing).offset(10)
+            make.top.equalToSuperview().offset(5)
+            make.trailing.equalToSuperview().offset(-16)
+            make.bottom.equalToSuperview().offset(-8)
+        }
+
+        view.addSubview(qrCodeIV)
+        qrCodeIV.snp.makeConstraints { make in
+            make.width.height.equalTo(220)
+            make.centerX.equalToSuperview()
+            make.top.equalTo(fixedTopView.snp.bottom).offset(60)
+        }
+
+        view.addSubview(addressLabel)
+        addressLabel.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalTo(qrCodeIV.snp.bottom).offset(14)
+            make.leading.equalToSuperview().offset(35)
+            make.trailing.equalToSuperview().offset(-35)
+        }
+
+        let button = UIButton()
+        button.setImage(UIImage(named: "10.icon_copy"), for: .normal)
+        button.addTarget(self, action: #selector(onTap), for: .touchUpInside)
+        view.addSubview(button)
+        button.snp.makeConstraints { make in
+            make.top.equalTo(addressLabel.snp.bottom).offset(14)
+            make.centerX.equalToSuperview()
+        }
+
+        let qrImage = UIImage.geneQRCodeImageFor(AssetVCSharedData.sharedData.selectedWalletAddress!, size: 300.0)
+        qrCodeIV.image = qrImage
+
+        saveImgAndShreadBtn.addTarget(self, action: #selector(onSaveImgAndShared), for: .touchUpInside)
+        addressLabel.text = AssetVCSharedData.sharedData.selectedWalletAddress
 
         let attribute_1 = NSAttributedString(string: "wallet_receive_qrcode_warning_1")
         let attribute_2 = NSAttributedString(string: "wallet_receive_qrcode_warning_2")
@@ -41,19 +123,7 @@ class AssetReceiveViewControllerV060: BaseViewController {
         attr.append(attribute_1)
         attr.append(NSAttributedString(string: SettingService.shareInstance.currentNetworkName))
         attr.append(attribute_2)
-        qrCodeView.tipsLabel.localizedAttributedTexts = [attribute_1, NSAttributedString(string: SettingService.shareInstance.currentNetworkDesc), attribute_2]
-
-        AssetVCSharedData.sharedData.registerHandler(object: self) {[weak self] in
-            let qrImage = UIImage.geneQRCodeImageFor(AssetVCSharedData.sharedData.selectedWalletAddress!, size: 300.0)
-//            let qrImage = self?.setupQRCodeImage(AssetVCSharedData.sharedData.selectedWalletAddress!, image: nil)
-            self?.qrCodeView.qrCodeImageView.image = qrImage
-            self?.qrCodeView.addressLabel.text = AssetVCSharedData.sharedData.selectedWalletAddress
-        }
-
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidLoad()
+        tipsLabel.localizedAttributedTexts = [attribute_1, NSAttributedString(string: SettingService.shareInstance.currentNetworkDesc), attribute_2]
     }
 
     func displayAlert() {
@@ -157,8 +227,16 @@ class AssetReceiveViewControllerV060: BaseViewController {
         let view = SharedView(frame: .zero)
         view.shareObject = image
         popUpVC.setUpContentView(view: view, size: CGSize(width: PopUpContentWidth, height: SharedView.getSharedViewHeight()))
-        popUpVC.setCloseEvent(button: view.closeBtn)
+        popUpVC.setCloseEvent(button: view.closeButton)
         popUpVC.show(inViewController: self)
+    }
+
+    @objc func onTap() {
+        if (addressLabel.text?.length)! > 0 {
+            let pasteboard = UIPasteboard.general
+            pasteboard.string = addressLabel.text
+            UIApplication.shared.keyWindow?.rootViewController?.showMessage(text: Localized("ExportVC_copy_success"))
+        }
     }
 
 }

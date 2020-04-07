@@ -21,7 +21,7 @@ PODS:
   - OHHTTPStubs/OHPathHelpers (8.0.0)
   - OHHTTPStubs/Swift (8.0.0):
     - OHHTTPStubs/Default
-  - platonWeb3 (0.7.6):
+  - platonWeb3 (0.7.7):
     - BigInt (~> 4.0)
     - CryptoSwift (~> 0.8)
     - Localize-Swift (~> 2.0)
@@ -77,7 +77,7 @@ DEPENDENCIES:
   - MBProgressHUD (~> 1.1.0)
   - MJRefresh
   - OHHTTPStubs/Swift
-  - platonWeb3 (from `../../SDK/client-sdk-ios/`)
+  - platonWeb3 (~> 0.7.7)
   - RealmSwift (~> 4.3.0)
   - RTRootNavigationController (= 0.7.1)
   - ScryptSwift (= 0.0.1)
@@ -112,6 +112,7 @@ SPEC REPOS:
     - MBProgressHUD
     - MJRefresh
     - OHHTTPStubs
+    - platonWeb3
     - Realm
     - RealmSwift
     - RTRootNavigationController
@@ -133,8 +134,6 @@ SPEC REPOS:
     - ZXingObjC
 
 EXTERNAL SOURCES:
-  platonWeb3:
-    :path: "../../SDK/client-sdk-ios/"
   Spring:
     :git: https://github.com/MengTo/Spring.git
 
@@ -154,7 +153,7 @@ SPEC CHECKSUMS:
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
   MJRefresh: 7798e16e53a5ef7f332dd05b27664db4e29530fd
   OHHTTPStubs: 9cbce6364bec557cc3439aa6bb7514670d780881
-  platonWeb3: a9f1f3b3887a2cfe0265b14ef618c836158c5067
+  platonWeb3: 3e3ff3004ee66a26913653ee9a22571f2108d6ba
   Realm: 9357c3589555793e1860a7104a7412bca4a48d99
   RealmSwift: 402f1e379a8ef82c635313037b043f0f06de880c
   RTRootNavigationController: afa6913402be26f8326f7f37fc1550aa67baddcc
@@ -176,6 +175,6 @@ SPEC CHECKSUMS:
   UMCShare: e0cef55c0fd6051254c8cda1d0630eb578b27bad
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: b40618b070226ca0cf9464879732ac8d52d4b05a
+PODFILE CHECKSUM: 9bebdf3a5a33ced7051e186438b2319da97fd321
 
 COCOAPODS: 1.8.4

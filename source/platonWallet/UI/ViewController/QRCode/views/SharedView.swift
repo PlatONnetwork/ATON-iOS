@@ -28,7 +28,11 @@ struct UrlsSchemes {
 
 class SharedView: UIView ,UICollectionViewDelegate,UICollectionViewDataSource {
 
-    let closeBtn = UIButton(type: .custom)
+    lazy var closeButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(named: "1.icon_shut down"), for: .normal)
+        return button
+    }()
 
     var collectionView : UICollectionView?
     let Identifier       = "SharedCollectionViewCell"
@@ -139,15 +143,14 @@ class SharedView: UIView ,UICollectionViewDelegate,UICollectionViewDataSource {
         }
 
         //closeBtn.setImage(UIImage.init(named: "closeBtn"), for: .normal)
-        self.addSubview(closeBtn)
-        closeBtn.snp.makeConstraints { (make) in
-            make.bottom.equalToSuperview()
-            make.trailing.leading.equalToSuperview()
-            make.height.equalTo(51)
+//        closeButton.addTarget(self, action: #selector(closeAction), for: .touchUpInside)
+        addSubview(closeButton)
+        closeButton.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().offset(-20)
+            make.centerY.equalTo(label)
+            make.height.width.equalTo(32)
         }
-        closeBtn.localizedNormalTitle = "alert_cancelBtn_title"
-        closeBtn.setTitleColor(UIColor(rgb: 0x105CFE ), for: .normal)
-        closeBtn.addTopSepline(offset: 16)
+
         return header
     }
 

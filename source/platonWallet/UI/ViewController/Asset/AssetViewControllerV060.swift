@@ -11,46 +11,47 @@ import Localize_Swift
 import RTRootNavigationController
 import MJRefresh
 import platonWeb3
+import SnapKit
+import EmptyDataSet_Swift
 
 let AssetHeaderViewH = 168 - 44 + 20
 let AssetSectionViewH: CGFloat = 124
 
-class AssetViewControllerV060: BaseViewController, PopupMenuTableDelegate {
+class AssetViewControllerV060: UIViewController, PopupMenuTableDelegate {
 
-    let transactionVC = AssetTransactionViewControllerV060()
-    let sendVC =  AssetSendViewControllerV060()
-    let recvVC = AssetReceiveViewControllerV060()
+    lazy var tableView: UITableView = {
+        let tableView = UITableView(frame: .zero, style: .plain)
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.separatorStyle = .none
+        tableView.showsVerticalScrollIndicator = false
+        tableView.backgroundColor = normal_background_color
+        tableView.register(AssetTransactionCell.self, forCellReuseIdentifier: AssetTransactionCell.cellIdentifier())
+        if #available(iOS 11, *) {
+            tableView.estimatedRowHeight = UITableView.automaticDimension
+        } else {
+            tableView.estimatedRowHeight = 69
+        }
+        tableView.emptyDataSetSource = self
+        return tableView
+    }()
 
-    lazy var scrollView = { () -> UIScrollView in
-        let view = UIScrollView(frame: .zero)
-        view.delegate = self
-        view.backgroundColor = .white
-        view.showsVerticalScrollIndicator = false
+    var viewModel: AssetViewModel {
+        return controller.viewModel
+    }
+
+    let controller: AssetController = {
+        return AssetController()
+    }()
+
+    lazy var assetWalletsView: AssetWalletsHeaderView = {
+        let view = AssetWalletsHeaderView(controller: controller.headerController)
         return view
     }()
 
-    lazy var headerView = { () -> AssetHeaderViewV060 in
-        let headerView = UIView.viewFromXib(theClass: AssetHeaderViewV060.self) as! AssetHeaderViewV060
-        headerView.menuButton.addTarget(self, action: #selector(onMenu), for: .touchUpInside)
-        headerView.scanButton.addTarget(self, action: #selector(onScan), for: .touchUpInside)
-        return headerView
-    }()
-
-    lazy var sectionView = { () -> AssetSectionViewV060 in
-        let view = UIView.viewFromXib(theClass: AssetSectionViewV060.self) as! AssetSectionViewV060
-        view.backUpbtn.addTarget(self, action: #selector(onBackup), for: .touchUpInside)
+    lazy var sectionView: AssetWalletsSectionView = {
+        let view = AssetWalletsSectionView(controller: controller.sectionController)
         return view
-    }()
-
-    lazy var pageVC = { () -> AssetPageViewController in
-        let vc = AssetPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
-        vc.delegate = self
-        vc.dataSource = self
-        return vc
-    }()
-
-    lazy var viewControllers: [BaseViewController] = {
-        return [transactionVC, sendVC, recvVC]
     }()
 
     lazy var refreshHeader = { () -> MJRefreshNormalHeader in
@@ -58,23 +59,23 @@ class AssetViewControllerV060: BaseViewController, PopupMenuTableDelegate {
         return header
     }()
 
-    var tmpChildVCIndex: Int = 0
-    var pageViewCurrentIndex: Int = 0
+    lazy var refreshFooterView: MJExtensionLoadMoreFooterView = {
+        let view = MJExtensionLoadMoreFooterView(refreshingTarget: self, refreshingAction: nil)!
+        return view
+    }()
 
-    var scrollViewScrollEnableInChildVCs = [true, true, true]
+    let tableHeaderView = UIView()
+    let headerForFixTop = UIView()
 
-    var scrollEnable: Bool {
-        get {
-            return scrollViewScrollEnableInChildVCs[tmpChildVCIndex]
-        }set {
-            scrollViewScrollEnableInChildVCs[tmpChildVCIndex] = newValue
-        }
+    var localDataSource = [String: [Transaction]]()
+
+    var walletAddress: String? {
+        return (AssetVCSharedData.sharedData.selectedWallet as? Wallet)?.address
     }
+    var isShowNavigationBar: Bool = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        transactionVC.parentController = self
         TransactionService.service.startTimerFire()
 
         // 先获取一次gasprice
@@ -82,240 +83,197 @@ class AssetViewControllerV060: BaseViewController, PopupMenuTableDelegate {
 
         initData()
         initUI()
+        initBinding()
         shouldUpdateWalletStatus()
 
-        scrollView.mj_header = refreshHeader
         refreshHeader.beginRefreshing()
-
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.setNavigationBarHidden(true, animated: false)
-        headerView.shouldUpdateWalletList()
-        sendVC.refreshData()
-        transactionVC.refreshData()
+        navigationController?.setNavigationBarHidden(!isShowNavigationBar, animated: false)
+//        headerView.shouldUpdateWalletList()
+    }
+
+    func initBinding() {
+        controller.headerController.viewModel.menuBtnPressed = { [weak self] in
+            self?.onMenu()
+        }
+
+        controller.headerController.viewModel.scanBtnPressed = { [weak self] in
+            self?.onScan()
+        }
+
+        controller.headerController.onCreatePressed = { [weak self] in
+            self?.createIndividualWallet()
+        }
+
+        controller.headerController.onImportPressed = { [weak self] in
+            self?.importIndividualWallet()
+        }
+
+        controller.sectionController.onReceivePressed = { [weak self] in
+            self?.onReceivePressed()
+        }
+
+        controller.sectionController.onSendPressed = { [weak self] in
+            self?.onSendPressed()
+        }
+
+        controller.sectionController.onSignaturePressed = { [weak self] in
+            self?.onScan()
+        }
+
+        controller.sectionController.onManagerPressed = { [weak self] in
+            self?.onWalletManagerPressed()
+        }
+
+        viewModel.transactionsData.addObserver { [weak self] _ in
+            self?.tableView.reloadData()
+        }
+
+        viewModel.isFetching.addObserver { [weak self] (isFetching) in
+            if !isFetching {
+                self?.tableView.mj_header.endRefreshing()
+            }
+        }
+
+        viewModel.isShowFooterMore.addObserver { [weak self] (isShowMore) in
+            self?.tableView.mj_footer.isHidden = !isShowMore
+        }
+
+        viewModel.isHideSectionView.addObserver { [weak self] (isHide) in
+            self?.sectionView.isHidden = isHide
+            self?.tableView.reloadEmptyDataSet()
+        }
+    }
+
+    func onWalletManagerPressed() {
+        guard let wallet = AssetVCSharedData.sharedData.selectedWallet as? Wallet else { return }
+        let detailVC = WalletManagerDetailViewController()
+        detailVC.wallet = wallet
+        detailVC.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(detailVC, animated: true)
     }
 
     func initUI() {
+        view.backgroundColor = normal_background_color
 
-        self.statusBarNeedTruncate = true
-        view.backgroundColor = .white
-        view.addSubview(UIView(frame: .zero))
-        view.addSubview(scrollView)
-        scrollView.canCancelContentTouches = true
-        scrollView.delaysContentTouches = true
-        scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 300, right: 0)
+        let barImage = UIImage(named: "asset_bj3")?.resizableImage(withCapInsets: UIEdgeInsets(top: 5, left: 5, bottom: 120, right: 300))
+            navigationController?.navigationBar.setBackgroundImage(barImage, for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+
+        let contentView = UIView()
+        navigationController?.navigationBar.addSubview(contentView)
+        contentView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+
+        let walletNameLabel = UILabel()
+        walletNameLabel.setContentHuggingPriority(.required, for: .vertical)
+        walletNameLabel.setContentCompressionResistancePriority(.required, for: .vertical)
+        walletNameLabel.localizedText = "asset_header_title"
+        walletNameLabel.font = UIFont.systemFont(ofSize: 18, weight: .medium)
+        walletNameLabel.textColor = .black
+        contentView.addSubview(walletNameLabel)
+        walletNameLabel.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(16)
+            make.top.equalToSuperview().offset(0)
+        }
+
+        let menuButton = UIButton()
+        menuButton.addTarget(self, action: #selector(onMenu), for: .touchUpInside)
+        menuButton.setImage(UIImage(named: "1.icon_add"), for: .normal)
+        contentView.addSubview(menuButton)
+        menuButton.snp.makeConstraints { make in
+            make.centerY.equalTo(walletNameLabel.snp.centerY)
+            make.trailing.equalToSuperview().offset(-16)
+            make.height.width.equalTo(30)
+        }
+
+        let scanButton = UIButton()
+        scanButton.addTarget(self, action: #selector(onScan), for: .touchUpInside)
+        scanButton.setImage(UIImage(named: "1.icon_scanning"), for: .normal)
+        contentView.addSubview(scanButton)
+        scanButton.snp.makeConstraints { make in
+            make.centerY.equalTo(walletNameLabel.snp.centerY)
+            make.height.width.equalTo(30)
+            make.trailing.equalTo(menuButton.snp.leading).offset(-10)
+            make.leading.greaterThanOrEqualTo(walletNameLabel.snp.trailing).offset(5)
+        }
 
         if #available(iOS 11.0, *) {
-            scrollView.contentInsetAdjustmentBehavior = .always
+            tableView.contentInsetAdjustmentBehavior = .never
         } else {
+            // Fallback on earlier versions
             automaticallyAdjustsScrollViewInsets = false
         }
 
-        let usingsafeAutoLaoutGuide = true
-        scrollView.snp.makeConstraints { (make) in
-            make.leading.trailing.equalToSuperview()
-            if usingsafeAutoLaoutGuide {
-                if #available(iOS 11.0, *) {
-                    make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-                    make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
-                } else {
-                    make.bottom.equalTo(bottomLayoutGuide.snp.top)
-//                    make.bottom.equalToSuperview()
-                    make.top.equalTo(topLayoutGuide.snp.bottom)
-                }
-            } else {
-                make.edges.equalToSuperview()
-            }
+        refreshFooterView.loadMoreTapHandle = { [weak self] in
+            self?.goTransactionList()
+        }
+        tableView.mj_footer = refreshFooterView
+        tableView.mj_header = refreshHeader
+
+        view.addSubview(tableView)
+        tableView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
 
-        scrollView.addSubview(headerView)
-        headerView.snp.makeConstraints { (make) in
-            make.leading.trailing.top.equalToSuperview()
-            make.height.equalTo(AssetHeaderViewH)
+        tableHeaderView.backgroundColor = .clear
+        tableView.tableHeaderView = tableHeaderView
+
+        tableHeaderView.addSubview(assetWalletsView)
+        assetWalletsView.snp.makeConstraints { (make) in
+            make.top.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
             make.width.equalTo(view)
         }
 
-        scrollView.addSubview(sectionView)
+        tableHeaderView.addSubview(sectionView)
         sectionView.snp.makeConstraints { (make) in
             make.leading.trailing.equalToSuperview()
-            make.top.equalTo(headerView.snp.bottom)
-            make.height.equalTo(AssetSectionViewH)
+            make.top.equalTo(assetWalletsView.snp.bottom)
             make.width.equalTo(view)
-        }
-        sectionView.restrictedIconTapHandler = { [weak self] in
-            self?.showRestrctedInfoDoubt()
+            make.bottom.equalToSuperview()
         }
 
-        pageVC.setViewControllers([viewControllers[tmpChildVCIndex]], direction: .forward, animated: false, completion: nil)
-        addChild(pageVC)
-        scrollView.addSubview(pageVC.view)
-        let tabbarHeight = (navigationController?.tabBarController?.tabBar.frame.size.height ?? 0)
-        pageVC.view.snp.makeConstraints { make in
-            make.top.equalTo(sectionView.snp.bottom).offset(0)
-            make.leading.trailing.bottom.equalToSuperview()
-            make.width.equalTo(view)
-            make.height.equalTo(kUIScreenHeight - 70 - tabbarHeight - CGFloat(AssetSectionViewH))
-        }
-        //        self.updatePageViewConstraint(headerHide: false)
-
-        pageVC.didScrolling = { offset in
-            //self?.sectionView.changingOffset(offset: offset, currentIndex: (self?.pageViewCurrentIndex)!,draging: (self?.pageVC.pagesScrollview?.isDragging)!)
-
+        if let tHeaderView = tableView.tableHeaderView {
+            tHeaderView.setNeedsLayout()
+            tHeaderView.layoutIfNeeded()
+            tHeaderView.frame.size = tHeaderView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
+            tableView.tableHeaderView = tHeaderView
         }
 
-        sendVC.delegate = self
-        transactionVC.delegate = self
-        sectionView.onSelectItem = { [weak self] (index) -> Bool in
-            if index == 1 && NetworkManager.shared.reachabilityManager?.isReachable == false {
-                self?.onScan()
-                return false
-            }
-            let target = self?.viewControllers[index]
-
-            if (self?.pageViewCurrentIndex)! < index {
-                //self?.pageVC.goToNextPage()
-                self?.pageVC.setViewControllers([target!], direction: .forward, animated: true, completion: nil)
-            } else if (self?.pageViewCurrentIndex)! > index {
-                //self?.pageVC.goToPreviousPage()
-                self?.pageVC.setViewControllers([target!], direction: .reverse, animated: true, completion: nil)
-            }
-            self?.pageViewCurrentIndex = index
-            return true
-
+        tableView.emptyDataSetView { [weak self] view in
+            guard let self = self else { return }
+            let holderView = self.factoryEmptyHolderView()
+            view.customView(holderView)
         }
 
-        sectionView.onWalletAvatarTapAction = { [weak self] in
-            guard let self = self, let wallet = AssetVCSharedData.sharedData.selectedWallet as? Wallet else { return }
-            let detailVC = WalletManagerDetailViewController()
-            detailVC.wallet = wallet
-            detailVC.hidesBottomBarWhenPushed = true
-            self.navigationController?.pushViewController(detailVC, animated: true)
-        }
-        sectionView.onLockedBalanceTapAction = { [weak self] in
-            self?.showMessage(text: Localized("wallet_balance_restricted_doubt"), delay: 2.0)
-        }
 
-        assetHeaderStyle = (false, false)
-
-        NotificationCenter.default.addObserver(self, selector: #selector(OnBeginEditing(_:)), name: UITextField.textDidBeginEditingNotification, object: nil)
+//        sectionView.onLockedBalanceTapAction = { [weak self] in
+//            self?.showMessage(text: Localized("wallet_balance_restricted_doubt"), delay: 2.0)
+//        }
         NotificationCenter.default.addObserver(self, selector: #selector(updateWalletList), name: Notification.Name.ATON.updateWalletList, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(shouldUpdateWalletStatus), name: Notification.Name.ATON.DidNetworkStatusChange, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame(_:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
-    }
-
-    // MARK: - Constraint
-
-    //    func updatePageViewConstraint(headerHide: Bool){
-    //        let tabbarHeight = (navigationController?.tabBarController?.tabBar.frame.size.height ?? 0)
-    //        if headerHide{
-    //            pageVC.view.snp.remakeConstraints { (make) in
-    //                make.leading.trailing.bottom.equalToSuperview()
-    //                make.width.equalTo(view)
-    //                make.top.equalTo(sectionView.snp.bottom).offset(0)
-    //                make.height.equalTo(kUIScreenHeight - 70 - tabbarHeight - CGFloat(AssetSectionViewH))
-    //            }
-    //        }else{
-    //            pageVC.view.snp.remakeConstraints { (make) in
-    //                make.leading.trailing.bottom.equalToSuperview()
-    //                make.width.equalTo(view)
-    //                make.top.equalTo(sectionView.snp.bottom).offset(0)
-    //                make.height.equalTo(kUIScreenHeight - 0 - tabbarHeight - CGFloat(AssetSectionViewH))
-    //            }
-    //        }
-    //    }
-
-    @objc func shouldUpdateWalletStatus() {
-        headerView.updateWalletStatus()
-        sectionView.updateSendTabUIStatus()
-        updatePageControllerDataSource()
-        resetCurrentTab()
-    }
-
-    func resetCurrentTab() {
-        if NetworkManager.shared.reachabilityManager?.isReachable == false && pageViewCurrentIndex == 1 {
-            AssetViewControllerV060.setPageViewController(index: 0)
-        }
-    }
-
-    // 禁用UIPageController 在离线状态下的拖动手势
-    func updatePageControllerDataSource() {
-        if NetworkManager.shared.reachabilityManager?.isReachable == false {
-            pageVC.dataSource = nil
-        } else {
-            pageVC.dataSource = self
-        }
     }
 
     @objc func fetchData() {
-        updateWalletList()
-        //        transactionVC.fetchTransactionLastest()
+        controller.fetchTransactionLastest()
+        refreshData()
+    }
+
+    @objc func shouldUpdateWalletStatus() {
+//        headerView.updateWalletStatus()
+//        sectionView.updateSendTabUIStatus()
     }
 
     func endFetchData() {
         refreshHeader.endRefreshing()
     }
 
-    func checkAndSetNoWalletViewStyle() {
-
-        if AssetVCSharedData.sharedData.walletList.count == 0 {
-            sectionView.snp.updateConstraints { (make) in
-                make.height.equalTo(0)
-            }
-            sectionView.setSectionSelectedIndex(index: 0)
-            sectionView.isHidden = true
-            scrollView.isScrollEnabled = false
-            pageVC.pagesScrollview?.isScrollEnabled = false
-            transactionVC.tableNodataHolderView.imageView.image = UIImage(named: "empty_no_wallet_icon")
-        } else {
-            sectionView.snp.updateConstraints { (make) in
-                make.height.equalTo(AssetSectionViewH)
-            }
-            sectionView.isHidden = false
-            scrollView.isScrollEnabled = true
-            pageVC.pagesScrollview?.isScrollEnabled = true
-            transactionVC.tableNodataHolderView.imageView.image = UIImage(named: "empty_no_data_img")
-        }
-    }
-
     func initData() {
         AssetVCSharedData.sharedData.reloadWallets()
-    }
-
-    //hide animate
-    var assetHeaderStyle: (hide: Bool, animated: Bool)? {
-        didSet {
-            let hide = assetHeaderStyle?.0 ?? false
-
-            if hide {
-                //                scrollView.setContentOffset(CGPoint(x: 0, y: AssetHeaderViewH), animated: animated)
-                sectionView.backgroundColor = .white
-                DispatchQueue.main.async {
-                    self.scrollView.isScrollEnabled = true
-                }
-
-                view.backgroundColor = .white
-                sectionView.backgroundColor = .white
-                sectionView.grayoutBackground.backgroundColor = .white
-                sectionView.bottomSepline.backgroundColor = #colorLiteral(red: 0.9751496911, green: 0.984305203, blue: 1, alpha: 1)
-            } else {
-                sectionView.backgroundColor = UIColor(red: 247, green: 250, blue: 255, alpha: 1)
-
-                //                scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: animated)
-                DispatchQueue.main.async {
-                    self.scrollView.isScrollEnabled = true
-                }
-                view.backgroundColor = .white
-                sectionView.backgroundColor = #colorLiteral(red: 0.9751496911, green: 0.984305203, blue: 1, alpha: 1)
-                sectionView.grayoutBackground.backgroundColor = #colorLiteral(red: 0.9751496911, green: 0.984305203, blue: 1, alpha: 1)
-                sectionView.bottomSepline.backgroundColor = #colorLiteral(red: 0.9215686275, green: 0.9333333333, blue: 0.9568627451, alpha: 1)
-            }
-
-            transactionVC.setHeaderStyle(hide: hide)
-            //            self.updatePageViewConstraint(headerHide: hide)
-
-        }
     }
 
     func showRestrctedInfoDoubt() {
@@ -338,92 +296,21 @@ class AssetViewControllerV060: BaseViewController, PopupMenuTableDelegate {
 
 }
 
-extension AssetViewControllerV060: UIPageViewControllerDelegate, UIPageViewControllerDataSource {
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-
-        var curIndex: Int! = viewControllers.firstIndex { (vc) -> Bool in
-            vc == viewController
-        }
-
-        if curIndex == 0 {
-            return nil
-        }
-        curIndex -= 1
-        tmpChildVCIndex = curIndex
-
-        return viewControllers[curIndex]
-    }
-
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-
-        var curIndex: Int! = viewControllers.firstIndex { (vc) -> Bool in
-            vc == viewController
-        }
-
-        if curIndex == viewControllers.count - 1 {
-            return nil
-        }
-        curIndex += 1
-        tmpChildVCIndex = curIndex
-        return viewControllers[curIndex]
-    }
-
-    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-        if (!completed) {
-            return
-        }
-        for (index, obj) in viewControllers.enumerated() {
-            if pageViewController.viewControllers!.first! == obj {
-                self.pageViewCurrentIndex = index
-            }
-        }
-
-        sectionView.didFinishAnimating(index: self.pageViewCurrentIndex)
-    }
-}
-
 // MARK: - UIScrollViewDelegate
 
-extension AssetViewControllerV060: UIScrollViewDelegate, ChildScrollViewDidScrollDelegate {
-
-    func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        //print("scrollview Didcroll:\(scrollView.contentOffset.y)")
-
-        //let rec = sectionView.convert(sectionView.bounds, to: view)
-        //print("sectionView y:\(rec.origin.y)")
-
-        if (!scrollEnable || scrollView.contentOffset.y >= CGFloat(AssetHeaderViewH)) {
-            //scrollView.setContentOffset(CGPoint(x: 0, y: AssetHeaderViewH - 20), animated: false)
-            DispatchQueue.main.async {
-                scrollView.setContentOffset(CGPoint(x: 0, y: AssetHeaderViewH), animated: false)
-            }
-            if !(self.assetHeaderStyle?.hide)! {
-                self.assetHeaderStyle = (true, false)
-            }
-        }
-    }
-
-    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
-        view.endEditing(true)
-    }
-
-    func childScrollViewDidScroll(childScrollView: UIScrollView) {
-        let yoffset = childScrollView.contentOffset.y
-        if yoffset <= 0 {
-            scrollEnable = true
-            childScrollView.setContentOffset(.zero, animated: false)
-        } else {
-            let rec = sectionView.convert(sectionView.bounds, to: view)
-            if scrollEnable && rec.origin.y > 0 && !(self.assetHeaderStyle?.hide)! {
-                childScrollView.setContentOffset(.zero, animated: false)
-            } else {
-                //                scrollEnable = false
-            }
-        }
-        //        scrollView.contentSize = CGSize(width: scrollView.contentSize.width, height: childScrollView.contentSize.height + CGFloat(AssetHeaderViewH) + CGFloat(AssetSectionViewH))
-    }
-
+extension AssetViewControllerV060 {
     // MARK: - User Interaction
+    func onReceivePressed() {
+        let receiveController = AssetReceiveViewControllerV060()
+        receiveController.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(receiveController, animated: true)
+    }
+
+    func onSendPressed() {
+        let sendController = AssetSendViewControllerV060()
+        sendController.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(sendController, animated: true)
+    }
 
     @objc func onMenu() {
         var menuArray: [MenuItem] = []
@@ -462,8 +349,8 @@ extension AssetViewControllerV060: UIScrollViewDelegate, ChildScrollViewDidScrol
         case .signedTransaction(let data):
             showQrcodeScan(scanData: data)
         case .address(let data):
-            sectionView.setSectionSelectedIndex(index: 1)
-            sendVC.walletAddressView.textField.text = data
+//            sectionView.setSectionSelectedIndex(index: 1)
+            break
         case .keystore(let data):
             let targetVC = MainImportWalletViewController(type: .keystore, text: data)
             targetVC.hidesBottomBarWhenPushed = true
@@ -499,7 +386,7 @@ extension AssetViewControllerV060: UIScrollViewDelegate, ChildScrollViewDidScrol
         let scanView = OfflineSignatureScanView()
         var qrcodeData: QrcodeData<[String]>? = scanData
 
-        if let data = qrcodeData, let signedString = data.qrCodeData  {
+        if let data = qrcodeData, let signedString = data.qrCodeData {
             scanView.textView.text = signedString.joined(separator: ";")
         }
 
@@ -525,7 +412,7 @@ extension AssetViewControllerV060: UIScrollViewDelegate, ChildScrollViewDidScrol
             guard let qrcode = qrcodeData else { return }
             AssetViewControllerV060.sendSignatureTransaction(qrcode: qrcode)
         }
-        controller.setUpConfirmView(view: offlineConfirmView, width: PopUpContentWidth)
+        controller.setUpConfirmView(view: offlineConfirmView)
         controller.show(inViewController: self)
     }
 
@@ -548,7 +435,6 @@ extension AssetViewControllerV060: UIScrollViewDelegate, ChildScrollViewDidScrol
 
     func doShowTransactionDetail(_ transaction: Transaction) {
         // 重置输入框
-        sendVC.resetTextFieldAndButton()
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             let controller = TransactionDetailViewController()
@@ -649,7 +535,7 @@ extension AssetViewControllerV060 {
                     guard
                         let signedTxJsonString = signedTx.jsonString
                         else { break }
-                    TransactionService.service.sendSignedTransactionToServer(data: signedTxJsonString, sign: sign) { (result, response) in
+                    TransactionService.service.sendSignedTransaction(txType: .transfer, data: signedTxJsonString, sign: sign) { (result, response) in
                         switch result {
                         case .success:
                             sendTransactionSuccess(tx: tx, thTx: thTx)
@@ -706,25 +592,6 @@ extension AssetViewControllerV060 {
         nav.popViewController(animated: true)
     }
 
-    static func setScrollViewScrollEnable(enable: Bool) {
-        guard
-            let tabNav = UIApplication.shared.keyWindow?.rootViewController as? BaseNavigationController,
-            let tabvc = tabNav.rt_topViewController as? MainTabBarViewController,
-            let nav = tabvc.viewControllers?.first as? BaseNavigationController else {
-                return
-        }
-
-        guard let navofAssetV60 = nav.viewControllers.first as? RTContainerController else {
-            return
-        }
-
-        guard let vc = navofAssetV60.contentViewController as? AssetViewControllerV060 else {
-            return
-        }
-
-        vc.scrollView.isScrollEnabled = enable
-    }
-
     static func getInstance() -> AssetViewControllerV060? {
         guard
             let tabNav = UIApplication.shared.keyWindow?.rootViewController as? BaseNavigationController,
@@ -741,23 +608,6 @@ extension AssetViewControllerV060 {
             return nil
         }
         return vc
-    }
-
-    static func setPageViewController(index: Int) {
-        guard let vc = self.getInstance() else {
-            return
-        }
-        vc.sectionView.setSectionSelectedIndex(index: index)
-    }
-
-    static func reloadTransactionList() {
-        guard let vc = self.getInstance() else {
-            return
-        }
-        //wait for db writing
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            vc.transactionVC.refreshData()
-        }
     }
 
     static func gotoCreateClassicWallet() {
@@ -784,40 +634,11 @@ extension AssetViewControllerV060 {
 
 extension AssetViewControllerV060 {
 
-    @objc func OnBeginEditing(_ no: Notification) {
-        guard let textFiled = no.object as? UITextField else {
-            return
-        }
-        if textFiled == sendVC.amountView.textField {
-            self.assetHeaderStyle = (true, true)
-        } else if textFiled == sendVC.walletAddressView.textField {
-            self.assetHeaderStyle = (true, true)
-        }
-    }
-
-    ///keyboard notification
-    @objc func keyboardWillChangeFrame(_ notify:Notification) {
-
-        guard
-            let responderView = scrollView.firstResponder,
-            let rect = responderView.superview?.convert(responderView.frame, to: view)
-            else { return }
-
-        let endFrame = notify.userInfo!["UIKeyboardFrameEndUserInfoKey"] as! CGRect
-        if rect.maxY > endFrame.origin.y {
-            view.transform = CGAffineTransform(translationX: 0, y: -(rect.maxY - endFrame.origin.y + rect.height))
-        } else {
-            view.transform = .identity
-        }
-    }
-
     @objc func updateWalletList() {
-        headerView.shouldUpdateWalletList()
+//        headerView.shouldUpdateWalletList()
 
         AssetService.sharedInstace.fetchWalletBalanceForV7(nil)
-        sendVC.refreshData()
-        transactionVC.refreshData()
-        self.checkAndSetNoWalletViewStyle()
+        refreshData()
     }
 
 }
@@ -833,5 +654,100 @@ extension UIView {
         }
 
         return nil
+    }
+}
+
+extension AssetViewControllerV060 {
+
+    func refreshData() {
+//        if AssetVCSharedData.sharedData.walletList.count == 0 {
+//            self.tableNodataHolderView.descriptionLabel.localizedText = "IndividualWallet_EmptyView_tips"
+//        } else {
+//            self.tableNodataHolderView.descriptionLabel.localizedText = "walletDetailVC_no_transactions_text"
+//        }
+    }
+
+    private func goTransactionList() {
+
+        let controller = TransactionListViewController()
+        controller.selectedWallet = AssetVCSharedData.sharedData.selectedWallet as? Wallet
+        controller.hidesBottomBarWhenPushed = true
+        navigationController?.pushViewController(controller, animated: true)
+    }
+}
+
+// 下拉刷新及加载更多
+extension AssetViewControllerV060 {
+//    func fetchDataByWalletChanged() {
+//        guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return }
+//        guard let count = self.dataSource[selectedAddress]?.count, count <= 0 else {
+//            pollingWalletTransactions()
+//            return
+//        }
+//    }
+}
+
+extension AssetViewControllerV060: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return 0 }
+        return viewModel.transactionsData.value[selectedAddress]?.count ?? 0
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let wallet = AssetVCSharedData.sharedData.selectedWallet
+        let cell: AssetTransactionCell = tableView.dequeueReusableCell(withIdentifier: AssetTransactionCell.cellIdentifier()) as! AssetTransactionCell
+        if let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress, let count = viewModel.transactionsData.value[selectedAddress]?.count, count > indexPath.row {
+            let tx = viewModel.transactionsData.value[selectedAddress]?[indexPath.row]
+            cell.updateTransferCell(transaction: tx, wallet: wallet as? Wallet)
+            cell.updateCellStyle(count: viewModel.transactionsData.value[selectedAddress]?.count ?? 0, index: indexPath.row)
+        }
+
+        return cell
+    }
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return }
+        let tx = viewModel.transactionsData.value[selectedAddress]?[indexPath.row]
+        if tx?.txReceiptStatus == TransactionReceiptStatus.pending.rawValue {
+            tx?.direction = .Sent
+        }
+        let transferVC = TransactionDetailViewController()
+        transferVC.transaction = tx
+        AssetViewControllerV060.pushViewController(viewController: transferVC)
+    }
+
+}
+
+extension AssetViewControllerV060: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.y <= 0 {
+            isShowNavigationBar = false
+            navigationController?.setNavigationBarHidden(true, animated: false)
+        } else {
+            isShowNavigationBar = true
+            navigationController?.setNavigationBarHidden(false, animated: false)
+        }
+    }
+}
+
+// MARK: - Asset60
+
+extension AssetViewControllerV060: EmptyDataSetSource {
+
+    func factoryEmptyHolderView() -> UIView {
+        let holderView = UIView.viewFromXib(theClass: TableViewNoDataPlaceHolder.self) as! TableViewNoDataPlaceHolder
+        holderView.descriptionLabel.localizedText = "walletDetailVC_no_transactions_text"
+        holderView.imageView.image = UIImage(named: "empty_no_data_img")
+        return holderView
+    }
+
+    func verticalOffset(forEmptyDataSet scrollView: UIScrollView) -> CGFloat {
+        if viewModel.isHideSectionView.value {
+            let edgeToTop = (assetWalletsView.frame.height)*0.5
+            return edgeToTop
+        } else {
+            let edgeToTop = (tableView.tableHeaderView?.frame.height ?? 0.00)*0.5
+            return edgeToTop
+        }
     }
 }

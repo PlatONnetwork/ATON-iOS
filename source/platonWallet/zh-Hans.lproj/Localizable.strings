@@ -50,7 +50,7 @@
 "asset_header_total_asset" = "总计LAT";
 
 //transfer viewController
-"transferVC_nav_title" = "发送 LAT";
+"transferVC_nav_title" = "发送";
 "transferVC_wallet_address_des" = "钱包地址";
 "transferVC_wallet_address_placeholder" = "输入钱包地址";
 "transferVC_Amount_des" = "发送数额";
@@ -722,15 +722,15 @@
 "data_parser_error" = "数据解析失败";
 "unknow_error" = "未知错误";
 
-"send_wallet_colon" = "接收钱包地址：";
-"send_amout_colon" = "数量：";
-"send_sendAll" = "全部";
+"send_wallet_colon" = "发送至";
+"send_amout_colon" = "发送金额";
+"send_sendAll" = "全部发送";
 
-"send_address_placeholder" = "输入钱包地址";
-"send_amount_placeholder" = "输入发送数量";
+"send_address_placeholder" = "输入接收地址";
+"send_amount_placeholder" = "0.00000000";
 "vote_confirm_from" = "支付钱包：";
 "staking_amount_placeholder" = "输入数量（不少于%@LAT）";
-"send_remark_placeholder" = "备注（可选-30以内）";
+"send_remark_placeholder" = "备注（可选-30字以内）";
 
 
 "createOrImport_guide_text" = "已有钱包？使用钱包文件(json)、助记词、私钥导入";
@@ -1003,3 +1003,35 @@
 
 "gaslimit_note" = "关于特殊合约转账，建议在默认GasLimit基础上增加2倍或更多，GasLimit太低可能导致您的交易失败。";
 "gaslimit_less_than" = "Gas Limit不能小于21000";
+
+"asset_header_title" = "我的钱包";
+
+"asset_cold_wallet_title" = "冷钱包";
+"asset_observer_wallet_title" = "观察钱包";
+"asset_section_receive" = "接收";
+"asset_section_send" = "发送";
+"asset_section_signature" = "离线签名";
+"asset_send_fee_title" = "交易手续费";
+"asset_prompt_backup_title" = "安全提醒";
+"asset_prompt_offline_title" = "设备离线提示";
+"asset_prompt_notConnect_title" = "网络连接失败！";
+"asset_prompt_backup_description" = "为您钱包安全，请务必完成助记词备份!";
+"asset_prompt_offline_description" = "可配合在线设备的观察钱包进行冷钱包离线签名，保证私钥安全";
+"asset_prompt_notConnect_description" = "请点击刷新或检查网络!";
+"asset_prompt_backup_button" = "备份";
+"asset_prompt_offline_button" = "知道了";
+"asset_prompt_notConnect_button" = "刷新";
+"asset_section_title" = "交易记录";
+
+"error_3001" = "请勿重复提交!";
+"error_3002" = "交易异常，请重试（%d）";
+"error_3003" = "二维码已失效";
+"error_3004_transfer" = "余额不足";
+"error_3004_delegate" = "余额不足支付手续费，无法委托";
+"error_3004_withdraw" = "余额不足支付手续费，无法赎回委托";
+"error_3004_reward" = "余额不足";
+"error_3005" = "GasLimt超过最大区块限制";
+"error_3006" = "委托节点已退出，无法委托";
+"error_3007" = "节点关联的钱包地址，不可参与委托。";
+"error_3008" = "基金会资助的节点不接受委托";
+"error_3009" = "委托数量不能少于%@ LAT";

@@ -23,6 +23,7 @@ enum NetworkError: Error {
     case nonceError(Int)
     case qrcodeExpiredError(Int)
     case transactionFailError
+    case sendSignedData(String, Int, String) // txtype,errorcode,mindelegate
 
     var code: Int {
         switch self {
@@ -50,6 +51,8 @@ enum NetworkError: Error {
             return c
         case .transactionFailError:
             return -32000
+        case .sendSignedData(_, let c, _):
+            return c
         }
     }
 
@@ -79,6 +82,37 @@ enum NetworkError: Error {
             return Localized("network_error_expired")
         case .transactionFailError:
             return Localized("Transaction.Fail")
+        case .sendSignedData(let t, let c, let m):
+            switch c {
+            case 3001:
+                return Localized("error_3001")
+            case 3002:
+                return Localized("error_3002", arguments: c)
+            case 3003:
+                return Localized("error_3003")
+            case 3004:
+                if t == TxType.claimReward.rawValue {
+                    return Localized("error_3004_reward")
+                } else if t == TxType.delegateCreate.rawValue {
+                    return Localized("error_3004_delegate")
+                } else if t == TxType.delegateWithdraw.rawValue {
+                    return Localized("error_3004_withdraw")
+                } else {
+                    return Localized("error_3004_transfer")
+                }
+            case 3005:
+                return Localized("error_3005")
+            case 3006:
+                return Localized("error_3006")
+            case 3007:
+                return Localized("error_3007")
+            case 3008:
+                return Localized("error_3008")
+            case 3009:
+                return Localized("error_3009", arguments: m)
+            default:
+                return Localized("error_3002", arguments: c)
+            }
         }
     }
 }
@@ -112,8 +146,12 @@ class NetworkService {
         return newHeaders
     }
 
-    static func request<T: Decodable>(_ url: String, parameters: Parameters? = nil, headers: HTTPHeaders? = nil, method: NetHTTPMethod = .Post, completion: NetworkCompletion<T>?) {
-        let requestUrl = SettingService.getCentralizationURL() + url
+    static func request<T: Decodable>(_ url: String, parameters: Parameters? = nil, headers: HTTPHeaders? = nil, isConfig: Bool = false, method: NetHTTPMethod = .Post, completion: NetworkCompletion<T>?) {
+        var requestUrl = url
+        if !url.hasPrefix("http") {
+            requestUrl = SettingService.getCentralizationURL() + url
+        }
+
         var request = URLRequest(url: try! requestUrl.asURL())
 
         if let param = parameters {
@@ -133,6 +171,13 @@ class NetworkService {
             switch response.result {
             case .success(let data):
                 do {
+                    if isConfig {
+                        let decoder = JSONDecoder()
+                        let result = try decoder.decode(T.self, from: data)
+                        completion?(.success, result)
+                        return
+                    }
+
                     let decoder = JSONDecoder()
                     let result = try decoder.decode(JSONResponse<T>.self, from: data)
                     if result.code == 0 {
@@ -163,6 +208,59 @@ class NetworkService {
                     completion?(.failure(NetworkError.default(error)), nil)
                 }
             }
+        }
+    }
+}
+
+class NetworkStatusService {
+    static let shared = NetworkStatusService()
+
+    var handlers: [String: (() -> Void)] = [:]
+
+    var isConnecting: Bool = true {
+        didSet {
+            for v in handlers {
+                v.value()
+            }
+        }
+    }
+
+    let reachabilityManager = Alamofire.NetworkReachabilityManager(host: "www.apple.com")
+
+    func startNetworkObserver() {
+        reachabilityManager?.listener = { [weak self] status in
+            switch status {
+            case .reachable:
+                if self?.isConnecting == false {
+                    self?.isConnecting = true
+                }
+            default:
+                if self?.isConnecting == true {
+                    self?.isConnecting = false
+                }
+            }
+        }
+        // start listening
+        reachabilityManager?.startListening()
+    }
+}
+
+extension NetworkStatusService {
+    func registerHandler(object: AnyObject?, handler: (() -> Void)?) {
+        guard object != nil, handler != nil else {
+            return
+        }
+        let address = String(format: "%d", (object?.hash)!)
+        guard address.length > 0 else { return }
+        handlers[address] = handler
+    }
+
+    func removeHandler(object: AnyObject?) {
+        var tmp = object
+        withUnsafePointer(to: &tmp) {
+            let address = String(format: "%p", $0)
+            guard address.length > 0 else { return }
+            handlers.removeValue(forKey: address)
         }
     }
 }

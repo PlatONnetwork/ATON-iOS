@@ -51,6 +51,10 @@ final class StakingService: BaseService {
                     completion?(.success, [])
                     return
                 }
+                // save to database
+                NodePersistence.add(nodes: data) {
+                }
+
                 let sortData = StakingService.nodeSorted(data, sort: sort)
                 completion?(.success, sortData)
             case .failure(let error):
@@ -140,16 +144,6 @@ final class StakingService: BaseService {
         parameters["addr"] = addr
         parameters["nodeId"] = nodeId
         NetworkService.request("/node/getDelegationValue", parameters: parameters, completion: completion)
-    }
-
-    static func getCanDelegation(
-        addr: String,
-        nodeId: String,
-        completion: NetworkCompletion<CanDelegation>?) {
-        var parameters: [String: Any] = [:]
-        parameters["addr"] = addr
-        parameters["nodeId"] = nodeId
-        NetworkService.request("/node/canDelegation", parameters: parameters, completion: completion)
     }
 }
 

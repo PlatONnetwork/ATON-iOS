@@ -131,6 +131,8 @@ class RewardRecordCell: UITableViewCell {
         balanceLabel.textAlignment = .right
         balanceLabel.adjustsFontSizeToFitWidth = true
         balanceLabel.minimumScaleFactor = 0.5
+        balanceLabel.setContentHuggingPriority(.required, for: .horizontal)
+        balanceLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
         walletBackgroundView.addSubview(balanceLabel)
         balanceLabel.snp.makeConstraints { make in
             make.top.equalTo(nameLabel)

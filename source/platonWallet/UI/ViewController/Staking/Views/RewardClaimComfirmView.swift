@@ -16,8 +16,15 @@ class RewardClaimComfirmView: UIView {
     let walletLabel = UILabel()
     let balanceLabel = UILabel()
     let comfirmBtn = PButton()
+    
+    lazy var closeButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(named: "1.icon_shut down"), for: .normal)
+        return button
+    }()
 
     var onCompletion: (() -> Void)?
+    var onDismiss: (() -> Void)?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -42,6 +49,14 @@ class RewardClaimComfirmView: UIView {
             make.top.equalToSuperview().offset(16)
             make.leading.equalToSuperview().offset(16)
             make.trailing.equalToSuperview().offset(-16)
+        }
+
+        closeButton.addTarget(self, action: #selector(closeAction), for: .touchUpInside)
+        addSubview(closeButton)
+        closeButton.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().offset(-20)
+            make.centerY.equalTo(titleLabel)
+            make.height.width.equalTo(32)
         }
 
         let lineV = UIView()
@@ -145,6 +160,10 @@ class RewardClaimComfirmView: UIView {
 
     @objc func submitAction() {
         onCompletion?()
+    }
+
+    @objc func closeAction() {
+        onDismiss?()
     }
 
 }

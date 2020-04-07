@@ -215,7 +215,7 @@ class SettingTableViewController: BaseViewController, UITableViewDelegate, UITab
 
         let type = PopSelectedViewType.threshold(datasource: listData, selected: value)
         let contentView = ThresholdValueSelectView(type: type)
-        contentView.show(viewController: self)
+//        contentView.show(viewController: self)
         contentView.valueChangedHandler = { [weak self] value in
             switch value {
             case .threshold(_, let selected):
@@ -225,6 +225,10 @@ class SettingTableViewController: BaseViewController, UITableViewDelegate, UITab
                 break
             }
         }
+        let popUpVC = PopUpViewController()
+        popUpVC.setUpContentView(view: contentView, size: CGSize(width: PopUpContentWidth, height: CGFloat(type.count) * contentView.cellHeight + 64.0))
+        popUpVC.setCloseEvent(button: contentView.closeButton)
+        popUpVC.show(inViewController: self)
     }
 
     // MARK: - UITableView Delegate

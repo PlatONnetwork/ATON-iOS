@@ -386,7 +386,6 @@ public final class WalletService {
         NotificationCenter.default.post(name: Notification.Name.ATON.WillDeleateWallet, object: wallet)
 
         AssetService.sharedInstace.balances = AssetService.sharedInstace.balances.filter { $0.addr.lowercased() != wallet.address.lowercased() }
-//        AssetService.sharedInstace.assets.removeValue(forKey: (wallet.key?.address)!)
 
         wallets.removeAll(where: { $0.uuid == wallet.uuid && $0.chainId == wallet.chainId })
 

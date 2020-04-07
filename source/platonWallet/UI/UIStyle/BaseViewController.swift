@@ -180,10 +180,6 @@ class BaseViewController: UIViewController {
     func setDefaultUIStyle() {
         view.backgroundColor = UIViewController_backround
 
-         navigationController?.navigationBar.shadowImage = UIImage()
-
-        let backgroundImage = UIImage.gradientImage(colors: [UIColor(rgb: 0xdfeafc), UIColor(rgb: 0xf0f4fb)], size: CGSize(width: 1, height: 1), startPoint: CGPoint(x: 0.5, y: 0), endPoint: CGPoint(x: 0.5, y: 1))
-
         if type(of: self) == AssetSendViewControllerV060.self ||
             type(of: self) == ImportMnemonicOrPrivateKeyViewController.self ||
             type(of: self) == PersonalViewController.self ||
@@ -197,6 +193,7 @@ class BaseViewController: UIViewController {
 
         } else {
             //设置导航栏背景图片为白色，会导致状态栏透明？？？，出现左滑返回时，状态栏出现阴影
+            let backgroundImage = UIImage(named: "asset_bj3")?.resizableImage(withCapInsets: UIEdgeInsets(top: 5, left: 5, bottom: 120, right: 360))
             navigationController?.navigationBar.setBackgroundImage(backgroundImage, for: .default)
             navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16.0), NSAttributedString.Key.foregroundColor: UIColor.white]
         }

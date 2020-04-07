@@ -713,12 +713,12 @@
 "data_parser_error" = "Data parsing error.";
 "unknow_error" = "Unknow error.";
 
-"send_wallet_colon" = "Recipient:";
-"send_amout_colon" = "Amout:";
-"send_sendAll" = "All";
+"send_wallet_colon" = "Send to";
+"send_amout_colon" = "Send Amount";
+"send_sendAll" = "Send All";
 
-"send_address_placeholder" = "Input wallet address";
-"send_amount_placeholder" = "Input Amount";
+"send_address_placeholder" = "Enter receive address";
+"send_amount_placeholder" = "0.00000000";
 "vote_confirm_from" = "From:";
 "staking_amount_placeholder" = "Input Amount (not less than %@ LAT)";
 "send_remark_placeholder" = "Memo(optional-less than 30 characters)";
@@ -993,3 +993,34 @@
 
 "gaslimit_note" = "For contract transfers, increase the default GasLimit by a factor of 2 or more. Too low a Gaslimit may cause your transaction to fail.";
 "gaslimit_less_than" = "Gas Limit cannot be less than 21000";
+
+"asset_header_title" = "My Wallet";
+"asset_cold_wallet_title" = "Cold Wallet";
+"asset_observer_wallet_title" = "Observed Wallet";
+"asset_section_receive" = "Receive";
+"asset_section_send" = "Send";
+"asset_section_signature" = "Offline Signature";
+"asset_send_fee_title" = "Tx fee";
+"asset_prompt_backup_title" = "Security Reminders";
+"asset_prompt_offline_title" = "Device offline prompt";
+"asset_prompt_notConnect_title" = "Network connection failed!";
+"asset_prompt_backup_description" = "For your wallet security, be sure to complete the mnemonic backup !";
+"asset_prompt_offline_description" = "Can cooperate with online devices to perform cold wallet offline signing to ensure the security of private keys!";
+"asset_prompt_notConnect_description" = "Please click to refresh or check the network!";
+"asset_prompt_backup_button" = "Backup";
+"asset_prompt_offline_button" = "Got it";
+"asset_prompt_notConnect_button" = "Refresh";
+"asset_section_title" = "Transaction";
+
+"error_3001" = "Do not submit repeatedly!";
+"error_3002" = "Transaction abnormal，please try again (%d)";
+"error_3003" = "Expired QR code";
+"error_3004_transfer" = "Insufficient balance";
+"error_3004_delegate" = "Insufficient balance payment fee";
+"error_3004_withdraw" = "Insufficient balance payment fee";
+"error_3004_reward" = "Insufficient balance";
+"error_3005" = "GasLimt exceeds the maximum block limit";
+"error_3006" = "The Validator has Exited and cannot be delegated.";
+"error_3007" = "The wallet associated with the validator is not allowed for delegation.";
+"error_3008" = "Foundation-funded nodes do not accept delegations";
+"error_3009" = "The Amount cannot be less than %@ LAT";

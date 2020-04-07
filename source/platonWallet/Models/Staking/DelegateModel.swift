@@ -80,8 +80,15 @@ struct DelegateDetail: Decodable {
 }
 
 struct Delegation: Decodable {
+    var free: String?
+    var lock: String?
+    var nonce: String?
     var minDelegation: String?
     var deleList: [DelegationValue]
+
+    var nonceBInt: BigUInt {
+        return BigUInt(nonce ?? "0") ?? BigUInt.zero
+    }
 }
 
 extension Delegation {
@@ -130,47 +137,6 @@ extension DelegationValue {
         default:
             return nil
         }
-    }
-}
-
-// 是否能委托response
-public struct CanDelegation: Decodable {
-    var free: String?
-    var lock: String?
-    var canDelegation: Bool = true
-    var message: Message?
-    var minDelegation: String?
-
-    public enum Message: String, Decodable {
-        case nodeExitingOrExited = "2"
-        case nodeAssociationWallet = "3"
-        case balanceZero = "4"
-        case nodeInit = "5"
-
-        public var localizedDesciption: String? {
-            switch self {
-            case .nodeInit:
-                return Localized("delegate_error_result_nodeInit")
-            case .nodeExitingOrExited:
-                return Localized("delegate_error_result_nodeexit")
-            case .nodeAssociationWallet:
-                return Localized("delegate_error_result_associate")
-            case .balanceZero:
-                return Localized("delegate_error_result_balancezero")
-            }
-        }
-    }
-}
-
-extension CanDelegation {
-    var minDelegationBInt: BigUInt {
-        guard let minDelegationString = minDelegation else { return BigUInt(10).multiplied(by: PlatonConfig.VON.LAT) }
-        return BigUInt(minDelegationString) ?? BigUInt(10).multiplied(by: PlatonConfig.VON.LAT)
-    }
-
-    var freeBigUInt: BigUInt {
-        guard let freeString = free else { return BigUInt.zero }
-        return BigUInt(freeString) ?? BigUInt.zero
     }
 }
 

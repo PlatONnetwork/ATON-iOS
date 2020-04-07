@@ -47,6 +47,35 @@ extension Wallet {
         return balanceStr.ATPSuffix()
     }
 
+    var restrictBalanceString: String? {
+        guard
+        let balance = AssetService.sharedInstace.balances.first(where: { $0.addr.lowercased() == self.address.lowercased() }),
+        let lockValue = BigUInt(balance.lock ?? "0"), lockValue > BigUInt.zero,
+        let balanceStr = balance.lock?.vonToLATString else { return nil }
+        return balanceStr
+    }
+
+    var freeBalance: BigUInt {
+        guard
+            let balance = AssetService.sharedInstace.balances.first(where: { $0.addr.lowercased() == self.address.lowercased() }),
+            let free = BigUInt(balance.free ?? "0") else { return BigUInt.zero }
+        return free
+    }
+
+    var lockBalance: BigUInt {
+        guard
+            let balance = AssetService.sharedInstace.balances.first(where: { $0.addr.lowercased() == self.address.lowercased() }),
+            let lock = BigUInt(balance.lock ?? "0") else { return BigUInt.zero }
+        return lock
+    }
+
+    var balanceString: String {
+        guard
+        let balance = AssetService.sharedInstace.balances.first(where: { $0.addr.lowercased() == self.address.lowercased() }),
+        let balanceStr = balance.free?.vonToLATString else { return "0.00" }
+        return balanceStr
+    }
+
     func balanceDescriptionForDisplayAsset() -> String {
         let balanceVisiable = UserDefaults.standard.object(forKey: AssetHidingStatus) as? Bool
         return balanceVisiable == true ? "***" : balanceDescription()
@@ -77,55 +106,44 @@ extension Wallet {
     var normalIcon: UIImage? {
         switch type {
         case .classic:
-            return UIImage(named: "home_classicWallet_icon_normal")
+            return UIImage(named: "icon-nm-un")
         case .cold:
-            return UIImage(named: "icon_cold_unselected")
+            return UIImage(named: "icon-co-un")
         case .observed:
-            return UIImage(named: "icon_observer_unselected")
+            return UIImage(named: "icon-ob-un")
         }
     }
 
     var selectedIcon: UIImage? {
         switch type {
         case .classic:
-            return UIImage(named: "home_classicWallet_icon_selected")
+            return UIImage(named: "icon-nm-sl")
         case .cold:
-            return UIImage(named: "icon_cold_selected")
+            return UIImage(named: "icon-co-sl")
         case .observed:
-            return UIImage(named: "icon_observer_selected")
+            return UIImage(named: "icon-ob-sl")
         }
     }
 
-    var normalImg: UIImage? {
+    var normalNameTextColor: UIColor {
+        return UIColor(rgb: 0x5E616B)
+    }
+
+    var normalBackgroundColor: UIColor {
         switch type {
-        case .classic:
-            return UIImage(named: "img_normal_default")
         case .cold:
-            return UIImage(named: "img_cold_default")
-        case .observed:
-            return UIImage(named: "img_observed_default")
+            return UIColor(rgb: 0xDEE1E4)
+        default:
+            return UIColor(rgb: 0xE8EDF4)
         }
     }
 
-    var selectedImg: UIImage? {
+    var selectedBackgroundColor: UIColor {
         switch type {
-        case .classic:
-            return UIImage(named: "img_normal_selected")
         case .cold:
-            return UIImage(named: "img_cold_selected")
-        case .observed:
-            return UIImage(named: "img_observed_selected")
-        }
-    }
-
-    var walletNameTextColor: UIColor {
-        switch type {
-        case .classic:
-            return common_blue_color
-        case .cold:
-            return wallet_gray_color
-        case .observed:
-            return wallet_orange_color
+            return UIColor(rgb: 0x2F364F)
+        default:
+            return UIColor(rgb: 0x0912D4)
         }
     }
 }

@@ -130,7 +130,6 @@ class WithDrawViewController: BaseViewController {
                     self?.delegation = newData
                     self?.initBalanceStyle()
                 }
-
             case .failure(let error):
                 self?.showErrorMessage(text: error?.message ?? "server error")
             }
@@ -378,7 +377,8 @@ extension WithDrawViewController {
         guard
             let walletObject = walletStyle,
             let nodeId = currentNode?.nodeId,
-            let stakingBlockNum = balanceStyle?.currentBlockNum else { return }
+            let stakingBlockNum = balanceStyle?.currentBlockNum
+        else { return }
         let currentAddress = walletObject.currentWallet.address
 
         let transactions = TransferPersistence.getPendingTransaction(address: walletObject.currentWallet.address)
@@ -387,30 +387,19 @@ extension WithDrawViewController {
             return
         }
 
+        guard let nonce = delegation?.nonceBInt else { return }
         if walletObject.currentWallet.type == .observed {
             let funcType = FuncType.withdrewDelegate(stakingBlockNum: stakingBlockNum, nodeId: nodeId, amount: self.currentAmount)
-            web3.platon.platonGetNonce(sender: walletObject.currentWallet.address) { [weak self] (result, blockNonce) in
-                guard let self = self else { return }
-                switch result {
-                case .success:
-                    guard let nonce = blockNonce else { return }
-                    let nonceString = nonce.quantity.description
+            let transactionData = TransactionQrcode(amount: self.currentAmount.description, chainId: web3.properties.chainId, from: walletObject.currentWallet.address, to: PlatonConfig.ContractAddress.stakingContractAddress, gasLimit: selectedGasLimit.description, gasPrice: selectedGasPrice.description, nonce: nonce.description, typ: nil, nodeId: nodeId, nodeName: self.currentNode?.name, stakingBlockNum: String(stakingBlockNum), functionType: funcType.typeValue, rk: nil)
 
-                    let transactionData = TransactionQrcode(amount: self.currentAmount.description, chainId: web3.properties.chainId, from: walletObject.currentWallet.address, to: PlatonConfig.ContractAddress.stakingContractAddress, gasLimit: selectedGasLimit.description, gasPrice: selectedGasPrice.description, nonce: nonceString, typ: nil, nodeId: nodeId, nodeName: self.currentNode?.name, stakingBlockNum: String(stakingBlockNum), functionType: funcType.typeValue, rk: nil)
-
-                    let qrcodeData = QrcodeData(qrCodeType: 0, qrCodeData: [transactionData], chainId: web3.chainId, functionType: 1005, from: walletObject.currentWallet.address, nodeName: self.currentNode?.name, rn: nil, timestamp: Int(Date().timeIntervalSince1970 * 1000), rk: nil, si: nil, v: 1)
-                    guard
-                        let data = try? JSONEncoder().encode(qrcodeData),
-                        let content = String(data: data, encoding: .utf8) else { return }
-                    self.generateQrCode = qrcodeData
-                    DispatchQueue.main.async {
-                        self.showOfflineConfirmView(content: content)
-                    }
-                case .fail(_, let message):
-                    self.showErrorMessage(text: message ?? "get nonce error")
-                }
+            let qrcodeData = QrcodeData(qrCodeType: 0, qrCodeData: [transactionData], chainId: web3.chainId, functionType: 1005, from: walletObject.currentWallet.address, nodeName: self.currentNode?.name, rn: nil, timestamp: Int(Date().timeIntervalSince1970 * 1000), rk: nil, si: nil, v: 1)
+            guard
+                let data = try? JSONEncoder().encode(qrcodeData),
+                let content = String(data: data, encoding: .utf8) else { return }
+            self.generateQrCode = qrcodeData
+            DispatchQueue.main.async {
+                self.showOfflineConfirmView(content: content)
             }
-            return
         }
         
         showPasswordInputPswAlert(for: walletObject.currentWallet) { [weak self] (privateKey, _, error) in
@@ -423,7 +412,7 @@ extension WithDrawViewController {
             }
 
             self.showLoadingHUD()
-            TransactionService.service.withdrawDelegate(stakingBlockNum: stakingBlockNum, nodeId: nodeId, amount: self.currentAmount, sender: currentAddress, privateKey: pri, gas: selectedGasLimit, gasPrice: selectedGasPrice) { [weak self] (result, data) in
+            TransactionService.service.withdrawDelegate(stakingBlockNum: stakingBlockNum, nodeId: nodeId, amount: self.currentAmount, sender: currentAddress, privateKey: pri, gas: selectedGasLimit, gasPrice: selectedGasPrice, nonce: nonce, minDelegate: self.minDelegateAmountLimit) { [weak self] (result, data) in
                 self?.hideLoadingHUD()
                 switch result {
                 case .success:
@@ -460,7 +449,7 @@ extension WithDrawViewController {
         controller.onCompletion = { [weak self] in
             self?.showQrcodeScan()
         }
-        controller.setUpConfirmView(view: offlineConfirmView, width: PopUpContentWidth)
+        controller.setUpConfirmView(view: offlineConfirmView)
         controller.show(inViewController: self)
     }
 
@@ -489,7 +478,7 @@ extension WithDrawViewController {
             guard let qrcode = qrcodeData else { return }
             self.sendSignatureTransaction(qrcode: qrcode)
         }
-        controller.setUpConfirmView(view: offlineConfirmView, width: PopUpContentWidth)
+        controller.setUpConfirmView(view: offlineConfirmView)
         controller.show(inViewController: self)
     }
 
@@ -552,7 +541,7 @@ extension WithDrawViewController {
                     guard
                         let signedTxJsonString = signedTx.jsonString
                         else { break }
-                    TransactionService.service.sendSignedTransactionToServer(data: signedTxJsonString, sign: sign) { (result, response) in
+                    TransactionService.service.sendSignedTransaction(txType: .delegateWithdraw, minDelgate: minDelegateAmountLimit.description, data: signedTxJsonString, sign: sign) { (result, response) in
                         switch result {
                         case .success:
                             self.sendTransactionSuccess(tx: tx)
@@ -637,7 +626,7 @@ extension WithDrawViewController {
 
         let type = PopSelectedViewType.delegate(datasource: balances, selected: selected)
         let contentView = ThresholdValueSelectView(title: Localized("pop_selection_title_withdraw"), type: type)
-        contentView.show(viewController: self)
+//        contentView.show(viewController: self)
         contentView.valueChangedHandler = { [weak self] value in
             switch value {
             case .delegate(_, let newSelected):
@@ -651,6 +640,11 @@ extension WithDrawViewController {
                 break
             }
         }
+
+        let popUpVC = PopUpViewController()
+        popUpVC.setUpContentView(view: contentView, size: CGSize(width: PopUpContentWidth, height: CGFloat(type.count) * contentView.cellHeight + 64.0))
+        popUpVC.setCloseEvent(button: contentView.closeButton)
+        popUpVC.show(inViewController: self)
     }
 
     func updateHeightOfRow(_ cell: SendInputTableViewCell) {

@@ -26,8 +26,7 @@ class OfflineSignatureQRCodeView: UIView {
         addSubview(imageView)
         imageView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
-//            make.centerX.equalToSuperview()
-//            make.top.bottom.equalToSuperview()
+            make.height.equalTo(imageView.snp.width).multipliedBy(1.0)
         }
     }
 }
@@ -106,9 +105,16 @@ class OfflineSignatureConfirmView: UIView {
     let titleLabel = UILabel()
     let descriptionLabel = UILabel()
     let submitBtn = PButton()
+    
+    lazy var closeButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(named: "1.icon_shut down"), for: .normal)
+        return button
+    }()
 
     var type: ConfirmViewType!
     var onCompletion: (() -> Void)?
+    var onDismiss: (() -> Void)?
     var observer: NSKeyValueObservation?
 
     convenience init(confirmType: ConfirmViewType) {
@@ -136,6 +142,14 @@ class OfflineSignatureConfirmView: UIView {
             make.leading.equalToSuperview().offset(16)
             make.trailing.equalToSuperview().offset(-16)
             make.top.equalToSuperview().offset(16)
+        }
+
+        closeButton.addTarget(self, action: #selector(closeAction), for: .touchUpInside)
+        addSubview(closeButton)
+        closeButton.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().offset(-20)
+            make.centerY.equalTo(titleLabel)
+            make.height.width.equalTo(32)
         }
 
         let lineV = UIView()
@@ -188,5 +202,9 @@ class OfflineSignatureConfirmView: UIView {
 
     @objc func submitAction() {
         onCompletion?()
+    }
+
+    @objc func closeAction() {
+        onDismiss?()
     }
 }

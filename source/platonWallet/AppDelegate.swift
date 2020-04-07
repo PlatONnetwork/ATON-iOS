@@ -129,7 +129,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func gotoAtonController() {
-        NetworkManager.shared.startNetworkReachabilityObserver()
+        NetworkStatusService.shared.startNetworkObserver()
         if WalletService.sharedInstance.wallets.count > 0 {
             gotoMainTab()
             getRemoteConfig()
@@ -199,7 +199,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 extension AppDelegate {
     func getRemoteConfig() {
-        RemoteService.getConfig { (result, remoteConfig) in
+        RemoteServices.getConfig { (result, remoteConfig) in
             switch result {
             case .success:
                 SettingService.shareInstance.remoteConfig = remoteConfig
@@ -214,7 +214,7 @@ extension AppDelegate {
             return
         }
 
-        RemoteService.getRemoteVersion { (result, response) in
+        RemoteServices.getRemoteVersion { (result, response) in
             switch result {
             case .success:
                 SettingService.shareInstance.remoteVersion = response
