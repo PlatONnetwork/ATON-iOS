@@ -15,5 +15,7 @@ class AssetViewModel {
     let isShowFooterMore = Observable<Bool>(value: false)
     let isFetching = Observable<Bool>(value: false)
     let isHideSectionView = Observable<Bool>(value: false)
+    let isShowOfflinePromptView = Observable<Bool>(value: false)
+    let isShowBackupPromptView = Observable<Bool>(value: false)
 
 }

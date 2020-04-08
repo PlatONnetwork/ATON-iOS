@@ -50,6 +50,7 @@ class AssetController {
             self.sectionController.viewModel.wallet.value = wallet
             self.sectionController.viewModel.freeBalance.value = self.sectionController.viewModel.wallet.value?.freeBalance ?? BigUInt.zero
             self.sectionController.viewModel.lockBalance.value = self.sectionController.viewModel.wallet.value?.lockBalance ?? BigUInt.zero
+            self.viewModel.isShowBackupPromptView.value = wallet.canBackupMnemonic
 
             self.fetchTransactionLastest()
         }
@@ -63,6 +64,7 @@ class AssetController {
             guard let self = self else { return }
             self.sectionController.viewModel.wallet.active()
             self.headerController.viewModel.walletViewModels.active()
+            self.viewModel.isShowOfflinePromptView.value = !NetworkStatusService.shared.isConnecting
         }
     }
 
