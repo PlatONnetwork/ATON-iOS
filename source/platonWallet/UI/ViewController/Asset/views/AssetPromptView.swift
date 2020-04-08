@@ -96,7 +96,7 @@ class AssetPromptView: UIView {
     let closeBtn = UIButton()
     var onComplete: (() -> Void)?
 
-    convenience init(type: AssetPromptType, onComplete: (() -> Void)?) {
+    convenience init(type: AssetPromptType, onComplete: (() -> Void)? = nil) {
         self.init(frame: .zero)
         self.onComplete = onComplete
         setupUI(type: type)
@@ -137,6 +137,33 @@ class AssetPromptView: UIView {
         subTitleLabel.textColor = type.descriptionColor
         button.localizedNormalTitle = type.buttonText
         closeBtn.isHidden = type.isHideCloseButton
+
+        if type != .notConnect {
+            iconIV.snp.remakeConstraints { make in
+                make.top.equalToSuperview().offset(16)
+                make.leading.equalToSuperview().offset(16)
+            }
+
+            titleLabel.snp.remakeConstraints { make in
+                make.centerY.equalTo(iconIV.snp.centerY)
+                make.leading.equalTo(iconIV.snp.trailing).offset(10)
+            }
+
+            subTitleLabel.snp.remakeConstraints { make in
+                make.top.equalTo(iconIV.snp.bottom).offset(13)
+                make.leading.equalToSuperview().offset(16)
+                make.bottom.equalToSuperview().offset(-16)
+            }
+
+            button.snp.remakeConstraints { make in
+                make.trailing.equalToSuperview().offset(-16)
+                make.centerY.equalTo(subTitleLabel.snp.centerY)
+                make.leading.equalTo(subTitleLabel.snp.trailing).offset(10)
+                make.top.greaterThanOrEqualTo(closeBtn.snp.bottom).offset(5).priorityMedium()
+                make.height.equalTo(34)
+                make.bottom.equalToSuperview().offset(-16).priorityMedium()
+            }
+        }
     }
 
     func initialUI() {
@@ -157,14 +184,20 @@ class AssetPromptView: UIView {
         }
 
         subTitleLabel.font = .systemFont(ofSize: 13)
-//        subTitleLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
-//        subTitleLabel.setContentHuggingPriority(.required, for: .horizontal)
         subTitleLabel.numberOfLines = 0
         addSubview(subTitleLabel)
         subTitleLabel.snp.makeConstraints { make in
             make.top.equalTo(titleLabel.snp.bottom).offset(6)
             make.leading.equalToSuperview().offset(16)
             make.bottom.equalToSuperview().offset(-9)
+        }
+
+        closeBtn.addTarget(self, action: #selector(onClosePressed), for: .touchUpInside)
+        closeBtn.setImage(UIImage(named: "1.icon_shut down"), for: .normal)
+        addSubview(closeBtn)
+        closeBtn.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().offset(-16)
+            make.top.equalToSuperview().offset(16)
         }
 
         button.setContentCompressionResistancePriority(.required, for: .horizontal)
@@ -181,14 +214,6 @@ class AssetPromptView: UIView {
             make.centerY.equalToSuperview()
             make.leading.lessThanOrEqualTo(subTitleLabel.snp.trailing).offset(10)
             make.height.equalTo(34)
-        }
-
-        closeBtn.addTarget(self, action: #selector(onClosePressed), for: .touchUpInside)
-        closeBtn.setImage(UIImage(named: "1.icon_shut down"), for: .normal)
-        addSubview(closeBtn)
-        closeBtn.snp.makeConstraints { make in
-            make.trailing.equalToSuperview().offset(-16)
-            make.top.equalToSuperview().offset(16)
         }
     }
 

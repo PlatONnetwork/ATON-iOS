@@ -64,6 +64,18 @@ class AssetViewControllerV060: UIViewController, PopupMenuTableDelegate {
         return view
     }()
 
+    lazy var backupPromptView: AssetPromptView = {
+        let view = AssetPromptView(type: AssetPromptType.backup)
+        view.isHidden = true
+        return view
+    }()
+
+    lazy var offlinePromptView: AssetPromptView = {
+        let view = AssetPromptView(type: AssetPromptType.offline)
+        view.isHidden = true
+        return view
+    }()
+
     let tableHeaderView = UIView()
     let headerForFixTop = UIView()
 
@@ -92,6 +104,7 @@ class AssetViewControllerV060: UIViewController, PopupMenuTableDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(!isShowNavigationBar, animated: false)
+        controller.fetchLatestData()
 //        headerView.shouldUpdateWalletList()
     }
 
@@ -145,6 +158,14 @@ class AssetViewControllerV060: UIViewController, PopupMenuTableDelegate {
         viewModel.isHideSectionView.addObserver { [weak self] (isHide) in
             self?.sectionView.isHidden = isHide
             self?.tableView.reloadEmptyDataSet()
+        }
+
+        viewModel.isShowBackupPromptView.addObserver { [weak self] (isShow) in
+            self?.backupPromptView.isHidden = !isShow
+        }
+
+        viewModel.isShowOfflinePromptView.addObserver { [weak self] (isShow) in
+            self?.offlinePromptView.isHidden = !isShow
         }
     }
 
@@ -251,6 +272,20 @@ class AssetViewControllerV060: UIViewController, PopupMenuTableDelegate {
             view.customView(holderView)
         }
 
+        backupPromptView.onComplete = { [weak self] in
+            self?.onBackup()
+        }
+        view.addSubview(backupPromptView)
+        backupPromptView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalToSuperview()
+        }
+
+        view.addSubview(offlinePromptView)
+        offlinePromptView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.bottom.equalToSuperview()
+        }
 
 //        sectionView.onLockedBalanceTapAction = { [weak self] in
 //            self?.showMessage(text: Localized("wallet_balance_restricted_doubt"), delay: 2.0)
@@ -308,6 +343,7 @@ extension AssetViewControllerV060 {
 
     func onSendPressed() {
         let sendController = AssetSendViewControllerV060()
+        sendController.assetController = controller
         sendController.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(sendController, animated: true)
     }

@@ -99,16 +99,16 @@ class RewardClaimComfirmView: UIView {
         feeTipLabel.setContentHuggingPriority(.required, for: .horizontal)
         addSubview(feeTipLabel)
         feeTipLabel.snp.makeConstraints { make in
-            make.top.equalTo(descLabel.snp.bottom).offset(24)
+            make.top.equalTo(descLabel.snp.bottom).offset(30)
             make.leading.equalToSuperview().offset(16)
         }
 
-        feeLabel.textAlignment = .right
         feeLabel.textColor = .black
         feeLabel.font = .systemFont(ofSize: 14)
         addSubview(feeLabel)
         feeLabel.snp.makeConstraints { make in
-            make.leading.equalTo(feeTipLabel.snp.trailing).offset(5)
+            make.leading.equalToSuperview().offset(120)
+//            make.leading.equalTo(feeTipLabel.snp.trailing).offset(5)
             make.trailing.equalToSuperview().offset(-16)
             make.centerY.equalTo(feeTipLabel.snp.centerY)
         }
@@ -125,12 +125,11 @@ class RewardClaimComfirmView: UIView {
             make.leading.equalToSuperview().offset(16)
         }
 
-        walletLabel.textAlignment = .right
         walletLabel.textColor = .black
         walletLabel.font = .systemFont(ofSize: 14, weight: .medium)
         addSubview(walletLabel)
         walletLabel.snp.makeConstraints { make in
-            make.leading.equalTo(walletTipLabel.snp.trailing).offset(5)
+            make.leading.equalTo(feeLabel.snp.leading)
             make.trailing.equalToSuperview().offset(-16)
             make.centerY.equalTo(walletTipLabel.snp.centerY)
         }
@@ -142,7 +141,7 @@ class RewardClaimComfirmView: UIView {
         balanceLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(16)
             make.trailing.equalToSuperview().offset(-16)
-            make.top.equalTo(walletTipLabel.snp.bottom).offset(32)
+            make.top.equalTo(walletTipLabel.snp.bottom).offset(40)
         }
 
         comfirmBtn.localizedNormalTitle = "claim_comfirm_comfirm"
