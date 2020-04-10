@@ -64,7 +64,10 @@ class AddressBookViewController: BaseViewController {
     func initNavigationItem() {
 
         super.leftNavigationTitle = "AddressBookVC_nav_title"
-        guard isHideAddButton == false else { return }
+        guard isHideAddButton == false else {
+            super.leftNavigationTitle = "AddressBookVC_nav_title_for_select"
+            return
+        }
 
         //let backgrouImage = UIImage(color: .white)
         //self.navigationController?.navigationBar.setBackgroundImage(backgrouImage, for: .default)

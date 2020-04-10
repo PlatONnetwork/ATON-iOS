@@ -19,6 +19,7 @@ class AssetTransactionCell: UITableViewCell {
 
     lazy var transferAmoutLabel: UILabel = {
         let label = UILabel()
+        label.adjustsFontSizeToFitWidth = true
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         return label
     }()
@@ -87,8 +88,6 @@ class AssetTransactionCell: UITableViewCell {
             make.bottom.equalToSuperview().offset(-12)
         }
 
-
-        
         shadowView.snp.makeConstraints { make in
             make.edges.equalTo(containerView)
         }
@@ -105,8 +104,8 @@ class AssetTransactionCell: UITableViewCell {
             make.leading.equalToSuperview().offset(10)
         }
 
-        transferAmoutLabel.setContentHuggingPriority(.required, for: .horizontal)
-        transferAmoutLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+//        transferAmoutLabel.setContentHuggingPriority(.required, for: .horizontal)
+//        transferAmoutLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
         containerView.addSubview(transferAmoutLabel)
         transferAmoutLabel.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
@@ -128,7 +127,7 @@ class AssetTransactionCell: UITableViewCell {
         timeLabel.snp.makeConstraints { make in
             make.top.equalTo(txTypeLabel.snp.bottom).offset(4)
             make.leading.equalTo(txTypeLabel.snp.leading)
-            make.trailing.lessThanOrEqualTo(transferAmoutLabel).offset(-5)
+            make.trailing.lessThanOrEqualTo(transferAmoutLabel.snp.leading).offset(-5)
         }
 
         txIcon.layer.addSublayer(pendingLayer)

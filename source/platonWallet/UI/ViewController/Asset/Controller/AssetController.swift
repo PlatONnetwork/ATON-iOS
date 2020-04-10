@@ -231,4 +231,9 @@ class AssetController {
         fetchWalletBalance()
         fetchTransactionLastest()
     }
+
+    func fetchWallets() {
+        headerController.updateWalletList()
+        sectionController.viewModel.wallet.value = (AssetVCSharedData.sharedData.selectedWallet as? Wallet)
+    }
 }
