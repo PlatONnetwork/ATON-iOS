@@ -308,6 +308,7 @@
 "AddressBookVC_nav_title" = "Address Book";
 "AddressBookVC_cell_edit_title" = "Edit";
 "AddressBookVC_cell_delete_title" = "Delete";
+"AddressBookVC_nav_title_for_select" = "Select Address";
 
 //NewAddressInfoViewController
 

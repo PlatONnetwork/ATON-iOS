@@ -27,7 +27,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
     var gasPriceLevel: Float?
     var txfeeViewBottomConstraint: Constraint?
     var inputGasLimit: BigUInt?
-
+    var toAddress: String?
     var gas: RemoteGas?
 
     var gasPrice: BigUInt? {
@@ -62,6 +62,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
         let amountView = ATextFieldView.create(title: "send_amout_colon")
         amountView.textField.LocalizePlaceholder = "send_amount_placeholder"
         amountView.textField.keyboardType = .decimalPad
+        amountView.textField.font = .systemFont(ofSize: 20, weight: .medium)
         amountView.addAction(title: "send_sendAll", action: {[weak self] in
             self?.onSendAll()
         })
@@ -368,6 +369,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
             make.width.equalTo(view)
         }
 
+        walletAddressView.textField.text = toAddress
         containerView.addSubview(walletAddressView)
         walletAddressView.snp.makeConstraints { (make) in
             make.left.right.equalToSuperview()

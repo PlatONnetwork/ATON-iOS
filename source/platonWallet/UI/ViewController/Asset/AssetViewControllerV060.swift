@@ -238,7 +238,8 @@ class AssetViewControllerV060: UIViewController, PopupMenuTableDelegate {
 
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+//            make.top.equalToSuperview().offset(-UIApplication.shared.statusBarFrame.height)
+            make.leading.trailing.bottom.top.equalToSuperview()
         }
 
         tableHeaderView.backgroundColor = .clear
@@ -248,13 +249,6 @@ class AssetViewControllerV060: UIViewController, PopupMenuTableDelegate {
         assetWalletsView.snp.makeConstraints { (make) in
             make.top.equalToSuperview()
             make.leading.trailing.equalToSuperview()
-            make.width.equalTo(view)
-        }
-
-        tableHeaderView.addSubview(sectionView)
-        sectionView.snp.makeConstraints { (make) in
-            make.leading.trailing.equalToSuperview()
-            make.top.equalTo(assetWalletsView.snp.bottom)
             make.width.equalTo(view)
             make.bottom.equalToSuperview()
         }
@@ -281,6 +275,9 @@ class AssetViewControllerV060: UIViewController, PopupMenuTableDelegate {
             make.bottom.equalToSuperview()
         }
 
+        offlinePromptView.onComplete = { [weak self] in
+            self?.offlinePromptView.dismiss()
+        }
         view.addSubview(offlinePromptView)
         offlinePromptView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
@@ -341,9 +338,10 @@ extension AssetViewControllerV060 {
         navigationController?.pushViewController(receiveController, animated: true)
     }
 
-    func onSendPressed() {
+    func onSendPressed(toAddress: String? = nil) {
         let sendController = AssetSendViewControllerV060()
         sendController.assetController = controller
+        sendController.toAddress = toAddress
         sendController.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(sendController, animated: true)
     }
@@ -385,8 +383,7 @@ extension AssetViewControllerV060 {
         case .signedTransaction(let data):
             showQrcodeScan(scanData: data)
         case .address(let data):
-//            sectionView.setSectionSelectedIndex(index: 1)
-            break
+            onSendPressed(toAddress: data)
         case .keystore(let data):
             let targetVC = MainImportWalletViewController(type: .keystore, text: data)
             targetVC.hidesBottomBarWhenPushed = true
@@ -752,16 +749,33 @@ extension AssetViewControllerV060: UITableViewDelegate, UITableViewDataSource {
         AssetViewControllerV060.pushViewController(viewController: transferVC)
     }
 
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        return sectionView
+    }
+
 }
 
 extension AssetViewControllerV060: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        print(scrollView.contentOffset.y)
         if scrollView.contentOffset.y <= 0 {
             isShowNavigationBar = false
             navigationController?.setNavigationBarHidden(true, animated: false)
+            if #available(iOS 11.0, *) {
+                tableView.contentInsetAdjustmentBehavior = .never
+            } else {
+                // Fallback on earlier versions
+                automaticallyAdjustsScrollViewInsets = false
+            }
         } else {
             isShowNavigationBar = true
             navigationController?.setNavigationBarHidden(false, animated: false)
+            if #available(iOS 11.0, *) {
+                tableView.contentInsetAdjustmentBehavior = .automatic
+            } else {
+                // Fallback on earlier versions
+                automaticallyAdjustsScrollViewInsets = true
+            }
         }
     }
 }
@@ -782,7 +796,7 @@ extension AssetViewControllerV060: EmptyDataSetSource {
             let edgeToTop = (assetWalletsView.frame.height)*0.5
             return edgeToTop
         } else {
-            let edgeToTop = (tableView.tableHeaderView?.frame.height ?? 0.00)*0.5
+            let edgeToTop = (assetWalletsView.frame.height + sectionView.frame.height)*0.5
             return edgeToTop
         }
     }

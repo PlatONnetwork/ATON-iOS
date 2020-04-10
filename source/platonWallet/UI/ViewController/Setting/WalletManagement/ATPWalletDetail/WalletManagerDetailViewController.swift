@@ -79,7 +79,6 @@ class WalletManagerDetailViewController: BaseViewController {
     }
 
     @IBAction func exportMnemonics(_ sender: Any) {
-        print("exportMnemonics")
         self.showWalletBackup(wallet: self.wallet)
     }
 
@@ -103,6 +102,9 @@ class WalletManagerDetailViewController: BaseViewController {
         }
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
             WalletService.sharedInstance.refreshDB()
+        }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            AssetViewControllerV060.getInstance()?.controller.fetchWallets()
         }
     }
 

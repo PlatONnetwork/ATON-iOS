@@ -62,7 +62,8 @@ class AssetReceiveViewControllerV060: BaseViewController {
         fixedTopView.backgroundColor = UIColor(rgb: 0xFFE6D1)
         view.addSubview(fixedTopView)
         fixedTopView.snp.makeConstraints { make in
-            make.top.leading.trailing.equalToSuperview()
+            make.top.equalTo(topLayoutGuide.snp.bottom)
+            make.leading.trailing.equalToSuperview()
         }
 
         let tipsIcon = UIImageView()
@@ -81,7 +82,7 @@ class AssetReceiveViewControllerV060: BaseViewController {
         fixedTopView.addSubview(tipsLabel)
         tipsLabel.snp.makeConstraints { make in
             make.leading.equalTo(tipsIcon.snp.trailing).offset(10)
-            make.top.equalToSuperview().offset(5)
+            make.top.equalToSuperview().offset(8)
             make.trailing.equalToSuperview().offset(-16)
             make.bottom.equalToSuperview().offset(-8)
         }

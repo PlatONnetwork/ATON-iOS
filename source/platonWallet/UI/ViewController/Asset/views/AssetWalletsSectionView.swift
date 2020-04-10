@@ -126,6 +126,7 @@ class AssetWalletsSectionView: UIView {
             self.walletIV.image = UIImage(named: wallet?.avatar ?? "")
 
             guard let wallet = wallet else { return }
+            self.typeLabel.localizedText = wallet.type.localizeText
 
             if wallet.type == .cold {
                 self.sendBtn.setTitleColor(.white, for: .normal)
@@ -141,7 +142,6 @@ class AssetWalletsSectionView: UIView {
                 self.typeContentView.isHidden = true
             } else {
                 self.typeContentView.isHidden = false
-                self.typeLabel.localizedText = wallet.type.localizeText
                 self.layoutIfNeeded()
 
                 let path = UIBezierPath(roundedRect: self.typeContentView.bounds, byRoundingCorners: [.topLeft, .bottomLeft], cornerRadii: CGSize(width: 12, height: 0))
@@ -206,7 +206,7 @@ class AssetWalletsSectionView: UIView {
         sectionTitleLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(16)
             make.top.equalTo(contentView.snp.bottom).offset(12)
-            make.bottom.equalToSuperview()
+            make.bottom.equalToSuperview().offset(-16)
         }
 
         contentView.addSubview(walletNameLabel)
@@ -249,11 +249,15 @@ class AssetWalletsSectionView: UIView {
             make.height.equalTo(40)
         }
 
+        typeContentView.setContentHuggingPriority(.required, for: .vertical)
+        typeContentView.setContentCompressionResistancePriority(.required, for: .vertical)
         contentView.addSubview(typeContentView)
         typeContentView.snp.makeConstraints { make in
             make.trailing.equalToSuperview()
             make.top.equalTo(balanceLabel.snp.bottom).offset(4)
         }
+        typeLabel.setContentHuggingPriority(.required, for: .vertical)
+        typeLabel.setContentCompressionResistancePriority(.required, for: .vertical)
         typeContentView.addSubview(typeLabel)
         typeLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(10)

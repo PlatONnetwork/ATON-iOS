@@ -43,4 +43,8 @@ class AssetWalletsSectionController {
             self?.onManagerPressed?()
         }
     }
+
+    func updateWalletViewModel() {
+
+    }
 }
