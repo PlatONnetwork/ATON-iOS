@@ -114,7 +114,7 @@ class WithDrawViewController: BaseViewController {
         view.endEditing(true)
     }
 
-    private func fetchDelegateValue() {
+    private func fetchDelegateValue(completion: ((Bool) -> Void)? = nil) {
         showLoadingHUD()
 
         guard
@@ -129,9 +129,11 @@ class WithDrawViewController: BaseViewController {
                 if let newData = data {
                     self?.delegation = newData
                     self?.initBalanceStyle()
+                    completion?(true)
                 }
             case .failure(let error):
                 self?.showErrorMessage(text: error?.message ?? "server error")
+                completion?(false)
             }
         }
     }
@@ -410,25 +412,53 @@ extension WithDrawViewController {
                 }
                 return
             }
+            self.sendWithdrawDelegate(privateKey: pri, stakingBlockNum: stakingBlockNum, nodeId: nodeId, amount: self.currentAmount, sender: currentAddress, selectedGasLimit: selectedGasLimit, selectedGasPrice: selectedGasPrice, nonce: nonce, minDelegate: self.minDelegateAmountLimit)
+        }
+    }
 
-            self.showLoadingHUD()
-            TransactionService.service.withdrawDelegate(stakingBlockNum: stakingBlockNum, nodeId: nodeId, amount: self.currentAmount, sender: currentAddress, privateKey: pri, gas: selectedGasLimit, gasPrice: selectedGasPrice, nonce: nonce, minDelegate: self.minDelegateAmountLimit) { [weak self] (result, data) in
-                self?.hideLoadingHUD()
-                switch result {
-                case .success:
-                    if let transaction = data as? Transaction {
-                        transaction.gasUsed = self?.estimateUseGas.description
-                        transaction.nodeName = self?.currentNode?.name
-                        TransferPersistence.add(tx: transaction)
-                        self?.doShowTransactionDetail(transaction)
-                    }
-                case .fail(_, let errMsg):
-                    if let message = errMsg, message == "insufficient funds for gas * price + value" {
-                        self?.showMessage(text: Localized(message), delay: 2.0)
-                    } else {
-                        self?.showMessage(text: errMsg ?? "call web3 error", delay: 2.0)
-                    }
+    func sendWithdrawDelegate(privateKey: String, stakingBlockNum: UInt64, nodeId: String, amount: BigUInt, sender: String, selectedGasLimit: BigUInt, selectedGasPrice: BigUInt, nonce: BigUInt, minDelegate: BigUInt) {
+        self.showLoadingHUD()
+        TransactionService.service.withdrawDelegate(stakingBlockNum: stakingBlockNum, nodeId: nodeId, amount: amount, sender: sender, privateKey: privateKey, gas: selectedGasLimit, gasPrice: selectedGasPrice, nonce: nonce, minDelegate: self.minDelegateAmountLimit) { [weak self] (result, data) in
+            guard let self = self else { return }
+            self.hideLoadingHUD()
+            switch result {
+            case .success:
+                if let transaction = data as? Transaction {
+                    transaction.gasUsed = self.estimateUseGas.description
+                    transaction.nodeName = self.currentNode?.name
+                    TransferPersistence.add(tx: transaction)
+                    self.doShowTransactionDetail(transaction)
                 }
+            case .fail(let code, let errMsg):
+                guard let c = code, let m = errMsg else { return }
+                self.showMessage(text: m, delay: 2.0)
+                switch c {
+                case 3001,
+                     3002,
+                     3003,
+                     3004,
+                     3005,
+                     3009:
+                    self.fetchDelegateValue()
+                default:
+                    break
+                }
+            }
+        }
+    }
+
+    func reSendSingatureData(privateKey: String, stakingBlockNum: UInt64, nodeId: String, amount: BigUInt, sender: String) {
+        guard
+        let selectedGasPrice = gasPrice,
+        let selectedGasLimit = gasLimit,
+        let nonce = delegation?.nonceBInt else { return }
+        fetchDelegateValue { [weak self] (success) in
+            guard let self = self else { return }
+            switch success {
+            case true:
+                self.sendWithdrawDelegate(privateKey: privateKey, stakingBlockNum: stakingBlockNum, nodeId: nodeId, amount: amount, sender: sender, selectedGasLimit: selectedGasLimit, selectedGasPrice: selectedGasPrice, nonce: nonce, minDelegate: self.minDelegateAmountLimit)
+            default:
+                break
             }
         }
     }
@@ -541,7 +571,7 @@ extension WithDrawViewController {
                     guard
                         let signedTxJsonString = signedTx.jsonString
                         else { break }
-                    TransactionService.service.sendSignedTransaction(txType: .delegateWithdraw, minDelgate: minDelegateAmountLimit.description, data: signedTxJsonString, sign: sign) { (result, response) in
+                    TransactionService.service.sendSignedTransaction(txType: .delegateWithdraw, minDelgate: minDelegateAmountLimit.description, isObserverWallet: true, data: signedTxJsonString, sign: sign) { (result, response) in
                         switch result {
                         case .success:
                             self.sendTransactionSuccess(tx: tx)

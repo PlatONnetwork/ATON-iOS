@@ -317,10 +317,6 @@ extension DelegateViewController {
             return
         }
 
-//        if currentAmount == (BigUInt(balanceStyle?.currentBalance.1 ?? "0") ?? BigUInt.zero), balanceStyle?.isLock == false {
-//            currentAmount -= (estimateUseGas ?? BigUInt.zero)
-//        }
-
         guard
             let walletObject = walletStyle,
             let balanceObject = balanceStyle,
@@ -361,32 +357,45 @@ extension DelegateViewController {
                 if let errorMsg = error?.localizedDescription {
                     self.showErrorMessage(text: errorMsg, delay: 2.0)
                 }
+
                 return
             }
-            self.showLoadingHUD()
 
-            TransactionService.service.createDelgate(typ: typ, nodeId: nodeId, amount: self.currentAmount, sender: currentAddress, privateKey: pri, gas: selectedGasLimit, gasPrice: selectedGasPrice, nonce: nonce, minDelegate: self.minDelegateAmountLimit, completion: { [weak self] (result, data) in
-                guard let self = self else { return }
-                self.hideLoadingHUD()
-
-                switch result {
-                case .success:
-                    // realm 不能跨线程访问同个实例
-                    if let transaction = data as? Transaction {
-                        transaction.gasUsed = self.estimateUseGas.description
-                        transaction.nodeName = self.currentNode?.name
-                        TransferPersistence.add(tx: transaction)
-                        self.doShowTransactionDetail(transaction)
-                    }
-                case .fail(_, let errMsg):
-                    if let message = errMsg, message == "insufficient funds for gas * price + value" {
-                        self.showMessage(text: Localized(message), delay: 2.0)
-                    } else {
-                        self.showMessage(text: errMsg ?? "call web3 error", delay: 2.0)
-                    }
-                }
-            })
+            self.sendCreateDelegate(privateKey: pri, typ: typ, nodeId: nodeId, amount: self.currentAmount, sender: currentAddress, nonce: nonce, minDelegate: self.minDelegateAmountLimit, selectedGasLimit: selectedGasLimit, selectedGasPrice: selectedGasPrice)
         }
+    }
+
+    func sendCreateDelegate(privateKey: String, typ: UInt16, nodeId: String, amount: BigUInt, sender: String, nonce: BigUInt, minDelegate: BigUInt, selectedGasLimit: BigUInt, selectedGasPrice: BigUInt) {
+        showLoadingHUD()
+        TransactionService.service.createDelgate(typ: typ, nodeId: nodeId, amount: amount, sender: sender, privateKey: privateKey, gas: selectedGasLimit, gasPrice: selectedGasPrice, nonce: nonce, minDelegate: minDelegate, completion: { [weak self] (result, data) in
+            guard let self = self else { return }
+            self.hideLoadingHUD()
+
+            switch result {
+            case .success:
+                // realm 不能跨线程访问同个实例
+                if let transaction = data as? Transaction {
+                    transaction.gasUsed = self.estimateUseGas.description
+                    transaction.nodeName = self.currentNode?.name
+                    TransferPersistence.add(tx: transaction)
+                    self.doShowTransactionDetail(transaction)
+                }
+            case .fail(let code, let errMsg):
+                guard let c = code, let m = errMsg else { return }
+                self.showMessage(text: m, delay: 2.0)
+                switch c {
+                case 3001,
+                     3002,
+                     3003,
+                     3004,
+                     3005,
+                     3009:
+                    self.getGas(walletAddr: sender, nodeId: nodeId)
+                default:
+                    break
+                }
+            }
+        })
     }
 
     func showOfflineConfirmView(content: String) {
@@ -497,7 +506,7 @@ extension DelegateViewController {
                     guard
                         let signedTxJsonString = signedTx.jsonString
                         else { break }
-                    TransactionService.service.sendSignedTransaction(txType: .delegateCreate, minDelgate: minDelegateAmountLimit.description, data: signedTxJsonString, sign: sign) { (result, response) in
+                    TransactionService.service.sendSignedTransaction(txType: .delegateCreate, minDelgate: minDelegateAmountLimit.description, isObserverWallet: true, data: signedTxJsonString, sign: sign) { (result, response) in
                         switch result {
                         case .success:
                             self.sendTransactionSuccess(tx: tx)
@@ -670,7 +679,7 @@ extension DelegateViewController {
 }
 
 extension DelegateViewController {
-    private func getGas(walletAddr: String, nodeId: String) {
+    private func getGas(walletAddr: String, nodeId: String, completion: ((Bool) -> Void)? = nil) {
         showLoadingHUD()
         TransactionService.service.getContractGas(from: walletAddr, txType: TxType.delegateCreate, nodeId: nodeId) { [weak self] (result, remoteGas) in
             self?.hideLoadingHUD()
@@ -682,8 +691,10 @@ extension DelegateViewController {
                 }
                 self?.remoteGas = gas
                 self?.tableView.reloadData()
+                completion?(true)
             case .failure(let error):
                 self?.showErrorMessage(text: error?.message ?? "get gas api error")
+                completion?(false)
             }
         }
     }

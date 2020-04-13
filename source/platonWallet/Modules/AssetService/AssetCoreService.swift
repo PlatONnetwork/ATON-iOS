@@ -15,13 +15,13 @@ class AssetCoreService {
     var assetVisible: Bool {
         get {
             guard let isHide = UserDefaults.standard.object(forKey: AssetHidingStatus) as? Bool else {
-                UserDefaults.standard.set(true, forKey: AssetHidingStatus)
+                UserDefaults.standard.set(false, forKey: AssetHidingStatus)
                 UserDefaults.standard.synchronize()
 
                 for v in handlers {
                     v.value()
                 }
-                return true
+                return false
             }
             return isHide
         }
