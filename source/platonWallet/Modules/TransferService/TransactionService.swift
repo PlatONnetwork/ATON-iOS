@@ -153,7 +153,7 @@ class TransactionService : BaseService {
             }
 
             let signedTxWithRemark = SignedTransaction(signedData: signedData, remark: remark)
-            self.sendRawTransaction(txType: .transfer, data: signedTxWithRemark, privateKey: pri, completion: { (result, response) in
+            self.sendRawTransaction(txType: .transfer, isObserverWallet: false, data: signedTxWithRemark, privateKey: pri, completion: { (result, response) in
                 switch result {
                 case .success:
                     ptx.txhash = signedTx?.hash?.add0x()
@@ -207,7 +207,7 @@ class TransactionService : BaseService {
             }
 
             let signedTxWithRemark = SignedTransaction(signedData: signedData, remark: "")
-            self.sendRawTransaction(txType: .delegateCreate, minDelgate: minDelegate.description, data: signedTxWithRemark, privateKey: privateKey, completion: { (result, response) in
+            self.sendRawTransaction(txType: .delegateCreate, minDelgate: minDelegate.description, isObserverWallet: false, data: signedTxWithRemark, privateKey: privateKey, completion: { (result, response) in
                 switch result {
                 case .success:
                     let transaction = Transaction()
@@ -256,7 +256,7 @@ class TransactionService : BaseService {
             }
 
             let signedTxWithRemark = SignedTransaction(signedData: signedData, remark: "")
-            self.sendRawTransaction(txType: .delegateWithdraw, minDelgate: minDelegate.description, data: signedTxWithRemark, privateKey: privateKey, completion: { (result, response) in
+            self.sendRawTransaction(txType: .delegateWithdraw, minDelgate: minDelegate.description, isObserverWallet: false, data: signedTxWithRemark, privateKey: privateKey, completion: { (result, response) in
                 switch result {
                 case .success:
                     let transaction = Transaction()
@@ -297,7 +297,7 @@ class TransactionService : BaseService {
             }
 
             let signedTxWithRemark = SignedTransaction(signedData: signedData, remark: "")
-            self.sendRawTransaction(txType: .claimReward, data: signedTxWithRemark, privateKey: privateKey, completion: { (result, response) in
+            self.sendRawTransaction(txType: .claimReward, isObserverWallet: false, data: signedTxWithRemark, privateKey: privateKey, completion: { (result, response) in
                 switch result {
                 case .success:
                     let transaction = Transaction()

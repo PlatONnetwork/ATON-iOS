@@ -41,6 +41,7 @@ class AssetController {
         NotificationCenter.default.addObserver(self, selector: #selector(pollingWalletTransactions), name: Notification.Name.ATON.UpdateTransactionList, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(willDeleteWallet(_:)), name: Notification.Name.ATON.WillDeleateWallet, object: nil)
 
+        // observer
         AssetVCSharedData.sharedData.registerHandler(object: self) { [weak self] in
             guard let self = self else { return }
             self.viewModel.isHideSectionView.value = (AssetVCSharedData.sharedData.walletList.count == 0)

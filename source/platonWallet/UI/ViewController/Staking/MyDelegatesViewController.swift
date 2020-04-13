@@ -302,8 +302,20 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
                 newTx.totalReward = delegate.withdrawReward
                 TransferPersistence.add(tx: newTx)
                 self?.tableView.mj_header.beginRefreshing()
-            case .fail(_, let errMsg):
-                self?.showMessage(text: errMsg ?? "network error", delay: 2.0)
+            case .fail(let code, let errMsg):
+                guard let c = code, let m = errMsg else { return }
+                self?.showMessage(text: m, delay: 2.0)
+                switch c {
+                case 3001,
+                     3002,
+                     3003,
+                     3004,
+                     3005,
+                     3009:
+                    self?.tableView.mj_header.beginRefreshing()
+                default:
+                    break
+                }
             }
         }
     }
@@ -416,7 +428,7 @@ class MyDelegatesViewController: BaseViewController, IndicatorInfoProvider {
                     guard
                         let signedTxJsonString = signedTx.jsonString
                         else { break }
-                    TransactionService.service.sendSignedTransaction(txType: .claimReward, data: signedTxJsonString, sign: sign) { (result, response) in
+                    TransactionService.service.sendSignedTransaction(txType: .claimReward, isObserverWallet: true, data: signedTxJsonString, sign: sign) { (result, response) in
                         switch result {
                         case .success:
                             self.sendTransactionSuccess(tx: tx)

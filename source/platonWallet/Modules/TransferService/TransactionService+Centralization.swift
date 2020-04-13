@@ -71,7 +71,7 @@ extension TransactionService {
         NetworkService.request("/transaction/estimateGas", parameters: parameters, completion: completion)
     }
 
-    func sendSignedTransaction(txType: TxType, minDelgate: String? = nil, data: String, sign: String, completion: NetworkCompletion<String>?) {
+    func sendSignedTransaction(txType: TxType, minDelgate: String? = nil, isObserverWallet: Bool, data: String, sign: String, completion: NetworkCompletion<String>?) {
         TransactionService.service.sendSignedTransactionToServer(data: data, sign: sign) { (result, txHash) in
             switch result {
             case .success:
@@ -84,7 +84,7 @@ extension TransactionService {
                 case .serviceError(let code):
                     switch code {
                     case 3001...3009:
-                        completion?(.failure(NetworkError.sendSignedData(txType.rawValue, code, minDelgate ?? "0")), nil)
+                        completion?(.failure(NetworkError.sendSignedData(txType.rawValue, code, minDelgate ?? "0", isObserverWallet)), nil)
                     default:
                         completion?(.failure(error), nil)
                     }
@@ -103,7 +103,7 @@ extension TransactionService {
         NetworkService.request("/transaction/submitSignedTransaction", parameters: parameters, completion: completion)
     }
 
-    func sendRawTransaction(txType: TxType, minDelgate: String? = nil, data: SignedTransaction, privateKey: String, completion: NetworkCompletion<String>?) {
+    func sendRawTransaction(txType: TxType, minDelgate: String? = nil, isObserverWallet: Bool, data: SignedTransaction, privateKey: String, completion: NetworkCompletion<String>?) {
         guard
             let jsonData = try? JSONEncoder().encode(data),
             let jsonString = String(data: jsonData, encoding: .utf8) else {
@@ -116,7 +116,7 @@ extension TransactionService {
             return
         }
 
-        sendSignedTransaction(txType: txType, minDelgate: minDelgate, data: jsonString, sign: signResult, completion: completion)
+        sendSignedTransaction(txType: txType, minDelgate: minDelgate, isObserverWallet: isObserverWallet, data: jsonString, sign: signResult, completion: completion)
     }
 
     func signQrcodeData(signedData: String, remark: String, privateKey: String) -> String? {

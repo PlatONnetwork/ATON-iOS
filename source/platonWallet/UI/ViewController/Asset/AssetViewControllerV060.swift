@@ -568,7 +568,7 @@ extension AssetViewControllerV060 {
                     guard
                         let signedTxJsonString = signedTx.jsonString
                         else { break }
-                    TransactionService.service.sendSignedTransaction(txType: .transfer, data: signedTxJsonString, sign: sign) { (result, response) in
+                    TransactionService.service.sendSignedTransaction(txType: .transfer, isObserverWallet: true, data: signedTxJsonString, sign: sign) { (result, response) in
                         switch result {
                         case .success:
                             sendTransactionSuccess(tx: tx, thTx: thTx)

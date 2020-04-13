@@ -251,7 +251,6 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
         fetchGasData()
         _ = self.checkConfirmButtonAvailable()
 
-
         AnalysisHelper.handleEvent(id: event_send, operation: .begin)
 
     }
@@ -384,10 +383,12 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
             make.top.equalTo(walletAddressView.snp.bottom).offset(20)
         }
 
+        balanceLabel.adjustsFontSizeToFitWidth = true
         containerView.addSubview(balanceLabel)
         balanceLabel.snp.makeConstraints { (make) in
             make.top.equalTo(amountView.snp.top).offset(2)
             make.right.equalToSuperview().offset(-16)
+            make.left.greaterThanOrEqualToSuperview().offset(120)
         }
 
         containerView.addSubview(remarkView)
@@ -788,7 +789,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
         _ = checkConfirmButtonAvailable()
     }
 
-    func fetchGasData() {
+    func fetchGasData(completion: ((Bool) -> Void)? = nil) {
         guard let address = AssetVCSharedData.sharedData.currentWalletAddress else { return }
         showLoadingHUD()
         TransactionService.service.getContractGas(from: address, txType: TxType.transfer) { [weak self] (result, remoteGas) in
@@ -797,8 +798,10 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
             case .success:
                 self?.gas = remoteGas
                 self?.DidNodeGasPriceUpdate()
+                completion?(true)
             case .failure(let error):
                 self?.showErrorMessage(text: error?.message ?? "get gas api error", delay: 2.0)
+                completion?(false)
             }
         }
     }
@@ -932,7 +935,20 @@ extension AssetSendViewControllerV060 {
                 self?.didTransferSuccess()
                 self?.navigationController?.popViewController(animated: true)
             case .fail(let code, let des):
-                self?.showMessageWithCodeAndMsg(code: code!, text: des!)
+                guard let c = code, let m = des else { return }
+                self?.showMessageWithCodeAndMsg(code: c, text: m)
+                switch code {
+                case 3001,
+                     3002,
+                     3003,
+                     3004,
+                     3005,
+                     3009:
+                    self?.fetchGasData()
+                default:
+                    break
+                }
+
             }
 
         })

@@ -23,7 +23,7 @@ enum NetworkError: Error {
     case nonceError(Int)
     case qrcodeExpiredError(Int)
     case transactionFailError
-    case sendSignedData(String, Int, String) // txtype,errorcode,mindelegate
+    case sendSignedData(String, Int, String, Bool) // txtype,errorcode,mindelegate,isobserverwallet
 
     var code: Int {
         switch self {
@@ -51,7 +51,7 @@ enum NetworkError: Error {
             return c
         case .transactionFailError:
             return -32000
-        case .sendSignedData(_, let c, _):
+        case .sendSignedData(_, let c, _, _):
             return c
         }
     }
@@ -82,14 +82,17 @@ enum NetworkError: Error {
             return Localized("network_error_expired")
         case .transactionFailError:
             return Localized("Transaction.Fail")
-        case .sendSignedData(let t, let c, let m):
+        case .sendSignedData(let t, let c, let m, let isObserver):
             switch c {
             case 3001:
                 return Localized("error_3001")
-            case 3002:
-                return Localized("error_3002", arguments: c)
-            case 3003:
-                return Localized("error_3003")
+            case 3002,
+                 3003:
+                if isObserver == true {
+                    return Localized("error_3003")
+                } else {
+                    return Localized("error_3002", arguments: c)
+                }
             case 3004:
                 if t == TxType.claimReward.rawValue {
                     return Localized("error_3004_reward")
