@@ -143,6 +143,7 @@ class AssetWalletsHeaderView: UIView {
             make.bottom.equalToSuperview().offset(-17)
         }
 
+        totalBalanceLabel.adjustsFontSizeToFitWidth = true
         totalBalanceLabel.setContentHuggingPriority(.required, for: .vertical)
         totalBalanceLabel.setContentCompressionResistancePriority(.required, for: .vertical)
         totalBalanceLabel.font = UIFont.systemFont(ofSize: 18, weight: .medium)
