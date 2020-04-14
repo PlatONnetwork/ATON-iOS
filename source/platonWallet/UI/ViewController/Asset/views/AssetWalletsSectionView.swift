@@ -22,6 +22,7 @@ class AssetWalletsSectionView: UIView {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 30, weight: .medium)
         label.textColor = .white
+        label.adjustsFontSizeToFitWidth = true
         return label
     }()
 

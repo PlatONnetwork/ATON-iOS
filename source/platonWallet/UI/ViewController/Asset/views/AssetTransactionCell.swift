@@ -84,7 +84,7 @@ class AssetTransactionCell: UITableViewCell {
         containerView.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(16)
             make.trailing.equalToSuperview().offset(-16)
-            make.top.equalToSuperview().offset(12)
+            make.top.equalToSuperview().offset(2)
             make.bottom.equalToSuperview().offset(-12)
         }
 
