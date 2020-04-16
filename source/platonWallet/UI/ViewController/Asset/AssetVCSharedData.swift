@@ -186,4 +186,10 @@ extension AssetVCSharedData {
             walletChangeHandlers.removeValue(forKey: address)
         }
     }
+
+    func active() {
+        for v in walletChangeHandlers {
+            v.value()
+        }
+    }
 }

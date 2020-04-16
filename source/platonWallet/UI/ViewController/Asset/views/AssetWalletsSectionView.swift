@@ -277,7 +277,8 @@ class AssetWalletsSectionView: UIView {
         receiveBtn.addTarget(self, action: #selector(receivePressed), for: .touchUpInside)
         contentView.addSubview(receiveBtn)
         receiveBtn.snp.makeConstraints { make in
-            make.top.equalTo(typeContentView.snp.bottom).offset(17)
+            make.top.greaterThanOrEqualTo(typeContentView.snp.bottom).offset(17)
+            make.top.greaterThanOrEqualTo(restrictedLabel.snp.bottom).offset(17)
             make.trailing.equalToSuperview().offset(-16)
             make.height.equalTo(34)
             make.bottom.equalToSuperview().offset(-16)

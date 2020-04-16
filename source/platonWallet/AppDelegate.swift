@@ -210,10 +210,6 @@ extension AppDelegate {
     }
 
     func getRemoteVersion() {
-        if window?.rootViewController is LaunchViewController {
-            return
-        }
-
         RemoteServices.getRemoteVersion { (result, response) in
             switch result {
             case .success:
