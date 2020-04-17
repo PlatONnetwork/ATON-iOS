@@ -13,6 +13,7 @@ disabled_rules: # 禁用指定的规则
   - file_length
   - cyclomatic_complexity
   - unused_capture_list
+  - orphaned_doc_comment
 opt_in_rules: # 启用指定的规则
   - empty_count
   # - missing_docs
@@ -25,6 +26,10 @@ excluded: # 执行 linting 时忽略的路径。 优先级比 `included` 更高�
   - Pods
   - platonWallet/ExcludedFolder
   - platonWallet/ExcludedFile.swift
+orphan_docstring:
+  name: For a docstring to work correctly, it must be next to what it is describing.
+  regex: '///\w*\n\s*//(?!/)'
+
 
 # line_length:
 #   warning: 120
