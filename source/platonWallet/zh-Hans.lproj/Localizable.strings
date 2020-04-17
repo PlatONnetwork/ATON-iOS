@@ -973,7 +973,7 @@
 "delegate_detail_unclaimed_reward" = "可领取奖励：";
 
 "wallet_receive_qrcode_warning_1" = "当前";
-"wallet_receive_qrcode_warning_2" = "网络，切勿将其他网络LAT转入到当前地址";
+"wallet_receive_qrcode_warning_2" = "网络，切勿将其他网络资产转入到当前地址";
 
 "claim_comfirm_title" = "领取奖励";
 "claim_comfirm_desc" = "预估奖励，以实际到账为准";
