@@ -32,7 +32,7 @@ class NodeSearchBarView: UIView {
         searchBar.setImage(UIImage(), for: .search, state: .normal)
         searchBar.showsCancelButton = true
         let cancelButton = searchBar.value(forKey: "cancelButton") as! UIButton
-        cancelButton.setTitle(Localized("mydelegates_search_cancel"), for: .normal)
+        cancelButton.localizedNormalTitle = "mydelegates_search_cancel"
         cancelButton.setTitleColor(common_blue_color, for: .normal)
         cancelButton.titleLabel?.font = UIFont.systemFont(ofSize: 14)
         if let textField = searchBar.value(forKey: "searchField") as? UITextField {

@@ -962,7 +962,7 @@
 "delegate_detail_unclaimed_reward" = "Unclaimed Reward：";
 
 "wallet_receive_qrcode_warning_1" = "You are on the ";
-"wallet_receive_qrcode_warning_2" = " Network. Never transfer other network LATs to this address.";
+"wallet_receive_qrcode_warning_2" = " Network. Never transfer asset from different network to this address.";
 
 "claim_comfirm_title" = "Claim Rewards";
 "claim_comfirm_desc" = "Estimated reward, subject to actual receipt";
