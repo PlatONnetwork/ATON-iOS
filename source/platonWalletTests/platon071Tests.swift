@@ -247,31 +247,6 @@ class platon071Tests: XCTestCase {
         }
     }
     
-    func testCanDelegateAPI() {
-        stub(condition: isPath(AppConfig.ServerURL.PATH + "/node/canDelegation")) { (request) -> OHHTTPStubsResponse in
-            let stubPath = OHPathForFile("canDelegation.json", type(of: self))
-            return fixture(filePath: stubPath!, headers: ["Content-Type":"application/json"])
-        }
-        
-        let expectaion = self.expectation(description: "testCanDelegateAPI")
-        let walletAddress = "0x0772fd8e5126C01b98D3a93C64546306149202ED"
-        let nid = "0x81f4ab0012303bff59c35cead6c2487909cbf59bb0b2b677c2ff36d7009b39a572b2f73214d8590022d20410cbf92631844a7ce8a7d5b840c0e25cd93dc234d5"
-        
-        StakingService.getCanDelegation(addr: walletAddress, nodeId: nid) { (result, data) in
-            switch result {
-            case .success:
-                XCTAssertTrue(data != nil, "response should be decode CanDelegation Type")
-                expectaion.fulfill()
-            case .failure:
-                XCTAssert(false, "get can delegate failure")
-            }
-        }
-        
-        waitForExpectations(timeout: 10) { (error) in
-            print(error?.localizedDescription ?? "")
-        }
-    }
-    
     func testGetBalanceAPI() {
         stub(condition: isPath(AppConfig.ServerURL.PATH + "/account/getBalance")) { (request) -> OHHTTPStubsResponse in
             let stubPath = OHPathForFile("getBalance.json", type(of: self))
