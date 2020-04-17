@@ -121,7 +121,7 @@ class AssetWalletsSectionView: UIView {
                     self.restrictedLabel.localizedAttributedTexts = [attribute_1, attribute_2, NSAttributedString(string: self.viewModel.lockBalance.value.description.vonToLATString ?? "0.00")]
                 }
             } else {
-                self.restrictedLabel.localizedAttributedTexts = nil
+                self.restrictedLabel.text = nil
             }
 
             self.walletIV.image = UIImage(named: wallet?.avatar ?? "")

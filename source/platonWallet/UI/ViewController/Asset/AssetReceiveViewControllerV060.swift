@@ -119,12 +119,8 @@ class AssetReceiveViewControllerV060: BaseViewController {
 
         let attribute_1 = NSAttributedString(string: "wallet_receive_qrcode_warning_1")
         let attribute_2 = NSAttributedString(string: "wallet_receive_qrcode_warning_2")
-
-        let attr = NSMutableAttributedString()
-        attr.append(attribute_1)
-        attr.append(NSAttributedString(string: SettingService.shareInstance.currentNetworkName))
-        attr.append(attribute_2)
-        tipsLabel.localizedAttributedTexts = [attribute_1, NSAttributedString(string: SettingService.shareInstance.currentNetworkDesc), attribute_2]
+        let networkNameAttribute = NSAttributedString(string: SettingService.shareInstance.currentNetworkName, attributes: [NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 14)])
+        tipsLabel.localizedAttributedTexts = [attribute_1, networkNameAttribute, attribute_2]
     }
 
     func displayAlert() {

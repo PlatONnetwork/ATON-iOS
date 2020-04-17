@@ -153,7 +153,7 @@ class TransactionListViewController: BaseViewController,UITableViewDelegate,UITa
 
         view.addSubview(txnTableView)
         txnTableView.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(50 + 7)
+            make.top.equalTo(topLayoutGuide.snp.bottom).offset(50 + 7)
             make.bottom.equalToSuperview()
             make.left.equalToSuperview().offset(0)
             make.right.equalToSuperview().offset(0)
