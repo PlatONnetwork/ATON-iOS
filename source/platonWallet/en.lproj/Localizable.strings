@@ -343,7 +343,7 @@
 
 
 //WalletEmptyView
-"IndividualWallet_EmptyView_tips" = "No Classic Wallet yet.";
+"IndividualWallet_EmptyView_tips" = "No Wallet yet.";
 "IndividualWallet_EmptyView_createBtn_title" = "Create Wallet";
 "IndividualWallet_EmptyView_importBtn_title" = "Import Wallet";
 

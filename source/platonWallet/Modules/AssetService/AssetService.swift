@@ -32,6 +32,7 @@ class AssetService : BaseService {
         let completion = completion
         let addresses = (AssetVCSharedData.sharedData.walletList as! [Wallet]).map { return $0.address }
         guard addresses.count > 0 else {
+            completion?(PlatonCommonResult.success, nil)
             NotificationCenter.default.post(name: Notification.Name.ATON.DidUpdateAllAsset, object: nil)
             return
         }

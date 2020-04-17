@@ -402,6 +402,7 @@ extension WithDrawViewController {
             DispatchQueue.main.async {
                 self.showOfflineConfirmView(content: content)
             }
+            return
         }
         
         showPasswordInputPswAlert(for: walletObject.currentWallet) { [weak self] (privateKey, _, error) in

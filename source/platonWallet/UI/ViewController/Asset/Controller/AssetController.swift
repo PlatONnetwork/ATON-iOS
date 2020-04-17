@@ -220,7 +220,10 @@ class AssetController {
     }
 
     @objc func willDeleteWallet(_ notification: Notification) {
-        guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return }
+        guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else {
+            fetchLatestData()
+            return
+        }
         guard let wallet = notification.object as? Wallet else { return }
         guard wallet.address.lowercased() == selectedAddress.lowercased() else { return }
         var tempData = viewModel.transactionsData.value
