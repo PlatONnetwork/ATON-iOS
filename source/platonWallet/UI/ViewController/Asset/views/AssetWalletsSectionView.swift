@@ -28,9 +28,11 @@ class AssetWalletsSectionView: UIView {
 
     lazy var restrictedLabel: UILabel = {
         let label = UILabel()
+        label.adjustsFontSizeToFitWidth = true
         label.font = UIFont.systemFont(ofSize: 14)
         label.textColor = .white
         label.numberOfLines = 2
+        label.lineBreakMode = .byCharWrapping
         return label
     }()
 
@@ -248,6 +250,7 @@ class AssetWalletsSectionView: UIView {
             make.leading.equalToSuperview().offset(16)
             make.top.equalTo(balanceLabel.snp.bottom).offset(7)
             make.height.equalTo(40)
+            make.trailing.equalToSuperview().offset(-145)
         }
 
         typeContentView.setContentHuggingPriority(.required, for: .vertical)
