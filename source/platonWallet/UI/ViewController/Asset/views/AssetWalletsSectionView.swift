@@ -28,10 +28,11 @@ class AssetWalletsSectionView: UIView {
 
     lazy var restrictedLabel: UILabel = {
         let label = UILabel()
+        label.adjustsFontSizeToFitWidth = true
         label.font = UIFont.systemFont(ofSize: 14)
         label.textColor = .white
         label.numberOfLines = 2
-        label.lineBreakMode =  NSLineBreakMode.byTruncatingTail
+        label.lineBreakMode = NSLineBreakMode.byTruncatingTail
         return label
     }()
 
