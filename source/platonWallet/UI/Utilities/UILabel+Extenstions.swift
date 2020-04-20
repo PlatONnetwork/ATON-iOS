@@ -78,4 +78,15 @@ extension UILabel {
             objc_setAssociatedObject(self, &unTruncateTextAssociatedKey, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN)
         }
     }
+    // add by liyf, 判断是否溢出
+    var isTruncated: Bool {
+
+        guard let labelText = text else {
+            return false
+        }
+
+        let labelTextSize = (labelText as NSString).boundingRect(with: CGSize(width: frame.size.width, height: .greatestFiniteMagnitude),options: .usesLineFragmentOrigin,attributes: [NSAttributedString.Key.font: font],context: nil).size
+
+        return labelTextSize.height > bounds.size.height
+    }
 }

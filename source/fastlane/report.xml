@@ -10,22 +10,22 @@
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="1: slather" time="3.552887">
+      <testcase classname="fastlane.lanes" name="1: slather" time="2.972525">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="2: lizard" time="2.884838">
+      <testcase classname="fastlane.lanes" name="2: lizard" time="2.899536">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="3: swiftlint" time="2.373545">
+      <testcase classname="fastlane.lanes" name="3: swiftlint" time="0.45004">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="4: sonar" time="29.431644">
+      <testcase classname="fastlane.lanes" name="4: sonar" time="19.455811">
         
       </testcase>
     
