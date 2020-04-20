@@ -31,6 +31,7 @@ class AssetWalletsSectionView: UIView {
         label.font = UIFont.systemFont(ofSize: 14)
         label.textColor = .white
         label.numberOfLines = 2
+        label.lineBreakMode =  NSLineBreakMode.byTruncatingTail
         return label
     }()
 
@@ -119,6 +120,10 @@ class AssetWalletsSectionView: UIView {
                     self.restrictedLabel.localizedAttributedTexts = [attribute_1, attribute_2, NSAttributedString(string: "***")]
                 } else {
                     self.restrictedLabel.localizedAttributedTexts = [attribute_1, attribute_2, NSAttributedString(string: self.viewModel.lockBalance.value.description.vonToLATString ?? "0.00")]
+                }
+                // 如果文字溢出， 数字换行现实
+                if(self.restrictedLabel.isTruncated) {
+                    self.restrictedLabel.localizedAttributedTexts = [attribute_1, attribute_2, NSAttributedString(string: "\n"),NSAttributedString(string: "1000000000000000000000000000000000034")]
                 }
             } else {
                 self.restrictedLabel.text = nil
@@ -247,7 +252,7 @@ class AssetWalletsSectionView: UIView {
         restrictedLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(16)
             make.top.equalTo(balanceLabel.snp.bottom).offset(7)
-            make.height.equalTo(40)
+            make.trailing.equalToSuperview().offset(-80)
         }
 
         typeContentView.setContentHuggingPriority(.required, for: .vertical)
