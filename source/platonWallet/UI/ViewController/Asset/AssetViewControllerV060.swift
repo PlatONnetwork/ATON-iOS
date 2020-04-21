@@ -786,8 +786,14 @@ extension AssetViewControllerV060: EmptyDataSetSource {
 
     func factoryEmptyHolderView() -> UIView {
         let holderView = UIView.viewFromXib(theClass: TableViewNoDataPlaceHolder.self) as! TableViewNoDataPlaceHolder
-        holderView.descriptionLabel.localizedText = "walletDetailVC_no_transactions_text"
-        holderView.imageView.image = UIImage(named: "empty_no_data_img")
+        
+        if AssetVCSharedData.sharedData.walletList.count == 0 {
+            holderView.descriptionLabel.localizedText = "IndividualWallet_EmptyView_tips"
+            holderView.imageView.image = UIImage(named: "empty_no_wallet_icon")
+        } else {
+            holderView.descriptionLabel.localizedText = "walletDetailVC_no_transactions_text"
+            holderView.imageView.image = UIImage(named: "empty_no_data_img")
+        }
         return holderView
     }
 

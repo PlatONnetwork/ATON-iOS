@@ -32,7 +32,7 @@ class AssetWalletsSectionView: UIView {
         label.font = UIFont.systemFont(ofSize: 14)
         label.textColor = .white
         label.numberOfLines = 2
-        label.lineBreakMode = NSLineBreakMode.byTruncatingTail
+        label.lineBreakMode = .byTruncatingTail
         return label
     }()
 
