@@ -6,7 +6,7 @@ PODS:
   - GzipSwift (5.0.0)
   - Kingfisher (4.10.1)
   - Localize-Swift (2.0.0)
-  - MBProgressHUD (1.1.0)
+  - MBProgressHUD (1.2.0)
   - MJRefresh (3.1.16)
   - OHHTTPStubs/Core (8.0.0)
   - OHHTTPStubs/Default (8.0.0):
@@ -74,7 +74,7 @@ DEPENDENCIES:
   - GzipSwift
   - Kingfisher
   - Localize-Swift (~> 2.0)
-  - MBProgressHUD (~> 1.1.0)
+  - MBProgressHUD (~> 1.2.0)
   - MJRefresh
   - OHHTTPStubs/Swift
   - platonWeb3 (~> 0.7.7)
@@ -150,7 +150,7 @@ SPEC CHECKSUMS:
   GzipSwift: 5592f4d62b641e04d06443ba471f8ed76b1363e4
   Kingfisher: c148cd7b47ebde9989f6bc7c27dcaa79d81279a0
   Localize-Swift: c798ec9286494866f7068f85f7c71283ac5bdab4
-  MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
+  MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   MJRefresh: 7798e16e53a5ef7f332dd05b27664db4e29530fd
   OHHTTPStubs: 9cbce6364bec557cc3439aa6bb7514670d780881
   platonWeb3: 3e3ff3004ee66a26913653ee9a22571f2108d6ba
@@ -175,6 +175,6 @@ SPEC CHECKSUMS:
   UMCShare: e0cef55c0fd6051254c8cda1d0630eb578b27bad
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: 9bebdf3a5a33ced7051e186438b2319da97fd321
+PODFILE CHECKSUM: e15877f5366eb4d974c074133d393646e3f2e872
 
 COCOAPODS: 1.9.1
