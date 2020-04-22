@@ -253,7 +253,8 @@ class AssetWalletsSectionView: UIView {
         restrictedLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(16)
             make.top.equalTo(balanceLabel.snp.bottom).offset(7)
-            make.trailing.equalToSuperview().offset(-80)
+            make.trailing.equalToSuperview().offset(-100)
+            make.height.equalTo(40)
         }
 
         typeContentView.setContentHuggingPriority(.required, for: .vertical)
