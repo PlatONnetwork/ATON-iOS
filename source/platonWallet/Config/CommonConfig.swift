@@ -20,11 +20,12 @@ struct AppConfig {
         static let VERSION_074 = "97"
         static let VERSION_0741 = "96"
         static let VERSION_076 = "95"
-        static let VERSION_MAINTESTNET = "101"
+        static let VERSION_0110 = "101"
+        static let VERSION_MAINTESTNET = "102"
         static let VERSION_MAINNET = "100"
         static let VERSION_UATNET = "299"
         static let DEV = "103"
-        static let TEST1 = "101"
+        static let TEST1 = "102"
     }
 
     struct NodeURL {

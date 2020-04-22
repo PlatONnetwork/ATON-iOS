@@ -35,7 +35,7 @@ class RealmHelper {
 
     public class func getConfig() -> Realm.Configuration {
         //v0.7.0 update scheme version to 8
-        let schemaVersion: UInt64 = 34
+        let schemaVersion: UInt64 = 35
 
         let config = Realm.Configuration(schemaVersion: schemaVersion, migrationBlock: { migration, oldSchemaVersion in
             if oldSchemaVersion < 23 {
@@ -64,6 +64,10 @@ class RealmHelper {
 
             if oldSchemaVersion < 34 {
                 migrationBelow091(migration: migration, schemaVersion: schemaVersion, oldSchemaVersion: oldSchemaVersion)
+            }
+
+            if oldSchemaVersion < 35 {
+                migrationBelow0120(migration: migration, schemaVersion: schemaVersion, oldSchemaVersion: oldSchemaVersion)
             }
         },shouldCompactOnLaunch: {(totalBytes, usedBytes) in
             //set db max size as 500M

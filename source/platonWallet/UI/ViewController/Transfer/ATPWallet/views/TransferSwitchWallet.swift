@@ -59,7 +59,11 @@ class TransferSwitchWallet: UIView, UITableViewDataSource, UITableViewDelegate {
                     }
                 }
             } else {
-                dataSourse.append(contentsOf: wallets)
+                for item in wallets {
+                    if item.type != .observed {
+                        dataSourse.append(item)
+                    }
+                }
             }
 
         }

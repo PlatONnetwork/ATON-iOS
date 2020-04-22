@@ -124,7 +124,7 @@ class AssetWalletsSectionView: UIView {
                 }
                 // 如果文字溢出， 数字换行现实
                 if(self.restrictedLabel.isTruncated) {
-                    self.restrictedLabel.localizedAttributedTexts = [attribute_1, attribute_2, NSAttributedString(string: "\n"),NSAttributedString(string: "1000000000000000000000000000000000034")]
+                    self.restrictedLabel.localizedAttributedTexts = [attribute_1, attribute_2, NSAttributedString(string: "\n"),NSAttributedString(string: self.viewModel.lockBalance.value.description.vonToLATString ?? "0.00")]
                 }
             } else {
                 self.restrictedLabel.text = nil
