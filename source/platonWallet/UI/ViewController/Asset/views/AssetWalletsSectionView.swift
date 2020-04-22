@@ -49,6 +49,18 @@ class AssetWalletsSectionView: UIView {
         return typeView
     }()
 
+    lazy var typeContentLabel: UILabel = {
+        let label = PaddingLabel()
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.textColor = .white
+        label.backgroundColor = UIColor(rgb: 0xC0D5FF)
+        label.topInset = 2
+        label.bottomInset = 2
+        label.leftInset = 10
+        label.rightInset = 10
+        return label
+    }()
+
     lazy var walletIV: UIImageView = {
         let imageView = UIImageView()
         return imageView
@@ -133,7 +145,7 @@ class AssetWalletsSectionView: UIView {
             self.walletIV.image = UIImage(named: wallet?.avatar ?? "")
 
             guard let wallet = wallet else { return }
-            self.typeLabel.localizedText = wallet.type.localizeText
+            self.typeContentLabel.localizedText = wallet.type.localizeText
 
             if wallet.type == .cold {
                 self.sendBtn.setTitleColor(.white, for: .normal)
@@ -146,15 +158,15 @@ class AssetWalletsSectionView: UIView {
             }
 
             if wallet.type == .classic {
-                self.typeContentView.isHidden = true
+                self.typeContentLabel.isHidden = true
             } else {
-                self.typeContentView.isHidden = false
+                self.typeContentLabel.isHidden = false
                 self.layoutIfNeeded()
 
-                let path = UIBezierPath(roundedRect: self.typeContentView.bounds, byRoundingCorners: [.topLeft, .bottomLeft], cornerRadii: CGSize(width: 12, height: 0))
+                let path = UIBezierPath(roundedRect: self.typeContentLabel.bounds, byRoundingCorners: [.topLeft, .bottomLeft], cornerRadii: CGSize(width: 12, height: 0))
                 let typeShapeMask = CAShapeLayer()
                 typeShapeMask.path = path.cgPath
-                self.typeContentView.layer.mask = typeShapeMask
+                self.typeContentLabel.layer.mask = typeShapeMask
             }
         }
 
@@ -253,24 +265,16 @@ class AssetWalletsSectionView: UIView {
         restrictedLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(16)
             make.top.equalTo(balanceLabel.snp.bottom).offset(7)
-            make.trailing.equalToSuperview().offset(-80)
+            make.trailing.equalToSuperview().offset(-100)
+            make.height.equalTo(40)
         }
 
-        typeContentView.setContentHuggingPriority(.required, for: .vertical)
-        typeContentView.setContentCompressionResistancePriority(.required, for: .vertical)
-        contentView.addSubview(typeContentView)
-        typeContentView.snp.makeConstraints { make in
+        typeContentLabel.setContentHuggingPriority(.required, for: .vertical)
+        typeContentLabel.setContentCompressionResistancePriority(.required, for: .vertical)
+        contentView.addSubview(typeContentLabel)
+        typeContentLabel.snp.makeConstraints { make in
             make.trailing.equalToSuperview()
             make.top.equalTo(balanceLabel.snp.bottom).offset(4)
-        }
-        typeLabel.setContentHuggingPriority(.required, for: .vertical)
-        typeLabel.setContentCompressionResistancePriority(.required, for: .vertical)
-        typeContentView.addSubview(typeLabel)
-        typeLabel.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(10)
-            make.trailing.equalToSuperview().offset(-10)
-            make.top.equalToSuperview().offset(2)
-            make.bottom.equalToSuperview().offset(-2)
         }
 
         let receiveBtn = UIButton()
@@ -283,7 +287,7 @@ class AssetWalletsSectionView: UIView {
         receiveBtn.addTarget(self, action: #selector(receivePressed), for: .touchUpInside)
         contentView.addSubview(receiveBtn)
         receiveBtn.snp.makeConstraints { make in
-            make.top.greaterThanOrEqualTo(typeContentView.snp.bottom).offset(17)
+            make.top.greaterThanOrEqualTo(typeContentLabel.snp.bottom).offset(17)
             make.top.greaterThanOrEqualTo(restrictedLabel.snp.bottom).offset(17)
             make.trailing.equalToSuperview().offset(-16)
             make.height.equalTo(34)

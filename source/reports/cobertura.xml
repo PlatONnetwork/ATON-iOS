@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE coverage SYSTEM "http://cobertura.sourceforge.net/xml/coverage-04.dtd">
-<coverage line-rate="0.3243071715675904" branch-rate="1.0000000000000000" lines-covered="1533" lines-valid="4727" branches-covered="0" branches-valid="0" complexity="0.0" timestamp="1587105981" version="Slather 2.4.7">
+<coverage line-rate="0.3231514640825784" branch-rate="1.0000000000000000" lines-covered="1534" lines-valid="4747" branches-covered="0" branches-valid="0" complexity="0.0" timestamp="1587539731" version="Slather 2.4.7">
   <sources>
     <source>/Users/liyf/gitrepo/ATON-iOS/source</source>
   </sources>
@@ -230,22 +230,21 @@
         <class name="CommonConfig" filename="platonWallet/Config/CommonConfig.swift" line-rate="0.5862068965517241" branch-rate="1.0000000000000000" complexity="0.0">
           <methods/>
           <lines>
-            <line number="62" branch="false" hits="1"/>
             <line number="63" branch="false" hits="1"/>
             <line number="64" branch="false" hits="1"/>
-            <line number="71" branch="false" hits="0"/>
+            <line number="65" branch="false" hits="1"/>
             <line number="72" branch="false" hits="0"/>
             <line number="73" branch="false" hits="0"/>
-            <line number="80" branch="false" hits="0"/>
+            <line number="74" branch="false" hits="0"/>
             <line number="81" branch="false" hits="0"/>
             <line number="82" branch="false" hits="0"/>
-            <line number="89" branch="false" hits="0"/>
+            <line number="83" branch="false" hits="0"/>
             <line number="90" branch="false" hits="0"/>
             <line number="91" branch="false" hits="0"/>
-            <line number="95" branch="false" hits="0"/>
+            <line number="92" branch="false" hits="0"/>
             <line number="96" branch="false" hits="0"/>
             <line number="97" branch="false" hits="0"/>
-            <line number="124" branch="false" hits="3"/>
+            <line number="98" branch="false" hits="0"/>
             <line number="125" branch="false" hits="3"/>
             <line number="126" branch="false" hits="3"/>
             <line number="127" branch="false" hits="3"/>
@@ -259,6 +258,7 @@
             <line number="135" branch="false" hits="3"/>
             <line number="136" branch="false" hits="3"/>
             <line number="137" branch="false" hits="3"/>
+            <line number="138" branch="false" hits="3"/>
           </lines>
         </class>
         <class name="CommonService" filename="platonWallet/Config/CommonService.swift" line-rate="0.3738317757009346" branch-rate="1.0000000000000000" complexity="0.0">
@@ -2141,9 +2141,9 @@
         <class name="AddressInfo" filename="platonWallet/Models/Wallet/AddressInfo.swift" line-rate="1.0000000000000000" branch-rate="1.0000000000000000" complexity="0.0">
           <methods/>
           <lines>
-            <line number="19" branch="false" hits="11"/>
-            <line number="23" branch="false" hits="11"/>
-            <line number="24" branch="false" hits="11"/>
+            <line number="19" branch="false" hits="12"/>
+            <line number="23" branch="false" hits="12"/>
+            <line number="24" branch="false" hits="12"/>
             <line number="26" branch="false" hits="1"/>
             <line number="27" branch="false" hits="1"/>
             <line number="28" branch="false" hits="1"/>
@@ -2926,7 +2926,7 @@
         </class>
       </classes>
     </package>
-    <package name="platonWallet.Modules.AssetService" line-rate="0.2105263157894737" branch-rate="1.0000000000000000" complexity="0.0">
+    <package name="platonWallet.Modules.AssetService" line-rate="0.2187500000000000" branch-rate="1.0000000000000000" complexity="0.0">
       <classes>
         <class name="AssetCoreService" filename="platonWallet/Modules/AssetService/AssetCoreService.swift" line-rate="0.0000000000000000" branch-rate="1.0000000000000000" complexity="0.0">
           <methods/>
@@ -2980,7 +2980,7 @@
             <line number="18" branch="false" hits="1"/>
           </lines>
         </class>
-        <class name="AssetService" filename="platonWallet/Modules/AssetService/AssetService.swift" line-rate="0.2830188679245283" branch-rate="1.0000000000000000" complexity="0.0">
+        <class name="AssetService" filename="platonWallet/Modules/AssetService/AssetService.swift" line-rate="0.2962962962962963" branch-rate="1.0000000000000000" complexity="0.0">
           <methods/>
           <lines>
             <line number="16" branch="false" hits="1"/>
@@ -2998,7 +2998,7 @@
             <line number="35" branch="false" hits="1"/>
             <line number="36" branch="false" hits="1"/>
             <line number="37" branch="false" hits="1"/>
-            <line number="38" branch="false" hits="0"/>
+            <line number="38" branch="false" hits="1"/>
             <line number="39" branch="false" hits="0"/>
             <line number="40" branch="false" hits="0"/>
             <line number="41" branch="false" hits="0"/>
@@ -3026,16 +3026,17 @@
             <line number="63" branch="false" hits="0"/>
             <line number="64" branch="false" hits="0"/>
             <line number="65" branch="false" hits="0"/>
-            <line number="68" branch="false" hits="0"/>
+            <line number="66" branch="false" hits="0"/>
             <line number="69" branch="false" hits="0"/>
             <line number="70" branch="false" hits="0"/>
-            <line number="74" branch="false" hits="0"/>
+            <line number="71" branch="false" hits="0"/>
             <line number="75" branch="false" hits="0"/>
             <line number="76" branch="false" hits="0"/>
             <line number="77" branch="false" hits="0"/>
             <line number="78" branch="false" hits="0"/>
             <line number="79" branch="false" hits="0"/>
             <line number="80" branch="false" hits="0"/>
+            <line number="81" branch="false" hits="0"/>
           </lines>
         </class>
       </classes>
@@ -3102,7 +3103,7 @@
         </class>
       </classes>
     </package>
-    <package name="platonWallet.Modules.Persistence" line-rate="0.4579256360078278" branch-rate="1.0000000000000000" complexity="0.0">
+    <package name="platonWallet.Modules.Persistence" line-rate="0.4543689320388349" branch-rate="1.0000000000000000" complexity="0.0">
       <classes>
         <class name="AddressInfoPersistence" filename="platonWallet/Modules/Persistence/AddressInfoPersistence.swift" line-rate="0.9137931034482759" branch-rate="1.0000000000000000" complexity="0.0">
           <methods/>
@@ -3244,7 +3245,7 @@
             <line number="66" branch="false" hits="0"/>
           </lines>
         </class>
-        <class name="RealmHelper" filename="platonWallet/Modules/Persistence/RealmHelper.swift" line-rate="0.4354838709677419" branch-rate="1.0000000000000000" complexity="0.0">
+        <class name="RealmHelper" filename="platonWallet/Modules/Persistence/RealmHelper.swift" line-rate="0.4090909090909091" branch-rate="1.0000000000000000" complexity="0.0">
           <methods/>
           <lines>
             <line number="18" branch="false" hits="0"/>
@@ -3286,29 +3287,33 @@
             <line number="65" branch="false" hits="0"/>
             <line number="66" branch="false" hits="0"/>
             <line number="67" branch="false" hits="0"/>
-            <line number="68" branch="false" hits="22"/>
-            <line number="69" branch="false" hits="22"/>
-            <line number="70" branch="false" hits="22"/>
-            <line number="71" branch="false" hits="22"/>
-            <line number="72" branch="false" hits="22"/>
-            <line number="73" branch="false" hits="42"/>
-            <line number="74" branch="false" hits="42"/>
-            <line number="80" branch="false" hits="26"/>
-            <line number="81" branch="false" hits="26"/>
-            <line number="82" branch="false" hits="26"/>
-            <line number="83" branch="false" hits="335"/>
-            <line number="84" branch="false" hits="335"/>
-            <line number="85" branch="false" hits="321"/>
-            <line number="86" branch="false" hits="0"/>
-            <line number="87" branch="false" hits="321"/>
-            <line number="88" branch="false" hits="321"/>
+            <line number="68" branch="false" hits="0"/>
+            <line number="69" branch="false" hits="0"/>
+            <line number="70" branch="false" hits="0"/>
+            <line number="71" branch="false" hits="0"/>
+            <line number="72" branch="false" hits="20"/>
+            <line number="73" branch="false" hits="20"/>
+            <line number="74" branch="false" hits="20"/>
+            <line number="75" branch="false" hits="20"/>
+            <line number="76" branch="false" hits="20"/>
+            <line number="77" branch="false" hits="42"/>
+            <line number="78" branch="false" hits="42"/>
+            <line number="84" branch="false" hits="26"/>
+            <line number="85" branch="false" hits="26"/>
+            <line number="86" branch="false" hits="26"/>
+            <line number="87" branch="false" hits="335"/>
+            <line number="88" branch="false" hits="335"/>
             <line number="89" branch="false" hits="321"/>
-            <line number="90" branch="false" hits="321"/>
-            <line number="91" branch="false" hits="26"/>
-            <line number="92" branch="false" hits="26"/>
-            <line number="98" branch="false" hits="10"/>
-            <line number="99" branch="false" hits="11"/>
-            <line number="100" branch="false" hits="10"/>
+            <line number="90" branch="false" hits="0"/>
+            <line number="91" branch="false" hits="321"/>
+            <line number="92" branch="false" hits="321"/>
+            <line number="93" branch="false" hits="321"/>
+            <line number="94" branch="false" hits="321"/>
+            <line number="95" branch="false" hits="26"/>
+            <line number="96" branch="false" hits="26"/>
+            <line number="102" branch="false" hits="10"/>
+            <line number="103" branch="false" hits="11"/>
+            <line number="104" branch="false" hits="10"/>
           </lines>
         </class>
         <class name="TransferPersistence" filename="platonWallet/Modules/Persistence/TransferPersistence.swift" line-rate="0.3352941176470588" branch-rate="1.0000000000000000" complexity="0.0">
@@ -3667,6 +3672,7 @@
             <line number="21" branch="false" hits="0"/>
             <line number="22" branch="false" hits="0"/>
             <line number="23" branch="false" hits="0"/>
+            <line number="24" branch="false" hits="0"/>
             <line number="25" branch="false" hits="0"/>
             <line number="26" branch="false" hits="0"/>
             <line number="27" branch="false" hits="0"/>
@@ -3675,13 +3681,12 @@
             <line number="30" branch="false" hits="0"/>
             <line number="31" branch="false" hits="0"/>
             <line number="32" branch="false" hits="0"/>
-            <line number="33" branch="false" hits="0"/>
             <line number="34" branch="false" hits="0"/>
             <line number="35" branch="false" hits="0"/>
+            <line number="36" branch="false" hits="0"/>
             <line number="37" branch="false" hits="0"/>
             <line number="38" branch="false" hits="0"/>
             <line number="39" branch="false" hits="0"/>
-            <line number="40" branch="false" hits="0"/>
             <line number="41" branch="false" hits="0"/>
             <line number="42" branch="false" hits="0"/>
             <line number="43" branch="false" hits="0"/>
@@ -3693,7 +3698,6 @@
             <line number="49" branch="false" hits="0"/>
             <line number="50" branch="false" hits="0"/>
             <line number="51" branch="false" hits="0"/>
-            <line number="52" branch="false" hits="0"/>
             <line number="53" branch="false" hits="0"/>
             <line number="54" branch="false" hits="0"/>
             <line number="55" branch="false" hits="0"/>
@@ -3701,6 +3705,7 @@
             <line number="57" branch="false" hits="0"/>
             <line number="58" branch="false" hits="0"/>
             <line number="59" branch="false" hits="0"/>
+            <line number="60" branch="false" hits="0"/>
             <line number="61" branch="false" hits="0"/>
             <line number="62" branch="false" hits="0"/>
             <line number="63" branch="false" hits="0"/>
@@ -3716,7 +3721,6 @@
             <line number="73" branch="false" hits="0"/>
             <line number="74" branch="false" hits="0"/>
             <line number="75" branch="false" hits="0"/>
-            <line number="76" branch="false" hits="0"/>
             <line number="77" branch="false" hits="0"/>
             <line number="78" branch="false" hits="0"/>
             <line number="79" branch="false" hits="0"/>
@@ -3725,12 +3729,28 @@
             <line number="82" branch="false" hits="0"/>
             <line number="83" branch="false" hits="0"/>
             <line number="84" branch="false" hits="0"/>
+            <line number="85" branch="false" hits="0"/>
+            <line number="86" branch="false" hits="0"/>
+            <line number="87" branch="false" hits="0"/>
             <line number="88" branch="false" hits="0"/>
             <line number="89" branch="false" hits="0"/>
             <line number="90" branch="false" hits="0"/>
+            <line number="91" branch="false" hits="0"/>
             <line number="92" branch="false" hits="0"/>
             <line number="93" branch="false" hits="0"/>
             <line number="94" branch="false" hits="0"/>
+            <line number="95" branch="false" hits="0"/>
+            <line number="96" branch="false" hits="0"/>
+            <line number="97" branch="false" hits="0"/>
+            <line number="98" branch="false" hits="0"/>
+            <line number="99" branch="false" hits="0"/>
+            <line number="100" branch="false" hits="0"/>
+            <line number="104" branch="false" hits="0"/>
+            <line number="105" branch="false" hits="0"/>
+            <line number="106" branch="false" hits="0"/>
+            <line number="108" branch="false" hits="0"/>
+            <line number="109" branch="false" hits="0"/>
+            <line number="110" branch="false" hits="0"/>
           </lines>
         </class>
       </classes>
