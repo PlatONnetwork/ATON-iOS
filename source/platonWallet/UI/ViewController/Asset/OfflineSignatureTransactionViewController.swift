@@ -91,7 +91,7 @@ class OfflineSignatureTransactionViewController: BaseViewController {
         let totalLAT = totalAmount.description.vonToLATString ?? "0.00"
         let unionAttr = NSAttributedString(string: " LAT", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 20)])
         let attributed = NSMutableAttributedString(string: totalLAT)
-        attributed.append(unionAttr)
+//        attributed.append(unionAttr)
         valueLabel.attributedText = attributed
 
         listData.append((title: Localized("confirm_authorize_function_type"), value: codes.first?.typeString ?? "--"))
