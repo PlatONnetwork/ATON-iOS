@@ -383,7 +383,13 @@ extension AssetViewControllerV060 {
         case .signedTransaction(let data):
             showQrcodeScan(scanData: data)
         case .address(let data):
-            onSendPressed(toAddress: data)
+            if (AssetVCSharedData.sharedData.walletList.isEmpty) {
+                let targetVC = MainImportWalletViewController(type: .observer, text: data)
+                targetVC.hidesBottomBarWhenPushed = true
+                navigationController?.pushViewController(targetVC, animated: true)
+            } else {
+                onSendPressed(toAddress: data)
+            }
         case .keystore(let data):
             let targetVC = MainImportWalletViewController(type: .keystore, text: data)
             targetVC.hidesBottomBarWhenPushed = true
