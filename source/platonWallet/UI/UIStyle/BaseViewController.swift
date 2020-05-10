@@ -180,8 +180,7 @@ class BaseViewController: UIViewController {
     func setDefaultUIStyle() {
         view.backgroundColor = UIViewController_backround
 
-        if type(of: self) == AssetSendViewControllerV060.self ||
-            type(of: self) == ImportMnemonicOrPrivateKeyViewController.self ||
+        if type(of: self) == ImportMnemonicOrPrivateKeyViewController.self ||
             type(of: self) == PersonalViewController.self ||
             type(of: self) == QRScannerViewController.self ||
             type(of: self) == MainImportWalletViewController.self {
