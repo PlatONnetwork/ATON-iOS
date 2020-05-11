@@ -594,7 +594,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
         confirmView.titleLabel.text = Localized("Send_transaction_alert_title")
         let unionAttr = NSAttributedString(string: " LAT", attributes: [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 16)])
         let amountAttr = NSMutableAttributedString(string: amountView.textField.text!.displayForMicrometerLevel(maxRound: 8))
-        amountAttr.append(unionAttr)
+//        amountAttr.append(unionAttr)
         confirmView.totalLabel.attributedText = amountAttr
         confirmView.toAddressLabel.text = walletAddressView.textField.text!.addressDisplayInLocal() ?? "--"
         confirmView.walletName.text = wallet.address.addressDisplayInLocal() ?? "--"
