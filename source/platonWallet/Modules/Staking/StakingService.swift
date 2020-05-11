@@ -167,7 +167,7 @@ extension StakingService {
 
                 return (Int(lhs.delegatedRatePA ?? "0") ?? 0) > (Int(rhs.delegatedRatePA ?? "0") ?? 0)
             case .delegated:
-                if lhs.delegateSum != lhs.delegateSum {
+                if lhs.delegateSum != rhs.delegateSum {
                     return (BigUInt(lhs.delegateSum ?? "0") ?? BigUInt.zero) > (BigUInt(rhs.delegateSum ?? "0") ?? BigUInt.zero)
                 }
 

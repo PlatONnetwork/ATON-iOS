@@ -4385,10 +4385,11 @@
 			baseConfigurationReference = 066997A993A7BD843316E036 /* Pods-platonWallet.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_DEBUG_INFORMATION_LEVEL = "line-tables-only";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 58;
+				CURRENT_PROJECT_VERSION = 59;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = JL97B8WL3X;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -4419,10 +4420,11 @@
 			baseConfigurationReference = B6C6C66ABA19AFA1DEE6933E /* Pods-platonWallet.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_DEBUG_INFORMATION_LEVEL = "line-tables-only";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 58;
+				CURRENT_PROJECT_VERSION = 59;
 				DEVELOPMENT_TEAM = JL97B8WL3X;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",

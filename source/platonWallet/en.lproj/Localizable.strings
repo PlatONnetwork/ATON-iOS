@@ -911,7 +911,7 @@
 "confirm_authorize_delegate_to" = "Delegated to:";
 "confirm_authorize_to" = "Recipient:";
 "confirm_authorize_undelegate_to" = "Undelegated from:";
-"confirm_authorize_fee" = "Fee:";
+"confirm_authorize_fee" = "Tx fee:";
 "confirm_generate_qrcode_for_signed_tx" = "Authorization Signature";
 "confirm_generate_qrcode_for_signed_tx_tip" = "Scan the OR code to finish your authorization for the observed wallet.";
 "confirm_button_signed_tx" = "Finish";
