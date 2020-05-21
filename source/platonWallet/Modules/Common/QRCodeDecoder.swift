@@ -40,7 +40,7 @@ open class QRCodeDecoder {
 //    }
 
     func decode(_ res: String) -> QRCodeType {
-        if res.isValidAddress() {
+        if WalletUtil.isValidAddress(res) {
             return QRCodeType.address(data: res)
         } else if res.isValidPrivateKey() {
             return QRCodeType.privatekey(data: res)

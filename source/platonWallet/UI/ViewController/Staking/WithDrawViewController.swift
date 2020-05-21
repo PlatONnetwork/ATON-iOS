@@ -545,7 +545,7 @@ extension WithDrawViewController {
                 let signedTransaction = try? EthereumSignedTransaction(rlp: signedTransactionRLP) {
 
                 guard
-                    let to = signedTransaction.to?.rawAddress.toHexString().add0x() else { return }
+                    let to = signedTransaction.to?.rawAddress.toHexString().add0xBech32() else { return }
                 let gasPrice = signedTransaction.gasPrice.quantity
                 let gasLimit = signedTransaction.gasLimit.quantity
                 let gasUsed = gasPrice.multiplied(by: gasLimit).description

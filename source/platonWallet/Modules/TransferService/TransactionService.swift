@@ -126,7 +126,7 @@ class TransactionService : BaseService {
 
         let data = EthereumData(bytes: [])
         try? walletAddr = EthereumAddress(hex: from, eip55: false)
-        try? toAddr = EthereumAddress(hex: to, eip55: false)
+        try? toAddr = EthereumAddress(hex: try! AddrCoder.shared.decodeHex(addr: to), eip55: false)
         try? fromAddr = EthereumAddress(hex: from, eip55: false)
         try? pk = EthereumPrivateKey(hexPrivateKey: pri)
 

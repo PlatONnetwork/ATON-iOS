@@ -545,7 +545,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
         guard
             let toAddress = walletAddressView.textField.text,
             let wallet = AssetVCSharedData.sharedData.selectedWallet as? Wallet,
-            toAddress.ishexStringEqual(other: wallet.address) == false
+            toAddress.isBech32AddressEqual(other: wallet.address) == false
         else {
             AssetViewControllerV060.getInstance()?.showMessage(text: Localized("cannot_send_itself"))
             return

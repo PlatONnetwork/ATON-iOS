@@ -120,7 +120,7 @@ class MainImportWalletViewController: BaseViewController,UIScrollViewDelegate,Im
     func handleScanResp(_ resp: String) {
         var index = currentIndex
 
-        if resp.isValidAddress() {
+        if WalletUtil.isValidAddress(resp) {
             index = ImportWalletVCType.observer.rawValue
             gotoVCForTabIndex(index, text: resp)
         } else if resp.isValidPrivateKey() {

@@ -15,6 +15,38 @@ extension RealmHelper {
         migration.renameProperty(onType: Node.className(), from: "ratePA", to: "delegatedRatePA")
     }
 
+    public static func migrationBelow0130(migration: Migration, schemaVersion:UInt64, oldSchemaVersion: UInt64) {
+//        #if UAT
+//        #elseif PARALLELNET
+//        #else
+        migration.enumerateObjects(ofType: Wallet.className()) { (oldObject, newObject) in
+            guard oldObject != nil, newObject != nil else { return }
+            // 旧钱包格式json不保存地址, 所以无需修改
+            //Wallet {
+            //	primaryKeyIdentifier = 0xBee4D8692caDdfAe2475e981541879AA8D830FEB101;
+            //	uuid = 0xBee4D8692caDdfAe2475e981541879AA8D830FEB;
+            //	keystorePath = UTC--2020-05-20T13-48-12.25960302348000--0xBee4D8692caDdfAe2475e981541879AA8D830FEB.json;
+            //	createTime = 1589953692258;
+            //	updateTime = 1589953692258;
+            //	name = liyf;
+            //	avatar = walletAvatar_7;
+            //	chainId = 101;
+            //	userArrangementIndex = -1;
+            //	balance = ;
+            //	lockedBalance = ;
+            //	mnemonic = ca54fca945288e78de3573b1bd951894a4965d982999c7eec68b751f2bcc2c6f060ab4a91c2e28326682e33a351f034d5016de3e2c81f3ca81c1a3bfc8c2fedb10ae8a8bfca2;
+            //	isBackup = 0;
+            //	version = 1;
+            //}
+
+            /*guard let address = oldObject!["address"] as? String, (
+                    WalletUtil.isValidAddress(address)
+            ) else { return }
+            newObject!["address"] = Keystore.Address(address: (oldObject!["address"] as? String)!, mainnetHrp: AppConfig.Hrp.LAT, testnetHrp: AppConfig.Hrp.LAX)*/
+        }
+//        #endif
+    }
+
     public static func migrationBelow0120(migration: Migration, schemaVersion:UInt64, oldSchemaVersion: UInt64) {
         #if UAT
         #elseif PARALLELNET

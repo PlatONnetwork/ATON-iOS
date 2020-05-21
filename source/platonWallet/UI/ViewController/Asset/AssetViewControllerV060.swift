@@ -537,8 +537,8 @@ extension AssetViewControllerV060 {
 
                 let tx = Transaction()
                 tx.senderAddress = from
-                tx.from = from.add0x()
-                tx.to = to.add0x()
+                tx.from = from.add0xBech32()
+                tx.to = to.add0xBech32()
                 tx.gasUsed = gasUsed
                 tx.createTime = Int(Date().timeIntervalSince1970 * 1000)
                 tx.txhash = signedTransaction.hash?.add0x()
@@ -565,8 +565,8 @@ extension AssetViewControllerV060 {
 
                 let thTx = TwoHourTransaction()
                 thTx.createTime = Int(Date().timeIntervalSince1970 * 1000)
-                thTx.to = to.add0x().lowercased()
-                thTx.from = from.add0x().lowercased()
+                thTx.to = to.add0xBech32().lowercased()
+                thTx.from = from.add0xBech32().lowercased()
                 thTx.value = amount
 
                 if (qrcode.v ?? 0) >= 1 {

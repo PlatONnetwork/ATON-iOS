@@ -120,7 +120,7 @@ extension DelegateDetailViewController {
     private func setupWalletData() {
         walletHeaderView.nodeAvatarIV.image = delegate?.walletAvatar ?? UIImage(named: "walletAvatar_1")
         walletHeaderView.nodeNameLabel.text = delegate?.walletName ?? "--"
-        walletHeaderView.nodeAddressLabel.text = delegate?.walletAddress.addressForDisplay() ?? "--"
+        walletHeaderView.nodeAddressLabel.text = delegate?.walletAddress.addressForDisplayBech32() ?? "--"
     }
 
     @objc private func fetchData() {

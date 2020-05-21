@@ -31,7 +31,7 @@ struct CommonService {
             return (false, Localized("transferVC_address_empty_tip"))
         }
 
-        guard address != nil && (address?.is40ByteAddress())! else {
+        guard address != nil && WalletUtil.isValidAddress(address!) else {
             return (false, Localized("transferVC_address_Incorrect_tip"))
         }
 
@@ -89,7 +89,7 @@ struct CommonService {
             return (false, Localized("NewAddress_address_empty_tip"))
         }
 
-        guard (address?.is40ByteAddress())! else {
+        guard WalletUtil.isValidAddress(address!) else {
             return (false, Localized("NewAddress_address_Incorrect_tip"))
         }
         return (true, nil)
@@ -127,7 +127,7 @@ struct CommonService {
             valid = false
         }
 
-        if (!text.is40ByteAddress()) {
+        if (!WalletUtil.isValidAddress(text)) {
             msg = Localized("transferVC_address_Incorrect_tip")
             valid = false
         }

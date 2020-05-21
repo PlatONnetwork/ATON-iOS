@@ -27,7 +27,7 @@ class MyDelegateViewCell: UITableViewCell {
         didSet {
             walletAvatarIV.image = delegate?.walletAvatar ?? UIImage(named: "walletAvatar_1")
             walletNameLabel.text = delegate?.walletName
-            walletAddressLabel.text = delegate?.walletAddress.addressForDisplay()
+            walletAddressLabel.text = delegate?.walletAddress.addressForDisplayBech32()
 
             delegatedLabel.text = delegate?.delegateValue
             totalRewardLabel.text = delegate?.cumulativeRewardValue

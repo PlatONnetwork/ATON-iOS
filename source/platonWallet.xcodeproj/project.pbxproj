@@ -1050,6 +1050,9 @@
 		9AF9AC222182E04000E97F07 /* PopupDialogContainerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF9AC122182E04000E97F07 /* PopupDialogContainerView.swift */; };
 		9AF9AC242182E19600E97F07 /* PAlertController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AF9AC232182E19600E97F07 /* PAlertController.swift */; };
 		B1DAED1D34810B2B9FF14A4A /* Pods_platonWallet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D427B78BFE8D21222DD020CB /* Pods_platonWallet.framework */; };
+		E8A41C8824765D510058201E /* Keystore.Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A41C8724765D510058201E /* Keystore.Address.swift */; };
+		E8A41C8924765D600058201E /* Keystore.Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A41C8724765D510058201E /* Keystore.Address.swift */; };
+		E8A41C8A24765D610058201E /* Keystore.Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A41C8724765D510058201E /* Keystore.Address.swift */; };
 		F4C14E17EDDB11FFD2934C8A /* Pods_platonWalletUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B921C95E2605F8C1B9AA186 /* Pods_platonWalletUITests.framework */; };
 /* End PBXBuildFile section */
 
@@ -1463,6 +1466,7 @@
 		D427B78BFE8D21222DD020CB /* Pods_platonWallet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_platonWallet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D820126F71DD314BE0646A42 /* Pods-platonWalletTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-platonWalletTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-platonWalletTests/Pods-platonWalletTests.release.xcconfig"; sourceTree = "<group>"; };
 		D9FE9219D5D4501081002D52 /* Pods-platonWalletUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-platonWalletUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-platonWalletUITests/Pods-platonWalletUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		E8A41C8724765D510058201E /* Keystore.Address.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Keystore.Address.swift; sourceTree = "<group>"; };
 		E8F5C94BA452BEFB338A80D7 /* Pods-platonWalletUAT.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-platonWalletUAT.debug.xcconfig"; path = "Pods/Target Support Files/Pods-platonWalletUAT/Pods-platonWalletUAT.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -2145,6 +2149,7 @@
 				9AD67AAD21748B2900A8432F /* Keystore.swift */,
 				8118862523B5E09000CAE5BA /* PBKDF2Params.swift */,
 				9A56557A217578EA002A1F6C /* Keystore.Crypto.swift */,
+				E8A41C8724765D510058201E /* Keystore.Address.swift */,
 				9A56557C2176CB05002A1F6C /* HDPath.swift */,
 				9A56557E21772DE2002A1F6C /* WalletUtil.swift */,
 				81E2E84E2186AEAF008B7504 /* AddressInfo.swift */,
@@ -3390,6 +3395,7 @@
 				811886E223B7590C00CAE5BA /* QuickSaveAddressButton.swift in Sources */,
 				811886E323B7590C00CAE5BA /* AddAddressInfoView.swift in Sources */,
 				811886E423B7590C00CAE5BA /* StakingService.swift in Sources */,
+				E8A41C8A24765D610058201E /* Keystore.Address.swift in Sources */,
 				811886E523B7590C00CAE5BA /* UINavigationItem+Extensions.swift in Sources */,
 				811886E623B7590C00CAE5BA /* AlertStylePopViewController.swift in Sources */,
 				811886E723B7590C00CAE5BA /* RemoteConfig.swift in Sources */,
@@ -3681,6 +3687,7 @@
 				81B58A1A235DA1FC00816B4E /* QuickSaveAddressButton.swift in Sources */,
 				81DD58EB238BA24D007844ED /* AddAddressInfoView.swift in Sources */,
 				81B58A1B235DA1FC00816B4E /* StakingService.swift in Sources */,
+				E8A41C8924765D600058201E /* Keystore.Address.swift in Sources */,
 				81B58A1C235DA1FC00816B4E /* UINavigationItem+Extensions.swift in Sources */,
 				81B58A1D235DA1FC00816B4E /* AlertStylePopViewController.swift in Sources */,
 				813A005B23692F33001CEE32 /* RemoteConfig.swift in Sources */,
@@ -3972,6 +3979,7 @@
 				81DD58D2238BA24D007844ED /* AddressBookTableViewCell.swift in Sources */,
 				81DD58EE238BA24D007844ED /* SettingTableViewCell.swift in Sources */,
 				81E072B9223A8359003F6A28 /* AlertStylePopViewController.swift in Sources */,
+				E8A41C8824765D510058201E /* Keystore.Address.swift in Sources */,
 				813A005A23692F33001CEE32 /* RemoteConfig.swift in Sources */,
 				81DD58EC238BA24D007844ED /* SettingFooter.swift in Sources */,
 				9AF9AC1E2182E04000E97F07 /* PopupDialogDefaultViewController.swift in Sources */,

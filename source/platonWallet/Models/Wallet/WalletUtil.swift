@@ -148,7 +148,11 @@ class WalletUtil {
     }
 
     static func isValidAddress(_ address: String) -> Bool {
-        return address.is40ByteAddress()
+        if(AppConfig.Hrp.LAT == SettingService.shareInstance.currentNodeHrp) {
+            return address.isMainnetAddress()
+        } else {
+            return address.isTestnetAddress()
+        }
     }
 
     static func generateNewObservedWalletName() -> String {

@@ -110,7 +110,7 @@ class NewAddressInfoViewController: BaseViewController , UITextFieldDelegate {
             return
         }
 
-        if !(contentView.addressField.text?.is40ByteAddress())! {
+        if !WalletUtil.isValidAddress(contentView.addressField.text!) {
             contentView.showAddressTipWithString(desciption: Localized("NewAddress_address_Incorrect_tip"))
             return
         }

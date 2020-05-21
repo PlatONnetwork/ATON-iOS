@@ -22,15 +22,15 @@ extension Transaction {
             return .unknown
         case .transfer:
             guard let address = currentAddress else {
-                let addresses = (AssetVCSharedData.sharedData.walletList as! [Wallet]).map { return $0.address.add0x().lowercased() }
-                if let fromAddress = to?.add0x().lowercased(), addresses.contains(fromAddress) {
+                let addresses = (AssetVCSharedData.sharedData.walletList as! [Wallet]).map { return $0.address.add0xBech32().lowercased() }
+                if let fromAddress = to?.add0xBech32().lowercased(), addresses.contains(fromAddress) {
                     return .Receive
                 }
                 return .Sent
             }
-            if address.add0x().lowercased() == from?.add0x().lowercased() {
+            if address.add0xBech32().lowercased() == from?.add0xBech32().lowercased() {
                 return .Sent
-            } else if address.add0x().lowercased() == to?.add0x().lowercased() {
+            } else if address.add0xBech32().lowercased() == to?.add0xBech32().lowercased() {
                 return .Receive
             } else {
                 return .unknown
@@ -77,7 +77,7 @@ extension Transaction {
                 if let addressBookWallet = AddressBookService.service.getAll().first(where: { $0.walletAddress?.lowercased() == to?.lowercased() }) {
                     return addressBookWallet.walletName
                 } else {
-                    return to?.addressForDisplayShort()
+                    return to?.addressForDisplayShortBech32()
                 }
             }
             return wallet.name
@@ -85,14 +85,14 @@ extension Transaction {
             if let nName = nodeName, nName.count > 0 {
                 return nName
             }
-            return to?.addressForDisplayShort()
+            return to?.addressForDisplayShortBech32()
         }
     }
 
     var fromNameString: String? {
         let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.address.lowercased() == from?.lowercased() }.first
         guard let wallet = localWallet else {
-            return from?.addressForDisplayShort()
+            return from?.addressForDisplayShortBech32()
         }
         return wallet.name
     }
@@ -326,6 +326,6 @@ extension Transaction {
     }
 
     var recordWalletAddress: String? {
-        return from != nil ? "(" + (from?.addressForDisplayShort() ?? "--") + ")" : ""
+        return from != nil ? "(" + (from?.addressForDisplayShortBech32() ?? "--") + ")" : ""
     }
 }
