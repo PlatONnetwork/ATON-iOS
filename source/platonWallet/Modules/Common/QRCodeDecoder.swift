@@ -40,7 +40,13 @@ open class QRCodeDecoder {
 //    }
 
     func decode(_ res: String) -> QRCodeType {
-        if WalletUtil.isValidAddress(res) {
+        if WalletUtil.isValidBech32Address(res) {
+            if(AppConfig.Hrp.LAT == SettingService.shareInstance.currentNodeHrp && res.hasPrefix(AppConfig.Hrp.LAX)) {
+                return QRCodeType.error(data: Localized("transferVC_address_mainnet_not_testnet_tip"))
+            }
+            if(AppConfig.Hrp.LAX == SettingService.shareInstance.currentNodeHrp && res.hasPrefix(AppConfig.Hrp.LAT)) {
+                return QRCodeType.error(data: Localized("transferVC_address_testnet_not_mainnet_tip"))
+            }
             return QRCodeType.address(data: res)
         } else if res.isValidPrivateKey() {
             return QRCodeType.privatekey(data: res)

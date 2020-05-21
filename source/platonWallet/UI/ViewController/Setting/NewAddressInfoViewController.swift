@@ -83,6 +83,8 @@ class NewAddressInfoViewController: BaseViewController , UITextFieldDelegate {
                 self?.showMessage(text: Localized("QRScan_success_tips"))
                 self?.contentView.addressField.text = data
                 _ = self?.checkConfirmButtonEnable(showTip: false)
+            case .error(let data):
+                self?.showMessage(text: data)
             default:
                 self?.showMessage(text: Localized("QRScan_failed_tips"))
             }

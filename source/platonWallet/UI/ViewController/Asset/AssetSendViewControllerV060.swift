@@ -528,6 +528,8 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
                 self?.walletAddressView.textField.text = data
                 self?.walletAddressView.cleanErrorState()
                 _ = self?.checkConfirmButtonAvailable()
+            case .error(let data):
+                AssetViewControllerV060.getInstance()?.showMessage(text: data)
             default:
                 AssetViewControllerV060.getInstance()?.showMessage(text: Localized("QRScan_failed_tips"))
             }
@@ -620,6 +622,9 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
             switch qrcodeType {
             case .signedTransaction(let data):
                 completion?(data)
+            case .error(let data):
+                AssetViewControllerV060.getInstance()?.showMessage(text: data)
+                completion?(nil)
             default:
                 AssetViewControllerV060.getInstance()?.showMessage(text: Localized("QRScan_failed_tips"))
                 completion?(nil)

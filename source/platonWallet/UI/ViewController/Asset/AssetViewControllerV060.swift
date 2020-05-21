@@ -398,6 +398,8 @@ extension AssetViewControllerV060 {
             let targetVC = MainImportWalletViewController(type: .privateKey, text: data)
             targetVC.hidesBottomBarWhenPushed = true
             navigationController?.pushViewController(targetVC, animated: true)
+        case .error(let data):
+            showMessage(text: data)
         default:
             showMessage(text: Localized("QRScan_failed_tips"))
         }
@@ -463,6 +465,9 @@ extension AssetViewControllerV060 {
             switch qrcodeType {
             case .signedTransaction(let data):
                 completion?(data)
+            case .error(let data):
+                AssetViewControllerV060.getInstance()?.showMessage(text: data)
+                completion?(nil)
             default:
                 AssetViewControllerV060.getInstance()?.showMessage(text: Localized("QRScan_failed_tips"))
                 completion?(nil)

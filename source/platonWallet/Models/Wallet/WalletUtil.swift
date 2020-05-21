@@ -147,11 +147,20 @@ class WalletUtil {
         return true
     }
 
+    static func isValidBech32Address(_ address: String) -> Bool {
+        do {
+            let hexAddress = try  AddrCoder.shared.decodeHex(addr: address)
+            return true
+        } catch {
+            return false
+        }
+    }
+
     static func isValidAddress(_ address: String) -> Bool {
         if(AppConfig.Hrp.LAT == SettingService.shareInstance.currentNodeHrp) {
-            return address.isMainnetAddress()
+            return isValidBech32Address(address) && address.isMainnetAddress()
         } else {
-            return address.isTestnetAddress()
+            return isValidBech32Address(address) && address.isTestnetAddress()
         }
     }
 

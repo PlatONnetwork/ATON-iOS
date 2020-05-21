@@ -127,9 +127,21 @@ struct CommonService {
             valid = false
         }
 
-        if (!WalletUtil.isValidAddress(text)) {
+        if (!WalletUtil.isValidBech32Address(text)) {
             msg = Localized("transferVC_address_Incorrect_tip")
             valid = false
+        }
+
+        if(AppConfig.Hrp.LAT == SettingService.shareInstance.currentNodeHrp) {
+            if text.hasPrefix(AppConfig.Hrp.LAX) {
+                msg = Localized("transferVC_address_mainnet_not_testnet_tip")
+                valid = false
+            }
+        } else {
+            if text.hasPrefix(AppConfig.Hrp.LAT) {
+                msg = Localized("transferVC_address_testnet_not_mainnet_tip")
+                valid = false
+            }
         }
         return (valid,msg)
     }

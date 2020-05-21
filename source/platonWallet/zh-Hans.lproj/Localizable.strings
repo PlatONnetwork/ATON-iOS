@@ -73,6 +73,8 @@
 "transferVC_confirm_ATP_send" = "发送 LAT";
 "transferVC_confirm_Submit" = "发送";
 
+"transferVC_address_mainnet_not_testnet_tip" = "测试地址，不要在主网下使用";
+"transferVC_address_testnet_not_mainnet_tip" = "主网地址，不要在测试网下使用";
 "transferVC_address_Incorrect_tip" = "地址格式不正确 ";
 "transferVC_address_empty_tip" = "地址不能为空";
 "transferVC_amout_empty_tip" = "发送数量为空";
