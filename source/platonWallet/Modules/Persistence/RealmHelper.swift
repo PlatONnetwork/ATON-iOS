@@ -70,7 +70,7 @@ class RealmHelper {
                 migrationBelow0120(migration: migration, schemaVersion: schemaVersion, oldSchemaVersion: oldSchemaVersion)
             }
 
-            if oldSchemaVersion < 38 {
+            if oldSchemaVersion < 36 {
                 migrationBelow0130(migration: migration, schemaVersion: schemaVersion, oldSchemaVersion: oldSchemaVersion)
             }
         },shouldCompactOnLaunch: {(totalBytes, usedBytes) in

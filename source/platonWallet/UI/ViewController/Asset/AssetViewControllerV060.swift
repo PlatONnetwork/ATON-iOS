@@ -582,6 +582,8 @@ extension AssetViewControllerV060 {
                     TransactionService.service.sendSignedTransaction(txType: .transfer, isObserverWallet: true, data: signedTxJsonString, sign: sign) { (result, response) in
                         switch result {
                         case .success:
+                            tx.to = WalletUtil.convertBech32(tx.to!)
+                            thTx.to = WalletUtil.convertBech32(thTx.to!)
                             sendTransactionSuccess(tx: tx, thTx: thTx)
                         case .failure(let error):
                             sendTransactionFailure(message: error?.message ?? "server error")

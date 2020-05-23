@@ -215,7 +215,13 @@ extension String {
     }
 
     func add0xBech32() -> String {
-        return self
+        if hasPrefix("lat") || hasPrefix("lax") {
+            return self
+        } else if !hasPrefix("0x") {
+            return "0x" + self
+        } else {
+            return self
+        }
     }
 
     func add0x() -> String {

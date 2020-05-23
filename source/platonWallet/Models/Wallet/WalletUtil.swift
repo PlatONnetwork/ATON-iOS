@@ -11,7 +11,7 @@ import TrezorCrypto
 import platonWeb3
 
 public let publicKeyByteSize = 64
-public let privateKeyByteSize = 32
+public let privateKeyByteSize =	 32
 
 class WalletUtil {
 
@@ -161,6 +161,14 @@ class WalletUtil {
             return isValidBech32Address(address) && address.isMainnetAddress()
         } else {
             return isValidBech32Address(address) && address.isTestnetAddress()
+        }
+    }
+    
+    static func convertBech32(_ address: String) -> String {
+        if(AppConfig.Hrp.LAT == SettingService.shareInstance.currentNodeHrp) {
+            return try! AddrCoder.shared.encode(hrp: AppConfig.Hrp.LAT, address: address)
+        } else {
+            return try! AddrCoder.shared.encode(hrp: AppConfig.Hrp.LAX, address: address)
         }
     }
 
