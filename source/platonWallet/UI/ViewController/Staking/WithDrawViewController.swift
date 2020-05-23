@@ -555,7 +555,7 @@ extension WithDrawViewController {
                 let amount = self.currentAmount.description
                 let tx = Transaction()
                 tx.from = from
-                tx.to = to
+                tx.to = WalletUtil.convertBech32(to.add0xBech32())
                 tx.gasUsed = gasUsed
                 tx.createTime = Int(Date().timeIntervalSince1970 * 1000)
                 tx.txReceiptStatus = -1
