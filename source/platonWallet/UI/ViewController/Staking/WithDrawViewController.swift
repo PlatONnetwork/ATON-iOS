@@ -427,6 +427,7 @@ extension WithDrawViewController {
                 if let transaction = data as? Transaction {
                     transaction.gasUsed = self.estimateUseGas.description
                     transaction.nodeName = self.currentNode?.name
+                    transaction.to = WalletUtil.convertBech32(transaction.to ?? "")
                     TransferPersistence.add(tx: transaction)
                     self.doShowTransactionDetail(transaction)
                 }
