@@ -163,7 +163,11 @@ class WalletUtil {
             return isValidBech32Address(address) && address.isTestnetAddress()
         }
     }
-    
+
+    static func convert0x(_ address: String) -> String {
+        return try! AddrCoder.shared.decodeHex(addr: address)
+    }
+
     static func convertBech32(_ address: String) -> String {
         if(AppConfig.Hrp.LAT == SettingService.shareInstance.currentNodeHrp) {
             return try! AddrCoder.shared.encode(hrp: AppConfig.Hrp.LAT, address: address)

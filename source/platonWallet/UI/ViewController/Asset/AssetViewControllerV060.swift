@@ -543,7 +543,7 @@ extension AssetViewControllerV060 {
                 let tx = Transaction()
                 tx.senderAddress = from
                 tx.from = from.add0xBech32()
-                tx.to = to.add0xBech32()
+                tx.to = WalletUtil.convertBech32(to.add0xBech32())
                 tx.gasUsed = gasUsed
                 tx.createTime = Int(Date().timeIntervalSince1970 * 1000)
                 tx.txhash = signedTransaction.hash?.add0x()
@@ -570,7 +570,7 @@ extension AssetViewControllerV060 {
 
                 let thTx = TwoHourTransaction()
                 thTx.createTime = Int(Date().timeIntervalSince1970 * 1000)
-                thTx.to = to.add0xBech32().lowercased()
+                thTx.to = WalletUtil.convertBech32(to.add0xBech32().lowercased())
                 thTx.from = from.add0xBech32().lowercased()
                 thTx.value = amount
 
@@ -582,8 +582,6 @@ extension AssetViewControllerV060 {
                     TransactionService.service.sendSignedTransaction(txType: .transfer, isObserverWallet: true, data: signedTxJsonString, sign: sign) { (result, response) in
                         switch result {
                         case .success:
-                            tx.to = WalletUtil.convertBech32(tx.to!)
-                            thTx.to = WalletUtil.convertBech32(thTx.to!)
                             sendTransactionSuccess(tx: tx, thTx: thTx)
                         case .failure(let error):
                             sendTransactionFailure(message: error?.message ?? "server error")
