@@ -210,10 +210,12 @@ class OfflineSignatureTransactionViewController: BaseViewController {
             let gasPrice = BigUInt(txQrcode.gasPrice ?? "0"),
             let gasLimit = BigUInt(txQrcode.gasLimit ?? "0"),
             let nonceBigInt = BigUInt(txQrcode.nonce ?? "0") else { return nil }
+
+        let to0x = WalletUtil.convert0x(to)
         let nonce = EthereumQuantity(quantity: nonceBigInt)
         let amount = EthereumQuantity(quantity: amountBigInt)
 
-        let txSigned = web3.platon.platonSignTransaction(to: to, nonce: nonce, data: [], sender: sender, privateKey: pri, gasPrice: gasPrice, gas: gasLimit, value: amount, estimated: true)
+        let txSigned = web3.platon.platonSignTransaction(to: to0x, nonce: nonce, data: [], sender: sender, privateKey: pri, gasPrice: gasPrice, gas: gasLimit, value: amount, estimated: true)
         guard
             let transactionSigned = txSigned else { return nil }
 

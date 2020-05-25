@@ -49,7 +49,7 @@ class TransactionDetailViewController: BaseViewController {
     @objc func didReceiveTransactionUpdate(_ notification: Notification) {
         guard let txStatus = notification.object as? TransactionsStatusByHash else { return }
         guard let currentTx = transaction else { return }
-        guard let txhash = txStatus.hash, txhash.ishexStringEqual(other: currentTx.txhash), let status = txStatus.txReceiptStatus else {
+        guard let txhash = txStatus.hash, txhash.isBech32AddressEqual(other: currentTx.txhash), let status = txStatus.txReceiptStatus else {
             return
         }
 

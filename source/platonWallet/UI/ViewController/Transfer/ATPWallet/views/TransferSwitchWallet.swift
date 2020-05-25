@@ -83,7 +83,7 @@ class TransferSwitchWallet: UIView, UITableViewDataSource, UITableViewDelegate {
 
             cell.walletName.text = wallet.name
 
-            if (selectedAddress != nil) && (wallet.address.ishexStringEqual(other: selectedAddress!)) {
+            if (selectedAddress != nil) && (wallet.address.isBech32AddressEqual(other: selectedAddress!)) {
                 cell.checkIcon.isHidden = false
             } else {
                 cell.checkIcon.isHidden = true

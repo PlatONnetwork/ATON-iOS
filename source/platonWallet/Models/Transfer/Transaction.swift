@@ -448,7 +448,7 @@ extension Transaction {
         get {
             switch txType! {
             case .transfer:
-                if senderAddress != nil && (senderAddress?.ishexStringEqual(other: from))! {
+                if senderAddress != nil && (senderAddress?.isBech32AddressEqual(other: from))! {
                     return .Send
                 } else {
                     return .Receive
@@ -478,7 +478,7 @@ extension Transaction {
             default:
                 let type = TransanctionType(rawValue: transactionType) ?? .Send
                 if type == .Send {
-                    if senderAddress != nil && (senderAddress?.ishexStringEqual(other: from))! {
+                    if senderAddress != nil && (senderAddress?.isBech32AddressEqual(other: from))! {
                         return .Send
                     } else {
                         return .Receive

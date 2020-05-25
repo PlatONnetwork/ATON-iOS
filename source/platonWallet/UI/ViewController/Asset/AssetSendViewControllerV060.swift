@@ -528,6 +528,8 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
                 self?.walletAddressView.textField.text = data
                 self?.walletAddressView.cleanErrorState()
                 _ = self?.checkConfirmButtonAvailable()
+            case .error(let data):
+                AssetViewControllerV060.getInstance()?.showMessage(text: data)
             default:
                 AssetViewControllerV060.getInstance()?.showMessage(text: Localized("QRScan_failed_tips"))
             }
@@ -545,7 +547,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
         guard
             let toAddress = walletAddressView.textField.text,
             let wallet = AssetVCSharedData.sharedData.selectedWallet as? Wallet,
-            toAddress.ishexStringEqual(other: wallet.address) == false
+            toAddress.isBech32AddressEqual(other: wallet.address) == false
         else {
             AssetViewControllerV060.getInstance()?.showMessage(text: Localized("cannot_send_itself"))
             return
@@ -620,6 +622,9 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
             switch qrcodeType {
             case .signedTransaction(let data):
                 completion?(data)
+            case .error(let data):
+                AssetViewControllerV060.getInstance()?.showMessage(text: data)
+                completion?(nil)
             default:
                 AssetViewControllerV060.getInstance()?.showMessage(text: Localized("QRScan_failed_tips"))
                 completion?(nil)
@@ -663,26 +668,19 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
             let gasLimit = useGasLimit.description
             let amount = (BigUInt.mutiply(a: amountLATString, by: ETHToWeiMultiplier) ?? BigUInt.zero).description
 
-            web3.platon.platonGetNonce(sender: wallet.address) { [weak self] (result, blockNonce) in
-                guard let self = self else { return }
-                switch result {
-                case .success:
-                    guard let nonce = blockNonce else { return }
-                    let nonceString = nonce.quantity.description
+            let to0x = try! AddrCoder.shared.decodeHex(addr: to)
+            let from0x = try! AddrCoder.shared.decodeHex(addr: wallet.address)
 
-                    let transactionData = TransactionQrcode(amount: amount, chainId: web3.properties.chainId, from: wallet.address, to: to, gasLimit: gasLimit, gasPrice: gasPrice, nonce: nonceString, typ: nil, nodeId: nil, nodeName: nil, stakingBlockNum: nil, functionType: 0, rk: self.remarkView.textField.text)
-                    let qrcodeData = QrcodeData(qrCodeType: 0, qrCodeData: [transactionData], chainId: web3.chainId, functionType: nil, from: nil, nodeName: nil, rn: nil, timestamp: Int(Date().timeIntervalSince1970 * 1000), rk: nil, si: nil, v: 1)
-                    guard
-                        let data = try? JSONEncoder().encode(qrcodeData),
-                        let content = String(data: data, encoding: .utf8) else { return }
-                    self.generateQrCode = qrcodeData
-                    DispatchQueue.main.async {
-                        self.showOfflineConfirmView(content: content)
-                    }
-                case .fail(_, let message):
-                    self.showErrorMessage(text: message ?? "get nonce error")
-                }
-            }
+            guard let nonce = gas?.nonceBInt else { return }
+            let nonceString = nonce.description
+
+            let transactionData = TransactionQrcode(amount: amount, chainId: web3.properties.chainId, from: wallet.address, to: to, gasLimit: gasLimit, gasPrice: gasPrice, nonce: self.gas?.nonce, typ: nil, nodeId: nil, nodeName: nil, stakingBlockNum: nil, functionType: 0, rk: self.remarkView.textField.text)
+            let qrcodeData = QrcodeData(qrCodeType: 0, qrCodeData: [transactionData], chainId: web3.chainId, functionType: nil, from: nil, nodeName: nil, rn: nil, timestamp: Int(Date().timeIntervalSince1970 * 1000), rk: nil, si: nil, v: 1)
+            guard
+                    let data = try? JSONEncoder().encode(qrcodeData),
+                    let content = String(data: data, encoding: .utf8) else { return }
+            self.generateQrCode = qrcodeData
+            self.showOfflineConfirmView(content: content)
         } else {
             showPasswordInputPswAlert(for: wallet) { [weak self] (privateKey, _, error) in
                 guard let self = self else { return }

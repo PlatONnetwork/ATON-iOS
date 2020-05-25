@@ -150,7 +150,7 @@ class ImportObservedWalletViewController: BaseImportWalletViewController {
 
     func checkKeyboard() {
         if let pasteBoardString = UIPasteboard.general.string {
-            if pasteBoardString.is40ByteAddress() {
+            if WalletUtil.isValidAddress(pasteBoardString) {
                 self.pasteButton.setTitleColor(UIColor(rgb: 0x105CFE), for: .normal)
             } else {
                 self.pasteButton.setTitleColor(UIColor(rgb: 0xB6BBD0), for: .normal)
@@ -196,7 +196,7 @@ class ImportObservedWalletViewController: BaseImportWalletViewController {
             return false
         }
 
-        if !addresstextView.text!.is40ByteAddress() {
+        if !WalletUtil.isValidAddress(addresstextView.text!) {
             if showError {
                 textViewTipLabel.text = Localized("importKeystoreVC_observed_invalid_tips")
                 submitButtonTopConstaint?.activate()
@@ -206,8 +206,8 @@ class ImportObservedWalletViewController: BaseImportWalletViewController {
             return false
         }
 
-        let addresses = (AssetVCSharedData.sharedData.walletList as! [Wallet]).map { $0.address.add0x().lowercased() }
-        if addresses.contains(addresstextView.text!.add0x().lowercased()) {
+        let addresses = (AssetVCSharedData.sharedData.walletList as! [Wallet]).map { $0.address.add0xBech32().lowercased() }
+        if addresses.contains(addresstextView.text!.add0xBech32().lowercased()) {
             if showError {
                 textViewTipLabel.text = Localized("importKeystoreVC_observed_existed_tips")
                 submitButtonTopConstaint?.activate()
@@ -227,7 +227,7 @@ class ImportObservedWalletViewController: BaseImportWalletViewController {
 
     @objc func onPaste() {
         if let pasteBoardString = UIPasteboard.general.string {
-            if pasteBoardString.is40ByteAddress() {
+            if WalletUtil.isValidAddress(pasteBoardString) {
                 self.addresstextView.text = pasteBoardString
                 self.checkCanEableButton()
             }

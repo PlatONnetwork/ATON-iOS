@@ -209,7 +209,7 @@ extension TransactionQrcode {
         guard let wallet = (AssetVCSharedData.sharedData.walletList as? [Wallet])?.first(where: { $0.address.lowercased() == from?.lowercased() }) else {
             return from ?? "--"
         }
-        return wallet.name + "（\(wallet.address.addressForDisplayShort())）"
+        return wallet.name + "（\(wallet.address.addressForDisplayShortBech32())）"
     }
 
     var toName: String {

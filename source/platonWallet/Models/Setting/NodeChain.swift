@@ -12,6 +12,7 @@ struct NodeChain {
     var nodeURLStr: String = ""
     var desc: String = ""
     var chainId: String = ""
+    var hrp: String = ""
 }
 
 extension NodeChain {

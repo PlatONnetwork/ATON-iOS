@@ -19,7 +19,7 @@ class NodeStoreService {
 
     var nodeList: [NodeChain] {
         let arr = AppConfig.NodeURL.defaultNodesURL.map { (tup) -> NodeChain in
-            let nc = NodeChain(nodeURLStr: tup.nodeURL, desc: tup.desc, chainId: tup.chainId)
+            let nc = NodeChain(nodeURLStr: tup.nodeURL, desc: tup.desc, chainId: tup.chainId, hrp: tup.hrp)
             return nc
         }
         return arr
@@ -33,6 +33,7 @@ class NodeStoreService {
 
     func switchNode(node: NodeChain) {
         SettingService.shareInstance.setCurrentNodeChainId(nodeChain: node)
+        SettingService.shareInstance.setCurrentNodeHrp(nodeChain: node)
 
         nodeWillSuccessSwitch()
         NotificationCenter.default.post(name: Notification.Name(NodeStoreService.didSwitchNodeNotification), object: self, userInfo: ["node": node])

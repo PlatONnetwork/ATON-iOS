@@ -48,6 +48,19 @@ extension String {
 }
 
 extension String {
+    func isMainnetAddress() -> Bool {
+        let regex = "(lat)?[A-Za-z0-9]{39}"
+        let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
+        let isValid = predicate.evaluate(with: self)
+        return isValid
+    }
+
+    func isTestnetAddress() -> Bool {
+        let regex = "(lax)?[A-Za-z0-9]{39}"
+        let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
+        let isValid = predicate.evaluate(with: self)
+        return isValid
+    }
 
     func is40ByteAddress() -> Bool {
         let regex = "(0x)?[A-Fa-f0-9]{40}"
@@ -72,6 +85,15 @@ extension String {
         let predicate = NSPredicate(format: "SELF MATCHES %@", regex)
         let isValid = predicate.evaluate(with: self)
         return isValid
+    }
+
+    func isBech32AddressEqual(other: String?) -> Bool {
+        if other == nil || other?.length == 0 {
+            return self == other
+        }
+        var newString = self
+        var newOther = other
+        return newString.lowercased() == newOther?.lowercased()
     }
 
     func ishexStringEqual(other: String?) -> Bool {
@@ -190,6 +212,16 @@ extension String {
             return String(dropFirst(2))
         }
         return self
+    }
+
+    func add0xBech32() -> String {
+        if hasPrefix("lat") || hasPrefix("lax") {
+            return self
+        } else if !hasPrefix("0x") {
+            return "0x" + self
+        } else {
+            return self
+        }
     }
 
     func add0x() -> String {
@@ -383,6 +415,10 @@ extension String {
         return self.substr(0, 10)! + "......" + self.substr(120, 10)!
     }
 
+    func addressForDisplayLeading4Trailing8Bech32() -> String {
+        return self.substr(0, 6)! + "...." + self.substr(34, 8)!
+    }
+
     func addressForDisplayLeading4Trailing8() -> String {
         guard self.is40ByteAddress() else {
             return self
@@ -393,6 +429,10 @@ extension String {
         return self.substr(0, 6)! + "...." + self.substr(34, 8)!
     }
 
+    func addressForDisplayShortBech32() -> String {
+        return self.substr(0, 4)! + "...." + self.substr(38, 4)!
+    }
+
     func addressForDisplayShort() -> String {
         guard self.is40ByteAddress() else {
             return self
@@ -401,6 +441,10 @@ extension String {
             return "0x" + self.substr(0, 2)! + "...." + self.substr(36, 4)!
         }
         return self.substr(0, 4)! + "...." + self.substr(38, 4)!
+    }
+
+    func addressForDisplayBech32() -> String {
+        return self.substr(0, 10)! + "......" + self.substr(32, 10)!
     }
 
     func addressForDisplay() -> String {
@@ -490,11 +534,11 @@ extension String {
     func addressDisplayInLocal() -> String? {
         let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.address.lowercased() == self.lowercased() }.first
         if let wallet = localWallet {
-            return wallet.name + "(\(self.addressForDisplayShort()))"
+            return wallet.name + "(\(self.addressForDisplayShortBech32()))"
         } else {
             let addressInfo = AddressBookService.service.getAll().filter { $0.walletAddress?.lowercased() == self.lowercased() }.first
             guard let addressName = addressInfo?.walletName else { return self }
-            return addressName + "(\(self.addressForDisplayShort()))"
+            return addressName + "(\(self.addressForDisplayShortBech32()))"
         }
     }
 }

@@ -73,6 +73,9 @@
 "transferVC_confirm_ATP_send" = "Send LAT ";
 "transferVC_confirm_Submit" = "Send";
 
+
+"transferVC_address_mainnet_not_testnet_tip" = "Testnet address, do not use in mainnet";
+"transferVC_address_testnet_not_mainnet_tip" = "Mainnet address, do not use in testnet";
 "transferVC_address_Incorrect_tip" = "Address is incorrect ";
 "transferVC_address_empty_tip" = "Address is empty";
 "transferVC_amout_empty_tip" = "Amout is empty";

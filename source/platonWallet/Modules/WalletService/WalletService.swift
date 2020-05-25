@@ -9,6 +9,7 @@
 import Foundation
 import RealmSwift
 import Localize_Swift
+import platonWeb3
 
 let keystoreFolderPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] + "/keystore"
 
@@ -41,7 +42,7 @@ public final class WalletService {
 
     func getWalletByAddress(address: String) -> Wallet? {
         for item in wallets {
-            if item.address.ishexStringEqual(other: address) {
+            if item.address.isBech32AddressEqual(other: address) {
                 return item
             }
         }
@@ -77,6 +78,7 @@ public final class WalletService {
         }
     }
 
+    // 导入观察钱包
     public func `import`(address: String, completion: @escaping (Wallet?, Error?) -> Void) {
         guard WalletUtil.isValidAddress(address) else {
             completion(nil, Error.invalidAddress)
@@ -85,7 +87,9 @@ public final class WalletService {
 
         walletQueue.async {
             let walletName = WalletUtil.generateNewObservedWalletName()
-            let wallet = Wallet(name: walletName, address: address)
+
+            let wallet = Wallet(name: walletName, originAddress: try! AddrCoder.shared.decodeHex(addr: address))
+
             DispatchQueue.main.async {
                 do {
                     try self.saveObservedWalletToDB(wallet: wallet)
@@ -387,7 +391,7 @@ public final class WalletService {
 
         AssetService.sharedInstace.balances = AssetService.sharedInstace.balances.filter { $0.addr.lowercased() != wallet.address.lowercased() }
 
-        wallets.removeAll(where: { $0.uuid == wallet.uuid && $0.chainId == wallet.chainId })
+        wallets.removeAll(where: { $0.uuid == wallet.uuid})
 
         AssetVCSharedData.sharedData.willDeleteWallet(object: wallet as AnyObject)
 
@@ -427,10 +431,8 @@ public final class WalletService {
     }
 
     private func saveObservedWalletToDB(wallet: Wallet) throws {
-        wallet.chainId = SettingService.shareInstance.currentNodeChainId
-
         let sameUuidWallet = wallets.first { (item) -> Bool in
-            item.uuid == wallet.uuid && item.chainId == wallet.chainId
+            item.uuid == wallet.uuid
         }
 
         if sameUuidWallet != nil {
@@ -440,7 +442,7 @@ public final class WalletService {
         WallletPersistence.sharedInstance.save(wallet: wallet)
 
         wallets.removeAll { (item) -> Bool in
-            item.uuid == wallet.uuid && item.chainId == wallet.chainId
+            item.uuid == wallet.uuid
         }
 
         wallets.append(wallet)
@@ -452,9 +454,8 @@ public final class WalletService {
             throw Error.invalidWallet
         }
 
-        wallet.chainId = SettingService.shareInstance.currentNodeChainId
         let sameUuidWallet = wallets.first { (item) -> Bool in
-            (item.uuid == wallet.uuid && item.chainId == wallet.chainId) || (item.address.lowercased() == wallet.address.lowercased() && item.chainId == wallet.chainId)
+            (item.uuid == wallet.uuid) || (item.address.lowercased() == wallet.address.lowercased())
         }
 
         if sameUuidWallet != nil {
@@ -491,7 +492,7 @@ public final class WalletService {
         WallletPersistence.sharedInstance.save(wallet: wallet)
 
         wallets.removeAll { (item) -> Bool in
-            item.uuid == wallet.uuid && item.chainId == wallet.chainId
+            item.uuid == wallet.uuid
         }
 
         wallets.append(wallet)

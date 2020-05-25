@@ -11,13 +11,14 @@ import CryptoSwift
 import TrezorCrypto
 //import Web3
 import ScryptSwift
+import platonWeb3
 
 let HDPATH = "m/44'/486'/0'/0/0"
 
 public struct Keystore {
 
     var id: String
-    var address: String
+    var address: Keystore.Address
     var crypto: Keystore.Crypto
     var version = 3
 
@@ -29,7 +30,7 @@ public struct Keystore {
         let mnemonic:String
 
         do {
-             mnemonic = try WalletUtil.generateMnemonic(strength: 128)
+            mnemonic = try WalletUtil.generateMnemonic(strength: 128)
         } catch WalletUtil.Error.mnemonicGeneFailed {
             throw Error.initFailed
         }
@@ -64,8 +65,9 @@ public struct Keystore {
         let publicKey = WalletUtil.publicKeyFromPrivateKey(privateKey)
 
         do {
-            address = try WalletUtil.addressFromPublicKey(publicKey, eip55: true)
-            print("address:\(address)")
+            let originAddress = try WalletUtil.addressFromPublicKey(publicKey, eip55: true)
+            address = Keystore.Address(address: originAddress, mainnetHrp: AppConfig.Hrp.LAT, testnetHrp: AppConfig.Hrp.LAX)
+            print("address:\(originAddress)")
         } catch WalletUtil.Error.publicKeyInvalid {
             throw Error.initFailed
         }
@@ -207,7 +209,12 @@ extension Keystore: Codable {
             self.crypto = try altValues.decode(Keystore.Crypto.self, forKey: .crypto)
         }
         version = try values.decode(Int.self, forKey: .version)
-        address = try values.decodeIfPresent(String.self, forKey: .address) ?? ""
+
+        if let address = try? values.decode(String.self, forKey: .address) {
+            self.address = Keystore.Address(address: address, mainnetHrp: AppConfig.Hrp.LAT, testnetHrp: AppConfig.Hrp.LAX)
+        } else {
+            self.address = try! values.decodeIfPresent(Keystore.Address.self, forKey: .address) ?? Keystore.Address(mainnet: "", testnet: "")
+        }
         publicKey = try values.decodeIfPresent(String.self, forKey: .publicKey)
     }
 

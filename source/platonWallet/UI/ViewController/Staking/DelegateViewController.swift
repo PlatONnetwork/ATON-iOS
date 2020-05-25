@@ -378,6 +378,7 @@ extension DelegateViewController {
                 if let transaction = data as? Transaction {
                     transaction.gasUsed = self.estimateUseGas.description
                     transaction.nodeName = self.currentNode?.name
+                    transaction.to = WalletUtil.convertBech32(transaction.to ?? "")
                     TransferPersistence.add(tx: transaction)
                     self.doShowTransactionDetail(transaction)
                 }
@@ -456,6 +457,9 @@ extension DelegateViewController {
             switch qrcodeType {
             case .signedTransaction(let data):
                 completion?(data)
+            case .error(let data):
+                AssetViewControllerV060.getInstance()?.showMessage(text: data)
+                completion?(nil)
             default:
                 AssetViewControllerV060.getInstance()?.showMessage(text: Localized("QRScan_failed_tips"))
                 completion?(nil)
@@ -481,14 +485,14 @@ extension DelegateViewController {
                 let signedTransaction = try? EthereumSignedTransaction(rlp: signedTransactionRLP) {
 
                 guard
-                    let to = signedTransaction.to?.rawAddress.toHexString().add0x() else { return }
+                    let to = signedTransaction.to?.rawAddress.toHexString().add0xBech32() else { return }
                 let gasPrice = signedTransaction.gasPrice.quantity
                 let gasLimit = signedTransaction.gasLimit.quantity
                 let gasUsed = gasPrice.multiplied(by: gasLimit).description
                 let amount = self.currentAmount.description
                 let tx = Transaction()
                 tx.from = from
-                tx.to = to
+                tx.to = WalletUtil.convertBech32(to.add0xBech32())
                 tx.gasUsed = gasUsed
                 tx.createTime = Int(Date().timeIntervalSince1970 * 1000)
                 tx.txReceiptStatus = -1

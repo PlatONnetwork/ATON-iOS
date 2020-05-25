@@ -34,7 +34,7 @@ class WalletTableViewCell: UITableViewCell {
         if isWithdraw {
             walletAddressLabel.text = Localized("withdraw_detail_balance") + wal.balanceDescription()
         } else {
-            walletAddressLabel.text = wal.address.addressForDisplay()
+            walletAddressLabel.text = wal.address.addressForDisplayBech32()
         }
     }
 

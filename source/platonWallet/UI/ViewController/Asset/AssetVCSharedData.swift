@@ -123,7 +123,7 @@ class AssetVCSharedData {
         //issue mutiply thread access wallet object?
         if let wallet = object as? Wallet {
             if let selectedWallet = AssetVCSharedData.sharedData.selectedWallet as? Wallet {
-                if selectedWallet.address.ishexStringEqual(other: wallet.address) {
+                if selectedWallet.address.isBech32AddressEqual(other: wallet.address) {
 //                    AssetVCSharedData.sharedData.selectedWallet = nil
                     AssetVCSharedData.sharedData.currentWalletAddress = nil;
                 }

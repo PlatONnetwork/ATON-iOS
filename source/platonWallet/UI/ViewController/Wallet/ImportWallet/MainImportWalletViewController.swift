@@ -120,7 +120,15 @@ class MainImportWalletViewController: BaseViewController,UIScrollViewDelegate,Im
     func handleScanResp(_ resp: String) {
         var index = currentIndex
 
-        if resp.isValidAddress() {
+        if WalletUtil.isValidBech32Address(resp) {
+            if(AppConfig.Hrp.LAT == SettingService.shareInstance.currentNodeHrp && resp.hasPrefix(AppConfig.Hrp.LAX)) {
+                showMessage(text: Localized("transferVC_address_mainnet_not_testnet_tip"))
+                return
+            }
+            if(AppConfig.Hrp.LAX == SettingService.shareInstance.currentNodeHrp && resp.hasPrefix(AppConfig.Hrp.LAT)) {
+                showMessage(text: Localized("transferVC_address_testnet_not_mainnet_tip"))
+                return
+            }
             index = ImportWalletVCType.observer.rawValue
             gotoVCForTabIndex(index, text: resp)
         } else if resp.isValidPrivateKey() {

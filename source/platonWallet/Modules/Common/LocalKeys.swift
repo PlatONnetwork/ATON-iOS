@@ -12,6 +12,7 @@ struct LocalKeys {
     static let ReminderThresholdValue = "ReminderThresholdValue" // 超额提醒
     static let isOpenResendReminder = "isOpenResendReminder" // 重发提醒
     static let SelectedChainIdKey = "SelectedChainIdKey"
+    static let SelectedHrpKey = "SelectedHrpKey"
     static let isLocalAuthenticationOpen = "isLocalAuthenticationOpen"
     static let isFirst = "isFirst"
 }

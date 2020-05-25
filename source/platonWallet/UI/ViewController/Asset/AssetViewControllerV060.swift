@@ -398,6 +398,8 @@ extension AssetViewControllerV060 {
             let targetVC = MainImportWalletViewController(type: .privateKey, text: data)
             targetVC.hidesBottomBarWhenPushed = true
             navigationController?.pushViewController(targetVC, animated: true)
+        case .error(let data):
+            showMessage(text: data)
         default:
             showMessage(text: Localized("QRScan_failed_tips"))
         }
@@ -463,6 +465,9 @@ extension AssetViewControllerV060 {
             switch qrcodeType {
             case .signedTransaction(let data):
                 completion?(data)
+            case .error(let data):
+                AssetViewControllerV060.getInstance()?.showMessage(text: data)
+                completion?(nil)
             default:
                 AssetViewControllerV060.getInstance()?.showMessage(text: Localized("QRScan_failed_tips"))
                 completion?(nil)
@@ -537,8 +542,8 @@ extension AssetViewControllerV060 {
 
                 let tx = Transaction()
                 tx.senderAddress = from
-                tx.from = from.add0x()
-                tx.to = to.add0x()
+                tx.from = from.add0xBech32()
+                tx.to = WalletUtil.convertBech32(to.add0xBech32())
                 tx.gasUsed = gasUsed
                 tx.createTime = Int(Date().timeIntervalSince1970 * 1000)
                 tx.txhash = signedTransaction.hash?.add0x()
@@ -565,8 +570,8 @@ extension AssetViewControllerV060 {
 
                 let thTx = TwoHourTransaction()
                 thTx.createTime = Int(Date().timeIntervalSince1970 * 1000)
-                thTx.to = to.add0x().lowercased()
-                thTx.from = from.add0x().lowercased()
+                thTx.to = WalletUtil.convertBech32(to.add0xBech32().lowercased())
+                thTx.from = from.add0xBech32().lowercased()
                 thTx.value = amount
 
                 if (qrcode.v ?? 0) >= 1 {

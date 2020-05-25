@@ -29,7 +29,7 @@ class AddressBookTableViewCell: SwipeTableViewCell {
 
     func setUpdCell(addressInfo : AddressInfo, isForSelectMode: Bool) {
         walletName.text = addressInfo.walletName
-        walletAddress.text = addressInfo.walletAddress?.addressForDisplay()
+        walletAddress.text = addressInfo.walletAddress?.addressForDisplayBech32()
         icon.image = UIImage(named: addressInfo.walletAddress?.walletAddressLastCharacterAvatar() ?? "walletAvatar_1")
         if isForSelectMode && (AssetVCSharedData.sharedData.selectedWallet as! Wallet).address.lowercased() == addressInfo.walletAddress?.lowercased() {
             containerView.backgroundColor = UIColor(rgb: 0xdcdfe8, alpha: 0.4)

@@ -12,6 +12,24 @@ import Localize_Swift
 import platonWeb3
 
 class SettingService {
+    var currentNodeHrp: String {
+        let standard = UserDefaults.standard
+        let defaultHrps = AppConfig.NodeURL.defaultNodesURL.map { $0.hrp }
+        guard
+                let hrp = standard.string(forKey: LocalKeys.SelectedHrpKey), defaultHrps.contains(hrp) else {
+            if let defaultNode = AppConfig.NodeURL.defaultNodesURL.first(where: { $0.isSelected == true }) {
+                standard.set(defaultNode.hrp, forKey: LocalKeys.SelectedHrpKey)
+                standard.synchronize()
+                return defaultNode.hrp
+            } else {
+                let hrp = AppConfig.NodeURL.defaultNodesURL.first!.hrp
+                standard.set(hrp, forKey: LocalKeys.SelectedHrpKey)
+                standard.synchronize()
+                return hrp
+            }
+        }
+        return hrp
+    }
 
     var currentNodeChainId: String {
         let standard = UserDefaults.standard
@@ -81,6 +99,18 @@ class SettingService {
                 return
         }
         standard.set(nodeChain.chainId, forKey: LocalKeys.SelectedChainIdKey)
+        standard.synchronize()
+    }
+
+    func setCurrentNodeHrp(nodeChain: NodeChain) {
+        let standard = UserDefaults.standard
+        guard
+            let hrp = standard.string(forKey: LocalKeys.SelectedHrpKey),
+            hrp != nodeChain.hrp
+            else {
+                return
+        }
+        standard.set(nodeChain.hrp, forKey: LocalKeys.SelectedHrpKey)
         standard.synchronize()
     }
 
