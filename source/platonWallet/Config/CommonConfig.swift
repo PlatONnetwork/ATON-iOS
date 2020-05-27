@@ -24,7 +24,7 @@ struct AppConfig {
         static let VERSION_MAINTESTNET = "102"
         static let VERSION_MAINNET = "100"
         static let VERSION_UATNET = "298"
-        static let DEV = "103"
+        static let DEV = "100"
         static let TEST1 = "101"
     }
 
