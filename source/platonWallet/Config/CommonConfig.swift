@@ -25,7 +25,7 @@ struct AppConfig {
         static let VERSION_MAINNET = "100"
         static let VERSION_UATNET = "298"
         static let DEV = "103"
-        static let TEST1 = "100"
+        static let TEST1 = "101"
     }
 
     struct Hrp {
@@ -44,7 +44,7 @@ struct AppConfig {
 //        test 模拟主网络 链id  =  100       接入地址：58.250.250.234:1000        内部接入地址： 192.168.9.190:1000
 //        dev 模拟测试网 链id  =  103       接入地址：58.250.250.234:1100        内部接入地址： 192.168.9.190:443
         static let defaultNodesURL = [
-            (nodeURL: AppConfig.NodeURL.DefaultNodeURL_Alpha_V071, desc: "SettingsVC_nodeSet_defaultTestNetwork_test_des", chainId: AppConfig.ChainID.TEST1, isSelected: true, hrp: AppConfig.Hrp.LAT),
+            (nodeURL: AppConfig.NodeURL.DefaultNodeURL_Alpha_V071, desc: "SettingsVC_nodeSet_defaultTestNetwork_test_des", chainId: AppConfig.ChainID.TEST1, isSelected: true, hrp: AppConfig.Hrp.LAX),
             (nodeURL: AppConfig.NodeURL.DefaultNodeURL_Alpha_V071_DEV, desc: "SettingsVC_nodeSet_defaultTestNetwork_develop_des", chainId: AppConfig.ChainID.DEV, isSelected: false, hrp: AppConfig.Hrp.LAX)
         ]
         #elseif PARALLELNET
