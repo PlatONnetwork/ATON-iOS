@@ -41,8 +41,10 @@ struct AppConfig {
         static let DefaultNodeURL_MAIN = ServerURL.HOST.MAINNET + "/rpc"
 
         #if UAT
+//        test 模拟主网络 链id  =  100       接入地址：58.250.250.234:1000        内部接入地址： 192.168.9.190:1000
+//        dev 模拟测试网 链id  =  103       接入地址：58.250.250.234:1100        内部接入地址： 192.168.9.190:443
         static let defaultNodesURL = [
-            (nodeURL: AppConfig.NodeURL.DefaultNodeURL_Alpha_V071, desc: "SettingsVC_nodeSet_defaultTestNetwork_test_des", chainId: AppConfig.ChainID.TEST1, isSelected: true, hrp: AppConfig.Hrp.LAT),
+            (nodeURL: AppConfig.NodeURL.DefaultNodeURL_Alpha_V071, desc: "SettingsVC_nodeSet_defaultTestNetwork_test_des", chainId: AppConfig.ChainID.TEST1, isSelected: true, hrp: AppConfig.Hrp.LAX),
             (nodeURL: AppConfig.NodeURL.DefaultNodeURL_Alpha_V071_DEV, desc: "SettingsVC_nodeSet_defaultTestNetwork_develop_des", chainId: AppConfig.ChainID.DEV, isSelected: false, hrp: AppConfig.Hrp.LAX)
         ]
         #elseif PARALLELNET
@@ -108,11 +110,10 @@ struct AppConfig {
             static let UATNET = "https://aton.uat.platon.network"
             static let MAINTESTNET = "https://aton.test.platon.network"
             static let MAINNET = "https://aton.main.platon.network"
-//            static let TESTNET = "http://192.168.9.190:1000"
             static let TESTNET = "http://58.250.250.234:1000"
-//            static let TESTNET = "http://58.250.250.234:1000"
-            static let DEVNET = "http://192.168.9.190:443"
-//            static let DEVNET = "http://192.168.120.141:6789"
+//            static let TESTNET = "http://192.168.9.190:1000"
+            static let DEVNET = "http://58.250.250.234:1100"
+//            static let DEVNET = "http://192.168.9.190:443"
         }
         static let PATH = "/app/v0760"
     }
