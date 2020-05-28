@@ -19,6 +19,7 @@ extension RealmHelper {
         #if UAT
         #elseif PARALLELNET
         #else
+        AddressBookService.service.deleteAll()
         migration.enumerateObjects(ofType: Wallet.className()) { (oldObject, newObject) in
             guard oldObject != nil, newObject != nil else { return }
             // 旧钱包格式json不保存地址, 所以无需修改
