@@ -26,4 +26,8 @@ class AddressBookService {
     func delete(addressInfo: AddressInfo) {
         AddressInfoPersistence.delete(addrInfo: addressInfo)
     }
+
+    func deleteAll() {
+        AddressInfoPersistence.deleteAll()
+    }
 }

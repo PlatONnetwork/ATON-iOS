@@ -72,4 +72,16 @@ class AddressInfoPersistence {
             })
         }
     }
+
+    public class func deleteAll() {
+        let predicate = NSPredicate(format: "addressType = %d", AddressType_AddressBook)
+        RealmWriteQueue.async {
+            autoreleasepool(invoking: {
+                let realm = try! Realm(configuration: RealmHelper.getConfig())
+                try? realm.write {
+                    realm.delete(realm.objects(AddressInfo.self).filter(predicate))
+                }
+            })
+        }
+    }
 }
