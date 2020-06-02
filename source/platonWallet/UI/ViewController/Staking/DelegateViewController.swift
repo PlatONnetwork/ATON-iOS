@@ -338,7 +338,7 @@ extension DelegateViewController {
         if walletObject.currentWallet.type == .observed {
             let funcType = FuncType.createDelegate(typ: typ, nodeId: nodeId, amount: self.currentAmount)
 
-            let transactionData = TransactionQrcode(amount: self.currentAmount.description, chainId: web3.properties.chainId, from: walletObject.currentWallet.address, to: PlatonConfig.ContractAddress.stakingContractAddress, gasLimit: selectedGasLimit.description, gasPrice: selectedGasPrice.description, nonce: nonce.description, typ: typ, nodeId: nodeId, nodeName: self.currentNode?.name, stakingBlockNum: nil, functionType: funcType.typeValue, rk: nil)
+            let transactionData = TransactionQrcode(amount: self.currentAmount.description, chainId: web3.properties.chainId, from: walletObject.currentWallet.address, to: WalletUtil.convertBech32(PlatonConfig.ContractAddress.stakingContractAddress), gasLimit: selectedGasLimit.description, gasPrice: selectedGasPrice.description, nonce: nonce.description, typ: typ, nodeId: nodeId, nodeName: self.currentNode?.name, stakingBlockNum: nil, functionType: funcType.typeValue, rk: nil)
 
             let qrcodeData = QrcodeData(qrCodeType: 0, qrCodeData: [transactionData], chainId: web3.chainId, functionType: 1004, from: walletObject.currentWallet.address, nodeName: self.currentNode?.name, rn: nil, timestamp: Int(Date().timeIntervalSince1970 * 1000), rk: nil, si: nil, v: 1)
             guard
