@@ -83,9 +83,8 @@ class ThresholdValueSelectView: UIView, UITableViewDelegate, UITableViewDataSour
         fatalError("init(coder:) has not been implemented")
     }
 
+    lazy var headerView = UIView()
     func setupSubviews(title: String?) {
-
-        let headerView = UIView()
         headerView.backgroundColor = .white
         addSubview(headerView)
         headerView.snp.makeConstraints { make in
@@ -135,7 +134,7 @@ class ThresholdValueSelectView: UIView, UITableViewDelegate, UITableViewDataSour
         super.touchesEnded(touches, with: event)
         guard
             let touch = touches.first,
-            !tableView.frame.contains(touch.location(in: self))
+            !headerView.frame.contains(touch.location(in: headerView))
         else { return }
         dismiss()
     }
