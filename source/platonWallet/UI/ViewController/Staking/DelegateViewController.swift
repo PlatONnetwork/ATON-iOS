@@ -181,7 +181,9 @@ class DelegateViewController: BaseViewController {
     }
 
     func fetchData() {
-
+        guard let node = currentNode else { return }
+        guard let address = currentAddress, let nodeId = node.nodeId else { return }
+        getGas(walletAddr: address, nodeId: nodeId)
     }
 
 }
@@ -582,6 +584,7 @@ extension DelegateViewController {
         tableView.reloadSections(IndexSet([indexSection, indexSection+1, indexSection+2, indexSection+3]), with: .fade)
         guard indexRow != 0 else { return }
 
+        currentAddress = walletStyle?.currentWallet.address.lowercased()
         fetchData()
     }
 
