@@ -190,7 +190,7 @@ extension CreateIndividualWalletViewController :UITextFieldDelegate {
         if textField == self.nameTF && string != "" {
             if let text = textField.text, let textRange = Range(range, in: text) {
                 let appendtext = text.replacingCharacters(in: textRange, with: string)
-                let result = CommonService.isValidWalletName(appendtext, checkDuplicate: true)
+                let result = CommonService.isValidWalletName(appendtext, checkDuplicate: false)
                 return result.0
             }
         }
