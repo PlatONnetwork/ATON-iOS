@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		1072E4FC0F23E3E3FB5CDE69 /* Pods_platonWalletParallelNet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AD6A13D4F52CFAFA06A9E38F /* Pods_platonWalletParallelNet.framework */; };
+		32B1405D7B34F665A7C3760C /* EthereumAddress+Extenstions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B14E4686AA44ED432EAC46 /* EthereumAddress+Extenstions.swift */; };
+		32B1452F69494BEAEC4D70ED /* EthereumAddress+Extenstions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B14E4686AA44ED432EAC46 /* EthereumAddress+Extenstions.swift */; };
+		32B14656AD074F2EB16CA35D /* EthereumAddress+Extenstions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32B14E4686AA44ED432EAC46 /* EthereumAddress+Extenstions.swift */; };
 		5EEB9FF321D56AEC03520158 /* Pods_platonWalletUAT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A4BB6563189E24AE4F9CC0C4 /* Pods_platonWalletUAT.framework */; };
 		6B0C7BFA8457D2B3989CB127 /* Pods_platonWallet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D427B78BFE8D21222DD020CB /* Pods_platonWallet.framework */; };
 		71C9360501B0BB928FC84DCF /* Pods_platonWalletTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AA889E430E082B94A0834EAA /* Pods_platonWalletTests.framework */; };
@@ -1077,6 +1080,7 @@
 		066997A993A7BD843316E036 /* Pods-platonWallet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-platonWallet.debug.xcconfig"; path = "Pods/Target Support Files/Pods-platonWallet/Pods-platonWallet.debug.xcconfig"; sourceTree = "<group>"; };
 		28CA084ED4DDD3E2EE7BE5FE /* Pods-platonWalletUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-platonWalletUITests.release.xcconfig"; path = "Pods/Target Support Files/Pods-platonWalletUITests/Pods-platonWalletUITests.release.xcconfig"; sourceTree = "<group>"; };
 		2B921C95E2605F8C1B9AA186 /* Pods_platonWalletUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_platonWalletUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		32B14E4686AA44ED432EAC46 /* EthereumAddress+Extenstions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "EthereumAddress+Extenstions.swift"; sourceTree = "<group>"; };
 		383D6B6E662D367828B2241A /* Pods-platonWalletParallelNet.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-platonWalletParallelNet.release.xcconfig"; path = "Pods/Target Support Files/Pods-platonWalletParallelNet/Pods-platonWalletParallelNet.release.xcconfig"; sourceTree = "<group>"; };
 		53876134805DE96AEC9A0A48 /* Pods-platonWalletParallelNet.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-platonWalletParallelNet.debug.xcconfig"; path = "Pods/Target Support Files/Pods-platonWalletParallelNet/Pods-platonWalletParallelNet.debug.xcconfig"; sourceTree = "<group>"; };
 		8101BDAE22ED6104004A009E /* ValidatorNodeListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidatorNodeListViewController.swift; sourceTree = "<group>"; };
@@ -2154,6 +2158,7 @@
 				9A56557E21772DE2002A1F6C /* WalletUtil.swift */,
 				81E2E84E2186AEAF008B7504 /* AddressInfo.swift */,
 				81E64A6123055070000F2E7C /* Balance.swift */,
+				32B14E4686AA44ED432EAC46 /* EthereumAddress+Extenstions.swift */,
 			);
 			path = Wallet;
 			sourceTree = "<group>";
@@ -3476,6 +3481,7 @@
 				8118872B23B7590C00CAE5BA /* CommonUtilities.swift in Sources */,
 				8118872C23B7590C00CAE5BA /* NodeAboutDelegateTableViewCell.swift in Sources */,
 				8118872D23B7590C00CAE5BA /* UIBarItem+Extensions.swift in Sources */,
+				32B14656AD074F2EB16CA35D /* EthereumAddress+Extenstions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3768,6 +3774,7 @@
 				81B58A5A235DA1FC00816B4E /* CommonUtilities.swift in Sources */,
 				81B58A5B235DA1FC00816B4E /* NodeAboutDelegateTableViewCell.swift in Sources */,
 				81B58A5C235DA1FC00816B4E /* UIBarItem+Extensions.swift in Sources */,
+				32B1405D7B34F665A7C3760C /* EthereumAddress+Extenstions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -4060,6 +4067,7 @@
 				81EE99C92175E665008DF8CB /* CommonUtilities.swift in Sources */,
 				81D7E27322E869A90069CDED /* NodeAboutDelegateTableViewCell.swift in Sources */,
 				819A522921902E7E00E4C500 /* UIBarItem+Extensions.swift in Sources */,
+				32B1452F69494BEAEC4D70ED /* EthereumAddress+Extenstions.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

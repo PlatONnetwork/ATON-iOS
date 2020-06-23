@@ -125,8 +125,8 @@ class TransactionService : BaseService {
         let value = EthereumQuantity(quantity: amountOfwei!)
 
         let data = EthereumData(bytes: [])
-        try? walletAddr = EthereumAddress(hex: from, eip55: false)
-        try? toAddr = EthereumAddress(hex: try! AddrCoder.shared.decodeHex(addr: to), eip55: false)
+        try? walletAddr = EthereumAddress(bech32: from, eip55: false)
+        try? toAddr = EthereumAddress(bech32: to, eip55: false)
         try? fromAddr = EthereumAddress(hex: from, eip55: false)
         try? pk = EthereumPrivateKey(hexPrivateKey: pri)
 
@@ -142,8 +142,8 @@ class TransactionService : BaseService {
                 value: value,
                 data : data
                 )
-            ptx.to = toAddr?.hex(eip55: true)
-            ptx.from = walletAddr?.hex(eip55: true)
+            ptx.to = toAddr?.bech32(eip55: true)
+            ptx.from = walletAddr?.bech32(eip55: true)
             let chainID = EthereumQuantity(quantity: BigUInt(web3.chainId)!)
             let signedTx = try? tx.sign(with: pk!, chainId: chainID) as EthereumSignedTransaction
 
@@ -168,8 +168,8 @@ class TransactionService : BaseService {
 
                     let thTx = TwoHourTransaction()
                     thTx.createTime = Date().millisecondsSince1970
-                    thTx.to = toAddr?.hex(eip55: true).lowercased()
-                    thTx.from = walletAddr?.hex(eip55: true).lowercased()
+                    thTx.to = toAddr?.bech32(eip55: true).lowercased()
+                    thTx.from = walletAddr?.bech32(eip55: true).lowercased()
                     thTx.value = String(value.quantity)
 
                     TransferPersistence.add(tx: ptx)
