@@ -903,7 +903,7 @@
 "about_version_update_alert_cancel" = "暂不更新";
 "about_version_update_alert_ok" = "立即更新";
 
-"delegate_detail_unable_alert" = "请先赎回 “已待赎回委托”";
+"delegate_detail_unable_alert" = "请先赎回 “待赎回委托”";
 
 "import_observed_wallet_tip_1" = "存储大额资金建议使用观察钱包和冷钱包联动管理。";
 "import_observed_wallet_tip_2" = "交易时需要配合冷钱包进行操作。";
