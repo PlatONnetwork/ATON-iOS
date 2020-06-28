@@ -173,6 +173,7 @@ extension WalletListViewController: UITableViewDelegate, UITableViewDataSource {
             self.tableView.reloadData()
             //排序过后，强制刷新一下内存数据
             WalletService.sharedInstance.refreshDB()
+            NotificationCenter.default.post(name: Notification.Name.ATON.updateWalletList, object: nil)
         }
     }
 

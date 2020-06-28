@@ -132,11 +132,11 @@ class AssetWalletsSectionView: UIView {
                 if self.viewModel.assetIsHide.value {
                     self.restrictedLabel.localizedAttributedTexts = [attribute_1, attribute_2, NSAttributedString(string: "***")]
                 } else {
-                    self.restrictedLabel.localizedAttributedTexts = [attribute_1, attribute_2, NSAttributedString(string: self.viewModel.lockBalance.value.description.vonToLATString ?? "0.00")]
+                    self.restrictedLabel.localizedAttributedTexts = [attribute_1, attribute_2, NSAttributedString(string: self.viewModel.lockBalance.value.description.vonToLATString ?? "0.00"), NSAttributedString(string: "LAT")]
                 }
                 // 如果文字溢出， 数字换行现实
                 if(self.restrictedLabel.isTruncated) {
-                    self.restrictedLabel.localizedAttributedTexts = [attribute_1, attribute_2, NSAttributedString(string: "\n"),NSAttributedString(string: self.viewModel.lockBalance.value.description.vonToLATString ?? "0.00")]
+                    self.restrictedLabel.localizedAttributedTexts = [attribute_1, attribute_2, NSAttributedString(string: "\n"),NSAttributedString(string: self.viewModel.lockBalance.value.description.vonToLATString ?? "0.00"), NSAttributedString(string: "LAT")]
                 }
             } else {
                 self.restrictedLabel.text = nil
