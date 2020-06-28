@@ -563,9 +563,9 @@ extension DelegateViewController {
         guard let indexRow = indexPath?.row, let indexSection = indexPath?.section else { return }
         if indexRow != 0 {
             newWalletStyle.selectedIndex = indexRow - 1
-            if newWalletStyle.selectedIndex != walletStyle?.selectedIndex {
+            /*if newWalletStyle.selectedIndex != walletStyle?.selectedIndex {
                 currentAmount = .zero
-            }
+            }*/
         }
         walletStyle = newWalletStyle
         listData[indexSection] = DelegateTableViewCellStyle.wallets(walletStyle: walletStyle!)
