@@ -86,6 +86,8 @@ class ThresholdValueSelectView: UIView, UITableViewDelegate, UITableViewDataSour
     lazy var headerView = UIView()
     func setupSubviews(title: String?) {
         headerView.backgroundColor = .white
+        headerView.isUserInteractionEnabled = true
+
         addSubview(headerView)
         headerView.snp.makeConstraints { make in
             make.leading.top.trailing.equalToSuperview()
@@ -130,14 +132,14 @@ class ThresholdValueSelectView: UIView, UITableViewDelegate, UITableViewDataSour
     }
 
 
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+    /*override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesEnded(touches, with: event)
         guard
             let touch = touches.first,
             !headerView.frame.contains(touch.location(in: headerView))
         else { return }
         dismiss()
-    }
+    }*/
 
     func show(viewController: UIViewController) {
         viewController.tabBarController?.view.addSubview(self)
