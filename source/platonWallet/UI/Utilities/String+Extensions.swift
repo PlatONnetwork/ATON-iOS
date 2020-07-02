@@ -9,6 +9,7 @@
 import Foundation
 import BigInt
 import Localize_Swift
+import platonWeb3
 
 let dateFormatter = DateFormatter()
 let dateFormatter_greenwich = DateFormatter()
@@ -465,8 +466,11 @@ extension String {
         if self.length == 0 {
             return "walletAvatar_1"
         }
-
-        let remain = (self.unicodeScalars.last?.value ?? 0) % 15
+        var avatarStr = self;
+        if self.isMainnetAddress() || self.isTestnetAddress() {
+            avatarStr = try! AddrCoder.shared.decodeHex(addr: self)
+        }
+        let remain = (avatarStr.unicodeScalars.last?.value ?? 0) % 15
         return "walletAvatar_\(remain + 1)"
     }
 

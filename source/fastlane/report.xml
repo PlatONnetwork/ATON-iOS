@@ -5,29 +5,27 @@
     
     
       
-      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.015135">
+      <testcase classname="fastlane.lanes" name="0: default_platform" time="0.001849">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="1: slather" time="5.840767">
+      <testcase classname="fastlane.lanes" name="1: slather" time="5.361765">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="2: lizard" time="3.024261">
+      <testcase classname="fastlane.lanes" name="2: lizard" time="3.11023">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="3: swiftlint" time="3.425161">
+      <testcase classname="fastlane.lanes" name="3: swiftlint" time="2.093736">
         
       </testcase>
     
       
-      <testcase classname="fastlane.lanes" name="4: sonar" time="82.609633">
-        
-          <failure message="/Library/Ruby/Gems/2.6.0/gems/fastlane-2.145.0/fastlane/lib/fastlane/actions/actions_helper.rb:48:in `execute_action'&#10;/Library/Ruby/Gems/2.6.0/gems/fastlane-2.145.0/fastlane/lib/fastlane/runner.rb:253:in `block in execute_action'&#10;/Library/Ruby/Gems/2.6.0/gems/fastlane-2.145.0/fastlane/lib/fastlane/runner.rb:227:in `chdir'&#10;/Library/Ruby/Gems/2.6.0/gems/fastlane-2.145.0/fastlane/lib/fastlane/runner.rb:227:in `execute_action'&#10;/Library/Ruby/Gems/2.6.0/gems/fastlane-2.145.0/fastlane/lib/fastlane/runner.rb:157:in `trigger_action_by_name'&#10;/Library/Ruby/Gems/2.6.0/gems/fastlane-2.145.0/fastlane/lib/fastlane/fast_file.rb:159:in `method_missing'&#10;Fastfile:46:in `block (2 levels) in parsing_binding'&#10;/Library/Ruby/Gems/2.6.0/gems/fastlane-2.145.0/fastlane/lib/fastlane/lane.rb:33:in `call'&#10;/Library/Ruby/Gems/2.6.0/gems/fastlane-2.145.0/fastlane/lib/fastlane/runner.rb:49:in `block in execute'&#10;/Library/Ruby/Gems/2.6.0/gems/fastlane-2.145.0/fastlane/lib/fastlane/runner.rb:45:in `chdir'&#10;/Library/Ruby/Gems/2.6.0/gems/fastlane-2.145.0/fastlane/lib/fastlane/runner.rb:45:in `execute'&#10;/Library/Ruby/Gems/2.6.0/gems/fastlane-2.145.0/fastlane/lib/fastlane/lane_manager.rb:56:in `cruise_lane'&#10;/Library/Ruby/Gems/2.6.0/gems/fastlane-2.145.0/fastlane/lib/fastlane/command_line_handler.rb:36:in `handle'&#10;/Library/Ruby/Gems/2.6.0/gems/fastlane-2.145.0/fastlane/lib/fastlane/commands_generator.rb:108:in `block (2 levels) in run'&#10;/Library/Ruby/Gems/2.6.0/gems/commander-fastlane-4.4.6/lib/commander/command.rb:178:in `call'&#10;/Library/Ruby/Gems/2.6.0/gems/commander-fastlane-4.4.6/lib/commander/command.rb:153:in `run'&#10;/Library/Ruby/Gems/2.6.0/gems/commander-fastlane-4.4.6/lib/commander/runner.rb:476:in `run_active_command'&#10;/Library/Ruby/Gems/2.6.0/gems/fastlane-2.145.0/fastlane_core/lib/fastlane_core/ui/fastlane_runner.rb:76:in `run!'&#10;/Library/Ruby/Gems/2.6.0/gems/commander-fastlane-4.4.6/lib/commander/delegates.rb:15:in `run!'&#10;/Library/Ruby/Gems/2.6.0/gems/fastlane-2.145.0/fastlane/lib/fastlane/commands_generator.rb:349:in `run'&#10;/Library/Ruby/Gems/2.6.0/gems/fastlane-2.145.0/fastlane/lib/fastlane/commands_generator.rb:41:in `start'&#10;/Library/Ruby/Gems/2.6.0/gems/fastlane-2.145.0/fastlane/lib/fastlane/cli_tools_distributor.rb:119:in `take_off'&#10;/Library/Ruby/Gems/2.6.0/gems/fastlane-2.145.0/bin/fastlane:23:in `&lt;top (required)&gt;'&#10;/usr/local/bin/fastlane:23:in `load'&#10;/usr/local/bin/fastlane:23:in `&lt;main&gt;'&#10;&#10;Shell command exited with exit status 1 instead of 0.&#10;INFO: Scanner configuration file: /usr/local/Cellar/sonar-scanner/4.3.0.2102/libexec/conf/sonar-scanner.properties&#10;INFO: Project root configuration file: /Users/liyf/gitrepo/ATON-iOS/source/sonar-project.properties&#10;INFO: SonarScanner 4.3.0.2102&#10;INFO: Java 14 Oracle Corporation (64-bit)&#10;INFO: Mac OS X 10.15.4 x86_64&#10;INFO: User cache: /Users/liyf/.sonar/cache&#10;ERROR: SonarQube server [http://192.168.16.173:9000] can not be reached&#10;INFO: ------------------------------------------------------------------------&#10;INFO: EXECUTION FAILURE&#10;INFO: ------------------------------------------------------------------------&#10;INFO: Total time: 1:21.705s&#10;INFO: Final Memory: 3M/17M&#10;INFO: ------------------------------------------------------------------------&#10;ERROR: Error during SonarScanner execution&#10;org.sonarsource.scanner.api.internal.ScannerException: Unable to execute SonarScanner analysis&#10;	at org.sonarsource.scanner.api.internal.IsolatedLauncherFactory.lambda$createLauncher$0(IsolatedLauncherFactory.java:85)&#10;	at java.base/java.security.AccessController.doPrivileged(AccessController.java:312)&#10;	at org.sonarsource.scanner.api.internal.IsolatedLauncherFactory.createLauncher(IsolatedLauncherFactory.java:74)&#10;	at org.sonarsource.scanner.api.internal.IsolatedLauncherFactory.createLauncher(IsolatedLauncherFactory.java:70)&#10;	at org.sonarsource.scanner.api.EmbeddedScanner.doStart(EmbeddedScanner.java:185)&#10;	at org.sonarsource.scanner.api.EmbeddedScanner.start(EmbeddedScanner.java:123)&#10;	at org.sonarsource.scanner.cli.Main.execute(Main.java:73)&#10;	at org.sonarsource.scanner.cli.Main.main(Main.java:61)&#10;Caused by: java.lang.IllegalStateException: Fail to get bootstrap index from server&#10;	at org.sonarsource.scanner.api.internal.BootstrapIndexDownloader.getIndex(BootstrapIndexDownloader.java:42)&#10;	at org.sonarsource.scanner.api.internal.JarDownloader.getScannerEngineFiles(JarDownloader.java:58)&#10;	at org.sonarsource.scanner.api.internal.JarDownloader.download(JarDownloader.java:53)&#10;	at org.sonarsource.scanner.api.internal.IsolatedLauncherFactory.lambda$createLauncher$0(IsolatedLauncherFactory.java:76)&#10;	... 7 more&#10;Caused by: java.lang.IllegalStateException: Status returned by url [http://192.168.16.173:9000/batch/index] is not valid: [503]&#10;	at org.sonarsource.scanner.api.internal.ServerConnection.callUrl(ServerConnection.java:116)&#10;	at org.sonarsource.scanner.api.internal.ServerConnection.downloadString(ServerConnection.java:99)&#10;	at org.sonarsource.scanner.api.internal.BootstrapIndexDownloader.getIndex(BootstrapIndexDownloader.java:39)&#10;	... 10 more&#10;ERROR: &#10;ERROR: Re-run SonarScanner using the -X switch to enable full debug logging.&#10;" />
+      <testcase classname="fastlane.lanes" name="4: sonar" time="20.90702">
         
       </testcase>
     
