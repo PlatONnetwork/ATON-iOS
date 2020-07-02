@@ -470,7 +470,7 @@ extension String {
         if self.isMainnetAddress() || self.isTestnetAddress() {
             avatarStr = try! AddrCoder.shared.decodeHex(addr: self)
         }
-        let remain = (self.unicodeScalars.last?.value ?? 0) % 15
+        let remain = (avatarStr.unicodeScalars.last?.value ?? 0) % 15
         return "walletAvatar_\(remain + 1)"
     }
 
