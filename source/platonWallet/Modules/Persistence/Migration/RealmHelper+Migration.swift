@@ -16,9 +16,9 @@ extension RealmHelper {
     }
 
     public static func migrationBelow0130(migration: Migration, schemaVersion:UInt64, oldSchemaVersion: UInt64) {
-        #if UAT
-        #elseif PARALLELNET
-        #else
+//        #if UAT
+//        #elseif PARALLELNET
+//        #else
         migration.deleteData(forType: AddressInfo.className())
         migration.enumerateObjects(ofType: Wallet.className()) { (oldObject, newObject) in
             guard oldObject != nil, newObject != nil else { return }
@@ -45,7 +45,7 @@ extension RealmHelper {
             ) else { return }
             newObject!["address"] = Keystore.Address(address: (oldObject!["address"] as? String)!, mainnetHrp: AppConfig.Hrp.LAT, testnetHrp: AppConfig.Hrp.LAX)*/
         }
-        #endif
+//        #endif
     }
 
     public static func migrationBelow0120(migration: Migration, schemaVersion:UInt64, oldSchemaVersion: UInt64) {
