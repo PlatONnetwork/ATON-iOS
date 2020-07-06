@@ -30,6 +30,11 @@ class DelegateRecordMainViewController: ButtonBarPagerTabStripViewController {
         }
 
         super.viewDidLoad()
+        buttonBarView.frame = CGRect(x: buttonBarView.frame.minX,
+                y: buttonBarView.frame.minY + (navigationController?.navigationBar.frame.size.height ?? 44) + UIApplication.shared.statusBarFrame.height,
+                width: buttonBarView.frame.width, height: buttonBarView.frame.height)
+        containerView.frame = CGRect(x: containerView.frame.minX, y: buttonBarView.frame.maxY, width: containerView.frame.width, height: containerView.frame.height - UIApplication.shared.statusBarFrame.height)
+
 
         // Do any additional setup after loading the view.
     }
