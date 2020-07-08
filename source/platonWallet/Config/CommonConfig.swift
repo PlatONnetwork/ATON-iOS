@@ -54,7 +54,7 @@ struct AppConfig {
         ]
         #else
         static let defaultNodesURL = [
-            (nodeURL: DefaultNodeURL_MAINTEST, desc: "SettingsVC_nodeSet_NewBaleyworld_des", chainId: AppConfig.ChainID.VERSION_MAINTESTNET, isSelected: false, hrp: AppConfig.Hrp.LAT),
+            (nodeURL: DefaultNodeURL_MAINTEST, desc: "SettingsVC_nodeSet_NewBaleyworld_des", chainId: AppConfig.ChainID.VERSION_MAINTESTNET, isSelected: false, hrp: AppConfig.Hrp.LAX),
         ]
         #endif
     }
