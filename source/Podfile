@@ -45,6 +45,8 @@ def target_pods
     pod 'OHHTTPStubs/Swift', :configurations => ['Debug']
     pod 'GzipSwift'
     pod 'ZXingObjC'
+    # Reveal
+    pod 'Reveal-SDK', '~> 24.0' , :configurations => ['Debug']
 end
 
 target 'platonWalletUAT' do

@@ -84,12 +84,13 @@ class WithDrawViewController: BaseViewController {
             make.edges.equalToSuperview()
         }
 
-        tableView.emptyDataSetView { [weak self] view in
-            let holder = self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, nil,"img-No network") as? TableViewNoDataPlaceHolder
-            holder?.descriptionLabel.text = Localized("empty_view_no_network_title")
-            view.customView(holder)
-            view.isScrollAllowed(true)
-        }
+        initListData()
+//        tableView.emptyDataSetView { [weak self] view in
+//            let holder = self?.emptyViewForTableView(forEmptyDataSet: (self?.tableView)!, nil,"img-No network") as? TableViewNoDataPlaceHolder
+//            holder?.descriptionLabel.text = Localized("empty_view_no_network_title")
+//            view.customView(holder)
+//            view.isScrollAllowed(true)
+//        }
 
         tableView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(cancelFirstResponser)))
     }
@@ -184,10 +185,25 @@ class WithDrawViewController: BaseViewController {
 
     private func initListData() {
         let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).first { $0.address.lowercased() == currentAddress?.lowercased() }
+
         guard
             let node = currentNode,
-            let bStyle = balanceStyle,
+//            let bStyle = balanceStyle,
             let wallet = localWallet else { return }
+        // 如下是接口调用返回balanceStyle实例
+        //        ▿ Optional<BalancesCellStyle>
+        //        ▿ some : BalancesCellStyle
+        //          ▿ balances : 1 element
+        //            ▿ 0 : 3 elements
+        //              - .0 : "已委托"
+        //              - .1 : "20000000000000000000"
+        //              - .2 : false
+        //          ▿ stakingBlockNums : 1 element
+        //            - 0 : 2325996
+        //          - selectedIndex : 0
+        //          - isExpand : false
+        // 预置默认数据。保证进入页面即可显示表格视图 （balance的$0,$1传空字符串可以在实际显示的时候按照"--"样式转义）
+        let bStyle = balanceStyle ?? BalancesCellStyle(balances: [("", "", false)], stakingBlockNums: [0], selectedIndex: 0, isExpand: false)
 
         let item1 = DelegateTableViewCellStyle.nodeInfo(node: node)
         walletStyle = WalletsCellStyle(wallets: [wallet], selectedIndex: 0, isExpand: false)

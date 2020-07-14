@@ -483,6 +483,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
                     _ = weakSelf.checkConfirmButtonAvailable()
                 }
             }
+            UIApplication.shared.keyWindow?.endEditing(true)
             AssetViewControllerV060.pushViewController(viewController: addressBookVC)
 
         })

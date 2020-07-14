@@ -31,6 +31,7 @@ PODS:
   - Realm/Headers (4.3.0)
   - RealmSwift (4.3.0):
     - Realm (= 4.3.0)
+  - Reveal-SDK (24)
   - RTRootNavigationController (0.7.1):
     - RTRootNavigationController/Core (= 0.7.1)
   - RTRootNavigationController/Core (0.7.1)
@@ -79,6 +80,7 @@ DEPENDENCIES:
   - OHHTTPStubs/Swift
   - platonWeb3 (~> 0.13.0)
   - RealmSwift (~> 4.3.0)
+  - Reveal-SDK (~> 24.0)
   - RTRootNavigationController (= 0.7.1)
   - ScryptSwift (= 0.0.1)
   - secp256k1.swift (~> 0.1)
@@ -115,6 +117,7 @@ SPEC REPOS:
     - platonWeb3
     - Realm
     - RealmSwift
+    - Reveal-SDK
     - RTRootNavigationController
     - ScryptSwift
     - secp256k1.swift
@@ -156,6 +159,7 @@ SPEC CHECKSUMS:
   platonWeb3: 2d4dfeebc05423c87af6c9a6a849c4faef7062bb
   Realm: 9357c3589555793e1860a7104a7412bca4a48d99
   RealmSwift: 402f1e379a8ef82c635313037b043f0f06de880c
+  Reveal-SDK: 5d7e56b8f018c0a88b3a2c10bf68d598bbd3b071
   RTRootNavigationController: afa6913402be26f8326f7f37fc1550aa67baddcc
   ScryptSwift: c771529fa895a563febe3184add81bbe5e2f85aa
   secp256k1.swift: a7e7a214f6db6ce5db32cc6b2b45e5c4dd633634
@@ -175,6 +179,6 @@ SPEC CHECKSUMS:
   UMCShare: e0cef55c0fd6051254c8cda1d0630eb578b27bad
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: 6c108daf9a82dfadf35265c8c86a89fdd10e4059
+PODFILE CHECKSUM: ceb1f664de51f0a1ef1e1942ef23ba1d8ad65926
 
-COCOAPODS: 1.9.1
+COCOAPODS: 1.9.3
