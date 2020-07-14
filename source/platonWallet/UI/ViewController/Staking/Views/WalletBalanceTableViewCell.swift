@@ -22,8 +22,17 @@ class WalletBalanceTableViewCell: UITableViewCell {
     var cellDidHandle: ((_ cell: WalletBalanceTableViewCell) -> Void)?
 
     func setupBalanceData(_ balance: (String, String, Bool)) {
-        balanceTipLabel.text = balance.0
-        balanceLabel.text = (balance.1.vonToLATString ?? "0").balanceFixToDisplay(maxRound: 8).ATPSuffix()
+        // 传入空字符串时转义成--
+        if balance.0.count == 0 {
+            balanceTipLabel.text = "--"
+        } else {
+            balanceTipLabel.text = balance.0
+        }
+        if balance.1.count == 0 {
+            balanceLabel.text = "--"
+        } else {
+            balanceLabel.text = (balance.1.vonToLATString ?? "0").balanceFixToDisplay(maxRound: 8).ATPSuffix()
+        }
     }
 
     var isTopCell: Bool = false {
