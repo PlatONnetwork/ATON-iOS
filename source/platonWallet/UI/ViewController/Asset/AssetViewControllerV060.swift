@@ -735,7 +735,9 @@ extension AssetViewControllerV060 {
 extension AssetViewControllerV060: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return 0 }
-        return viewModel.transactionsData.value[selectedAddress]?.count ?? 0
+        let rowCount = viewModel.transactionsData.value[selectedAddress]?.count ?? 0
+        tableView.mj_footer.alpha = rowCount == 0 ? 0 : 1
+        return rowCount
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -784,8 +786,13 @@ extension AssetViewControllerV060: UIScrollViewDelegate {
             navigationController?.setNavigationBarHidden(false, animated: false)
             // 处理组头偏移问题
             if scrollView.contentOffset.y > tableHeaderView.bounds.size.height - self.navigationController!.navigationBar.bounds.size.height - kStatusBarHeight {
-                print("scrollView.contentOffset.y: ", scrollView.contentOffset.y)
-                tableView.contentInset = UIEdgeInsets(top: self.navigationController!.navigationBar.bounds.size.height + kStatusBarHeight, left: 0, bottom: 0, right: 0)
+//                print("scrollView.contentOffset.y: ", scrollView.contentOffset.y)
+//                var safeAreaBottom: CGFloat = 0
+//                if #available(iOS 11.0, *) {
+//                    safeAreaBottom = UIApplication.shared.keyWindow!.safeAreaInsets.bottom
+//                }
+//                let tabbarHeight = self.tabBarController!.tabBar.bounds.size.height
+                tableView.contentInset = UIEdgeInsets(top: self.navigationController!.navigationBar.bounds.size.height + kStatusBarHeight, left: 0, bottom: 69, right: 0)
             } else {
                 tableView.contentInset = UIEdgeInsets.zero
             }
