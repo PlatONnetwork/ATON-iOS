@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class NodeInfoTableViewCell: UITableViewCell {
 
@@ -18,6 +19,9 @@ class NodeInfoTableViewCell: UITableViewCell {
         didSet {
             nameLabel.text = node?.name
             addressLabel.text = node?.nodeId?.nodeIdForDisplay()
+            if let avatarURL = URL(string: node?.url ?? "") {
+                avatarIV.kf.setImage(with: ImageResource(downloadURL: avatarURL), placeholder: UIImage(named: "3.icon_default"), options: nil, progressBlock: nil, completionHandler: nil)
+            }
         }
     }
 
