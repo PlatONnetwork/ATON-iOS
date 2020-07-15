@@ -215,7 +215,9 @@ class AssetWalletsSectionView: UIView {
         let contentView = UIView()
         addSubview(contentView)
         contentView.snp.makeConstraints { make in
-            make.top.trailing.leading.equalToSuperview()
+//            make.top.trailing.leading.equalToSuperview()
+            make.top.equalTo(-1)
+            make.leading.trailing.equalToSuperview()
         }
 
         let bgImageView = UIImageView()

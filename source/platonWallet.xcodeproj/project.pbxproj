@@ -4165,7 +4165,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.13.0;
+				MARKETING_VERSION = 0.13.1;
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-DPARALLELNET\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.platon.atonuat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4198,7 +4198,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.13.0;
+				MARKETING_VERSION = 0.13.1;
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\" \"-DPARALLELNET\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.platon.atonuat;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4418,7 +4418,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.13.0;
+				MARKETING_VERSION = 0.13.1;
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.platon.aton;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -4452,7 +4452,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 0.13.0;
+				MARKETING_VERSION = 0.13.1;
 				OTHER_SWIFT_FLAGS = "$(inherited) \"-D\" \"COCOAPODS\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.platon.aton;
 				PRODUCT_NAME = "$(TARGET_NAME)";

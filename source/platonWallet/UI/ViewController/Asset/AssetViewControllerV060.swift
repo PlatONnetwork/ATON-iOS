@@ -199,7 +199,8 @@ class AssetViewControllerV060: UIViewController, PopupMenuTableDelegate {
         contentView.addSubview(walletNameLabel)
         walletNameLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(16)
-            make.top.equalToSuperview().offset(0)
+            // 根据实际调试所得，防止滑动tableView时顶部导航栏内容发生突然位置跳跃
+            make.top.equalToSuperview().offset(18)
         }
 
         let menuButton = UIButton()
@@ -769,23 +770,24 @@ extension AssetViewControllerV060: UITableViewDelegate, UITableViewDataSource {
 extension AssetViewControllerV060: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         print(scrollView.contentOffset.y)
+        if #available(iOS 11.0, *) {
+            tableView.contentInsetAdjustmentBehavior = .never
+        } else {
+            // Fallback on earlier versions
+            automaticallyAdjustsScrollViewInsets = false
+        }
         if scrollView.contentOffset.y <= 0 {
             isShowNavigationBar = false
             navigationController?.setNavigationBarHidden(true, animated: false)
-            if #available(iOS 11.0, *) {
-                tableView.contentInsetAdjustmentBehavior = .never
-            } else {
-                // Fallback on earlier versions
-                automaticallyAdjustsScrollViewInsets = false
-            }
         } else {
             isShowNavigationBar = true
             navigationController?.setNavigationBarHidden(false, animated: false)
-            if #available(iOS 11.0, *) {
-                tableView.contentInsetAdjustmentBehavior = .automatic
+            // 处理组头偏移问题
+            if scrollView.contentOffset.y > tableHeaderView.bounds.size.height - self.navigationController!.navigationBar.bounds.size.height - kStatusBarHeight {
+                print("scrollView.contentOffset.y: ", scrollView.contentOffset.y)
+                tableView.contentInset = UIEdgeInsets(top: self.navigationController!.navigationBar.bounds.size.height + kStatusBarHeight, left: 0, bottom: 0, right: 0)
             } else {
-                // Fallback on earlier versions
-                automaticallyAdjustsScrollViewInsets = true
+                tableView.contentInset = UIEdgeInsets.zero
             }
         }
     }
@@ -797,7 +799,6 @@ extension AssetViewControllerV060: EmptyDataSetSource {
 
     func factoryEmptyHolderView() -> UIView {
         let holderView = UIView.viewFromXib(theClass: TableViewNoDataPlaceHolder.self) as! TableViewNoDataPlaceHolder
-        
         if AssetVCSharedData.sharedData.walletList.count == 0 {
             holderView.descriptionLabel.localizedText = "IndividualWallet_EmptyView_tips"
             holderView.imageView.image = UIImage(named: "empty_no_wallet_icon")
