@@ -34,7 +34,7 @@ class ValidatorNodesViewController: ButtonBarPagerTabStripViewController, Indica
         return button
     }()
 
-    var isSelectedSearchButton: Bool = false  {
+    var isSelectedSearchButton: Bool = false {
         didSet {
             searchButton.isSelected = isSelectedSearchButton
         }

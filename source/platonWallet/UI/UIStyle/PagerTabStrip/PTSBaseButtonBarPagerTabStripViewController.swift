@@ -17,6 +17,8 @@ open class BaseButtonBarPagerTabStripViewController<ButtonBarCellType: UICollect
     public var changeCurrentIndexProgressive: ((_ oldCell: ButtonBarCellType?, _ newCell: ButtonBarCellType?, _ progressPercentage: CGFloat, _ changeCurrentIndex: Bool, _ animated: Bool) -> Void)?
 
     @IBOutlet public weak var buttonBarView: ButtonBarView!
+    /// 是否通过拖拽来切换标签，如果不是，则为点击标签切换的
+    var isDragToChangeTag: Bool!
 
     lazy private var cachedCellWidths: [CGFloat]? = { [unowned self] in
         return self.calculateWidths()
@@ -179,7 +181,9 @@ open class BaseButtonBarPagerTabStripViewController<ButtonBarCellType: UICollect
 
     open func updateIndicator(for viewController: PagerTabStripViewController, fromIndex: Int, toIndex: Int, withProgressPercentage progressPercentage: CGFloat, indexWasChanged: Bool) {
         guard shouldUpdateButtonBarView else { return }
-        buttonBarView.move(fromIndex: fromIndex, toIndex: toIndex, progressPercentage: progressPercentage, pagerScroll: .yes)
+        if isDragToChangeTag == true {
+            buttonBarView.move(fromIndex: fromIndex, toIndex: toIndex, progressPercentage: progressPercentage, pagerScroll: .yes)
+        }
         if let changeCurrentIndexProgressive = changeCurrentIndexProgressive {
             let oldCell = buttonBarView.cellForItem(at: IndexPath(item: currentIndex != fromIndex ? fromIndex : toIndex, section: 0)) as? ButtonBarCellType
             let newCell = buttonBarView.cellForItem(at: IndexPath(item: currentIndex, section: 0)) as? ButtonBarCellType
@@ -200,18 +204,19 @@ open class BaseButtonBarPagerTabStripViewController<ButtonBarCellType: UICollect
         guard indexPath.item != currentIndex else { return }
         buttonBarView.moveTo(index: indexPath.item, animated: true, swipeDirection: .none, pagerScroll: .yes)
         shouldUpdateButtonBarView = true
-
-        let oldCell = buttonBarView.cellForItem(at: IndexPath(item: currentIndex, section: 0)) as? ButtonBarCellType
-        let newCell = buttonBarView.cellForItem(at: IndexPath(item: indexPath.item, section: 0)) as? ButtonBarCellType
-        if pagerBehaviour.isProgressiveIndicator {
-            if let changeCurrentIndexProgressive = changeCurrentIndexProgressive {
-                changeCurrentIndexProgressive(oldCell, newCell, 1, true, true)
-            }
-        } else {
-            if let changeCurrentIndex = changeCurrentIndex {
-                changeCurrentIndex(oldCell, newCell, true)
-            }
-        }
+        isDragToChangeTag = false
+// 下列已屏蔽掉，防止切换标签时指示器跳动
+//        let oldCell = buttonBarView.cellForItem(at: IndexPath(item: currentIndex, section: 0)) as? ButtonBarCellType
+//        let newCell = buttonBarView.cellForItem(at: IndexPath(item: indexPath.item, section: 0)) as? ButtonBarCellType
+//        if pagerBehaviour.isProgressiveIndicator {
+//            if let changeCurrentIndexProgressive = changeCurrentIndexProgressive {
+//                changeCurrentIndexProgressive(oldCell, newCell, 1, true, true)
+//            }
+//        } else {
+//            if let changeCurrentIndex = changeCurrentIndex {
+//                changeCurrentIndex(oldCell, newCell, true)
+//            }
+//        }
         moveToViewController(at: indexPath.item)
 
     }
@@ -245,7 +250,13 @@ open class BaseButtonBarPagerTabStripViewController<ButtonBarCellType: UICollect
     }
 
     // MARK: - UIScrollViewDelegate
-
+    
+    open override func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        super.scrollViewWillBeginDragging(scrollView)
+        guard scrollView == containerView else { return }
+               isDragToChangeTag = true
+    }
+    
     open override func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
         super.scrollViewDidEndScrollingAnimation(scrollView)
 
