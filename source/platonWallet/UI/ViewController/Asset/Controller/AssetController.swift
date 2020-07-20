@@ -47,7 +47,6 @@ class AssetController {
             self.viewModel.isHideSectionView.value = (AssetVCSharedData.sharedData.walletList.count == 0)
 
             guard let wallet = AssetVCSharedData.sharedData.selectedWallet as? Wallet else { return }
-
             self.sectionController.viewModel.wallet.value = wallet
             self.sectionController.viewModel.freeBalance.value = self.sectionController.viewModel.wallet.value?.freeBalance ?? BigUInt.zero
             self.sectionController.viewModel.lockBalance.value = self.sectionController.viewModel.wallet.value?.lockBalance ?? BigUInt.zero

@@ -37,6 +37,11 @@
 "createWalletVC_title" = "创建钱包";
 "createWalletVC_walletName" = "钱包名称:";
 "createWalletVC_password" = "钱包密码:";
+"createWalletVC_walletType" = "类型:";
+"createWalletVC_walletType_normal" = "普通";
+"createWalletVC_walletType_hd" = "HD";
+"createWalletVC_choose_walletType" = "选择钱包类型";
+"wallet_type_creating_desc" = "选择HD，将生成30个钱包";
 
 "createWalletVC_pswStrength" = "强度";
 "createWalletVC_note" = "注意：请务必牢记钱包密码，服务器不会存储您的密码，遗忘丢失将无法找回！";
@@ -1038,3 +1043,6 @@
 "error_3007" = "节点关联的钱包地址，不可参与委托。";
 "error_3008" = "基金会资助的节点不接受委托";
 "error_3009" = "委托数量不能少于%@ LAT";
+
+"common_setting_confirm" = "确定";
+

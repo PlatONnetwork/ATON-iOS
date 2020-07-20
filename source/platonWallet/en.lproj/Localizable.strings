@@ -37,6 +37,13 @@
 "createWalletVC_title" = "Create Wallet";
 "createWalletVC_walletName" = "Wallet Name:";
 "createWalletVC_password" = "Password:";
+"createWalletVC_walletType" = "Type:";
+"createWalletVC_walletType_normal" = "normal";
+"createWalletVC_walletType_hd" = "HD";
+"createWalletVC_choose_walletType" = "Select Type";
+
+"wallet_type_creating_desc" = "A group of 30 wallets will be created when select HD";
+
 "createWalletVC_pswStrength" = "Strength";
 "createWalletVC_note" = "Note: Be sure to keep your wallet password in mind, the server will not store your password, you will not be able to retrieve the password if forgetting or losing!";
 "createWalletVC_createBtn_title" = "Create";
@@ -1028,3 +1035,5 @@
 "error_3007" = "The wallet associated with the validator is not allowed for delegation.";
 "error_3008" = "Foundation-funded nodes do not accept delegations";
 "error_3009" = "The Amount cannot be less than %@ LAT";
+
+"common_setting_confirm" = "Confirm";

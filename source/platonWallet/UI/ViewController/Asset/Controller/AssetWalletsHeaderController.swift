@@ -55,14 +55,44 @@ class AssetWalletsHeaderController {
     @objc func updateWalletList() {
         var viewModels: [RowViewModel] = []
         if let wallets = AssetVCSharedData.sharedData.walletList as? [Wallet] {
+
             for wallet in wallets {
-                let walletViewModel = AssetWalletViewModel(wallet: wallet)
+                let walletViewModel: AssetWalletViewModel = AssetWalletViewModel(wallet: wallet, subWallets: [])
+                if wallet.isHD == false {
+                    viewModels.append(walletViewModel)
+                } else {
+                    if wallet.parentId == nil {
+                        let allSubWallets = WalletHelper.fetchHDSubWallets(from: wallets)
+                        let subWallets = allSubWallets.filter { (sWallet) -> Bool in
+                            sWallet.parentId == wallet.uuid
+                        }
+                        walletViewModel.subWallets = subWallets
+                        viewModels.append(walletViewModel)
+                    }
+                }
                 walletViewModel.cellPressed = { [weak self] in
-                    AssetVCSharedData.sharedData.currentWalletAddress = wallet.address
+                    if walletViewModel.subWallets.count > 0 {
+                        AssetVCSharedData.sharedData.currentWalletAddress = walletViewModel.subWallets[walletViewModel.wallet.selectedIndex].address
+                    } else {
+                        AssetVCSharedData.sharedData.currentWalletAddress = wallet.address
+                    }
+                    
                     self?.onwalletsSelect?()
                 }
-                viewModels.append(walletViewModel)
+                walletViewModel.cellExchangeButtonPressed = {[weak self] in
+                    guard let self = self else { return }
+                    
+                }
             }
+            
+//            for wallet in wallets {
+//                let walletViewModel = AssetWalletViewModel(wallet: wallet)
+//                walletViewModel.cellPressed = { [weak self] in
+//                    AssetVCSharedData.sharedData.currentWalletAddress = wallet.address
+//                    self?.onwalletsSelect?()
+//                }
+//                viewModels.append(walletViewModel)
+//            }
         }
 
         let createWalletViewModel = AssetGenerateViewModel(title: "AddWalletMenuVC_createIndividualWallet_title", icon: UIImage(named: "cellItemCreate"))

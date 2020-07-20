@@ -13,20 +13,27 @@ class WalletCollectionViewCell: UICollectionViewCell, CellConfigurable {
     let iconImgV = UIImageView()
     let walletNameLabel = UILabel()
     var viewModel: AssetWalletViewModel?
+    let exchangeButton = UIButton()
 
     func setup(viewModel: RowViewModel) {
         guard let viewModel = viewModel as? AssetWalletViewModel else { return }
         self.viewModel = viewModel
-
-        walletNameLabel.text = viewModel.wallet.name
+        if viewModel.subWallets.count > 0 {
+            let curSelectedIndex = viewModel.wallet.selectedIndex
+            walletNameLabel.text = viewModel.subWallets[curSelectedIndex].name
+        } else {
+            walletNameLabel.text = viewModel.wallet.name
+        }
         if viewModel.isWalletSelected {
             contentView.backgroundColor = viewModel.wallet.selectedBackgroundColor
             iconImgV.image = viewModel.wallet.selectedIcon
             walletNameLabel.textColor = .white
+            exchangeButton.isEnabled = true
         } else {
             contentView.backgroundColor = viewModel.wallet.normalBackgroundColor
             iconImgV.image = viewModel.wallet.normalIcon
             walletNameLabel.textColor = viewModel.wallet.normalNameTextColor
+            exchangeButton.isEnabled = false
         }
 
         contentView.layer.cornerRadius = 4.0
@@ -57,6 +64,22 @@ class WalletCollectionViewCell: UICollectionViewCell, CellConfigurable {
             make.centerY.equalTo(iconImgV.snp.centerY)
             make.trailing.lessThanOrEqualToSuperview().offset(-5)
         }
+        
+        contentView.addSubview(exchangeButton)
+        exchangeButton.snp.makeConstraints { (make) in
+            make.width.height.equalTo(40)
+            make.centerY.equalTo(iconImgV)
+            make.trailing.equalTo(-8)
+        }
+        exchangeButton.setImage(UIImage(named: "homepage_wallet_change_w"), for: .normal)
+        exchangeButton.setImage(UIImage(named: "homepage_wallet_change_b"), for: .disabled)
+        
+        exchangeButton.addTarget(self, action: #selector(exchangeButtonClick(sender:)), for: .touchUpInside)
+    }
+    
+    @objc func exchangeButtonClick(sender: UIButton) {
+        print("exchangeButtonClick")
+        self.viewModel?.cellExchangeButtonPressed?()
     }
 
 }

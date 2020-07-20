@@ -11,6 +11,12 @@ import RealmSwift
 import Localize_Swift
 import platonWeb3
 
+/// 物理层级的钱包类型
+public enum WalletPhysicalType {
+    case hd
+    case normal
+}
+
 let keystoreFolderPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] + "/keystore"
 
 public final class WalletService {
@@ -77,6 +83,58 @@ public final class WalletService {
             }
         }
     }
+    
+    /// 创建钱包（创建普通类型和HD类型）
+    public func createWallet(name:String, password: String, physicalType: WalletPhysicalType, completion: @escaping (Wallet?, Error?) -> Void) {
+        walletQueue.async {
+            guard let keystore = try? Keystore(password: password, walletPhysicalType: physicalType) else {
+                DispatchQueue.main.sync {
+                    completion(nil, Error.keystoreGeneFailed)
+                }
+                return
+            }
+            
+            var wallet: Wallet!
+            if physicalType == .normal {
+                // 普通钱包
+                wallet = Wallet(uuid: keystore.generateHDSubAddress(index: 0), name: name, keystoreObject: keystore, isHD: false, pathIndex: 0, parentId: nil)
+                DispatchQueue.main.async {
+                    do {
+                        try self.saveToDB(wallet: wallet)
+                    } catch {
+                        completion(nil, Error.keystoreFileSaveFailed)
+                    }
+                    completion(wallet, nil)
+                }
+            } else {
+                // 分层钱包
+                wallet = Wallet(uuid: keystore.generateHDParentAddress(), name: name, keystoreObject: keystore, isHD: true, pathIndex: 0, parentId: nil)
+                var walletArr: [Wallet] = [wallet]
+                for i: UInt in 0..<30 {
+                    let subWalletItem = Wallet(uuid: keystore.generateHDSubAddress(index: i), name: "\(name)_\(i + 1)", keystoreObject: keystore, isHD: true, pathIndex: Int(i), parentId: wallet.uuid)
+                    walletArr.append(subWalletItem)
+                }
+                DispatchQueue.main.async {
+                    do {
+                        try self.saveToDB(walletArray: walletArr)
+                    } catch {
+                        completion(nil, Error.keystoreFileSaveFailed)
+                    }
+                    completion(wallet, nil)
+                }
+            }
+            
+            
+            
+        }
+    }
+    
+    
+    
+    
+    private func createSubWallets(keystore: Keystore , superiorName: String, completion: @escaping (Wallet?, Error?) -> Void) {
+        
+    }
 
     // 导入观察钱包
     public func `import`(address: String, completion: @escaping (Wallet?, Error?) -> Void) {
@@ -122,7 +180,7 @@ public final class WalletService {
 
         walletQueue.async {
 
-            guard let keystore = try? Keystore(password: walletPassword, mnemonic: mnemonic) else {
+            guard let keystore = try? Keystore(password: walletPassword, mnemonic: mnemonic, walletPhysicalType: WalletPhysicalType.normal) else {
                 DispatchQueue.main.async {
                     completion(nil, Error.keystoreGeneFailed)
                 }
@@ -446,6 +504,41 @@ public final class WalletService {
         }
 
         wallets.append(wallet)
+    }
+    
+    private func saveToDB(walletArray: [Wallet]) throws {
+        for (_, wallet) in walletArray.enumerated() {
+        
+//            let sameUuidWallet = wallets.first { (item) -> Bool in
+//                (item.uuid == wallet.uuid) || (item.address.lowercased() == wallet.address.lowercased())
+//            }
+//
+//            if sameUuidWallet != nil {
+//                throw Error.walletAlreadyExists
+//            }
+
+            if wallet.parentId == nil {
+                guard let keystore = wallet.key else {
+                    throw Error.invalidWallet
+                }
+                let fileName = generateFileName(identifier: "\(keystore.address).json")
+                let fileURL = keystoreFolderURL.appendingPathComponent(fileName)
+                let json = try JSONEncoder().encode(keystore)
+                do {
+                    try json.write(to: fileURL, options: [.atomicWrite])
+                } catch {
+                    throw WalletService.Error.keystoreFileSaveFailed
+                }
+                wallet.keystorePath = fileName
+                wallet.mnemonic = keystore.mnemonic ?? ""
+            }
+//            WallletPersistence.sharedInstance.save(wallet: wallet)
+            wallets.removeAll { (item) -> Bool in
+                item.uuid == wallet.uuid
+            }
+            wallets.append(wallet)
+        }
+        WallletPersistence.sharedInstance.save(wallets: walletArray)
     }
 
     private func saveToDB(wallet: Wallet) throws {

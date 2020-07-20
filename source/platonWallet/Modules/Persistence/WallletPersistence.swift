@@ -25,6 +25,20 @@ class WallletPersistence {
             })
         }
     }
+    
+    func save(wallets: [Wallet]) {
+        let wallets = wallets.detached
+        RealmWriteQueue.async {
+            autoreleasepool(invoking: {
+                let realm = try! Realm(configuration: RealmHelper.getConfig())
+                try? realm.write {
+                    wallets.forEach { (wallet) in
+                        realm.add(wallet, update: .all)
+                    }
+                }
+            })
+        }
+    }
 
     func delete(wallet: Wallet) {
 

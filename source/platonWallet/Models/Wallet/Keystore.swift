@@ -24,6 +24,9 @@ public struct Keystore {
 
     var publicKey: String?
     var mnemonic:String?
+    /// 主私钥
+    private var hdNode: HDNode?
+    private var rootPrivateKey: String?
 
     public init(password: String) throws {
 
@@ -39,11 +42,23 @@ public struct Keystore {
         self.mnemonic = try encrypt(mnemonic: mnemonic, password: password)
     }
 
+    /// 根据钱包物理类型 构造Keystore
+    public init(password: String, walletPhysicalType: WalletPhysicalType) throws {
+        let mnemonic:String
+        do {
+            mnemonic = try WalletUtil.generateMnemonic(strength: 128)
+        } catch WalletUtil.Error.mnemonicGeneFailed {
+            throw Error.initFailed
+        }
+        try self.init(password: password, mnemonic: mnemonic, passphrase: "", walletPhysicalType: walletPhysicalType)
+        self.mnemonic = try encrypt(mnemonic: mnemonic, password: password)
+    }
+
     public init(contentsOf url: URL) throws {
         let data = try Data(contentsOf: url)
         self = try JSONDecoder().decode(Keystore.self, from: data)
     }
-
+    
     public init(password: String, mnemonic: String, passphrase: String = "") throws {
 
         let seed = WalletUtil.seedFromMnemonic(mnemonic, passphrase: "")
@@ -60,6 +75,75 @@ public struct Keystore {
         self.mnemonic = try encrypt(mnemonic: mnemonic, password: password)
     }
 
+    public init(password: String, mnemonic: String, passphrase: String = "", walletPhysicalType: WalletPhysicalType) throws {
+
+        let seed = WalletUtil.seedFromMnemonic(mnemonic, passphrase: "")
+        var hdNode = WalletUtil.hdNodeFromSeed(seed)
+//        self.hdNode = hdNode
+        let mirror = Mirror(reflecting: hdNode.private_key)
+        var privateKeyStr = String()
+        for (_, v) in mirror.children {
+            var value = String(format: "%x", v as! CVarArg)
+            if value.count == 1 {
+                value = "0" + value
+            }
+            privateKeyStr.append(value)
+        }
+        print("rootPrivateKey:", privateKeyStr)
+        
+        if walletPhysicalType == .hd {
+            let data = Data(hex: privateKeyStr)
+            try self.init(password: password, privateKey: data)
+        } else {
+            var privateKey:Data
+            do {
+                privateKey = try WalletUtil.privateKeyFromHDNode(&hdNode, hdPath: HDPATH)
+            } catch WalletUtil.Error.hdPathInvalid {
+                throw Error.initFailed
+            }
+
+            try self.init(password: password, privateKey: privateKey)
+        }
+        self.rootPrivateKey = privateKeyStr
+        self.hdNode = hdNode
+        self.mnemonic = try encrypt(mnemonic: mnemonic, password: password)
+    }
+    
+    /// 根据hdNode生成根私钥
+    fileprivate func generateRootPrivateKey(from hdNode: HDNode) -> Data {
+        let mirror = Mirror(reflecting: hdNode.private_key)
+        var privateKeyStr = String()
+        for (_, v) in mirror.children {
+            var value = String(format: "%x", v as! CVarArg)
+            if value.count == 1 {
+                value = "0" + value
+            }
+            privateKeyStr.append(value)
+        }
+        print("rootPrivateKey:", privateKeyStr)
+        let data = Data(hex: privateKeyStr)
+        return data
+        
+    }
+    
+    /// 通过Keystore私钥和路径生成子地址
+    func generateHDSubAddress(index: UInt) -> String {
+        let path = "m/44'/486'/0'/0/\(index)"
+        var hdNode = self.hdNode!
+        let privateKey = try! WalletUtil.privateKeyFromHDNode(&hdNode, hdPath: path)
+        let publicKey = WalletUtil.publicKeyFromPrivateKey(privateKey)
+        let originAddress = try! WalletUtil.addressFromPublicKey(publicKey, eip55: true)
+        return originAddress
+    }
+    
+    /// 通过Keystore生成母地址
+    func generateHDParentAddress() -> String {
+        let publicKey = WalletUtil.publicKeyFromPrivateKey(generateRootPrivateKey(from: self.hdNode!))
+        let originAddress = try! WalletUtil.addressFromPublicKey(publicKey, eip55: true)
+        return originAddress
+    }
+
+    /// 构建常规钱包的钱包文件
     public init(password: String, privateKey: Data) throws {
 
         let publicKey = WalletUtil.publicKeyFromPrivateKey(privateKey)
