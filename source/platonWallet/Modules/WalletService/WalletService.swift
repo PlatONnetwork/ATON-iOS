@@ -45,6 +45,15 @@ public final class WalletService {
         wallets.removeAll()
         wallets.append(contentsOf: WallletPersistence.sharedInstance.getAll())
     }
+    
+    func getWallet(byUUID uuid: String) -> Wallet? {
+        for item in wallets {
+            if item.uuid == uuid {
+                return item
+            }
+        }
+        return nil
+    }
 
     func getWalletByAddress(address: String) -> Wallet? {
         for item in wallets {
@@ -83,7 +92,7 @@ public final class WalletService {
             }
         }
     }
-    
+
     /// 创建钱包（创建普通类型和HD类型）
     public func createWallet(name:String, password: String, physicalType: WalletPhysicalType, completion: @escaping (Wallet?, Error?) -> Void) {
         walletQueue.async {
@@ -93,7 +102,7 @@ public final class WalletService {
                 }
                 return
             }
-            
+
             var wallet: Wallet!
             if physicalType == .normal {
                 // 普通钱包
@@ -123,17 +132,7 @@ public final class WalletService {
                     completion(wallet, nil)
                 }
             }
-            
-            
-            
         }
-    }
-    
-    
-    
-    
-    private func createSubWallets(keystore: Keystore , superiorName: String, completion: @escaping (Wallet?, Error?) -> Void) {
-        
     }
 
     // 导入观察钱包
@@ -467,6 +466,10 @@ public final class WalletService {
     public func updateWalletLockedBalance(_ wallet: Wallet, value: String) {
         WallletPersistence.sharedInstance.updateWalletLockedBalance(wallet: wallet, value: value)
     }
+    
+    public func updateWalletSelectedIndex(_ wallet: Wallet, selectedIndex: Int) {
+        WallletPersistence.sharedInstance.updataWalletSelectedIndex(wallet: wallet, selectedIndex: selectedIndex)
+    }
 
     /// Generates a unique file name for an address.
     func generateFileName(identifier: String, date: Date = Date(), timeZone: TimeZone = .current) -> String {
@@ -505,10 +508,10 @@ public final class WalletService {
 
         wallets.append(wallet)
     }
-    
+
     private func saveToDB(walletArray: [Wallet]) throws {
         for (_, wallet) in walletArray.enumerated() {
-        
+
 //            let sameUuidWallet = wallets.first { (item) -> Bool in
 //                (item.uuid == wallet.uuid) || (item.address.lowercased() == wallet.address.lowercased())
 //            }

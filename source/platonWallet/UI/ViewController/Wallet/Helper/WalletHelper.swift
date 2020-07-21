@@ -23,7 +23,7 @@ class WalletHelper {
             w.isHD == true
         }
     }
-    
+
     /// 从钱包中筛选HD母钱包
     static func fetchHDParentWallets(from wallets: [Wallet]) -> [Wallet] {
         return wallets.filter { (w) -> Bool in
@@ -37,12 +37,11 @@ class WalletHelper {
             w.isHD == true && (w.parentId != nil && w.parentId!.count > 0)
         }
     }
-    
+
     /// 从钱包数组中筛选深度为0的钱包
     static func fetchDepthIsZeroWallets(from wallets: [Wallet]) -> [Wallet] {
         return wallets.filter { (w) -> Bool in
             w.depth == 0
         }
     }
-
 }

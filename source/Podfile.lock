@@ -40,7 +40,6 @@ PODS:
   - secp256k1.swift (0.1.4)
   - SnapKit (4.0.1)
   - Spring (1.0.6)
-  - SwiftLint (0.30.1)
   - SwiftMonkey (2.1.1)
   - SwiftMonkeyPaws (2.1.1)
   - SwiftReorder (6.0.2)
@@ -86,7 +85,6 @@ DEPENDENCIES:
   - secp256k1.swift (~> 0.1)
   - SnapKit (~> 4.0.0)
   - Spring (from `https://github.com/MengTo/Spring.git`)
-  - SwiftLint (= 0.30.1)
   - SwiftMonkey
   - SwiftMonkeyPaws
   - SwiftReorder (~> 6.0)
@@ -122,7 +120,6 @@ SPEC REPOS:
     - ScryptSwift
     - secp256k1.swift
     - SnapKit
-    - SwiftLint
     - SwiftMonkey
     - SwiftMonkeyPaws
     - SwiftReorder
@@ -165,7 +162,6 @@ SPEC CHECKSUMS:
   secp256k1.swift: a7e7a214f6db6ce5db32cc6b2b45e5c4dd633634
   SnapKit: 0de968a9fec17499afa29683b05d0c775b6d1c29
   Spring: 3d113f14575ef79aec9c5f906dfa4f5001c03254
-  SwiftLint: a54bf1fe12b55c68560eb2a7689dfc81458508f7
   SwiftMonkey: aea6f2707a4b7ab5277b4d2fd2f0723a083997b1
   SwiftMonkeyPaws: 655524bb402df5ac2be836f9f604aca1068fbde6
   SwiftReorder: 60ef1faf6446cf68f9a647cb975530db8efd6620
@@ -179,6 +175,6 @@ SPEC CHECKSUMS:
   UMCShare: e0cef55c0fd6051254c8cda1d0630eb578b27bad
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: ceb1f664de51f0a1ef1e1942ef23ba1d8ad65926
+PODFILE CHECKSUM: 4c87902fc145f65f81aa342abd6a0bbd09f23e36
 
 COCOAPODS: 1.9.3

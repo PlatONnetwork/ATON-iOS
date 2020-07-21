@@ -79,7 +79,7 @@ class WalletCollectionViewCell: UICollectionViewCell, CellConfigurable {
     
     @objc func exchangeButtonClick(sender: UIButton) {
         print("exchangeButtonClick")
-        self.viewModel?.cellExchangeButtonPressed?()
+        self.viewModel?.onExchangeWalletToDisplay?()
     }
 
 }

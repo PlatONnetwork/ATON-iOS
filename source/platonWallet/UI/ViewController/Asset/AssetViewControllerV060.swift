@@ -46,6 +46,7 @@ class AssetViewControllerV060: UIViewController, PopupMenuTableDelegate {
 
     lazy var assetWalletsView: AssetWalletsHeaderView = {
         let view = AssetWalletsHeaderView(controller: controller.headerController)
+
         return view
     }()
 
@@ -123,6 +124,11 @@ class AssetViewControllerV060: UIViewController, PopupMenuTableDelegate {
 
         controller.headerController.onImportPressed = { [weak self] in
             self?.importIndividualWallet()
+        }
+        
+        controller.headerController.onExchangeWalletToDisplay = {[weak self](walletAddress) in
+            guard let self = self else { return }
+            self.chooseHighlightWallet(currentWalletAddress: walletAddress)
         }
 
         controller.sectionController.onReceivePressed = { [weak self] in
@@ -512,6 +518,23 @@ extension AssetViewControllerV060 {
         let importWallet = MainImportWalletViewController()
         importWallet.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(importWallet, animated: true)
+    }
+    
+    /// 选择钱包展示
+    func chooseHighlightWallet(currentWalletAddress: String) {
+        let vc = SelectWalletVC(walletAddress: currentWalletAddress, enterMode: .fromChangeWallet)
+        vc.show(from: self)
+        vc.chooseWalletCallback = {[weak self] (walletAddress) in
+            guard let self = self else { return }
+            AssetVCSharedData.sharedData.currentWalletAddress = walletAddress
+//            guard let subWallet = WalletService.sharedInstance.getWalletByAddress(address: walletAddress) else { return }
+//            guard let parentWallet = WalletService.sharedInstance.getWallet(byUUID: subWallet.parentId!) else { return }
+//            // 更新母钱包的索引值（更改db）
+//            WalletService.sharedInstance.updateWalletSelectedIndex(parentWallet, selectedIndex: subWallet.pathIndex)
+//            WalletService.sharedInstance.refreshDB()
+//            // 刷新首页选择Item
+//            self.assetWalletsView.controller.updateWalletList()
+        }
     }
 }
 

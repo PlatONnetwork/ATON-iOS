@@ -123,7 +123,6 @@ public struct Keystore {
         print("rootPrivateKey:", privateKeyStr)
         let data = Data(hex: privateKeyStr)
         return data
-        
     }
     
     /// 通过Keystore私钥和路径生成子地址

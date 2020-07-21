@@ -33,6 +33,14 @@
 "wallet_pswConfirmInput_empty_tips" = "Confirm password can't be empty";
 "wallet_pswConfirmInput_mismatch_tips" = "Password don't match !";
 
+"WalletTypeTag_all" = "All";
+"WalletTypeTag_HD" = "HD";
+"WalletTypeTag_normal" = "Normal";
+
+"Wallet_selectingTitle" = "Select Wallet";
+"Wallet_selecting_hideSearchBar" = "hide";
+"Wallet_searchBarPlaceHolder" = "search by wallet name/address";
+
 //createWalletVC
 "createWalletVC_title" = "Create Wallet";
 "createWalletVC_walletName" = "Wallet Name:";

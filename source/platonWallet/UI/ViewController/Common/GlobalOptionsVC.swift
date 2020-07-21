@@ -29,32 +29,28 @@ import Localize_Swift
 //}
 
 
-
 class GlobalOptionsVC: BaseViewController, UITableViewDelegate, UITableViewDataSource {
 
     typealias OptionId = String
     typealias OptionName = String
 
-    
     private var selectedIndex: Int = 0
     private var options: [(OptionId,OptionName)]!
-    
-    
+
     private var didConfirmedSelectionCallback: ((OptionId,OptionName) -> Void)?
-        
+
     override func viewDidLoad() {
         super.viewDidLoad()
         configUI()
     }
-    
+
     convenience init(options: [(OptionId,OptionName)], defaultSelectedIndex: Int, didConfirmedSelectionCallback: ((OptionId,OptionName) -> Void)?) {
         self.init()
         self.options = options
         self.selectedIndex = defaultSelectedIndex
         self.didConfirmedSelectionCallback = didConfirmedSelectionCallback
-        
     }
-    
+
     func configUI() {
         super.leftNavigationTitle = "createWalletVC_choose_walletType"
         view.backgroundColor = UIViewController_backround
@@ -78,18 +74,17 @@ class GlobalOptionsVC: BaseViewController, UITableViewDelegate, UITableViewDataS
         rightMenuButton.addTarget(self, action: #selector(onNavRight), for: .touchUpInside)
         let rightBarButtonItem = UIBarButtonItem(customView: rightMenuButton)
         navigationItem.rightBarButtonItem = rightBarButtonItem
-        
+
     }
-    
+
     @objc func onNavRight() {
-        
         guard let callback = self.didConfirmedSelectionCallback else {
             return
         }
         callback(options[selectedIndex].0, options[selectedIndex].1)
         self.navigationController?.popViewController(animated: true)
     }
-    
+
     // MARK: UITableViewDataSource & UITableViewDelegate
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

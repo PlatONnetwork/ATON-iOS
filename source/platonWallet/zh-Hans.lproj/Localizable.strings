@@ -43,6 +43,14 @@
 "createWalletVC_choose_walletType" = "选择钱包类型";
 "wallet_type_creating_desc" = "选择HD，将生成30个钱包";
 
+"WalletTypeTag_all" = "全部";
+"WalletTypeTag_HD" = "HD";
+"WalletTypeTag_normal" = "普通";
+
+"Wallet_selectingTitle" = "选择钱包";
+"Wallet_selecting_hideSearchBar" = "隐藏";
+"Wallet_searchBarPlaceHolder" = "通过钱包名/地址搜索";
+
 "createWalletVC_pswStrength" = "强度";
 "createWalletVC_note" = "注意：请务必牢记钱包密码，服务器不会存储您的密码，遗忘丢失将无法找回！";
 "createWalletVC_createBtn_title" = "创建钱包";

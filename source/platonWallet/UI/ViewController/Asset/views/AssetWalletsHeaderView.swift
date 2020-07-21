@@ -79,6 +79,10 @@ class AssetWalletsHeaderView: UIView {
         controller.onwalletsSelect = { [weak self] in
             self?.collectionView.reloadData()
         }
+//        controller.onExchangeWalletToDisplay = {[weak self](walletAddress) in
+//            guard let self = self else { return }
+//            
+//        }
     }
 
     func initView() {

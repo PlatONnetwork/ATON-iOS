@@ -11,7 +11,8 @@ import Foundation
 class AssetWalletViewModel: RowViewModel, ViewModelPressible {
     let wallet: Wallet
     var cellPressed: (() -> Void)?
-    var cellExchangeButtonPressed: (() -> Void)?
+    /// 切换钱包展示
+    var onExchangeWalletToDisplay: (() -> Void)?
 
     /// 子钱包数组
     var subWallets: [Wallet]

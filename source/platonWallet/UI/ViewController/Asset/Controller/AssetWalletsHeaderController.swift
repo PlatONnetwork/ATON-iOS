@@ -14,6 +14,7 @@ class AssetWalletsHeaderController {
     var onwalletsSelect: (() -> Void)?
     var onImportPressed: (() -> Void)?
     var onCreatePressed: (() -> Void)?
+    var onExchangeWalletToDisplay: ((_ walletAddress: String) -> Void)?
 
     init(viewModel: AssetHeaderViewModel = AssetHeaderViewModel()) {
         self.viewModel = viewModel
@@ -74,14 +75,21 @@ class AssetWalletsHeaderController {
                     if walletViewModel.subWallets.count > 0 {
                         AssetVCSharedData.sharedData.currentWalletAddress = walletViewModel.subWallets[walletViewModel.wallet.selectedIndex].address
                     } else {
-                        AssetVCSharedData.sharedData.currentWalletAddress = wallet.address
+                        AssetVCSharedData.sharedData.currentWalletAddress = walletViewModel.wallet.address
                     }
-                    
                     self?.onwalletsSelect?()
                 }
-                walletViewModel.cellExchangeButtonPressed = {[weak self] in
+                walletViewModel.onExchangeWalletToDisplay = {[weak self] in
                     guard let self = self else { return }
-                    
+                    if walletViewModel.subWallets.count > 0 {
+                        guard let callback = self.onExchangeWalletToDisplay else { return }
+                        // 把当前选中的钱包的地址传出去做比对
+                        if walletViewModel.subWallets.count > 0 {
+                            callback(walletViewModel.subWallets[walletViewModel.wallet.selectedIndex].address)
+                        } else {
+                            callback(walletViewModel.wallet.address)
+                        }
+                    }
                 }
             }
             

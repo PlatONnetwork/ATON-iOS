@@ -119,7 +119,6 @@ class AssetWalletsSectionView: UIView {
         viewModel.wallet.addObserver { [weak self] (wallet) in
             guard let self = self else { return }
             self.walletNameLabel.text = wallet?.name
-
             if self.viewModel.assetIsHide.value {
                 self.balanceLabel.text = "***"
             } else {
