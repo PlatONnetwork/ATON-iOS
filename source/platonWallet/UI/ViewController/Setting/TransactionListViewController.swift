@@ -32,8 +32,10 @@ class TransactionListViewController: BaseViewController,UITableViewDelegate,UITa
     }()
 
     var dataSource : [Transaction] = []
-
+    /// 视图中选中的钱包
     var selectedWallet: Wallet?
+    /// 要求查询记录的钱包数据源数组
+    var selectedWallets: [Wallet]?
 
     lazy var refreshHeader: MJRefreshHeader = {
         let header = MJRefreshNormalHeader(refreshingTarget: self, refreshingAction: #selector(fetchTransactionLastest))!
@@ -56,8 +58,11 @@ class TransactionListViewController: BaseViewController,UITableViewDelegate,UITa
     @objc func fetchTransactionLastest() {
         var addressStrs: [String] = []
 
-        if let wallet = selectedWallet {
-            addressStrs.append(wallet.address)
+        if let wallets = selectedWallets {
+            let addrs = wallets.map { (w) -> String in
+                return w.address
+            }
+            addressStrs.append(contentsOf: addrs)
         } else {
             let allLocalAddresses = AssetVCSharedData.sharedData.walletList.filterClassicWallet.map { cwallet in
                 return cwallet.address
@@ -76,8 +81,11 @@ class TransactionListViewController: BaseViewController,UITableViewDelegate,UITa
     @objc func fetchTransactionMore() {
         var addressStrs: [String] = []
 
-        if let wallet = selectedWallet {
-            addressStrs.append(wallet.address)
+        if let wallets = selectedWallets {
+            let addrs = wallets.map { (w) -> String in
+                return w.address
+            }
+            addressStrs.append(contentsOf: addrs)
         } else {
             let allLocalAddresses = AssetVCSharedData.sharedData.walletList.filterClassicWallet.map { cwallet in
                 return cwallet.address
@@ -145,9 +153,10 @@ class TransactionListViewController: BaseViewController,UITableViewDelegate,UITa
             make.trailing.equalToSuperview().offset(-10)
             make.height.equalTo(50)
         }
-        dropdownListView.dropdownListDidHandle = { [weak self] wallet in
+        dropdownListView.dropdownListDidHandle = { [weak self] (wallet, wallets) in
             guard let self = self else { return }
             self.selectedWallet = wallet
+            self.selectedWallets = wallets
             self.txnTableView.mj_header.beginRefreshing()
         }
 

@@ -44,6 +44,8 @@ class WalletManagerTableViewCell: UITableViewCell {
     @IBOutlet weak var jointIcon: UIImageView!
 
     @IBOutlet weak var WalletTypeTag: PaddingLabel!
+    
+    var backupButtonClickCallback:((_ sender: UIButton) -> Void)?
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -62,6 +64,7 @@ class WalletManagerTableViewCell: UITableViewCell {
 
         self.backupContainer.isHidden = true
         self.backupButton.isEnabled = false
+        self.backupButton.addTarget(self, action: #selector(backupButtonClick(sender:)), for: .touchUpInside)
 
         if let aptWallet = wallet as? Wallet {
             walletName.text = aptWallet.name
@@ -95,10 +98,10 @@ class WalletManagerTableViewCell: UITableViewCell {
         }
     }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
+    @objc func backupButtonClick(sender: UIButton) {
+        guard let callback = backupButtonClickCallback else {
+            return
+        }
+        callback(sender)
     }
-
 }

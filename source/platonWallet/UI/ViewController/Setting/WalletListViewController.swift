@@ -13,15 +13,16 @@ class WalletListViewController: BaseViewController,TableViewReorderDelegate {
 
     var tableView: UITableView!
 
-    var dataSource: [AnyObject] = []
+//    var dataSource: [AnyObject] = []
+    var dataSource: [WalletDisplaySectionInfo] = []
 
     lazy var atpWalletEmptyView : WalletEmptyView! = {
 
         let view = WalletEmptyView(walletType: .classic, createBtnClickHandler: { [weak self] in
             self?.createIndividualWallet()
-
-        }) { [weak self] in
-            self?.importIndividualWallet()
+        }) {[weak self] in
+            guard let self = self else { return }
+            self.importIndividualWallet()
         }
         view.isHidden = true
         self.view.addSubview(view)
@@ -46,7 +47,8 @@ class WalletListViewController: BaseViewController,TableViewReorderDelegate {
 
     func initData() {
         dataSource.removeAll()
-        dataSource.append(contentsOf: AssetVCSharedData.sharedData.walletList as [AnyObject])
+//        dataSource.append(contentsOf: AssetVCSharedData.sharedData.walletList as [AnyObject])
+            dataSource = WalletHelper.fetchWalletDisplaySectionInfos()
     }
 
     func updateUI() {
@@ -118,10 +120,17 @@ extension WalletListViewController: UITableViewDelegate, UITableViewDataSource {
         }
 
         let cell = tableView.dequeueReusableCell(withIdentifier: "WalletManagerTableViewCell", for: indexPath) as! WalletManagerTableViewCell
-        cell.backupButton.tag = indexPath.row
-        cell.backupButton.addTarget(self, action: #selector(onBackUp), for: .touchUpInside)
-        cell.feedData(dataSource[indexPath.row])
-
+//        cell.backupButton.tag = indexPath.row
+//        cell.backupButton.addTarget(self, action: #selector(onBackUp), for: .touchUpInside)
+        //        cell.feedData(dataSource[indexPath.row])
+        let wallet = dataSource[indexPath.row].wallet
+        cell.feedData(wallet)
+        cell.backupButtonClickCallback = {[weak self] (sender) in
+            guard let self = self, wallet.canBackupMnemonic == true else {
+                return
+            }
+            self.showWalletBackup(wallet: wallet)
+        }
         return cell
 
     }
@@ -131,20 +140,26 @@ extension WalletListViewController: UITableViewDelegate, UITableViewDataSource {
 //    }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let wallet = dataSource[indexPath.row]
-        if let wallet = wallet as? Wallet {
+        let info = dataSource[indexPath.row]
+        let wallet = info.wallet
+        if wallet.depth == 0 && wallet.isHD == true {
+            let vc = WalletListMangementInnerVC()
+            vc.wallet = info.wallet
+            vc.wallets = info.subWallets
+            self.navigationController?.pushViewController(vc, animated: true)
+        } else {
             let detailVC = WalletManagerDetailViewController()
             detailVC.wallet = wallet
             navigationController?.pushViewController(detailVC, animated: true)
         }
     }
-
-    @objc func onBackUp(sender: UIButton) {
-        guard sender.tag < dataSource.count ,let walletTobackup = dataSource[sender.tag] as? Wallet, walletTobackup.canBackupMnemonic else {
-            return
-        }
-        showWalletBackup(wallet: walletTobackup)
-    }
+    
+//    @objc func onBackUp(sender: UIButton) {
+//        guard sender.tag < dataSource.count ,let walletTobackup = dataSource[sender.tag] as? Wallet, walletTobackup.canBackupMnemonic else {
+//            return
+//        }
+//        showWalletBackup(wallet: walletTobackup)
+//    }
 
     // MARK: - TableViewReorderDelegate
     func tableView(_ tableView: UITableView, reorderRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
@@ -162,9 +177,8 @@ extension WalletListViewController: UITableViewDelegate, UITableViewDataSource {
         array.insert(initItem, at: finalDestinationIndexPath.row)
 
         for (i,element) in array.enumerated() {
-            if let classicWallet = element as? Wallet {
-                WallletPersistence().updateWalletUserArrangementIndex(wallet: classicWallet, userArrangementIndex: i)
-            }
+            let classicWallet = element.wallet
+            WallletPersistence().updateWalletUserArrangementIndex(wallet: classicWallet, userArrangementIndex: i)
         }
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {

@@ -162,16 +162,16 @@ public final class Wallet: Object {
         self.avatar = uuid.walletAddressLastCharacterAvatar()
     }
 
-    convenience public init(name: String, keystoreObject:Keystore) {
-
-        self.init()
-        uuid = try! AddrCoder.shared.decodeHex(addr: keystoreObject.address.mainnet)
-        primaryKeyIdentifier = uuid
-        key = keystoreObject
-        keystorePath = ""
-        self.name = name
-        self.avatar = uuid.walletAddressLastCharacterAvatar()
-    }
+//    convenience public init(name: String, keystoreObject:Keystore) {
+//
+//        self.init()
+//        uuid = try! AddrCoder.shared.decodeHex(addr: keystoreObject.address.mainnet)
+//        primaryKeyIdentifier = uuid
+//        key = keystoreObject
+//        keystorePath = ""
+//        self.name = name
+//        self.avatar = uuid.walletAddressLastCharacterAvatar()
+//    }
 
     /// 构造钱包（HD & general）
     /// - Parameters:

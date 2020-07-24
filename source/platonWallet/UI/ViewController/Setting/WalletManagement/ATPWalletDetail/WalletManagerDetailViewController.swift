@@ -28,6 +28,8 @@ class WalletManagerDetailViewController: BaseViewController {
     @IBOutlet weak var exportPriContainer: UIView!
 
     @IBOutlet weak var exportKeyStore: UIView!
+    
+    var updatedWalletNameCallback: ((_ wallet: Wallet, _ newName: String) -> Void)?
 
     var wallet: Wallet!
 
@@ -106,6 +108,10 @@ class WalletManagerDetailViewController: BaseViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
             AssetViewControllerV060.getInstance()?.controller.fetchWallets()
         }
+        guard let callback = self.updatedWalletNameCallback else {
+            return
+        }
+        callback(wallet, name)
     }
 
     func showErrorNameAlert() {

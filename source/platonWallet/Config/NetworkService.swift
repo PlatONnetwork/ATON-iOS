@@ -146,6 +146,8 @@ class NetworkService {
             newHeaders = oldHeaders
         }
         newHeaders["Content-Type"] = "application/json"
+        let localLanguageCode = Locale.current.identifier  // en_US ,  zh-Hans_US
+        newHeaders["Accept-Language"] = localLanguageCode
         return newHeaders
     }
 

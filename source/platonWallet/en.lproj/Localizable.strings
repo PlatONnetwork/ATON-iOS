@@ -6,6 +6,10 @@
   Copyright © 2018 ju. All rights reserved.
 */
 
+"New_version_released" = "New_version_released";
+"Update_Later" = "Update Later";
+"Update_Now" = "Update Now";
+
 "loading" = "loading...";
 
 "WelcomePage_create_wallet" = "Create Wallet";

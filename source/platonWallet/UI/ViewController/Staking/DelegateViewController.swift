@@ -14,9 +14,9 @@ import platonWeb3
 class DelegateViewController: BaseViewController {
 
     var currentNode: Node?
-    var listData: [DelegateTableViewCellStyle] = []
+    var listData: [DelegateTCellStyle] = []
     var currentAddress: String?
-    var walletStyle: WalletsCellStyle?
+    var walletStyle: DelegateWalletsCellStyle?
     var balanceStyle: BalancesCellStyle?
     var currentAmount: BigUInt = BigUInt.zero
     var isDelegateAll: Bool = false
@@ -127,14 +127,14 @@ class DelegateViewController: BaseViewController {
         }
 
         balanceStyle = BalancesCellStyle(balances: balances, stakingBlockNums: [], selectedIndex: 0, isExpand: false)
-        listData[2] = DelegateTableViewCellStyle.walletBalances(balanceStyle: balanceStyle!)
+        listData[2] = DelegateTCellStyle.walletBalances(balanceStyle: balanceStyle!)
         tableView.reloadData()
     }
 
     private func initListData() {
         guard let node = currentNode else { return }
 
-        let item1 = DelegateTableViewCellStyle.nodeInfo(node: node)
+        let item1 = DelegateTCellStyle.nodeInfo(node: node)
         // 每次出现当前页面就会重新生成钱包列表和余额列表，当前选中的地址
         if walletStyle != nil {
             currentAddress = walletStyle?.currentWallet.address
@@ -149,7 +149,10 @@ class DelegateViewController: BaseViewController {
         } else {
             currentAddress = canUseWallets[index ?? 0].address
         }
-        walletStyle = WalletsCellStyle(wallets: canUseWallets, selectedIndex: index ?? 0, isExpand: false)
+//        walletStyle = DelegateWalletsCellStyle(wallets: canUseWallets, selectedIndex: index ?? 0, isExpand: false)
+        walletStyle = DelegateWalletsCellStyle(currentWallet: canUseWallets.first(where: { (wallet) -> Bool in
+            return wallet.address == currentAddress
+        }))
 
         let balance = AssetService.sharedInstace.balances.first { (item) -> Bool in
             return item.addr.lowercased() == walletStyle!.currentWallet.address.lowercased()
@@ -163,16 +166,16 @@ class DelegateViewController: BaseViewController {
 
         balanceStyle = BalancesCellStyle(balances: balances, stakingBlockNums: [], selectedIndex: 0, isExpand: false)
 
-        let item2 = DelegateTableViewCellStyle.wallets(walletStyle: walletStyle!)
-        let item3 = DelegateTableViewCellStyle.walletBalances(balanceStyle: balanceStyle!)
-        let item4 = DelegateTableViewCellStyle.inputAmount
-        let item5 = DelegateTableViewCellStyle.singleButton(title: Localized("statking_validator_Delegate"))
+        let item2 = DelegateTCellStyle.wallets(walletStyle: walletStyle!)
+        let item3 = DelegateTCellStyle.walletBalances(balanceStyle: balanceStyle!)
+        let item4 = DelegateTCellStyle.inputAmount
+        let item5 = DelegateTCellStyle.singleButton(title: Localized("statking_validator_Delegate"))
 
         let contents = [
             (Localized("staking_doubt_delegate"), NSMutableAttributedString(string: Localized("staking_doubt_delegate_detail"))),
             (Localized("staking_doubt_reward"), NSMutableAttributedString(string: Localized("staking_doubt_reward_detail")))
         ]
-        let item6 = DelegateTableViewCellStyle.doubt(contents: contents)
+        let item6 = DelegateTCellStyle.doubt(contents: contents)
         listData = [item1, item2, item3, item4, item5, item6]
         tableView.reloadData()
 
@@ -197,7 +200,7 @@ extension DelegateViewController: UITableViewDelegate, UITableViewDataSource {
         let style = listData[section]
         switch style {
         case .wallets(let walletStyle):
-            return walletStyle.cellCount
+            return 1 // walletStyle.cellCount
         case .walletBalances(let balanceStyle):
             return balanceStyle.cellCount
         case .doubt(let contents):
@@ -216,17 +219,19 @@ extension DelegateViewController: UITableViewDelegate, UITableViewDataSource {
             return cell
         case .wallets(let walletStyle):
             let cell = tableView.dequeueReusableCell(withIdentifier: "WalletTableViewCell") as! WalletTableViewCell
-            cell.setupCellData(for: walletStyle.getWallet(for: indexPath.row))
+            cell.setupCellData(for: walletStyle.currentWallet)
+//            cell.setupCellData(for: walletStyle.getWallet(for: indexPath.row))
             cell.walletBackgroundView.isHidden = indexPath.row != 0
-            cell.bottomlineV.isHidden = (indexPath.row == 0 || indexPath.row == walletStyle.cellCount - 1)
-            cell.rightImageView.image =
-                (walletStyle.wallets.count <= 1) ? nil :
-                indexPath.row == 0 ? UIImage(named: "3.icon_ drop-down") :
-                indexPath.row == walletStyle.selectedIndex + 1 ? UIImage(named: "iconApprove") : nil
-            cell.isTopCell = indexPath.row == 0
+            cell.bottomlineV.isHidden = false // (indexPath.row == 0 || indexPath.row == walletStyle.cellCount - 1)
+//            cell.rightImageView.image =
+//                (walletStyle.wallets.count <= 1) ? nil :
+//                indexPath.row == 0 ? UIImage(named: "3.icon_ drop-down") :
+//                indexPath.row == walletStyle.selectedIndex + 1 ? UIImage(named: "iconApprove") : nil
+            cell.rightImageView.image = UIImage(color: .red)
+            cell.isTopCell = true // indexPath.row == 0
 
             cell.cellDidHandle = { [weak self] (_ cell: WalletTableViewCell) in
-                guard let self = self, walletStyle.wallets.count > 1 else { return }
+                guard let self = self/*, walletStyle.wallets.count > 1*/ else { return }
                 self.walletCellDidHandle(cell)
             }
             return cell
@@ -556,7 +561,34 @@ extension DelegateViewController {
 
     func walletCellDidHandle(_ cell: WalletTableViewCell) {
         guard let wStyle = walletStyle else { return }
+        var currentAddress = wStyle.currentWallet.address.lowercased()
+        let vc = SelectWalletVC(walletAddress: currentAddress, enterMode: .fromChangeWallet)
+        vc.show(from: self)
+        vc.chooseWalletCallback = {[weak self] (walletAddress) in
+            guard let self = self else { return }
+            currentAddress = walletAddress
+            self.walletStyle!.currentWallet = WalletService.sharedInstance.getWalletByAddress(address: walletAddress)
+            cell.setupCellData(for: self.walletStyle!.currentWallet)
+            let indexPath = self.tableView.indexPath(for: cell)
+            guard let indexSection = indexPath?.section else { return }
+            self.listData[indexSection] = DelegateTCellStyle.wallets(walletStyle: self.walletStyle!)
+ 
+            let balance = AssetService.sharedInstace.balances.first { (item) -> Bool in
+                return item.addr.lowercased() == self.walletStyle!.currentWallet.address.lowercased()
+            }
 
+            var balances: [(String, String, Bool)] = []
+            balances.append((Localized("staking_balance_can_used"), balance?.free ?? "0", false))
+            if let lock = balance?.lock, (BigUInt(lock) ?? BigUInt.zero) > BigUInt.zero {
+                balances.append((Localized("staking_balance_locked_position"), lock, false))
+            }
+            self.balanceStyle = BalancesCellStyle(balances: balances, stakingBlockNums: [], selectedIndex: 0, isExpand: false)
+            self.listData[indexSection + 1] = DelegateTCellStyle.walletBalances(balanceStyle: self.balanceStyle!)
+            self.tableView.reloadData()
+            self.fetchData()
+        
+        }
+/*
         let indexPath = tableView.indexPath(for: cell)
         var newWalletStyle = wStyle
         newWalletStyle.isExpand = !newWalletStyle.isExpand
@@ -568,7 +600,7 @@ extension DelegateViewController {
             }*/
         }
         walletStyle = newWalletStyle
-        listData[indexSection] = DelegateTableViewCellStyle.wallets(walletStyle: walletStyle!)
+        listData[indexSection] = DelegateTCellStyle.wallets(walletStyle: walletStyle!)
 
         let balance = AssetService.sharedInstace.balances.first { (item) -> Bool in
             return item.addr.lowercased() == walletStyle?.currentWallet.address.lowercased()
@@ -580,12 +612,14 @@ extension DelegateViewController {
             balances.append((Localized("staking_balance_locked_position"), lock, false))
         }
         balanceStyle = BalancesCellStyle(balances: balances, stakingBlockNums: [], selectedIndex: 0, isExpand: false)
-        listData[indexSection + 1] = DelegateTableViewCellStyle.walletBalances(balanceStyle: balanceStyle!)
+        listData[indexSection + 1] = DelegateTCellStyle.walletBalances(balanceStyle: balanceStyle!)
+        tableView.reloadData()
         tableView.reloadSections(IndexSet([indexSection, indexSection+1, indexSection+2, indexSection+3]), with: .fade)
         guard indexRow != 0 else { return }
 
         currentAddress = walletStyle?.currentWallet.address.lowercased()
         fetchData()
+ */
     }
 
     func balanceCellDidHandle(_ cell: WalletBalanceTableViewCell) {
@@ -600,7 +634,7 @@ extension DelegateViewController {
 //        }
 //        balanceStyle = newBalanceStyle
 //
-//        listData[indexSection] = DelegateTableViewCellStyle.walletBalances(balanceStyle: balanceStyle!)
+//        listData[indexSection] = DelegateTCellStyle.walletBalances(balanceStyle: balanceStyle!)
 //        tableView.reloadSections(IndexSet([indexSection, indexSection+1]), with: .fade)
 //
 //        if currentAmount != .zero {
@@ -639,7 +673,7 @@ extension DelegateViewController {
     func refreshBalanceAndInputAmountCell(_ indexPath: IndexPath) {
         let indexSection = indexPath.section
         guard let bStyle = balanceStyle else { return }
-        listData[indexSection] = DelegateTableViewCellStyle.walletBalances(balanceStyle: bStyle)
+        listData[indexSection] = DelegateTCellStyle.walletBalances(balanceStyle: bStyle)
         tableView.reloadSections(IndexSet([indexSection, indexSection+1, indexSection+2]), with: .fade)
 
         if currentAmount != .zero {
