@@ -117,6 +117,8 @@ class BaseViewController: UIViewController {
     var leftNavigationTitle: String?
 
     var statusBarNeedTruncate: Bool = false
+    
+    var rightNaviButtonClickCallback: ((UIButton) -> Void)?
 
     var titleLabel: UILabel? {
         guard let bar = self.innerLeftBarButtonItem, bar.customView != nil, (bar.customView?.subviews.count)! > 0 else {
@@ -297,6 +299,26 @@ class BaseViewController: UIViewController {
         holderView.descriptionLabel.localizedAttributedTexts = attributedTexts
         holderView.imageView.image = UIImage(named: imageName)
         return holderView
+    }
+    
+    func setRightNaviButton(title: String, clickCallback: ((UIButton) -> Void)?) {
+        let rightMenuButton = UIButton(type: .custom)
+        rightMenuButton.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
+        rightMenuButton.localizedNormalTitle = title
+        rightMenuButton.setTitleColor(UIColor(rgb: 0x105CFE), for: .normal)
+        rightMenuButton.titleLabel?.font = UIFont.systemFont(ofSize: 15)
+        rightMenuButton.addTarget(self, action: #selector(rightNaviButtonClick(sender:)), for: .touchUpInside)
+        let rightBarButtonItem = UIBarButtonItem(customView: rightMenuButton)
+        navigationItem.rightBarButtonItem = rightBarButtonItem
+        self.rightNaviButtonClickCallback = clickCallback
+    }
+    
+    ///
+    @objc private func rightNaviButtonClick(sender: UIButton) {
+        guard let callback = rightNaviButtonClickCallback else {
+            return
+        }
+        callback(sender)
     }
 
     deinit {

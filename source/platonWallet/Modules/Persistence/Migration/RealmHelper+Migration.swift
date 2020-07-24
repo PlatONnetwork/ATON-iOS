@@ -15,6 +15,21 @@ extension RealmHelper {
         migration.renameProperty(onType: Node.className(), from: "ratePA", to: "delegatedRatePA")
     }
 
+    public static func migrationBelow0131(migration: Migration, schemaVersion:UInt64, oldSchemaVersion: UInt64) {
+        #if UAT
+        #elseif PARALLELNET
+        #else
+        migration.enumerateObjects(ofType: Wallet.className()) { (oldObject, newObject) in
+            guard oldObject != nil, newObject != nil else { return }
+            newObject!["isHD"] = false  // 0.13.0及以前不支持HD
+            newObject!["pathIndex"] = 0  // 默认置0
+            newObject!["selectedIndex"] = 0  /// 默认置0
+            newObject!["parentId"] = "" // 普通钱包没有父ID
+            newObject!["depth"] = 0 // 普通钱包深度为0
+        }
+        #endif
+    }
+    
     public static func migrationBelow0130(migration: Migration, schemaVersion:UInt64, oldSchemaVersion: UInt64) {
         migration.deleteData(forType: AddressInfo.className())
         #if UAT

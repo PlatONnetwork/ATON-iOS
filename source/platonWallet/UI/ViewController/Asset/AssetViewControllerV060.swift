@@ -46,6 +46,7 @@ class AssetViewControllerV060: UIViewController, PopupMenuTableDelegate {
 
     lazy var assetWalletsView: AssetWalletsHeaderView = {
         let view = AssetWalletsHeaderView(controller: controller.headerController)
+
         return view
     }()
 
@@ -123,6 +124,11 @@ class AssetViewControllerV060: UIViewController, PopupMenuTableDelegate {
 
         controller.headerController.onImportPressed = { [weak self] in
             self?.importIndividualWallet()
+        }
+        
+        controller.headerController.onExchangeWalletToDisplay = {[weak self](walletAddress) in
+            guard let self = self else { return }
+            self.chooseHighlightWallet(currentWalletAddress: walletAddress)
         }
 
         controller.sectionController.onReceivePressed = { [weak self] in
@@ -513,6 +519,26 @@ extension AssetViewControllerV060 {
         importWallet.hidesBottomBarWhenPushed = true
         navigationController?.pushViewController(importWallet, animated: true)
     }
+    
+    /// 选择钱包展示
+    func chooseHighlightWallet(currentWalletAddress: String) {
+        let vc = SelectWalletVC(walletAddress: currentWalletAddress, enterMode: .fromChangeWallet)
+        vc.show(from: self)
+        vc.chooseWalletCallback = {[weak self] (walletAddress) in
+            guard let self = self else { return }
+            AssetVCSharedData.sharedData.currentWalletAddress = walletAddress
+            guard let subWallet = WalletService.sharedInstance.getWalletByAddress(address: walletAddress) else { return }
+            if let pid = subWallet.parentId {
+                guard let parentWallet = WalletService.sharedInstance.getWallet(byUUID: pid) else { return }
+                // 更新母钱包的索引值（更改db）
+                WalletService.sharedInstance.updateWalletSelectedIndex(parentWallet, selectedIndex: subWallet.pathIndex)
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                WalletService.sharedInstance.refreshDB()
+                self.assetWalletsView.controller.updateWalletList()
+            }
+        }
+    }
 }
 
 extension AssetViewControllerV060 {
@@ -735,7 +761,9 @@ extension AssetViewControllerV060 {
 extension AssetViewControllerV060: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let selectedAddress = AssetVCSharedData.sharedData.selectedWalletAddress else { return 0 }
-        return viewModel.transactionsData.value[selectedAddress]?.count ?? 0
+        let rowCount = viewModel.transactionsData.value[selectedAddress]?.count ?? 0
+        tableView.mj_footer.alpha = rowCount == 0 ? 0 : 1
+        return rowCount
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -784,8 +812,13 @@ extension AssetViewControllerV060: UIScrollViewDelegate {
             navigationController?.setNavigationBarHidden(false, animated: false)
             // 处理组头偏移问题
             if scrollView.contentOffset.y > tableHeaderView.bounds.size.height - self.navigationController!.navigationBar.bounds.size.height - kStatusBarHeight {
-                print("scrollView.contentOffset.y: ", scrollView.contentOffset.y)
-                tableView.contentInset = UIEdgeInsets(top: self.navigationController!.navigationBar.bounds.size.height + kStatusBarHeight, left: 0, bottom: 0, right: 0)
+//                print("scrollView.contentOffset.y: ", scrollView.contentOffset.y)
+//                var safeAreaBottom: CGFloat = 0
+//                if #available(iOS 11.0, *) {
+//                    safeAreaBottom = UIApplication.shared.keyWindow!.safeAreaInsets.bottom
+//                }
+//                let tabbarHeight = self.tabBarController!.tabBar.bounds.size.height
+                tableView.contentInset = UIEdgeInsets(top: self.navigationController!.navigationBar.bounds.size.height + kStatusBarHeight, left: 0, bottom: 69, right: 0)
             } else {
                 tableView.contentInset = UIEdgeInsets.zero
             }

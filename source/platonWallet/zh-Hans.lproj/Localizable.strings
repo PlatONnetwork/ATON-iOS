@@ -6,6 +6,10 @@
   Copyright © 2018 ju. All rights reserved.
 */
 
+"New_version_released" = "发现新版本";
+"Update_Later" = "稍后再说";
+"Update_Now" = "立即更新";
+
 "loading" = "加载中...";
 
 "WelcomePage_create_wallet" = "创建钱包";
@@ -37,6 +41,19 @@
 "createWalletVC_title" = "创建钱包";
 "createWalletVC_walletName" = "钱包名称:";
 "createWalletVC_password" = "钱包密码:";
+"createWalletVC_walletType" = "类型:";
+"createWalletVC_walletType_normal" = "普通";
+"createWalletVC_walletType_hd" = "HD";
+"createWalletVC_choose_walletType" = "选择钱包类型";
+"wallet_type_creating_desc" = "选择HD将默认创建一组30个钱包";
+
+"WalletTypeTag_all" = "全部";
+"WalletTypeTag_HD" = "HD";
+"WalletTypeTag_normal" = "普通";
+
+"Wallet_selectingTitle" = "选择钱包";
+"Wallet_selecting_hideSearchBar" = "隐藏";
+"Wallet_searchBarPlaceHolder" = "通过钱包名/地址搜索";
 
 "createWalletVC_pswStrength" = "强度";
 "createWalletVC_note" = "注意：请务必牢记钱包密码，服务器不会存储您的密码，遗忘丢失将无法找回！";
@@ -1038,3 +1055,6 @@
 "error_3007" = "节点关联的钱包地址，不可参与委托。";
 "error_3008" = "基金会资助的节点不接受委托";
 "error_3009" = "委托数量不能少于%@ LAT";
+
+"common_setting_confirm" = "确定";
+

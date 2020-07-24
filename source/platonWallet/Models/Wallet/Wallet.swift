@@ -65,9 +65,20 @@ public final class Wallet: Object {
     // 保留chainId，以免通过反射调用的老代码报错
     @objc dynamic var chainId: String = ""
 
+    /// 是否HD钱包
+    @objc dynamic var isHD: Bool = false
+    // HD的index值，普通钱包和HD母钱包都是0
+    @objc dynamic var pathIndex: Int = 0
+    // 默认的排序索引, 和钱包管理顺序相同，从0开始，数据小的排前面。
+    @objc dynamic var selectedIndex: Int = 0
+    // 如果是HD子钱包，为HD父钱包的 uuid字段
+    @objc dynamic var parentId: String?
+    // HD目录和普通钱包为0，HD子钱包为1
+    @objc dynamic var depth: Int = 0
+
     // 钱包类型
     var type: WalletType {
-        if key == nil {
+        if key == nil && depth == 0 {
             return .observed
         } else {
             if NetworkStatusService.shared.isConnecting == true {
@@ -86,18 +97,18 @@ public final class Wallet: Object {
     }
 
     var address: String {
-        guard let ks = key else {
+//        guard let ks = key else {
             if(AppConfig.Hrp.LAT == SettingService.shareInstance.currentNodeHrp) {
                 return try! AddrCoder.shared.encode(hrp: AppConfig.Hrp.LAT, address: uuid)
             } else {
                 return try! AddrCoder.shared.encode(hrp: AppConfig.Hrp.LAX, address: uuid)
             }
-        }
-        if(AppConfig.Hrp.LAT == SettingService.shareInstance.currentNodeHrp) {
-            return ks.address.mainnet
-        } else {
-            return ks.address.testnet
-        }
+//        }
+//        if(AppConfig.Hrp.LAT == SettingService.shareInstance.currentNodeHrp) {
+//            return ks.address.mainnet
+//        } else {
+//            return ks.address.testnet
+//        }
     }
 
     // 0.7.5 修改助记词存放位置
@@ -151,15 +162,44 @@ public final class Wallet: Object {
         self.avatar = uuid.walletAddressLastCharacterAvatar()
     }
 
-    convenience public init(name: String, keystoreObject:Keystore) {
+//    convenience public init(name: String, keystoreObject:Keystore) {
+//
+//        self.init()
+//        uuid = try! AddrCoder.shared.decodeHex(addr: keystoreObject.address.mainnet)
+//        primaryKeyIdentifier = uuid
+//        key = keystoreObject
+//        keystorePath = ""
+//        self.name = name
+//        self.avatar = uuid.walletAddressLastCharacterAvatar()
+//    }
 
+    /// 构造钱包（HD & general）
+    /// - Parameters:
+    ///   - name: 名称
+    ///   - keystoreObject: KeyStore
+    ///   - isHD: 是否是HD钱包
+    ///   - pathIndex: HD的index值，普通钱包和HD母钱包都是0
+    ///   - parentId: 如果是HD子钱包，为HD父钱包的 uuid字段
+    convenience public init(uuid: String, name: String, keystoreObject:Keystore, isHD: Bool, pathIndex: Int, parentId: String?) {
         self.init()
-        uuid = try! AddrCoder.shared.decodeHex(addr: keystoreObject.address.mainnet)
+        self.uuid = uuid // try! AddrCoder.shared.decodeHex(addr: keystoreObject.address.mainnet) 
         primaryKeyIdentifier = uuid
         key = keystoreObject
         keystorePath = ""
         self.name = name
         self.avatar = uuid.walletAddressLastCharacterAvatar()
+        self.selectedIndex = 0
+        self.isHD = isHD
+        self.parentId = parentId
+        if isHD == true && parentId != nil {
+            // HD子钱包
+            self.pathIndex = pathIndex
+            self.depth = 1
+        } else {
+            // 普通钱包或HD母钱包
+            self.pathIndex = 0
+            self.depth = 0
+        }
     }
 
     override public static func ignoredProperties() -> [String] {

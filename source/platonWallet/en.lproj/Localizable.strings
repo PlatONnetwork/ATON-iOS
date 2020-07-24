@@ -6,6 +6,10 @@
   Copyright © 2018 ju. All rights reserved.
 */
 
+"New_version_released" = "New_version_released";
+"Update_Later" = "Update Later";
+"Update_Now" = "Update Now";
+
 "loading" = "loading...";
 
 "WelcomePage_create_wallet" = "Create Wallet";
@@ -33,10 +37,25 @@
 "wallet_pswConfirmInput_empty_tips" = "Confirm password can't be empty";
 "wallet_pswConfirmInput_mismatch_tips" = "Password don't match !";
 
+"WalletTypeTag_all" = "All";
+"WalletTypeTag_HD" = "HD";
+"WalletTypeTag_normal" = "Normal";
+
+"Wallet_selectingTitle" = "Select Wallet";
+"Wallet_selecting_hideSearchBar" = "hide";
+"Wallet_searchBarPlaceHolder" = "search by wallet name/address";
+
 //createWalletVC
 "createWalletVC_title" = "Create Wallet";
 "createWalletVC_walletName" = "Wallet Name:";
 "createWalletVC_password" = "Password:";
+"createWalletVC_walletType" = "Type:";
+"createWalletVC_walletType_normal" = "normal";
+"createWalletVC_walletType_hd" = "HD";
+"createWalletVC_choose_walletType" = "Select Type";
+
+"wallet_type_creating_desc" = "A group of 30 wallets will be created when select HD";
+
 "createWalletVC_pswStrength" = "Strength";
 "createWalletVC_note" = "Note: Be sure to keep your wallet password in mind, the server will not store your password, you will not be able to retrieve the password if forgetting or losing!";
 "createWalletVC_createBtn_title" = "Create";
@@ -1028,3 +1047,5 @@
 "error_3007" = "The wallet associated with the validator is not allowed for delegation.";
 "error_3008" = "Foundation-funded nodes do not accept delegations";
 "error_3009" = "The Amount cannot be less than %@ LAT";
+
+"common_setting_confirm" = "Confirm";

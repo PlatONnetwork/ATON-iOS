@@ -26,6 +26,20 @@ class WallletPersistence {
         }
     }
 
+    func save(wallets: [Wallet]) {
+        let wallets = wallets.detached
+        RealmWriteQueue.async {
+            autoreleasepool(invoking: {
+                let realm = try! Realm(configuration: RealmHelper.getConfig())
+                try? realm.write {
+                    wallets.forEach { (wallet) in
+                        realm.add(wallet, update: .all)
+                    }
+                }
+            })
+        }
+    }
+
     func delete(wallet: Wallet) {
 
         let predicate = NSPredicate(format: "primaryKeyIdentifier == %@", wallet.primaryKeyIdentifier)
@@ -114,6 +128,23 @@ class WallletPersistence {
                     let r = realm.objects(Wallet.self).filter(predicate)
                     for wal in r {
                         wal.lockedBalance = value
+                    }
+                }
+            })
+        }
+    }
+    
+    /// 更新钱包选中索引值（操作对象通常是HD母钱包）
+    func updataWalletSelectedIndex(wallet: Wallet, selectedIndex: Int) {
+        let predicate = NSPredicate(format: "primaryKeyIdentifier == %@", wallet.primaryKeyIdentifier)
+        RealmWriteQueue.async {
+            autoreleasepool(invoking: {
+                let realm = try! Realm(configuration: RealmHelper.getConfig())
+
+                try? realm.write {
+                    let r = realm.objects(Wallet.self).filter(predicate)
+                    for wal in r {
+                        wal.selectedIndex = selectedIndex
                     }
                 }
             })

@@ -246,6 +246,8 @@ extension UIViewController {
 }
 
 extension UIViewController {
+    
+    /// 输入密码弹窗
     func showPasswordInputPswAlert(for wallet: Wallet, isForDelete: Bool? = false, completion: ((String?, String?, Error?) -> Void)?) {
 
         let alertVC = AlertStylePopViewController.initFromNib()
@@ -288,6 +290,11 @@ extension UIViewController {
         alertVC.showInViewController(viewController: self)
 
         return
+    }
+    
+    /// 更新提示弹窗
+    func showAppCheckUpadteAlert() {
+        
     }
 }
 

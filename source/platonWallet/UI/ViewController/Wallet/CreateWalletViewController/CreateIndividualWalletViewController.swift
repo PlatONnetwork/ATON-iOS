@@ -11,6 +11,8 @@ import Localize_Swift
 
 class CreateIndividualWalletViewController: BaseViewController,StartBackupMnemonicDelegate {
 
+    @IBOutlet weak var walletPhysicalTypeLabel: UILabel!
+    @IBOutlet weak var walletTypeBottomLine: UIView!
     @IBOutlet weak var nameTF: PTextFieldWithPadding!
     @IBOutlet weak var pswTF: PTextFieldWithPadding!
     @IBOutlet weak var confirmPswTF: PTextFieldWithPadding!
@@ -32,11 +34,23 @@ class CreateIndividualWalletViewController: BaseViewController,StartBackupMnemon
 
     var wallet:Wallet!
     var alertPswInput: String?
+    
+    /// 当前的钱包物理类型
+    var curWalletPhysicalType: WalletPhysicalType! {
+        didSet {
+            if curWalletPhysicalType == .normal {
+                self.walletPhysicalTypeLabel.text = Localized("createWalletVC_walletType_normal")
+            } else if curWalletPhysicalType == .hd {
+                self.walletPhysicalTypeLabel.text = Localized("createWalletVC_walletType_hd")
+            }
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setupUI()
+        prepareData()
         NotificationCenter.default.addObserver(self, selector: #selector(afterBackup), name: Notification.Name.ATON.BackupMnemonicFinish, object: nil)
     }
 
@@ -51,16 +65,21 @@ class CreateIndividualWalletViewController: BaseViewController,StartBackupMnemon
 
         AnalysisHelper.handleEvent(id: event_newWallet, operation: .cancel)
     }
+    
+    /// 初始化准备数据
+    func prepareData() {
+        curWalletPhysicalType = .normal
+    }
 
     func setupUI() {
-
+        walletTypeBottomLine.backgroundColor = bottomLineNormalColor
         endEditingWhileTapBackgroundView = true
 
         super.leftNavigationTitle = "createWalletVC_title"
 
         //showNavigationBarShadowImage()
 
-        nameTF.becomeFirstResponder()
+//        nameTF.becomeFirstResponder()
 
         createBtn.style = .disable
 
@@ -81,12 +100,11 @@ class CreateIndividualWalletViewController: BaseViewController,StartBackupMnemon
             return
         }
 
-        if self.isInCustomLoading != nil && self.isInCustomLoading!{
+        if self.isInCustomLoading != nil && self.isInCustomLoading! {
             return
         }
-        showLoadingHUD() 
-        
-        WalletService.sharedInstance.createWallet(name: nameTF.text!, password: pswTF.text!) { [weak self](wallet, error) in
+        showLoadingHUD()
+        WalletService.sharedInstance.createWallet(name: nameTF.text!, password: pswTF.text!, physicalType: self.curWalletPhysicalType) { [weak self](wallet, error) in
 
             AnalysisHelper.handleEvent(id: event_newWallet, operation: .end)
 
@@ -102,9 +120,22 @@ class CreateIndividualWalletViewController: BaseViewController,StartBackupMnemon
             self?.navigationController?.pushViewController(successVC, animated: true)
 
         }
-
     }
 
+    @IBAction func chooseWalletPhysicalType(_ sender: Any) {
+        print("选择钱包类型")
+        let vc = GlobalOptionsVC(options: [("0", Localized("createWalletVC_walletType_normal")), ("1", Localized("createWalletVC_walletType_hd"))], defaultSelectedIndex: 0, didConfirmedSelectionCallback: { (optionId, optionName) in
+            print("optionId: \(optionId), optionName: \(optionName)")
+            if optionId == "0" {
+                self.curWalletPhysicalType = .normal
+            } else if optionId == "1" {
+                self.curWalletPhysicalType = .hd
+            }
+        })
+        
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
     // MARK: - Check Input
 
     func checkCanEableButton() {

@@ -13,4 +13,5 @@ struct RemoteVersion: Decodable {
     var isForce: Bool?
     var newVersion: String?
     var url: String?
+    var desc: String?
 }

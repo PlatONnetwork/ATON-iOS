@@ -53,7 +53,19 @@ class AssetWalletsHeaderView: UIView {
 
     func initBinding() {
         viewModel.walletViewModels.addObserver { [weak self] (_) in
-            self?.collectionView.reloadData()
+            guard let self = self else { return }
+            let rowModels = self.viewModel.walletViewModels.value
+            self.collectionView.reloadData()
+            for (i, v) in rowModels.enumerated() {
+                if let md = v as? AssetWalletViewModel {
+                    if md.isWalletSelected == true {
+                        self.layoutIfNeeded()
+                        let indexPath = IndexPath(item: i, section: 0)
+                        self.collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+                        break
+                    }
+                }
+            }
         }
 
         viewModel.assetIsHide.addObserver { [weak self] (isHidden) in
@@ -77,8 +89,25 @@ class AssetWalletsHeaderView: UIView {
             }
         }
         controller.onwalletsSelect = { [weak self] in
-            self?.collectionView.reloadData()
+            guard let self = self else { return }
+            let rowModels = self.viewModel.walletViewModels.value
+            self.collectionView.reloadData()
+            for (i, v) in rowModels.enumerated() {
+                if let md = v as? AssetWalletViewModel {
+                    if md.isWalletSelected == true {
+                        self.layoutIfNeeded()
+                        let indexPath = IndexPath(item: i, section: 0)
+                        self.collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+                        break
+                    }
+                }
+            }
+            self.collectionView.reloadData()
         }
+//        controller.onExchangeWalletToDisplay = {[weak self](walletAddress) in
+//            guard let self = self else { return }
+//            
+//        }
     }
 
     func initView() {

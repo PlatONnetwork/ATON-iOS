@@ -67,12 +67,23 @@ class AssetVCSharedData {
             else {
                 if let defaultWallet = walletList.first as? Wallet {
                     currentWalletAddress = defaultWallet.address
-                    return defaultWallet
+                    return WalletHelper.fetchFinalSelectedWallet(from: defaultWallet) as AnyObject
                 }
                 return nil
         }
-        return wallet as AnyObject
+        return WalletHelper.fetchFinalSelectedWallet(from: wallet) as AnyObject as AnyObject
     }
+    
+    func fetchFinalSelectedWalletAddress(from wallet: Wallet) -> String {
+        let subWallets = WalletHelper.fetchSubWallets(of: wallet)
+        if subWallets.count > 0 {
+            let selectedWallet = subWallets[wallet.selectedIndex]
+            return selectedWallet.address
+        } else {
+            return wallet.address
+        }
+    }
+
 
 //    var selectedWallet: AnyObject? {
 //        didSet {

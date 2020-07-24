@@ -14,7 +14,8 @@ public let publicKeyByteSize = 64
 public let privateKeyByteSize =	 32
 
 class WalletUtil {
-
+    
+    /// 生成12个助记词
     static func generateMnemonic(strength:Int) throws -> String {
 
         guard let ptr = mnemonic_generate(128) else {

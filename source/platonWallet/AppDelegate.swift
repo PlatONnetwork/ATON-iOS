@@ -234,6 +234,7 @@ extension AppDelegate {
     }
 
     func showShouldUpdateVersionAlert() {
+        /*
         let controller = UIAlertController(title: Localized("about_version_update_alert_title"), message: Localized("about_version_update_alert_message_1") + (SettingService.shareInstance.remoteVersion?.newVersion ?? "") + Localized("about_version_update_alert_message_2"), preferredStyle: .alert)
         let cancelAction = UIAlertAction(title: Localized("about_version_update_alert_cancel"), style: .cancel, handler: nil)
         let okAction = UIAlertAction(title: Localized("about_version_update_alert_ok"), style: .default) { (_) in
@@ -244,5 +245,17 @@ extension AppDelegate {
         }
         controller.addAction(okAction)
         window?.rootViewController?.present(controller, animated: true, completion: nil)
+        */
+        if let rootVC = window?.rootViewController {
+            let newVersion = SettingService.shareInstance.remoteVersion?.newVersion ?? ""
+            let isForceUpdate = SettingService.shareInstance.remoteVersion?.isForce ?? false
+            let updateInfo = SettingService.shareInstance.remoteVersion?.desc ?? ""
+            let vc = CheckUpdateVC(isForceUpdate: isForceUpdate, version: "V" + newVersion, updateInfo: updateInfo)
+            vc.confirmCallback = {
+                UIApplication.shared.openURL(URL(string: SettingService.shareInstance.remoteVersion?.url ?? "https://developer.platon.network/mobile/index.html")!)
+            }
+            vc.show(from: rootVC)
+        }
+        
     }
 }

@@ -10,6 +10,16 @@ import Foundation
 import UIKit
 
 public extension UIView {
+    
+    /// 切圆角（即时）
+    func cropView(corners: UIRectCorner,cornerRadiiV : CGFloat) {
+        let maskPath = UIBezierPath(roundedRect: self.bounds, byRoundingCorners: corners, cornerRadii: CGSize(width: cornerRadiiV, height: cornerRadiiV))
+        let maskLayer = CAShapeLayer()
+        maskLayer.frame = self.bounds
+        maskLayer.path = maskPath.cgPath
+        self.layer.mask = maskLayer
+    }
+    
     func addMaskView(corners: UIRectCorner,cornerRadiiV : CGFloat) {
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {

@@ -42,6 +42,22 @@ class ImportMnemonicOrPrivateKeyViewController: BaseImportWalletViewController {
     @IBOutlet weak var mnemonicContainerHeight: NSLayoutConstraint!
 
     @IBOutlet weak var inputTextViewHeight: NSLayoutConstraint!
+    /// 选择类型视图
+    @IBOutlet weak var selectTypeView: UIView!
+    /// 私钥TextView到助记词网格视图的间距
+    @IBOutlet weak var privateKeyInputTextViewTopToGridViewBottom: NSLayoutConstraint!
+    @IBOutlet weak var walletTypeBottomLine: UIView!
+    @IBOutlet weak var walletPhysicalTypeLabel: UILabel!
+    /// 当前的钱包物理类型
+    var curWalletPhysicalType: WalletPhysicalType! = .normal {
+        didSet {
+            if curWalletPhysicalType == .normal {
+                self.walletPhysicalTypeLabel.text = Localized("createWalletVC_walletType_normal")
+            } else if curWalletPhysicalType == .hd {
+                self.walletPhysicalTypeLabel.text = Localized("createWalletVC_walletType_hd")
+            }
+        }
+    }
 
     var importType: ImportWalletVCType = .mnemonic
 
@@ -49,7 +65,10 @@ class ImportMnemonicOrPrivateKeyViewController: BaseImportWalletViewController {
 
         self.init()
         importType = type
-
+    }
+    
+    func prepareData() {
+        curWalletPhysicalType = .normal
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -99,18 +118,36 @@ class ImportMnemonicOrPrivateKeyViewController: BaseImportWalletViewController {
             self.mnemonicGridView?.snp.makeConstraints({ (make) in
                 make.edges.equalTo(self.mnemonicContainer)
             })
+            self.privateKeyInputTextViewTopToGridViewBottom.constant = 74
+            walletTypeBottomLine.backgroundColor = bottomLineNormalColor
+            self.selectTypeView.isHidden = false
             pasteButton.isHidden = true
         } else {
             headerTipsLabel.localizedText = "importWalletVC_privateKey_tips"
             textView.localizedText_Placeholder = "importWalletVC_privateKey_textView_placeholder"
             self.mnemonicContainerHeight.constant = 0
             self.mnemonicContainer.isHidden = true
+            self.privateKeyInputTextViewTopToGridViewBottom.constant = 0
+            self.selectTypeView.isHidden = true
         }
         scrollView.keyboardDismissMode = .interactive
         textView.text = defaultText
 
         importBtn.style = .disable
 
+    }
+
+    @IBAction func chooseWalletPhysicalType(_ sender: Any) {
+        let vc = GlobalOptionsVC(options: [("0", Localized("createWalletVC_walletType_normal")), ("1", Localized("createWalletVC_walletType_hd"))], defaultSelectedIndex: 0, didConfirmedSelectionCallback: { (optionId, optionName) in
+            print("optionId: \(optionId), optionName: \(optionName)")
+            if optionId == "0" {
+                self.curWalletPhysicalType = .normal
+            } else if optionId == "1" {
+                self.curWalletPhysicalType = .hd
+            }
+        })
+        
+        self.navigationController?.pushViewController(vc, animated: true)
     }
 
     ///keyboard notification
@@ -137,11 +174,14 @@ class ImportMnemonicOrPrivateKeyViewController: BaseImportWalletViewController {
 
         if importType == .mnemonic {
             let mnemonicString = self.mnemonicGridView?.getMnemonic()
-            WalletService.sharedInstance.import(mnemonic: mnemonicString!, walletName: nameTF.text!, walletPassword: pswTF.text!) { [weak self](wallet, error) in
+//            WalletService.sharedInstance.import(mnemonic: mnemonicString!, walletName: nameTF.text!, walletPassword: pswTF.text!) { [weak self](wallet, error) in
+//                self?.hideLoadingHUD(animated: false)
+//                self?.importCompletion(wallet: wallet, error: error)
+//            }
+            WalletService.sharedInstance.import(mnemonic: mnemonicString!, walletName: nameTF.text!, walletPassword: pswTF.text!, physicalType: self.curWalletPhysicalType, completion: { [weak self](wallet, error) in
                 self?.hideLoadingHUD(animated: false)
                 self?.importCompletion(wallet: wallet, error: error)
-            }
-
+            })
         } else {
 
             WalletService.sharedInstance.import(privateKey: textView.text!, walletName: nameTF.text!, walletPassword: pswTF.text!) { [weak self](wallet, error) in

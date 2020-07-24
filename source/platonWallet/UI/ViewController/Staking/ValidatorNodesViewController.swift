@@ -34,7 +34,7 @@ class ValidatorNodesViewController: ButtonBarPagerTabStripViewController, Indica
         return button
     }()
 
-    var isSelectedSearchButton: Bool = false  {
+    var isSelectedSearchButton: Bool = false {
         didSet {
             searchButton.isSelected = isSelectedSearchButton
         }
@@ -121,7 +121,7 @@ class ValidatorNodesViewController: ButtonBarPagerTabStripViewController, Indica
         rankButton.frame = CGRect(x: buttonBarView.frame.width - 18 - 14, y: (buttonBarView.frame.height - 22)/2.0, width: 18, height: 22)
         buttonBarView.addSubview(searchButton)
         searchButton.frame = CGRect(x: rankButton.frame.minX-18-10, y: (buttonBarView.frame.height - 22)/2.0, width: 18, height: 22)
-        containerView.backgroundColor = .red
+//        containerView.backgroundColor = .red
         containerView.frame = CGRect(x: containerView.frame.minX, y: buttonBarView.frame.maxY, width: containerView.frame.width, height: containerView.frame.height - UIApplication.shared.statusBarFrame.height)
 
     }

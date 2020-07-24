@@ -76,3 +76,19 @@ struct WalletsCellStyle {
         }
     }
 }
+
+// 可展开绑定的样式数据
+struct DelegateWalletsCellStyle {
+    var currentWallet: Wallet!
+}
+
+enum DelegateTCellStyle {
+    case nodeInfo(node: Node)
+    case wallets(walletStyle: DelegateWalletsCellStyle)
+    case walletBalances(balanceStyle: BalancesCellStyle)
+    case inputAmount
+    case feeUsed(fee: String)
+    case singleButton(title: String)
+    case doubt(contents: [(title: String, content: NSMutableAttributedString)])
+}
+
