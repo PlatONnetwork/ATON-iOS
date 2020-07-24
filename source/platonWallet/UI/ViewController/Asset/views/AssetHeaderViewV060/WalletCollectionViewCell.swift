@@ -21,8 +21,10 @@ class WalletCollectionViewCell: UICollectionViewCell, CellConfigurable {
         if viewModel.subWallets.count > 0 {
             let curSelectedIndex = viewModel.wallet.selectedIndex
             walletNameLabel.text = viewModel.subWallets[curSelectedIndex].name
+            exchangeButton.isHidden = false
         } else {
             walletNameLabel.text = viewModel.wallet.name
+            exchangeButton.isHidden = true
         }
         if viewModel.isWalletSelected {
             contentView.backgroundColor = viewModel.wallet.selectedBackgroundColor

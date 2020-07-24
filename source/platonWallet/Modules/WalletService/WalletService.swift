@@ -119,7 +119,7 @@ public final class WalletService {
                 // 分层钱包
                 wallet = Wallet(uuid: keystore.generateHDParentAddress(), name: name, keystoreObject: keystore, isHD: true, pathIndex: 0, parentId: nil)
                 var walletArr: [Wallet] = [wallet]
-                for i: UInt in 0..<30 {
+                for i: Int in 0..<30 {
                     let subWalletItem = Wallet(uuid: keystore.generateHDSubAddress(index: i), name: "\(name)_\(i + 1)", keystoreObject: keystore, isHD: true, pathIndex: Int(i), parentId: wallet.uuid)
                     walletArr.append(subWalletItem)
                 }
@@ -224,7 +224,7 @@ public final class WalletService {
                 // 分层钱包
                 wallet = Wallet(uuid: keystore.generateHDParentAddress(), name: name, keystoreObject: keystore, isHD: true, pathIndex: 0, parentId: nil)
                 var walletArr: [Wallet] = [wallet]
-                for i: UInt in 0..<30 {
+                for i: Int in 0..<30 {
                     let subWalletItem = Wallet(uuid: keystore.generateHDSubAddress(index: i), name: "\(name)_\(i + 1)", keystoreObject: keystore, isHD: true, pathIndex: Int(i), parentId: wallet.uuid)
                     walletArr.append(subWalletItem)
                 }
@@ -369,42 +369,67 @@ public final class WalletService {
     }
 
     /// exportPrivateKey
-    ///
-    /// - Parameters:
-    ///   - wallet: <#wallet description#>
-    ///   - password: <#password description#>
-    /// - Returns: <#return value description#>
-    /// - Throws: <#throws value description#>
+//    public func exportPrivateKey(wallet: Wallet, password: String, completion: @escaping (String?, Error?) -> Void) {
+//
+//        guard let keystore = wallet.key else {
+//            completion(nil, Error.invalidWallet)
+//            return
+//        }
+//
+//        walletQueue.async {
+//
+//            guard let privateKeyData = try? keystore.decrypt(password: password) else {
+//
+//                DispatchQueue.main.async {
+//                    completion(nil, Error.invalidWalletPassword)
+//                }
+//                return
+//            }
+//
+//            guard WalletUtil.isValidPrivateKeyData(privateKeyData) else {
+//                completion(nil, Error.invalidKey)
+//                return
+//            }
+//
+//            DispatchQueue.main.async {
+//                let res = privateKeyData.toHexString()
+//                print("🔑privateKey:\(res)")
+//                completion(res, nil)
+//            }
+//
+//        }
+//
+//    }
+    
+    /// exportPrivateKey
     public func exportPrivateKey(wallet: Wallet, password: String, completion: @escaping (String?, Error?) -> Void) {
-
         guard let keystore = wallet.key else {
             completion(nil, Error.invalidWallet)
             return
         }
-
         walletQueue.async {
-
-            guard let privateKeyData = try? keystore.decrypt(password: password) else {
-
-                DispatchQueue.main.async {
-                    completion(nil, Error.invalidWalletPassword)
+            var privateKeyData: Data!
+            if wallet.isHD == true {
+                privateKeyData = keystore.generateHDSubPrivateKey(index: wallet.pathIndex)
+            } else {
+                guard let tmpPrivateKeyData = try? keystore.decrypt(password: password) else {
+                    DispatchQueue.main.async {
+                        completion(nil, Error.invalidWalletPassword)
+                    }
+                    return
                 }
-                return
+                privateKeyData = tmpPrivateKeyData
             }
-
             guard WalletUtil.isValidPrivateKeyData(privateKeyData) else {
                 completion(nil, Error.invalidKey)
                 return
             }
-
             DispatchQueue.main.async {
                 let res = privateKeyData.toHexString()
                 print("🔑privateKey:\(res)")
                 completion(res, nil)
             }
-
         }
-
     }
 
     /// exportKeystoreFile

@@ -346,7 +346,7 @@ extension SelectWalletVC {
         }
         return sectionInfos
     }
-    
+
     /// 钱包是否可以被搜索到
     func isFoundable(wallet: Wallet, keyword: String) -> Bool {
         let lWalletAddr = wallet.address.lowercased()

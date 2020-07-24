@@ -125,11 +125,17 @@ public struct Keystore {
         return data
     }
     
-    /// 通过Keystore私钥和路径生成子地址
-    func generateHDSubAddress(index: UInt) -> String {
+    /// 生成子钱包的私钥
+    func generateHDSubPrivateKey(index: Int) -> Data {
         let path = "m/44'/486'/0'/0/\(index)"
         var hdNode = self.hdNode!
         let privateKey = try! WalletUtil.privateKeyFromHDNode(&hdNode, hdPath: path)
+        return privateKey
+    }
+    
+    /// 通过Keystore私钥和路径生成子地址
+    func generateHDSubAddress(index: Int) -> String {
+        let privateKey = generateHDSubPrivateKey(index: Int(index))
         let publicKey = WalletUtil.publicKeyFromPrivateKey(privateKey)
         let originAddress = try! WalletUtil.addressFromPublicKey(publicKey, eip55: true)
         return originAddress

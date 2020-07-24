@@ -97,18 +97,18 @@ public final class Wallet: Object {
     }
 
     var address: String {
-        guard let ks = key else {
+//        guard let ks = key else {
             if(AppConfig.Hrp.LAT == SettingService.shareInstance.currentNodeHrp) {
                 return try! AddrCoder.shared.encode(hrp: AppConfig.Hrp.LAT, address: uuid)
             } else {
                 return try! AddrCoder.shared.encode(hrp: AppConfig.Hrp.LAX, address: uuid)
             }
-        }
-        if(AppConfig.Hrp.LAT == SettingService.shareInstance.currentNodeHrp) {
-            return ks.address.mainnet
-        } else {
-            return ks.address.testnet
-        }
+//        }
+//        if(AppConfig.Hrp.LAT == SettingService.shareInstance.currentNodeHrp) {
+//            return ks.address.mainnet
+//        } else {
+//            return ks.address.testnet
+//        }
     }
 
     // 0.7.5 修改助记词存放位置
