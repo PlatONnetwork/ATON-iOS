@@ -61,7 +61,10 @@ class AssetWalletsHeaderView: UIView {
                     if md.isWalletSelected == true {
                         self.layoutIfNeeded()
                         let indexPath = IndexPath(item: i, section: 0)
-                        self.collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+//                        self.collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+                        guard let attr = self.collectionView.collectionViewLayout.layoutAttributesForItem(at: indexPath) else { return }
+                        let rect = CGRect(x: attr.frame.origin.x - 20, y: attr.frame.origin.y, width: self.collectionView.frame.width, height: attr.frame.height)
+                        self.collectionView.scrollRectToVisible(rect, animated: true)
                         break
                     }
                 }
@@ -97,7 +100,10 @@ class AssetWalletsHeaderView: UIView {
                     if md.isWalletSelected == true {
                         self.layoutIfNeeded()
                         let indexPath = IndexPath(item: i, section: 0)
-                        self.collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+//                        self.collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+                        guard let attr = self.collectionView.collectionViewLayout.layoutAttributesForItem(at: indexPath) else { return }
+                        let rect = CGRect(x: attr.frame.origin.x - 20, y: attr.frame.origin.y, width: self.collectionView.frame.width, height: attr.frame.height)
+                        self.collectionView.scrollRectToVisible(rect, animated: true)
                         break
                     }
                 }

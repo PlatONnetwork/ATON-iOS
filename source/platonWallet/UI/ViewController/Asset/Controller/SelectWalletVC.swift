@@ -31,7 +31,7 @@ class SelectWalletVC: UIViewController, UITableViewDelegate, UITableViewDataSour
             tableView.reloadData()
         }
     }
-    fileprivate var enterMode: EnterMode?
+    fileprivate var enterMode: EnterMode = .fromChangeWallet
 
     var cateButtons: [SelectWalletTypeButton]!
     let searchBar = SelectWalletSearchBar()
@@ -71,7 +71,7 @@ class SelectWalletVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
 
     func configData() {
-        sectionInfos = generatePageDataSource(cate: .all)
+        sectionInfos = generatePageDataSource(cate: .all, enterMode: self.enterMode)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -154,13 +154,13 @@ class SelectWalletVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
 
     func showContent() {
-        UIView.animate(withDuration: 0.15) {
+        UIView.animate(withDuration: 0.2) {
             self.contentView.frame = CGRect(x: self.view.bounds.width - 290, y: 0, width: 290, height: self.view.bounds.height)
         }
     }
 
     func hide() {
-        UIView.animate(withDuration: 0.15) {
+        UIView.animate(withDuration: 0.2) {
             self.contentView.frame = CGRect(x: self.view.bounds.width, y: 0, width: 290, height: self.view.bounds.height)
             self.dismiss(animated: true, completion: nil)
         }
@@ -276,13 +276,13 @@ class SelectWalletVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         if selectedCateIndex == 0 {
             // All
-            sectionInfos = generatePageDataSource(cate: .all, keyword: self.searchingKeyword)
+            sectionInfos = generatePageDataSource(cate: .all, enterMode: self.enterMode, keyword: self.searchingKeyword)
         } else if selectedCateIndex == 1 {
             // HD
-            sectionInfos = generatePageDataSource(cate: .hd, keyword: self.searchingKeyword)
+            sectionInfos = generatePageDataSource(cate: .hd, enterMode: self.enterMode, keyword: self.searchingKeyword)
         } else if selectedCateIndex == 2 {
             // Normal
-            sectionInfos = generatePageDataSource(cate: .normal, keyword: self.searchingKeyword)
+            sectionInfos = generatePageDataSource(cate: .normal, enterMode: self.enterMode, keyword: self.searchingKeyword)
         }
         tableView.reloadData()
     }
@@ -298,7 +298,7 @@ extension SelectWalletVC {
     }
 
     /// 生成当前页面需要展示的数据源
-    func generatePageDataSource(cate: WalletCate, keyword: String = "") -> [SelectWalletDisplaySectionInfo] {
+    func generatePageDataSource(cate: WalletCate, enterMode: EnterMode, keyword: String = "") -> [SelectWalletDisplaySectionInfo] {
         var sectionInfos: [SelectWalletDisplaySectionInfo] = []
         /// 普通组
         var normalSectionInfo = SelectWalletDisplaySectionInfo(wallet: nil, subWallets: [])
@@ -322,8 +322,14 @@ extension SelectWalletVC {
                         /// 临时的HD分组
                         var tempHDSectionInfo = SelectWalletDisplaySectionInfo(wallet: wallet, subWallets: [])
                         let allSubWallets = WalletHelper.fetchHDSubWallets(from: wallets)
-                        let subWallets = allSubWallets.filter { (sWallet) -> Bool in
+                        var subWallets = allSubWallets.filter { (sWallet) -> Bool in
                             sWallet.parentId == wallet.uuid
+                        }
+                        if enterMode == .fromDelegation {
+                            /// 委托场景需要对子钱包进行排序
+                            subWallets.sort { (ls, rs) -> Bool in
+                                return Int(ls.balance) ?? 0 >= Int(rs.balance) ?? 0
+                            }
                         }
                         if keyword.count > 0 {
                             let fiteredSubWallets = subWallets.filter { (wallet) -> Bool in

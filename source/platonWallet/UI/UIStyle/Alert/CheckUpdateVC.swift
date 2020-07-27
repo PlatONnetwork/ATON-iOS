@@ -12,6 +12,8 @@ class CheckUpdateVC: BaseViewController {
     
     var confirmCallback: (() -> Void)?
     
+    var cancelCallback: (() -> Void)?
+    
     fileprivate let contentView = UIView()
     fileprivate let headerImageView = UIImageView(image: UIImage(named: "alertTipImage"))
     fileprivate let headerLabel = UILabel()
@@ -151,16 +153,16 @@ class CheckUpdateVC: BaseViewController {
         viewController.present(self, animated: true, completion: nil)
     }
     
-    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for touch: AnyObject in touches {
-            let t:UITouch = touch as! UITouch
-            let touchPoint = t.location(in: self.view)
-            if !self.contentView.frame.contains(touchPoint) {
-                if self.isForceUpdate == true { return }
-                hide()
-            }
-        }
-    }
+//    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        for touch: AnyObject in touches {
+//            let t:UITouch = touch as! UITouch
+//            let touchPoint = t.location(in: self.view)
+//            if !self.contentView.frame.contains(touchPoint) {
+//                if self.isForceUpdate == true { return }
+//                hide()
+//            }
+//        }
+//    }
     
     @objc private func confirmButtonClick(sender: UIButton) {
         hide()
@@ -170,6 +172,8 @@ class CheckUpdateVC: BaseViewController {
     
     
     @objc private func cancelButtonClick(sender: UIButton) {
+        guard let callback = self.cancelCallback else { return }
+        callback()
         hide()
     }
     

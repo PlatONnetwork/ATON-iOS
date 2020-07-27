@@ -853,6 +853,7 @@
 "node_status_candidate" = "候选中";
 "node_status_exiting" = "退出中";
 "node_status_exited" = "已退出";
+"node_status_locket" = "锁定中";
 
 "community_contact_wechat" = "微信";
 "community_contact_telegram" = "Telegram";

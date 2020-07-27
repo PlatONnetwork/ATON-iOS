@@ -13,7 +13,7 @@ class SelectWalletTCell: UITableViewCell {
     var wallet: Wallet? {
         didSet {
             titleLabel.text = wallet?.name
-            addrLabel.text = wallet?.address
+            addrLabel.text = wallet?.address.addressForDisplayBech32()
         }
     }
     fileprivate let contentBackView = UIView()
@@ -62,7 +62,7 @@ class SelectWalletTCell: UITableViewCell {
             make.bottom.equalTo(contentBackView.snp.bottom).offset(-10)
         }
         addrLabel.font = UIFont.systemFont(ofSize: 13, weight: .regular)
-        addrLabel.numberOfLines = 0
+        addrLabel.numberOfLines = 1
 
     }
     

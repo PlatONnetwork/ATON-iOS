@@ -847,6 +847,7 @@
 "node_status_candidate" = "Candidate";
 "node_status_exiting" = "Exiting";
 "node_status_exited" = "Exited";
+"node_status_locket" = "Locked";
 
 "community_contact_wechat" = "WeChat";
 "community_contact_telegram" = "Telegram";

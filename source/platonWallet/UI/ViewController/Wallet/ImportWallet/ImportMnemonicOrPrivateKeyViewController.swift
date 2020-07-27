@@ -49,7 +49,7 @@ class ImportMnemonicOrPrivateKeyViewController: BaseImportWalletViewController {
     @IBOutlet weak var walletTypeBottomLine: UIView!
     @IBOutlet weak var walletPhysicalTypeLabel: UILabel!
     /// 当前的钱包物理类型
-    var curWalletPhysicalType: WalletPhysicalType! = .normal {
+    var curWalletPhysicalType: WalletPhysicalType! {
         didSet {
             if curWalletPhysicalType == .normal {
                 self.walletPhysicalTypeLabel.text = Localized("createWalletVC_walletType_normal")
@@ -66,7 +66,7 @@ class ImportMnemonicOrPrivateKeyViewController: BaseImportWalletViewController {
         self.init()
         importType = type
     }
-    
+
     func prepareData() {
         curWalletPhysicalType = .normal
     }
@@ -95,6 +95,7 @@ class ImportMnemonicOrPrivateKeyViewController: BaseImportWalletViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        prepareData()
         setupUI()
 
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillChangeFrame(_:)), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
