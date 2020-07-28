@@ -351,6 +351,7 @@
 
 "AddWalletMenuVC_createIndividualWallet_title" = "Create Wallet";
 "AddWalletMenuVC_importIndividualWallet_title" = "Import Wallet";
+"AddWalletMenuVC_chooseIndividualWallet_title" = "Select Wallet";
 
 "Invalid password" = "Password Incorrect";
 "Invalid wallet" = "Invalid wallet";
@@ -1048,5 +1049,5 @@
 "error_3007" = "The wallet associated with the validator is not allowed for delegation.";
 "error_3008" = "Foundation-funded nodes do not accept delegations";
 "error_3009" = "The Amount cannot be less than %@ LAT";
-
+"error_3011" = "The Validator has been frozen and cannot be delegated.";
 "common_setting_confirm" = "Confirm";

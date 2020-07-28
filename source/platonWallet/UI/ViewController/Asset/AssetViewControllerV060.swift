@@ -356,8 +356,9 @@ extension AssetViewControllerV060 {
     @objc func onMenu() {
         var menuArray: [MenuItem] = []
         let menu1 = MenuItem(icon: UIImage(named: "img-more-classic-create"), title: Localized("AddWalletMenuVC_createIndividualWallet_title"))
-        let menu3 = MenuItem(icon: UIImage(named: "img-more-classic-import"), title: Localized("AddWalletMenuVC_importIndividualWallet_title"))
-        menuArray = [menu1, menu3]
+        let menu2 = MenuItem(icon: UIImage(named: "img-more-classic-import"), title: Localized("AddWalletMenuVC_importIndividualWallet_title"))
+        let menu3 = MenuItem(icon: UIImage(named: "img-more-classic-select"), title: Localized("AddWalletMenuVC_chooseIndividualWallet_title"))
+        menuArray = [menu1, menu2, menu3]
         let menu = PopupMenuTable(menuArray: menuArray, arrowPoint: CGPoint(x: UIScreen.main.bounds.width - 30, y: 64 + UIDevice.notchHeight))
         menu.popUp()
         menu.delegate = self
@@ -503,7 +504,10 @@ extension AssetViewControllerV060 {
             createIndividualWallet()
         case 1:
             importIndividualWallet()
+        case 2:
+            chooseIndividualWallet()
         default:
+            
             do {}
         }
     }
@@ -533,10 +537,16 @@ extension AssetViewControllerV060 {
                 // 更新母钱包的索引值（更改db）
                 WalletService.sharedInstance.updateWalletSelectedIndex(parentWallet, selectedIndex: subWallet.pathIndex)
             }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                WalletService.sharedInstance.refreshDB()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+//                WalletService.sharedInstance.refreshDB()
                 self.assetWalletsView.controller.updateWalletList()
             }
+        }
+    }
+    
+    func chooseIndividualWallet() {
+        if let currentWallet =  AssetVCSharedData.sharedData.selectedWallet as? Wallet {
+            chooseHighlightWallet(currentWalletAddress: currentWallet.address)
         }
     }
 }

@@ -148,7 +148,7 @@ class CreateIndividualWalletViewController: BaseViewController,StartBackupMnemon
 
     func checkInputValueIsValid() -> Bool {
 
-        return checkNameTF() && checkPswTF(isConfirmPsw: true)
+        return checkNameTF() && checkPswTF(isConfirmPsw: true) && checkWalletsCount()
 
     }
 
@@ -191,6 +191,21 @@ class CreateIndividualWalletViewController: BaseViewController,StartBackupMnemon
         }
         self.view.layoutIfNeeded()
         return pswRes.0
+    }
+    
+    func checkWalletsCount() -> Bool {
+        var res = true
+        if self.curWalletPhysicalType == .normal {
+            res = WalletService.sharedInstance.wallets.count < 200
+        } else if self.curWalletPhysicalType == .hd {
+            res = WalletService.sharedInstance.wallets.count < 200 - 30
+        }
+        if res == false {
+            print("不支持创建更多钱包")
+        } else {
+            print("还能创建更多钱包")
+        }
+        return res
     }
 
     /// BackupDelegate

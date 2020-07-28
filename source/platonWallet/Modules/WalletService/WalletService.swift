@@ -118,14 +118,13 @@ public final class WalletService {
             } else {
                 // 分层钱包
                 wallet = Wallet(uuid: keystore.generateHDParentAddress(), name: name, keystoreObject: keystore, isHD: true, pathIndex: 0, parentId: nil)
-                var walletArr: [Wallet] = [wallet]
                 for i: Int in 0..<30 {
                     let subWalletItem = Wallet(uuid: keystore.generateHDSubAddress(index: i), name: "\(name)_\(i + 1)", keystoreObject: keystore, isHD: true, pathIndex: Int(i), parentId: wallet.uuid)
-                    walletArr.append(subWalletItem)
+                    wallet.subWallets.append(subWalletItem)
                 }
                 DispatchQueue.main.async {
                     do {
-                        try self.saveToDB(walletArray: walletArr)
+                        try self.saveToDB(wallet: wallet)
                     } catch {
                         completion(nil, Error.keystoreFileSaveFailed)
                     }
@@ -223,17 +222,13 @@ public final class WalletService {
             } else {
                 // 分层钱包
                 wallet = Wallet(uuid: keystore.generateHDParentAddress(), name: name, keystoreObject: keystore, isHD: true, pathIndex: 0, parentId: nil)
-                var walletArr: [Wallet] = [wallet]
                 for i: Int in 0..<30 {
                     let subWalletItem = Wallet(uuid: keystore.generateHDSubAddress(index: i), name: "\(name)_\(i + 1)", keystoreObject: keystore, isHD: true, pathIndex: Int(i), parentId: wallet.uuid)
-                    walletArr.append(subWalletItem)
+                    wallet.subWallets.append(subWalletItem)
                 }
                 DispatchQueue.main.async {
                     do {
-                        try self.saveToDB(walletArray: walletArr)
-                    } catch Error.walletAlreadyExists {
-                        completion(nil, Error.walletAlreadyExists)
-                        return
+                        try self.saveToDB(wallet: wallet)
                     } catch {
                         completion(nil, Error.keystoreFileSaveFailed)
                     }
@@ -534,7 +529,7 @@ public final class WalletService {
     }
     
     public func updateWalletSelectedIndex(_ wallet: Wallet, selectedIndex: Int) {
-        WallletPersistence.sharedInstance.updataWalletSelectedIndex(wallet: wallet, selectedIndex: selectedIndex)
+        WallletPersistence.sharedInstance.updateWalletSelectedIndex(wallet: wallet, selectedIndex: selectedIndex)
     }
 
     /// Generates a unique file name for an address.
@@ -575,6 +570,7 @@ public final class WalletService {
         wallets.append(wallet)
     }
 
+    /*
     private func saveToDB(walletArray: [Wallet]) throws {
         for (_, wallet) in walletArray.enumerated() {
 
@@ -609,6 +605,7 @@ public final class WalletService {
         }
         WallletPersistence.sharedInstance.save(wallets: walletArray)
     }
+ */
 
     private func saveToDB(wallet: Wallet) throws {
 

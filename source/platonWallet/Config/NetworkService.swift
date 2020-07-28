@@ -113,6 +113,8 @@ enum NetworkError: Error {
                 return Localized("error_3008")
             case 3009:
                 return Localized("error_3009", arguments: m)
+            case 3011:
+                return Localized("error_3011")
             default:
                 return Localized("error_3002", arguments: c)
             }

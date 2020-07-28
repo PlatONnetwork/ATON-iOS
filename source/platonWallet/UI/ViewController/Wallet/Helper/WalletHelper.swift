@@ -60,8 +60,8 @@ class WalletHelper {
                 sectionInfos.append(sectionInfo)
             } else {
                 if wallet.parentId == nil {
-                    let subWallets = self.fetchSubWallets(of: wallet)
-                    sectionInfo.subWallets = subWallets
+                    let subWallets = wallet.subWallets
+                    sectionInfo.subWallets = Array(subWallets)
                     sectionInfos.append(sectionInfo)
                 }
             }
@@ -121,22 +121,22 @@ class WalletHelper {
      */
     
     /// 获取某个钱包在某个钱包组中的子钱包
-    static func fetchSubWallets(of wallet: Wallet, from wallets:[Wallet]) -> [Wallet] {
-        let allSubWallets = WalletHelper.fetchHDSubWallets(from: wallets)
-        let subWallets = allSubWallets.filter { (sWallet) -> Bool in
-            sWallet.parentId == wallet.uuid
-        }
-        return subWallets
-    }
+//    static func fetchSubWallets(of wallet: Wallet, from wallets:[Wallet]) -> [Wallet] {
+//        let allSubWallets = WalletHelper.fetchHDSubWallets(from: wallets)
+//        let subWallets = allSubWallets.filter { (sWallet) -> Bool in
+//            sWallet.parentId == wallet.uuid
+//        }
+//        return subWallets
+//    }
     
-    /// 获取某钱包的在数据库中的子钱包
-    static func fetchSubWallets(of wallet: Wallet) -> [Wallet] {
-        let wallets = AssetVCSharedData.sharedData.walletList as! [Wallet]
-        return self.fetchSubWallets(of: wallet, from: wallets)
-    }
+    /// 获取某钱包的在数据库中的子钱包(遍历法)
+//    static func fetchSubWallets(of wallet: Wallet) -> [Wallet] {
+//        let wallets = AssetVCSharedData.sharedData.walletList as! [Wallet]
+//        return self.fetchSubWallets(of: wallet, from: wallets)
+//    }
     
     static func fetchFinalSelectedWalletAddress(from wallet: Wallet) -> String {
-        let subWallets = WalletHelper.fetchSubWallets(of: wallet)
+        let subWallets = wallet.subWallets
         if subWallets.count > 0 {
             let selectedWallet = subWallets[wallet.selectedIndex]
             return selectedWallet.address
@@ -146,7 +146,7 @@ class WalletHelper {
     }
     
     static func fetchFinalSelectedWallet(from wallet: Wallet) -> Wallet {
-        let subWallets = WalletHelper.fetchSubWallets(of: wallet)
+        let subWallets = wallet.subWallets // WalletHelper.fetchSubWallets(of: wallet)
         if subWallets.count > 0 {
             let selectedWallet = subWallets[wallet.selectedIndex]
             return selectedWallet

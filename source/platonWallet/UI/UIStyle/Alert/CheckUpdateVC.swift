@@ -172,9 +172,9 @@ class CheckUpdateVC: BaseViewController {
     
     
     @objc private func cancelButtonClick(sender: UIButton) {
+        hide()
         guard let callback = self.cancelCallback else { return }
         callback()
-        hide()
     }
     
 }
