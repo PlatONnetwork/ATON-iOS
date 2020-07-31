@@ -51,7 +51,20 @@ class AssetVCSharedData {
             return newSorted
         }
     }
+    
+    /// 深度为0的钱包列表
+    var depthZeroWallets: [Wallet] {
+        if let wallets = self.walletList as? [Wallet] {
+            return wallets.filter { (w) -> Bool in
+                return w.depth == 0
+            }
+        }
+        else {
+            return []
+        }
+    }
 
+    /// 选中的钱包（普通钱包或母钱包）
     var currentWalletAddress: String? {
         didSet {
             for v in walletChangeHandlers {

@@ -46,6 +46,7 @@
 "createWalletVC_walletType_hd" = "HD";
 "createWalletVC_choose_walletType" = "选择钱包类型";
 "wallet_type_creating_desc" = "选择HD将默认创建一组30个钱包";
+"createWalletVC_maximized_count" = "钱包的数量不能超过200";
 
 "WalletTypeTag_all" = "全部";
 "WalletTypeTag_HD" = "HD";

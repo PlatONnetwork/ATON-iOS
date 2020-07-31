@@ -18,9 +18,9 @@ class WalletCollectionViewCell: UICollectionViewCell, CellConfigurable {
     func setup(viewModel: RowViewModel) {
         guard let viewModel = viewModel as? AssetWalletViewModel else { return }
         self.viewModel = viewModel
-        if viewModel.subWallets.count > 0 {
-            let curSelectedIndex = viewModel.wallet.selectedIndex
-            walletNameLabel.text = viewModel.subWallets[curSelectedIndex].name
+        if viewModel.wallet.subWallets.count > 0 {
+            let selectedWallet = WalletHelper.fetchFinalSelectedWallet(from: viewModel.wallet)
+            walletNameLabel.text = selectedWallet.name
             exchangeButton.isHidden = false
         } else {
             walletNameLabel.text = viewModel.wallet.name

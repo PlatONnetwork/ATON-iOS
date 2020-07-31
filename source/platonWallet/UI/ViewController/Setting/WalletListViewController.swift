@@ -145,7 +145,6 @@ extension WalletListViewController: UITableViewDelegate, UITableViewDataSource {
         if wallet.depth == 0 && wallet.isHD == true {
             let vc = WalletListMangementInnerVC()
             vc.wallet = info.wallet
-            vc.wallets = info.subWallets
             self.navigationController?.pushViewController(vc, animated: true)
         } else {
             let detailVC = WalletManagerDetailViewController()

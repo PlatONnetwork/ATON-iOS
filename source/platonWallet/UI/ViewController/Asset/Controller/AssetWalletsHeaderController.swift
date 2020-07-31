@@ -37,7 +37,7 @@ class AssetWalletsHeaderController {
     }
 
     func initialObserver() {
-        NotificationCenter.default.addObserver(self, selector: #selector(updateWalletList), name: Notification.Name.ATON.updateWalletList, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateWalletListFromNotification), name: Notification.Name.ATON.updateWalletList, object: nil)
     }
 
     deinit {
@@ -52,9 +52,47 @@ class AssetWalletsHeaderController {
             return CreateImportCollectionViewCell.cellIdentifier()
         }
     }
+    
+    @objc func updateWalletListFromNotification() {
+        updateWalletList()
+    }
 
     @objc func updateWalletList() {
         var viewModels: [RowViewModel] = []
+        WalletService.sharedInstance.refreshDB()
+        let rootWallets = AssetVCSharedData.sharedData.depthZeroWallets
+        for (_, v) in rootWallets.enumerated() {
+            let walletViewModel: AssetWalletViewModel = AssetWalletViewModel(wallet: v)
+            viewModels.append(walletViewModel)
+            walletViewModel.cellPressed = { [weak self] in
+                AssetVCSharedData.sharedData.currentWalletAddress = walletViewModel.wallet.address
+                self?.onwalletsSelect?()
+            }
+            walletViewModel.onExchangeWalletToDisplay = {[weak self] in
+                guard let self = self else { return }
+                if walletViewModel.wallet.subWallets.count > 0 {
+                    guard let callback = self.onExchangeWalletToDisplay else { return }
+                    callback(walletViewModel.wallet.address)
+//                    // 把当前选中的钱包的地址传出去做比对
+//                    if walletViewModel.subWallets.count > 0 {
+//                        callback(walletViewModel.subWallets[walletViewModel.wallet.selectedIndex].address)
+//                    } else {
+//                        callback(walletViewModel.wallet.address)
+//                    }
+                }
+            }
+            
+//            for rootWallet in rootWallets {
+//                let walletViewModel = AssetWalletViewModel(wallet: rootWallet, subWallets: <#[Wallet]#>)
+//                walletViewModel.cellPressed = { [weak self] in
+//                    AssetVCSharedData.sharedData.currentWalletAddress = wallet.address
+//                    self?.onwalletsSelect?()
+//                }
+//                viewModels.append(walletViewModel)
+//            }
+        }
+        
+        /*
         if let wallets = AssetVCSharedData.sharedData.walletList as? [Wallet] {
 
             for wallet in wallets {
@@ -72,11 +110,12 @@ class AssetWalletsHeaderController {
                     }
                 }
                 walletViewModel.cellPressed = { [weak self] in
-                    if walletViewModel.subWallets.count > 0 {
-                        AssetVCSharedData.sharedData.currentWalletAddress = walletViewModel.subWallets[walletViewModel.wallet.selectedIndex].address
-                    } else {
-                        AssetVCSharedData.sharedData.currentWalletAddress = walletViewModel.wallet.address
-                    }
+                    AssetVCSharedData.sharedData.currentWalletAddress = walletViewModel.wallet.address
+//                    if walletViewModel.subWallets.count > 0 {
+//                        AssetVCSharedData.sharedData.currentWalletAddress = walletViewModel.subWallets[walletViewModel.wallet.selectedIndex].address
+//                    } else {
+//                        AssetVCSharedData.sharedData.currentWalletAddress = walletViewModel.wallet.address
+//                    }
                     self?.onwalletsSelect?()
                 }
                 walletViewModel.onExchangeWalletToDisplay = {[weak self] in
@@ -102,7 +141,7 @@ class AssetWalletsHeaderController {
 //                viewModels.append(walletViewModel)
 //            }
         }
-
+*/
         let createWalletViewModel = AssetGenerateViewModel(title: "AddWalletMenuVC_createIndividualWallet_title", icon: UIImage(named: "cellItemCreate"))
         createWalletViewModel.cellPressed = { [weak self] in
             self?.onCreatePressed?()

@@ -53,6 +53,7 @@ class WalletHelper {
     /// 获取钱包展示的分组信息
     static func fetchWalletDisplaySectionInfos() -> [WalletDisplaySectionInfo] {
         var sectionInfos: [WalletDisplaySectionInfo] = []
+        WalletService.sharedInstance.refreshDB()
         let wallets = AssetVCSharedData.sharedData.walletList as! [Wallet]
         for wallet in wallets {
             var sectionInfo = WalletDisplaySectionInfo(wallet: wallet, subWallets: [])
@@ -135,21 +136,27 @@ class WalletHelper {
 //        return self.fetchSubWallets(of: wallet, from: wallets)
 //    }
     
-    static func fetchFinalSelectedWalletAddress(from wallet: Wallet) -> String {
-        let subWallets = wallet.subWallets
-        if subWallets.count > 0 {
-            let selectedWallet = subWallets[wallet.selectedIndex]
-            return selectedWallet.address
-        } else {
-            return wallet.address
-        }
-    }
+//    static func fetchFinalSelectedWalletAddress(from wallet: Wallet) -> String {
+//        let subWallets = wallet.subWallets
+//        if subWallets.count > 0 {
+//            let selectedWallet = subWallets[wallet.selectedIndex]
+//            return selectedWallet.address
+//        } else {
+//            return wallet.address
+//        }
+//    }
     
+    /// 获取钱包中选中的钱包
     static func fetchFinalSelectedWallet(from wallet: Wallet) -> Wallet {
-        let subWallets = wallet.subWallets // WalletHelper.fetchSubWallets(of: wallet)
+        let subWallets = Array(wallet.subWallets)
         if subWallets.count > 0 {
-            let selectedWallet = subWallets[wallet.selectedIndex]
-            return selectedWallet
+            if let selectedWallet = subWallets.first(where: { (wal) -> Bool in
+                wal.pathIndex == wallet.selectedIndex
+            }) {
+                return selectedWallet
+            } else {
+                return subWallets.first!
+            }
         } else {
             return wallet
         }

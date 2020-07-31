@@ -13,13 +13,16 @@ class WallletPersistence {
 
     static let sharedInstance = WallletPersistence()
 
-    func save(wallet: Wallet) {
+    func save(wallet: Wallet, subWallets: [Wallet]? = nil) {
         let wallet = wallet.detached()
 
         RealmWriteQueue.async {
             autoreleasepool(invoking: {
                 let realm = try! Realm(configuration: RealmHelper.getConfig())
                 try? realm.write {
+                    if subWallets != nil {
+                        wallet.subWallets.append(objectsIn: subWallets!)
+                    }
                     realm.add(wallet, update: .all)
                 }
             })

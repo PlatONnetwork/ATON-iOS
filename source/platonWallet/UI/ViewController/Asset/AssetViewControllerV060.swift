@@ -526,21 +526,48 @@ extension AssetViewControllerV060 {
     
     /// 选择钱包展示
     func chooseHighlightWallet(currentWalletAddress: String) {
-        let vc = SelectWalletVC(walletAddress: currentWalletAddress, enterMode: .fromChangeWallet)
+        guard let rootWallet = WalletService.sharedInstance.getWalletByAddress(address: currentWalletAddress) else { return }
+        let selectedWallet = WalletHelper.fetchFinalSelectedWallet(from: rootWallet)
+        var selectedAddress = selectedWallet.address
+        if rootWallet.subWallets.count > 0 {
+            if let selectedSubWallet = rootWallet.subWallets.first(where: { (wal) -> Bool in
+                wal.pathIndex == rootWallet.selectedIndex
+            }) {
+                selectedAddress = selectedSubWallet.address
+            }
+            
+        }
+        let vc = SelectWalletVC(walletAddress: selectedAddress, enterMode: .fromChangeWallet)
+        
+//        let vc = SelectWalletVC(walletAddress: currentWalletAddress, enterMode: .fromChangeWallet)
         vc.show(from: self)
         vc.chooseWalletCallback = {[weak self] (walletAddress) in
             guard let self = self else { return }
-            AssetVCSharedData.sharedData.currentWalletAddress = walletAddress
-            guard let subWallet = WalletService.sharedInstance.getWalletByAddress(address: walletAddress) else { return }
-            if let pid = subWallet.parentId {
-                guard let parentWallet = WalletService.sharedInstance.getWallet(byUUID: pid) else { return }
-                // 更新母钱包的索引值（更改db）
-                WalletService.sharedInstance.updateWalletSelectedIndex(parentWallet, selectedIndex: subWallet.pathIndex)
-            }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
-//                WalletService.sharedInstance.refreshDB()
+            guard let wallet = WalletService.sharedInstance.getWalletByAddress(address: walletAddress) else { return }
+            if wallet.parentId != nil && wallet.parentId?.count ?? 0 > 0 {
+                guard let parentWallet = WalletService.sharedInstance.getWallet(byUUID: wallet.parentId!) else { return }
+                AssetVCSharedData.sharedData.currentWalletAddress = parentWallet.address
+                WalletService.sharedInstance.updateWalletSelectedIndex(parentWallet, selectedIndex: wallet.pathIndex)
+            } 
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.06) {
+                //                WalletService.sharedInstance.refreshDB()
                 self.assetWalletsView.controller.updateWalletList()
+                AssetVCSharedData.sharedData.currentWalletAddress = walletAddress
             }
+            
+//            AssetVCSharedData.sharedData.currentWalletAddress = walletAddress
+            
+//            guard let subWallet = WalletService.sharedInstance.getWalletByAddress(address: walletAddress) else { return }
+//            if let pid = subWallet.parentId {
+//                guard let parentWallet = WalletService.sharedInstance.getWallet(byUUID: pid) else { return }
+//                // 更新母钱包的索引值（更改db）
+//                WalletService.sharedInstance.updateWalletSelectedIndex(parentWallet, selectedIndex: subWallet.pathIndex)
+//            }
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+////                WalletService.sharedInstance.refreshDB()
+//                self.assetWalletsView.controller.updateWalletList()
+//            }
+            
         }
     }
     

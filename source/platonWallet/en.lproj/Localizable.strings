@@ -53,8 +53,8 @@
 "createWalletVC_walletType_normal" = "normal";
 "createWalletVC_walletType_hd" = "HD";
 "createWalletVC_choose_walletType" = "Select Type";
-
 "wallet_type_creating_desc" = "A group of 30 wallets will be created when select HD";
+"createWalletVC_maximized_count" = "The number of wallets should not exceed 200";
 
 "createWalletVC_pswStrength" = "Strength";
 "createWalletVC_note" = "Note: Be sure to keep your wallet password in mind, the server will not store your password, you will not be able to retrieve the password if forgetting or losing!";
