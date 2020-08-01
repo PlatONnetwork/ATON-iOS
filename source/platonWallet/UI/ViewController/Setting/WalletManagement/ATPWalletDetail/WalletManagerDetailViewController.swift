@@ -46,7 +46,12 @@ class WalletManagerDetailViewController: BaseViewController {
         if let w = WalletService.sharedInstance.getWalletByAddress(address: wallet.address) {
             self.wallet = w
         }
-        deleteBtn.isHidden = wallet.canBackupMnemonic
+        if let parentWallet = WalletHelper.fetchParentWallet(from: wallet) {
+            deleteBtn.isHidden = parentWallet.canBackupMnemonic
+        } else {
+           deleteBtn.isHidden = wallet.canBackupMnemonic
+        }
+
         exportMnemonicContainer.isHidden = (self.wallet.keystoreMnemonic.count == 0)
     }
 
@@ -219,11 +224,17 @@ class WalletManagerDetailViewController: BaseViewController {
     func confirmToDeleteWallet(_ psw: String) {
 
         verifyPassword(psw, type: .deleteWallet) { [weak self](_) in
-
+            guard let self = self else {
+                return
+            }
             // fix waiting
-            AssetService.sharedInstace.balances = AssetService.sharedInstace.balances.filter { $0.addr.lowercased() != self?.wallet.address.lowercased() }
-            WalletService.sharedInstance.deleteWallet(self!.wallet)
-            self?.navigationController?.popViewController(animated: true)
+            AssetService.sharedInstace.balances = AssetService.sharedInstace.balances.filter { $0.addr.lowercased() != self.wallet.address.lowercased() }
+            WalletService.sharedInstance.deleteWallet(self.wallet) {[weak self] in
+                guard let self = self else {
+                    return
+                }
+                self.navigationController?.popViewController(animated: true)
+            }
         }
     }
 

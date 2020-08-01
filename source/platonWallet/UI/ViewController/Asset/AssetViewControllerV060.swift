@@ -554,20 +554,6 @@ extension AssetViewControllerV060 {
                 self.assetWalletsView.controller.updateWalletList()
                 AssetVCSharedData.sharedData.currentWalletAddress = walletAddress
             }
-            
-//            AssetVCSharedData.sharedData.currentWalletAddress = walletAddress
-            
-//            guard let subWallet = WalletService.sharedInstance.getWalletByAddress(address: walletAddress) else { return }
-//            if let pid = subWallet.parentId {
-//                guard let parentWallet = WalletService.sharedInstance.getWallet(byUUID: pid) else { return }
-//                // 更新母钱包的索引值（更改db）
-//                WalletService.sharedInstance.updateWalletSelectedIndex(parentWallet, selectedIndex: subWallet.pathIndex)
-//            }
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-////                WalletService.sharedInstance.refreshDB()
-//                self.assetWalletsView.controller.updateWalletList()
-//            }
-            
         }
     }
     

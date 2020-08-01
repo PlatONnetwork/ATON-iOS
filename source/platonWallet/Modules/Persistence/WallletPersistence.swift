@@ -45,14 +45,16 @@ class WallletPersistence {
         }
     }
 
-    func delete(wallet: Wallet) {
-
+    func delete(wallet: Wallet, complete: (() -> Void)? = nil) {
         let predicate = NSPredicate(format: "primaryKeyIdentifier == %@", wallet.primaryKeyIdentifier)
         RealmWriteQueue.async {
             autoreleasepool(invoking: {
                 let realm = try! Realm(configuration: RealmHelper.getConfig())
                 try? realm.write {
                     realm.delete(realm.objects(Wallet.self).filter(predicate))
+                }
+                DispatchQueue.main.async {
+                    complete?()
                 }
             })
         }

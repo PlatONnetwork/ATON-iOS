@@ -25,8 +25,7 @@ public final class WalletService {
 
     public var wallets: [Wallet] = WallletPersistence.sharedInstance.getAll() {
         didSet {
-            print("\n😀😀😀😀😀😀😀😀😀😀😀😀😀\nwallets:", wallets,"\n😀😀😀😀😀😀😀😀😀😀😀😀😀\n")
-            print("\(NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0])")
+            print("\n😀😀😀😀😀😀😀😀😀😀😀😀😀\n")
         }
     }
     
@@ -563,47 +562,58 @@ public final class WalletService {
 //        w?.key?.mnemonic = nil
     }
 
-    public func deleteWallet(_ wallet:Wallet) {
-        NotificationCenter.default.post(name: Notification.Name.ATON.WillDeleateWallet, object: wallet)
-        wallets.removeAll(where: { $0.uuid == wallet.uuid})
-        AssetVCSharedData.sharedData.willDeleteWallet(object: wallet as AnyObject)
+    public func deleteWallet(_ wallet:Wallet, complete: (() -> Void)? = nil) {
+
         /*
         NotificationCenter.default.post(name: Notification.Name.ATON.WillDeleateWallet, object: wallet)
         wallets.removeAll(where: { $0.uuid == wallet.uuid})
         AssetVCSharedData.sharedData.willDeleteWallet(object: wallet as AnyObject)
          */
+        NotificationCenter.default.post(name: Notification.Name.ATON.WillDeleateWallet, object: wallet)
         AssetService.sharedInstace.balances = AssetService.sharedInstace.balances.filter { $0.addr.lowercased() != wallet.address.lowercased() }
-        WallletPersistence.sharedInstance.delete(wallet: wallet)
+        WallletPersistence.sharedInstance.delete(wallet: wallet) {
+            self.refreshDB()
+            // 保持AssetVCSharedData监听有效
+            AssetVCSharedData.sharedData.active()
+            complete?()
+            NotificationCenter.default.post(name: Notification.Name.ATON.updateWalletList, object: wallet)
+        }
         /// 当母钱包没有了子钱包，则删除母钱包
-        if let parentWallet = WalletService.sharedInstance.getWallet(byUUID: wallet.parentId ?? "") {
-            for (i, v) in parentWallet.subWallets.enumerated().reversed() {
-                if wallet.uuid == v.uuid {
-                    parentWallet.subWallets.remove(at: i)
-                    if parentWallet.selectedIndex == i {
-                        // 若删除的正好是母钱包中选中的这个子钱包，需要调整选中的索引值
-                        if let firstPathIndex = parentWallet.subWallets.first?.pathIndex {
-                            // 还有子钱包
-                            parentWallet.selectedIndex = firstPathIndex
-                        } else {
-                            // 没有子钱包
-                            parentWallet.selectedIndex = 0
-                        }
-                        WalletService.sharedInstance.updateWalletSelectedIndex(parentWallet, selectedIndex: parentWallet.selectedIndex)
-                    }
-                }
-            }
+        if let parentWallet = WalletHelper.fetchParentWallet(from: wallet) {
+            self.removeWallet(wallet: wallet, fromParent: parentWallet)
             if parentWallet.subWallets.count == 0 {
                 self.deleteWallet(parentWallet)
-            } else {
-                WalletService.sharedInstance.updateWalletSelectedIndex(parentWallet, selectedIndex: 0)
             }
-        }
-        self.refreshDB()
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            NotificationCenter.default.post(name: Notification.Name.ATON.updateWalletList, object: wallet)
         }
         
     }
+    
+    /// 从一个父钱包中移除子钱包
+    private func removeWallet(wallet: Wallet, fromParent parentWallet: Wallet) {
+        // 反向遍历母钱包
+        for (i, v) in parentWallet.subWallets.enumerated().reversed() {
+            if wallet.uuid == v.uuid {
+                parentWallet.subWallets.remove(at: i)
+                if parentWallet.selectedIndex == v.pathIndex {
+                    // 若删除的正好是母钱包中选中的这个子钱包，需要调整选中的索引值
+                    if let firstPathIndex = parentWallet.subWallets.first?.pathIndex {
+                        // 还有子钱包
+                        parentWallet.selectedIndex = firstPathIndex
+                    } else {
+                        // 没有子钱包
+                        parentWallet.selectedIndex = 0
+                        WalletService.sharedInstance.wallets.removeAll()
+                    }
+                    // 重新设定母钱包的索引值
+                    WalletService.sharedInstance.updateWalletSelectedIndex(parentWallet, selectedIndex: parentWallet.selectedIndex)
+                    /// 强制刷新一下currentWalletAddress，即调用didSet方法
+                    AssetVCSharedData.sharedData.currentWalletAddress = AssetVCSharedData.sharedData.currentWalletAddress
+                }
+            }
+        }
+    }
+    
+
 
     public func updateWalletName(_ wallet: Wallet, name: String) {
         WallletPersistence.sharedInstance.updateWalletName(wallet: wallet, name: name)

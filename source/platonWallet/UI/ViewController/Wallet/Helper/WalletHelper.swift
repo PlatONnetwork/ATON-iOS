@@ -146,12 +146,22 @@ class WalletHelper {
 //        }
 //    }
     
+    /// 获取母钱包
+    static func fetchParentWallet(from wallet: Wallet) -> Wallet? {
+        if let parentId = wallet.parentId {
+            if let parentWallet = WalletService.sharedInstance.getWallet(byUUID: parentId) {
+                return parentWallet
+            }
+        }
+        return nil
+    }
+    
     /// 获取钱包中选中的钱包
     static func fetchFinalSelectedWallet(from wallet: Wallet) -> Wallet {
         let subWallets = Array(wallet.subWallets)
         if subWallets.count > 0 {
             if let selectedWallet = subWallets.first(where: { (wal) -> Bool in
-                wal.pathIndex == wallet.selectedIndex
+                return wal.pathIndex == wallet.selectedIndex
             }) {
                 return selectedWallet
             } else {
