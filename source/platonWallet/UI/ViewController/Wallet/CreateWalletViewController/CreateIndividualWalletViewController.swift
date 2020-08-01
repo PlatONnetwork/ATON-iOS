@@ -31,7 +31,9 @@ class CreateIndividualWalletViewController: BaseViewController,StartBackupMnemon
     @IBOutlet weak var strengthView: PasswordStrengthView!
 
     @IBOutlet weak var createBtn: PButton!
-
+    /// 创建钱包反馈提示信息
+    @IBOutlet weak var walletCreateAbilityDescLabel: UILabel!
+    
     var wallet:Wallet!
     var alertPswInput: String?
     
@@ -118,18 +120,21 @@ class CreateIndividualWalletViewController: BaseViewController,StartBackupMnemon
             let successVC = CreateWalletSuccessViewController()
             successVC.delegate = self
             self?.navigationController?.pushViewController(successVC, animated: true)
-
         }
     }
 
     @IBAction func chooseWalletPhysicalType(_ sender: Any) {
         print("选择钱包类型")
-        let vc = GlobalOptionsVC(options: [("0", Localized("createWalletVC_walletType_normal")), ("1", Localized("createWalletVC_walletType_hd"))], defaultSelectedIndex: 0, didConfirmedSelectionCallback: { (optionId, optionName) in
+        let vc = GlobalOptionsVC(options: [("0", Localized("createWalletVC_walletType_normal")), ("1", Localized("createWalletVC_walletType_hd"))], defaultSelectedIndex: self.curWalletPhysicalType.rawValue, didConfirmedSelectionCallback: {[weak self] (optionId, optionName) in
+            guard let self = self else { return }
             print("optionId: \(optionId), optionName: \(optionName)")
             if optionId == "0" {
                 self.curWalletPhysicalType = .normal
             } else if optionId == "1" {
                 self.curWalletPhysicalType = .hd
+            }
+            if self.nameTF.text?.count ?? 0 > 0 && self.pswTF.text?.count ?? 0 > 0 {
+               self.checkCanEableButton()
             }
         })
         
@@ -148,7 +153,7 @@ class CreateIndividualWalletViewController: BaseViewController,StartBackupMnemon
 
     func checkInputValueIsValid() -> Bool {
 
-        return checkNameTF() && checkPswTF(isConfirmPsw: true)
+        return checkNameTF() && checkPswTF(isConfirmPsw: true) && checkWalletsCount()
 
     }
 
@@ -191,6 +196,27 @@ class CreateIndividualWalletViewController: BaseViewController,StartBackupMnemon
         }
         self.view.layoutIfNeeded()
         return pswRes.0
+    }
+    
+    func checkWalletsCount() -> Bool {
+        WalletService.sharedInstance.refreshDB()
+        var res = true
+        if self.curWalletPhysicalType == .normal {
+            res = WalletService.sharedInstance.wallets.count < 200
+        } else if self.curWalletPhysicalType == .hd {
+            res = WalletService.sharedInstance.wallets.count < 200 - 30
+        }
+        if res == false {
+            print("不支持创建更多钱包")
+            noteLabelTopLayoutWithPswTips.constant = 32
+            walletCreateAbilityDescLabel.isHidden = false
+            walletCreateAbilityDescLabel.text = Localized("createWalletVC_maximized_count")
+        } else {
+            print("还能创建更多钱包")
+            noteLabelTopLayoutWithPswTips.constant = 10
+            walletCreateAbilityDescLabel.isHidden = true
+        }
+        return res
     }
 
     /// BackupDelegate

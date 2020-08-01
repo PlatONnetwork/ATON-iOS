@@ -13,13 +13,16 @@ class WallletPersistence {
 
     static let sharedInstance = WallletPersistence()
 
-    func save(wallet: Wallet) {
+    func save(wallet: Wallet, subWallets: [Wallet]? = nil) {
         let wallet = wallet.detached()
 
         RealmWriteQueue.async {
             autoreleasepool(invoking: {
                 let realm = try! Realm(configuration: RealmHelper.getConfig())
                 try? realm.write {
+                    if subWallets != nil {
+                        wallet.subWallets.append(objectsIn: subWallets!)
+                    }
                     realm.add(wallet, update: .all)
                 }
             })
@@ -28,26 +31,30 @@ class WallletPersistence {
 
     func save(wallets: [Wallet]) {
         let wallets = wallets.detached
+        let walletList = List<Wallet>()
+        wallets.forEach { (wallet) in
+            walletList.append(wallet)
+        }
         RealmWriteQueue.async {
             autoreleasepool(invoking: {
                 let realm = try! Realm(configuration: RealmHelper.getConfig())
-                try? realm.write {
-                    wallets.forEach { (wallet) in
-                        realm.add(wallet, update: .all)
-                    }
+                try! realm.write {
+                    realm.add(walletList)
                 }
             })
         }
     }
 
-    func delete(wallet: Wallet) {
-
+    func delete(wallet: Wallet, complete: (() -> Void)? = nil) {
         let predicate = NSPredicate(format: "primaryKeyIdentifier == %@", wallet.primaryKeyIdentifier)
         RealmWriteQueue.async {
             autoreleasepool(invoking: {
                 let realm = try! Realm(configuration: RealmHelper.getConfig())
                 try? realm.write {
                     realm.delete(realm.objects(Wallet.self).filter(predicate))
+                }
+                DispatchQueue.main.async {
+                    complete?()
                 }
             })
         }
@@ -135,7 +142,7 @@ class WallletPersistence {
     }
     
     /// 更新钱包选中索引值（操作对象通常是HD母钱包）
-    func updataWalletSelectedIndex(wallet: Wallet, selectedIndex: Int) {
+    func updateWalletSelectedIndex(wallet: Wallet, selectedIndex: Int) {
         let predicate = NSPredicate(format: "primaryKeyIdentifier == %@", wallet.primaryKeyIdentifier)
         RealmWriteQueue.async {
             autoreleasepool(invoking: {

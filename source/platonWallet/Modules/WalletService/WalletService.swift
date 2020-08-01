@@ -12,9 +12,9 @@ import Localize_Swift
 import platonWeb3
 
 /// 物理层级的钱包类型
-public enum WalletPhysicalType {
-    case hd
-    case normal
+public enum WalletPhysicalType: Int {
+    case normal = 0
+    case hd = 1
 }
 
 let keystoreFolderPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)[0] + "/keystore"
@@ -23,7 +23,12 @@ public final class WalletService {
 
     let keystoreFolderURL : URL
 
-    public var wallets: [Wallet] = WallletPersistence.sharedInstance.getAll()
+    public var wallets: [Wallet] = WallletPersistence.sharedInstance.getAll() {
+        didSet {
+            print("\n😀😀😀😀😀😀😀😀😀😀😀😀😀\n")
+        }
+    }
+    
 
     static let sharedInstance = WalletService()
 
@@ -106,7 +111,8 @@ public final class WalletService {
             var wallet: Wallet!
             if physicalType == .normal {
                 // 普通钱包
-                wallet = Wallet(uuid: keystore.generateHDSubAddress(index: 0), name: name, keystoreObject: keystore, isHD: false, pathIndex: 0, parentId: nil)
+                let uuid = try! AddrCoder.shared.decodeHex(addr: keystore.address.mainnet)
+                wallet = Wallet(uuid: uuid, name: name, keystoreObject: keystore, isHD: false, pathIndex: 0, parentId: nil)
                 DispatchQueue.main.async {
                     do {
                         try self.saveToDB(wallet: wallet)
@@ -118,14 +124,14 @@ public final class WalletService {
             } else {
                 // 分层钱包
                 wallet = Wallet(uuid: keystore.generateHDParentAddress(), name: name, keystoreObject: keystore, isHD: true, pathIndex: 0, parentId: nil)
-                var walletArr: [Wallet] = [wallet]
+                var subWallets: [Wallet] = []
                 for i: Int in 0..<30 {
                     let subWalletItem = Wallet(uuid: keystore.generateHDSubAddress(index: i), name: "\(name)_\(i + 1)", keystoreObject: keystore, isHD: true, pathIndex: Int(i), parentId: wallet.uuid)
-                    walletArr.append(subWalletItem)
+                    subWallets.append(subWalletItem)
                 }
                 DispatchQueue.main.async {
                     do {
-                        try self.saveToDB(walletArray: walletArr)
+                        try self.saveToDB(wallet: wallet, subWallets: subWallets.count == 0 ? nil : subWallets)
                     } catch {
                         completion(nil, Error.keystoreFileSaveFailed)
                     }
@@ -223,17 +229,13 @@ public final class WalletService {
             } else {
                 // 分层钱包
                 wallet = Wallet(uuid: keystore.generateHDParentAddress(), name: name, keystoreObject: keystore, isHD: true, pathIndex: 0, parentId: nil)
-                var walletArr: [Wallet] = [wallet]
                 for i: Int in 0..<30 {
                     let subWalletItem = Wallet(uuid: keystore.generateHDSubAddress(index: i), name: "\(name)_\(i + 1)", keystoreObject: keystore, isHD: true, pathIndex: Int(i), parentId: wallet.uuid)
-                    walletArr.append(subWalletItem)
+                    wallet.subWallets.append(subWalletItem)
                 }
                 DispatchQueue.main.async {
                     do {
-                        try self.saveToDB(walletArray: walletArr)
-                    } catch Error.walletAlreadyExists {
-                        completion(nil, Error.walletAlreadyExists)
-                        return
+                        try self.saveToDB(wallet: wallet)
                     } catch {
                         completion(nil, Error.keystoreFileSaveFailed)
                     }
@@ -280,9 +282,9 @@ public final class WalletService {
                 }
                 return
             }
-
-//            let wallet = Wallet(name: walletName, keystoreObject: keystore)
-            let wallet = Wallet(uuid: keystore.generateHDParentAddress(), name: walletName, keystoreObject: keystore, isHD: false, pathIndex: 0, parentId: nil)
+            /// 只能私钥导入普通钱包
+            let uuid = try! AddrCoder.shared.decodeHex(addr: keystore.address.mainnet)
+            let wallet = Wallet(uuid: uuid, name: walletName, keystoreObject: keystore, isHD: false, pathIndex: 0, parentId: nil)
 
             DispatchQueue.main.async {
 
@@ -321,8 +323,8 @@ public final class WalletService {
 
         walletQueue.async {
 
-//            let wallet = Wallet(name: walletName, keystoreObject: keystoreObj)
-            let wallet = Wallet(uuid: keystoreObj.generateHDParentAddress(), name: walletName, keystoreObject: keystoreObj, isHD: false, pathIndex: 0, parentId: nil)
+            let uuid = try! AddrCoder.shared.decodeHex(addr: keystoreObj.address.mainnet)
+            let wallet = Wallet(uuid: uuid, name: walletName, keystoreObject: keystoreObj, isHD: false, pathIndex: 0, parentId: nil)
 
             self.exportPrivateKey(wallet: wallet, password: password, completion: { (privateKey, error) in
                 if error != nil && privateKey == nil {
@@ -403,21 +405,51 @@ public final class WalletService {
     
     /// exportPrivateKey
     public func exportPrivateKey(wallet: Wallet, password: String, completion: @escaping (String?, Error?) -> Void) {
-        guard let keystore = wallet.key else {
+        var keystore: Keystore!
+        var parentWallet: Wallet!
+        if wallet.depth == 0 && wallet.isHD == false {
+            // 普通钱包
+            keystore = wallet.key!
+        } else if wallet.depth == 1 && wallet.isHD == true {
+            // HD子钱包
+            parentWallet = WalletService.sharedInstance.getWallet(byUUID: wallet.parentId!)
+//            let seed = WalletUtil.seedFromMnemonic(parentWallet!.mnemonic, passphrase: "")
+//            let hdNode = WalletUtil.hdNodeFromSeed(seed)
+//            var parentKeystore = parentWallet!.key!
+//            parentKeystore.hdNode = hdNode
+//            let privateKeyData = parentKeystore.generateHDSubPrivateKey(index: wallet.pathIndex)
+//            guard let key = try? Keystore(password: password, privateKey: privateKeyData) else {
+//                DispatchQueue.main.async {
+//                    completion(nil, Error.keystoreGeneFailed)
+//                }
+//                return
+//            }
+            keystore = parentWallet!.key!
+        } else {
+            // HD母钱包，不能导出私钥
             completion(nil, Error.invalidWallet)
             return
         }
+//        guard let keystore = wallet.key else {
+//            completion(nil, Error.invalidWallet)
+//            return
+//        }
+
         walletQueue.async {
             var privateKeyData: Data!
+            guard let tmpPrivateKeyData = try? keystore.decrypt(password: password) else {
+                DispatchQueue.main.async {
+                    completion(nil, Error.invalidWalletPassword)
+                }
+                return
+            }
             if wallet.isHD == true {
+                let mnemonic = try! keystore.decrypt(encryptedMnemonic: parentWallet!.mnemonic, password: password)
+                let seed = WalletUtil.seedFromMnemonic(mnemonic, passphrase: "")
+                let hdNode = WalletUtil.hdNodeFromSeed(seed)
+                keystore.hdNode = hdNode
                 privateKeyData = keystore.generateHDSubPrivateKey(index: wallet.pathIndex)
             } else {
-                guard let tmpPrivateKeyData = try? keystore.decrypt(password: password) else {
-                    DispatchQueue.main.async {
-                        completion(nil, Error.invalidWalletPassword)
-                    }
-                    return
-                }
                 privateKeyData = tmpPrivateKeyData
             }
             guard WalletUtil.isValidPrivateKeyData(privateKeyData) else {
@@ -441,7 +473,27 @@ public final class WalletService {
     /// - Throws: <#throws value description#>
     public func exportKeystore(wallet: Wallet, password: String = "") -> (keystore:String?, error:Error?) {
 
-        guard var keystore = wallet.key else {
+//        guard var keystore = wallet.key else {
+//            return (nil, Error.invalidWallet)
+//        }
+        var keystore: Keystore!
+        if wallet.depth == 0 && wallet.isHD == false {
+            // 普通钱包
+            keystore = wallet.key!
+        } else if wallet.depth == 1 && wallet.isHD == true {
+            // HD子钱包
+            let parentWallet = WalletService.sharedInstance.getWallet(byUUID: wallet.parentId!)
+            var parentKeystore = parentWallet!.key!
+            let mnemonic = try! parentKeystore.decrypt(encryptedMnemonic: parentWallet!.mnemonic, password: password)
+            let seed = WalletUtil.seedFromMnemonic(mnemonic, passphrase: "")
+            let hdNode = WalletUtil.hdNodeFromSeed(seed)
+            parentKeystore.hdNode = hdNode
+            let privateKeyData = parentKeystore.generateHDSubPrivateKey(index: wallet.pathIndex)
+            guard let key = try? Keystore(password: password, privateKey: privateKeyData) else {
+                return (nil, Error.keystoreGeneFailed)
+            }
+            keystore = key
+        } else {
             return (nil, Error.invalidWallet)
         }
 
@@ -459,7 +511,9 @@ public final class WalletService {
         keystore.publicKey = nil
 //        let tempMnemonic = keystore.mnemonic
 //        keystore.mnemonic = nil
-        guard let keystoreJson = String(bytes: try! JSONEncoder().encode(keystore), encoding: .utf8) else { return (nil, Error.invalidWallet) }
+        guard let keystoreJson = String(bytes: try! JSONEncoder().encode(keystore), encoding: .utf8) else {
+            return (nil, Error.invalidWallet)
+        }
         keystore.publicKey = tempPublicKey
 //        keystore.mnemonic = tempMnemonic
         return (keystoreJson, nil)
@@ -508,18 +562,60 @@ public final class WalletService {
 //        w?.key?.mnemonic = nil
     }
 
-    public func deleteWallet(_ wallet:Wallet) {
+    public func deleteWallet(_ wallet:Wallet, complete: (() -> Void)? = nil) {
 
+        /*
         NotificationCenter.default.post(name: Notification.Name.ATON.WillDeleateWallet, object: wallet)
-
-        AssetService.sharedInstace.balances = AssetService.sharedInstace.balances.filter { $0.addr.lowercased() != wallet.address.lowercased() }
-
         wallets.removeAll(where: { $0.uuid == wallet.uuid})
-
         AssetVCSharedData.sharedData.willDeleteWallet(object: wallet as AnyObject)
-
-        WallletPersistence.sharedInstance.delete(wallet: wallet)
+         */
+        NotificationCenter.default.post(name: Notification.Name.ATON.WillDeleateWallet, object: wallet)
+        AssetService.sharedInstace.balances = AssetService.sharedInstace.balances.filter { $0.addr.lowercased() != wallet.address.lowercased() }
+        WallletPersistence.sharedInstance.delete(wallet: wallet) {
+            self.refreshDB()
+            // 保持AssetVCSharedData监听有效
+            AssetVCSharedData.sharedData.active()
+            complete?()
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                NotificationCenter.default.post(name: Notification.Name.ATON.updateWalletList, object: wallet)
+            }
+        }
+        /// 当母钱包没有了子钱包，则删除母钱包
+        if let parentWallet = WalletHelper.fetchParentWallet(from: wallet) {
+            self.removeWallet(wallet: wallet, fromParent: parentWallet)
+            if parentWallet.subWallets.count == 0 {
+                self.deleteWallet(parentWallet)
+            }
+        }
+        
     }
+    
+    /// 从一个父钱包中移除子钱包
+    private func removeWallet(wallet: Wallet, fromParent parentWallet: Wallet) {
+        // 反向遍历母钱包
+        for (i, v) in parentWallet.subWallets.enumerated().reversed() {
+            if wallet.uuid == v.uuid {
+                parentWallet.subWallets.remove(at: i)
+                if parentWallet.selectedIndex == v.pathIndex {
+                    // 若删除的正好是母钱包中选中的这个子钱包，需要调整选中的索引值
+                    if let firstPathIndex = parentWallet.subWallets.first?.pathIndex {
+                        // 还有子钱包
+                        parentWallet.selectedIndex = firstPathIndex
+                    } else {
+                        // 没有子钱包
+                        parentWallet.selectedIndex = 0
+                        WalletService.sharedInstance.wallets.removeAll()
+                    }
+                    // 重新设定母钱包的索引值
+                    WalletService.sharedInstance.updateWalletSelectedIndex(parentWallet, selectedIndex: parentWallet.selectedIndex)
+                    /// 强制刷新一下currentWalletAddress，即调用didSet方法
+                    AssetVCSharedData.sharedData.currentWalletAddress = AssetVCSharedData.sharedData.currentWalletAddress
+                }
+            }
+        }
+    }
+    
+
 
     public func updateWalletName(_ wallet: Wallet, name: String) {
         WallletPersistence.sharedInstance.updateWalletName(wallet: wallet, name: name)
@@ -534,7 +630,7 @@ public final class WalletService {
     }
     
     public func updateWalletSelectedIndex(_ wallet: Wallet, selectedIndex: Int) {
-        WallletPersistence.sharedInstance.updataWalletSelectedIndex(wallet: wallet, selectedIndex: selectedIndex)
+        WallletPersistence.sharedInstance.updateWalletSelectedIndex(wallet: wallet, selectedIndex: selectedIndex)
     }
 
     /// Generates a unique file name for an address.
@@ -575,6 +671,7 @@ public final class WalletService {
         wallets.append(wallet)
     }
 
+    /*
     private func saveToDB(walletArray: [Wallet]) throws {
         for (_, wallet) in walletArray.enumerated() {
 
@@ -609,8 +706,9 @@ public final class WalletService {
         }
         WallletPersistence.sharedInstance.save(wallets: walletArray)
     }
+ */
 
-    private func saveToDB(wallet: Wallet) throws {
+    private func saveToDB(wallet: Wallet, subWallets: [Wallet]? = nil) throws {
 
         guard let keystore = wallet.key else {
             throw Error.invalidWallet
@@ -651,7 +749,7 @@ public final class WalletService {
         wallet.keystorePath = fileName
         wallet.mnemonic = keystore.mnemonic ?? ""
 
-        WallletPersistence.sharedInstance.save(wallet: wallet)
+        WallletPersistence.sharedInstance.save(wallet: wallet, subWallets: subWallets)
 
         wallets.removeAll { (item) -> Bool in
             item.uuid == wallet.uuid

@@ -53,8 +53,8 @@
 "createWalletVC_walletType_normal" = "normal";
 "createWalletVC_walletType_hd" = "HD";
 "createWalletVC_choose_walletType" = "Select Type";
-
 "wallet_type_creating_desc" = "A group of 30 wallets will be created when select HD";
+"createWalletVC_maximized_count" = "The number of wallets should not exceed 200";
 
 "createWalletVC_pswStrength" = "Strength";
 "createWalletVC_note" = "Note: Be sure to keep your wallet password in mind, the server will not store your password, you will not be able to retrieve the password if forgetting or losing!";
@@ -351,6 +351,7 @@
 
 "AddWalletMenuVC_createIndividualWallet_title" = "Create Wallet";
 "AddWalletMenuVC_importIndividualWallet_title" = "Import Wallet";
+"AddWalletMenuVC_chooseIndividualWallet_title" = "Select Wallet";
 
 "Invalid password" = "Password Incorrect";
 "Invalid wallet" = "Invalid wallet";
@@ -847,6 +848,7 @@
 "node_status_candidate" = "Candidate";
 "node_status_exiting" = "Exiting";
 "node_status_exited" = "Exited";
+"node_status_locket" = "Locked";
 
 "community_contact_wechat" = "WeChat";
 "community_contact_telegram" = "Telegram";
@@ -1047,5 +1049,5 @@
 "error_3007" = "The wallet associated with the validator is not allowed for delegation.";
 "error_3008" = "Foundation-funded nodes do not accept delegations";
 "error_3009" = "The Amount cannot be less than %@ LAT";
-
+"error_3011" = "The Validator has been frozen and cannot be delegated.";
 "common_setting_confirm" = "Confirm";

@@ -284,7 +284,7 @@ extension DropdownListView: UITableViewDelegate, UITableViewDataSource {
                 self.walletLabel.text = Localized("transaction_list_all_wallet")
             } else {
                 let wallet = self.walletsObject.sectionInfos[section - 1].wallet
-                let subWallets = WalletHelper.fetchSubWallets(of: wallet)
+                let subWallets = Array(wallet.subWallets)
                 self.dropdownListDidHandle?(wallet, subWallets.count == 0 ? [wallet] : subWallets)
                 self.walletIconIV.image = UIImage(named: wallet.avatar)
                 self.walletLabel.text = wallet.name

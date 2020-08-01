@@ -14,12 +14,11 @@ class AssetWalletViewModel: RowViewModel, ViewModelPressible {
     /// 切换钱包展示
     var onExchangeWalletToDisplay: (() -> Void)?
 
-    /// 子钱包数组
-    var subWallets: [Wallet]
+//    /// 子钱包数组
+//    var subWallets: [Wallet]
 
-    init(wallet: Wallet, subWallets: [Wallet]) {
+    init(wallet: Wallet) {
         self.wallet = wallet
-        self.subWallets = subWallets
     }
 
 //    init(wallet: Wallet) {
@@ -33,7 +32,7 @@ class AssetWalletViewModel: RowViewModel, ViewModelPressible {
             if selectedWallet.address.lowercased() == wallet.address.lowercased() {
                 return true
             }
-            let subWalletsAddresses = self.subWallets.map { (wallet) -> String in return wallet.address }
+            let subWalletsAddresses = self.wallet.subWallets.map { (wallet) -> String in return wallet.address }
             if subWalletsAddresses.contains(selectedWallet.address) {
                 return true
             }

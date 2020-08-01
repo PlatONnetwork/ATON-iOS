@@ -84,6 +84,8 @@ extension DelegateDetail {
             return (nodeStatus.description, status_darkgray_color)
         case .Exited:
             return (nodeStatus.description, status_lightgray_color)
+        case .Locked:
+            return (nodeStatus.description, UIColor.red) // 暂时用红色表示
         }
     }
 

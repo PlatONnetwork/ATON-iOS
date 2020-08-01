@@ -75,6 +75,10 @@ public final class Wallet: Object {
     @objc dynamic var parentId: String?
     // HD目录和普通钱包为0，HD子钱包为1
     @objc dynamic var depth: Int = 0
+    
+    /// 子钱包列表
+    let subWallets = List<Wallet>()
+    let parentWallet = LinkingObjects(fromType: Wallet.self, property: "subWallets")
 
     // 钱包类型
     var type: WalletType {

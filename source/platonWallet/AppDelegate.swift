@@ -188,7 +188,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-        getRemoteVersion()
+//        getRemoteVersion()
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
@@ -210,12 +210,34 @@ extension AppDelegate {
     }
 
     func getRemoteVersion() {
-        RemoteServices.getRemoteVersion { (result, response) in
+        RemoteServices.getRemoteVersion {[weak self] (result, response) in
+            guard let self = self else { return }
             switch result {
             case .success:
                 SettingService.shareInstance.remoteVersion = response
 
                 guard SettingService.shareInstance.remoteVersion?.isNeed == true else { return }
+                let isForceUpdate = SettingService.shareInstance.remoteVersion?.isForce ?? false
+                if isForceUpdate == true {
+                    self.showShouldUpdateVersionAlert()
+                } else {
+                    if let localDate = UserDefaults.standard.object(forKey: "UpdateVersionAlertDate") as? Date {
+                        // 不是同一天才能更新
+                        if Calendar.current.isDate(localDate, inSameDayAs: Date()) == true {
+                            return
+                        }
+                        self.showShouldUpdateVersionAlert()
+                        UserDefaults.standard.set(Date(), forKey: "UpdateVersionAlertDate")
+                    }
+                    else {
+                        /// 没有记录
+                        self.showShouldUpdateVersionAlert()
+                        UserDefaults.standard.set(Date(), forKey: "UpdateVersionAlertDate")
+                    }
+                }
+                
+                
+                /*
                 guard
                     let localDate = UserDefaults.standard.object(forKey: "UpdateVersionAlertDate") as? Date,
                     Calendar.current.isDate(localDate, inSameDayAs: Date()) else {
@@ -227,6 +249,7 @@ extension AppDelegate {
                 guard SettingService.shareInstance.remoteVersion?.isForce == true else { return }
                 self.showShouldUpdateVersionAlert()
                 UserDefaults.standard.set(Date(), forKey: "UpdateVersionAlertDate")
+ */
             case .failure(let error):
                 UIApplication.shared.keyWindow?.rootViewController?.showErrorMessage(text: error?.message ?? "server error")
             }
@@ -254,6 +277,9 @@ extension AppDelegate {
             vc.confirmCallback = {
                 UIApplication.shared.openURL(URL(string: SettingService.shareInstance.remoteVersion?.url ?? "https://developer.platon.network/mobile/index.html")!)
             }
+//            vc.cancelCallback = {
+//
+//            }
             vc.show(from: rootVC)
         }
         

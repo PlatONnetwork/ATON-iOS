@@ -53,6 +53,7 @@ class WalletHelper {
     /// 获取钱包展示的分组信息
     static func fetchWalletDisplaySectionInfos() -> [WalletDisplaySectionInfo] {
         var sectionInfos: [WalletDisplaySectionInfo] = []
+        WalletService.sharedInstance.refreshDB()
         let wallets = AssetVCSharedData.sharedData.walletList as! [Wallet]
         for wallet in wallets {
             var sectionInfo = WalletDisplaySectionInfo(wallet: wallet, subWallets: [])
@@ -60,8 +61,8 @@ class WalletHelper {
                 sectionInfos.append(sectionInfo)
             } else {
                 if wallet.parentId == nil {
-                    let subWallets = self.fetchSubWallets(of: wallet)
-                    sectionInfo.subWallets = subWallets
+                    let subWallets = wallet.subWallets
+                    sectionInfo.subWallets = Array(subWallets)
                     sectionInfos.append(sectionInfo)
                 }
             }
@@ -121,35 +122,51 @@ class WalletHelper {
      */
     
     /// 获取某个钱包在某个钱包组中的子钱包
-    static func fetchSubWallets(of wallet: Wallet, from wallets:[Wallet]) -> [Wallet] {
-        let allSubWallets = WalletHelper.fetchHDSubWallets(from: wallets)
-        let subWallets = allSubWallets.filter { (sWallet) -> Bool in
-            sWallet.parentId == wallet.uuid
+//    static func fetchSubWallets(of wallet: Wallet, from wallets:[Wallet]) -> [Wallet] {
+//        let allSubWallets = WalletHelper.fetchHDSubWallets(from: wallets)
+//        let subWallets = allSubWallets.filter { (sWallet) -> Bool in
+//            sWallet.parentId == wallet.uuid
+//        }
+//        return subWallets
+//    }
+    
+    /// 获取某钱包的在数据库中的子钱包(遍历法)
+//    static func fetchSubWallets(of wallet: Wallet) -> [Wallet] {
+//        let wallets = AssetVCSharedData.sharedData.walletList as! [Wallet]
+//        return self.fetchSubWallets(of: wallet, from: wallets)
+//    }
+    
+//    static func fetchFinalSelectedWalletAddress(from wallet: Wallet) -> String {
+//        let subWallets = wallet.subWallets
+//        if subWallets.count > 0 {
+//            let selectedWallet = subWallets[wallet.selectedIndex]
+//            return selectedWallet.address
+//        } else {
+//            return wallet.address
+//        }
+//    }
+    
+    /// 获取母钱包
+    static func fetchParentWallet(from wallet: Wallet) -> Wallet? {
+        if let parentId = wallet.parentId {
+            if let parentWallet = WalletService.sharedInstance.getWallet(byUUID: parentId) {
+                return parentWallet
+            }
         }
-        return subWallets
+        return nil
     }
     
-    /// 获取某钱包的在数据库中的子钱包
-    static func fetchSubWallets(of wallet: Wallet) -> [Wallet] {
-        let wallets = AssetVCSharedData.sharedData.walletList as! [Wallet]
-        return self.fetchSubWallets(of: wallet, from: wallets)
-    }
-    
-    static func fetchFinalSelectedWalletAddress(from wallet: Wallet) -> String {
-        let subWallets = WalletHelper.fetchSubWallets(of: wallet)
-        if subWallets.count > 0 {
-            let selectedWallet = subWallets[wallet.selectedIndex]
-            return selectedWallet.address
-        } else {
-            return wallet.address
-        }
-    }
-    
+    /// 获取钱包中选中的钱包
     static func fetchFinalSelectedWallet(from wallet: Wallet) -> Wallet {
-        let subWallets = WalletHelper.fetchSubWallets(of: wallet)
+        let subWallets = Array(wallet.subWallets)
         if subWallets.count > 0 {
-            let selectedWallet = subWallets[wallet.selectedIndex]
-            return selectedWallet
+            if let selectedWallet = subWallets.first(where: { (wal) -> Bool in
+                return wal.pathIndex == wallet.selectedIndex
+            }) {
+                return selectedWallet
+            } else {
+                return subWallets.first!
+            }
         } else {
             return wallet
         }

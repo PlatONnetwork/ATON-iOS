@@ -25,22 +25,22 @@ public struct Keystore {
     var publicKey: String?
     var mnemonic:String?
     /// 主私钥
-    private var hdNode: HDNode?
+    var hdNode: HDNode?
     private var rootPrivateKey: String?
 
-    public init(password: String) throws {
-
-        let mnemonic:String
-
-        do {
-            mnemonic = try WalletUtil.generateMnemonic(strength: 128)
-        } catch WalletUtil.Error.mnemonicGeneFailed {
-            throw Error.initFailed
-        }
-
-        try self.init(password: password, mnemonic: mnemonic, passphrase: "")
-        self.mnemonic = try encrypt(mnemonic: mnemonic, password: password)
-    }
+//    public init(password: String) throws {
+//
+//        let mnemonic:String
+//
+//        do {
+//            mnemonic = try WalletUtil.generateMnemonic(strength: 128)
+//        } catch WalletUtil.Error.mnemonicGeneFailed {
+//            throw Error.initFailed
+//        }
+//
+//        try self.init(password: password, mnemonic: mnemonic, passphrase: "")
+//        self.mnemonic = try encrypt(mnemonic: mnemonic, password: password)
+//    }
 
     /// 根据钱包物理类型 构造Keystore
     public init(password: String, walletPhysicalType: WalletPhysicalType) throws {

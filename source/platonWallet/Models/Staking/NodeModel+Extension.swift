@@ -21,6 +21,8 @@ extension Node {
             return .Exiting
         case "Exited":
             return .Exited
+        case "Locked":
+            return .Locked
         default:
             return .Active
         }
@@ -44,6 +46,8 @@ extension Node {
             return (nStatus.description, status_darkgray_color)
         case .Exited:
             return (nStatus.description, status_lightgray_color)
+        case .Locked:
+            return (nStatus.description, UIColor.red) // 暂时用红色表示
         }
     }
 

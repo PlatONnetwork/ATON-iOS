@@ -13,12 +13,18 @@ class WalletListMangementInnerVC: BaseViewController, UITableViewDelegate, UITab
     let tableView = UITableView()
 
     var wallet: Wallet!
-    var wallets: [Wallet] = []
+//    var wallets: [Wallet] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configSubViews()
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+            self.updateWalletList()
+    }
+
 
     func configSubViews() {
         super.leftNavigationTitle = wallet.name
@@ -60,13 +66,13 @@ class WalletListMangementInnerVC: BaseViewController, UITableViewDelegate, UITab
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return wallets.count
+        return wallet.subWallets.count
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "WalletManagerTableViewCell", for: indexPath) as! WalletManagerTableViewCell
         cell.backupButton.tag = indexPath.row
-        let wallet = wallets[indexPath.row]
+        let wallet = self.wallet.subWallets[indexPath.row]
         cell.feedData(wallet)
         return cell
 
@@ -77,14 +83,20 @@ class WalletListMangementInnerVC: BaseViewController, UITableViewDelegate, UITab
     //    }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let wallet = wallets[indexPath.row]
+        let wallet = self.wallet.subWallets[indexPath.row]
         let detailVC = WalletManagerDetailViewController()
         detailVC.wallet = wallet
-        detailVC.updatedWalletNameCallback = {[weak self] (wallet,name) in
-            guard let self = self else { return }
-            self.wallets[indexPath.row].name = name
-            self.tableView.reloadData()
-        }
         navigationController?.pushViewController(detailVC, animated: true)
+    }
+    
+    @objc func updateWalletList() {
+        WalletService.sharedInstance.refreshDB()
+        if let wallet = WalletService.sharedInstance.getWallet(byUUID: self.wallet.uuid) {
+            self.wallet = wallet
+            self.tableView.reloadData()
+        } else {
+            self.navigationController?.popViewController(animated: true)
+        }
+        
     }
 }

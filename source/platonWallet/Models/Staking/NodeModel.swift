@@ -16,6 +16,7 @@ enum NodeStatus: String, Decodable {
     case Candidate
     case Exiting
     case Exited
+    case Locked
 
     var description: String {
         switch self {
@@ -27,6 +28,8 @@ enum NodeStatus: String, Decodable {
             return Localized("node_status_exiting")
         case .Exited:
             return Localized("node_status_exited")
+        case .Locked:
+            return Localized("node_status_locket")
         }
     }
 }

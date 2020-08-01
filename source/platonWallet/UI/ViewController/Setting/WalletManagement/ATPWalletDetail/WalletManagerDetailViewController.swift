@@ -29,7 +29,6 @@ class WalletManagerDetailViewController: BaseViewController {
 
     @IBOutlet weak var exportKeyStore: UIView!
     
-    var updatedWalletNameCallback: ((_ wallet: Wallet, _ newName: String) -> Void)?
 
     var wallet: Wallet!
 
@@ -47,8 +46,12 @@ class WalletManagerDetailViewController: BaseViewController {
         if let w = WalletService.sharedInstance.getWalletByAddress(address: wallet.address) {
             self.wallet = w
         }
+        if let parentWallet = WalletHelper.fetchParentWallet(from: wallet) {
+            deleteBtn.isHidden = parentWallet.canBackupMnemonic
+        } else {
+           deleteBtn.isHidden = wallet.canBackupMnemonic
+        }
 
-        deleteBtn.isHidden = wallet.canBackupMnemonic
         exportMnemonicContainer.isHidden = (self.wallet.keystoreMnemonic.count == 0)
     }
 
@@ -108,10 +111,7 @@ class WalletManagerDetailViewController: BaseViewController {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
             AssetViewControllerV060.getInstance()?.controller.fetchWallets()
         }
-        guard let callback = self.updatedWalletNameCallback else {
-            return
-        }
-        callback(wallet, name)
+        NotificationCenter.default.post(name: Notification.Name.ATON.updateWalletList, object: nil)
     }
 
     func showErrorNameAlert() {
@@ -208,7 +208,7 @@ class WalletManagerDetailViewController: BaseViewController {
 
             let vc = ExportPrivateKeyOrKeystoreViewController(exportType: .keystore)
 
-            let res = WalletService.sharedInstance.exportKeystore(wallet: self!.wallet)
+            let res = WalletService.sharedInstance.exportKeystore(wallet: self!.wallet, password: psw)
 
             guard let json = res.keystore else {
                 self!.showMessage(text: res.error?.errorDescription ?? "")
@@ -224,12 +224,17 @@ class WalletManagerDetailViewController: BaseViewController {
     func confirmToDeleteWallet(_ psw: String) {
 
         verifyPassword(psw, type: .deleteWallet) { [weak self](_) in
-
+            guard let self = self else {
+                return
+            }
             // fix waiting
-            AssetService.sharedInstace.balances = AssetService.sharedInstace.balances.filter { $0.addr.lowercased() != self?.wallet.address.lowercased() }
-            WalletService.sharedInstance.deleteWallet(self!.wallet)
-            self?.navigationController?.popViewController(animated: true)
-            NotificationCenter.default.post(name: Notification.Name.ATON.updateWalletList, object: nil)
+            AssetService.sharedInstace.balances = AssetService.sharedInstace.balances.filter { $0.addr.lowercased() != self.wallet.address.lowercased() }
+            WalletService.sharedInstance.deleteWallet(self.wallet) {[weak self] in
+                guard let self = self else {
+                    return
+                }
+                self.navigationController?.popViewController(animated: true)
+            }
         }
     }
 
@@ -247,8 +252,7 @@ class WalletManagerDetailViewController: BaseViewController {
     func confirmToDeleteObserverWallet() {
         AssetService.sharedInstace.balances = AssetService.sharedInstace.balances.filter { $0.addr.lowercased() != wallet.address.lowercased() }
         WalletService.sharedInstance.deleteWallet(wallet)
-        navigationController?.popViewController(animated: true)
-        NotificationCenter.default.post(name: Notification.Name.ATON.updateWalletList, object: nil)
+        navigationController?.popViewController(animated: true)        
     }
 
     func verifyPassword(_ psw: String, type: AlertActionType, completionCallback:@escaping (_ privateKey: String?) -> Void) {

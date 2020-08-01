@@ -51,7 +51,20 @@ class AssetVCSharedData {
             return newSorted
         }
     }
+    
+    /// 深度为0的钱包列表
+    var depthZeroWallets: [Wallet] {
+        if let wallets = self.walletList as? [Wallet] {
+            return wallets.filter { (w) -> Bool in
+                return w.depth == 0
+            }
+        }
+        else {
+            return []
+        }
+    }
 
+    /// 选中的钱包（普通钱包或母钱包）
     var currentWalletAddress: String? {
         didSet {
             for v in walletChangeHandlers {
@@ -75,7 +88,7 @@ class AssetVCSharedData {
     }
     
     func fetchFinalSelectedWalletAddress(from wallet: Wallet) -> String {
-        let subWallets = WalletHelper.fetchSubWallets(of: wallet)
+        let subWallets = wallet.subWallets
         if subWallets.count > 0 {
             let selectedWallet = subWallets[wallet.selectedIndex]
             return selectedWallet.address

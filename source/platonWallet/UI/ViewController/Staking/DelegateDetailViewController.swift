@@ -163,7 +163,7 @@ extension DelegateDetailViewController: UITableViewDelegate, UITableViewDataSour
         let cell = tableView.dequeueReusableCell(withIdentifier: "NodeAboutDelegateTableViewCell") as! NodeAboutDelegateTableViewCell
         let delegateDetail = self.listData[indexPath.row]
         cell.delegateDetail = delegateDetail
-        cell.delegateButton.isEnabled = delegateDetail.isExistWallet(address: delegate!.walletAddress)
+        cell.delegateButton.isEnabled = delegateDetail.isExistWallet(address: delegate!.walletAddress) && delegateDetail.nodeStatus != .Locked
         cell.delegateButton.isSelected = delegateDetail.isInit || (delegateDetail.nodeStatus == .Exiting || delegateDetail.nodeStatus == .Exited || delegateDetail.releasedBInt > BigUInt.zero)
         cell.delegateButton.backgroundColor = delegateDetail.isExistWallet(address: delegate!.walletAddress) && !delegateDetail.isInit && (delegateDetail.nodeStatus == .Active || delegateDetail.nodeStatus == .Candidate) && delegateDetail.releasedBInt == BigUInt.zero ? UIColor.white : UIColor(rgb: 0xDCDFE8, alpha: 0.4)
         cell.withDrawButton.isEnabled = delegateDetail.isExistWallet(address: delegate!.walletAddress)

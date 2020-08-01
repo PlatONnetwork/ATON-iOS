@@ -15,7 +15,7 @@ class AssetWalletsHeaderView: UIView {
     let menuButton = UIButton()
     let scanButton = UIButton()
 
-    lazy var collectionView: UICollectionView = {
+    private lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: 200, height: 44)
         layout.sectionInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
@@ -61,7 +61,10 @@ class AssetWalletsHeaderView: UIView {
                     if md.isWalletSelected == true {
                         self.layoutIfNeeded()
                         let indexPath = IndexPath(item: i, section: 0)
-                        self.collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+//                        self.collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+                        guard let attr = self.collectionView.collectionViewLayout.layoutAttributesForItem(at: indexPath) else { return }
+                        let rect = CGRect(x: attr.frame.origin.x - 20, y: attr.frame.origin.y, width: self.collectionView.frame.width, height: attr.frame.height)
+                        self.collectionView.scrollRectToVisible(rect, animated: true)
                         break
                     }
                 }
@@ -91,13 +94,15 @@ class AssetWalletsHeaderView: UIView {
         controller.onwalletsSelect = { [weak self] in
             guard let self = self else { return }
             let rowModels = self.viewModel.walletViewModels.value
-            self.collectionView.reloadData()
             for (i, v) in rowModels.enumerated() {
                 if let md = v as? AssetWalletViewModel {
                     if md.isWalletSelected == true {
                         self.layoutIfNeeded()
                         let indexPath = IndexPath(item: i, section: 0)
-                        self.collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+//                        self.collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+                        guard let attr = self.collectionView.collectionViewLayout.layoutAttributesForItem(at: indexPath) else { return }
+                        let rect = CGRect(x: attr.frame.origin.x - 20, y: attr.frame.origin.y, width: self.collectionView.frame.width, height: attr.frame.height)
+                        self.collectionView.scrollRectToVisible(rect, animated: true)
                         break
                     }
                 }

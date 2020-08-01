@@ -46,6 +46,7 @@
 "createWalletVC_walletType_hd" = "HD";
 "createWalletVC_choose_walletType" = "选择钱包类型";
 "wallet_type_creating_desc" = "选择HD将默认创建一组30个钱包";
+"createWalletVC_maximized_count" = "钱包的数量不能超过200";
 
 "WalletTypeTag_all" = "全部";
 "WalletTypeTag_HD" = "HD";
@@ -345,7 +346,7 @@
 
 "AddWalletMenuVC_createIndividualWallet_title" = "创建钱包";
 "AddWalletMenuVC_importIndividualWallet_title" = "导入钱包";
-
+"AddWalletMenuVC_chooseIndividualWallet_title" = "选择钱包";
 
 "Invalid password" = "密码错误";
 "Invalid wallet" = "钱包错误";
@@ -853,6 +854,7 @@
 "node_status_candidate" = "候选中";
 "node_status_exiting" = "退出中";
 "node_status_exited" = "已退出";
+"node_status_locket" = "锁定中";
 
 "community_contact_wechat" = "微信";
 "community_contact_telegram" = "Telegram";
@@ -1055,6 +1057,7 @@
 "error_3007" = "节点关联的钱包地址，不可参与委托。";
 "error_3008" = "基金会资助的节点不接受委托";
 "error_3009" = "委托数量不能少于%@ LAT";
+"error_3011" = "节点冻结中，不能委托";
 
 "common_setting_confirm" = "确定";
 

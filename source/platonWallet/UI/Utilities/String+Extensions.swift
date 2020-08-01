@@ -433,6 +433,10 @@ extension String {
     func addressForDisplayShortBech32() -> String {
         return self.substr(0, 4)! + "...." + self.substr(38, 4)!
     }
+    
+    func addressForDisplayShortBech32_6bit() -> String {
+        return self.substr(0, 6)! + "...." + self.substr(36, 6)!
+    }
 
     func addressForDisplayShort() -> String {
         guard self.is40ByteAddress() else {
@@ -538,11 +542,13 @@ extension String {
     func addressDisplayInLocal() -> String? {
         let localWallet = (AssetVCSharedData.sharedData.walletList as! [Wallet]).filter { $0.address.lowercased() == self.lowercased() }.first
         if let wallet = localWallet {
-            return wallet.name + "(\(self.addressForDisplayShortBech32()))"
+//            return wallet.name + "(\(self.addressForDisplayShortBech32()))"
+            return wallet.name + "(\(self.addressForDisplayShortBech32_6bit()))"
         } else {
             let addressInfo = AddressBookService.service.getAll().filter { $0.walletAddress?.lowercased() == self.lowercased() }.first
             guard let addressName = addressInfo?.walletName else { return self }
-            return addressName + "(\(self.addressForDisplayShortBech32()))"
+//            return addressName + "(\(self.addressForDisplayShortBech32()))"
+            return addressName + "(\(self.addressForDisplayShortBech32_6bit()))"
         }
     }
 }
