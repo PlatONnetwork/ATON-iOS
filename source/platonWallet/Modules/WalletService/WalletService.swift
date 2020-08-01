@@ -576,7 +576,9 @@ public final class WalletService {
             // 保持AssetVCSharedData监听有效
             AssetVCSharedData.sharedData.active()
             complete?()
-            NotificationCenter.default.post(name: Notification.Name.ATON.updateWalletList, object: wallet)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                NotificationCenter.default.post(name: Notification.Name.ATON.updateWalletList, object: wallet)
+            }
         }
         /// 当母钱包没有了子钱包，则删除母钱包
         if let parentWallet = WalletHelper.fetchParentWallet(from: wallet) {
