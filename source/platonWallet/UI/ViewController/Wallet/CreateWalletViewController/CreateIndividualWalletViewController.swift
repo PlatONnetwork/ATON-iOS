@@ -87,6 +87,7 @@ class CreateIndividualWalletViewController: BaseViewController,StartBackupMnemon
 
         pswAdviseLabelTopToStrengthLayoutConstraint.priority = .defaultLow
         pswAdviseLabelTopToConfirmPSWLayoutConstraint.priority = .defaultHigh
+        nameTF.addTarget(self, action: #selector(textFieldValueChanged(textField:)), for: .editingChanged)
         self.strengthView.isHidden = true
     }
 
@@ -155,6 +156,13 @@ class CreateIndividualWalletViewController: BaseViewController,StartBackupMnemon
 
         return checkNameTF() && checkPswTF(isConfirmPsw: true) && checkWalletsCount()
 
+    }
+    
+    @objc func textFieldValueChanged(textField: UITextField) {
+        if textField == nameTF && checkPswTF() == true {
+            /// 保证先输入密码再输入钱包名时可以实时处理创建按钮的状态
+            checkCanEableButton()
+        }
     }
 
     func checkNameTF(showErrorMsg: Bool = false) -> Bool {
@@ -266,7 +274,7 @@ extension CreateIndividualWalletViewController :UITextFieldDelegate {
 
         return true
     }
-
+    
     func textFieldDidEndEditing(_ textField: UITextField) {
 
         if textField == nameTF {

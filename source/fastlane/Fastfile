@@ -42,7 +42,7 @@ platform :ios do
       ignore: ["*ViewController*.swift", "*view*.swift", "*View*.swift", "*UI*.swift"],
       binary_basename: "platonWallet")
     lizard(source_folder: "./platonWallet", language: "swift", export_type: "xml", report_file: "reports/lizard-report.xml")
-    swiftlint(config_file: "./fastlane/.swiftlint.yml", output_file: "./reports/swiftlint.txt", ignore_exit_status: true)
+    # swiftlint(config_file: "./fastlane/.swiftlint.yml", output_file: "./reports/swiftlint.txt", ignore_exit_status: true)
     sonar
   end
   lane :tests do

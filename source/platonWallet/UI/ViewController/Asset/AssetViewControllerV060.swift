@@ -546,7 +546,7 @@ extension AssetViewControllerV060 {
             guard let wallet = WalletService.sharedInstance.getWalletByAddress(address: walletAddress) else { return }
             if wallet.parentId != nil && wallet.parentId?.count ?? 0 > 0 {
                 guard let parentWallet = WalletService.sharedInstance.getWallet(byUUID: wallet.parentId!) else { return }
-                AssetVCSharedData.sharedData.currentWalletAddress = parentWallet.address
+//                AssetVCSharedData.sharedData.currentWalletAddress = parentWallet.address
                 WalletService.sharedInstance.updateWalletSelectedIndex(parentWallet, selectedIndex: wallet.pathIndex)
             } 
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.06) {
