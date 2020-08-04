@@ -84,7 +84,7 @@ class AssetVCSharedData {
                 }
                 return nil
         }
-        return WalletHelper.fetchFinalSelectedWallet(from: wallet) as AnyObject as AnyObject
+        return WalletHelper.fetchFinalSelectedWallet(from: wallet) as AnyObject
     }
     
     func fetchFinalSelectedWalletAddress(from wallet: Wallet) -> String {

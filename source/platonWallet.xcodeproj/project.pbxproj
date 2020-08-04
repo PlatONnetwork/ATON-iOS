@@ -1129,7 +1129,6 @@
 		81168B33243187AD00E44F62 /* AssetTransactionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetTransactionCell.swift; sourceTree = "<group>"; };
 		8118862523B5E09000CAE5BA /* PBKDF2Params.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PBKDF2Params.swift; sourceTree = "<group>"; };
 		8118877323B7590C00CAE5BA /* platonWalletParallelNet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = platonWalletParallelNet.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		8118877423B7590D00CAE5BA /* platonWalletParallelNet-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "platonWalletParallelNet-Info.plist"; path = "/Users/ned/Documents/yuham/ios/platon/ATON-iOS/source/platonWalletParallelNet-Info.plist"; sourceTree = "<absolute>"; };
 		811AB2AE22EE8CB100284F1A /* NodeDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeDetailViewController.swift; sourceTree = "<group>"; };
 		811AB2B022EE9FAA00284F1A /* NodeBaseInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeBaseInfoView.swift; sourceTree = "<group>"; };
 		811AB2B222EECBEC00284F1A /* WithDrawViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WithDrawViewController.swift; sourceTree = "<group>"; };
@@ -1197,7 +1196,6 @@
 		8141E671233A15B2001A9351 /* OfflineSignatureTransactionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OfflineSignatureTransactionViewController.swift; sourceTree = "<group>"; };
 		8141E673233A1C7D001A9351 /* TransactionQrcode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionQrcode.swift; sourceTree = "<group>"; };
 		8141E677233CA673001A9351 /* QRCodeDecoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCodeDecoder.swift; sourceTree = "<group>"; };
-		81437A43235DA5BD00499623 /* platonWallet copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "platonWallet copy-Info.plist"; path = "/Users/ned/Documents/yuham/ios/platon/ATON-iOS/source/platonWallet copy-Info.plist"; sourceTree = "<absolute>"; };
 		81466834232F3B4E00A141D9 /* AppDelegate+MonkeyTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+MonkeyTest.swift"; sourceTree = "<group>"; };
 		8146683A232F986C00A141D9 /* nodelist.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = nodelist.json; sourceTree = "<group>"; };
 		8146683C232FA94300A141D9 /* listDelegateGroupByAddr.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = listDelegateGroupByAddr.json; sourceTree = "<group>"; };
@@ -1273,7 +1271,6 @@
 		81B58960235AE2CC00816B4E /* UIScrollView+GestureConflict.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScrollView+GestureConflict.swift"; sourceTree = "<group>"; };
 		81B58963235D92FD00816B4E /* RealmHelper+Migration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RealmHelper+Migration.swift"; sourceTree = "<group>"; };
 		81B58A9D235DA1FC00816B4E /* platonWalletUAT.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = platonWalletUAT.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		81B58A9E235DA1FD00816B4E /* platonWalletUAT-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "platonWalletUAT-Info.plist"; path = "/Users/ned/Documents/yuham/ios/platon/ATON-iOS/source/platonWalletUAT-Info.plist"; sourceTree = "<absolute>"; };
 		81B5CE70224332C500ACFE96 /* UITextFieldWithSearch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UITextFieldWithSearch.swift; sourceTree = "<group>"; };
 		81C3DD11240910DC0014E59F /* RemarkTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemarkTextView.swift; sourceTree = "<group>"; };
 		81C88E0121746B39005F17F7 /* platonWallet.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = platonWallet.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1884,9 +1881,6 @@
 				81C88E0221746B39005F17F7 /* Products */,
 				A0CD6C6641A0A126F2A0DAAC /* Pods */,
 				A14CE8F011E34CAD2F0E56F0 /* Frameworks */,
-				81B58A9E235DA1FD00816B4E /* platonWalletUAT-Info.plist */,
-				81437A43235DA5BD00499623 /* platonWallet copy-Info.plist */,
-				8118877423B7590D00CAE5BA /* platonWalletParallelNet-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
