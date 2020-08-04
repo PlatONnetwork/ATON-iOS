@@ -814,8 +814,9 @@ extension AssetSendViewControllerV060 {
     // MARK: - Notification
 
     @objc func DidNodeGasPriceUpdate() {
+        let totalfee = self.totalFee() // 保证在主线程中调用totalFee()
         DispatchQueue.global().async {
-            let feeString = self.totalFee().divide(by: ETHToWeiMultiplier, round: 8)
+            let feeString = totalfee.divide(by: ETHToWeiMultiplier, round: 8)
             DispatchQueue.main.async {
                 self.txFeeLabel.text = feeString
                 let value = self.gasPriceLevel ?? TransactionService.service.getSliderDefaultValue(min: TransactionService.service.minGasPrice, value: self.gas?.gasPriceBInt ?? TransactionService.service.defaultGasPrice)
