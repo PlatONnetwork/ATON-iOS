@@ -53,6 +53,8 @@ class SelectWalletVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     var selectedIndexPath: IndexPath?
     /// 选中了新的钱包回调
     var chooseWalletCallback: ((_ walletAddress: String) -> Void)?
+    
+    let contentViewWidth = kUIScreenWidth * 290.0 / 375.0
 
     convenience init(walletAddress: String, enterMode: SelectWalletVC.EnterMode) {
         self.init()
@@ -88,18 +90,20 @@ class SelectWalletVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     func configContent() {
         view.addSubview(contentView)
         contentView.backgroundColor = UIColor(hex: "F9FBFF")
-        contentView.frame = CGRect(x: self.view.bounds.width, y: 0, width: 290, height: self.view.bounds.height)
+        contentView.frame = CGRect(x: self.view.bounds.width, y: 0, width: contentViewWidth, height: self.view.bounds.height)
         contentView.cropView(corners: [.topLeft, .bottomLeft], cornerRadiiV: 35)
 
         contentView.addSubview(selectWalletTitleLabel)
         selectWalletTitleLabel.text = Localized("Wallet_selectingTitle")
         selectWalletTitleLabel.font = UIFont.systemFont(ofSize: 18)
         selectWalletTitleLabel.frame = CGRect(x: 16, y: 38, width: 112, height: 25)
+        selectWalletTitleLabel.sizeToFit()
 
         cateButtons = []
         for i in 0..<cateTitles.count {
             let btn = SelectWalletTypeButton(type: .custom)
             btn.setTitle(cateTitles[i], for: .normal)
+            btn.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .medium)
             cateButtons.append(btn)
             contentView.addSubview(btn)
             let itemW: CGFloat = 68
@@ -112,9 +116,10 @@ class SelectWalletVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
 
         contentView.addSubview(searchButton)
-        searchButton.frame = CGRect(x: 290 - 10 - 20, y: 85, width: 20, height: 20)
+        searchButton.frame = CGRect(x: contentViewWidth - 15 - 20, y: 85, width: 20, height: 20)
         searchButton.setImage(UIImage(named: "wallet_icon_Search"), for: .normal)
         searchButton.addTarget(self, action: #selector(searchButtonClick(sender:)), for: .touchUpInside)
+        searchButton.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .regular)
 
         contentView.addSubview(searchBar)
         searchBar.snp.makeConstraints { (make) in
@@ -155,13 +160,13 @@ class SelectWalletVC: UIViewController, UITableViewDelegate, UITableViewDataSour
 
     func showContent() {
         UIView.animate(withDuration: 0.2) {
-            self.contentView.frame = CGRect(x: self.view.bounds.width - 290, y: 0, width: 290, height: self.view.bounds.height)
+            self.contentView.frame = CGRect(x: self.view.bounds.width - self.contentViewWidth, y: 0, width: self.contentViewWidth, height: self.view.bounds.height)
         }
     }
 
     func hide() {
         UIView.animate(withDuration: 0.2) {
-            self.contentView.frame = CGRect(x: self.view.bounds.width, y: 0, width: 290, height: self.view.bounds.height)
+            self.contentView.frame = CGRect(x: self.view.bounds.width, y: 0, width: self.contentViewWidth, height: self.view.bounds.height)
             self.dismiss(animated: true, completion: nil)
         }
     }
@@ -340,6 +345,9 @@ extension SelectWalletVC {
                             tempHDSectionInfo.subWallets = subWallets
                         }
                         if tempHDSectionInfo.subWallets.count > 0 {
+                            tempHDSectionInfo.subWallets.sort { (l, h) -> Bool in
+                                l.pathIndex < h.pathIndex
+                            }
                             sectionInfos.append(tempHDSectionInfo)
                         }
                     }

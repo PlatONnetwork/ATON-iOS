@@ -147,7 +147,7 @@ public final class Wallet: Object {
         primaryKeyIdentifier = originAddress + SettingService.shareInstance.currentNodeChainId
         self.uuid = originAddress
         self.name = name
-        self.avatar = originAddress.walletAddressLastCharacterAvatar()
+        self.avatar = avatarImageName(address: originAddress) // originAddress.walletAddressLastCharacterAvatar()
     }
 
     convenience init(name: String, mainnetAddress: String) {
@@ -155,7 +155,7 @@ public final class Wallet: Object {
         uuid = try! AddrCoder.shared.decodeHex(addr: mainnetAddress)
         primaryKeyIdentifier = uuid
         self.name = name
-        self.avatar = uuid.walletAddressLastCharacterAvatar()
+        self.avatar = avatarImageName(address: uuid) // uuid.walletAddressLastCharacterAvatar()
     }
 
     convenience init(name: String, testnetAddress: String) {
@@ -163,7 +163,16 @@ public final class Wallet: Object {
         uuid = try! AddrCoder.shared.decodeHex(addr: testnetAddress)
         primaryKeyIdentifier = uuid
         self.name = name
-        self.avatar = uuid.walletAddressLastCharacterAvatar()
+        self.avatar = avatarImageName(address: uuid) // uuid.walletAddressLastCharacterAvatar()
+    }
+    
+    
+    private func avatarImageName(address: String) -> String  {
+        if self.depth == 0 && self.isHD == true {
+            return "img-hd-wallet"
+        } else {
+            return address.walletAddressLastCharacterAvatar()
+        }
     }
 
 //    convenience public init(name: String, keystoreObject:Keystore) {
@@ -191,7 +200,7 @@ public final class Wallet: Object {
         key = keystoreObject
         keystorePath = ""
         self.name = name
-        self.avatar = uuid.walletAddressLastCharacterAvatar()
+        
         self.selectedIndex = 0
         self.isHD = isHD
         self.parentId = parentId
@@ -204,6 +213,8 @@ public final class Wallet: Object {
             self.pathIndex = 0
             self.depth = 0
         }
+        // avatar初始化要放在depth和isHD后面，对它们有依赖
+        self.avatar = avatarImageName(address: uuid) // uuid.walletAddressLastCharacterAvatar()
     }
 
     override public static func ignoredProperties() -> [String] {
