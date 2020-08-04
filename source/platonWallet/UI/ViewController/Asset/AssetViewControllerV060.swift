@@ -544,15 +544,19 @@ extension AssetViewControllerV060 {
         vc.chooseWalletCallback = {[weak self] (walletAddress) in
             guard let self = self else { return }
             guard let wallet = WalletService.sharedInstance.getWalletByAddress(address: walletAddress) else { return }
+            var addr = String()
             if wallet.parentId != nil && wallet.parentId?.count ?? 0 > 0 {
                 guard let parentWallet = WalletService.sharedInstance.getWallet(byUUID: wallet.parentId!) else { return }
 //                AssetVCSharedData.sharedData.currentWalletAddress = parentWallet.address
                 WalletService.sharedInstance.updateWalletSelectedIndex(parentWallet, selectedIndex: wallet.pathIndex)
-            } 
+                addr = parentWallet.address
+            }  else {
+                addr = walletAddress
+            }
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.06) {
                 //                WalletService.sharedInstance.refreshDB()
                 self.assetWalletsView.controller.updateWalletList()
-                AssetVCSharedData.sharedData.currentWalletAddress = walletAddress
+                AssetVCSharedData.sharedData.currentWalletAddress = addr
             }
         }
     }
