@@ -49,12 +49,15 @@ class WalletManagerDetailViewController: BaseViewController {
         if let parentWallet = WalletHelper.fetchParentWallet(from: wallet) {
             deleteBtn.isHidden = parentWallet.canBackupMnemonic
         } else {
-           deleteBtn.isHidden = wallet.canBackupMnemonic
+            deleteBtn.isHidden = wallet.canBackupMnemonic
         }
-
+        #warning("TODO")
+        #if DEBUG
+        deleteBtn.isHidden = false
+        #endif
         exportMnemonicContainer.isHidden = (self.wallet.keystoreMnemonic.count == 0)
     }
-
+    
     func setupUI() {
         super.leftNavigationTitle = wallet.name
         deleteBtn.style = .delete

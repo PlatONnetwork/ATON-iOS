@@ -26,10 +26,14 @@ class WalletServiceTests: XCTestCase {
     func testCreateWallet() {
         let expectaion = self.expectation(description: "testCreateWallet")
 
-        WalletService.sharedInstance.createWallet(name: "wallet-create-070", password: "123456", completion: { (wallet, error) in
+//        WalletService.sharedInstance.createWallet(name: "wallet-create-070", password: "123456", completion: { (wallet, error) in
+//            XCTAssertNotNil(wallet, "create wallet shoulde be not nil")
+//            expectaion.fulfill()
+//        })
+        WalletService.sharedInstance.createWallet(name: "wallet-create-070", password: "123456", physicalType: .normal) { (wallet, error) in
             XCTAssertNotNil(wallet, "create wallet shoulde be not nil")
             expectaion.fulfill()
-        })
+        }
 
         wait(for: [expectaion], timeout: 30.0)
     }
@@ -102,7 +106,7 @@ class WalletServiceTests: XCTestCase {
     }
     
     func testKeystoreInitWithPassword() {
-        let keystore = try? Keystore(password: "")
+        let keystore = try? Keystore(password: "", walletPhysicalType: .normal) // Keystore(password: "")
         XCTAssertNotNil(keystore, "keystore should be not nil")
     }
     
