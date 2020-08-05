@@ -41,19 +41,20 @@ struct AppConfig {
         static let DefaultNodeURL_MAINTEST = ServerURL.HOST.MAINTESTNET + "/rpc"
         static let DefaultNodeURL_MAIN = ServerURL.HOST.MAINNET + "/rpc"
 
-        #if UAT
+        #if ENVIROMENT_DEV // UAT
 //        test 模拟主网络 链id  =  100       接入地址：58.250.250.234:1000        内部接入地址： 192.168.9.190:1000
 //        dev 模拟测试网 链id  =  103       接入地址：58.250.250.234:1100        内部接入地址： 192.168.9.190:443
         static let defaultNodesURL = [
             (nodeURL: AppConfig.NodeURL.DefaultNodeURL_Alpha_V071, desc: "SettingsVC_nodeSet_defaultTestNetwork_test_des", chainId: AppConfig.ChainID.TEST1, isSelected: true, hrp: AppConfig.Hrp.LAT),
             (nodeURL: AppConfig.NodeURL.DefaultNodeURL_Alpha_V071_DEV, desc: "SettingsVC_nodeSet_defaultTestNetwork_develop_des", chainId: AppConfig.ChainID.DEV, isSelected: false, hrp: AppConfig.Hrp.LAX)
         ]
-        #elseif PARALLELNET
+        #elseif ENVIROMENT_UAT // PARALLELNET
         static let defaultNodesURL = [
             (nodeURL: DefaultNodeURL_UAT, desc: "SettingsVC_nodeSet_parallel_des", chainId: AppConfig.ChainID.VERSION_UATNET, isSelected: false, hrp: AppConfig.Hrp.LAX),
         ]
         #else
         static let defaultNodesURL = [
+            (nodeURL: DefaultNodeURL_MAIN, desc: "SettingsVC_nodeSet_Chuantuo_des", chainId: AppConfig.ChainID.VERSION_MAINNET, isSelected: false, hrp: AppConfig.Hrp.LAT),
             (nodeURL: DefaultNodeURL_MAINTEST, desc: "SettingsVC_nodeSet_NewBaleyworld_des", chainId: AppConfig.ChainID.VERSION_MAINTESTNET, isSelected: false, hrp: AppConfig.Hrp.LAX),
         ]
         #endif
@@ -130,14 +131,14 @@ struct AppConfig {
 
 extension String {
     var chainid: String {
-        #if UAT
+        #if ENVIROMENT_DEV // UAT
         switch self {
         case AppConfig.NodeURL.DefaultNodeURL_Alpha_V071_DEV:
             return AppConfig.ChainID.DEV
         default:
             return AppConfig.ChainID.TEST1
         }
-        #elseif PARALLELNET
+        #elseif ENVIROMENT_UAT // PARALLELNET
         return AppConfig.ChainID.VERSION_UATNET
         #else
         return AppConfig.ChainID.VERSION_MAINTESTNET

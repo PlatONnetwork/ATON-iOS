@@ -16,8 +16,8 @@ extension RealmHelper {
     }
 
     public static func migrationBelow0131(migration: Migration, schemaVersion:UInt64, oldSchemaVersion: UInt64) {
-        #if UAT
-        #elseif PARALLELNET
+        #if ENVIROMENT_DEV // UAT
+        #elseif ENVIROMENT_UAT // PARALLELNET
         #else
         migration.enumerateObjects(ofType: Wallet.className()) { (oldObject, newObject) in
             guard oldObject != nil, newObject != nil else { return }
@@ -32,8 +32,8 @@ extension RealmHelper {
     
     public static func migrationBelow0130(migration: Migration, schemaVersion:UInt64, oldSchemaVersion: UInt64) {
         migration.deleteData(forType: AddressInfo.className())
-        #if UAT
-        #elseif PARALLELNET
+        #if ENVIROMENT_DEV // UAT
+        #elseif ENVIROMENT_UAT // PARALLELNET
         #else
         migration.enumerateObjects(ofType: Wallet.className()) { (oldObject, newObject) in
             guard oldObject != nil, newObject != nil else { return }
@@ -49,8 +49,8 @@ extension RealmHelper {
     }
 
     public static func migrationBelow0120(migration: Migration, schemaVersion:UInt64, oldSchemaVersion: UInt64) {
-        #if UAT
-        #elseif PARALLELNET
+        #if ENVIROMENT_DEV // UAT
+        #elseif ENVIROMENT_UAT // PARALLELNET
         #else
         migration.enumerateObjects(ofType: Wallet.className()) { (oldObject, newObject) in
             guard oldObject != nil, newObject != nil else { return }
@@ -72,8 +72,8 @@ extension RealmHelper {
     }
 
     public static func migrationBelow080(migration: Migration, schemaVersion:UInt64, oldSchemaVersion: UInt64) {
-        #if UAT
-        #elseif PARALLELNET
+        #if ENVIROMENT_DEV // UAT
+        #elseif ENVIROMENT_UAT // PARALLELNET
         #else
         migration.enumerateObjects(ofType: Wallet.className()) { (oldObject, newObject) in
             guard oldObject != nil, newObject != nil else { return }
@@ -84,8 +84,8 @@ extension RealmHelper {
     }
 
     public static func migrationBelow0741(migration: Migration, schemaVersion:UInt64, oldSchemaVersion: UInt64) {
-        #if UAT
-        #elseif PARALLELNET
+        #if ENVIROMENT_DEV // UAT
+        #elseif ENVIROMENT_UAT // PARALLELNET
         #else
         migration.enumerateObjects(ofType: Wallet.className()) { (oldObject, newObject) in
             guard oldObject != nil, newObject != nil else { return }

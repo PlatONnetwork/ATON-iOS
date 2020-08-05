@@ -437,7 +437,8 @@
 "SettingsVC_nodeSet_defaultTestNetwork_test_des" = "测试环境网";
 "SettingsVC_nodeSet_defaultTestNetwork_develop_des" = "开发环境网";
 "SettingsVC_nodeSet_NewBaleyworld_des" = "新贝莱世界";
-"SettingsVC_nodeSet_parallel_des" = "平行网";
+"SettingsVC_nodeSet_Chuantuo_des" = "川陀";
+"SettingsVC_nodeSet_parallel_des" = "UAT";
 "SettingsVC_nodeSet_switchSuccess_tips" = "节点切换成功";
 "SettingsVC_nodeSet_switchFail_tips" = "节点切换失败";
 "SettingsVC_nodeSet_recovery_tips" = "节点连接失败，已还原修改";

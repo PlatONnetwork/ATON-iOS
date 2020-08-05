@@ -69,13 +69,13 @@ class SettingService {
 
     func getCentralizationHost() -> String {
         let chainId = SettingService.shareInstance.currentNodeChainId
-        #if UAT
+        #if ENVIROMENT_DEV // UAT
         if chainId == AppConfig.ChainID.TEST1 {
             return AppConfig.ServerURL.HOST.TESTNET
         } else {
             return AppConfig.ServerURL.HOST.DEVNET
         }
-        #elseif PARALLELNET
+        #elseif ENVIROMENT_UAT // PARALLELNET
         return AppConfig.ServerURL.HOST.UATNET
         #else
         if chainId == AppConfig.ChainID.VERSION_MAINTESTNET {
