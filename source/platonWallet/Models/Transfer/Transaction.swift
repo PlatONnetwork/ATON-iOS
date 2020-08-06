@@ -568,6 +568,9 @@ struct TransactionsStatusByHash: Decodable {
     var blockNumber: String?
 
     var txReceiptStatus: TransactionReceiptStatus?
+    var timestamp: String?
+    var actualTxCost: String?
+    
 
     enum CodingKeys: String, CodingKey {
         case hash

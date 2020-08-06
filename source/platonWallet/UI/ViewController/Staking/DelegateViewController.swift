@@ -561,12 +561,13 @@ extension DelegateViewController {
 
     func walletCellDidHandle(_ cell: WalletTableViewCell) {
         guard let wStyle = walletStyle else { return }
-        var currentAddress = wStyle.currentWallet.address.lowercased()
-        let vc = SelectWalletVC(walletAddress: currentAddress, enterMode: .fromChangeWallet)
+        var curAddress = wStyle.currentWallet.address.lowercased()
+        let vc = SelectWalletVC(walletAddress: curAddress, enterMode: .fromChangeWallet)
         vc.show(from: self)
         vc.chooseWalletCallback = {[weak self] (walletAddress) in
             guard let self = self else { return }
-            currentAddress = walletAddress
+            self.currentAddress = walletAddress
+            curAddress = walletAddress
             self.walletStyle!.currentWallet = WalletService.sharedInstance.getWalletByAddress(address: walletAddress)
             cell.setupCellData(for: self.walletStyle!.currentWallet)
             let indexPath = self.tableView.indexPath(for: cell)

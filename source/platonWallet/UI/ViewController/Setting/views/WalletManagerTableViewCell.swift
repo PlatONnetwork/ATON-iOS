@@ -47,6 +47,8 @@ class WalletManagerTableViewCell: UITableViewCell {
     
     var backupButtonClickCallback:((_ sender: UIButton) -> Void)?
 
+    @IBOutlet weak var walletNameCenterVerticalCons: NSLayoutConstraint!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
@@ -68,6 +70,13 @@ class WalletManagerTableViewCell: UITableViewCell {
 
         if let aptWallet = wallet as? Wallet {
             walletName.text = aptWallet.name
+            if aptWallet.isHD == true && aptWallet.depth == 0 {
+                address.isHidden = true
+                walletNameCenterVerticalCons.priority = UILayoutPriority(rawValue: 1000)
+            } else {
+                address.isHidden = false
+                walletNameCenterVerticalCons.priority = UILayoutPriority(rawValue: 250)
+            }
             address.text = aptWallet.address
             walletIcon.image = UIImage(named: aptWallet.avatar)?.circleImage()
 

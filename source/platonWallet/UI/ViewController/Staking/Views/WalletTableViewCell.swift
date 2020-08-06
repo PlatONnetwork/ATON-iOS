@@ -18,6 +18,7 @@ class WalletTableViewCell: UITableViewCell {
     public let bottomlineV = UIView()
     public let rightImageView = UIImageView()
     public let containerView = UIButton()
+    fileprivate let changeWalletImageView = UIImageView(image: UIImage(named: "homepage_wallet_change_b"))
 
     var cellDidHandle: ((_ cell: WalletTableViewCell) -> Void)?
 
@@ -117,6 +118,14 @@ class WalletTableViewCell: UITableViewCell {
         rightImageView.snp.makeConstraints { make in
             make.trailing.equalToSuperview().offset(-16)
             make.centerY.equalToSuperview()
+        }
+        
+        containerView.addSubview(changeWalletImageView)
+        changeWalletImageView.snp.makeConstraints { (make) in
+            make.width.equalTo(14)
+            make.height.equalTo(14)
+            make.centerY.equalToSuperview()
+            make.right.equalTo(-30)
         }
     }
 
