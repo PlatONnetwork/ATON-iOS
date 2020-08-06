@@ -18,7 +18,7 @@ class WalletTableViewCell: UITableViewCell {
     public let bottomlineV = UIView()
     public let rightImageView = UIImageView()
     public let containerView = UIButton()
-    fileprivate let changeWalletImageView = UIImageView(image: UIImage(named: "homepage_wallet_change_b"))
+    let changeWalletImageView = UIImageView(image: UIImage(named: "homepage_wallet_change_b"))
 
     var cellDidHandle: ((_ cell: WalletTableViewCell) -> Void)?
 

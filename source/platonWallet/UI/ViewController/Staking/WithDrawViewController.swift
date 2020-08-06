@@ -258,6 +258,7 @@ extension WithDrawViewController: UITableViewDelegate, UITableViewDataSource {
             return cell
         case .wallets(let walletStyle):
             let cell = tableView.dequeueReusableCell(withIdentifier: "WalletTableViewCell") as! WalletTableViewCell
+            cell.changeWalletImageView.isHidden = true
             cell.setupCellData(for: walletStyle.getWallet(for: indexPath.row), isWithdraw: true)
             cell.walletBackgroundView.isHidden = indexPath.row != 0
             cell.bottomlineV.isHidden = (indexPath.row == 0 || indexPath.row == walletStyle.cellCount - 1)
