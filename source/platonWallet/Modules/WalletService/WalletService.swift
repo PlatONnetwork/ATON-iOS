@@ -123,7 +123,7 @@ public final class WalletService {
                 }
             } else {
                 // 分层钱包
-                wallet = Wallet(uuid: keystore.generateHDParentAddress(), name: name, keystoreObject: keystore, isHD: true, pathIndex: 0, parentId: nil)
+                wallet = Wallet(uuid: keystore.generateRootWalletAddress(), name: name, keystoreObject: keystore, isHD: true, pathIndex: 0, parentId: nil)
                 var subWallets: [Wallet] = []
                 for i: Int in 0..<30 {
                     let subWalletItem = Wallet(uuid: keystore.generateHDSubAddress(index: i), name: "\(name)_\(i + 1)", keystoreObject: keystore, isHD: true, pathIndex: Int(i), parentId: wallet.uuid)
@@ -213,7 +213,7 @@ public final class WalletService {
             var wallet: Wallet!
             if physicalType == .normal {
                 // 普通钱包
-                wallet = Wallet(uuid: keystore.generateHDSubAddress(index: 0), name: name, keystoreObject: keystore, isHD: false, pathIndex: 0, parentId: nil)
+                wallet = Wallet(uuid: keystore.generateRootWalletAddress(), name: name, keystoreObject: keystore, isHD: false, pathIndex: 0, parentId: nil)
                 wallet.isBackup = true
                 DispatchQueue.main.async {
                     do {
@@ -228,7 +228,7 @@ public final class WalletService {
                 }
             } else {
                 // 分层钱包
-                wallet = Wallet(uuid: keystore.generateHDParentAddress(), name: name, keystoreObject: keystore, isHD: true, pathIndex: 0, parentId: nil)
+                wallet = Wallet(uuid: keystore.generateRootWalletAddress(), name: name, keystoreObject: keystore, isHD: true, pathIndex: 0, parentId: nil)
                 for i: Int in 0..<30 {
                     let subWalletItem = Wallet(uuid: keystore.generateHDSubAddress(index: i), name: "\(name)_\(i + 1)", keystoreObject: keystore, isHD: true, pathIndex: Int(i), parentId: wallet.uuid)
                     wallet.subWallets.append(subWalletItem)

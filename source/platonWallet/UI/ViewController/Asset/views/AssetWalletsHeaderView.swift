@@ -94,6 +94,7 @@ class AssetWalletsHeaderView: UIView {
         controller.onwalletsSelect = { [weak self] in
             guard let self = self else { return }
             let rowModels = self.viewModel.walletViewModels.value
+            self.collectionView.reloadData()
             for (i, v) in rowModels.enumerated() {
                 if let md = v as? AssetWalletViewModel {
                     if md.isWalletSelected == true {
@@ -107,7 +108,6 @@ class AssetWalletsHeaderView: UIView {
                     }
                 }
             }
-            self.collectionView.reloadData()
         }
 //        controller.onExchangeWalletToDisplay = {[weak self](walletAddress) in
 //            guard let self = self else { return }
