@@ -76,7 +76,7 @@ class WallletPersistence {
         }
     }
 
-    func updateWalletBackupStatus(wallet: Wallet, isBackup: Bool) {
+    func updateWalletBackupStatus(wallet: Wallet, isBackup: Bool, complete: (() -> Void)? = nil) {
         let predicate = NSPredicate(format: "primaryKeyIdentifier == %@", wallet.primaryKeyIdentifier)
         RealmWriteQueue.async {
             autoreleasepool(invoking: {
@@ -86,6 +86,9 @@ class WallletPersistence {
                     for wal in r {
                         wal.isBackup = isBackup
                     }
+                }
+                DispatchQueue.main.async {
+                    complete?()
                 }
             })
         }

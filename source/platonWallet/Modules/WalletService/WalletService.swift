@@ -544,9 +544,9 @@ public final class WalletService {
 
     }
 
-    public func afterBackupMnemonic(wallet: Wallet) {
+    public func afterBackupMnemonic(wallet: Wallet, complete: (() -> Void)? = nil) {
         wallet.isBackup = true
-        WallletPersistence.sharedInstance.updateWalletBackupStatus(wallet: wallet, isBackup: true)
+        WallletPersistence.sharedInstance.updateWalletBackupStatus(wallet: wallet, isBackup: true, complete: complete)
 
 //        guard var keystore = wallet.key else {
 //            return
