@@ -142,7 +142,7 @@ public struct Keystore {
     }
     
     /// 通过Keystore生成母地址
-    func generateHDParentAddress() -> String {
+    func generateRootWalletAddress() -> String {
         let publicKey = WalletUtil.publicKeyFromPrivateKey(generateRootPrivateKey(from: self.hdNode!))
         let originAddress = try! WalletUtil.addressFromPublicKey(publicKey, eip55: true)
         return originAddress
