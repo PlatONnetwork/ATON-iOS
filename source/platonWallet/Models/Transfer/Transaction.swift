@@ -577,6 +577,8 @@ struct TransactionsStatusByHash: Decodable {
         case status
         case totalReward
         case blockNumber
+        case timestamp
+        case actualTxCost
     }
 
     init(from decoder: Decoder) throws {
@@ -585,6 +587,8 @@ struct TransactionsStatusByHash: Decodable {
         status = try? container.decode(Int.self, forKey: .status)
         totalReward = try? container.decode(String.self, forKey: .totalReward)
         blockNumber = try? container.decode(String.self, forKey: .blockNumber)
+        timestamp = try? container.decode(String.self, forKey: .timestamp)
+        actualTxCost = try? container.decode(String.self, forKey: .actualTxCost)
 
         guard let st = status else { return }
         switch st {

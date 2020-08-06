@@ -56,10 +56,17 @@ class TransactionDetailViewController: BaseViewController {
         DispatchQueue.main.async { [weak self] in
             currentTx.direction = currentTx.getTransactionDirection(self?.txSendAddress)
             currentTx.txReceiptStatus = status.rawValue
+            currentTx.actualTxCost = txStatus.actualTxCost
+            if let timestamp = txStatus.timestamp, let timestampInt = Int(timestamp) {
+                currentTx.createTime = timestampInt
+            }
+            if let actualTxCost = txStatus.actualTxCost {
+                currentTx.actualTxCost = actualTxCost
+            }
             if let totalRewardBInt = BigUInt(txStatus.totalReward ?? "0"), totalRewardBInt > BigUInt.zero, currentTx.txReceiptStatus == TransactionReceiptStatus.sucess.rawValue {
                 currentTx.totalReward = txStatus.totalReward
             }
-
+            
             if let tableHeaderView = self?.tableView.tableHeaderView as? TransactionDetailHeaderView {
                 tableHeaderView.updateContent(tx: currentTx)
                 tableHeaderView.frame.size = tableHeaderView.systemLayoutSizeFitting(UIView.layoutFittingCompressedSize)
