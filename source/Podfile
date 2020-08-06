@@ -42,11 +42,11 @@ def target_pods
     pod 'UMCShare/Social/Twitter'
 
     pod 'SwiftMonkeyPaws'
-    pod 'OHHTTPStubs/Swift', :configurations => ['Debug']
     pod 'GzipSwift'
     pod 'ZXingObjC'
+    pod 'OHHTTPStubs/Swift', :configurations => ['Debug','Debug.DEV','Debug.UAT']
     # Reveal
-    pod 'Reveal-SDK', '~> 24.0' , :configurations => ['Debug']
+    pod 'Reveal-SDK', '~> 24.0' , :configurations => ['Debug','Debug.DEV','Debug.UAT']
 end
 
 target 'platonWalletUAT' do

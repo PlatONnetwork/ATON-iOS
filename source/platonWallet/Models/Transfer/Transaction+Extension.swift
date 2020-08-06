@@ -315,7 +315,7 @@ extension Transaction {
         let localZone = NSTimeZone.local
         format.timeZone = localZone
         format.locale = NSLocale.current
-        format.dateFormat = "#yyyy/MMdd HH:mm:ss"
+        format.dateFormat = "#yyyy/MM/dd HH:mm:ss"
         let strDate = format.string(from: date)
         return strDate
     }
@@ -326,6 +326,6 @@ extension Transaction {
     }
 
     var recordWalletAddress: String? {
-        return from != nil ? "(" + (from?.addressForDisplayShortBech32() ?? "--") + ")" : ""
+        return from != nil ? "(" + (from?.addressForDisplayShortBech32_6bit() ?? "--") + ")" : ""
     }
 }

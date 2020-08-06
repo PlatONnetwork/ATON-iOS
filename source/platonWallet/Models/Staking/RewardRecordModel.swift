@@ -62,7 +62,8 @@ extension RewardModel {
     }
 
     var walletAddress: String? {
-        return "(" + address.addressForDisplayLeading4Trailing8Bech32() + ")"
+//        return "(" + address.addressForDisplayLeading4Trailing8Bech32() + ")"
+        return "(" + address.addressForDisplayShortBech32_6bit() + ")"
     }
 
     var amountForDisplay: String? {

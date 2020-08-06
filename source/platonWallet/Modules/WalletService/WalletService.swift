@@ -435,6 +435,8 @@ public final class WalletService {
 //            return
 //        }
 
+        let isHD = wallet.isHD
+        let pathIndex = wallet.pathIndex
         walletQueue.async {
             var privateKeyData: Data!
             guard let tmpPrivateKeyData = try? keystore.decrypt(password: password) else {
@@ -443,12 +445,12 @@ public final class WalletService {
                 }
                 return
             }
-            if wallet.isHD == true {
+            if isHD == true {
                 let mnemonic = try! keystore.decrypt(encryptedMnemonic: parentWallet!.mnemonic, password: password)
                 let seed = WalletUtil.seedFromMnemonic(mnemonic, passphrase: "")
                 let hdNode = WalletUtil.hdNodeFromSeed(seed)
                 keystore.hdNode = hdNode
-                privateKeyData = keystore.generateHDSubPrivateKey(index: wallet.pathIndex)
+                privateKeyData = keystore.generateHDSubPrivateKey(index: pathIndex)
             } else {
                 privateKeyData = tmpPrivateKeyData
             }

@@ -30,7 +30,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
     var toAddress: String?
     var gas: RemoteGas?
 
-    var gasPrice: BigUInt? {
+    private var gasPrice: BigUInt? {
         get {
             //gas prise: 1gwei ~ 10gwei
             let defaultGasPrice = gas?.gasPriceBInt ?? TransactionService.service.defaultGasPrice
@@ -789,9 +789,10 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
     }
 
     func fetchGasData(completion: ((Bool) -> Void)? = nil) {
-        guard let address = AssetVCSharedData.sharedData.currentWalletAddress else { return }
+//        guard let address = AssetVCSharedData.sharedData.currentWalletAddress else { return }
+        guard let wallet = AssetVCSharedData.sharedData.selectedWallet as? Wallet else { return }
         showLoadingHUD()
-        TransactionService.service.getContractGas(from: address, txType: TxType.transfer) { [weak self] (result, remoteGas) in
+        TransactionService.service.getContractGas(from: wallet.address, txType: TxType.transfer) { [weak self] (result, remoteGas) in
             self?.hideLoadingHUD()
             switch result {
             case .success:

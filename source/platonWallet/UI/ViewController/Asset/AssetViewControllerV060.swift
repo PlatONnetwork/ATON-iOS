@@ -375,10 +375,17 @@ extension AssetViewControllerV060 {
     }
 
     @objc func onBackup() {
-        guard let wallet = AssetVCSharedData.sharedData.selectedWallet as? Wallet, wallet.canBackupMnemonic else {
+        guard let wallet = AssetVCSharedData.sharedData.selectedWallet as? Wallet else {
             return
         }
-        self.showWalletBackup(wallet: wallet)
+        if wallet.depth == 0 && wallet.canBackupMnemonic == true {
+            self.showWalletBackup(wallet: WalletHelper.fetchFinalSelectedWallet(from: wallet))
+            return
+        } else if wallet.depth == 1 {
+            if let parentWallet = WalletHelper.fetchParentWallet(from: wallet), parentWallet.canBackupMnemonic == true {
+                self.showWalletBackup(wallet: parentWallet)
+            }
+        }
     }
 
     // MARK: - Login
