@@ -876,7 +876,7 @@ extension AssetSendViewControllerV060 {
 
     func totalFee() -> BigUInt {
         guard (AssetVCSharedData.sharedData.selectedWallet as? Wallet) != nil else {
-            return BigUInt("0")!
+            return BigUInt("0")
         }
         return (self.gasPrice?.multiplied(by: self.useGasLimit))!
     }

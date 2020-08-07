@@ -229,6 +229,7 @@ public final class WalletService {
             } else {
                 // 分层钱包
                 wallet = Wallet(uuid: keystore.generateRootWalletAddress(), name: name, keystoreObject: keystore, isHD: true, pathIndex: 0, parentId: nil)
+                wallet.isBackup = true
                 for i: Int in 0..<30 {
                     let subWalletItem = Wallet(uuid: keystore.generateHDSubAddress(index: i), name: "\(name)_\(i + 1)", keystoreObject: keystore, isHD: true, pathIndex: Int(i), parentId: wallet.uuid)
                     wallet.subWallets.append(subWalletItem)

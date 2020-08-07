@@ -54,21 +54,8 @@ class AssetWalletsHeaderView: UIView {
     func initBinding() {
         viewModel.walletViewModels.addObserver { [weak self] (_) in
             guard let self = self else { return }
-            let rowModels = self.viewModel.walletViewModels.value
             self.collectionView.reloadData()
-            for (i, v) in rowModels.enumerated() {
-                if let md = v as? AssetWalletViewModel {
-                    if md.isWalletSelected == true {
-                        self.layoutIfNeeded()
-                        let indexPath = IndexPath(item: i, section: 0)
-//                        self.collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
-                        guard let attr = self.collectionView.collectionViewLayout.layoutAttributesForItem(at: indexPath) else { return }
-                        let rect = CGRect(x: attr.frame.origin.x - 20, y: attr.frame.origin.y, width: self.collectionView.frame.width, height: attr.frame.height)
-                        self.collectionView.scrollRectToVisible(rect, animated: true)
-                        break
-                    }
-                }
-            }
+            self.scrollToSelectedWallet()
         }
 
         viewModel.assetIsHide.addObserver { [weak self] (isHidden) in
@@ -93,26 +80,31 @@ class AssetWalletsHeaderView: UIView {
         }
         controller.onwalletsSelect = { [weak self] in
             guard let self = self else { return }
-            let rowModels = self.viewModel.walletViewModels.value
             self.collectionView.reloadData()
-            for (i, v) in rowModels.enumerated() {
-                if let md = v as? AssetWalletViewModel {
-                    if md.isWalletSelected == true {
-                        self.layoutIfNeeded()
-                        let indexPath = IndexPath(item: i, section: 0)
-//                        self.collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
-                        guard let attr = self.collectionView.collectionViewLayout.layoutAttributesForItem(at: indexPath) else { return }
-                        let rect = CGRect(x: attr.frame.origin.x - 20, y: attr.frame.origin.y, width: self.collectionView.frame.width, height: attr.frame.height)
-                        self.collectionView.scrollRectToVisible(rect, animated: true)
-                        break
-                    }
-                }
-            }
+            self.scrollToSelectedWallet()
         }
 //        controller.onExchangeWalletToDisplay = {[weak self](walletAddress) in
 //            guard let self = self else { return }
 //            
 //        }
+    }
+    
+    /// 滚动到选中的Wallet
+    func scrollToSelectedWallet() {
+        let rowModels = self.viewModel.walletViewModels.value
+        for (i, v) in rowModels.enumerated() {
+            if let md = v as? AssetWalletViewModel {
+                if md.isWalletSelected == true {
+                    self.layoutIfNeeded()
+                    let indexPath = IndexPath(item: i, section: 0)
+                    // self.collectionView.scrollToItem(at: indexPath, at: .centeredHorizontally, animated: true)
+                    guard let attr = self.collectionView.collectionViewLayout.layoutAttributesForItem(at: indexPath) else { return }
+                    let rect = CGRect(x: attr.frame.origin.x - 20, y: attr.frame.origin.y, width: self.collectionView.frame.width, height: attr.frame.height)
+                    self.collectionView.scrollRectToVisible(rect, animated: true)
+                    break
+                }
+            }
+        }
     }
 
     func initView() {
