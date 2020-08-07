@@ -632,8 +632,8 @@ public final class WalletService {
         WallletPersistence.sharedInstance.updateWalletLockedBalance(wallet: wallet, value: value)
     }
     
-    public func updateWalletSelectedIndex(_ wallet: Wallet, selectedIndex: Int) {
-        WallletPersistence.sharedInstance.updateWalletSelectedIndex(wallet: wallet, selectedIndex: selectedIndex)
+    public func updateWalletSelectedIndex(_ wallet: Wallet, selectedIndex: Int, complete: (() -> Void)? = nil) {
+        WallletPersistence.sharedInstance.updateWalletSelectedIndex(wallet: wallet, selectedIndex: selectedIndex, complete: complete)
     }
 
     /// Generates a unique file name for an address.

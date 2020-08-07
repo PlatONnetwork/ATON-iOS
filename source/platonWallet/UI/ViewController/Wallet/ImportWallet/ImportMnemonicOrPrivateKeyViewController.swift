@@ -203,6 +203,9 @@ class ImportMnemonicOrPrivateKeyViewController: BaseImportWalletViewController {
         showMessage(text: Localized("importWalletVC_success_tips"))
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3, execute: {
             (UIApplication.shared.delegate as? AppDelegate)?.gotoMainTab()
+            if let addr = wallet?.address {
+                AssetViewControllerV060.getInstance()?.reloadCurrentWallet(addr: addr)
+            }
         })
     }
 

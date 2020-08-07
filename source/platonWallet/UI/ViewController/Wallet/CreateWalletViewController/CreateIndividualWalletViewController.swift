@@ -120,6 +120,7 @@ class CreateIndividualWalletViewController: BaseViewController,StartBackupMnemon
             self?.wallet = wallet
             let successVC = CreateWalletSuccessViewController()
             successVC.delegate = self
+            successVC.wallet = wallet
             self?.navigationController?.pushViewController(successVC, animated: true)
         }
     }

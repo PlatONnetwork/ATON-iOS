@@ -159,9 +159,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window?.rootViewController = nav
     }
 
-    func gotoWalletCreateSuccessVC() {
-        self.window?.rootViewController = BaseNavigationController(rootViewController: CreateWalletSuccessViewController())
-    }
+//    func gotoWalletCreateSuccessVC() {
+//        self.window?.rootViewController = BaseNavigationController(rootViewController: CreateWalletSuccessViewController())
+//    }
 
     func localAuthStateSwitch(_ open:Bool) {
         UserDefaults.standard.set(open, forKey: LocalKeys.isLocalAuthenticationOpen)
