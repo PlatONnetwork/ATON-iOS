@@ -17,6 +17,7 @@ class CreateWalletSuccessViewController: BaseViewController {
 
     @IBOutlet weak var nextButton: PButton!
     weak var delegate: StartBackupMnemonicDelegate?
+    var wallet: Wallet?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,11 +46,18 @@ class CreateWalletSuccessViewController: BaseViewController {
     }
 
     override func back() {
-        (UIApplication.shared.delegate as? AppDelegate)?.gotoMainTab()
+        backToMain()
     }
 
     @IBAction func onSkip(_ sender: Any) {
+        backToMain()
+    }
+    
+    func backToMain() {
         (UIApplication.shared.delegate as? AppDelegate)?.gotoMainTab()
+        if let addr = wallet?.address {
+            AssetViewControllerV060.getInstance()?.reloadCurrentWallet(addr: addr)
+        }
     }
 
 }

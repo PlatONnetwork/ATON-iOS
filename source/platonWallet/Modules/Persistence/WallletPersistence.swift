@@ -145,7 +145,7 @@ class WallletPersistence {
     }
     
     /// 更新钱包选中索引值（操作对象通常是HD母钱包）
-    func updateWalletSelectedIndex(wallet: Wallet, selectedIndex: Int) {
+    func updateWalletSelectedIndex(wallet: Wallet, selectedIndex: Int, complete: (() -> Void)? = nil) {
         let predicate = NSPredicate(format: "primaryKeyIdentifier == %@", wallet.primaryKeyIdentifier)
         RealmWriteQueue.async {
             autoreleasepool(invoking: {
@@ -156,6 +156,9 @@ class WallletPersistence {
                     for wal in r {
                         wal.selectedIndex = selectedIndex
                     }
+                }
+                DispatchQueue.main.async {
+                    complete?()
                 }
             })
         }

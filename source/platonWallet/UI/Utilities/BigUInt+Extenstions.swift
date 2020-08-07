@@ -14,7 +14,7 @@ extension BigUInt {
 
     static func safeInit(str: String?) -> BigUInt {
         guard str != nil else {
-            return BigUInt("0")!
+            return BigUInt("0")
         }
 
         var conditionVar = str
@@ -22,11 +22,11 @@ extension BigUInt {
             if let index = conditionVar!.lastIndex(of: ".") {
                 conditionVar = String(conditionVar![..<index])
             } else {
-                return BigUInt(conditionVar ?? "0") ?? BigUInt("0")!
+                return BigUInt(conditionVar ?? "0") ?? BigUInt("0")
             }
         }
 
-        return BigUInt("0")!
+        return BigUInt("0")
     }
 
     static func mutiply(a : String, by : String) -> BigUInt? {
@@ -200,7 +200,7 @@ extension BigUInt {
     }
 
     func fixIntrinsicGasLowWithDouble() -> BigUInt {
-        return self.multiplied(by: BigUInt("4")!)
+        return self.multiplied(by: BigUInt("4"))
     }
 
     func gasMutiply(_ times: Int) -> BigUInt {

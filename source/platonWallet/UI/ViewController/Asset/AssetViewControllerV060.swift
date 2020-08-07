@@ -94,7 +94,7 @@ class AssetViewControllerV060: UIViewController, PopupMenuTableDelegate {
         // 先获取一次gasprice
         TransactionService.service.getGasPrice()
 
-        initData()
+//        initData()
         initUI()
         initBinding()
         shouldUpdateWalletStatus()
@@ -555,17 +555,22 @@ extension AssetViewControllerV060 {
             if wallet.parentId != nil && wallet.parentId?.count ?? 0 > 0 {
                 guard let parentWallet = WalletService.sharedInstance.getWallet(byUUID: wallet.parentId!) else { return }
 //                AssetVCSharedData.sharedData.currentWalletAddress = parentWallet.address
-                WalletService.sharedInstance.updateWalletSelectedIndex(parentWallet, selectedIndex: wallet.pathIndex)
-                addr = parentWallet.address
+                WalletService.sharedInstance.updateWalletSelectedIndex(parentWallet, selectedIndex: wallet.pathIndex) {[weak self] in
+                    guard let self = self else { return }
+                    addr = parentWallet.address
+                    self.reloadCurrentWallet(addr: addr)
+                }
             }  else {
                 addr = walletAddress
-            }
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.06) {
-                //                WalletService.sharedInstance.refreshDB()
-                self.assetWalletsView.controller.updateWalletList()
-                AssetVCSharedData.sharedData.currentWalletAddress = addr
+                self.reloadCurrentWallet(addr: addr)
             }
         }
+    }
+    
+    @objc func reloadCurrentWallet(addr: String) {
+        // WalletService.sharedInstance.refreshDB()
+        self.assetWalletsView.controller.updateWalletList()
+        AssetVCSharedData.sharedData.currentWalletAddress = addr
     }
     
     func chooseIndividualWallet() {

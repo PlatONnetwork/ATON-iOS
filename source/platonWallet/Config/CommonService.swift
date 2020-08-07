@@ -213,7 +213,7 @@ struct CommonService {
         return (valid, message)
     }
 
-    static func checkStakingAmoutInput(inputVON: BigUInt?, balance: BigUInt, minLimit: BigUInt? = nil, maxLimit: BigUInt? = nil, fee: BigUInt? = BigUInt("0")!, type: SendInputTableViewCellType?, isLockAmount: Bool? = false) -> (Bool, String) {
+    static func checkStakingAmoutInput(inputVON: BigUInt?, balance: BigUInt, minLimit: BigUInt? = nil, maxLimit: BigUInt? = nil, fee: BigUInt? = BigUInt("0"), type: SendInputTableViewCellType?, isLockAmount: Bool? = false) -> (Bool, String) {
 
         // if input empty, not regular
         guard let amountVON = inputVON else {
@@ -232,7 +232,7 @@ struct CommonService {
         return (true, "")
     }
 
-    static func checkStakingAmoutInput(text: String, balance: BigUInt, minLimit: BigUInt? = nil, maxLimit: BigUInt? = nil, fee: BigUInt? = BigUInt("0")!, type: SendInputTableViewCellType?, isLockAmount: Bool? = false) -> (Bool, String) {
+    static func checkStakingAmoutInput(text: String, balance: BigUInt, minLimit: BigUInt? = nil, maxLimit: BigUInt? = nil, fee: BigUInt? = BigUInt("0"), type: SendInputTableViewCellType?, isLockAmount: Bool? = false) -> (Bool, String) {
 
         // if input empty, not regular
         guard text.count > 0 else {
