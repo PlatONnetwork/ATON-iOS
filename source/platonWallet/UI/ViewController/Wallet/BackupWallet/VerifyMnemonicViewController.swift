@@ -190,8 +190,10 @@ class VerifyMnemonicViewController: BaseViewController,MnemonicGridViewDelegate 
             }
 
             WalletService.sharedInstance.afterBackupMnemonic(wallet: wallet) {
-                NotificationCenter.default.post(name: Notification.Name.ATON.updateWalletList, object: nil)
-                AssetVCSharedData.sharedData.active()
+                DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
+                    NotificationCenter.default.post(name: Notification.Name.ATON.updateWalletList, object: nil)
+                    AssetVCSharedData.sharedData.active()
+                }
             }
         } else {
             showErrorAlert()
