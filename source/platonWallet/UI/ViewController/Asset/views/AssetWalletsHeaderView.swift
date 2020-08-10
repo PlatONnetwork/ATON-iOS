@@ -140,7 +140,7 @@ class AssetWalletsHeaderView: UIView {
         }
 
         menuButton.addTarget(self, action: #selector(onMenu), for: .touchUpInside)
-        menuButton.setImage(UIImage(named: "1.icon_add"), for: .normal)
+        menuButton.setImage(UIImage(named: "1.icon_more"), for: .normal)
         contentView.addSubview(menuButton)
         menuButton.snp.makeConstraints { make in
             make.centerY.equalTo(walletNameLabel.snp.centerY)

@@ -69,35 +69,6 @@ public final class WalletService {
         return nil
     }
 
-    /// Create Wallet
-    ///
-    /// - Parameters:
-    ///   - name: <#name description#>
-    ///   - password: <#password description#>
-    ///   - completion: <#completion description#>
-//    public func createWallet(name:String, password: String, completion: @escaping (Wallet?, Error?) -> Void) {
-//
-//        walletQueue.async {
-//
-//            guard let keystore = try? Keystore(password: password) else {
-//                DispatchQueue.main.sync {
-//                    completion(nil, Error.keystoreGeneFailed)
-//                }
-//                return
-//            }
-//            let wallet = Wallet(name: name, keystoreObject: keystore)
-//
-//            DispatchQueue.main.async {
-//                do {
-//                    try self.saveToDB(wallet: wallet)
-//                } catch {
-//                    completion(nil, Error.keystoreFileSaveFailed)
-//                }
-//                completion(wallet, nil)
-//            }
-//        }
-//    }
-
     /// 创建钱包（创建普通类型和HD类型）
     public func createWallet(name:String, password: String, physicalType: WalletPhysicalType, completion: @escaping (Wallet?, Error?) -> Void) {
         walletQueue.async {
@@ -192,23 +163,6 @@ public final class WalletService {
                 return
             }
 
-//            let wallet = Wallet(name: walletName, keystoreObject: keystore)
-//            wallet.isBackup = true
-
-//            DispatchQueue.main.async {
-//                do {
-//                    try self.saveToDB(wallet: wallet)
-//                } catch Error.walletAlreadyExists {
-//                    completion(nil, Error.walletAlreadyExists)
-//                    return
-//                } catch {
-//                    completion(nil, Error.keystoreFileSaveFailed)
-//                    return
-//                }
-//
-//                completion(wallet, nil)
-//            }
-            
             let name = walletName
             var wallet: Wallet!
             if physicalType == .normal {
@@ -256,27 +210,20 @@ public final class WalletService {
     /// - Returns: <#return value description#>
     /// - Throws: <#throws value description#>
     public func `import`(privateKey: String, walletName: String, walletPassword: String, completion: @escaping (Wallet?, Error?) -> Void) {
-
         var privateK = privateKey
-
         if privateK.hasPrefix("0x") {
             privateK = String(privateK.dropFirst(2))
         }
-
         guard WalletUtil.isValidPrivateKeyHexStr(privateK) else {
             completion(nil, Error.invalidKey)
             return
         }
-
         let privateKeyData = Data(bytes: privateK.hexToBytes())
-
         guard WalletUtil.isValidPrivateKeyData(privateKeyData) else {
             completion(nil, Error.invalidKey)
             return
         }
-
         walletQueue.async {
-
             guard let keystore = try? Keystore(password: walletPassword, privateKey: privateKeyData) else {
                 DispatchQueue.main.async {
                     completion(nil, Error.keystoreGeneFailed)
@@ -286,9 +233,7 @@ public final class WalletService {
             /// 只能私钥导入普通钱包
             let uuid = try! AddrCoder.shared.decodeHex(addr: keystore.address.mainnet)
             let wallet = Wallet(uuid: uuid, name: walletName, keystoreObject: keystore, isHD: false, pathIndex: 0, parentId: nil)
-
             DispatchQueue.main.async {
-
                 do {
                     try self.saveToDB(wallet: wallet)
                 } catch Error.walletAlreadyExists {
@@ -298,12 +243,9 @@ public final class WalletService {
                     completion(nil, Error.keystoreFileSaveFailed)
                     return
                 }
-
                 completion(wallet, nil)
             }
-
         }
-
     }
 
     /// importWalletFromKeystoreFile
@@ -315,15 +257,11 @@ public final class WalletService {
     /// - Returns: <#return value description#>
     /// - Throws: <#throws value description#>
     public func `import`(keystore: String, walletName: String, password: String, completion: @escaping (Wallet?, Error?) -> Void) {
-
         guard let keystoreObj = try? JSONDecoder().decode(Keystore.self, from: keystore.data(using: .utf8)!) else {
-
             completion(nil, Error.invalidKeystore)
             return
         }
-
         walletQueue.async {
-
             let uuid = try! AddrCoder.shared.decodeHex(addr: keystoreObj.address.mainnet)
             let wallet = Wallet(uuid: uuid, name: walletName, keystoreObject: keystoreObj, isHD: false, pathIndex: 0, parentId: nil)
 
@@ -332,7 +270,6 @@ public final class WalletService {
                     completion(nil, error)
                     return
                 }
-
                 if keystoreObj.crypto.kdf != .SCRYPT {
                     let privateKeyData = Data(bytes: privateKey!.hexToBytes())
 
@@ -340,7 +277,6 @@ public final class WalletService {
                         completion(nil, Error.invalidKey)
                         return
                     }
-
                     guard let ks = try? Keystore(password: password, privateKey: privateKeyData) else {
                         DispatchQueue.main.async {
                             completion(nil, Error.keystoreGeneFailed)
@@ -349,9 +285,7 @@ public final class WalletService {
                     }
                     wallet.key = ks
                 }
-
                 wallet.updateInfoFromPrivateKey(privateKey!)
-
                 do {
                     try self.saveToDB(wallet: wallet)
 
@@ -362,7 +296,6 @@ public final class WalletService {
                     completion(nil, Error.keystoreFileSaveFailed)
                     return
                 }
-
                 completion(wallet, nil)
 
             })
@@ -370,39 +303,6 @@ public final class WalletService {
         }
 
     }
-
-    /// exportPrivateKey
-//    public func exportPrivateKey(wallet: Wallet, password: String, completion: @escaping (String?, Error?) -> Void) {
-//
-//        guard let keystore = wallet.key else {
-//            completion(nil, Error.invalidWallet)
-//            return
-//        }
-//
-//        walletQueue.async {
-//
-//            guard let privateKeyData = try? keystore.decrypt(password: password) else {
-//
-//                DispatchQueue.main.async {
-//                    completion(nil, Error.invalidWalletPassword)
-//                }
-//                return
-//            }
-//
-//            guard WalletUtil.isValidPrivateKeyData(privateKeyData) else {
-//                completion(nil, Error.invalidKey)
-//                return
-//            }
-//
-//            DispatchQueue.main.async {
-//                let res = privateKeyData.toHexString()
-//                print("🔑privateKey:\(res)")
-//                completion(res, nil)
-//            }
-//
-//        }
-//
-//    }
     
     /// exportPrivateKey
     public func exportPrivateKey(wallet: Wallet, password: String, completion: @escaping (String?, Error?) -> Void) {
@@ -414,28 +314,12 @@ public final class WalletService {
         } else if wallet.depth == 1 && wallet.isHD == true {
             // HD子钱包
             parentWallet = WalletService.sharedInstance.getWallet(byUUID: wallet.parentId!)
-//            let seed = WalletUtil.seedFromMnemonic(parentWallet!.mnemonic, passphrase: "")
-//            let hdNode = WalletUtil.hdNodeFromSeed(seed)
-//            var parentKeystore = parentWallet!.key!
-//            parentKeystore.hdNode = hdNode
-//            let privateKeyData = parentKeystore.generateHDSubPrivateKey(index: wallet.pathIndex)
-//            guard let key = try? Keystore(password: password, privateKey: privateKeyData) else {
-//                DispatchQueue.main.async {
-//                    completion(nil, Error.keystoreGeneFailed)
-//                }
-//                return
-//            }
             keystore = parentWallet!.key!
         } else {
             // HD母钱包，不能导出私钥
             completion(nil, Error.invalidWallet)
             return
         }
-//        guard let keystore = wallet.key else {
-//            completion(nil, Error.invalidWallet)
-//            return
-//        }
-
         let isHD = wallet.isHD
         let pathIndex = wallet.pathIndex
         walletQueue.async {
@@ -499,26 +383,12 @@ public final class WalletService {
         } else {
             return (nil, Error.invalidWallet)
         }
-
-//        var privateData: Data
-//        do {
-//            privateData = try keystore.decrypt(password: password)
-//        } catch  {
-//            throw Error.invalidWalletPassword
-//        }
-//        
-//        guard WalletUtil.isValidPrivateKeyData(privateData) else {
-//            throw Error.invalidKey
-//        }
         let tempPublicKey = keystore.publicKey
         keystore.publicKey = nil
-//        let tempMnemonic = keystore.mnemonic
-//        keystore.mnemonic = nil
         guard let keystoreJson = String(bytes: try! JSONEncoder().encode(keystore), encoding: .utf8) else {
             return (nil, Error.invalidWallet)
         }
         keystore.publicKey = tempPublicKey
-//        keystore.mnemonic = tempMnemonic
         return (keystoreJson, nil)
     }
 
@@ -540,9 +410,7 @@ public final class WalletService {
             DispatchQueue.main.async {
                 completion(mnemonic, nil)
             }
-
         }
-
     }
 
     public func afterBackupMnemonic(wallet: Wallet, complete: (() -> Void)? = nil) {
@@ -673,43 +541,6 @@ public final class WalletService {
 
         wallets.append(wallet)
     }
-
-    /*
-    private func saveToDB(walletArray: [Wallet]) throws {
-        for (_, wallet) in walletArray.enumerated() {
-
-//            let sameUuidWallet = wallets.first { (item) -> Bool in
-//                (item.uuid == wallet.uuid) || (item.address.lowercased() == wallet.address.lowercased())
-//            }
-//
-//            if sameUuidWallet != nil {
-//                throw Error.walletAlreadyExists
-//            }
-
-            if wallet.parentId == nil {
-                guard let keystore = wallet.key else {
-                    throw Error.invalidWallet
-                }
-                let fileName = generateFileName(identifier: "\(keystore.address).json")
-                let fileURL = keystoreFolderURL.appendingPathComponent(fileName)
-                let json = try JSONEncoder().encode(keystore)
-                do {
-                    try json.write(to: fileURL, options: [.atomicWrite])
-                } catch {
-                    throw WalletService.Error.keystoreFileSaveFailed
-                }
-                wallet.keystorePath = fileName
-                wallet.mnemonic = keystore.mnemonic ?? ""
-            }
-//            WallletPersistence.sharedInstance.save(wallet: wallet)
-            wallets.removeAll { (item) -> Bool in
-                item.uuid == wallet.uuid
-            }
-            wallets.append(wallet)
-        }
-        WallletPersistence.sharedInstance.save(wallets: walletArray)
-    }
- */
 
     private func saveToDB(wallet: Wallet, subWallets: [Wallet]? = nil) throws {
 

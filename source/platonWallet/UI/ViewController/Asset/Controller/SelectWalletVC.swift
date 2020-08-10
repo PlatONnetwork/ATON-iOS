@@ -67,8 +67,12 @@ class SelectWalletVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         view.backgroundColor = UIColor.black.withAlphaComponent(0.65)
         configData()
         configContent()
+        self.view.layoutIfNeeded()
         if let indexPath = getInitialSectedIndex() {
-            tableView.scrollToRow(at: indexPath, at: .top, animated: false)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                // 延时保证布局准确的情况进行定位
+                self.tableView.scrollToRow(at: indexPath, at: .top, animated: false)
+            }
         }
     }
 
@@ -79,6 +83,10 @@ class SelectWalletVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.showContent()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
     }
 
     func show(from viewController: UIViewController) {
@@ -199,15 +207,18 @@ class SelectWalletVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
 
     func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        if section == sectionInfos.count - 1 {
+            return 16
+        }
         return CGFloat.leastNormalMagnitude
     }
     
-    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 72
-    }
+//    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+//        return 72
+//    }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return UITableView.automaticDimension
+        return 72 // UITableView.automaticDimension
     }
 
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
