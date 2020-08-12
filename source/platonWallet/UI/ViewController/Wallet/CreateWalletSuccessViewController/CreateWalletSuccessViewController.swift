@@ -43,6 +43,9 @@ class CreateWalletSuccessViewController: BaseViewController {
 
     @IBAction func startBackup(_ sender: Any) {
         delegate?.startBackup()
+        if let addr = wallet?.address {
+            AssetViewControllerV060.getInstance()?.reloadCurrentWallet(addr: addr)
+        }
     }
 
     override func back() {

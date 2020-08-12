@@ -73,7 +73,7 @@ class AssetController {
     }
 
     func initialTimers() {
-        let pollingTimer = Timer.scheduledTimer(timeInterval: TimeInterval(AppConfig.TimerSetting.balancePollingTimerInterval), target: self, selector: #selector(pollingGetBalance), userInfo: nil, repeats: true)
+        _ = Timer.scheduledTimer(timeInterval: TimeInterval(AppConfig.TimerSetting.balancePollingTimerInterval), target: self, selector: #selector(pollingGetBalance), userInfo: nil, repeats: true)
     }
 
     deinit {
@@ -153,9 +153,16 @@ class AssetController {
         AssetService.sharedInstace.fetchWalletBalanceForV7 { [weak self] (result, _) in
             switch result {
             case .success:
-                self?.headerController.viewModel.totalBalance.value = AssetService.sharedInstace.totalFreeBalance
-                self?.sectionController.viewModel.freeBalance.value = self?.sectionController.viewModel.wallet.value?.freeBalance ?? BigUInt.zero
-                self?.sectionController.viewModel.lockBalance.value = self?.sectionController.viewModel.wallet.value?.lockBalance ?? BigUInt.zero
+                if WalletService.sharedInstance.wallets.count > 0 { // 保证有钱包
+                    self?.headerController.viewModel.totalBalance.value = AssetService.sharedInstace.totalFreeBalance
+                    self?.sectionController.viewModel.freeBalance.value = self?.sectionController.viewModel.wallet.value?.freeBalance ?? BigUInt.zero
+                    self?.sectionController.viewModel.lockBalance.value = self?.sectionController.viewModel.wallet.value?.lockBalance ?? BigUInt.zero
+                } else {
+                    self?.headerController.viewModel.totalBalance.value = BigUInt.zero
+                    self?.sectionController.viewModel.freeBalance.value = BigUInt.zero
+                    self?.sectionController.viewModel.lockBalance.value = BigUInt.zero
+                }
+                
             case .fail:
                 break
             }

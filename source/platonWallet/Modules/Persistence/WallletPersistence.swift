@@ -59,6 +59,22 @@ class WallletPersistence {
             })
         }
     }
+    
+    /// 删除钱包的子钱包
+    func deleteSubWallets(wallet: Wallet, complete: (() -> Void)? = nil) {
+        let predicate = NSPredicate(format: "parentId == %@", wallet.primaryKeyIdentifier)
+        RealmWriteQueue.async {
+            autoreleasepool(invoking: {
+                let realm = try! Realm(configuration: RealmHelper.getConfig())
+                try? realm.write {
+                    realm.delete(realm.objects(Wallet.self).filter(predicate))
+                }
+                DispatchQueue.main.async {
+                    complete?()
+                }
+            })
+        }
+    }
 
     func updateWalletName(wallet: Wallet, name: String) {
 

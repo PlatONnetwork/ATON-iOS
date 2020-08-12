@@ -302,6 +302,10 @@
 
 "WalletManagerDetailVC_WalletAddress"="Wallet Address:";
 "WalletManagerDetailVC_Rename"="Rename";
+"WalletManagerDetailVC_bubble_Rename"="Rename";
+"WalletManagerDetailVC_bubble_Mnemonics_Backup"="Mnemonics Backup";
+"WalletManagerDetailVC_bubble_Mnemonics_DeleteHDWallet"="Delete HD Wallet";
+
 "WalletManagerDetailVC_exportPrivateKey_title" = "Export Private Key";
 "WalletManagerDetailVC_exportKeystore_title" = "Export Keystore";
 "WalletManagerDetailVC_Mnemonicsbackup" = "Mnemonics backup";

@@ -250,6 +250,9 @@ class SelectWalletVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         guard let callback = self.chooseWalletCallback else {
             return
         }
+        #if DEBUG
+        print("\n🟢🟢🟢🟢selected address: \(address) 🟢🟢🟢🟢\n")
+        #endif
         callback(address)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             self.hide()

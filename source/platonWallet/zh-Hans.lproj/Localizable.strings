@@ -289,9 +289,13 @@
 "PersonalVC_service_agreement" = "服务协议";
 "PersonalVC_privacy_policy" = "隐私政策";
 
-//WalletManagerDetailViewController
+// WalletManagerDetailViewController
 "WalletManagerDetailVC_title" = "钱包管理";
 "WalletManagerDetailVC_Rename"="修改名称";
+"WalletManagerDetailVC_bubble_Rename"="修改名称";
+"WalletManagerDetailVC_bubble_Mnemonics_Backup"="备份助记词";
+"WalletManagerDetailVC_bubble_Mnemonics_DeleteHDWallet"="删除HD钱包";
+
 "WalletManagerDetailVC_exportPrivateKey_title" = "导出私钥";
 "WalletManagerDetailVC_exportKeystore_title" = "导出钱包文件（.json）";
 "WalletManagerDetailVC_Mnemonicsbackup" = "备份助记词";

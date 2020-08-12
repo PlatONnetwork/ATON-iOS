@@ -220,7 +220,8 @@ extension UIViewController {
             //!!! WalletManagerDetailViewController is in front of WalletListViewController
             if type(of: vc) == AssetViewControllerV060.self ||
                 type(of: vc) == WalletManagerDetailViewController.self ||
-                type(of: vc) == WalletListViewController.self {
+                type(of: vc) == WalletListViewController.self ||
+                type(of: vc) == WalletListMangementInnerVC.self {
                 return true
             }
             return false
@@ -228,7 +229,7 @@ extension UIViewController {
 
         if (obj?.count)! > 0 {
             let walletmanagervc = obj?.filter({ (vc) -> Bool in
-                if type(of: vc) == WalletManagerDetailViewController.self {
+                if type(of: vc) == WalletManagerDetailViewController.self || type(of: vc) == WalletListMangementInnerVC.self {
                     return true
                 }
                 return false

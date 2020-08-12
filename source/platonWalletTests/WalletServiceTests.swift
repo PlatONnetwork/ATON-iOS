@@ -23,14 +23,10 @@ class WalletServiceTests: XCTestCase {
         }
     }
 
-    func testCreateWallet() {
+    // 创建普通钱包
+    func testCreateNormalWallet() {
         let expectaion = self.expectation(description: "testCreateWallet")
-
-//        WalletService.sharedInstance.createWallet(name: "wallet-create-070", password: "123456", completion: { (wallet, error) in
-//            XCTAssertNotNil(wallet, "create wallet shoulde be not nil")
-//            expectaion.fulfill()
-//        })
-        WalletService.sharedInstance.createWallet(name: "wallet-create-070", password: "123456", physicalType: .normal) { (wallet, error) in
+        WalletService.sharedInstance.createWallet(name: "wallet-create-normal-070", password: "123456", physicalType: .normal) { (wallet, error) in
             XCTAssertNotNil(wallet, "create wallet shoulde be not nil")
             expectaion.fulfill()
         }
@@ -38,7 +34,43 @@ class WalletServiceTests: XCTestCase {
         wait(for: [expectaion], timeout: 30.0)
     }
     
-
+    // 创建HD钱包
+    func testCreateAndDeleteHDWallet() {
+        let expectaion = self.expectation(description: "testCreateHDWallet")
+        WalletService.sharedInstance.createWallet(name: "wallet-create-hd-071", password: "123456", physicalType: .hd) { (wallet, error) in
+            XCTAssertNotNil(wallet, "create wallet shoulde be not nil")
+            expectaion.fulfill()
+        }
+        wait(for: [expectaion], timeout: 30.0)
+    }
+    
+    func testDeleteWallet() {
+        let expectaion = self.expectation(description: "testDeleteWallet")
+        if let wallet = WalletService.sharedInstance.wallets.last {
+            if wallet.isHD == false {
+                // 普通钱包
+                WalletService.sharedInstance.deleteWallet(wallet) {
+                    expectaion.fulfill()
+                }
+            } else if wallet.subWallets.count == 0 {
+                // 没有子钱包的hd钱包，删除的对象可能是子钱包或母钱包
+                WalletService.sharedInstance.deleteWallet(wallet) {
+                    expectaion.fulfill()
+                }
+            }
+        }
+        wait(for: [expectaion], timeout: 30.0)
+    }
+    
+    func testWalletRename() {
+        let expectaion = self.expectation(description: "testRenameWallet")
+        if let wallet = WalletService.sharedInstance.wallets.last {
+            WalletService.sharedInstance.updateWalletName(wallet, name: "MyNewName")
+            expectaion.fulfill()
+        }
+        wait(for: [expectaion], timeout: 30.0)
+    }
+    
     func testGenerateMnemonic() {
         let result = try? WalletUtil.generateMnemonic(strength: 128)
         let arr = result?.split(separator: " ")
