@@ -270,4 +270,9 @@ extension MenuCell {
             })
         }
     }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        titleLabel.adjustsFontSizeToFitWidth = true
+    }
 }

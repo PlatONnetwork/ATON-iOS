@@ -8,7 +8,7 @@
 
 import UIKit
 
-class WalletListMangementInnerVC: BaseViewController, UITableViewDelegate, UITableViewDataSource {
+class WalletListMangementInnerVC: BaseViewController, UITableViewDelegate, UITableViewDataSource, PopupMenuTableDelegate {
 
     let tableView = UITableView()
 
@@ -41,12 +41,115 @@ class WalletListMangementInnerVC: BaseViewController, UITableViewDelegate, UITab
             make.right.equalToSuperview().offset(0)
         }
         tableView.tableFooterView = UIView()
-        self.setRightNaviButton(title: Localized("WalletManagerDetailVC_Rename")) {[weak self] (_) in
+//        self.setRightNaviButton(title: Localized("WalletManagerDetailVC_Rename")) {[weak self] (_) in
+//            guard let self = self else { return }
+//            self.showCommonRenameInput(completion: { [weak self] text in
+//                guard let self = self else { return }
+//                self.updateWalletName(text!)
+//            }, checkDuplicate: true)
+//        }
+        
+        let addButton = UIButton(type: .custom)
+        addButton.setImage(UIImage(named: "1.icon_more"), for: .normal)
+        addButton.addTarget(self, action: #selector(onNavRight), for: .touchUpInside)
+        addButton.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
+        let rightBarButtonItem = UIBarButtonItem(customView: addButton)
+        navigationItem.rightBarButtonItem = rightBarButtonItem
+    }
+    
+    @objc func onNavRight() {
+        var menuArray: [MenuItem] = []
+        let menu1 = MenuItem(icon: nil, title: Localized("WalletManagerDetailVC_bubble_Rename")) // 修改名称
+        let menu2 = MenuItem(icon: nil, title: Localized("WalletManagerDetailVC_bubble_Mnemonics_Backup")) // 备份助记词
+        let menu3 = MenuItem(icon: nil, title: Localized("WalletManagerDetailVC_bubble_Mnemonics_DeleteHDWallet")) // 删除HD钱包
+        menuArray = wallet.isBackup ? [menu1, menu2, menu3] : [menu1, menu2]
+        let menu = PopupMenuTable(menuArray: menuArray, arrowPoint: CGPoint(x: UIScreen.main.bounds.width - 30, y: 64 + UIDevice.notchHeight))
+        menu.popUp()
+        menu.delegate = self
+    }
+    
+    // MARK: - PopupMenuTableDelegate
+
+    func popupMenu(_ popupMenu: PopupMenuTable, didSelectAt index: Int) {
+        switch index {
+        case 0:
+            renameWallet()
+        case 1:
+            showWalletBackup(wallet: self.wallet)
+        case 2:
+            deleteWallet()
+        default:
+            do {}
+        }
+    }
+    
+    func deleteWallet() {
+        showPasswordInputPswAlert(for: self.wallet, isForDelete: true) { [weak self] (_, password, error) in
             guard let self = self else { return }
-            self.showCommonRenameInput(completion: { [weak self] text in
-                guard let self = self else { return }
-                self.updateWalletName(text!)
+            if let errMessage = error?.localizedDescription {
+                self.showErrorMessage(text: errMessage, delay: 2.0)
+                return
+            }
+            if error != nil {
+                return
+            }
+            self.confirmToDeleteWallet()
+            
+        }
+    }
+    
+    func renameWallet() {
+        self.showCommonRenameInput(completion: { [weak self] text in
+            guard let self = self else { return }
+            self.updateWalletName(text!)
             }, checkDuplicate: true)
+    }
+    
+    func showWalletBackup() {
+        guard let wallet = self.wallet, wallet.canBackupMnemonic == true else { return }
+        let alertVC = AlertStylePopViewController.initFromNib()
+        let style = PAlertStyle.passwordInput(walletName: wallet.name)
+
+        alertVC.onAction(confirm: {[weak self] (text, _) -> (Bool)  in
+            let valid = CommonService.isValidWalletPassword(text ?? "")
+            if !valid.0 {
+                alertVC.showInputErrorTip(string: valid.1)
+                return false
+            }
+
+            alertVC.showLoadingHUD()
+            WalletService.sharedInstance.exportMnemonic(wallet: wallet, password: text!, completion: { (res, error) in
+                alertVC.hideLoadingHUD()
+                if (error == nil && (res!.length) > 0) {
+                    let vc = BackupMnemonicViewController()
+                    vc.mnemonic = res
+                    vc.walletAddress = wallet.address
+                    vc.view.backgroundColor = .white
+                    vc.hidesBottomBarWhenPushed = true
+                    self?.rt_navigationController!.pushViewController(vc, animated: true)
+                    alertVC.dismissWithCompletion()
+                } else {
+                    //alertVC.showInputErrorTip(string: error?.errorDescription)
+                    alertVC.showErrorMessage(text: Localized(error?.errorDescription ?? ""), delay: 2.0)
+                }
+            })
+            return false
+
+        }) { (_, _) -> (Bool) in
+            return true
+        }
+        alertVC.style = style
+        alertVC.showInViewController(viewController: self)
+    }
+    
+    /// 删除HD钱包
+    func confirmToDeleteWallet() {
+        guard let wal = self.wallet else { return }
+        WalletService.sharedInstance.deleteWallet(wal, shouldDeleteSubWallet: true) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                // 跳出页面
+                self.navigationController?.popViewController(animated: true)
+            }
         }
     }
 

@@ -98,7 +98,6 @@ class AssetViewControllerV060: UIViewController, PopupMenuTableDelegate {
         initUI()
         initBinding()
         shouldUpdateWalletStatus()
-
         refreshHeader.beginRefreshing()
     }
 

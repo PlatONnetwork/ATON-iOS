@@ -181,6 +181,12 @@ public final class WalletService {
                     completion(wallet, nil)
                 }
             } else {
+                let allWallets = WalletService.sharedInstance.wallets
+                let walletsUUIDs = allWallets.map { (wal) -> String in return wal.uuid }
+                if walletsUUIDs.contains(keystore.generateHDSubAddress(index: 0)) == true {
+                    completion(nil, Error.walletAlreadyExists)
+                    return
+                }
                 // 分层钱包
                 wallet = Wallet(uuid: keystore.generateRootWalletAddress(), name: name, keystoreObject: keystore, isHD: true, pathIndex: 0, parentId: nil)
                 wallet.isBackup = true
@@ -191,6 +197,9 @@ public final class WalletService {
                 DispatchQueue.main.async {
                     do {
                         try self.saveToDB(wallet: wallet)
+                    } catch Error.walletAlreadyExists {
+                        completion(nil, Error.walletAlreadyExists)
+                        return
                     } catch {
                         completion(nil, Error.keystoreFileSaveFailed)
                     }
@@ -308,8 +317,8 @@ public final class WalletService {
     public func exportPrivateKey(wallet: Wallet, password: String, completion: @escaping (String?, Error?) -> Void) {
         var keystore: Keystore!
         var parentWallet: Wallet!
-        if wallet.depth == 0 && wallet.isHD == false {
-            // 普通钱包
+         if wallet.depth == 0 {
+            // 普通钱包或HD母钱包
             keystore = wallet.key!
         } else if wallet.depth == 1 && wallet.isHD == true {
             // HD子钱包
@@ -330,7 +339,7 @@ public final class WalletService {
                 }
                 return
             }
-            if isHD == true {
+            if isHD == true && parentWallet != nil {
                 let mnemonic = try! keystore.decrypt(encryptedMnemonic: parentWallet!.mnemonic, password: password)
                 let seed = WalletUtil.seedFromMnemonic(mnemonic, passphrase: "")
                 let hdNode = WalletUtil.hdNodeFromSeed(seed)
@@ -433,7 +442,7 @@ public final class WalletService {
 //        w?.key?.mnemonic = nil
     }
 
-    public func deleteWallet(_ wallet:Wallet, complete: (() -> Void)? = nil) {
+    public func deleteWallet(_ wallet:Wallet, shouldCleanParentWalletFinally: Bool = true, complete: (() -> Void)? = nil) {
 
         /*
         NotificationCenter.default.post(name: Notification.Name.ATON.WillDeleateWallet, object: wallet)
@@ -452,10 +461,37 @@ public final class WalletService {
             }
         }
         /// 当母钱包没有了子钱包，则删除母钱包
-        if let parentWallet = WalletHelper.fetchParentWallet(from: wallet) {
+        if let parentWallet = WalletHelper.fetchParentWallet(from: wallet), shouldCleanParentWalletFinally == true {
             self.removeWallet(wallet: wallet, fromParent: parentWallet)
             if parentWallet.subWallets.count == 0 {
                 self.deleteWallet(parentWallet)
+            }
+        }
+    }
+    
+    /// 删除某个钱包的子钱包
+    public func deleteSubWallets(_ wallet:Wallet, complete: (() -> Void)? = nil) {
+        AssetService.sharedInstace.balances = AssetService.sharedInstace.balances.filter { $0.addr.lowercased() != wallet.address.lowercased() }
+        WallletPersistence.sharedInstance.deleteSubWallets(wallet: wallet) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) {
+                complete?()
+            }
+        }
+    }
+    
+    /// 删除钱包并确认是否删除子钱包
+    public func deleteWallet(_ wallet:Wallet ,shouldDeleteSubWallet: Bool, complete: (() -> Void)? = nil) {
+        NotificationCenter.default.post(name: Notification.Name.ATON.WillDeleateWallet, object: wallet)
+        AssetService.sharedInstace.balances = AssetService.sharedInstace.balances.filter { $0.addr.lowercased() != wallet.address.lowercased() }
+        self.deleteSubWallets(wallet) {
+            WallletPersistence.sharedInstance.delete(wallet: wallet) {
+                self.refreshDB()
+                // 保持AssetVCSharedData监听有效
+                AssetVCSharedData.sharedData.active()
+                complete?()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    NotificationCenter.default.post(name: Notification.Name.ATON.updateWalletList, object: wallet)
+                }
             }
         }
         
@@ -501,7 +537,11 @@ public final class WalletService {
     }
     
     public func updateWalletSelectedIndex(_ wallet: Wallet, selectedIndex: Int, complete: (() -> Void)? = nil) {
-        WallletPersistence.sharedInstance.updateWalletSelectedIndex(wallet: wallet, selectedIndex: selectedIndex, complete: complete)
+        WallletPersistence.sharedInstance.updateWalletSelectedIndex(wallet: wallet, selectedIndex: selectedIndex) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+                complete?()
+            }
+        }
     }
 
     /// Generates a unique file name for an address.
