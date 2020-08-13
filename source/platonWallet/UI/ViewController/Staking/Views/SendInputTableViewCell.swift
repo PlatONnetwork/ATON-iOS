@@ -22,7 +22,14 @@ class SendInputTableViewCell: UITableViewCell {
     var cellDidContentEditingHandler: ((BigUInt, Bool) -> Void)?
     var maxAmountLimit: BigUInt?
     var gas: BigUInt?
-    var type: SendInputTableViewCellType?
+    var type: SendInputTableViewCellType? {
+        didSet {
+            if type == .withdraw {
+                // 赎回时，显示”全部“
+                self.amountView.handleBtn.setTitle(Localized("redeem_all"), for: .normal)
+            }
+        }
+    }
 
     lazy var amountView = { () -> ATextFieldView in
         let amountView = ATextFieldView.create(title: "ATextFieldView_withdraw_title")
@@ -82,7 +89,7 @@ class SendInputTableViewCell: UITableViewCell {
             if let maxAmount = maxAmountLimit {
                 amountView.textField.text = maxAmount.divide(by: ETHToWeiMultiplier, round: 8)
                 cellDidContentEditingHandler?(maxAmount, true)
-                amountView.checkInvalidNow(showErrorMsg: true)
+                let _ = amountView.checkInvalidNow(showErrorMsg: true)
             }
             return
         }
