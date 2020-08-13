@@ -80,4 +80,25 @@ extension UIDevice {
             return .unknown
         }
     }
+    
+    /// 是否刘海屏设备
+    var isNotchScreen: Bool {
+        get {
+            var flag = false
+            if UIDevice.current.userInterfaceIdiom != .phone {
+                //判断是否是手机
+                return flag
+            }
+            if #available(iOS 11.0, *) {
+                guard let mainWindow = UIApplication.shared.delegate?.window else {
+                    return false
+                }
+                if (mainWindow?.safeAreaInsets.bottom ?? 0.0) > 0.0 {
+                    flag = true
+                }
+            }
+            return flag
+        }
+    }
+    
 }
