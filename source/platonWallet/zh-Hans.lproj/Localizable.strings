@@ -779,6 +779,7 @@
 "staking_delegate_record_all" = "全部";
 "staking_delegate_record_delegate" = "委托";
 "staking_delegate_record_undelegate" = "赎回委托";
+"redeem_all" = "全部";
 
 "staking_delegate_locked" = "已委托";
 "staking_delegate_release" = "待赎回委托";

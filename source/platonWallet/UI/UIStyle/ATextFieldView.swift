@@ -20,6 +20,7 @@ class ATextFieldView: UIView {
     public let tipsLabel = UILabel()
     private let tipLabelLeadingV = UIView()
     public let feeLabel = UILabel()
+    public var handleBtn = UIButton(type: .custom)
 
     var textFieldShouldReturnCompletion : ((_ textField: UITextField) -> (Bool))?
 
@@ -133,7 +134,7 @@ class ATextFieldView: UIView {
 
     func addAction(title: String? = nil, icon: UIImage? = nil, action: @escaping (() -> Void)) {
 
-        let btn = UIButton(type: .custom)
+        let btn = self.handleBtn
         if title != nil {
             btn.localizedNormalTitle = title
             btn.setTitleColor(common_blue_color, for: .normal)

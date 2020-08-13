@@ -23,16 +23,47 @@ extension Transaction {
         case .transfer:
             guard let address = currentAddress else {
                 let addresses = (AssetVCSharedData.sharedData.walletList as! [Wallet]).map { return $0.address.add0xBech32().lowercased() }
-                if let fromAddress = to?.add0xBech32().lowercased(), addresses.contains(fromAddress) {
-                    return .Receive
+//                if let fromAddress = to?.add0xBech32().lowercased(), addresses.contains(fromAddress) {
+//                    return .Receive
+//                }
+//                return .Sent
+                
+                if let fromAddress = to?.add0xBech32().lowercased(), let toAddress =  from?.add0xBech32().lowercased() {
+                    if addresses.contains(fromAddress) == true && addresses.contains(toAddress) == true {
+                        return .unknown
+                    } else if addresses.contains(fromAddress) == true {
+                        return .Receive
+                    } else if addresses.contains(toAddress) == true {
+                        return .Sent
+                    }
+                    return .unknown
+                } else if let toAddress = from?.add0xBech32().lowercased(), addresses.contains(toAddress) {
+                    return .Sent
                 }
-                return .Sent
+                return .unknown
             }
             if address.add0xBech32().lowercased() == from?.add0xBech32().lowercased() {
                 return .Sent
             } else if address.add0xBech32().lowercased() == to?.add0xBech32().lowercased() {
                 return .Receive
             } else {
+                if let addr = currentAddress {
+                    if let wallet = WalletService.sharedInstance.getWalletByAddress(address: addr) {
+                        let subWalletsAddress = wallet.subWallets.map { (wal) -> String in return wal.address }
+                        if let fromAddress = to?.add0xBech32().lowercased(), let toAddress =  from?.add0xBech32().lowercased() {
+                            if subWalletsAddress.contains(fromAddress) == true && subWalletsAddress.contains(toAddress) == true {
+                                return .unknown
+                            } else if subWalletsAddress.contains(fromAddress) == true {
+                                return .Receive
+                            } else if subWalletsAddress.contains(toAddress) == true {
+                                return .Sent
+                            }
+                            return .unknown
+                        } else if let toAddress =  from?.add0xBech32().lowercased(), subWalletsAddress.contains(toAddress) {
+                            return .Sent
+                        }
+                    }
+                }
                 return .unknown
             }
         default:
@@ -167,7 +198,7 @@ extension Transaction {
         case .Receive:
             return "+" + topValueDescription!
         default:
-            return "-" + topValueDescription!
+            return "" + topValueDescription!
         }
     }
 

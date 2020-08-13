@@ -84,17 +84,17 @@ class WalletListMangementInnerVC: BaseViewController, UITableViewDelegate, UITab
     }
     
     func deleteWallet() {
-        showPasswordInputPswAlert(for: self.wallet, isForDelete: true) { [weak self] (_, password, error) in
+        showPasswordInputPswAlert(for: self.wallet, isForDelete: true) { [weak self] (pri, password, error) in
             guard let self = self else { return }
             if let errMessage = error?.localizedDescription {
                 self.showErrorMessage(text: errMessage, delay: 2.0)
                 return
             }
-            if error != nil {
+            // 有错或者取消（回调数据全空即为取消）
+            if error != nil || (pri == nil && password == nil && error == nil) {
                 return
             }
             self.confirmToDeleteWallet()
-            
         }
     }
     

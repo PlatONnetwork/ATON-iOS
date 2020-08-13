@@ -773,6 +773,7 @@
 "staking_delegate_record_all" = "All";
 "staking_delegate_record_delegate" = "Delegate";
 "staking_delegate_record_undelegate" = "Undelegate";
+"redeem_all" = "All";
 
 "staking_delegate_locked" = "Delegated";
 "staking_delegate_release" = "Invalid delegations";
