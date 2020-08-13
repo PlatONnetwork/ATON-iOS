@@ -49,30 +49,6 @@ def target_pods
     pod 'Reveal-SDK', '~> 24.0' , :configurations => ['Debug','Debug.DEV','Debug.UAT']
 end
 
-target 'platonWalletUAT' do
-    use_frameworks!
-    target_pods
-
-
-#    target 'platonWalletTests' do
-#        inherit! :search_paths
-#        # Pods for testing
-#    end
-#
-#    target 'platonWalletUITests' do
-#        inherit! :search_paths
-#        # Pods for testing
-#        pod 'SwiftMonkey'
-#    end
-end
-
-target 'platonWalletParallelNet' do
-  use_frameworks!
-  target_pods
-
-end
-
-
 
 target 'platonWallet' do
   # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
