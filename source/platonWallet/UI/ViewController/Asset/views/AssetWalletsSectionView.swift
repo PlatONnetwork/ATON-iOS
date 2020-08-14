@@ -10,6 +10,11 @@ import UIKit
 import BigInt
 
 class AssetWalletsSectionView: UIView {
+    
+    lazy var backView: UIView = {
+        let view = UIView()
+        return view
+    }()
 
     lazy var walletNameLabel: UILabel = {
         let label = UILabel()
@@ -209,10 +214,19 @@ class AssetWalletsSectionView: UIView {
     }
 
     func initView() {
+        addSubview(backView)
+        backView.snp.makeConstraints { (make) in
+            make.left.equalTo(0)
+            make.top.equalTo(0)
+            make.right.equalTo(0)
+            make.bottom.equalTo(0)
+        }
+        
         backgroundColor = UIColor(rgb: 0xf9fbff)
+        backView.backgroundColor = backgroundColor
 
         let contentView = UIView()
-        addSubview(contentView)
+        backView.addSubview(contentView)
         contentView.snp.makeConstraints { make in
 //            make.top.trailing.leading.equalToSuperview()
             make.top.equalTo(-1)
@@ -226,7 +240,7 @@ class AssetWalletsSectionView: UIView {
             make.edges.equalToSuperview()
         }
 
-        addSubview(sectionTitleLabel)
+        backView.addSubview(sectionTitleLabel)
         sectionTitleLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(16)
             make.top.equalTo(contentView.snp.bottom).offset(12)
