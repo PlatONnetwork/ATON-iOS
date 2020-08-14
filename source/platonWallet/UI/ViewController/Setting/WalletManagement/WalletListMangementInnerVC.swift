@@ -62,7 +62,11 @@ class WalletListMangementInnerVC: BaseViewController, UITableViewDelegate, UITab
         let menu1 = MenuItem(icon: nil, title: Localized("WalletManagerDetailVC_bubble_Rename")) // 修改名称
         let menu2 = MenuItem(icon: nil, title: Localized("WalletManagerDetailVC_bubble_Mnemonics_Backup")) // 备份助记词
         let menu3 = MenuItem(icon: nil, title: Localized("WalletManagerDetailVC_bubble_Mnemonics_DeleteHDWallet")) // 删除HD钱包
+        #if DEBUG
+        menuArray = [menu1, menu2, menu3]
+        #else
         menuArray = wallet.isBackup ? [menu1, menu2, menu3] : [menu1, menu2]
+        #endif
         let menu = PopupMenuTable(menuArray: menuArray, arrowPoint: CGPoint(x: UIScreen.main.bounds.width - 30, y: 64 + UIDevice.notchHeight))
         menu.popUp()
         menu.delegate = self

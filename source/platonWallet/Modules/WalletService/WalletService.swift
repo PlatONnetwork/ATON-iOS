@@ -452,11 +452,11 @@ public final class WalletService {
         NotificationCenter.default.post(name: Notification.Name.ATON.WillDeleateWallet, object: wallet)
         AssetService.sharedInstace.balances = AssetService.sharedInstace.balances.filter { $0.addr.lowercased() != wallet.address.lowercased() }
         WallletPersistence.sharedInstance.delete(wallet: wallet) {
-            self.refreshDB()
-            // 保持AssetVCSharedData监听有效
-            AssetVCSharedData.sharedData.active()
-            complete?()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                self.refreshDB()
+                // 保持AssetVCSharedData监听有效
+                AssetVCSharedData.sharedData.active()
+                complete?()
                 NotificationCenter.default.post(name: Notification.Name.ATON.updateWalletList, object: wallet)
             }
         }
@@ -485,11 +485,11 @@ public final class WalletService {
         AssetService.sharedInstace.balances = AssetService.sharedInstace.balances.filter { $0.addr.lowercased() != wallet.address.lowercased() }
         self.deleteSubWallets(wallet) {
             WallletPersistence.sharedInstance.delete(wallet: wallet) {
-                self.refreshDB()
-                // 保持AssetVCSharedData监听有效
-                AssetVCSharedData.sharedData.active()
-                complete?()
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    self.refreshDB()
+                    // 保持AssetVCSharedData监听有效
+                    AssetVCSharedData.sharedData.active()
+                    complete?()
                     NotificationCenter.default.post(name: Notification.Name.ATON.updateWalletList, object: wallet)
                 }
             }

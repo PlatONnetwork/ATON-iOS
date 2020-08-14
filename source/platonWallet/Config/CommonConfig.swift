@@ -22,7 +22,7 @@ struct AppConfig {
         static let VERSION_076 = "95"
         static let VERSION_0110 = "101"
         static let VERSION_0120 = "102"
-        static let VERSION_MAINTESTNET = "103"
+        static let VERSION_0130 = "103"
         static let VERSION_MAINNET = "100"
         static let VERSION_UATNET = "298"
         static let DEV = "103"
@@ -54,7 +54,7 @@ struct AppConfig {
         ]
         #else
         static let defaultNodesURL = [
-            (nodeURL: DefaultNodeURL_MAIN, desc: "SettingsVC_nodeSet_Chuantuo_des", chainId: AppConfig.ChainID.VERSION_MAINNET, isSelected: false, hrp: AppConfig.Hrp.LAT),
+//            (nodeURL: DefaultNodeURL_MAIN, desc: "SettingsVC_nodeSet_Chuantuo_des", chainId: AppConfig.ChainID.VERSION_MAINNET, isSelected: false, hrp: AppConfig.Hrp.LAT),
             (nodeURL: DefaultNodeURL_MAINTEST, desc: "SettingsVC_nodeSet_NewBaleyworld_des", chainId: AppConfig.ChainID.VERSION_MAINTESTNET, isSelected: false, hrp: AppConfig.Hrp.LAX),
         ]
         #endif
