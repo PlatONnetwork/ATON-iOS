@@ -23,6 +23,7 @@ struct AppConfig {
         static let VERSION_0110 = "101"
         static let VERSION_0120 = "102"
         static let VERSION_0130 = "103"
+        static let VERSION_MAINTESTNET = "104"
         static let VERSION_MAINNET = "100"
         static let VERSION_UATNET = "298"
         static let DEV = "103"
