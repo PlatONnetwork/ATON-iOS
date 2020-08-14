@@ -20,7 +20,7 @@ let AssetSectionViewH: CGFloat = 124
 class AssetViewControllerV060: UIViewController, PopupMenuTableDelegate {
 
     lazy var tableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .plain)
+        let tableView = UITableView(frame: .zero, style: .grouped)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.separatorStyle = .none
@@ -98,7 +98,7 @@ class AssetViewControllerV060: UIViewController, PopupMenuTableDelegate {
         initUI()
         initBinding()
         shouldUpdateWalletStatus()
-        refreshHeader.beginRefreshing()
+//        refreshHeader.beginRefreshing()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -848,18 +848,18 @@ extension AssetViewControllerV060: UIScrollViewDelegate {
         } else {
             isShowNavigationBar = true
             navigationController?.setNavigationBarHidden(false, animated: false)
-            // 处理组头偏移问题
-            if scrollView.contentOffset.y > tableHeaderView.bounds.size.height - self.navigationController!.navigationBar.bounds.size.height - kStatusBarHeight {
-//                print("scrollView.contentOffset.y: ", scrollView.contentOffset.y)
-//                var safeAreaBottom: CGFloat = 0
-//                if #available(iOS 11.0, *) {
-//                    safeAreaBottom = UIApplication.shared.keyWindow!.safeAreaInsets.bottom
-//                }
-//                let tabbarHeight = self.tabBarController!.tabBar.bounds.size.height
-                tableView.contentInset = UIEdgeInsets(top: self.navigationController!.navigationBar.bounds.size.height + kStatusBarHeight, left: 0, bottom: 69, right: 0)
-            } else {
-                tableView.contentInset = UIEdgeInsets.zero
-            }
+//            // 处理组头偏移问题
+//            if scrollView.contentOffset.y > tableHeaderView.bounds.size.height - self.navigationController!.navigationBar.bounds.size.height - kStatusBarHeight {
+////                print("scrollView.contentOffset.y: ", scrollView.contentOffset.y)
+////                var safeAreaBottom: CGFloat = 0
+////                if #available(iOS 11.0, *) {
+////                    safeAreaBottom = UIApplication.shared.keyWindow!.safeAreaInsets.bottom
+////                }
+////                let tabbarHeight = self.tabBarController!.tabBar.bounds.size.height
+//                tableView.contentInset = UIEdgeInsets(top: self.navigationController!.navigationBar.bounds.size.height + kStatusBarHeight, left: 0, bottom: 69, right: 0)
+//            } else {
+//                tableView.contentInset = UIEdgeInsets.zero
+//            }
         }
     }
 }

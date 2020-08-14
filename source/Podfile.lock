@@ -3,6 +3,7 @@ PODS:
   - BigInt (4.0.0)
   - CryptoSwift (0.10.0)
   - EmptyDataSet-Swift (4.2.0)
+  - FDFullscreenPopGesture (1.1)
   - GzipSwift (5.0.0)
   - Kingfisher (4.10.1)
   - Localize-Swift (2.0.0)
@@ -71,6 +72,7 @@ DEPENDENCIES:
   - BigInt (= 4.0)
   - CryptoSwift (~> 0.10.0)
   - EmptyDataSet-Swift (~> 4.2.0)
+  - FDFullscreenPopGesture (~> 1.1)
   - GzipSwift
   - Kingfisher
   - Localize-Swift (~> 2.0)
@@ -106,6 +108,7 @@ SPEC REPOS:
     - BigInt
     - CryptoSwift
     - EmptyDataSet-Swift
+    - FDFullscreenPopGesture
     - GzipSwift
     - Kingfisher
     - Localize-Swift
@@ -147,6 +150,7 @@ SPEC CHECKSUMS:
   BigInt: 2aad1a9942dc932ec8b84290d2c564a3d76f97ab
   CryptoSwift: 6c778d69282bed3b4e975ff97a79d074f20bb011
   EmptyDataSet-Swift: 1fa0b35f530a35f852ecb2b53564728b0c300aaf
+  FDFullscreenPopGesture: a8a620179e3d9c40e8e00256dcee1c1a27c6d0f0
   GzipSwift: 5592f4d62b641e04d06443ba471f8ed76b1363e4
   Kingfisher: c148cd7b47ebde9989f6bc7c27dcaa79d81279a0
   Localize-Swift: c798ec9286494866f7068f85f7c71283ac5bdab4
@@ -175,6 +179,6 @@ SPEC CHECKSUMS:
   UMCShare: e0cef55c0fd6051254c8cda1d0630eb578b27bad
   ZXingObjC: fdbb269f25dd2032da343e06f10224d62f537bdb
 
-PODFILE CHECKSUM: 3a1051fac8188a3c1bf5653ceeaae9066b442163
+PODFILE CHECKSUM: 8126e97cd0dc008aac264672d981e63a481a69fc
 
 COCOAPODS: 1.9.3
