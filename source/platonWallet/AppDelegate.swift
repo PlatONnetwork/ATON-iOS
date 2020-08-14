@@ -273,7 +273,7 @@ extension AppDelegate {
             let newVersion = SettingService.shareInstance.remoteVersion?.newVersion ?? ""
             let isForceUpdate = SettingService.shareInstance.remoteVersion?.isForce ?? false
             let updateInfo = SettingService.shareInstance.remoteVersion?.desc ?? ""
-            let vc = CheckUpdateVC(isForceUpdate: isForceUpdate, version: "V" + newVersion, updateInfo: updateInfo)
+            let vc = CheckUpdateVC(isForceUpdate: isForceUpdate, version: newVersion, updateInfo: updateInfo)
             vc.confirmCallback = {
                 UIApplication.shared.openURL(URL(string: SettingService.shareInstance.remoteVersion?.url ?? "https://developer.platon.network/mobile/index.html")!)
             }
