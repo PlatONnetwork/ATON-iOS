@@ -148,7 +148,9 @@ class NetworkService {
             newHeaders = oldHeaders
         }
         newHeaders["Content-Type"] = "application/json"
-        let localLanguageCode = Locale.current.identifier  // en_US ,  zh-Hans_US
+        
+        let localLanguageCode = Locale.current.identifier.replacingOccurrences(of: "_", with: "-")  // en_US ,  zh-Hans_US, 下划线替换成中划线，为了后台接口能识别
+        
         newHeaders["Accept-Language"] = localLanguageCode
         return newHeaders
     }

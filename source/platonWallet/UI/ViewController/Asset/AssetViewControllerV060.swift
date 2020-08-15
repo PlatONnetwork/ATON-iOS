@@ -20,7 +20,7 @@ let AssetSectionViewH: CGFloat = 124
 class AssetViewControllerV060: UIViewController, PopupMenuTableDelegate {
 
     lazy var tableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .grouped)
+        let tableView = UITableView(frame: .zero, style: .plain)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.separatorStyle = .none
@@ -834,32 +834,49 @@ extension AssetViewControllerV060: UITableViewDelegate, UITableViewDataSource {
 }
 
 extension AssetViewControllerV060: UIScrollViewDelegate {
+    
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
-        print(scrollView.contentOffset.y)
-        if #available(iOS 11.0, *) {
-            tableView.contentInsetAdjustmentBehavior = .never
-        } else {
-            // Fallback on earlier versions
-            automaticallyAdjustsScrollViewInsets = false
-        }
-        if scrollView.contentOffset.y <= 0 {
+        if scrollView !== tableView { return }
+        let offsetY = tableView.contentOffset.y
+        let topBarH: CGFloat = UIDevice.current.isNotchScreen ? 88.0 : 64.0
+        let tableHeaderViewH = self.tableView.tableHeaderView?.bounds.size.height ?? 0
+        if tableHeaderViewH == 0.0 { return }
+//        print("------------------------")
+//        print("offsetY:", offsetY, "contentInset.top:", tableView.contentInset.top)
+
+        if offsetY <= 0 {
             isShowNavigationBar = false
             navigationController?.setNavigationBarHidden(true, animated: false)
         } else {
             isShowNavigationBar = true
             navigationController?.setNavigationBarHidden(false, animated: false)
-//            // 处理组头偏移问题
-//            if scrollView.contentOffset.y > tableHeaderView.bounds.size.height - self.navigationController!.navigationBar.bounds.size.height - kStatusBarHeight {
-////                print("scrollView.contentOffset.y: ", scrollView.contentOffset.y)
-////                var safeAreaBottom: CGFloat = 0
-////                if #available(iOS 11.0, *) {
-////                    safeAreaBottom = UIApplication.shared.keyWindow!.safeAreaInsets.bottom
-////                }
-////                let tabbarHeight = self.tabBarController!.tabBar.bounds.size.height
-//                tableView.contentInset = UIEdgeInsets(top: self.navigationController!.navigationBar.bounds.size.height + kStatusBarHeight, left: 0, bottom: 69, right: 0)
-//            } else {
-//                tableView.contentInset = UIEdgeInsets.zero
-//            }
+        }
+        // 处理组头偏移问题
+        if offsetY + topBarH > tableHeaderViewH {
+//            print("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴")
+//            tableView.contentInset = UIEdgeInsets(top: offsetY + topBarH, left: 0, bottom: 0, right: 0)
+            var headerOffset = offsetY + topBarH - tableHeaderViewH
+            if headerOffset > topBarH {
+                headerOffset = topBarH
+            }
+            // 此处修改约束是为了让sectionHeaderView吸顶且不抖动
+            sectionView.backView.snp.remakeConstraints { (make) in
+                make.top.equalTo(headerOffset)
+                make.left.equalTo(0)
+                make.right.equalTo(0)
+                make.bottom.equalTo(sectionView.snp_bottom).offset(headerOffset)
+            }
+            
+        } else {
+//            print("🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢")
+//            tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+            // 此处修改约束是为了让sectionHeaderView取消吸顶且不抖动
+            sectionView.backView.snp.remakeConstraints { (make) in
+                make.top.equalTo(0)
+                make.left.equalTo(0)
+                make.right.equalTo(0)
+                make.bottom.equalTo(0)
+            }
         }
     }
 }
