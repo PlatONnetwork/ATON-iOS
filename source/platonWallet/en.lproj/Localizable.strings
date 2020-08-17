@@ -176,6 +176,7 @@
 "QRScanerVC_nav_title" = "QR Scan";
 "QRScan_success_tips" = "Success";
 "QRScan_failed_tips" = "Unrecognized content";
+"QRScan_unrecog_content_tips" = "Unrecognized content";
 
 //qr code view
 "QRView_public_key" = "Public Key";
