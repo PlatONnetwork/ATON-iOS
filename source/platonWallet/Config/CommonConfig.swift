@@ -54,10 +54,12 @@ struct AppConfig {
             (nodeURL: DefaultNodeURL_UAT, desc: "SettingsVC_nodeSet_parallel_des", chainId: AppConfig.ChainID.VERSION_UATNET, isSelected: false, hrp: AppConfig.Hrp.LAX),
         ]
         #else
-        static let defaultNodesURL = [
-//            (nodeURL: DefaultNodeURL_MAIN, desc: "SettingsVC_nodeSet_Chuantuo_des", chainId: AppConfig.ChainID.VERSION_MAINNET, isSelected: false, hrp: AppConfig.Hrp.LAT),
-            (nodeURL: DefaultNodeURL_MAINTEST, desc: "SettingsVC_nodeSet_NewBaleyworld_des", chainId: AppConfig.ChainID.VERSION_MAINTESTNET, isSelected: false, hrp: AppConfig.Hrp.LAX),
-        ]
+        /// isShowMainNet用于在构建时决定是否显示主网。下列代码需要与jenkins中的配置相对应
+        static let isShowMainNet = false
+        static let defaultNodesURL = isShowMainNet == true ? [
+            (nodeURL: DefaultNodeURL_MAIN, desc: "SettingsVC_nodeSet_Chuantuo_des", chainId: AppConfig.ChainID.VERSION_MAINNET, isSelected: false, hrp: AppConfig.Hrp.LAT),
+            (nodeURL: DefaultNodeURL_MAINTEST, desc: "SettingsVC_nodeSet_NewBaleyworld_des", chainId: AppConfig.ChainID.VERSION_MAINTESTNET, isSelected: false, hrp: AppConfig.Hrp.LAX)]
+            : [(nodeURL: DefaultNodeURL_MAINTEST, desc: "SettingsVC_nodeSet_NewBaleyworld_des", chainId: AppConfig.ChainID.VERSION_MAINTESTNET, isSelected: false, hrp: AppConfig.Hrp.LAX)]
         #endif
     }
 
