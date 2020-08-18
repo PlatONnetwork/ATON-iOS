@@ -57,8 +57,9 @@ open class QRCodeDecoder {
                 return QRCodeType.transaction(data: result)
             } else if let data = res.data(using: .utf8), let result = try? JSONDecoder().decode(QrcodeData<[String]>.self, from: data) {
                 return QRCodeType.signedTransaction(data: result)
-            } else {
-                return QRCodeType.error(data: Localized("QRScan_failed_tips"))
+            }
+            else {
+                return QRCodeType.error(data: Localized("QRScan_unrecog_content_tips"))
             }
         }
     }

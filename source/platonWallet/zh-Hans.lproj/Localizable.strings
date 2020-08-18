@@ -171,6 +171,7 @@
 
 "QRScan_success_tips" = "扫码成功";
 "QRScan_failed_tips" = "无法识别二维码";
+"QRScan_unrecog_content_tips" = "无法识别内容";
 
 //qr code view
 
