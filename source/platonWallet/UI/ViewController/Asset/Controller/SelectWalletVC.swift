@@ -227,6 +227,7 @@ class SelectWalletVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "SelectWalletTableHeader") as! SelectWalletTableHeader
         header.title = sectionInfos[section].wallet?.name ?? ""
+        header.contentView.backgroundColor = UIColor(hex: section % 2 == 0 ? "F9FBFF" : "EFF4FD")
         return header
     }
 
@@ -238,6 +239,7 @@ class SelectWalletVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: SelectWalletTCell.self), for: indexPath) as! SelectWalletTCell
         cell.wallet = sectionInfos[indexPath.section].subWallets[indexPath.row]
         cell.isChoosed = cell.wallet?.address == self.walletAddress
+        cell.contentView.backgroundColor = UIColor(hex: indexPath.section % 2 == 0 ? "F9FBFF" : "EFF4FD")
         if cell.isChoosed == true {
             selectedIndexPath = indexPath
         }
