@@ -824,6 +824,7 @@
 "statking_validator_Balance" = "可用余额";
 
 "staking_validator_isInit_doubt" = "基金会资助的节点不接受委托";
+"locked_node_cant_be_delegate" = "锁定中的节点不能接受委托";
 
 "ATextFieldView_title" = "数量:";
 "ATextFieldView_delegate_title" = "委托数量:";

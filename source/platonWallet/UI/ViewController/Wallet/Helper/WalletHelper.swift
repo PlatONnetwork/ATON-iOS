@@ -172,4 +172,18 @@ class WalletHelper {
         }
     }
     
+    /// 检查是否还能新建钱包数据
+    static func checkWalletsCount(type: WalletPhysicalType) -> Bool {
+        WalletService.sharedInstance.refreshDB()
+        var res = true
+        if type == .normal {
+            // 普通钱包创建一次1条数据
+            res = WalletService.sharedInstance.wallets.count <= 200
+        } else if type == .hd {
+            // HD钱包创建一次31条数据
+            res = WalletService.sharedInstance.wallets.count <= 200 - 30
+        }
+        return res
+    }
+    
 }

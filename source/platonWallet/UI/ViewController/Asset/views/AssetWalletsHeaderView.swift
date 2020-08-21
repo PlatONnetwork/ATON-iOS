@@ -83,7 +83,7 @@ class AssetWalletsHeaderView: UIView {
         controller.onwalletsSelect = { [weak self] in
             guard let self = self else { return }
             self.collectionView.reloadData()
-            self.scrollToSelectedWallet(isAnimated: true)
+//            self.scrollToSelectedWallet(isAnimated: true)
         }
 //        controller.onExchangeWalletToDisplay = {[weak self](walletAddress) in
 //            guard let self = self else { return }

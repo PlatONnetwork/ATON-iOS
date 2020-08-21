@@ -39,9 +39,12 @@ class PasswordAuthViewController: BaseViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        if WalletService.sharedInstance.wallets.count == 0 {
+            // 没钱包名义上不进入该页面，进入即退出程序
+            exit(0)
+        }
         setupUI()
-        selectedWallet = WalletService.sharedInstance.wallets[0]
+        selectedWallet = WalletService.sharedInstance.wallets[0].selectedWallet
         unlockBtn.style = .disable
 //
 //        pswTF.checkInput(mode: .textChange, check: {[weak self] (text) -> (Bool, String) in

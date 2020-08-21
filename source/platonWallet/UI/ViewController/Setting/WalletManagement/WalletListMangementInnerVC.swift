@@ -67,7 +67,8 @@ class WalletListMangementInnerVC: BaseViewController, UITableViewDelegate, UITab
         #else
         menuArray = wallet.isBackup ? [menu1, menu2, menu3] : [menu1, menu2]
         #endif
-        let menu = PopupMenuTable(menuArray: menuArray, arrowPoint: CGPoint(x: UIScreen.main.bounds.width - 30, y: 64 + UIDevice.notchHeight))
+        let itemSize = CGSize(width: Localize.currentLanguage().contains("zh") ? 110 : 145, height: 44)
+        let menu = PopupMenuTable(menuArray: menuArray, arrowPoint: CGPoint(x: UIScreen.main.bounds.width - 30, y: 64 + UIDevice.notchHeight), cellSize: itemSize, arrowPosition: .right)
         menu.popUp()
         menu.delegate = self
     }

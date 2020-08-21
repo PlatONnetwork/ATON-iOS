@@ -70,13 +70,14 @@ class WalletManagerTableViewCell: UITableViewCell {
 
         if let aptWallet = wallet as? Wallet {
             walletName.text = aptWallet.name
-            if aptWallet.isHD == true && aptWallet.depth == 0 {
-                address.isHidden = true
-                walletNameCenterVerticalCons.priority = UILayoutPriority(rawValue: 1000)
-            } else {
-                address.isHidden = false
-                walletNameCenterVerticalCons.priority = UILayoutPriority(rawValue: 250)
-            }
+//            if aptWallet.isHD == true && aptWallet.depth == 0 {
+//                address.isHidden = true
+//                walletNameCenterVerticalCons.priority = UILayoutPriority(rawValue: 1000)
+//            } else {
+//                address.isHidden = false
+//                walletNameCenterVerticalCons.priority = UILayoutPriority(rawValue: 250)
+//            }
+            walletNameCenterVerticalCons.priority = UILayoutPriority(rawValue: 1000) // 所有的备份都居中显示
             address.text = aptWallet.address
             walletIcon.image = UIImage(named: aptWallet.avatar)?.circleImage()
 

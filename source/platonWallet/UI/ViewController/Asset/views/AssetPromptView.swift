@@ -124,7 +124,10 @@ class AssetPromptView: UIView {
         UIView.animate(withDuration: 0.3, animations: {
             self.alpha = 0.0
         }) { (_) in
-            self.removeFromSuperview()
+//            self.removeFromSuperview()
+            // 不能移除，防止干扰其他钱包的备份视图的显示和隐藏
+            self.isHidden = true
+            self.alpha = 1.0
         }
     }
 

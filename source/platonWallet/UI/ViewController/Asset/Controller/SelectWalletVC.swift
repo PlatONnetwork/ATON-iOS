@@ -227,6 +227,7 @@ class SelectWalletVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: "SelectWalletTableHeader") as! SelectWalletTableHeader
         header.title = sectionInfos[section].wallet?.name ?? ""
+        header.contentView.backgroundColor = UIColor(hex: section % 2 == 0 ? "F9FBFF" : "EFF4FD")
         return header
     }
 
@@ -238,6 +239,7 @@ class SelectWalletVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         let cell = tableView.dequeueReusableCell(withIdentifier: String(describing: SelectWalletTCell.self), for: indexPath) as! SelectWalletTCell
         cell.wallet = sectionInfos[indexPath.section].subWallets[indexPath.row]
         cell.isChoosed = cell.wallet?.address == self.walletAddress
+        cell.contentView.backgroundColor = UIColor(hex: indexPath.section % 2 == 0 ? "F9FBFF" : "EFF4FD")
         if cell.isChoosed == true {
             selectedIndexPath = indexPath
         }
@@ -341,14 +343,8 @@ extension SelectWalletVC {
                         /// 临时的HD分组
                         var tempHDSectionInfo = SelectWalletDisplaySectionInfo(wallet: wallet, subWallets: [])
                         let allSubWallets = WalletHelper.fetchHDSubWallets(from: wallets)
-                        var subWallets = allSubWallets.filter { (sWallet) -> Bool in
+                        let subWallets = allSubWallets.filter { (sWallet) -> Bool in
                             sWallet.parentId == wallet.uuid
-                        }
-                        if enterMode == .fromDelegation {
-                            /// 委托场景需要对子钱包进行排序
-                            subWallets.sort { (ls, rs) -> Bool in
-                                return Int(ls.balance) ?? 0 >= Int(rs.balance) ?? 0
-                            }
                         }
                         if keyword.count > 0 {
                             let fiteredSubWallets = subWallets.filter { (wallet) -> Bool in
@@ -369,6 +365,11 @@ extension SelectWalletVC {
             }
         }
         if normalSectionInfo.subWallets.count > 0 {
+            if enterMode == .fromDelegation {
+                normalSectionInfo.subWallets = normalSectionInfo.subWallets.sorted { (ls, rs) -> Bool in
+                    return Int(ls.balance) ?? 0 > Int(rs.balance) ?? 0
+                }
+            }
             /// 普通组作为数据源的第一组数据
             sectionInfos.insert(normalSectionInfo, at: 0)
         }

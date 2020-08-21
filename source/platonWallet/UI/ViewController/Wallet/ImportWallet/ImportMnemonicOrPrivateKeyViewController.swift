@@ -48,6 +48,8 @@ class ImportMnemonicOrPrivateKeyViewController: BaseImportWalletViewController {
     @IBOutlet weak var privateKeyInputTextViewTopToGridViewBottom: NSLayoutConstraint!
     @IBOutlet weak var walletTypeBottomLine: UIView!
     @IBOutlet weak var walletPhysicalTypeLabel: UILabel!
+    @IBOutlet weak var walletCreateAbilityDescLabel: UILabel!
+    @IBOutlet weak var bottomBtnBottomCons: NSLayoutConstraint!
     /// 当前的钱包物理类型
     var curWalletPhysicalType: WalletPhysicalType! {
         didSet {
@@ -74,6 +76,7 @@ class ImportMnemonicOrPrivateKeyViewController: BaseImportWalletViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.checkKeyboard()
+        checkCanEableButton()
     }
 
     @objc func onPasteboardChange() {
@@ -139,7 +142,7 @@ class ImportMnemonicOrPrivateKeyViewController: BaseImportWalletViewController {
     }
 
     @IBAction func chooseWalletPhysicalType(_ sender: Any) {
-        let vc = GlobalOptionsVC(options: [("0", Localized("createWalletVC_walletType_normal")), ("1", Localized("createWalletVC_walletType_hd"))], defaultSelectedIndex: 0, didConfirmedSelectionCallback: { (optionId, optionName) in
+        let vc = GlobalOptionsVC(options: [("0", Localized("createWalletVC_walletType_normal")), ("1", Localized("createWalletVC_walletType_hd"))], defaultSelectedIndex: self.curWalletPhysicalType.rawValue, didConfirmedSelectionCallback: { (optionId, optionName) in
             print("optionId: \(optionId), optionName: \(optionName)")
             if optionId == "0" {
                 self.curWalletPhysicalType = .normal
@@ -161,6 +164,23 @@ class ImportMnemonicOrPrivateKeyViewController: BaseImportWalletViewController {
             scrollView.contentInset = UIEdgeInsets.zero
         }
 
+    }
+    
+    func checkWalletsCount() -> Bool {
+        let res = WalletHelper.checkWalletsCount(type: self.curWalletPhysicalType)
+        if res == false {
+            print("不支持导入更多钱包")
+//            noteLabelTopLayoutWithPswTips.constant = 32
+            walletCreateAbilityDescLabel.isHidden = false
+            walletCreateAbilityDescLabel.text = Localized("createWalletVC_maximized_count")
+            bottomBtnBottomCons.priority = UILayoutPriority(rawValue: 250)
+        } else {
+            print("还能导入更多钱包")
+//            noteLabelTopLayoutWithPswTips.constant = 10
+            walletCreateAbilityDescLabel.isHidden = true
+            bottomBtnBottomCons.priority = UILayoutPriority(rawValue: 1000)
+        }
+        return res
     }
 
     @IBAction func startImport(_ sender: Any) {
@@ -211,7 +231,7 @@ class ImportMnemonicOrPrivateKeyViewController: BaseImportWalletViewController {
 
     func checkCanEableButton() {
         if importType == .mnemonic {
-            if self.checkInputValueIsValid() && (mnemonicGridView?.nonEmptyCount())! == 12 {
+            if self.checkInputValueIsValid() && (mnemonicGridView?.nonEmptyCount())! == 12 && checkWalletsCount() == true {
                 importBtn.style = .blue
             } else {
                 importBtn.style = .disable

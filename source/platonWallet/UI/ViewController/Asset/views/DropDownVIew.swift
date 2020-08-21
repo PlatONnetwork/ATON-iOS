@@ -90,7 +90,7 @@ public class PopupMenuTable: UIView {
         self.menuCellSize = cellSize
         self.arrowPosition = arrowPosition
         self.backgroundColor = contentBgColor
-
+        self.tableView.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         switch arrowPosition {
         case .left:
             let x = arrowPoint.x - arrowWidth/2 - arrowOffset
@@ -274,5 +274,11 @@ extension MenuCell {
     override func layoutSubviews() {
         super.layoutSubviews()
         titleLabel.adjustsFontSizeToFitWidth = true
+        line.snp.updateConstraints { (make) in
+            make.bottom.equalToSuperview()
+            make.left.equalToSuperview().inset(self.iconView.image == nil ? 8 : 38)
+            make.right.equalToSuperview().inset(0)
+            make.height.equalTo(1)
+        }
     }
 }
