@@ -107,14 +107,7 @@ class NodeDetailViewController: BaseViewController {
             self?.doubtTapAction()
         }
 
-        let attachment = NSTextAttachment()
-        attachment.bounds = CGRect(x: 0, y: -2, width: 10, height: 10)
-        attachment.image = UIImage(named: "3.icon_warning")
-
-        let attr = NSMutableAttributedString()
-        attr.append(NSAttributedString(attachment: attachment))
-        attr.append(NSAttributedString(string: " "))
-        attr.append(NSAttributedString(string: Localized("staking_validator_isInit_doubt")))
+        let attr = configDoubtAttr(text: Localized("staking_validator_isInit_doubt"))
 
         doubtLabel.attributedText = attr
         doubtLabel.textColor = UIColor(rgb: 0xFF6B00)
@@ -128,7 +121,7 @@ class NodeDetailViewController: BaseViewController {
             make.centerX.equalTo(delegateButton.snp.centerX)
 //            make.leading.trailing.equalTo(delegateButton)
 //            make.bottom.equalTo(bottomLayoutGuide.snp.top).offset(-30)
-            make.top.equalTo(delegateButton.snp.bottom).offset(15)
+            make.top.equalTo(delegateButton.snp.bottom).offset(8)
         }
 
         noNetworkEmptyView.isHidden = true
@@ -136,6 +129,19 @@ class NodeDetailViewController: BaseViewController {
         noNetworkEmptyView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+    }
+    
+    /// 配置富文本警告提示
+    func configDoubtAttr(text: String) -> NSMutableAttributedString {
+        let attachment = NSTextAttachment()
+        attachment.bounds = CGRect(x: 0, y: -2, width: 10, height: 10)
+        attachment.image = UIImage(named: "3.icon_warning")
+
+        let attr = NSMutableAttributedString()
+        attr.append(NSAttributedString(attachment: attachment))
+        attr.append(NSAttributedString(string: " "))
+        attr.append(NSAttributedString(string: text))
+        return attr
     }
 
     private func setupData() {
@@ -167,10 +173,16 @@ class NodeDetailViewController: BaseViewController {
                 make.bottom.equalTo(bottomLayoutGuide.snp.top).offset(-40)
             }
             view.layoutIfNeeded()
-            delegateButton.style = AssetVCSharedData.sharedData.walletList.count == 0 ? .disable : .blue
-            doubtLabel.isHidden = true
+            // 若钱包数非空，并且节点状态为Active或Candidate才能执行委托操作
+            delegateButton.style = (AssetVCSharedData.sharedData.walletList.count > 0) && ((nodeDetail?.node.nodeStatus == "Active") || (nodeDetail?.node.nodeStatus == "Candidate")) ?  .blue : .disable
+            if  nodeDetail?.node.nodeStatus == "Locked" {
+                doubtLabel.isHidden = false
+                doubtLabel.attributedText = configDoubtAttr(text: Localized("locked_node_cant_be_delegate"))
+            } else {
+                doubtLabel.isHidden = true
+            }
         }
-        doubtLabel.isHidden = (nodeDetail?.node.isInit == false)
+
         nodeInfoView.isInitNode = nodeDetail?.node.isInit ?? false
         nodeInfoView.setNeedsLayout()
         nodeInfoView.layoutIfNeeded()

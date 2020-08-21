@@ -28,7 +28,7 @@ class SelectWalletSearchBar: UIView {
             make.centerY.equalTo(self)
             make.right.equalTo(-10)
             make.height.equalTo(20)
-            make.width.greaterThanOrEqualTo(30)
+            make.width.equalTo(30)
         }
         mainTextField.placeholder = Localized("Wallet_searchBarPlaceHolder")
         mainTextField.font = UIFont.systemFont(ofSize: 13)

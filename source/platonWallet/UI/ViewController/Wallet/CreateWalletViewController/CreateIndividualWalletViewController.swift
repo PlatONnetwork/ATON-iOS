@@ -60,6 +60,8 @@ class CreateIndividualWalletViewController: BaseViewController,StartBackupMnemon
         super.viewWillAppear(animated)
 
         AnalysisHelper.handleEvent(id: event_newWallet, operation: .begin)
+        // 进入页面就检查钱包数量
+        let _ = checkWalletsCount()
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -208,13 +210,7 @@ class CreateIndividualWalletViewController: BaseViewController,StartBackupMnemon
     }
     
     func checkWalletsCount() -> Bool {
-        WalletService.sharedInstance.refreshDB()
-        var res = true
-        if self.curWalletPhysicalType == .normal {
-            res = WalletService.sharedInstance.wallets.count < 200
-        } else if self.curWalletPhysicalType == .hd {
-            res = WalletService.sharedInstance.wallets.count < 200 - 30
-        }
+        let res = WalletHelper.checkWalletsCount(type: self.curWalletPhysicalType)
         if res == false {
             print("不支持创建更多钱包")
             noteLabelTopLayoutWithPswTips.constant = 32

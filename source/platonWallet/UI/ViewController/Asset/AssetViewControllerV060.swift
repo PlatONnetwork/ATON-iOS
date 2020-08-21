@@ -60,7 +60,7 @@ class AssetViewControllerV060: UIViewController, PopupMenuTableDelegate {
         return header
     }()
 
-    lazy var refreshFooterView: MJExtensionLoadMoreFooterView = {
+    var refreshFooterView: MJExtensionLoadMoreFooterView = {
         let view = MJExtensionLoadMoreFooterView(refreshingTarget: self, refreshingAction: nil)!
         return view
     }()
@@ -98,7 +98,7 @@ class AssetViewControllerV060: UIViewController, PopupMenuTableDelegate {
         initUI()
         initBinding()
         shouldUpdateWalletStatus()
-//        refreshHeader.beginRefreshing()
+        refreshHeader.beginRefreshing()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -166,7 +166,8 @@ class AssetViewControllerV060: UIViewController, PopupMenuTableDelegate {
         }
 
         viewModel.isShowBackupPromptView.addObserver { [weak self] (isShow) in
-            self?.backupPromptView.isHidden = !isShow
+            guard let self = self else { return }
+            self.backupPromptView.isHidden = !isShow
         }
 
         viewModel.isShowOfflinePromptView.addObserver { [weak self] (isShow) in
@@ -841,9 +842,6 @@ extension AssetViewControllerV060: UIScrollViewDelegate {
         let topBarH: CGFloat = UIDevice.current.isNotchScreen ? 88.0 : 64.0
         let tableHeaderViewH = self.tableView.tableHeaderView?.bounds.size.height ?? 0
         if tableHeaderViewH == 0.0 { return }
-//        print("------------------------")
-//        print("offsetY:", offsetY, "contentInset.top:", tableView.contentInset.top)
-
         if offsetY <= 0 {
             isShowNavigationBar = false
             navigationController?.setNavigationBarHidden(true, animated: false)
@@ -853,8 +851,6 @@ extension AssetViewControllerV060: UIScrollViewDelegate {
         }
         // 处理组头偏移问题
         if offsetY + topBarH > tableHeaderViewH {
-//            print("🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴🔴")
-//            tableView.contentInset = UIEdgeInsets(top: offsetY + topBarH, left: 0, bottom: 0, right: 0)
             var headerOffset = offsetY + topBarH - tableHeaderViewH
             if headerOffset > topBarH {
                 headerOffset = topBarH
@@ -868,8 +864,6 @@ extension AssetViewControllerV060: UIScrollViewDelegate {
             }
             
         } else {
-//            print("🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢")
-//            tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
             // 此处修改约束是为了让sectionHeaderView取消吸顶且不抖动
             sectionView.backView.snp.remakeConstraints { (make) in
                 make.top.equalTo(0)

@@ -26,7 +26,7 @@ class DelegateViewController: BaseViewController {
 
     var canUseWallets: [Wallet] {
         get {
-            let wallets = (AssetVCSharedData.sharedData.walletList as! [Wallet]).sorted(by: <)
+            let wallets = (AssetVCSharedData.sharedData.walletList as! [Wallet]) // .sorted(by: <)
             return wallets
         }
     }
@@ -562,7 +562,7 @@ extension DelegateViewController {
     func walletCellDidHandle(_ cell: WalletTableViewCell) {
         guard let wStyle = walletStyle else { return }
         var curAddress = wStyle.currentWallet.address.lowercased()
-        let vc = SelectWalletVC(walletAddress: curAddress, enterMode: .fromChangeWallet)
+        let vc = SelectWalletVC(walletAddress: curAddress, enterMode: .fromDelegation)
         vc.show(from: self)
         vc.chooseWalletCallback = {[weak self] (walletAddress) in
             guard let self = self else { return }

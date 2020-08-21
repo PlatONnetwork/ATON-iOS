@@ -343,14 +343,8 @@ extension SelectWalletVC {
                         /// 临时的HD分组
                         var tempHDSectionInfo = SelectWalletDisplaySectionInfo(wallet: wallet, subWallets: [])
                         let allSubWallets = WalletHelper.fetchHDSubWallets(from: wallets)
-                        var subWallets = allSubWallets.filter { (sWallet) -> Bool in
+                        let subWallets = allSubWallets.filter { (sWallet) -> Bool in
                             sWallet.parentId == wallet.uuid
-                        }
-                        if enterMode == .fromDelegation {
-                            /// 委托场景需要对子钱包进行排序
-                            subWallets.sort { (ls, rs) -> Bool in
-                                return Int(ls.balance) ?? 0 >= Int(rs.balance) ?? 0
-                            }
                         }
                         if keyword.count > 0 {
                             let fiteredSubWallets = subWallets.filter { (wallet) -> Bool in
@@ -371,6 +365,11 @@ extension SelectWalletVC {
             }
         }
         if normalSectionInfo.subWallets.count > 0 {
+            if enterMode == .fromDelegation {
+                normalSectionInfo.subWallets = normalSectionInfo.subWallets.sorted { (ls, rs) -> Bool in
+                    return Int(ls.balance) ?? 0 > Int(rs.balance) ?? 0
+                }
+            }
             /// 普通组作为数据源的第一组数据
             sectionInfos.insert(normalSectionInfo, at: 0)
         }

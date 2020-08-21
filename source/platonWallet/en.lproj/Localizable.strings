@@ -42,7 +42,7 @@
 "WalletTypeTag_normal" = "Normal";
 
 "Wallet_selectingTitle" = "Select Wallet";
-"Wallet_selecting_hideSearchBar" = "hide";
+"Wallet_selecting_hideSearchBar" = "Hide";
 "Wallet_searchBarPlaceHolder" = "search by wallet name/address";
 
 //createWalletVC
@@ -50,7 +50,7 @@
 "createWalletVC_walletName" = "Wallet Name:";
 "createWalletVC_password" = "Password:";
 "createWalletVC_walletType" = "Type:";
-"createWalletVC_walletType_normal" = "normal";
+"createWalletVC_walletType_normal" = "Normal";
 "createWalletVC_walletType_hd" = "HD";
 "createWalletVC_choose_walletType" = "Select Type";
 "wallet_type_creating_desc" = "A group of 30 wallets will be created when select HD";
@@ -818,6 +818,7 @@
 "statking_validator_Balance" = "Balance";
 
 "staking_validator_isInit_doubt" = "Foundation-funded nodes do not accept delegations";
+"locked_node_cant_be_delegate" = "The locked node does not accept delegation";
 
 "ATextFieldView_title" = "Amount:";
 "ATextFieldView_delegate_title" = "Amount:";

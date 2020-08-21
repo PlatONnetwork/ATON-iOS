@@ -93,6 +93,17 @@ public final class Wallet: Object {
             }
         }
     }
+    
+    /// 当前钱包选中的钱包（非母钱包指向自己，母钱包根据指向索引值去指定）
+    public var selectedWallet: Wallet {
+        get {
+            if self.isHD == true && self.depth == 0 {
+                return subWallets[selectedIndex]
+            } else {
+                return self
+            }
+        }
+    }
 
     // 0.7.3增加离线钱包，因为只有一个address，不能生成keystore，且之前uuid是key.address赋值，所以增加address，值为uuid
     var originAddress: String {

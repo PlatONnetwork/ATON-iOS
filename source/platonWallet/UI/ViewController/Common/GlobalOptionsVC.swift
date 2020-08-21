@@ -66,14 +66,14 @@ class GlobalOptionsVC: BaseViewController, UITableViewDelegate, UITableViewDataS
 
         tableView.registerCell(cellTypes: [LanguageSettingTableViewCell.self])
 
-        let rightMenuButton = UIButton(type: .custom)
-        rightMenuButton.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
-        rightMenuButton.localizedNormalTitle = "common_setting_confirm"
-        rightMenuButton.setTitleColor(UIColor(rgb: 0x105CFE), for: .normal)
-        rightMenuButton.titleLabel?.font = UIFont.systemFont(ofSize: 15)
-        rightMenuButton.addTarget(self, action: #selector(onNavRight), for: .touchUpInside)
-        let rightBarButtonItem = UIBarButtonItem(customView: rightMenuButton)
-        navigationItem.rightBarButtonItem = rightBarButtonItem
+//        let rightMenuButton = UIButton(type: .custom)
+//        rightMenuButton.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
+//        rightMenuButton.localizedNormalTitle = "common_setting_confirm"
+//        rightMenuButton.setTitleColor(UIColor(rgb: 0x105CFE), for: .normal)
+//        rightMenuButton.titleLabel?.font = UIFont.systemFont(ofSize: 15)
+//        rightMenuButton.addTarget(self, action: #selector(onNavRight), for: .touchUpInside)
+//        let rightBarButtonItem = UIBarButtonItem(customView: rightMenuButton)
+//        navigationItem.rightBarButtonItem = rightBarButtonItem
 
     }
 
@@ -109,5 +109,8 @@ class GlobalOptionsVC: BaseViewController, UITableViewDelegate, UITableViewDataS
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.selectedIndex = indexPath.row
         tableView.reloadData()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            self.onNavRight()
+        }
     }
 }

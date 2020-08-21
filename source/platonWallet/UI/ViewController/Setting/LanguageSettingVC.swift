@@ -115,6 +115,8 @@ class LanguageSettingVC: BaseViewController, UITableViewDelegate, UITableViewDat
         default:
             break
         }
+        // 更换语言后发送全局通知
+        NotificationCenter.default.post(name: NSNotification.Name.ATON.GloabalChangeLanguage, object: nil, userInfo: ["lang" : seleceted])
     }
 
     @objc func onNavRight() {

@@ -50,8 +50,13 @@ class TransferSwitchWallet: UIView, UITableViewDataSource, UITableViewDelegate {
     func refresh() {
         dataSourse.removeAll()
         if walletListType == .ClassWallet {
-            var wallets = AssetVCSharedData.sharedData.walletList.filterClassicWallet
-            wallets.userArrangementSort()
+            var wals = AssetVCSharedData.sharedData.walletList.filterClassicWallet.filter { (wal) -> Bool in
+                wal.depth == 0
+            }
+            wals.userArrangementSort()
+            let wallets = wals.map { (wal) -> Wallet in
+                return wal.selectedWallet
+            }
             if self.checkSufficient {
                 for item in wallets {
                     if item.WalletBalanceStatus() == .Sufficient {
