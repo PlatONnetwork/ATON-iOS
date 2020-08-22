@@ -82,7 +82,7 @@
 "transferVC_faster_des" = "Faster";
 "transferVC_estima_des" = "Estimated transaction confirmation time:\nprobably within";
 
-"transferVC_confirm_PayInfo" = "Txn Info:";
+"transferVC_confirm_PayInfo" = "Tx Info:";
 "transferVC_confirm_executor" = "Executor:";
 "transferVC_confirm_From" = "Sender:";
 "transferVC_confirm_To" = "Recipient:";
