@@ -900,6 +900,7 @@
 "service_agreement_title" = "Service agreement";
 "service_agreement_selected_text" = "I have read and agree to the above agreement";
 "service_agreement_button_next" = "Next";
+"service_agreement_empty_tip" = "Error~";
 
 "asset_alert_restricted_info" = "Non tradable LAT，but can be delegated";
 

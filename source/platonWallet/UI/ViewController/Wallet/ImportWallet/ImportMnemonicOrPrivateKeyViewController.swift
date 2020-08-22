@@ -174,12 +174,12 @@ class ImportMnemonicOrPrivateKeyViewController: BaseImportWalletViewController {
 //            noteLabelTopLayoutWithPswTips.constant = 32
             walletCreateAbilityDescLabel.isHidden = false
             walletCreateAbilityDescLabel.text = Localized("createWalletVC_maximized_count")
-            bottomBtnBottomCons.priority = UILayoutPriority(rawValue: 250)
+            bottomBtnBottomCons.priority = UILayoutPriority(rawValue: 501)
         } else {
             print("还能导入更多钱包")
 //            noteLabelTopLayoutWithPswTips.constant = 10
             walletCreateAbilityDescLabel.isHidden = true
-            bottomBtnBottomCons.priority = UILayoutPriority(rawValue: 1000)
+            bottomBtnBottomCons.priority = UILayoutPriority(rawValue: 999)
         }
         return res
     }
