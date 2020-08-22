@@ -254,8 +254,9 @@ class WalletManagerDetailViewController: BaseViewController {
 
     func confirmToDeleteObserverWallet() {
         AssetService.sharedInstace.balances = AssetService.sharedInstace.balances.filter { $0.addr.lowercased() != wallet.address.lowercased() }
-        WalletService.sharedInstance.deleteWallet(wallet)
-        navigationController?.popViewController(animated: true)        
+        WalletService.sharedInstance.deleteWallet(wallet) {
+            self.navigationController?.popViewController(animated: true)
+        }
     }
 
     func verifyPassword(_ psw: String, type: AlertActionType, completionCallback:@escaping (_ privateKey: String?) -> Void) {

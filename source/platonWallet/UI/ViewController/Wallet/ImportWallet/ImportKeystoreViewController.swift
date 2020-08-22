@@ -29,7 +29,8 @@ class ImportKeystoreViewController: BaseImportWalletViewController,UIScrollViewD
     @IBOutlet weak var scrollView: UIScrollView!
 
     @IBOutlet weak var scrollViewBottomLayout: NSLayoutConstraint!
-
+    @IBOutlet weak var walletCreateAbilityDescLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -50,6 +51,8 @@ class ImportKeystoreViewController: BaseImportWalletViewController,UIScrollViewD
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.checkKeyboard()
+        // 进入页面就检查钱包数量
+        let _ = checkWalletsCount()
     }
 
     @objc func onPasteboardChange() {
@@ -117,9 +120,22 @@ class ImportKeystoreViewController: BaseImportWalletViewController,UIScrollViewD
             importBtn.style = .disable
         }
     }
+    
+    func checkWalletsCount() -> Bool {
+        let res = WalletHelper.checkWalletsCount(type: .normal)
+        if res == false {
+            print("不支持创建更多钱包")
+            walletCreateAbilityDescLabel.isHidden = false
+            walletCreateAbilityDescLabel.text = Localized("createWalletVC_maximized_count")
+        } else {
+            print("还能创建更多钱包")
+            walletCreateAbilityDescLabel.isHidden = true
+        }
+        return res
+    }
 
     func checkInputValueIsValid() -> Bool {
-        return checkKeystoreTV(showError: false) && checkNameTF(showError: false) && checkPswTF(showError: false)
+        return checkKeystoreTV(showError: false) && checkNameTF(showError: false) && checkPswTF(showError: false) && checkWalletsCount()
     }
 
     func checkKeystoreTV(showError: Bool = true) -> Bool {

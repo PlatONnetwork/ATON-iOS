@@ -65,7 +65,7 @@ class AssetWalletsHeaderController {
             let walletViewModel: AssetWalletViewModel = AssetWalletViewModel(wallet: v)
             viewModels.append(walletViewModel)
             walletViewModel.cellPressed = { [weak self] in
-                AssetVCSharedData.sharedData.currentWalletAddress = walletViewModel.wallet.address
+                AssetVCSharedData.sharedData.currentRootWalletAddress = walletViewModel.wallet.address
                 self?.onwalletsSelect?()
             }
             walletViewModel.onExchangeWalletToDisplay = {[weak self] in

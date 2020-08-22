@@ -47,7 +47,7 @@ class WalletManagerTableViewCell: UITableViewCell {
     
     var backupButtonClickCallback:((_ sender: UIButton) -> Void)?
 
-    @IBOutlet weak var walletNameCenterVerticalCons: NSLayoutConstraint!
+//    @IBOutlet weak var walletNameCenterVerticalCons: NSLayoutConstraint!
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -77,7 +77,6 @@ class WalletManagerTableViewCell: UITableViewCell {
 //                address.isHidden = false
 //                walletNameCenterVerticalCons.priority = UILayoutPriority(rawValue: 250)
 //            }
-            walletNameCenterVerticalCons.priority = UILayoutPriority(rawValue: 1000) // 所有的备份都居中显示
             address.text = aptWallet.address
             walletIcon.image = UIImage(named: aptWallet.avatar)?.circleImage()
 
