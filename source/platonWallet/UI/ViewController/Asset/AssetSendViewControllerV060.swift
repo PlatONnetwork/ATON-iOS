@@ -67,12 +67,17 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
             self?.onSendAll()
         })
         amountView.checkInput(mode: .all, check: { [weak self] (text, _) -> (Bool, String) in
-            let balance = self?.getAvailbleBalance()
+            print("1:", Date())
+            let balance = self?.getAvailbleBalanceFromPageGas()
+            print("2:", Date())
             let inputformat = CommonService.checkStakingAmoutInput(text: text, balance: balance ?? BigUInt.zero, type: .transfer)
+            print("3:", Date())
             if !inputformat.0 {
                 return inputformat
             }
-            return (self?.checkSufficient(text: text))!
+            let res = (self?.checkSufficient(text: text))!
+            print("4:", Date())
+            return res
 
             }, heightChange: { [weak self](view) in
                 self?.textFieldViewUpdateHeight(atextFieldView: view)
@@ -292,7 +297,8 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
 
     func initdata() {
         self.refreshData()
-        AssetVCSharedData.sharedData.registerHandler(object: self) {
+        AssetVCSharedData.sharedData.registerHandler(object: self) {[weak self] in
+            guard let self = self else { return }
             self.refreshData()
             if let count = self.walletAddressView.textField.text?.count, count > 0 {
                 _ = self.walletAddressView.checkInvalidNow(showErrorMsg: true)
@@ -473,15 +479,15 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
             make.bottom.equalTo(sendBtn.snp.top).offset(-20)
         }
 
-        walletAddressView.addAction(icon: UIImage(named: "textField_icon_addressBook"), action: {
+        walletAddressView.addAction(icon: UIImage(named: "textField_icon_addressBook"), action: {[weak self] in
+            guard let self = self else { return }
             let addressBookVC = AddressBookViewController()
             addressBookVC.isHideAddButton = true
             addressBookVC.selectionCompletion = { [weak self](_ addressInfo: AddressInfo?) -> Void in
-                if let weakSelf = self {
-                    weakSelf.walletAddressView.textField.text = addressInfo!.walletAddress
-                    weakSelf.walletAddressView.cleanErrorState()
-                    _ = weakSelf.checkConfirmButtonAvailable()
-                }
+                guard let self = self else { return }
+                self.walletAddressView.textField.text = addressInfo!.walletAddress
+                self.walletAddressView.cleanErrorState()
+                _ = self.checkConfirmButtonAvailable()
             }
             UIApplication.shared.keyWindow?.endEditing(true)
             AssetViewControllerV060.pushViewController(viewController: addressBookVC)
@@ -493,10 +499,11 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
 
         self.feeView.levelView.curLevel = gasPriceLevel ?? TransactionService.service.getSliderDefaultValue(min: TransactionService.service.minGasPrice, value: gas?.gasPriceBInt ?? TransactionService.service.defaultGasPrice)
         self.feeView.levelView.levelChanged = { [weak self] level in
-            self?.gasPriceLevel = level
-            self?.DidNodeGasPriceUpdate()
-            _ = self?.amountView.checkInvalidNow(showErrorMsg: true)
-            _ = self?.checkConfirmButtonAvailable()
+            guard let self = self else { return }
+            self.gasPriceLevel = level
+            self.DidNodeGasPriceUpdate()
+            _ = self.amountView.checkInvalidNow(showErrorMsg: true)
+            _ = self.checkConfirmButtonAvailable()
         }
         self.DidNodeGasPriceUpdate()
 
@@ -789,7 +796,7 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
     }
 
     func fetchGasData(completion: ((Bool) -> Void)? = nil) {
-//        guard let address = AssetVCSharedData.sharedData.currentWalletAddress else { return }
+//        guard let address = AssetVCSharedData.sharedData.currentRootWalletAddress else { return }
         guard let wallet = AssetVCSharedData.sharedData.selectedWallet as? Wallet else { return }
         showLoadingHUD()
         TransactionService.service.getContractGas(from: wallet.address, txType: TxType.transfer) { [weak self] (result, remoteGas) in
@@ -804,6 +811,10 @@ class AssetSendViewControllerV060: BaseViewController, UITextFieldDelegate {
                 completion?(false)
             }
         }
+    }
+    
+    deinit {
+        print("🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩🟩")
     }
 
 }
@@ -853,7 +864,7 @@ extension AssetSendViewControllerV060 {
         }
         var overflow = false
 
-        let balance = getAvailbleBalance()
+        let balance = getAvailbleBalanceFromPageGas()
         var newBalance = BigUInt(String(balance))
         overflow = (newBalance?.subtractReportingOverflow(amountOfwei, shiftedBy: 0))!
         if overflow {
@@ -908,6 +919,14 @@ extension AssetSendViewControllerV060 {
             let freeString = balance.free,
             let freeBalanceValue = BigUInt(freeString) else { return BigUInt.zero }
 
+        return freeBalanceValue.floorToDecimal(round: (18 - 8))
+    }
+    
+    /// 获取页面接口获取的余额
+    func getAvailbleBalanceFromPageGas() -> BigUInt {
+        guard
+            let freeString = self.gas?.free,
+            let freeBalanceValue = BigUInt(freeString) else { return BigUInt.zero }
         return freeBalanceValue.floorToDecimal(round: (18 - 8))
     }
 

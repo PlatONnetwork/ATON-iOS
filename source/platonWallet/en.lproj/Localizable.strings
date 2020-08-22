@@ -54,7 +54,7 @@
 "createWalletVC_walletType_hd" = "HD";
 "createWalletVC_choose_walletType" = "Select Type";
 "wallet_type_creating_desc" = "A group of 30 wallets will be created when select HD";
-"createWalletVC_maximized_count" = "The number of wallets should not exceed 200";
+"createWalletVC_maximized_count" = "The number of wallets cannot exceed 200";
 
 "createWalletVC_pswStrength" = "Strength";
 "createWalletVC_note" = "Note: Be sure to keep your wallet password in mind, the server will not store your password, you will not be able to retrieve the password if forgetting or losing!";
@@ -405,7 +405,7 @@
 "TransactionStatus_failed_undelegate" = "Failed";
 "TransactionStatus_succeed_undelegate" = "Success";
 
-"TransactionStatus_transfer_title" = "transfer";
+"TransactionStatus_transfer_title" = "Transfer";
 "TransactionStatus_contractCreate_title" = "ContractCreation";
 "TransactionStatus_contractExecute_title" = "ContractExecution";
 "TransactionStatus_otherReceive_title" = "OtherIncome";
@@ -938,8 +938,8 @@
 "confirm_scan_qrcode_for_read_tip" = "Scan the OR code displayed on the cold wallet to get the transaction signature.";
 "confirm_button_send" = "Finish";
 "confirm_authorize_button_send" = "Next";
-"confirm_authorize_function_type" = "Txn info:";
-"confirm_authorize_from" = "Operator_Address:";
+"confirm_authorize_function_type" = "Tx info:";
+"confirm_authorize_from" = "Operator Address:";
 "confirm_authorize_delegate_to" = "Delegated to:";
 "confirm_authorize_to" = "Recipient:";
 "confirm_authorize_undelegate_to" = "Undelegated from:";

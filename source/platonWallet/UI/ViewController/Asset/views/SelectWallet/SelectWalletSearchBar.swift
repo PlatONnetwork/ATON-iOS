@@ -28,8 +28,9 @@ class SelectWalletSearchBar: UIView {
             make.centerY.equalTo(self)
             make.right.equalTo(-10)
             make.height.equalTo(20)
-            make.width.equalTo(30)
+            make.width.equalTo(32)
         }
+        hideButton.titleLabel?.adjustsFontSizeToFitWidth = true
         mainTextField.placeholder = Localized("Wallet_searchBarPlaceHolder")
         mainTextField.font = UIFont.systemFont(ofSize: 13)
         mainTextField.snp.makeConstraints { (make) in

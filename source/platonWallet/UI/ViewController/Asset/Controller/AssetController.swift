@@ -50,12 +50,13 @@ class AssetController {
             self.sectionController.viewModel.wallet.value = wallet
             self.sectionController.viewModel.freeBalance.value = self.sectionController.viewModel.wallet.value?.freeBalance ?? BigUInt.zero
             self.sectionController.viewModel.lockBalance.value = self.sectionController.viewModel.wallet.value?.lockBalance ?? BigUInt.zero
-            var isShowBackupPromptView = wallet.canBackupMnemonic
-            if let parentWallet = WalletHelper.fetchParentWallet(from: wallet) {
-                isShowBackupPromptView = parentWallet.canBackupMnemonic
+            var isShowBackupPromptView = false
+            guard let rootWallet = AssetVCSharedData.sharedData.currentRootWallet else { return }
+            if rootWallet.canBackupMnemonic == true && (WalletService.sharedInstance.checkHiddenWalletsContain(wallet: rootWallet) == false) {
+                // 若钱包可以备份且已经关闭备份提示的钱包不包含该钱包
+                isShowBackupPromptView = true
             }
             self.viewModel.isShowBackupPromptView.value = isShowBackupPromptView
-
             self.fetchTransactionLastest()
         }
 

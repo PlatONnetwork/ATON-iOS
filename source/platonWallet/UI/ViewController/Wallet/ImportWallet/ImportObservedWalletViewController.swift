@@ -23,6 +23,14 @@ class ImportObservedWalletViewController: BaseImportWalletViewController {
     let pasteButton = UIButton()
 
     var submitButtonTopConstaint: Constraint?
+    
+    lazy var walletCreateAbilityDescLabel: UILabel = {
+        let lbl = UILabel()
+        lbl.font = UIFont.systemFont(ofSize: 12)
+        lbl.textColor = .red
+        lbl.text = Localized("createWalletVC_maximized_count")
+        return lbl
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -119,6 +127,14 @@ class ImportObservedWalletViewController: BaseImportWalletViewController {
             make.trailing.equalToSuperview().offset(-20)
             make.top.equalTo(addresstextView.snp.bottom).offset(-35.5)
         }
+        
+        contentView.addSubview(walletCreateAbilityDescLabel)
+        walletCreateAbilityDescLabel.snp.makeConstraints { (make) in
+            make.leading.equalTo(16)
+            make.trailing.equalTo(16)
+            make.top.equalTo(self.submitButton.snp.bottom).offset(10)
+            make.height.equalTo(13)
+        }
 
         endEditingWhileTapBackgroundView = true
 
@@ -135,6 +151,7 @@ class ImportObservedWalletViewController: BaseImportWalletViewController {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        walletCreateAbilityDescLabel.isHidden = WalletHelper.checkWalletsCount(type: .normal) == true
         self.checkKeyboard()
 
         if checkObservedWalletTV(showError: false) {
@@ -173,7 +190,7 @@ class ImportObservedWalletViewController: BaseImportWalletViewController {
     }
 
     func checkCanEableButton() {
-        if checkObservedWalletTV(showError: true) {
+        if checkObservedWalletTV(showError: true) && WalletHelper.checkWalletsCount(type: .normal) == true {
             submitButton.style = .blue
         } else {
             submitButton.style = .disable

@@ -225,7 +225,6 @@ class ATextFieldView: UIView {
 
         // 校验数量是否符合
         let res = check!(text, isDelete)
-
         if !showErrorMsg {
             return res
         }

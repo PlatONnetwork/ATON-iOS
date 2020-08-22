@@ -76,7 +76,8 @@ class ImportMnemonicOrPrivateKeyViewController: BaseImportWalletViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.checkKeyboard()
-        checkCanEableButton()
+        // 进入页面就检查钱包数量
+        let _ = checkWalletsCount()
     }
 
     @objc func onPasteboardChange() {
@@ -221,11 +222,14 @@ class ImportMnemonicOrPrivateKeyViewController: BaseImportWalletViewController {
             return
         }
         showMessage(text: Localized("importWalletVC_success_tips"))
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3, execute: {
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1, execute: {
             (UIApplication.shared.delegate as? AppDelegate)?.gotoMainTab()
             if let addr = wallet?.address {
-                AssetViewControllerV060.getInstance()?.reloadCurrentWallet(addr: addr)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) { /// 延时是为了保证导入钱包后首页会执行新录入的钱包
+                    AssetViewControllerV060.getInstance()?.reloadCurrentWallet(addr: addr)
+                }
             }
+            
         })
     }
 
@@ -237,7 +241,7 @@ class ImportMnemonicOrPrivateKeyViewController: BaseImportWalletViewController {
                 importBtn.style = .disable
             }
         } else {
-            if self.checkInputValueIsValid() && textView.text!.length > 0 {
+            if self.checkInputValueIsValid() && textView.text!.length > 0 && checkWalletsCount() == true {
                 importBtn.style = .blue
             } else {
                 importBtn.style = .disable

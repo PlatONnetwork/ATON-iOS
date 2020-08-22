@@ -130,7 +130,7 @@ extension AssetHeaderViewV060: UICollectionViewDelegate, UICollectionViewDataSou
             return
         }
 
-        AssetVCSharedData.sharedData.currentWalletAddress = (obj as? Wallet)?.address
+        AssetVCSharedData.sharedData.currentRootWalletAddress = (obj as? Wallet)?.address
 //        AssetVCSharedData.sharedData.selectedWallet = obj
         collectionView.reloadData()
     }

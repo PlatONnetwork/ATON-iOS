@@ -67,7 +67,17 @@ class AssetViewControllerV060: UIViewController, PopupMenuTableDelegate {
 
     lazy var backupPromptView: AssetPromptView = {
         let view = AssetPromptView(type: AssetPromptType.backup)
-        view.isHidden = true
+        
+        var isShowBackupPromptView = false
+        if let rootWallet = AssetVCSharedData.sharedData.currentRootWallet, rootWallet.canBackupMnemonic == true && (WalletService.sharedInstance.checkHiddenWalletsContain(wallet: rootWallet) == false) {
+            isShowBackupPromptView = true
+        }
+        view.isHidden = !isShowBackupPromptView
+        view.onDismiss = {[weak self] in
+            guard let self = self else { return }
+            guard let rootSelectedWallet = AssetVCSharedData.sharedData.currentRootWallet else { return }
+            WalletService.sharedInstance.setupHiddenStatus(wallet: rootSelectedWallet)
+        }
         return view
     }()
 
@@ -98,7 +108,8 @@ class AssetViewControllerV060: UIViewController, PopupMenuTableDelegate {
         initUI()
         initBinding()
         shouldUpdateWalletStatus()
-        refreshHeader.beginRefreshing()
+//        refreshHeader.beginRefreshing()
+        fetchData()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -127,7 +138,7 @@ class AssetViewControllerV060: UIViewController, PopupMenuTableDelegate {
         
         controller.headerController.onExchangeWalletToDisplay = {[weak self](walletAddress) in
             guard let self = self else { return }
-            self.chooseHighlightWallet(currentWalletAddress: walletAddress)
+            self.chooseHighlightWallet(currentRootWalletAddress: walletAddress)
         }
 
         controller.sectionController.onReceivePressed = { [weak self] in
@@ -165,7 +176,7 @@ class AssetViewControllerV060: UIViewController, PopupMenuTableDelegate {
             self?.tableView.reloadEmptyDataSet()
         }
 
-        viewModel.isShowBackupPromptView.addObserver { [weak self] (isShow) in
+        viewModel.isShowBackupPromptView.addObserver(fireNow: false) {[weak self] (isShow) in
             guard let self = self else { return }
             self.backupPromptView.isHidden = !isShow
         }
@@ -532,8 +543,8 @@ extension AssetViewControllerV060 {
     }
     
     /// 选择钱包展示
-    func chooseHighlightWallet(currentWalletAddress: String) {
-        guard let rootWallet = WalletService.sharedInstance.getWalletByAddress(address: currentWalletAddress) else { return }
+    func chooseHighlightWallet(currentRootWalletAddress: String) {
+        guard let rootWallet = WalletService.sharedInstance.getWalletByAddress(address: currentRootWalletAddress) else { return }
         let selectedWallet = WalletHelper.fetchFinalSelectedWallet(from: rootWallet)
         var selectedAddress = selectedWallet.address
         if rootWallet.subWallets.count > 0 {
@@ -546,7 +557,7 @@ extension AssetViewControllerV060 {
         }
         let vc = SelectWalletVC(walletAddress: selectedAddress, enterMode: .fromChangeWallet)
         
-//        let vc = SelectWalletVC(walletAddress: currentWalletAddress, enterMode: .fromChangeWallet)
+//        let vc = SelectWalletVC(walletAddress: currentRootWalletAddress, enterMode: .fromChangeWallet)
         vc.show(from: self)
         vc.chooseWalletCallback = {[weak self] (walletAddress) in
             guard let self = self else { return }
@@ -554,7 +565,7 @@ extension AssetViewControllerV060 {
             var addr = String()
             if wallet.parentId != nil && wallet.parentId?.count ?? 0 > 0 {
                 guard let parentWallet = WalletService.sharedInstance.getWallet(byUUID: wallet.parentId!) else { return }
-//                AssetVCSharedData.sharedData.currentWalletAddress = parentWallet.address
+//                AssetVCSharedData.sharedData.currentRootWalletAddress = parentWallet.address
                 WalletService.sharedInstance.updateWalletSelectedIndex(parentWallet, selectedIndex: wallet.pathIndex) {[weak self] in
                     guard let self = self else { return }
                     addr = parentWallet.address
@@ -570,12 +581,12 @@ extension AssetViewControllerV060 {
     @objc func reloadCurrentWallet(addr: String) {
         // WalletService.sharedInstance.refreshDB()
         self.assetWalletsView.controller.updateWalletList()
-        AssetVCSharedData.sharedData.currentWalletAddress = addr
+        AssetVCSharedData.sharedData.currentRootWalletAddress = addr
     }
     
     func chooseIndividualWallet() {
         if let currentWallet =  AssetVCSharedData.sharedData.selectedWallet as? Wallet {
-            chooseHighlightWallet(currentWalletAddress: currentWallet.address)
+            chooseHighlightWallet(currentRootWalletAddress: currentWallet.address)
         }
     }
 }
@@ -850,17 +861,18 @@ extension AssetViewControllerV060: UIScrollViewDelegate {
             navigationController?.setNavigationBarHidden(false, animated: false)
         }
         // 处理组头偏移问题
-        if offsetY + topBarH > tableHeaderViewH {
+        let offset: CGFloat = 10 /* 10:  约定“我的钱包”和头视图间隙 */
+        if offsetY + topBarH > tableHeaderViewH - offset {
             var headerOffset = offsetY + topBarH - tableHeaderViewH
             if headerOffset > topBarH {
                 headerOffset = topBarH
             }
             // 此处修改约束是为了让sectionHeaderView吸顶且不抖动
             sectionView.backView.snp.remakeConstraints { (make) in
-                make.top.equalTo(headerOffset)
+                make.top.equalTo(headerOffset + offset)
                 make.left.equalTo(0)
                 make.right.equalTo(0)
-                make.bottom.equalTo(sectionView.snp_bottom).offset(headerOffset)
+                make.bottom.equalTo(sectionView.snp_bottom).offset(headerOffset + offset)
             }
             
         } else {

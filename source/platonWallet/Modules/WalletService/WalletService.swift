@@ -25,7 +25,7 @@ public final class WalletService {
 
     public var wallets: [Wallet] = WallletPersistence.sharedInstance.getAll() {
         didSet {
-            print("\n😀😀😀😀😀😀😀😀😀😀😀😀😀\n")
+//            print("\n😀😀😀😀😀😀😀😀😀😀😀😀😀\n")
         }
     }
     
@@ -67,6 +67,34 @@ public final class WalletService {
             }
         }
         return nil
+    }
+    
+    /// 默认所有的钱包都没有被手动隐藏过
+//    private var originalHiddenStatuses: [Bool] {
+//        get {
+//            var arr: [Bool] = []
+//            for _ in 0..<wallets.count {
+//                arr.append(false)
+//            }
+//            return arr
+//        }
+//    }
+    
+    /// 用于首页已经隐藏的钱包(是否已经点击过隐藏，隐藏后，直到下次启动前都不能再提示备份)
+    private var hiddenWalletsAddresses: [String] = []
+    /// 检查某个钱包是否被隐藏
+    public func checkHiddenWalletsContain(wallet: Wallet) -> Bool {
+        if self.hiddenWalletsAddresses.contains(wallet.address) == true {
+            return true
+        } else {
+            return false
+        }
+    }
+    /// 更新某个钱包的隐藏状态（设为隐藏）
+    public func setupHiddenStatus(wallet: Wallet) {
+        if hiddenWalletsAddresses.contains(wallet.address) == false {
+            hiddenWalletsAddresses.append(wallet.address)
+        }
     }
 
     /// 创建钱包（创建普通类型和HD类型）
@@ -515,8 +543,8 @@ public final class WalletService {
                     }
                     // 重新设定母钱包的索引值
                     WalletService.sharedInstance.updateWalletSelectedIndex(parentWallet, selectedIndex: parentWallet.selectedIndex)
-                    /// 强制刷新一下currentWalletAddress，即调用didSet方法
-                    AssetVCSharedData.sharedData.currentWalletAddress = AssetVCSharedData.sharedData.currentWalletAddress
+                    /// 强制刷新一下currentRootWalletAddress，即调用didSet方法
+                    AssetVCSharedData.sharedData.currentRootWalletAddress = AssetVCSharedData.sharedData.currentRootWalletAddress
                 }
             }
         }

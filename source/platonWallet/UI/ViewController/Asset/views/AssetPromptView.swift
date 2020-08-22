@@ -95,6 +95,7 @@ class AssetPromptView: UIView {
     let button = UIButton()
     let closeBtn = UIButton()
     var onComplete: (() -> Void)?
+    var onDismiss: (() -> Void)?
 
     convenience init(type: AssetPromptType, onComplete: (() -> Void)? = nil) {
         self.init(frame: .zero)
@@ -128,6 +129,7 @@ class AssetPromptView: UIView {
             // 不能移除，防止干扰其他钱包的备份视图的显示和隐藏
             self.isHidden = true
             self.alpha = 1.0
+            self.onDismiss?()
         }
     }
 

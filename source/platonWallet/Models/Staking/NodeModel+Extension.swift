@@ -47,7 +47,7 @@ extension Node {
         case .Exited:
             return (nStatus.description, status_lightgray_color)
         case .Locked:
-            return (nStatus.description, UIColor.red) // 暂时用红色表示
+            return (nStatus.description, UIColor.gray) 
         }
     }
 

@@ -85,10 +85,6 @@ class AssetWalletsHeaderView: UIView {
             self.collectionView.reloadData()
 //            self.scrollToSelectedWallet(isAnimated: true)
         }
-//        controller.onExchangeWalletToDisplay = {[weak self](walletAddress) in
-//            guard let self = self else { return }
-//            
-//        }
     }
     
     /// 滚动到选中的Wallet
@@ -103,7 +99,7 @@ class AssetWalletsHeaderView: UIView {
                     guard let attr = self.collectionView.collectionViewLayout.layoutAttributesForItem(at: indexPath) else { return }
                     let rect = CGRect(x: attr.frame.origin.x - 16, y: attr.frame.origin.y, width: self.collectionView.frame.width, height: attr.frame.height)
                     self.collectionView.scrollRectToVisible(rect, animated: isAnimated)
-                    break
+                    return
                 }
             }
         }

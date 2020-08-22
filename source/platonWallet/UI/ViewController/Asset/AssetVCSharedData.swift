@@ -64,22 +64,28 @@ class AssetVCSharedData {
         }
     }
 
-    /// 选中的钱包（普通钱包或母钱包）
-    var currentWalletAddress: String? {
+    /// 选中的钱包地址（普通钱包或母钱包）
+    var currentRootWalletAddress: String? {
         didSet {
             for v in walletChangeHandlers {
                 v.value()
             }
         }
     }
+    
+    /// 选中的钱包（普通钱包或母钱包）
+    var currentRootWallet: Wallet? {
+        guard let address = currentRootWalletAddress, let wallet = (walletList as? [Wallet])?.first(where: { $0.address.lowercased() == address.lowercased() }) else {
+            return nil
+        }
+        return wallet
+    }
 
     var selectedWallet: AnyObject? {
-        guard
-            let address = currentWalletAddress,
-            let wallet = (walletList as? [Wallet])?.first(where: { $0.address.lowercased() == address.lowercased() })
+        guard let address = currentRootWalletAddress, let wallet = (walletList as? [Wallet])?.first(where: { $0.address.lowercased() == address.lowercased() })
             else {
                 if let defaultWallet = walletList.first as? Wallet {
-                    currentWalletAddress = defaultWallet.address
+                    currentRootWalletAddress = defaultWallet.address
                     return WalletHelper.fetchFinalSelectedWallet(from: defaultWallet) as AnyObject
                 }
                 return nil
@@ -120,7 +126,7 @@ class AssetVCSharedData {
             if let selectedWallet = AssetVCSharedData.sharedData.selectedWallet as? Wallet {
                 if selectedWallet.address.isBech32AddressEqual(other: wallet.address) {
 //                    AssetVCSharedData.sharedData.selectedWallet = nil
-                    AssetVCSharedData.sharedData.currentWalletAddress = nil;
+                    AssetVCSharedData.sharedData.currentRootWalletAddress = nil;
                 }
             }
         }
@@ -131,7 +137,7 @@ class AssetVCSharedData {
 
     public func reloadWallets() {
         let newList = self.walletList
-        currentWalletAddress = (newList as? [Wallet])?.first?.address
+        currentRootWalletAddress = (newList as? [Wallet])?.first?.address
 //        if newList.count > 0 {
 //            self.selectedWallet = newList.first as AnyObject
 //        } else {
@@ -145,7 +151,7 @@ class AssetVCSharedData {
             let wl = walletList as? [Wallet]
         else { return }
         let currentSw = wl.first(where: { $0.address.lowercased() == sw.address.lowercased() })
-        currentWalletAddress = currentSw?.address
+        currentRootWalletAddress = currentSw?.address
 //        selectedWallet = currentSw
     }
 }
