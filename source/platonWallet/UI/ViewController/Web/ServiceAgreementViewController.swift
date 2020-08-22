@@ -22,11 +22,28 @@ class ServiceAgreementViewController: BaseViewController {
     }()
 
     public let nextButton = PButton()
+    private let selectedButton = UIButton()
+    
+    var timer: Timer?
+
+    lazy var emptyButton: UIButton = {
+        let btn = UIButton(type: .custom)
+        self.webView.addSubview(btn)
+        btn.isHidden = true
+        btn.setTitle(Localized("service_agreement_empty_tip"), for: .normal)
+        btn.setTitleColor(.gray, for: .normal)
+        btn.titleLabel?.font = UIFont.systemFont(ofSize: 17)
+        btn.addTarget(self, action: #selector(emptyButtonClick), for: .touchUpInside)
+        return btn
+    }()
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        self.emptyButton.isHidden = true
+        self.emptyButton.snp.makeConstraints { (make) in
+            make.leading.trailing.top.bottom.equalTo(self.webView)
+        }
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.black]
         title = Localized("service_agreement_title")
 
@@ -41,7 +58,7 @@ class ServiceAgreementViewController: BaseViewController {
             make.height.equalTo(93)
         }
 
-        let selectedButton = UIButton()
+        
         selectedButton.setImage(UIImage(named: "icon_box"), for: .normal)
         selectedButton.setImage(UIImage(named: "icon_box2"), for: .selected)
         selectedButton.addTarget(self, action: #selector(agreementSelected(_:)), for: .touchUpInside)
@@ -88,9 +105,16 @@ class ServiceAgreementViewController: BaseViewController {
     }
 
     private func loadRequest() {
+        self.emptyButton.isHidden = true
         showLoadingHUD()
         let request = URLRequest(url: URL(string: AppConfig.H5URL.LisenceURL.serviceurl)!)
         webView.load(request)
+        if timer != nil {
+            timer!.invalidate()
+            timer = nil
+        }
+        timer = Timer(timeInterval: 30, target: self, selector: #selector(fireTime), userInfo: nil, repeats: false)
+        RunLoop.current.add(timer!, forMode: .default)
     }
 
     @objc func agreementSelected(_ sender: UIButton) {
@@ -101,18 +125,54 @@ class ServiceAgreementViewController: BaseViewController {
     @objc func nextAction() {
         nextActionHandler?()
     }
+    
+    @objc func fireTime() {
+        hideLoadingHUD()
+        showEmptyLabel()
+    }
+    
+    
+    func showEmptyLabel() {
+        self.emptyButton.isHidden = false
+        self.view.bringSubviewToFront(self.emptyButton)
+    }
+    
+    deinit {
+        timer?.invalidate()
+    }
 }
 
 extension ServiceAgreementViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
-
+        
     }
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        hideLoadingHUD()
+        successHandle()
+        self.timer?.invalidate()
+        self.timer = nil
     }
 
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
         hideLoadingHUD()
+        showEmptyLabel()
     }
+    
+    func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+        hideLoadingHUD()
+//        let err = error as NSError
+        showEmptyLabel()
+        
+    }
+    
+    @objc func emptyButtonClick() {
+        self.loadRequest()
+//        self.emptyButton.isHidden = true
+    }
+    
+    func successHandle() {
+        hideLoadingHUD()
+        self.emptyButton.isHidden = true
+    }
+    
 }

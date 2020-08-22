@@ -903,6 +903,7 @@
 "empty_string_validator" = "没有验证节点";
 "empty_string_delegation_record" = "暂无记录";
 
+"service_agreement_empty_tip" = "出错啦！点击空白处刷新~";
 "service_agreement_title" = "服务协议";
 "service_agreement_selected_text" = "我已阅读并同意上述条款";
 "service_agreement_button_next" = "继续";
