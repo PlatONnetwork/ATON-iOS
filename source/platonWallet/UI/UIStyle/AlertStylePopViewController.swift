@@ -179,7 +179,10 @@ class AlertStylePopViewController: UIViewController, UITextFieldDelegate {
         self.errorLabel.isHidden = true
         self.textFieldInput.tipsLabel = self.errorLabel
         self.textFieldInput.isSecureTextEntry = true
-        self.textFieldInput.becomeFirstResponder()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            // 防止第一响应影响动画效果
+            self.textFieldInput.becomeFirstResponder()
+        }
         if enablePassowrdCommonCheck {
             self.textFieldInput.bottomSeplineStyleChangeWithErrorTip = false
             self.confirmButton.style = .disable
