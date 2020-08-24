@@ -59,21 +59,21 @@ public struct Keystore {
         self = try JSONDecoder().decode(Keystore.self, from: data)
     }
     
-    public init(password: String, mnemonic: String, passphrase: String = "") throws {
-
-        let seed = WalletUtil.seedFromMnemonic(mnemonic, passphrase: "")
-        var hdNode = WalletUtil.hdNodeFromSeed(seed)
-        var privateKey:Data
-
-        do {
-            privateKey = try WalletUtil.privateKeyFromHDNode(&hdNode, hdPath: HDPATH)
-        } catch WalletUtil.Error.hdPathInvalid {
-            throw Error.initFailed
-        }
-
-        try self.init(password: password, privateKey: privateKey)
-        self.mnemonic = try encrypt(mnemonic: mnemonic, password: password)
-    }
+//    public init(password: String, mnemonic: String, passphrase: String = "") throws {
+//
+//        let seed = WalletUtil.seedFromMnemonic(mnemonic, passphrase: "")
+//        var hdNode = WalletUtil.hdNodeFromSeed(seed)
+//        var privateKey:Data
+//
+//        do {
+//            privateKey = try WalletUtil.privateKeyFromHDNode(&hdNode, hdPath: HDPATH)
+//        } catch WalletUtil.Error.hdPathInvalid {
+//            throw Error.initFailed
+//        }
+//
+//        try self.init(password: password, privateKey: privateKey)
+//        self.mnemonic = try encrypt(mnemonic: mnemonic, password: password)
+//    }
 
     public init(password: String, mnemonic: String, passphrase: String = "", walletPhysicalType: WalletPhysicalType) throws {
 

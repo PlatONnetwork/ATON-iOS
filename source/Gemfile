@@ -1,6 +1,7 @@
 # source "https://rubygems.org"
 source "https://gems.ruby-china.com"
 
+gem "slather"
 gem "fastlane"
 gem "fastlane-plugin-lizard"
 
