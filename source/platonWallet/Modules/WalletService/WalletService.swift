@@ -69,17 +69,6 @@ public final class WalletService {
         return nil
     }
     
-    /// 默认所有的钱包都没有被手动隐藏过
-//    private var originalHiddenStatuses: [Bool] {
-//        get {
-//            var arr: [Bool] = []
-//            for _ in 0..<wallets.count {
-//                arr.append(false)
-//            }
-//            return arr
-//        }
-//    }
-    
     /// 用于首页已经隐藏的钱包(是否已经点击过隐藏，隐藏后，直到下次启动前都不能再提示备份)
     private var hiddenWalletsAddresses: [String] = []
     /// 检查某个钱包是否被隐藏
@@ -183,31 +172,18 @@ public final class WalletService {
         }
 
         walletQueue.async {
-
             guard let keystore = try? Keystore(password: walletPassword, mnemonic: mnemonic, walletPhysicalType: physicalType) else {
                 DispatchQueue.main.async {
                     completion(nil, Error.keystoreGeneFailed)
                 }
                 return
             }
-
             let name = walletName
             var wallet: Wallet!
             if physicalType == .normal {
                 // 普通钱包
                 wallet = Wallet(uuid: keystore.generateRootWalletAddress(), name: name, keystoreObject: keystore, isHD: false, pathIndex: 0, parentId: nil)
                 wallet.isBackup = true
-                DispatchQueue.main.async {
-                    do {
-                        try self.saveToDB(wallet: wallet)
-                    } catch Error.walletAlreadyExists {
-                        completion(nil, Error.walletAlreadyExists)
-                        return
-                    } catch {
-                        completion(nil, Error.keystoreFileSaveFailed)
-                    }
-                    completion(wallet, nil)
-                }
             } else {
                 let allWallets = WalletService.sharedInstance.wallets
                 let walletsUUIDs = allWallets.map { (wal) -> String in return wal.uuid }
@@ -222,17 +198,17 @@ public final class WalletService {
                     let subWalletItem = Wallet(uuid: keystore.generateHDSubAddress(index: i), name: "\(name)_\(i + 1)", keystoreObject: keystore, isHD: true, pathIndex: Int(i), parentId: wallet.uuid)
                     wallet.subWallets.append(subWalletItem)
                 }
-                DispatchQueue.main.async {
-                    do {
-                        try self.saveToDB(wallet: wallet)
-                    } catch Error.walletAlreadyExists {
-                        completion(nil, Error.walletAlreadyExists)
-                        return
-                    } catch {
-                        completion(nil, Error.keystoreFileSaveFailed)
-                    }
-                    completion(wallet, nil)
+            }
+            DispatchQueue.main.async {
+                do {
+                    try self.saveToDB(wallet: wallet)
+                } catch Error.walletAlreadyExists {
+                    completion(nil, Error.walletAlreadyExists)
+                    return
+                } catch {
+                    completion(nil, Error.keystoreFileSaveFailed)
                 }
+                completion(wallet, nil)
             }
             
         }

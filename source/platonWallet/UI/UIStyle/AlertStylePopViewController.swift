@@ -239,7 +239,10 @@ class AlertStylePopViewController: UIViewController, UITextFieldDelegate {
         self.errorLabel.text = ""
         self.textFieldInput.tipsLabel = self.errorLabel
         self.hideMessageLabel()
-        self.textFieldInput.becomeFirstResponder()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            // 防止第一响应影响动画效果
+            self.textFieldInput.becomeFirstResponder()
+        }
 
         if enableWalletNameInputCheck {
             self.textFieldInput.bottomSeplineStyleChangeWithErrorTip = false
@@ -268,7 +271,10 @@ class AlertStylePopViewController: UIViewController, UITextFieldDelegate {
         self.confirmButton.localizedNormalTitle = "alert_confirmBtn_title"
         self.cancelButton.localizedNormalTitle = "alert_cancelBtn_title"
         self.textFieldInput.tipsLabel = self.errorLabel
-        self.textFieldInput.becomeFirstResponder()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            // 防止第一响应影响动画效果
+            self.textFieldInput.becomeFirstResponder()
+        }
 
         if enableWalletNameInputCheck {
             self.textFieldInput.bottomSeplineStyleChangeWithErrorTip = false

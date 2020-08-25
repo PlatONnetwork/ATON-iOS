@@ -44,7 +44,7 @@ class AssetViewControllerV060: UIViewController, PopupMenuTableDelegate {
         return AssetController()
     }()
 
-    lazy var assetWalletsView: AssetWalletsHeaderView = {
+    lazy var walletsHeaderView: AssetWalletsHeaderView = {
         let view = AssetWalletsHeaderView(controller: controller.headerController)
 
         return view
@@ -263,8 +263,8 @@ class AssetViewControllerV060: UIViewController, PopupMenuTableDelegate {
         tableHeaderView.backgroundColor = .clear
         tableView.tableHeaderView = tableHeaderView
 
-        tableHeaderView.addSubview(assetWalletsView)
-        assetWalletsView.snp.makeConstraints { (make) in
+        tableHeaderView.addSubview(walletsHeaderView)
+        walletsHeaderView.snp.makeConstraints { (make) in
             make.top.equalToSuperview()
             make.leading.trailing.equalToSuperview()
             make.width.equalTo(view)
@@ -580,7 +580,7 @@ extension AssetViewControllerV060 {
     
     @objc func reloadCurrentWallet(addr: String) {
         // WalletService.sharedInstance.refreshDB()
-        self.assetWalletsView.controller.updateWalletList()
+        self.walletsHeaderView.controller.updateWalletList()
         AssetVCSharedData.sharedData.currentRootWalletAddress = addr
     }
     
@@ -905,10 +905,10 @@ extension AssetViewControllerV060: EmptyDataSetSource {
 
     func verticalOffset(forEmptyDataSet scrollView: UIScrollView) -> CGFloat {
         if viewModel.isHideSectionView.value {
-            let edgeToTop = (assetWalletsView.frame.height)*0.5
+            let edgeToTop = (walletsHeaderView.frame.height)*0.5
             return edgeToTop
         } else {
-            let edgeToTop = (assetWalletsView.frame.height + sectionView.frame.height)*0.5
+            let edgeToTop = (walletsHeaderView.frame.height + sectionView.frame.height)*0.5
             return edgeToTop
         }
     }

@@ -225,7 +225,7 @@ class ImportMnemonicOrPrivateKeyViewController: BaseImportWalletViewController {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1, execute: {
             (UIApplication.shared.delegate as? AppDelegate)?.gotoMainTab()
             if let addr = wallet?.address {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) { /// 延时是为了保证导入钱包后首页会执行新录入的钱包
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.01) { /// 延时是为了保证导入钱包后首页会指向新录入的钱包
                     AssetViewControllerV060.getInstance()?.reloadCurrentWallet(addr: addr)
                 }
             }

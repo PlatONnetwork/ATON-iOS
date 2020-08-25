@@ -138,7 +138,7 @@ class AssetWalletsSectionView: UIView {
                 } else {
                     self.restrictedLabel.localizedAttributedTexts = [attribute_1, attribute_2, NSAttributedString(string: self.viewModel.lockBalance.value.description.vonToLATString ?? "0.00")]
                 }
-                // 如果文字溢出， 数字换行现实
+                // 如果文字溢出， 数字换行显示
                 if(self.restrictedLabel.isTruncated) {
                     self.restrictedLabel.localizedAttributedTexts = [attribute_1, attribute_2, NSAttributedString(string: "\n"),NSAttributedString(string: self.viewModel.lockBalance.value.description.vonToLATString ?? "0.00")]
                 }
@@ -165,12 +165,12 @@ class AssetWalletsSectionView: UIView {
                 self.typeContentLabel.isHidden = true
             } else {
                 self.typeContentLabel.isHidden = false
-                self.layoutIfNeeded()
+//                self.layoutIfNeeded()
 
-                let path = UIBezierPath(roundedRect: self.typeContentLabel.bounds, byRoundingCorners: [.topLeft, .bottomLeft], cornerRadii: CGSize(width: 12, height: 0))
-                let typeShapeMask = CAShapeLayer()
-                typeShapeMask.path = path.cgPath
-                self.typeContentLabel.layer.mask = typeShapeMask
+//                let path = UIBezierPath(roundedRect: self.typeContentLabel.bounds, byRoundingCorners: [.topLeft, .bottomLeft], cornerRadii: CGSize(width: 12, height: 0))
+//                let typeShapeMask = CAShapeLayer()
+//                typeShapeMask.path = path.cgPath
+//                self.typeContentLabel.layer.mask = typeShapeMask
             }
         }
 
@@ -330,7 +330,7 @@ class AssetWalletsSectionView: UIView {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-
+        self.typeContentLabel.cropView(corners: [.topLeft, .bottomLeft], cornerRadiiV: self.typeContentLabel.bounds.height / 2.0)
     }
 
     @objc func sendPressed() {

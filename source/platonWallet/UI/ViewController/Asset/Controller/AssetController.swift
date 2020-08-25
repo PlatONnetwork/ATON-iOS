@@ -40,6 +40,7 @@ class AssetController {
         NotificationCenter.default.addObserver(self, selector: #selector(didReceiveTransactionUpdate(_:)), name: Notification.Name.ATON.DidUpdateTransactionByHash, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(pollingWalletTransactions), name: Notification.Name.ATON.UpdateTransactionList, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(willDeleteWallet(_:)), name: Notification.Name.ATON.WillDeleateWallet, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(setupLang(noti:)), name: NSNotification.Name.ATON.GloabalChangeLanguage, object: nil)
 
         // observer
         AssetVCSharedData.sharedData.registerHandler(object: self) { [weak self] in
@@ -241,6 +242,12 @@ class AssetController {
         tempData[selectedAddress]?.removeAll()
         viewModel.transactionsData.value = tempData
     }
+    
+     @objc private func setupLang(noti: NSNotification) {
+            if (noti.userInfo != nil) {
+                self.viewModel.transactionsData.active()
+            }
+        }
 
     func fetchLatestData() {
         fetchWalletBalance()

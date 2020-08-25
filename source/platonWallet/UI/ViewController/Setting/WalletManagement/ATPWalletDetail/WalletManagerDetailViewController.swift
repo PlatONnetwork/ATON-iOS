@@ -51,7 +51,7 @@ class WalletManagerDetailViewController: BaseViewController {
         } else {
             deleteBtn.isHidden = wallet.canBackupMnemonic
         }
-        #warning("TODO")
+        #warning("TODO 方便调试")
         #if DEBUG
         deleteBtn.isHidden = false
         #endif
