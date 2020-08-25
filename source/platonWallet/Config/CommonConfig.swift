@@ -55,7 +55,7 @@ struct AppConfig {
         ]
         #else
         /// isShowMainNet用于在构建时决定是否显示主网。下列代码需要与jenkins中的配置相对应
-        static let isShowMainNet = false
+        static let isShowMainNet = true
         static let defaultNodesURL = isShowMainNet == true ? [
             (nodeURL: DefaultNodeURL_MAIN, desc: "SettingsVC_nodeSet_Chuantuo_des", chainId: AppConfig.ChainID.VERSION_MAINNET, isSelected: false, hrp: AppConfig.Hrp.LAT),
             (nodeURL: DefaultNodeURL_MAINTEST, desc: "SettingsVC_nodeSet_NewBaleyworld_des", chainId: AppConfig.ChainID.VERSION_MAINTESTNET, isSelected: false, hrp: AppConfig.Hrp.LAX)]
@@ -144,7 +144,12 @@ extension String {
         #elseif ENVIROMENT_UAT // PARALLELNET
         return AppConfig.ChainID.VERSION_UATNET
         #else
-        return AppConfig.ChainID.VERSION_MAINTESTNET
+        switch self {
+        case AppConfig.NodeURL.DefaultNodeURL_MAIN:
+            return AppConfig.ChainID.VERSION_MAINNET
+        default:
+            return AppConfig.ChainID.VERSION_MAINTESTNET
+        }
         #endif
     }
 }
