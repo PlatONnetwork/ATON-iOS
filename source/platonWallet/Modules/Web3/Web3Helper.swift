@@ -80,7 +80,11 @@ struct Web3Helper {
     }
 
     static func getRpcURL() -> String {
-        guard let node = NodeStoreService.share.nodeList.first(where: { $0.chainId == SettingService.shareInstance.currentNodeChainId }) else { return "" }
+        guard let node = NodeStoreService.share.nodeList.first(where: {
+            $0.chainId == SettingService.shareInstance.currentNodeChainId
+        }) else {
+            return ""
+        }
         return node.nodeURLStr
     }
 

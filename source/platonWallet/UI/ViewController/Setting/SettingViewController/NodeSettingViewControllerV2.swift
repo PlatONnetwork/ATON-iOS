@@ -92,7 +92,7 @@ extension NodeSettingViewControllerV2: UITableViewDelegate, UITableViewDataSourc
 //    }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
+        tableView.deselectRow(at: indexPath, animated: true)
         let didSelectNode = NodeStoreService.share.nodeList[indexPath.row]
 
         // 当前点击的节点已经为选中状态，则不往下
@@ -100,20 +100,25 @@ extension NodeSettingViewControllerV2: UITableViewDelegate, UITableViewDataSourc
             return
         }
 
-        showLoadingHUD()
+        NodeStoreService.share.switchNode(node: didSelectNode)
+        self.showMessage(text: Localized("SettingsVC_nodeSet_switchSuccess_tips"))
+        
+        /*
+//        showLoadingHUD()
         Web3Helper.switchRpcURL(didSelectNode.nodeURLStr, succeedCb: { [weak self] in
 
             guard let self = self else {
                 return
             }
-            self.hideLoadingHUD()
-            NodeStoreService.share.switchNode(node: didSelectNode)
-            self.showMessage(text: Localized("SettingsVC_nodeSet_switchSuccess_tips"))
+//            self.hideLoadingHUD()
+//            NodeStoreService.share.switchNode(node: didSelectNode)
+//            self.showMessage(text: Localized("SettingsVC_nodeSet_switchSuccess_tips"))
         }) { [weak self] in
 
-            self?.hideLoadingHUD()
+//            self?.hideLoadingHUD()
             self?.showMessage(text: Localized("SettingsVC_nodeSet_switchFail_tips"))
         }
+ */
 
     }
 }

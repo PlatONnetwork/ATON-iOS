@@ -18,6 +18,9 @@ class PopUpViewController: UIViewController {
     let bgView = UIView()
 
     let dismissView = UIView()
+    
+    /// 底部白色底图，为了让弹性动画底部不突兀
+    let bottomCoverView = UIView()
 
     var dismissCompletion: (() -> Void)?
 
@@ -42,10 +45,18 @@ class PopUpViewController: UIViewController {
     // 0.7版本新增适配发送交易确认页面自动布局
     func setUpConfirmView(view: UIView) {
         contentView = view
+        bgView.addSubview(bottomCoverView)
+        bottomCoverView.backgroundColor = .white
+        bottomCoverView.snp.makeConstraints { (make) in
+            make.leading.trailing.bottom.equalTo(bgView)
+            make.height.equalTo(40)
+        }
+        bottomCoverView.alpha = 0
+       
         bgView.addSubview(contentView!)
         contentView?.snp.makeConstraints({ (make) in
             make.centerX.equalTo(bgView)
-            make.bottom.equalTo(bgView.snp.bottom)
+            make.bottom.equalTo(bgView.snp.bottom).offset(400)
             make.leading.trailing.equalToSuperview()
         })
 
@@ -133,13 +144,21 @@ class PopUpViewController: UIViewController {
             dismissCompletion!()
         }
         if animated {
-            UIView.animate(withDuration: 0.15, delay: 0, usingSpringWithDamping: CGFloat(0.75), initialSpringVelocity: CGFloat(3.0), options: UIView.AnimationOptions.allowUserInteraction, animations: { [weak self] in
+            self.contentView!.superview!.layoutIfNeeded()
+            UIView.animate(withDuration: 0.25, delay: 0, usingSpringWithDamping: CGFloat(0.75), initialSpringVelocity: CGFloat(3.0), options: UIView.AnimationOptions.allowUserInteraction, animations: { [weak self] in
                 guard let self = self else { return }
-                self.contentView?.snp.updateConstraints({ (make) in
-                    make.bottom.equalTo(self.bgView.snp.bottom).offset(kUIScreenHeight)
-                })
-                self.contentView!.superview!.layoutIfNeeded()
+//                self.contentView?.snp.updateConstraints({ (make) in
+//                    make.bottom.equalTo(self.bgView.snp.bottom).offset(kUIScreenHeight)
+//                })
+                
+//                self.contentView?.snp.remakeConstraints({ (make) in
+//                    make.centerX.equalTo(self.bgView)
+////                    make.bottom.equalTo(bgView.snp.bottom).offset(400)
+//                    make.top.equalTo(self.bgView.snp.bottom)
+//                    make.leading.trailing.equalToSuperview()
+//                })
                 self.bgView.alpha = 0
+                self.contentView!.superview!.layoutIfNeeded()
             }) { _ in
                 self.presentingViewController?.dismiss(animated: false, completion: {
                     completion?()
@@ -158,7 +177,8 @@ class PopUpViewController: UIViewController {
         if let tabBarController = vc.tabBarController {
             presentRootController = tabBarController
         }
-        
+        self.bgView.alpha = 0
+        bottomCoverView.alpha = 1
         presentRootController.present(self, animated: animated, completion: {
             UIView.animate(withDuration: 0.35,
                            delay: 0,
@@ -166,13 +186,14 @@ class PopUpViewController: UIViewController {
                            initialSpringVelocity: CGFloat(3.0),
                            options: UIView.AnimationOptions.allowUserInteraction,
                            animations: {
-
                             self.contentView?.snp.updateConstraints({ (make) in
                                 make.bottom.equalTo(self.bgView.snp.bottom)
                             })
+                            self.bgView.alpha = 1
                             self.contentView!.superview!.layoutIfNeeded()
 
             },completion: { _ in()
+                self.bottomCoverView.alpha = 0
             })
         })
     }

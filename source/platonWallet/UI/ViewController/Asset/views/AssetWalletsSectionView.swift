@@ -330,7 +330,9 @@ class AssetWalletsSectionView: UIView {
 
     override func layoutSubviews() {
         super.layoutSubviews()
-        self.typeContentLabel.cropView(corners: [.topLeft, .bottomLeft], cornerRadiiV: self.typeContentLabel.bounds.height / 2.0)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.001) {
+            self.typeContentLabel.cropView(corners: [.topLeft, .bottomLeft], cornerRadiiV: self.typeContentLabel.bounds.height / 2.0)
+        }
     }
 
     @objc func sendPressed() {

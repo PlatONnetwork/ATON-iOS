@@ -135,12 +135,9 @@ public final class WalletService {
             completion(nil, Error.invalidAddress)
             return
         }
-
         walletQueue.async {
             let walletName = WalletUtil.generateNewObservedWalletName()
-
             let wallet = Wallet(name: walletName, originAddress: try! AddrCoder.shared.decodeHex(addr: address))
-
             DispatchQueue.main.async {
                 do {
                     try self.saveObservedWalletToDB(wallet: wallet)
@@ -157,13 +154,6 @@ public final class WalletService {
     }
 
     /// importWalletFromMnemonic
-    ///
-    /// - Parameters:
-    ///   - mnemonic: <#mnemonic description#>
-    ///   - passphrase: <#passphrase description#>
-    ///   - walletName: <#walletName description#>
-    ///   - walletPassword: <#walletPassword description#>
-    ///   - completion: <#completion description#>
     public func `import`(mnemonic: String ,passphrase: String = "", walletName: String, walletPassword: String, physicalType: WalletPhysicalType = .normal, completion: @escaping (Wallet?, Error?) -> Void) {
 
         guard WalletUtil.isValidMnemonic(mnemonic) else {
@@ -215,13 +205,6 @@ public final class WalletService {
     }
 
     /// importWalletFromPrivateKey
-    ///
-    /// - Parameters:
-    ///   - privateKey: <#privateKey description#>
-    ///   - walletName: <#walletName description#>
-    ///   - walletPassword: <#walletPassword description#>
-    /// - Returns: <#return value description#>
-    /// - Throws: <#throws value description#>
     public func `import`(privateKey: String, walletName: String, walletPassword: String, completion: @escaping (Wallet?, Error?) -> Void) {
         var privateK = privateKey
         if privateK.hasPrefix("0x") {
@@ -262,13 +245,6 @@ public final class WalletService {
     }
 
     /// importWalletFromKeystoreFile
-    ///
-    /// - Parameters:
-    ///   - keystore: <#keystore description#>
-    ///   - walletName: <#walletName description#>
-    ///   - password: <#password description#>
-    /// - Returns: <#return value description#>
-    /// - Throws: <#throws value description#>
     public func `import`(keystore: String, walletName: String, password: String, completion: @escaping (Wallet?, Error?) -> Void) {
         guard let keystoreObj = try? JSONDecoder().decode(Keystore.self, from: keystore.data(using: .utf8)!) else {
             completion(nil, Error.invalidKeystore)
@@ -310,11 +286,8 @@ public final class WalletService {
                     return
                 }
                 completion(wallet, nil)
-
             })
-
         }
-
     }
     
     /// exportPrivateKey
@@ -365,12 +338,6 @@ public final class WalletService {
     }
 
     /// exportKeystoreFile
-    ///
-    /// - Parameters:
-    ///   - wallet: <#wallet description#>
-    ///   - password: <#password description#>
-    /// - Returns: <#return value description#>
-    /// - Throws: <#throws value description#>
     public func exportKeystore(wallet: Wallet, password: String = "") -> (keystore:String?, error:Error?) {
 
 //        guard var keystore = wallet.key else {
@@ -447,7 +414,6 @@ public final class WalletService {
     }
 
     public func deleteWallet(_ wallet:Wallet, shouldCleanParentWalletFinally: Bool = true, complete: (() -> Void)? = nil) {
-
         /*
         NotificationCenter.default.post(name: Notification.Name.ATON.WillDeleateWallet, object: wallet)
         wallets.removeAll(where: { $0.uuid == wallet.uuid})
@@ -498,10 +464,9 @@ public final class WalletService {
                 }
             }
         }
-        
     }
     
-    /// 从一个父钱包中移除子钱包
+    /// 从一个母钱包中移除子钱包（若是最后一个子钱包被删除，母钱包也会被删除）
     private func removeWallet(wallet: Wallet, fromParent parentWallet: Wallet) {
         // 反向遍历母钱包
         for (i, v) in parentWallet.subWallets.enumerated().reversed() {
@@ -515,12 +480,15 @@ public final class WalletService {
                     } else {
                         // 没有子钱包
                         parentWallet.selectedIndex = 0
-                        WalletService.sharedInstance.wallets.removeAll()
+//                        WalletService.sharedInstance.wallets.removeAll()
+                        if WalletService.sharedInstance.wallets.contains(parentWallet) {
+                            WalletService.sharedInstance.deleteWallet(parentWallet)
+                        }
                     }
                     // 重新设定母钱包的索引值
                     WalletService.sharedInstance.updateWalletSelectedIndex(parentWallet, selectedIndex: parentWallet.selectedIndex)
-                    /// 强制刷新一下currentRootWalletAddress，即调用didSet方法
-                    AssetVCSharedData.sharedData.currentRootWalletAddress = AssetVCSharedData.sharedData.currentRootWalletAddress
+                    /// 强制刷新
+                    AssetVCSharedData.sharedData.active()
                 }
             }
         }

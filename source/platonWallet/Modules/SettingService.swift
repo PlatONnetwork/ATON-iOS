@@ -16,40 +16,40 @@ class SettingService {
         let standard = UserDefaults.standard
         let defaultHrps = AppConfig.NodeURL.defaultNodesURL.map { $0.hrp }
         guard
-                let hrp = standard.string(forKey: LocalKeys.SelectedHrpKey), defaultHrps.contains(hrp) else {
-            if let defaultNode = AppConfig.NodeURL.defaultNodesURL.first(where: { $0.isSelected == true }) {
-                standard.set(defaultNode.hrp, forKey: LocalKeys.SelectedHrpKey)
-                standard.synchronize()
-                return defaultNode.hrp
-            } else {
-                let hrp = AppConfig.NodeURL.defaultNodesURL.first!.hrp
-                standard.set(hrp, forKey: LocalKeys.SelectedHrpKey)
-                standard.synchronize()
-                return hrp
-            }
+            let hrp = standard.string(forKey: LocalKeys.SelectedHrpKey), defaultHrps.contains(hrp) else {
+                if let defaultNode = AppConfig.NodeURL.defaultNodesURL.first(where: { $0.isSelected == true }) {
+                    standard.set(defaultNode.hrp, forKey: LocalKeys.SelectedHrpKey)
+                    standard.synchronize()
+                    return defaultNode.hrp
+                } else {
+                    let hrp = AppConfig.NodeURL.defaultNodesURL.first!.hrp
+                    standard.set(hrp, forKey: LocalKeys.SelectedHrpKey)
+                    standard.synchronize()
+                    return hrp
+                }
         }
         return hrp
     }
-
+    
     var currentNodeChainId: String {
         let standard = UserDefaults.standard
         let defaultChainIds = AppConfig.NodeURL.defaultNodesURL.map { $0.chainId }
         guard
             let chainId = standard.string(forKey: LocalKeys.SelectedChainIdKey), defaultChainIds.contains(chainId) else {
-            if let defaultNode = AppConfig.NodeURL.defaultNodesURL.first(where: { $0.isSelected == true }) {
-                standard.set(defaultNode.chainId, forKey: LocalKeys.SelectedChainIdKey)
-                standard.synchronize()
-                return defaultNode.chainId
-            } else {
-                let chainId = AppConfig.NodeURL.defaultNodesURL.first!.chainId
-                standard.set(chainId, forKey: LocalKeys.SelectedChainIdKey)
-                standard.synchronize()
-                return chainId
-            }
+                if let defaultNode = AppConfig.NodeURL.defaultNodesURL.first(where: { $0.isSelected == true }) {
+                    standard.set(defaultNode.chainId, forKey: LocalKeys.SelectedChainIdKey)
+                    standard.synchronize()
+                    return defaultNode.chainId
+                } else {
+                    let chainId = AppConfig.NodeURL.defaultNodesURL.first!.chainId
+                    standard.set(chainId, forKey: LocalKeys.SelectedChainIdKey)
+                    standard.synchronize()
+                    return chainId
+                }
         }
         return chainId
     }
-
+    
     var currentNetworkDesc: String {
         let currentNode = AppConfig.NodeURL.defaultNodesURL.first(where: { $0.chainId == currentNodeChainId })
         guard let desc = currentNode?.desc else {
@@ -57,25 +57,25 @@ class SettingService {
         }
         return desc
     }
-
+    
     var currentNetworkName: String {
         return Localized(currentNetworkDesc)
     }
-
+    
     var remoteVersion: RemoteVersion?
     var remoteConfig: RemoteConfig?
-
+    
     static let shareInstance = SettingService()
-
+    
     func getCentralizationHost() -> String {
         let chainId = SettingService.shareInstance.currentNodeChainId
-        #if ENVIROMENT_DEV // UAT
+        #if ENVIROMENT_DEV // 对应0.13.0及以前的UAT
         if chainId == AppConfig.ChainID.TEST1 {
             return AppConfig.ServerURL.HOST.TESTNET
         } else {
             return AppConfig.ServerURL.HOST.DEVNET
         }
-        #elseif ENVIROMENT_UAT // PARALLELNET
+        #elseif ENVIROMENT_UAT // 对应0.13.0及以前的PARALLELNET
         return AppConfig.ServerURL.HOST.UATNET
         #else
         if chainId == AppConfig.ChainID.VERSION_MAINTESTNET {
@@ -85,11 +85,11 @@ class SettingService {
         }
         #endif
     }
-
+    
     static func getCentralizationURL() -> String {
         return SettingService.shareInstance.getCentralizationHost() + AppConfig.ServerURL.PATH
     }
-
+    
     func setCurrentNodeChainId(nodeChain: NodeChain) {
         let standard = UserDefaults.standard
         guard
@@ -101,7 +101,7 @@ class SettingService {
         standard.set(nodeChain.chainId, forKey: LocalKeys.SelectedChainIdKey)
         standard.synchronize()
     }
-
+    
     func setCurrentNodeHrp(nodeChain: NodeChain) {
         let standard = UserDefaults.standard
         guard
@@ -113,7 +113,7 @@ class SettingService {
         standard.set(nodeChain.hrp, forKey: LocalKeys.SelectedHrpKey)
         standard.synchronize()
     }
-
+    
     var thresholdValue: BigUInt {
         get {
             if let value = UserDefaults.standard.object(forKey: LocalKeys.ReminderThresholdValue) as? String {
@@ -128,7 +128,7 @@ class SettingService {
             UserDefaults.standard.synchronize()
         }
     }
-
+    
     var isResendReminder: Bool {
         get {
             if let value = UserDefaults.standard.object(forKey: LocalKeys.isOpenResendReminder) as? Bool {

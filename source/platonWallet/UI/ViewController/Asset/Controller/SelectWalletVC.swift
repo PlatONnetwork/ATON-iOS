@@ -8,6 +8,7 @@
 
 import UIKit
 import Localize_Swift
+import BigInt
 
 class SelectWalletVC: UIViewController, UITableViewDelegate, UITableViewDataSource {
 
@@ -325,6 +326,12 @@ extension SelectWalletVC {
         var normalSectionInfo = SelectWalletDisplaySectionInfo(wallet: nil, subWallets: [])
         let wallets = AssetVCSharedData.sharedData.walletList as! [Wallet]
         for wallet in wallets {
+            if let balance = AssetService.sharedInstace.balances.first(where: { (ba) -> Bool in
+                ba.addr == wallet.address
+            }) {
+                wallet.balance = balance.free ?? "0"
+                wallet.lockedBalance = balance.lock ?? "0"
+            }
             let foundable = self.isFoundable(wallet: wallet, keyword: keyword)
             if wallet.isHD == false {
                 if cate == .all || cate == .normal {
@@ -366,8 +373,11 @@ extension SelectWalletVC {
         }
         if normalSectionInfo.subWallets.count > 0 {
             if enterMode == .fromDelegation {
-                normalSectionInfo.subWallets = normalSectionInfo.subWallets.sorted { (ls, rs) -> Bool in
-                    return Int(ls.balance) ?? 0 > Int(rs.balance) ?? 0
+                normalSectionInfo.subWallets.sort { (ls, rs) -> Bool in
+                    let lsBalance = (BigUInt(ls.balance) ?? 0) + (BigUInt(ls.lockedBalance) ?? 0)
+                    let rsBalance = ((BigUInt(rs.balance) ?? 0) + (BigUInt(rs.lockedBalance) ?? 0))
+                    // 余额降序排列（自由金和锁定金）
+                    return lsBalance > rsBalance
                 }
             }
             /// 普通组作为数据源的第一组数据

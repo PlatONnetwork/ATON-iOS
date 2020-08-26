@@ -257,7 +257,6 @@ extension Wallet: Comparable {
     public static func < (lhs: Wallet, rhs: Wallet) -> Bool {
         let lhsB = AssetService.sharedInstace.balances.first(where: { $0.addr.lowercased() == lhs.address.lowercased() })
         let rhsB = AssetService.sharedInstace.balances.first(where: { $0.addr.lowercased() == rhs.address.lowercased() })
-
         guard
                 let lhsBBigUInt = BigUInt(lhsB?.free ?? "0"),
                 let rhsBBigUInt = BigUInt(rhsB?.free ?? "0") else {
