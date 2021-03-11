@@ -11,9 +11,9 @@ import Localize_Swift
 
 struct AppConfig {
     struct Keys {
-        static let BuglyAppleID = "e8f57be7d2"
-        static let Production_Umeng_key = "5d551ffd3fc1959f6b000113"
-        static let Test_Umeng_key = "5d57a9ba570df380e2000b23"
+        static let BuglyAppleID = ""
+        static let Production_Umeng_key = ""
+        static let Test_Umeng_key = ""
     }
 
     struct ChainID {
